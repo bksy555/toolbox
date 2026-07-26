@@ -1237,36 +1237,39 @@ console.log("Hello World!");
 
   // ==================== 新分类：媒体工具 ====================
   {
-    id: 'video-download-tool',
+    id: 'video-download-guide',
     cat: 'media',
     icon: '🎬',
-    name: '抖音/TikTok 视频解析',
-    desc: '解析抖音/TikTok视频链接，在线预览并下载无水印视频',
+    name: '抖音/TikTok 视频去水印下载',
+    desc: '使用第三方工具下载抖音/TikTok无水印视频',
     html: `
       <div class="tool-card">
         <div class="input-group">
-          <label>粘贴视频分享链接</label>
-          <div class="row" style="gap:8px;">
-            <input type="text" id="vdl-url" placeholder="https://v.douyin.com/xxxxx/ 或 https://www.tiktok.com/@xxx/video/xxx" style="flex:1;">
-            <button class="btn btn-primary" onclick="parseVideoUrl()">🔍 解析</button>
-          </div>
-          <p style="font-size:12px;color:var(--text-light);margin-top:6px;">支持：抖音、TikTok、快手、小红书、B站</p>
+          <label>📌 使用说明</label>
+          <p style="font-size:14px;color:var(--text-light);line-height:1.8;">
+            复制抖音/TikTok视频分享链接，粘贴到以下工具的输入框，即可下载无水印视频。
+          </p>
         </div>
-        <div id="vdl-loading" style="display:none;text-align:center;padding:20px;color:var(--text-light);">⏳ 正在解析...</div>
-        <div id="vdl-result" style="margin-top:16px;display:none;">
-          <div style="background:var(--bg);border-radius:10px;padding:16px;border:1px solid var(--border);text-align:center;">
-            <div id="vdl-thumb" style="margin-bottom:12px;"></div>
-            <div id="vdl-info" style="font-size:14px;margin-bottom:12px;"></div>
-            <div id="vdl-actions" class="btn-group" style="justify-content:center;"></div>
+        <div style="display:grid;gap:12px;margin-top:16px;">
+          <div style="background:var(--bg);border-radius:10px;padding:16px;border:1px solid var(--border);">
+            <div style="font-weight:600;font-size:16px;display:flex;align-items:center;gap:8px;">
+              <span>🎬 SSSTik.io</span>
+              <span style="font-size:11px;background:#22c55e;color:white;padding:2px 8px;border-radius:4px;">推荐</span>
+            </div>
+            <p style="font-size:13px;color:var(--text-light);margin:4px 0 8px;">全球最流行的TikTok/抖音去水印下载工具，粘贴链接即可下载无水印视频，支持HD画质</p>
+            <a href="https://ssstik.io/" target="_blank" style="color:var(--primary);font-weight:600;">https://ssstik.io/ →</a>
+          </div>
+          <div style="background:var(--bg);border-radius:10px;padding:16px;border:1px solid var(--border);">
+            <div style="font-weight:600;font-size:16px;display:flex;align-items:center;gap:8px;">
+              <span>⚡ SnapTik</span>
+              <span style="font-size:11px;background:#22c55e;color:white;padding:2px 8px;border-radius:4px;">推荐</span>
+            </div>
+            <p style="font-size:13px;color:var(--text-light);margin:4px 0 8px;">支持抖音、TikTok、快手、小红书等，无需注册，粘贴链接即可下载</p>
+            <a href="https://snaptik.app/en3" target="_blank" style="color:var(--primary);font-weight:600;">https://snaptik.app/en3 →</a>
           </div>
         </div>
-        <div id="vdl-status" style="margin-top:8px;font-size:13px;color:var(--text-light);"></div>
-        <div style="margin-top:12px;padding:12px;background:#f0fdf4;border-radius:10px;font-size:13px;color:#166534;">
-          <strong>📌 说明：</strong>本工具使用各平台官方API解析视频信息，纯前端实现。
-          <br><strong>✅ TikTok：</strong>官方oEmbed API → 可预览信息
-          <br><strong>✅ B站：</strong>官方API → 可预览信息
-          <br><strong>⚠️ 抖音/小红书/快手：</strong>因平台限制，无法直接下载，请在官方应用内查看
-          <br><br><strong>关于下载：</strong> TikTok/B站等平台限制第三方下载无水印视频，这是平台政策，不是技术问题。所有声称能下载的第三方工具都使用非官方接口，存在法律风险。
+        <div style="margin-top:16px;padding:12px;background:#fef3c7;border-radius:10px;font-size:13px;color:#92400e;">
+          ⚠️ 第三方工具可能随时变更，使用时请注意保护个人隐私，不要输入敏感信息。
         </div>
       </div>
     `,
@@ -2054,7 +2057,7 @@ const CATEGORIES = [
   { id: 'security', icon: '🔒', name: '安全工具', desc: '密码生成、Hash计算、随机数' },
   { id: 'time', icon: '⏱️', name: '时间工具', desc: '时间戳转换、日期计算' },
   { id: 'color', icon: '🎨', name: '颜色工具', desc: 'HEX/RGB/HSL颜色转换' },
-  { id: 'media', icon: '🎬', name: '媒体工具', desc: '抖音/TikTok视频解析、视频转GIF' },
+  { id: 'media', icon: '🎬', name: '媒体工具', desc: '抖音/TikTok去水印下载、视频转GIF' },
   { id: 'ai', icon: '🤖', name: 'AI工具', desc: 'AI聊天、AI Agent安装、免费AI工具推荐' },
   { id: 'voice', icon: '🗣️', name: '群众心声', desc: '提交工具建议、投票排行榜、前3名自动实现' }
 ];
