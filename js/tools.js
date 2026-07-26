@@ -1521,115 +1521,209 @@ openclaw update</code></pre>
     handler: () => {}
   },
   {
-    id: 'format-convert-guide',
+    id: 'image-to-pdf',
     cat: 'document',
-    icon: '🗂️',
-    name: '文档格式转换大全',
-    desc: 'Word/Excel/PDF/图片互转的免费在线工具导航',
+    icon: '🖼️',
+    name: '图片转 PDF',
+    desc: '将多张图片合并为一份 PDF 文件，支持排序',
     html: `
       <div class="tool-card">
         <div class="input-group">
-          <label>📌 说明</label>
-          <p style="font-size:14px;color:var(--text-light);line-height:1.8;">
-            由于浏览器限制，部分文档格式转换（如 Word 转 PDF、PDF 转 Word 等）需要服务器端处理。
-            以下推荐经过验证的免费在线转换工具，无需安装，打开即用。
-          </p>
+          <label>选择图片（支持多选，按选择顺序排列）</label>
+          <div class="file-input-wrapper">
+            <span class="file-btn">📁 选择图片</span>
+            <input type="file" id="ip-images" accept="image/*" multiple onchange="loadImagesForPDF()">
+          </div>
+          <span id="ip-info" style="margin-left:12px;font-size:13px;color:var(--text-light);"></span>
         </div>
-
-        <h3 style="font-size:16px;margin:20px 0 12px;color:var(--primary);">📄 Word 相关转换</h3>
-        <div style="display:grid;gap:10px;">
-          <div class="guide-item" style="background:var(--bg);border-radius:10px;padding:14px;border:1px solid var(--border);">
-            <div style="font-weight:600;">Word → PDF</div>
-            <div style="font-size:13px;color:var(--text-light);margin:2px 0 6px;line-height:1.6;">支持 .doc / .docx 转 PDF，保留原始排版和图片</div>
-            <a href="https://smallpdf.com/word-to-pdf" target="_blank" style="color:var(--primary);font-size:13px;">🔗 smallpdf.com</a>
-            &nbsp;·&nbsp; <a href="https://www.ilovepdf.com/word_to_pdf" target="_blank" style="color:var(--primary);font-size:13px;">🔗 ilovepdf.com</a>
-            &nbsp;·&nbsp; <a href="https://www.freeconvert.com/word-to-pdf" target="_blank" style="color:var(--primary);font-size:13px;">🔗 freeconvert.com</a>
-          </div>
-          <div class="guide-item" style="background:var(--bg);border-radius:10px;padding:14px;border:1px solid var(--border);">
-            <div style="font-weight:600;">PDF → Word</div>
-            <div style="font-size:13px;color:var(--text-light);margin:2px 0 6px;line-height:1.6;">PDF 转 Word / .docx，可编辑</div>
-            <a href="https://smallpdf.com/pdf-to-word" target="_blank" style="color:var(--primary);font-size:13px;">🔗 smallpdf.com</a>
-            &nbsp;·&nbsp; <a href="https://www.ilovepdf.com/pdf_to_word" target="_blank" style="color:var(--primary);font-size:13px;">🔗 ilovepdf.com</a>
-            &nbsp;·&nbsp; <a href="https://www.pdf2go.com/pdf-to-word" target="_blank" style="color:var(--primary);font-size:13px;">🔗 pdf2go.com</a>
-          </div>
-          <div class="guide-item" style="background:var(--bg);border-radius:10px;padding:14px;border:1px solid var(--border);">
-            <div style="font-weight:600;">Word ↔ Excel</div>
-            <div style="font-size:13px;color:var(--text-light);margin:2px 0 6px;line-height:1.6;">Word 表格转 Excel 电子表格，互转</div>
-            <a href="https://www.ilovepdf.com/word_to_excel" target="_blank" style="color:var(--primary);font-size:13px;">🔗 ilovepdf.com</a>
-            &nbsp;·&nbsp; <a href="https://www.freeconvert.com/word-to-excel" target="_blank" style="color:var(--primary);font-size:13px;">🔗 freeconvert.com</a>
+        <div class="input-group">
+          <label>PDF 页面设置</label>
+          <div class="row" style="margin-top:8px;">
+            <select id="ip-format" style="width:120px;">
+              <option value="a4">A4</option>
+              <option value="a3">A3</option>
+              <option value="letter">Letter</option>
+            </select>
+            <select id="ip-orientation" style="width:120px;">
+              <option value="portrait">纵向</option>
+              <option value="landscape">横向</option>
+            </select>
+            <select id="ip-fit" style="width:120px;">
+              <option value="contain">适应页面</option>
+              <option value="cover">填充页面</option>
+            </select>
           </div>
         </div>
-
-        <h3 style="font-size:16px;margin:20px 0 12px;color:var(--primary);">📊 Excel 相关转换</h3>
-        <div style="display:grid;gap:10px;">
-          <div class="guide-item" style="background:var(--bg);border-radius:10px;padding:14px;border:1px solid var(--border);">
-            <div style="font-weight:600;">Excel → PDF</div>
-            <div style="font-size:13px;color:var(--text-light);margin:2px 0 6px;line-height:1.6;">Excel 表格转 PDF 文件，保留格式</div>
-            <a href="https://smallpdf.com/excel-to-pdf" target="_blank" style="color:var(--primary);font-size:13px;">🔗 smallpdf.com</a>
-            &nbsp;·&nbsp; <a href="https://www.ilovepdf.com/excel_to_pdf" target="_blank" style="color:var(--primary);font-size:13px;">🔗 ilovepdf.com</a>
-          </div>
-          <div class="guide-item" style="background:var(--bg);border-radius:10px;padding:14px;border:1px solid var(--border);">
-            <div style="font-weight:600;">PDF → Excel</div>
-            <div style="font-size:13px;color:var(--text-light);margin:2px 0 6px;line-height:1.6;">PDF 中的表格提取为 Excel 电子表格</div>
-            <a href="https://smallpdf.com/pdf-to-excel" target="_blank" style="color:var(--primary);font-size:13px;">🔗 smallpdf.com</a>
-            &nbsp;·&nbsp; <a href="https://www.ilovepdf.com/pdf_to_excel" target="_blank" style="color:var(--primary);font-size:13px;">🔗 ilovepdf.com</a>
+        <div id="ip-preview" style="display:none;">
+          <div id="ip-thumbnails" style="display:flex;flex-wrap:wrap;gap:8px;margin:12px 0;"></div>
+          <div class="btn-group">
+            <button class="btn btn-primary" onclick="generateImagePDF()">📄 生成 PDF</button>
+            <button class="btn btn-secondary" onclick="clearImagesForPDF()">清空</button>
           </div>
         </div>
-
-        <h3 style="font-size:16px;margin:20px 0 12px;color:var(--primary);">🖼️ 文档与图片互转</h3>
-        <div style="display:grid;gap:10px;">
-          <div class="guide-item" style="background:var(--bg);border-radius:10px;padding:14px;border:1px solid var(--border);">
-            <div style="font-weight:600;">PDF ↔ 图片 (JPG/PNG)</div>
-            <div style="font-size:13px;color:var(--text-light);margin:2px 0 6px;line-height:1.6;">PDF 转图片（每页一张图），图片转 PDF</div>
-            <a href="https://www.ilovepdf.com/pdf_to_jpg" target="_blank" style="color:var(--primary);font-size:13px;">🔗 ilovepdf.com</a>
-            &nbsp;·&nbsp; <a href="https://smallpdf.com/pdf-to-jpg" target="_blank" style="color:var(--primary);font-size:13px;">🔗 smallpdf.com</a>
-            &nbsp;·&nbsp; <a href="https://www.freeconvert.com/pdf-to-jpg" target="_blank" style="color:var(--primary);font-size:13px;">🔗 freeconvert.com</a>
+        <div id="ip-status" style="margin-top:12px;font-size:14px;color:var(--text-light);"></div>
+      </div>
+    `,
+    handler: () => {}
+  },
+  {
+    id: 'pdf-to-image',
+    cat: 'document',
+    icon: '📸',
+    name: 'PDF 转图片',
+    desc: '将 PDF 每一页转换为 PNG/JPG 图片下载',
+    html: `
+      <div class="tool-card">
+        <div class="input-group">
+          <label>选择 PDF 文件</label>
+          <div class="file-input-wrapper">
+            <span class="file-btn">📁 选择 PDF</span>
+            <input type="file" id="pi-file" accept=".pdf" onchange="loadPDFForImage()">
           </div>
-          <div class="guide-item" style="background:var(--bg);border-radius:10px;padding:14px;border:1px solid var(--border);">
-            <div style="font-weight:600;">Word 转图片</div>
-            <div style="font-size:13px;color:var(--text-light);margin:2px 0 6px;line-height:1.6;">Word 文档转 JPG/PNG 图片</div>
-            <a href="https://cdkm.com/cn/word-to-jpg" target="_blank" style="color:var(--primary);font-size:13px;">🔗 cdkm.com</a>
-            &nbsp;·&nbsp; <a href="https://www.freeconvert.com/word-to-png" target="_blank" style="color:var(--primary);font-size:13px;">🔗 freeconvert.com</a>
+          <span id="pi-info" style="margin-left:12px;font-size:13px;color:var(--text-light);"></span>
+        </div>
+        <div class="row">
+          <div class="input-group">
+            <label>输出格式</label>
+            <select id="pi-format" style="width:150px;">
+              <option value="png">PNG</option>
+              <option value="jpeg">JPG (较小)</option>
+            </select>
           </div>
-          <div class="guide-item" style="background:var(--bg);border-radius:10px;padding:14px;border:1px solid var(--border);">
-            <div style="font-weight:600;">Excel 转图片</div>
-            <div style="font-size:13px;color:var(--text-light);margin:2px 0 6px;line-height:1.6;">Excel 表格区域转 PNG/JPG 图片</div>
-            <a href="https://cdkm.com/cn/excel-to-jpg" target="_blank" style="color:var(--primary);font-size:13px;">🔗 cdkm.com</a>
-            &nbsp;·&nbsp; <a href="https://www.freeconvert.com/xlsx-to-png" target="_blank" style="color:var(--primary);font-size:13px;">🔗 freeconvert.com</a>
+          <div class="input-group">
+            <label>质量 (仅 JPG)</label>
+            <input type="number" id="pi-quality" value="90" min="10" max="100" style="width:100px;">
           </div>
         </div>
-
-        <h3 style="font-size:16px;margin:20px 0 12px;color:var(--primary);">🔄 综合文档转换平台</h3>
-        <div style="display:grid;gap:10px;margin-bottom:16px;">
-          <div class="guide-item" style="background:var(--bg);border-radius:10px;padding:14px;border:1px solid var(--border);">
-            <div style="font-weight:600;">⭐ SmallPDF (功能最全)</div>
-            <div style="font-size:13px;color:var(--text-light);margin:2px 0 6px;line-height:1.6;">Word/Excel/PDF/图片互转，每天免费使用</div>
-            <a href="https://smallpdf.com" target="_blank" style="color:var(--primary);font-size:13px;">🔗 https://smallpdf.com</a>
-          </div>
-          <div class="guide-item" style="background:var(--bg);border-radius:10px;padding:14px;border:1px solid var(--border);">
-            <div style="font-weight:600;">⭐ iLovePDF (月访问量1.6亿)</div>
-            <div style="font-size:13px;color:var(--text-light);margin:2px 0 6px;line-height:1.6;">PDF 编辑、压缩、合并、转换，支持中文界面</div>
-            <a href="https://www.ilovepdf.com" target="_blank" style="color:var(--primary);font-size:13px;">🔗 https://www.ilovepdf.com</a>
-          </div>
-          <div class="guide-item" style="background:var(--bg);border-radius:10px;padding:14px;border:1px solid var(--border);">
-            <div style="font-weight:600;">⭐ FreeConvert</div>
-            <div style="font-size:13px;color:var(--text-light);margin:2px 0 6px;line-height:1.6;">支持 100+ 格式转换，包括文档、图片、音视频</div>
-            <a href="https://www.freeconvert.com" target="_blank" style="color:var(--primary);font-size:13px;">🔗 https://www.freeconvert.com</a>
-          </div>
-          <div class="guide-item" style="background:var(--bg);border-radius:10px;padding:14px;border:1px solid var(--border);">
-            <div style="font-weight:600;">⭐ Convertio</div>
-            <div style="font-size:13px;color:var(--text-light);margin:2px 0 6px;line-height:1.6;">300+ 格式转换，文档/图片/音视频/电子书等</div>
-            <a href="https://convertio.co" target="_blank" style="color:var(--primary);font-size:13px;">🔗 https://convertio.co</a>
+        <div id="pi-controls" style="display:none;">
+          <div class="btn-group">
+            <button class="btn btn-primary" onclick="convertPDFToImages()">📸 全部导出</button>
+            <button class="btn btn-secondary" onclick="downloadAllPDFImages()" id="pi-download-all" style="display:none;">📥 下载全部 (ZIP)</button>
           </div>
         </div>
-
-        <div style="margin-top:20px;padding:16px;background:#fef3c7;border-radius:10px;border:1px solid #fde68a;font-size:13px;color:#92400e;line-height:1.8;">
-          <strong>💡 使用建议：</strong><br>
-          • 免费工具大多有每日使用次数限制，少量文件转换免费<br>
-          • 敏感文件建议使用本地工具（如 WPS Office 自带转换功能）<br>
-          • 本站提供的 <strong>Excel 在线查看器</strong> 和 <strong>PDF 文本提取</strong> 可本地处理，不上传服务器<br>
-          • 需要批量转换或更高频率，可考虑购买付费版
+        <div id="pi-gallery" style="display:flex;flex-wrap:wrap;gap:12px;margin-top:16px;justify-content:center;"></div>
+        <div id="pi-loading" style="display:none;text-align:center;padding:40px;color:var(--text-light);">
+          <div style="font-size:48px;margin-bottom:12px;">⏳</div>
+          <div>正在渲染 PDF 页面...</div>
         </div>
+        <div id="pi-status" style="margin-top:8px;font-size:13px;color:var(--text-light);"></div>
+      </div>
+    `,
+    handler: () => {}
+  },
+  {
+    id: 'word-parser',
+    cat: 'document',
+    icon: '📝',
+    name: 'Word 文档解析',
+    desc: '上传 .docx 文件，提取文本内容，导出为 TXT 或 PDF',
+    html: `
+      <div class="tool-card">
+        <div class="input-group">
+          <label>选择 Word 文件 (.docx)</label>
+          <div class="file-input-wrapper">
+            <span class="file-btn">📁 选择文件</span>
+            <input type="file" id="wp-file" accept=".docx" onchange="loadWordFile()">
+          </div>
+          <span id="wp-info" style="margin-left:12px;font-size:13px;color:var(--text-light);"></span>
+        </div>
+        <div id="wp-controls" style="display:none;">
+          <div class="btn-group">
+            <button class="btn btn-success" onclick="copyResult('wp-output')">📋 复制文本</button>
+            <button class="btn btn-primary" onclick="wordToPDF()">📄 导出为 PDF</button>
+            <button class="btn btn-secondary" onclick="downloadWordText()">📥 下载 TXT</button>
+          </div>
+        </div>
+        <div class="input-group" style="margin-top:12px;">
+          <label>提取的文本内容</label>
+          <textarea id="wp-output" readonly rows="10" onclick="copyId(this)"></textarea>
+        </div>
+        <div id="wp-loading" style="display:none;text-align:center;padding:40px;color:var(--text-light);">
+          <div style="font-size:48px;margin-bottom:12px;">⏳</div>
+          <div>正在解析 .docx 文件...</div>
+        </div>
+        <div id="wp-status" style="margin-top:8px;font-size:13px;color:var(--text-light);"></div>
+        <div style="margin-top:12px;padding:12px;background:#f0f9ff;border-radius:10px;font-size:13px;color:#075985;line-height:1.6;">
+          💡 .docx 文件本质是 ZIP 压缩包，我们直接在浏览器中解压提取文字内容，
+          所有操作在本地完成，不会上传到任何服务器。
+        </div>
+      </div>
+    `,
+    handler: () => {}
+  },
+  {
+    id: 'excel-to-pdf',
+    cat: 'document',
+    icon: '📊',
+    name: 'Excel 转 PDF',
+    desc: '将 Excel 表格导出为 PDF 文件',
+    html: `
+      <div class="tool-card">
+        <div class="input-group">
+          <label>选择 Excel 文件</label>
+          <div class="file-input-wrapper">
+            <span class="file-btn">📁 选择文件</span>
+            <input type="file" id="ep-file" accept=".xlsx,.xls,.csv" onchange="loadExcelForPDF()">
+          </div>
+          <span id="ep-info" style="margin-left:12px;font-size:13px;color:var(--text-light);"></span>
+        </div>
+        <div id="ep-controls" style="display:none;">
+          <div class="row">
+            <div class="input-group">
+              <label>工作表</label>
+              <select id="ep-sheet" onchange="previewExcelForPDF()" style="width:200px;"></select>
+            </div>
+            <div class="input-group">
+              <label>页面方向</label>
+              <select id="ep-orientation" style="width:120px;">
+                <option value="portrait">纵向</option>
+                <option value="landscape" selected>横向（推荐）</option>
+              </select>
+            </div>
+          </div>
+          <div class="btn-group">
+            <button class="btn btn-primary" onclick="generateExcelPDF()">📄 导出为 PDF</button>
+          </div>
+        </div>
+        <div id="ep-preview" style="overflow-x:auto;margin-top:12px;border:1px solid var(--border);border-radius:10px;padding:8px;background:white;min-height:50px;display:none;"></div>
+        <div id="ep-loading" style="display:none;text-align:center;padding:40px;color:var(--text-light);">
+          <div style="font-size:48px;margin-bottom:12px;">⏳</div>
+          <div>正在加载...</div>
+        </div>
+        <div id="ep-status" style="margin-top:8px;font-size:13px;color:var(--text-light);"></div>
+      </div>
+    `,
+    handler: () => {}
+  },
+  {
+    id: 'pdf-merge',
+    cat: 'document',
+    icon: '🔗',
+    name: 'PDF 合并',
+    desc: '将多个 PDF 文件合并为一个 PDF 文件',
+    html: `
+      <div class="tool-card">
+        <div class="input-group">
+          <label>选择 PDF 文件（支持多选，按选择顺序合并）</label>
+          <div class="file-input-wrapper">
+            <span class="file-btn">📁 选择 PDF 文件</span>
+            <input type="file" id="pm-files" accept=".pdf" multiple onchange="loadPDFsForMerge()">
+          </div>
+          <span id="pm-info" style="margin-left:12px;font-size:13px;color:var(--text-light);"></span>
+        </div>
+        <div id="pm-file-list" style="margin:12px 0;display:none;">
+          <div style="font-weight:600;margin-bottom:8px;">已选择文件：</div>
+          <ul id="pm-list" style="padding-left:20px;font-size:14px;color:var(--text-light);"></ul>
+          <div class="btn-group">
+            <button class="btn btn-primary" onclick="mergePDFs()">🔗 合并 PDF</button>
+            <button class="btn btn-secondary" onclick="clearPDFsForMerge()">清空</button>
+          </div>
+        </div>
+        <div id="pm-loading" style="display:none;text-align:center;padding:40px;color:var(--text-light);">
+          <div style="font-size:48px;margin-bottom:12px;">⏳</div>
+          <div>正在合并 PDF...</div>
+        </div>
+        <div id="pm-status" style="margin-top:8px;font-size:13px;color:var(--text-light);"></div>
       </div>
     `,
     handler: () => {}
@@ -1686,7 +1780,7 @@ const CATEGORIES = [
   { id: 'text', icon: '✏️', name: '文本工具', desc: '字数统计、简繁转换、摩斯密码、文本转语音、文本对比' },
   { id: 'dev', icon: '💻', name: '开发者工具', desc: 'JSON格式化、二维码生成、正则测试、Markdown、IP查询' },
   { id: 'image', icon: '🖼️', name: '图片处理', desc: '图片压缩、格式转换、裁剪、OCR文字识别' },
-  { id: 'document', icon: '📄', name: '文档转换', desc: 'Excel查看、文本转PDF、HTML转PDF、PDF文本提取、格式转换大全' },
+  { id: 'document', icon: '📄', name: '文档转换', desc: '图片转PDF、PDF转图片、Word解析、Excel转PDF、PDF合并' },
   { id: 'convert', icon: '🔄', name: '转换工具', desc: '单位换算、进制转换' },
   { id: 'security', icon: '🔒', name: '安全工具', desc: '密码生成、Hash计算、随机数' },
   { id: 'time', icon: '⏱️', name: '时间工具', desc: '时间戳转换、日期计算' },
