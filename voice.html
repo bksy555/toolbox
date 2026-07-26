@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>群众心声 - 工具建议投票排行榜</title>
+  <meta name="description" content="提交你想要的工具建议，投票支持，每月更新排行榜，前3名工具将被实现！">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+      background: linear-gradient(135deg, #fff7ed 0%, #fef9ef 100%);
+      color: #1e293b;
+      min-height: 100vh;
+      line-height: 1.6;
+    }
+
+    /* Header */
+    .header {
+      background: linear-gradient(135deg, #ea580c, #f97316);
+      color: white;
+      padding: 40px 20px 50px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .header::before {
+      content: '💬';
+      position: absolute;
+      font-size: 200px;
+      opacity: 0.08;
+      top: -30px;
+      right: -30px;
+      transform: rotate(15deg);
+    }
+    .header h1 {
+      font-size: 2.4rem;
+      font-weight: 800;
+    }
+    .header p {
+      font-size: 1.1rem;
+      opacity: 0.9;
+      margin-top: 10px;
+    }
+    .header .back-link {
+      display: inline-block;
+      margin-top: 16px;
+      color: rgba(255,255,255,0.8);
+      text-decoration: none;
+      font-size: 0.9rem;
+      padding: 8px 20px;
+      border: 1px solid rgba(255,255,255,0.3);
+      border-radius: 20px;
+      transition: all 0.3s;
+    }
+    .header .back-link:hover {
+      background: rgba(255,255,255,0.15);
+      color: white;
+    }
+
+    /* Stats bar */
+    .stats-bar {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      padding: 20px;
+      background: white;
+      border-bottom: 1px solid #e2e8f0;
+      flex-wrap: wrap;
+    }
+    .stat-item {
+      text-align: center;
+    }
+    .stat-item .num {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #f97316;
+    }
+    .stat-item .label {
+      font-size: 0.85rem;
+      color: #64748b;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 30px 20px 60px;
+    }
+
+    /* Submit section */
+    .submit-section {
+      background: white;
+      border-radius: 16px;
+      padding: 30px;
+      margin-bottom: 30px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+      border: 1px solid #fed7aa;
+    }
+    .submit-section h2 {
+      font-size: 1.3rem;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .submit-section .form-group {
+      margin-bottom: 14px;
+    }
+    .submit-section label {
+      display: block;
+      font-size: 0.9rem;
+      font-weight: 600;
+      margin-bottom: 4px;
+      color: #374151;
+    }
+    .submit-section input, .submit-section textarea {
+      width: 100%;
+      padding: 10px 14px;
+      border: 1px solid #d1d5db;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      transition: border-color 0.2s;
+      font-family: inherit;
+    }
+    .submit-section input:focus, .submit-section textarea:focus {
+      outline: none;
+      border-color: #f97316;
+      box-shadow: 0 0 0 3px rgba(249,115,22,0.1);
+    }
+    .submit-section textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
+    .submit-section .btn-submit {
+      background: linear-gradient(135deg, #ea580c, #f97316);
+      color: white;
+      border: none;
+      padding: 12px 28px;
+      border-radius: 10px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      width: 100%;
+    }
+    .submit-section .btn-submit:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(249,115,22,0.3);
+    }
+    .submit-section .btn-submit:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+    .submit-section .form-tip {
+      font-size: 0.8rem;
+      color: #94a3b8;
+      margin-top: 10px;
+      text-align: center;
+    }
+    .submit-section .form-tip a {
+      color: #f97316;
+    }
+
+    /* Ranking section */
+    .ranking-section h2 {
+      font-size: 1.3rem;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .ranking-item {
+      background: white;
+      border-radius: 12px;
+      padding: 16px 20px;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+      border: 1px solid #e2e8f0;
+      transition: all 0.3s;
+    }
+    .ranking-item:hover {
+      transform: translateX(4px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    }
+    .ranking-item .rank {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 1.1rem;
+      flex-shrink: 0;
+    }
+    .rank-1 { background: linear-gradient(135deg, #f59e0b, #fbbf24); color: white; }
+    .rank-2 { background: linear-gradient(135deg, #94a3b8, #cbd5e1); color: white; }
+    .rank-3 { background: linear-gradient(135deg, #d97706, #f59e0b); color: white; }
+    .rank-other { background: #f1f5f9; color: #64748b; }
+
+    .ranking-item .info {
+      flex: 1;
+    }
+    .ranking-item .info .name {
+      font-weight: 600;
+      font-size: 1rem;
+    }
+    .ranking-item .info .desc {
+      font-size: 0.85rem;
+      color: #64748b;
+      margin-top: 2px;
+    }
+    .ranking-item .votes {
+      text-align: center;
+      flex-shrink: 0;
+    }
+    .ranking-item .votes .num {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: #f97316;
+    }
+    .ranking-item .votes .label {
+      font-size: 0.75rem;
+      color: #94a3b8;
+    }
+
+    .ranking-item .vote-btn {
+      background: #fef3c7;
+      border: 1px solid #fcd34d;
+      color: #92400e;
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      flex-shrink: 0;
+    }
+    .ranking-item .vote-btn:hover {
+      background: #fde68a;
+      transform: translateY(-1px);
+    }
+    .ranking-item .vote-btn.voted {
+      background: #dcfce7;
+      border-color: #86efac;
+      color: #166534;
+    }
+
+    .rank-badge {
+      font-size: 0.7rem;
+      padding: 2px 8px;
+      border-radius: 20px;
+      font-weight: 600;
+      margin-left: 8px;
+    }
+    .badge-hot { background: #fef2f2; color: #991b1b; }
+    .badge-new { background: #f0fdf4; color: #166534; }
+    .badge-implemented { background: #f0f9ff; color: #1e40af; }
+
+    /* Empty state */
+    .empty-state {
+      text-align: center;
+      padding: 60px 20px;
+      color: #94a3b8;
+    }
+    .empty-state .icon { font-size: 4rem; }
+
+    /* Loading */
+    .loading {
+      text-align: center;
+      padding: 40px;
+      color: #94a3b8;
+    }
+    .loading .spinner {
+      display: inline-block;
+      width: 32px;
+      height: 32px;
+      border: 3px solid #e2e8f0;
+      border-top-color: #f97316;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin-bottom: 10px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Toast */
+    .toast {
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #1e293b;
+      color: white;
+      padding: 12px 24px;
+      border-radius: 10px;
+      font-size: 0.9rem;
+      opacity: 0;
+      transition: opacity 0.3s;
+      z-index: 1000;
+      pointer-events: none;
+    }
+    .toast.show { opacity: 1; }
+
+    /* Footer */
+    .footer {
+      text-align: center;
+      padding: 30px;
+      color: #94a3b8;
+      font-size: 0.85rem;
+      border-top: 1px solid #e2e8f0;
+      background: white;
+    }
+    .footer a { color: #f97316; text-decoration: none; }
+
+    @media (max-width: 640px) {
+      .header h1 { font-size: 1.8rem; }
+      .stats-bar { gap: 20px; }
+      .ranking-item { flex-wrap: wrap; }
+      .ranking-item .vote-btn { width: 100%; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="header">
+    <h1>🗣️ 群众心声</h1>
+    <p>你想要的工具，我们来实现！提交建议，投票支持，每月更新排行榜</p>
+    <a href="index.html" class="back-link">← 返回工具箱</a>
+  </header>
+
+  <!-- Stats -->
+  <div class="stats-bar" id="statsBar">
+    <div class="stat-item"><div class="num" id="totalSuggestions">-</div><div class="label">建议总数</div></div>
+    <div class="stat-item"><div class="num" id="totalVotes">-</div><div class="label">总投票数</div></div>
+    <div class="stat-item"><div class="num" id="implementedCount">-</div><div class="label">已实现</div></div>
+    <div class="stat-item"><div class="num">🌙</div><div class="label">每日更新</div></div>
+  </div>
+
+  <div class="container">
+
+    <!-- Submit Form -->
+    <div class="submit-section">
+      <h2>💡 提交你的工具建议</h2>
+      <div class="form-group">
+        <label>工具名称</label>
+        <input type="text" id="suggestionName" placeholder="例如：PDF转Word工具" maxlength="50">
+      </div>
+      <div class="form-group">
+        <label>工具描述</label>
+        <textarea id="suggestionDesc" placeholder="简单描述一下这个工具的功能，让大家知道它有什么用..."></textarea>
+      </div>
+      <button class="btn-submit" id="submitBtn" onclick="submitSuggestion()">
+        📤 提交建议
+      </button>
+      <p class="form-tip">
+        提交后需要管理员审核，重复建议会自动合并计数
+      </p>
+    </div>
+
+    <!-- Ranking -->
+    <div class="ranking-section">
+      <h2>🏆 工具建议排行榜</h2>
+      <p style="font-size:0.85rem;color:#94a3b8;margin-bottom:16px;">
+        排行榜每天凌晨自动更新，前3名将被实现到工具箱中！
+      </p>
+      <div id="rankingList">
+        <div class="loading">
+          <div class="spinner"></div>
+          <p>加载排行榜中...</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Toast -->
+  <div class="toast" id="toast"></div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <p>🗣️ 群众心声 &mdash; 你想要的工具，我们来实现</p>
+    <p style="margin-top:6px;">
+      数据来源：<a href="https://github.com/bksy555/toolbox/issues" target="_blank">GitHub Issues</a> &middot;
+      收录于 <a href="index.html">ToolBox 工具箱</a>
+    </p>
+  </footer>
+
+  <script>
+    // ====== Toast ======
+    function showToast(msg) {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 3000);
+    }
+
+    // ====== Load Rankings ======
+    async function loadRankings() {
+      try {
+        // Try to load from GitHub raw JSON
+        const res = await fetch('https://raw.githubusercontent.com/bksy555/toolbox/main/data/rankings.json');
+        if (!res.ok) throw new Error('Failed to load');
+        const data = await res.json();
+        renderRankings(data.ranking);
+
+        // Update stats
+        document.getElementById('totalSuggestions').textContent = data.ranking.length;
+        const totalVotes = data.ranking.reduce((sum, item) => sum + item.votes, 0);
+        document.getElementById('totalVotes').textContent = totalVotes;
+        document.getElementById('implementedCount').textContent = '0';
+
+        // Store in localStorage for voting
+        localStorage.setItem('voice_ranking', JSON.stringify(data.ranking));
+        localStorage.setItem('voice_updated', data.last_updated);
+      } catch (e) {
+        // Fallback: try to load from local API
+        try {
+          const res = await fetch('/data/rankings.json');
+          if (!res.ok) throw new Error('Failed to load local');
+          const data = await res.json();
+          renderRankings(data.ranking);
+          document.getElementById('totalSuggestions').textContent = data.ranking.length;
+          const totalVotes = data.ranking.reduce((sum, item) => sum + item.votes, 0);
+          document.getElementById('totalVotes').textContent = totalVotes;
+          document.getElementById('implementedCount').textContent = '0';
+        } catch(e2) {
+          document.getElementById('rankingList').innerHTML = `
+            <div class="empty-state">
+              <div class="icon">📭</div>
+              <p>暂时无法加载排行榜，请稍后再试</p>
+            </div>`;
+        }
+      }
+    }
+
+    // ====== Render Rankings ======
+    function renderRankings(ranking) {
+      if (!ranking || ranking.length === 0) {
+        document.getElementById('rankingList').innerHTML = `
+          <div class="empty-state">
+            <div class="icon">📭</div>
+            <p>还没有人提交建议，快来当第一个吧！</p>
+          </div>`;
+        return;
+      }
+
+      // Get voted items from localStorage
+      const voted = JSON.parse(localStorage.getItem('voice_voted') || '[]');
+
+      let html = '';
+      ranking.forEach((item, index) => {
+        const rank = index + 1;
+        let rankClass = 'rank-other';
+        if (rank === 1) rankClass = 'rank-1';
+        else if (rank === 2) rankClass = 'rank-2';
+        else if (rank === 3) rankClass = 'rank-3';
+
+        let rankIcon = rank;
+        if (rank === 1) rankIcon = '🥇';
+        else if (rank === 2) rankIcon = '🥈';
+        else if (rank === 3) rankIcon = '🥉';
+
+        const isVoted = voted.includes(item.name);
+        const voteBtnClass = isVoted ? 'vote-btn voted' : 'vote-btn';
+        const voteBtnText = isVoted ? '✅ 已投票' : '👍 投票';
+
+        // Badge
+        let badge = '';
+        if (rank <= 3) badge = '<span class="rank-badge badge-hot">🔥 热门</span>';
+        else if (item.votes >= 8) badge = '<span class="rank-badge badge-hot">🔥 热门</span>';
+
+        html += `
+          <div class="ranking-item">
+            <div class="rank ${rankClass}">${rankIcon}</div>
+            <div class="info">
+              <div class="name">${escapeHtml(item.name)} ${badge}</div>
+              <div class="desc">${escapeHtml(item.desc || '')}</div>
+            </div>
+            <div class="votes">
+              <div class="num">${item.votes}</div>
+              <div class="label">票</div>
+            </div>
+            <button class="${voteBtnClass}" onclick="voteFor('${escapeHtml(item.name)}')" ${isVoted ? 'disabled' : ''}>
+              ${voteBtnText}
+            </button>
+          </div>`;
+      });
+
+      document.getElementById('rankingList').innerHTML = html;
+    }
+
+    // ====== Vote ======
+    function voteFor(name) {
+      const voted = JSON.parse(localStorage.getItem('voice_voted') || '[]');
+      if (voted.includes(name)) {
+        showToast('你已经投过票了！');
+        return;
+      }
+      voted.push(name);
+      localStorage.setItem('voice_voted', JSON.stringify(voted));
+      showToast('✅ 投票成功！感谢你的支持');
+      
+      // Reload rankings to update UI
+      loadRankings();
+    }
+
+    // ====== Submit Suggestion ======
+    function submitSuggestion() {
+      const name = document.getElementById('suggestionName').value.trim();
+      const desc = document.getElementById('suggestionDesc').value.trim();
+      
+      if (!name) {
+        showToast('请填写工具名称');
+        return;
+      }
+      if (!desc) {
+        showToast('请填写工具描述');
+        return;
+      }
+
+      const btn = document.getElementById('submitBtn');
+      btn.disabled = true;
+      btn.textContent = '⏳ 提交中...';
+
+      // Store in localStorage for now
+      const pending = JSON.parse(localStorage.getItem('voice_pending') || '[]');
+      pending.push({ name, desc, time: new Date().toISOString() });
+      localStorage.setItem('voice_pending', JSON.stringify(pending));
+
+      // Also create a GitHub issue link
+      const issueTitle = encodeURIComponent(`[建议] ${name}`);
+      const issueBody = encodeURIComponent(
+        `## 工具名称\n${name}\n\n## 工具描述\n${desc}\n\n---\n*通过 ToolBox 群众心声提交*`
+      );
+      const issueUrl = `https://github.com/bksy555/toolbox/issues/new?title=${issueTitle}&body=${issueBody}&labels=suggestion`;
+
+      setTimeout(() => {
+        btn.disabled = false;
+        btn.textContent = '📤 提交建议';
+        document.getElementById('suggestionName').value = '';
+        document.getElementById('suggestionDesc').value = '';
+
+        showToast('✅ 建议已提交！去 GitHub 完善信息可加速审核');
+        
+        // Open GitHub issues in new tab
+        window.open(issueUrl, '_blank');
+        
+        loadRankings();
+      }, 1000);
+    }
+
+    // ====== Escape HTML ======
+    function escapeHtml(str) {
+      if (!str) return '';
+      return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+
+    // ====== Init ======
+    loadRankings();
+  </script>
+
+</body>
+</html>

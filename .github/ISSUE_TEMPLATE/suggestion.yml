@@ -1,0 +1,36 @@
+name: 工具建议 🛠️
+description: 提交你想要的工具建议，我们会定期更新排名并实现前3名
+title: "[建议] "
+labels: ["suggestion", "群众心声"]
+body:
+  - type: input
+    id: tool-name
+    attributes:
+      label: 工具名称
+      description: 你想要的工具叫什么名字？
+      placeholder: 例如：PDF转Word工具
+    validations:
+      required: true
+  - type: textarea
+    id: tool-desc
+    attributes:
+      label: 工具描述
+      description: 简单描述一下这个工具的功能
+      placeholder: 例如：在线免费将PDF文件转换为Word文档，支持批量上传
+    validations:
+      required: true
+  - type: textarea
+    id: reason
+    attributes:
+      label: 为什么需要这个工具？
+      description: 说出你的理由，让更多人支持你
+      placeholder: 例如：我经常需要转换PDF，但找不到好用的免费工具
+    validations:
+      required: false
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: 确认
+      options:
+        - label: 我确认这个工具是免费的、合法的
+          required: true

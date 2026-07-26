@@ -1,0 +1,101 @@
+{
+  "suggestions": [
+    {
+      "id": "suggestion-001",
+      "name": "PDF转Word工具",
+      "desc": "在线免费将PDF文件转换为Word文档，支持批量转换",
+      "votes": 15,
+      "created_at": "2026-07-20T10:00:00Z",
+      "status": "pending"
+    },
+    {
+      "id": "suggestion-002",
+      "name": "在线PS修图工具",
+      "desc": "类似Photoshop的在线图片编辑工具，支持图层、滤镜等",
+      "votes": 12,
+      "created_at": "2026-07-21T14:30:00Z",
+      "status": "pending"
+    },
+    {
+      "id": "suggestion-003",
+      "name": "屏幕录制工具",
+      "desc": "在线录制屏幕，支持选择区域、录制声音，无需安装软件",
+      "votes": 10,
+      "created_at": "2026-07-22T09:15:00Z",
+      "status": "pending"
+    },
+    {
+      "id": "suggestion-004",
+      "name": "表情包制作工具",
+      "desc": "在线制作表情包，支持添加文字、图片合成，一键生成",
+      "votes": 8,
+      "created_at": "2026-07-22T16:45:00Z",
+      "status": "pending"
+    },
+    {
+      "id": "suggestion-005",
+      "name": "思维导图工具",
+      "desc": "在线绘制思维导图，支持导出PNG/PDF，无需注册",
+      "votes": 7,
+      "created_at": "2026-07-23T08:20:00Z",
+      "status": "pending"
+    },
+    {
+      "id": "suggestion-006",
+      "name": "在线录屏转GIF",
+      "desc": "将录制的视频或屏幕内容转换为GIF动图，支持裁剪和压缩",
+      "votes": 6,
+      "created_at": "2026-07-23T11:30:00Z",
+      "status": "pending"
+    },
+    {
+      "id": "suggestion-007",
+      "name": "视频剪辑工具",
+      "desc": "在线剪辑视频，支持裁剪、合并、添加字幕，免费无水印",
+      "votes": 5,
+      "created_at": "2026-07-24T09:00:00Z",
+      "status": "pending"
+    },
+    {
+      "id": "suggestion-008",
+      "name": "在线音乐播放器",
+      "desc": "在线听歌工具，搜索和播放全网音乐，无需下载",
+      "votes": 4,
+      "created_at": "2026-07-24T15:20:00Z",
+      "status": "pending"
+    },
+    {
+      "id": "suggestion-009",
+      "name": "二维码解码器",
+      "desc": "上传二维码图片，解析出其中的文本或链接内容",
+      "votes": 3,
+      "created_at": "2026-07-25T10:10:00Z",
+      "status": "pending"
+    },
+    {
+      "id": "suggestion-010",
+      "name": "网页截图工具",
+      "desc": "输入网址，自动截图整个网页，支持全屏和长截图",
+      "votes": 3,
+      "created_at": "2026-07-25T13:45:00Z",
+      "status": "pending"
+    },
+    {
+      "id": "suggestion-011",
+      "name": "在线翻译工具",
+      "desc": "支持多语言互译，可翻译整段文本和网页内容",
+      "votes": 2,
+      "created_at": "2026-07-25T16:30:00Z",
+      "status": "pending"
+    },
+    {
+      "id": "suggestion-012",
+      "name": "字体识别工具",
+      "desc": "上传图片中的文字，自动识别出使用的字体名称",
+      "votes": 2,
+      "created_at": "2026-07-26T08:00:00Z",
+      "status": "pending"
+    }
+  ],
+  "last_updated": "2026-07-26T12:00:00Z"
+}

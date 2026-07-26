@@ -1348,6 +1348,49 @@ openclaw update</code></pre>
       </div>
     `,
     handler: () => {}
+  },
+
+  // ==================== 群众心声 ====================
+  {
+    id: 'peoples-voice',
+    cat: 'voice',
+    icon: '🗣️',
+    name: '群众心声',
+    desc: '提交你想要的工具建议，投票支持，前3名将被实现！',
+    html: `
+      <div class="tool-card">
+        <div style="text-align:center;padding:40px 20px;">
+          <div style="font-size:64px;margin-bottom:16px;">🗣️</div>
+          <h3 style="font-size:22px;margin-bottom:10px;">群众心声</h3>
+          <p style="font-size:15px;color:var(--text-light);line-height:1.8;margin-bottom:20px;">
+            你想要的工具，告诉我们！<br>
+            提交建议 → 投票支持 → 排行榜更新 → 前3名自动实现
+          </p>
+          <a href="voice.html" target="_blank" style="display:inline-block;background:linear-gradient(135deg,#ea580c,#f97316);color:white;padding:14px 36px;border-radius:30px;text-decoration:none;font-size:16px;font-weight:600;box-shadow:0 4px 14px rgba(249,115,22,0.3);transition:all 0.3s;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
+            🚀 进入群众心声 →
+          </a>
+          <div style="margin-top:20px;display:flex;justify-content:center;gap:30px;flex-wrap:wrap;">
+            <div style="text-align:center;">
+              <div style="font-size:28px;font-weight:700;color:var(--primary);">📤</div>
+              <div style="font-size:13px;color:var(--text-light);">提交建议</div>
+            </div>
+            <div style="text-align:center;">
+              <div style="font-size:28px;font-weight:700;color:var(--primary);">👍</div>
+              <div style="font-size:13px;color:var(--text-light);">投票支持</div>
+            </div>
+            <div style="text-align:center;">
+              <div style="font-size:28px;font-weight:700;color:var(--primary);">🏆</div>
+              <div style="font-size:13px;color:var(--text-light);">排行榜</div>
+            </div>
+            <div style="text-align:center;">
+              <div style="font-size:28px;font-weight:700;color:var(--primary);">✅</div>
+              <div style="font-size:13px;color:var(--text-light);">自动实现</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    `,
+    handler: () => {}
   }
 ];
 
@@ -1363,5 +1406,6 @@ const CATEGORIES = [
   { id: 'time', icon: '⏱️', name: '时间工具', desc: '时间戳转换、日期计算' },
   { id: 'color', icon: '🎨', name: '颜色工具', desc: 'HEX/RGB/HSL颜色转换' },
   { id: 'media', icon: '🎬', name: '媒体工具', desc: '视频去水印下载指引' },
-  { id: 'ai', icon: '🤖', name: 'AI工具', desc: 'AI聊天、AI Agent安装、免费AI工具推荐' }
+  { id: 'ai', icon: '🤖', name: 'AI工具', desc: 'AI聊天、AI Agent安装、免费AI工具推荐' },
+  { id: 'voice', icon: '🗣️', name: '群众心声', desc: '提交工具建议、投票排行榜、前3名自动实现' }
 ];
