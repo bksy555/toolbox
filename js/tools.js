@@ -301,6 +301,220 @@ const TOOLS = [
     handler: () => {}
   },
 
+  // ==================== 图片工具 (续2) ====================
+  {
+    id: 'bg-remover',
+    cat: 'image',
+    icon: '🎭',
+    name: '图片去背景 + 证件照换底色',
+    desc: '一键去除图片背景，支持换蓝底/白底/红底证件照',
+    html: `
+      <div class="tool-card">
+        <div class="input-group">
+          <label>上传图片</label>
+          <div class="file-input-wrapper">
+            <span class="file-btn">📁 选择图片</span>
+            <input type="file" id="bg-file" accept="image/*" onchange="loadBgImage()">
+          </div>
+          <span id="bg-info" style="margin-left:12px;font-size:13px;color:var(--text-light);"></span>
+        </div>
+        <div class="row-3">
+          <div class="input-group">
+            <label>容差 (0-100)</label>
+            <input type="range" id="bg-tolerance" min="0" max="100" value="30" oninput="document.getElementById('bg-tol-val').textContent=this.value">
+            <span id="bg-tol-val" style="font-size:13px;color:var(--text-light);">30</span>
+          </div>
+          <div class="input-group">
+            <label>替换背景色</label>
+            <select id="bg-color" style="width:120px;">
+              <option value="transparent">透明</option>
+              <option value="#ffffff" selected>白色</option>
+              <option value="#4a90d9">蓝色 (证件照)</option>
+              <option value="#cc0000">红色 (证件照)</option>
+              <option value="#000000">黑色</option>
+              <option value="custom">自定义</option>
+            </select>
+          </div>
+          <div class="input-group" id="bg-custom-color-group" style="display:none;">
+            <label>自定义颜色</label>
+            <input type="color" id="bg-custom-color" value="#00ff00">
+          </div>
+        </div>
+        <div class="btn-group">
+          <button class="btn btn-primary" onclick="removeBg()">🎭 去背景</button>
+          <button class="btn btn-success" onclick="downloadBgResult()" id="bg-download-btn" style="display:none;">📥 下载</button>
+        </div>
+        <div id="bg-canvas-area" style="margin-top:16px;text-align:center;display:none;">
+          <div style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center;">
+            <div><div style="font-size:13px;color:var(--text-light);margin-bottom:6px;">原图</div><canvas id="bg-source-canvas" style="max-width:250px;max-height:250px;border:1px solid var(--border);border-radius:8px;"></canvas></div>
+            <div><div style="font-size:13px;color:var(--text-light);margin-bottom:6px;">结果</div><canvas id="bg-result-canvas" style="max-width:250px;max-height:250px;border:1px solid var(--border);border-radius:8px;"></canvas></div>
+          </div>
+        </div>
+        <div id="bg-status" style="margin-top:8px;font-size:13px;color:var(--text-light);"></div>
+        <div style="margin-top:10px;padding:10px;background:#fef3c7;border-radius:8px;font-size:12px;color:#92400e;line-height:1.6;">
+          <strong>💡 使用说明：</strong> 点击图片背景区域选择要移除的颜色，调整容差控制范围。适合纯色背景（如证件照白底/蓝底），复杂背景效果有限。
+        </div>
+      </div>
+    `,
+    handler: () => {}
+  },
+  {
+    id: 'batch-compress',
+    cat: 'image',
+    icon: '🗜️',
+    name: '批量图片压缩',
+    desc: '批量压缩多张图片，显示压缩率对比，支持ZIP打包下载',
+    html: `
+      <div class="tool-card">
+        <div class="input-group">
+          <label>选择图片（支持多选）</label>
+          <div class="file-input-wrapper">
+            <span class="file-btn">📁 选择图片</span>
+            <input type="file" id="bc-files" accept="image/*" multiple onchange="loadBatchCompress()">
+          </div>
+          <span id="bc-info" style="margin-left:12px;font-size:13px;color:var(--text-light);"></span>
+        </div>
+        <div class="row">
+          <div class="input-group">
+            <label>质量 (1-100)</label>
+            <input type="range" id="bc-quality" min="1" max="100" value="70" oninput="document.getElementById('bc-q-val').textContent=this.value">
+            <span id="bc-q-val" style="font-size:13px;color:var(--text-light);">70</span>
+          </div>
+          <div class="input-group">
+            <label>最大宽度 (px)</label>
+            <input type="number" id="bc-maxwidth" value="1920" min="100" max="7680" style="width:100px;">
+          </div>
+          <div class="input-group">
+            <label>输出格式</label>
+            <select id="bc-format" style="width:100px;">
+              <option value="jpeg">JPEG</option>
+              <option value="png">PNG</option>
+              <option value="webp">WebP</option>
+            </select>
+          </div>
+        </div>
+        <div class="btn-group">
+          <button class="btn btn-primary" onclick="runBatchCompress()">🗜️ 开始压缩</button>
+          <button class="btn btn-secondary" onclick="downloadBatchCompressed()" id="bc-download-btn" style="display:none;">📥 下载全部 (ZIP)</button>
+        </div>
+        <div id="bc-loading" style="display:none;text-align:center;padding:20px;color:var(--text-light);">⏳ 正在压缩...</div>
+        <div id="bc-list" style="margin-top:12px;"></div>
+        <div id="bc-status" style="margin-top:8px;font-size:13px;color:var(--text-light);"></div>
+      </div>
+    `,
+    handler: () => {}
+  },
+  {
+    id: 'image-watermark',
+    cat: 'image',
+    icon: '💧',
+    name: '批量加水印',
+    desc: '给图片添加文字或图片水印，批量处理，保护版权',
+    html: `
+      <div class="tool-card">
+        <div class="input-group">
+          <label>上传图片（支持多选）</label>
+          <div class="file-input-wrapper">
+            <span class="file-btn">📁 选择图片</span>
+            <input type="file" id="wm-files" accept="image/*" multiple onchange="loadWatermarkImages()">
+          </div>
+          <span id="wm-info" style="margin-left:12px;font-size:13px;color:var(--text-light);"></span>
+        </div>
+        <div class="row-3">
+          <div class="input-group">
+            <label>水印类型</label>
+            <select id="wm-type" onchange="toggleWatermarkType()" style="width:120px;">
+              <option value="text">文字水印</option>
+              <option value="image">图片水印</option>
+            </select>
+          </div>
+          <div class="input-group" id="wm-text-group">
+            <label>水印文字</label>
+            <input type="text" id="wm-text" value="ToolBox" style="width:140px;">
+          </div>
+          <div class="input-group" id="wm-image-group" style="display:none;">
+            <label>水印图片</label>
+            <input type="file" id="wm-image-file" accept="image/*">
+          </div>
+        </div>
+        <div class="row-3">
+          <div class="input-group">
+            <label>位置</label>
+            <select id="wm-position" style="width:100px;">
+              <option value="center">居中</option>
+              <option value="topleft">左上</option>
+              <option value="topright">右上</option>
+              <option value="bottomleft">左下</option>
+              <option value="bottomright" selected>右下</option>
+              <option value="tile">平铺</option>
+            </select>
+          </div>
+          <div class="input-group">
+            <label>透明度</label>
+            <input type="range" id="wm-opacity" min="0" max="100" value="30" oninput="document.getElementById('wm-op-val').textContent=this.value+'%'">
+            <span id="wm-op-val" style="font-size:13px;color:var(--text-light);">30%</span>
+          </div>
+          <div class="input-group">
+            <label>大小</label>
+            <input type="number" id="wm-size" value="36" min="8" max="200" style="width:80px;"> px
+          </div>
+        </div>
+        <div class="btn-group">
+          <button class="btn btn-primary" onclick="runWatermark()">💧 添加水印</button>
+          <button class="btn btn-secondary" onclick="downloadWatermarked()" id="wm-download-btn" style="display:none;">📥 下载全部 (ZIP)</button>
+        </div>
+        <div id="wm-loading" style="display:none;text-align:center;padding:20px;color:var(--text-light);">⏳ 正在处理...</div>
+        <div id="wm-list" style="margin-top:12px;"></div>
+        <div id="wm-status" style="margin-top:8px;font-size:13px;color:var(--text-light);"></div>
+      </div>
+    `,
+    handler: () => {}
+  },
+  {
+    id: 'image-stitch',
+    cat: 'image',
+    icon: '🧩',
+    name: '长图拼接',
+    desc: '将多张截图/图片垂直或水平拼接为一张长图',
+    html: `
+      <div class="tool-card">
+        <div class="input-group">
+          <label>上传图片（按顺序拼接）</label>
+          <div class="file-input-wrapper">
+            <span class="file-btn">📁 选择图片</span>
+            <input type="file" id="st-files" accept="image/*" multiple onchange="loadStitchImages()">
+          </div>
+          <span id="st-info" style="margin-left:12px;font-size:13px;color:var(--text-light);"></span>
+        </div>
+        <div class="row">
+          <div class="input-group">
+            <label>拼接方向</label>
+            <select id="st-direction" style="width:120px;">
+              <option value="vertical">垂直拼接</option>
+              <option value="horizontal">水平拼接</option>
+            </select>
+          </div>
+          <div class="input-group">
+            <label>间距 (px)</label>
+            <input type="number" id="st-gap" value="0" min="0" max="50" style="width:80px;">
+          </div>
+          <div class="input-group">
+            <label>背景色</label>
+            <input type="color" id="st-bgcolor" value="#ffffff">
+          </div>
+        </div>
+        <div class="btn-group">
+          <button class="btn btn-primary" onclick="runStitch()">🧩 拼接</button>
+          <button class="btn btn-success" onclick="downloadStitchResult()" id="st-download-btn" style="display:none;">📥 下载长图</button>
+        </div>
+        <div id="st-loading" style="display:none;text-align:center;padding:20px;color:var(--text-light);">⏳ 正在拼接...</div>
+        <div id="st-preview" style="margin-top:12px;text-align:center;"></div>
+        <div id="st-status" style="margin-top:8px;font-size:13px;color:var(--text-light);"></div>
+      </div>
+    `,
+    handler: () => {}
+  },
+
   // ==================== 转换工具 ====================
   {
     id: 'unit-converter',
@@ -1066,6 +1280,69 @@ console.log("Hello World!");
     `,
     handler: () => {}
   },
+    {
+      id: 'video-to-gif',
+      cat: 'media',
+      icon: '🎞️',
+      name: '视频转 GIF',
+      desc: '将视频片段转换为 GIF 动图，自定义时长、帧率、尺寸',
+      html: `
+        <div class="tool-card">
+          <div class="input-group">
+            <label>选择视频文件</label>
+            <div class="file-input-wrapper">
+              <span class="file-btn">📁 选择视频</span>
+              <input type="file" id="vg-file" accept="video/*" onchange="loadVideoForGif()">
+            </div>
+            <span id="vg-info" style="margin-left:12px;font-size:13px;color:var(--text-light);"></span>
+          </div>
+          <div id="vg-controls" style="display:none;">
+            <div style="margin-top:12px;">
+              <video id="vg-video" controls style="max-width:100%;max-height:300px;border-radius:10px;background:black;"></video>
+            </div>
+            <div class="row-3" style="margin-top:12px;">
+              <div class="input-group">
+                <label>开始时间 (秒)</label>
+                <input type="number" id="vg-start" value="0" min="0" step="0.5" style="width:100px;">
+              </div>
+              <div class="input-group">
+                <label>时长 (秒)</label>
+                <input type="number" id="vg-duration" value="3" min="0.5" max="30" step="0.5" style="width:100px;">
+              </div>
+              <div class="input-group">
+                <label>帧率 (fps)</label>
+                <input type="number" id="vg-fps" value="10" min="5" max="30" style="width:100px;">
+              </div>
+            </div>
+            <div class="row">
+              <div class="input-group">
+                <label>宽度 (px, 0=原宽)</label>
+                <input type="number" id="vg-width" value="0" min="0" max="1920" style="width:100px;">
+              </div>
+              <div class="input-group">
+                <label>颜色数量</label>
+                <select id="vg-colors" style="width:120px;">
+                  <option value="256">256色 (高质量)</option>
+                  <option value="128">128色</option>
+                  <option value="64">64色 (小文件)</option>
+                  <option value="32">32色</option>
+                </select>
+              </div>
+            </div>
+            <div class="btn-group" style="margin-top:12px;">
+              <button class="btn btn-primary" onclick="generateGif()">🎞️ 生成 GIF</button>
+            </div>
+          </div>
+          <div id="vg-loading" style="display:none;text-align:center;padding:30px;color:var(--text-light);">
+            <div style="font-size:48px;margin-bottom:12px;">⏳</div>
+            <div>正在生成 GIF，请稍候...</div>
+          </div>
+          <div id="vg-result" style="margin-top:12px;text-align:center;display:none;"></div>
+          <div id="vg-status" style="margin-top:8px;font-size:13px;color:var(--text-light);"></div>
+        </div>
+      `,
+      handler: () => {}
+    },
 
   // ==================== AI工具 ====================
   {
@@ -1779,13 +2056,13 @@ openclaw update</code></pre>
 const CATEGORIES = [
   { id: 'text', icon: '✏️', name: '文本工具', desc: '字数统计、简繁转换、摩斯密码、文本转语音、文本对比' },
   { id: 'dev', icon: '💻', name: '开发者工具', desc: 'JSON格式化、二维码生成、正则测试、Markdown、IP查询' },
-  { id: 'image', icon: '🖼️', name: '图片处理', desc: '图片压缩、格式转换、裁剪、OCR文字识别' },
+  { id: 'image', icon: '🖼️', name: '图片处理', desc: '去背景换底色、批量压缩、加水印、长图拼接、格式转换、裁剪、OCR' },
   { id: 'document', icon: '📄', name: '文档转换', desc: '图片转PDF、PDF转图片、Word解析、Excel转PDF、PDF合并' },
   { id: 'convert', icon: '🔄', name: '转换工具', desc: '单位换算、进制转换' },
   { id: 'security', icon: '🔒', name: '安全工具', desc: '密码生成、Hash计算、随机数' },
   { id: 'time', icon: '⏱️', name: '时间工具', desc: '时间戳转换、日期计算' },
   { id: 'color', icon: '🎨', name: '颜色工具', desc: 'HEX/RGB/HSL颜色转换' },
-  { id: 'media', icon: '🎬', name: '媒体工具', desc: '视频去水印下载指引' },
+  { id: 'media', icon: '🎬', name: '媒体工具', desc: '视频转GIF、视频去水印下载指引' },
   { id: 'ai', icon: '🤖', name: 'AI工具', desc: 'AI聊天、AI Agent安装、免费AI工具推荐' },
   { id: 'voice', icon: '🗣️', name: '群众心声', desc: '提交工具建议、投票排行榜、前3名自动实现' }
 ];
