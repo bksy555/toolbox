@@ -1254,13 +1254,18 @@ console.log("Hello World!");
         <div style="display:grid;gap:12px;margin-top:16px;">
           <div style="background:var(--bg);border-radius:10px;padding:16px;border:1px solid var(--border);">
             <div style="font-weight:600;font-size:16px;">🎵 抖音/TikTok 去水印</div>
-            <p style="font-size:13px;color:var(--text-light);margin:4px 0 8px;">支持抖音、TikTok、快手、小红书等</p>
-            <a href="https://www.douyin.wm-tool.com/" target="_blank" style="color:var(--primary);">https://www.douyin.wm-tool.com/</a>
+            <p style="font-size:13px;color:var(--text-light);margin:4px 0 8px;">支持抖音、TikTok，粘贴链接即可下载无水印视频</p>
+            <a href="https://www.iesdouyin.com/" target="_blank" style="color:var(--primary);">https://www.iesdouyin.com/</a>
           </div>
           <div style="background:var(--bg);border-radius:10px;padding:16px;border:1px solid var(--border);">
-            <div style="font-weight:600;font-size:16px;">🎬 抖音视频去水印</div>
-            <p style="font-size:13px;color:var(--text-light);margin:4px 0 8px;">粘贴分享链接即可下载无水印视频</p>
-            <a href="https://www.iesdouyin.com/" target="_blank" style="color:var(--primary);">https://www.iesdouyin.com/</a>
+            <div style="font-weight:600;font-size:16px;">🎬 SSSTik.io</div>
+            <p style="font-size:13px;color:var(--text-light);margin:4px 0 8px;">全球最流行的TikTok/抖音去水印下载工具，支持HD画质</p>
+            <a href="https://www.ssstik.io/" target="_blank" style="color:var(--primary);">https://www.ssstik.io/</a>
+          </div>
+          <div style="background:var(--bg);border-radius:10px;padding:16px;border:1px solid var(--border);">
+            <div style="font-weight:600;font-size:16px;">⚡ SnapTik</div>
+            <p style="font-size:13px;color:var(--text-light);margin:4px 0 8px;">支持抖音、TikTok、快手、小红书等，无需注册</p>
+            <a href="https://snaptik.app/" target="_blank" style="color:var(--primary);">https://snaptik.app/</a>
           </div>
           <div style="background:var(--bg);border-radius:10px;padding:16px;border:1px solid var(--border);">
             <div style="font-weight:600;font-size:16px;">📱 综合平台去水印</div>
@@ -1268,7 +1273,7 @@ console.log("Hello World!");
             <a href="https://www.xiaokai.com/" target="_blank" style="color:var(--primary);">https://www.xiaokai.com/</a>
           </div>
           <div style="background:var(--bg);border-radius:10px;padding:16px;border:1px solid var(--border);">
-            <div style="font-weight:600;font-size:16px;">⚡ SaveFrom.net</div>
+            <div style="font-weight:600;font-size:16px;">🌍 SaveFrom.net</div>
             <p style="font-size:13px;color:var(--text-light);margin:4px 0 8px;">支持 YouTube、Facebook、Instagram 等国外平台</p>
             <a href="https://en.savefrom.net/" target="_blank" style="color:var(--primary);">https://en.savefrom.net/</a>
           </div>
