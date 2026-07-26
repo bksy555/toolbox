@@ -1065,6 +1065,289 @@ console.log("Hello World!");
       </div>
     `,
     handler: () => {}
+  },
+
+  // ==================== AI工具 ====================
+  {
+    id: 'openclaw-install',
+    cat: 'ai',
+    icon: '🦞',
+    name: '小龙虾 OpenClaw 安装指南',
+    desc: '开源AI智能体框架 - 详细安装步骤与代码',
+    html: `
+      <div class="tool-card">
+        <div class="ai-section">
+          <h3 style="font-size:20px;margin-bottom:12px;">🦞 小龙虾 (OpenClaw) 是什么？</h3>
+          <p style="font-size:14px;color:var(--text-light);line-height:1.8;">
+            OpenClaw 是一个<strong>开源的个人 AI 智能体（AI Agent）</strong>，运行在你自己的设备上，数据完全私有。
+            可通过 WhatsApp、Telegram、Discord、微信、钉钉等 20+ 聊天平台与你交互，
+            帮你处理清理收件箱、发送邮件、管理日历等日常任务。
+          </p>
+        </div>
+
+        <div class="ai-section" style="margin-top:20px;">
+          <h4 style="font-size:16px;margin-bottom:10px;color:var(--primary);">📋 前置要求</h4>
+          <ul style="font-size:14px;color:var(--text-light);line-height:1.8;padding-left:20px;">
+            <li>Node.js 22.22.3+ 或 Node.js 24.15+（推荐）</li>
+            <li>npm / pnpm / bun（包管理器）</li>
+            <li>Linux / macOS / Windows 均可</li>
+            <li>Docker（可选，推荐用 Docker 安装）</li>
+          </ul>
+        </div>
+
+        <div class="ai-section" style="margin-top:20px;">
+          <h4 style="font-size:16px;margin-bottom:10px;color:var(--primary);">🚀 方式一：一键安装（推荐）</h4>
+          <p style="font-size:13px;color:var(--text-light);margin-bottom:8px;">macOS / Linux 终端执行：</p>
+          <pre style="background:#1e293b;color:#e2e8f0;padding:16px;border-radius:10px;font-size:14px;overflow-x:auto;white-space:pre-wrap;word-break:break-all;"><code>curl -fsSL https://openclaw.ai/install.sh | bash</code></pre>
+
+          <p style="font-size:13px;color:var(--text-light);margin:12px 0 8px;">Windows PowerShell 执行：</p>
+          <pre style="background:#1e293b;color:#e2e8f0;padding:16px;border-radius:10px;font-size:14px;overflow-x:auto;white-space:pre-wrap;word-break:break-all;"><code>iwr -useb https://openclaw.ai/install.ps1 | iex</code></pre>
+        </div>
+
+        <div class="ai-section" style="margin-top:20px;">
+          <h4 style="font-size:16px;margin-bottom:10px;color:var(--primary);">📦 方式二：npm 安装</h4>
+          <pre style="background:#1e293b;color:#e2e8f0;padding:16px;border-radius:10px;font-size:14px;overflow-x:auto;"><code>npm install -g openclaw@latest</code></pre>
+        </div>
+
+        <div class="ai-section" style="margin-top:20px;">
+          <h4 style="font-size:16px;margin-bottom:10px;color:var(--primary);">🐳 方式三：Docker 安装</h4>
+          <p style="font-size:13px;color:var(--text-light);margin-bottom:8px;">创建 docker-compose.yml：</p>
+          <pre style="background:#1e293b;color:#e2e8f0;padding:16px;border-radius:10px;font-size:13px;overflow-x:auto;"><code>services:
+  openclaw-gateway:
+    image: ghcr.io/openclaw/openclaw:latest
+    ports:
+      - "18789:18789"
+    volumes:
+      - ~/.openclaw:/home/node/.openclaw
+    environment:
+      - TZ=Asia/Shanghai
+    restart: unless-stopped</code></pre>
+          <p style="font-size:13px;color:var(--text-light);margin:8px 0;">启动：</p>
+          <pre style="background:#1e293b;color:#e2e8f0;padding:16px;border-radius:10px;font-size:14px;overflow-x:auto;"><code>docker compose up -d</code></pre>
+        </div>
+
+        <div class="ai-section" style="margin-top:20px;">
+          <h4 style="font-size:16px;margin-bottom:10px;color:var(--primary);">⚙️ 初始化配置</h4>
+          <p style="font-size:14px;color:var(--text-light);line-height:1.8;">
+            安装完成后，运行以下命令进行初始化设置：
+          </p>
+          <pre style="background:#1e293b;color:#e2e8f0;padding:16px;border-radius:10px;font-size:14px;overflow-x:auto;"><code>openclaw onboard --install-daemon</code></pre>
+          <p style="font-size:13px;color:var(--text-light);margin-top:8px;line-height:1.6;">
+            初始化向导会引导你设置：API密钥配置、消息渠道接入、工作空间、技能等。
+            完成后 Gateway 会作为后台服务自动运行。
+          </p>
+        </div>
+
+        <div class="ai-section" style="margin-top:20px;">
+          <h4 style="font-size:16px;margin-bottom:10px;color:var(--primary);">🔍 常用命令</h4>
+          <pre style="background:#1e293b;color:#e2e8f0;padding:16px;border-radius:10px;font-size:14px;overflow-x:auto;"><code># 查看运行状态
+openclaw gateway status
+
+# 打开控制面板
+openclaw dashboard
+
+# 发送消息测试
+openclaw message send --target +1234567890 --message "你好"
+
+# 与AI对话
+openclaw agent --message "帮我写一封邮件"
+
+# 更新版本
+openclaw update</code></pre>
+        </div>
+
+        <div class="ai-section" style="margin-top:20px;">
+          <h4 style="font-size:16px;margin-bottom:10px;color:var(--primary);">🌐 支持的聊天平台</h4>
+          <p style="font-size:14px;color:var(--text-light);line-height:1.8;">
+            WhatsApp · Telegram · Discord · Slack · Signal · iMessage · 飞书 · 钉钉 · 企业微信 · QQ · LINE · Matrix · Microsoft Teams · Google Chat · IRC · 等 20+ 平台
+          </p>
+        </div>
+
+        <div style="margin-top:20px;padding:16px;background:#f0fdf4;border-radius:10px;border:1px solid #bbf7d0;">
+          <p style="font-size:14px;color:#166534;line-height:1.8;">
+            📌 <strong>官方网站</strong>：<a href="https://openclaw.ai" target="_blank" style="color:var(--primary);">https://openclaw.ai</a><br>
+            📌 <strong>GitHub</strong>：<a href="https://github.com/openclaw/openclaw" target="_blank" style="color:var(--primary);">https://github.com/openclaw/openclaw</a><br>
+            📌 <strong>中文文档</strong>：<a href="https://www.clawfather.cn/" target="_blank" style="color:var(--primary);">https://www.clawfather.cn/</a><br>
+            📌 <strong>Docker 镜像</strong>：ghcr.io/openclaw/openclaw:latest
+          </p>
+        </div>
+      </div>
+    `,
+    handler: () => {}
+  },
+  {
+    id: 'free-ai-tools',
+    cat: 'ai',
+    icon: '🤖',
+    name: '免费AI工具推荐',
+    desc: '精选免费AI工具合集，含ChatGPT、DeepSeek、Ollama等',
+    html: `
+      <div class="tool-card">
+        <div class="ai-section">
+          <h3 style="font-size:20px;margin-bottom:16px;">🤖 精选免费AI工具推荐</h3>
+          <p style="font-size:14px;color:var(--text-light);line-height:1.8;margin-bottom:20px;">
+            以下工具均经过验证，提供免费使用额度或完全免费开源，可直接在线使用或本地部署。
+          </p>
+        </div>
+
+        <div style="display:grid;gap:16px;">
+          <!-- ChatGPT -->
+          <div style="background:var(--bg);border-radius:12px;padding:20px;border:1px solid var(--border);">
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
+              <span style="font-size:28px;">💬</span>
+              <span style="font-size:18px;font-weight:600;">ChatGPT</span>
+              <span style="font-size:12px;background:#dbeafe;color:#1e40af;padding:2px 8px;border-radius:20px;">免费版可用</span>
+            </div>
+            <p style="font-size:13px;color:var(--text-light);line-height:1.6;">
+              OpenAI 出品，支持对话、编程、翻译、写作等。免费版可使用 GPT-3.5 模型，无限次数。
+            </p>
+            <a href="https://chat.openai.com" target="_blank" style="display:inline-block;margin-top:8px;color:var(--primary);font-size:13px;">🔗 https://chat.openai.com</a>
+          </div>
+
+          <!-- DeepSeek -->
+          <div style="background:var(--bg);border-radius:12px;padding:20px;border:1px solid var(--border);">
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
+              <span style="font-size:28px;">🧠</span>
+              <span style="font-size:18px;font-weight:600;">DeepSeek</span>
+              <span style="font-size:12px;background:#dcfce7;color:#166534;padding:2px 8px;border-radius:20px;">完全免费</span>
+            </div>
+            <p style="font-size:13px;color:var(--text-light);line-height:1.6;">
+              国产开源大模型，推理能力强，支持超长上下文（1M tokens）。网页版完全免费，无需注册即可使用。
+            </p>
+            <a href="https://chat.deepseek.com" target="_blank" style="display:inline-block;margin-top:8px;color:var(--primary);font-size:13px;">🔗 https://chat.deepseek.com</a>
+          </div>
+
+          <!-- 通义千问 -->
+          <div style="background:var(--bg);border-radius:12px;padding:20px;border:1px solid var(--border);">
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
+              <span style="font-size:28px;">☁️</span>
+              <span style="font-size:18px;font-weight:600;">通义千问 (Qwen)</span>
+              <span style="font-size:12px;background:#dcfce7;color:#166534;padding:2px 8px;border-radius:20px;">完全免费</span>
+            </div>
+            <p style="font-size:13px;color:var(--text-light);line-height:1.6;">
+              阿里云出品，支持对话、文档分析、图片理解、代码生成等。免费无限制使用。
+            </p>
+            <a href="https://tongyi.aliyun.com" target="_blank" style="display:inline-block;margin-top:8px;color:var(--primary);font-size:13px;">🔗 https://tongyi.aliyun.com</a>
+          </div>
+
+          <!-- Gemini -->
+          <div style="background:var(--bg);border-radius:12px;padding:20px;border:1px solid var(--border);">
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
+              <span style="font-size:28px;">🌟</span>
+              <span style="font-size:18px;font-weight:600;">Google Gemini</span>
+              <span style="font-size:12px;background:#dbeafe;color:#1e40af;padding:2px 8px;border-radius:20px;">免费版可用</span>
+            </div>
+            <p style="font-size:13px;color:var(--text-light);line-height:1.6;">
+              Google 出品，支持多模态（图片、视频、音频理解）。免费版功能强大，可上传文件分析。
+            </p>
+            <a href="https://gemini.google.com" target="_blank" style="display:inline-block;margin-top:8px;color:var(--primary);font-size:13px;">🔗 https://gemini.google.com</a>
+          </div>
+
+          <!-- Claude -->
+          <div style="background:var(--bg);border-radius:12px;padding:20px;border:1px solid var(--border);">
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
+              <span style="font-size:28px;">🟣</span>
+              <span style="font-size:18px;font-weight:600;">Claude (Anthropic)</span>
+              <span style="font-size:12px;background:#fef3c7;color:#92400e;padding:2px 8px;border-radius:20px;">免费版有限额</span>
+            </div>
+            <p style="font-size:13px;color:var(--text-light);line-height:1.6;">
+              Anthropic 出品，编码能力强，支持长文本分析。免费版每日有使用次数限制。
+            </p>
+            <a href="https://claude.ai" target="_blank" style="display:inline-block;margin-top:8px;color:var(--primary);font-size:13px;">🔗 https://claude.ai</a>
+          </div>
+
+          <!-- Ollama -->
+          <div style="background:var(--bg);border-radius:12px;padding:20px;border:1px solid var(--border);">
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
+              <span style="font-size:28px;">🦙</span>
+              <span style="font-size:18px;font-weight:600;">Ollama（本地部署）</span>
+              <span style="font-size:12px;background:#dcfce7;color:#166534;padding:2px 8px;border-radius:20px;">完全免费开源</span>
+            </div>
+            <p style="font-size:13px;color:var(--text-light);line-height:1.6;">
+              本地运行大语言模型，支持 Llama、Qwen、DeepSeek、Mistral 等主流模型。隐私安全，无需联网。
+            </p>
+            <a href="https://ollama.ai" target="_blank" style="display:inline-block;margin-top:8px;color:var(--primary);font-size:13px;">🔗 https://ollama.ai</a>
+            <div style="margin-top:8px;padding:8px 12px;background:#1e293b;color:#e2e8f0;border-radius:8px;font-size:12px;font-family:monospace;">
+              # 一键安装 curl -fsSL https://ollama.ai/install.sh | sh<br>
+              # 运行模型 ollama run qwen2.5
+            </div>
+          </div>
+
+          <!-- Hugging Face -->
+          <div style="background:var(--bg);border-radius:12px;padding:20px;border:1px solid var(--border);">
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
+              <span style="font-size:28px;">🤗</span>
+              <span style="font-size:18px;font-weight:600;">Hugging Face</span>
+              <span style="font-size:12px;background:#dcfce7;color:#166534;padding:2px 8px;border-radius:20px;">完全免费</span>
+            </div>
+            <p style="font-size:13px;color:var(--text-light);line-height:1.6;">
+              AI模型社区，提供免费在线使用各种AI模型：文本生成、图片生成、语音识别、翻译等。
+            </p>
+            <a href="https://huggingface.co/chat" target="_blank" style="display:inline-block;margin-top:8px;color:var(--primary);font-size:13px;">🔗 https://huggingface.co/chat</a>
+          </div>
+
+          <!-- 文心一言 -->
+          <div style="background:var(--bg);border-radius:12px;padding:20px;border:1px solid var(--border);">
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
+              <span style="font-size:28px;">🐻</span>
+              <span style="font-size:18px;font-weight:600;">文心一言 (百度)</span>
+              <span style="font-size:12px;background:#dbeafe;color:#1e40af;padding:2px 8px;border-radius:20px;">免费版可用</span>
+            </div>
+            <p style="font-size:13px;color:var(--text-light);line-height:1.6;">
+              百度出品，中文理解能力强，支持对话、文档分析、图片生成。免费版功能丰富。
+            </p>
+            <a href="https://yiyan.baidu.com" target="_blank" style="display:inline-block;margin-top:8px;color:var(--primary);font-size:13px;">🔗 https://yiyan.baidu.com</a>
+          </div>
+
+          <!-- 豆包 -->
+          <div style="background:var(--bg);border-radius:12px;padding:20px;border:1px solid var(--border);">
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
+              <span style="font-size:28px;">🔴</span>
+              <span style="font-size:18px;font-weight:600;">豆包 (字节跳动)</span>
+              <span style="font-size:12px;background:#dcfce7;color:#166534;padding:2px 8px;border-radius:20px;">完全免费</span>
+            </div>
+            <p style="font-size:13px;color:var(--text-light);line-height:1.6;">
+              字节跳动出品，支持对话、图片理解、文档分析、AI绘画等。完全免费，不限次数。
+            </p>
+            <a href="https://www.doubao.com" target="_blank" style="display:inline-block;margin-top:8px;color:var(--primary);font-size:13px;">🔗 https://www.doubao.com</a>
+          </div>
+
+          <!-- Stable Diffusion WebUI -->
+          <div style="background:var(--bg);border-radius:12px;padding:20px;border:1px solid var(--border);">
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
+              <span style="font-size:28px;">🎨</span>
+              <span style="font-size:18px;font-weight:600;">Stable Diffusion WebUI</span>
+              <span style="font-size:12px;background:#dcfce7;color:#166534;padding:2px 8px;border-radius:20px;">完全免费开源</span>
+            </div>
+            <p style="font-size:13px;color:var(--text-light);line-height:1.6;">
+              本地部署的AI绘画工具，免费开源，支持文生图、图生图。需要 NVIDIA 显卡（至少4GB显存）。
+            </p>
+            <a href="https://github.com/AUTOMATIC1111/stable-diffusion-webui" target="_blank" style="display:inline-block;margin-top:8px;color:var(--primary);font-size:13px;">🔗 GitHub 仓库</a>
+          </div>
+
+          <!-- Perplexity -->
+          <div style="background:var(--bg);border-radius:12px;padding:20px;border:1px solid var(--border);">
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
+              <span style="font-size:28px;">🔍</span>
+              <span style="font-size:18px;font-weight:600;">Perplexity AI</span>
+              <span style="font-size:12px;background:#dbeafe;color:#1e40af;padding:2px 8px;border-radius:20px;">免费版可用</span>
+            </div>
+            <p style="font-size:13px;color:var(--text-light);line-height:1.6;">
+              AI搜索引擎，联网搜索+AI回答，引用来源可查。免费版每天可使用多次搜索。
+            </p>
+            <a href="https://www.perplexity.ai" target="_blank" style="display:inline-block;margin-top:8px;color:var(--primary);font-size:13px;">🔗 https://www.perplexity.ai</a>
+          </div>
+        </div>
+
+        <div style="margin-top:24px;padding:16px;background:#f0f9ff;border-radius:10px;border:1px solid #bae6fd;">
+          <p style="font-size:13px;color:#075985;line-height:1.8;">
+            💡 <strong>提示</strong>：以上免费工具大多有使用限制（如免费版每日次数、功能限制等）。
+            如需更强大的功能，可以考虑付费升级或使用 API 接入方式。
+          </p>
+        </div>
+      </div>
+    `,
+    handler: () => {}
   }
 ];
 
@@ -1079,5 +1362,6 @@ const CATEGORIES = [
   { id: 'security', icon: '🔒', name: '安全工具', desc: '密码生成、Hash计算、随机数' },
   { id: 'time', icon: '⏱️', name: '时间工具', desc: '时间戳转换、日期计算' },
   { id: 'color', icon: '🎨', name: '颜色工具', desc: 'HEX/RGB/HSL颜色转换' },
-  { id: 'media', icon: '🎬', name: '媒体工具', desc: '视频去水印下载指引' }
+  { id: 'media', icon: '🎬', name: '媒体工具', desc: '视频去水印下载指引' },
+  { id: 'ai', icon: '🤖', name: 'AI工具', desc: 'AI聊天、AI Agent安装、免费AI工具推荐' }
 ];
