@@ -1,5 +1,5 @@
 // ============================================================
-// 视频解析 - 自研，纯前端实现
+// 视频解析 - 自研，通过后端API解析无水印视频
 // ============================================================
 
 function parseVideoUrl() {
@@ -10,136 +10,42 @@ function parseVideoUrl() {
   document.getElementById('vdl-result').style.display = 'none';
   document.getElementById('vdl-status').textContent = '';
   
-  var platform = detectPlatform(url);
-  if (!platform) {
-    document.getElementById('vdl-loading').style.display = 'none';
-    document.getElementById('vdl-status').textContent = '❌ 暂不支持该平台，仅支持抖音、TikTok、B站、小红书、快手';
-    return;
-  }
-  
-  switch (platform) {
-    case 'tiktok':
-      parseTikTokEmbed(url);
-      break;
-    case 'bilibili':
-      parseBilibiliVideo(url);
-      break;
-    case 'douyin':
-    case 'xiaohongshu':
-    case 'kuaishou':
-      document.getElementById('vdl-loading').style.display = 'none';
-      document.getElementById('vdl-result').style.display = 'none';
-      document.getElementById('vdl-status').textContent = 'ℹ️ ' + platformName(platform) + '暂不支持直接下载，请使用官方应用或网页版查看';
-      break;
-  }
-}
-
-function detectPlatform(url) {
-  if (url.includes('tiktok.com')) return 'tiktok';
-  if (url.includes('douyin.com') || url.includes('v.douyin')) return 'douyin';
-  if (url.includes('bilibili.com') || url.includes('b23.tv')) return 'bilibili';
-  if (url.includes('xiaohongshu.com') || url.includes('xhslink.com')) return 'xiaohongshu';
-  if (url.includes('kuaishou.com') || url.includes('gifshow.com')) return 'kuaishou';
-  return null;
-}
-
-function platformName(p) {
-  var names = { tiktok: 'TikTok', douyin: '抖音', bilibili: 'B站', xiaohongshu: '小红书', kuaishou: '快手' };
-  return names[p] || p;
-}
-
-// TikTok - 使用官方 oEmbed API（纯前端，无需后端）
-function parseTikTokEmbed(url) {
-  var oembedUrl = 'https://www.tiktok.com/oembed?url=' + encodeURIComponent(url);
-  
-  fetch(oembedUrl)
-    .then(function(resp) {
-      if (!resp.ok) throw new Error('TikTok API 请求失败');
-      return resp.json();
-    })
-    .then(function(data) {
-      document.getElementById('vdl-loading').style.display = 'none';
-      
-      var thumb = document.getElementById('vdl-thumb');
-      if (data.thumbnail_url) {
-        thumb.innerHTML = '<img src="' + data.thumbnail_url + '" style="max-width:100%;max-height:250px;border-radius:10px;border:1px solid var(--border);">';
-      } else {
-        thumb.innerHTML = '<div style="padding:30px;background:var(--bg);border-radius:10px;color:var(--text-light);">暂无封面</div>';
-      }
-      
-      var info = document.getElementById('vdl-info');
-      info.innerHTML = '<div style="font-size:12px;color:var(--text-light);margin-bottom:4px;">📺 TikTok</div>' +
-        '<div style="font-weight:600;font-size:16px;">' + (data.title || 'TikTok 视频') + '</div>' +
-        (data.author_name ? '<div style="font-size:13px;color:var(--text-light);margin-top:4px;">👤 ' + data.author_name + '</div>' : '') +
-        (data.author_url ? '<div style="font-size:12px;color:var(--text-light);margin-top:2px;"><a href="' + data.author_url + '" target="_blank" style="color:var(--primary);">查看作者主页 →</a></div>' : '');
-      
-      var actions = document.getElementById('vdl-actions');
-      actions.innerHTML = '<button class="btn btn-primary" onclick="window.open(\'' + url + '\', \'_blank\')">▶️ 在 TikTok 中打开</button>';
-      
-      // 尝试从 embed HTML 中提取视频播放地址
-      if (data.html) {
-        var vidMatch = data.html.match(/video_id=([^"&]+)/);
-        if (vidMatch) {
-          var videoPageUrl = 'https://www.tiktok.com/@' + data.author_name + '/video/' + vidMatch[1];
-          actions.innerHTML += '<button class="btn btn-success" onclick="window.open(\'' + videoPageUrl + '\', \'_blank\')">📥 查看视频页</button>';
-        }
-      }
-      
-      document.getElementById('vdl-result').style.display = 'block';
-    })
-    .catch(function(err) {
-      document.getElementById('vdl-loading').style.display = 'none';
-      document.getElementById('vdl-status').textContent = '❌ 解析失败: ' + err.message + '。请确认链接是否正确';
-    });
-}
-
-// Bilibili - 使用官方 API（纯前端，无需后端）
-function parseBilibiliVideo(url) {
-  // 提取视频 ID
-  var videoId = '';
-  var bvMatch = url.match(/BV[a-zA-Z0-9]+/);
-  var avMatch = url.match(/av(\d+)/i);
-  
-  if (bvMatch) {
-    videoId = bvMatch[0];
-  } else if (avMatch) {
-    videoId = 'av' + avMatch[1];
-  } else {
-    document.getElementById('vdl-loading').style.display = 'none';
-    document.getElementById('vdl-status').textContent = '❌ 无法识别B站视频ID';
-    return;
-  }
-  
-  // B站官方 API（支持跨域）
-  var apiUrl = 'https://api.bilibili.com/x/web-interface/view?bvid=' + videoId;
+  // 调用后端API解析
+  var apiUrl = '/api/parse-video?url=' + encodeURIComponent(url);
   
   fetch(apiUrl)
     .then(function(resp) { return resp.json(); })
     .then(function(data) {
       document.getElementById('vdl-loading').style.display = 'none';
       
-      if (data.code !== 0) {
-        throw new Error(data.message || 'B站API返回错误');
+      if (data.error) {
+        document.getElementById('vdl-status').textContent = '❌ ' + data.error;
+        return;
       }
       
-      var video = data.data;
-      
+      // 显示封面
       var thumb = document.getElementById('vdl-thumb');
-      thumb.innerHTML = '<img src="' + (video.pic || '') + '" style="max-width:100%;max-height:250px;border-radius:10px;border:1px solid var(--border);">';
+      if (data.thumbnail) {
+        thumb.innerHTML = '<img src="' + data.thumbnail + '" style="max-width:100%;max-height:250px;border-radius:10px;border:1px solid var(--border);">';
+      } else {
+        thumb.innerHTML = '<div style="padding:30px;background:var(--bg);border-radius:10px;color:var(--text-light);">暂无封面</div>';
+      }
       
+      var platformNames = { tiktok: 'TikTok', douyin: '抖音', bilibili: 'B站' };
       var info = document.getElementById('vdl-info');
-      info.innerHTML = '<div style="font-size:12px;color:var(--text-light);margin-bottom:4px;">📺 Bilibili</div>' +
-        '<div style="font-weight:600;font-size:16px;">' + (video.title || 'B站视频') + '</div>' +
-        (video.owner ? '<div style="font-size:13px;color:var(--text-light);margin-top:4px;">👤 ' + video.owner.name + '</div>' : '') +
-        (video.stat ? '<div style="font-size:12px;color:var(--text-light);margin-top:4px;">👁️ ' + formatCount(video.stat.view) + ' 播放</div>' : '');
+      info.innerHTML = '<div style="font-size:12px;color:var(--text-light);margin-bottom:4px;">📺 ' + (platformNames[data.platform] || data.platform) + '</div>' +
+        '<div style="font-weight:600;font-size:16px;">' + (data.title || '视频') + '</div>' +
+        (data.author ? '<div style="font-size:13px;color:var(--text-light);margin-top:4px;">👤 ' + data.author + '</div>' : '');
       
       var actions = document.getElementById('vdl-actions');
-      actions.innerHTML = '<button class="btn btn-primary" onclick="window.open(\'https://www.bilibili.com/video/' + videoId + '\', \'_blank\')">▶️ 在B站打开</button>';
+      actions.innerHTML = '';
       
-      if (video.duration) {
-        var mins = Math.floor(video.duration / 60);
-        var secs = video.duration % 60;
-        info.innerHTML += '<div style="font-size:12px;color:var(--text-light);margin-top:2px;">⏱️ ' + mins + ':' + (secs < 10 ? '0' : '') + secs + '</div>';
+      if (data.videoUrl) {
+        actions.innerHTML = '<button class="btn btn-success" onclick="downloadTikTokVideo(\'' + data.videoUrl.replace(/'/g, "\\'") + '\')">📥 下载无水印视频</button>';
+      }
+      
+      if (data.note) {
+        document.getElementById('vdl-status').textContent = 'ℹ️ ' + data.note;
       }
       
       document.getElementById('vdl-result').style.display = 'block';
@@ -150,10 +56,11 @@ function parseBilibiliVideo(url) {
     });
 }
 
-function formatCount(n) {
-  if (!n) return '0';
-  if (n >= 10000) return (n / 10000).toFixed(1) + '万';
-  return n.toString();
+function downloadTikTokVideo(videoUrl) {
+  if (!videoUrl) { toast('⚠️ 无法获取视频地址'); return; }
+  // 直接在新标签页打开视频地址（浏览器会播放或下载）
+  window.open(videoUrl, '_blank');
+  toast('✅ 正在打开视频... 可在页面右键保存');
 }
 
 // ============================================================
