@@ -688,14 +688,8 @@ async function generateGif() {
   document.getElementById('vg-status').textContent = '';
   
   if (typeof GIF === 'undefined') {
-    var script = document.createElement('script');
-    script.src = 'https://cdn.jsdelivr.net/npm/gif.js@0.2.0/dist/gif.js';
-    script.onload = function() { doGenerateGif(startTime, duration, fps, targetWidth, colors); };
-    script.onerror = function() {
-      document.getElementById('vg-loading').style.display = 'none';
-      document.getElementById('vg-status').textContent = '❌ 加载 GIF 库失败，请检查网络连接';
-    };
-    document.head.appendChild(script);
+    // gif.js 已在 index.html 中预加载，如果还没加载完成则等待
+    setTimeout(function() { doGenerateGif(startTime, duration, fps, targetWidth, colors); }, 500);
   } else {
     doGenerateGif(startTime, duration, fps, targetWidth, colors);
   }
@@ -717,7 +711,7 @@ async function doGenerateGif(startTime, duration, fps, targetWidth, colors) {
       quality: 10,
       width: Math.round(width),
       height: Math.round(height),
-      workerScript: 'https://cdn.jsdelivr.net/npm/gif.js@0.2.0/dist/gif.worker.js'
+      workerScript: 'js/gif.worker.js'
     });
     
     var canvas = document.createElement('canvas');
