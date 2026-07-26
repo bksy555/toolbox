@@ -1,5 +1,5 @@
 // ============================================================
-// 视频解析 - 自研，通过后端API解析无水印视频
+// 视频解析 - 自研，纯前端调官方API
 // ============================================================
 
 function parseVideoUrl() {
@@ -10,45 +10,36 @@ function parseVideoUrl() {
   document.getElementById('vdl-result').style.display = 'none';
   document.getElementById('vdl-status').textContent = '';
   
-  // 调用后端API解析
-  var apiUrl = '/api/parse-video?url=' + encodeURIComponent(url);
-  
-  fetch(apiUrl)
-    .then(function(resp) { return resp.json(); })
+  var platform = detectPlatform(url);
+  switch (platform) {
+    case 'tiktok': parseTiktok(url); break;
+    case 'bilibili': parseBilibili(url); break;
+    case 'douyin': showUnsupported(url, '抖音'); break;
+    case 'xiaohongshu': showUnsupported(url, '小红书'); break;
+    case 'kuaishou': showUnsupported(url, '快手'); break;
+    default:
+      document.getElementById('vdl-loading').style.display = 'none';
+      document.getElementById('vdl-status').textContent = '❌ 暂不支持该平台';
+  }
+}
+
+function detectPlatform(url) {
+  if (/tiktok\.com/i.test(url)) return 'tiktok';
+  if (/douyin\.com|v\.douyin/i.test(url)) return 'douyin';
+  if (/bilibili\.com|b23\.tv/i.test(url)) return 'bilibili';
+  if (/xiaohongshu\.com|xhslink\.com/i.test(url)) return 'xiaohongshu';
+  if (/kuaishou\.com|gifshow\.com/i.test(url)) return 'kuaishou';
+  return null;
+}
+
+// TikTok - 使用官方 oEmbed API
+function parseTiktok(url) {
+  fetch('https://www.tiktok.com/oembed?url=' + encodeURIComponent(url))
+    .then(function(r) { return r.json(); })
     .then(function(data) {
       document.getElementById('vdl-loading').style.display = 'none';
-      
-      if (data.error) {
-        document.getElementById('vdl-status').textContent = '❌ ' + data.error;
-        return;
-      }
-      
-      // 显示封面
-      var thumb = document.getElementById('vdl-thumb');
-      if (data.thumbnail) {
-        thumb.innerHTML = '<img src="' + data.thumbnail + '" style="max-width:100%;max-height:250px;border-radius:10px;border:1px solid var(--border);">';
-      } else {
-        thumb.innerHTML = '<div style="padding:30px;background:var(--bg);border-radius:10px;color:var(--text-light);">暂无封面</div>';
-      }
-      
-      var platformNames = { tiktok: 'TikTok', douyin: '抖音', bilibili: 'B站' };
-      var info = document.getElementById('vdl-info');
-      info.innerHTML = '<div style="font-size:12px;color:var(--text-light);margin-bottom:4px;">📺 ' + (platformNames[data.platform] || data.platform) + '</div>' +
-        '<div style="font-weight:600;font-size:16px;">' + (data.title || '视频') + '</div>' +
-        (data.author ? '<div style="font-size:13px;color:var(--text-light);margin-top:4px;">👤 ' + data.author + '</div>' : '');
-      
-      var actions = document.getElementById('vdl-actions');
-      actions.innerHTML = '';
-      
-      if (data.videoUrl) {
-        actions.innerHTML = '<button class="btn btn-success" onclick="downloadTikTokVideo(\'' + data.videoUrl.replace(/'/g, "\\'") + '\')">📥 下载无水印视频</button>';
-      }
-      
-      if (data.note) {
-        document.getElementById('vdl-status').textContent = 'ℹ️ ' + data.note;
-      }
-      
-      document.getElementById('vdl-result').style.display = 'block';
+      if (data.code) throw new Error(data.message || '解析失败');
+      showVideoResult('TikTok', data.title, data.author_name, data.thumbnail_url, url, data.author_url);
     })
     .catch(function(err) {
       document.getElementById('vdl-loading').style.display = 'none';
@@ -56,11 +47,56 @@ function parseVideoUrl() {
     });
 }
 
-function downloadTikTokVideo(videoUrl) {
-  if (!videoUrl) { toast('⚠️ 无法获取视频地址'); return; }
-  // 直接在新标签页打开视频地址（浏览器会播放或下载）
-  window.open(videoUrl, '_blank');
-  toast('✅ 正在打开视频... 可在页面右键保存');
+// B站 - 使用官方 API
+function parseBilibili(url) {
+  var id = (url.match(/BV[a-zA-Z0-9]+/) || [''])[0] || 'av' + (url.match(/av(\d+)/i) || [0, ''])[1];
+  if (!id) { document.getElementById('vdl-loading').style.display = 'none'; document.getElementById('vdl-status').textContent = '❌ 无法识别B站视频ID'; return; }
+  
+  fetch('https://api.bilibili.com/x/web-interface/view?bvid=' + id)
+    .then(function(r) { return r.json(); })
+    .then(function(d) {
+      document.getElementById('vdl-loading').style.display = 'none';
+      if (d.code !== 0) throw new Error(d.message);
+      var v = d.data;
+      showVideoResult('B站', v.title, v.owner.name, v.pic, 'https://www.bilibili.com/video/' + id, 'https://space.bilibili.com/' + (v.owner.mid || ''));
+      // 添加播放量和时长
+      var info = document.getElementById('vdl-info');
+      info.innerHTML += '<div style="font-size:12px;color:var(--text-light);margin-top:2px;">👁️ ' + formatCount(v.stat.view) + ' 播放 · ⏱️ ' + Math.floor(v.duration/60) + ':' + (v.duration%60+'').padStart(2,'0') + '</div>';
+    })
+    .catch(function(err) {
+      document.getElementById('vdl-loading').style.display = 'none';
+      document.getElementById('vdl-status').textContent = '❌ 解析失败: ' + err.message;
+    });
+}
+
+function showUnsupported(url, name) {
+  document.getElementById('vdl-loading').style.display = 'none';
+  document.getElementById('vdl-result').style.display = 'none';
+  document.getElementById('vdl-status').textContent = 'ℹ️ ' + name + '暂不支持直接下载，请在官方应用内查看。这是平台限制，不是本站功能问题。';
+}
+
+function showVideoResult(platform, title, author, thumbnail, videoUrl, authorUrl) {
+  var thumb = document.getElementById('vdl-thumb');
+  if (thumbnail) {
+    thumb.innerHTML = '<img src="' + thumbnail + '" style="max-width:100%;max-height:250px;border-radius:10px;border:1px solid var(--border);">';
+  } else {
+    thumb.innerHTML = '<div style="padding:30px;background:var(--bg);border-radius:10px;color:var(--text-light);">暂无封面</div>';
+  }
+  
+  var info = document.getElementById('vdl-info');
+  info.innerHTML = '<div style="font-size:12px;color:var(--text-light);margin-bottom:4px;">📺 ' + platform + '</div>' +
+    '<div style="font-weight:600;font-size:16px;">' + (title || '视频') + '</div>' +
+    (author ? '<div style="font-size:13px;color:var(--text-light);margin-top:4px;">👤 ' + author + '</div>' : '');
+  
+  var actions = document.getElementById('vdl-actions');
+  actions.innerHTML = '<button class="btn btn-primary" onclick="window.open(\'' + videoUrl + '\', \'_blank\')">▶️ 在' + platform + '中打开</button>';
+  
+  document.getElementById('vdl-result').style.display = 'block';
+}
+
+function formatCount(n) {
+  if (!n) return '0';
+  return n >= 10000 ? (n / 10000).toFixed(1) + '万' : n.toString();
 }
 
 // ============================================================

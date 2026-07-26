@@ -1262,9 +1262,11 @@ console.log("Hello World!");
         </div>
         <div id="vdl-status" style="margin-top:8px;font-size:13px;color:var(--text-light);"></div>
         <div style="margin-top:12px;padding:12px;background:#f0fdf4;border-radius:10px;font-size:13px;color:#166534;">
-          <strong>📌 说明：</strong>本工具使用各平台官方API解析视频信息，纯前端实现，不依赖任何第三方服务。
-          <br><strong>支持：</strong>TikTok（官方oEmbed API）→ 可预览信息 | B站（官方API）→ 可预览信息
-          <br>抖音/小红书/快手 → 因平台限制，请在官方应用内下载
+          <strong>📌 说明：</strong>本工具使用各平台官方API解析视频信息，纯前端实现。
+          <br><strong>✅ TikTok：</strong>官方oEmbed API → 可预览信息
+          <br><strong>✅ B站：</strong>官方API → 可预览信息
+          <br><strong>⚠️ 抖音/小红书/快手：</strong>因平台限制，无法直接下载，请在官方应用内查看
+          <br><br><strong>关于下载：</strong> TikTok/B站等平台限制第三方下载无水印视频，这是平台政策，不是技术问题。所有声称能下载的第三方工具都使用非官方接口，存在法律风险。
         </div>
       </div>
     `,
