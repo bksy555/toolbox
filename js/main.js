@@ -1256,7 +1256,7 @@ function loadExcelFile() {
   // 动态加载 SheetJS
   if (typeof XLSX === 'undefined') {
     const script = document.createElement('script');
-    script.src = 'https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js';
+    script.src = 'https://cdn.jsdelivr.net/npm/xlsx@0.20.3/dist/xlsx.full.min.js';
     script.onload = () => parseExcelFile(file);
     script.onerror = () => {
       document.getElementById('ev-loading').innerHTML = '<div style="color:var(--danger);">❌ 加载 SheetJS 库失败，请检查网络连接</div>';
@@ -1371,7 +1371,7 @@ function generateTextPDF() {
   
   if (typeof jspdf === 'undefined') {
     const script = document.createElement('script');
-    script.src = 'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.2/jspdf.umd.min.js';
+    script.src = 'https://cdn.jsdelivr.net/npm/jspdf@2.5.2/dist/jspdf.umd.min.js';
     script.onload = () => doGenerateTextPDF(text);
     script.onerror = () => {
       document.getElementById('tp-status').textContent = '❌ 加载 jsPDF 库失败，请检查网络连接';
@@ -1441,7 +1441,7 @@ function generateHTMLPDF() {
   
   if (typeof jspdf === 'undefined') {
     const script = document.createElement('script');
-    script.src = 'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.2/jspdf.umd.min.js';
+    script.src = 'https://cdn.jsdelivr.net/npm/jspdf@2.5.2/dist/jspdf.umd.min.js';
     script.onload = () => doGenerateHTMLPDF();
     script.onerror = () => {
       document.getElementById('hp-status').textContent = '❌ 加载 jsPDF 库失败，请检查网络连接';
@@ -1536,9 +1536,9 @@ function loadPDFFile() {
   if (typeof pdfjsLib === 'undefined') {
     // 加载 PDF.js
     const script = document.createElement('script');
-    script.src = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js';
+    script.src = 'https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js';
     script.onload = () => {
-      pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+      pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js';
       doLoadPDF(file);
     };
     script.onerror = () => {
@@ -1636,7 +1636,7 @@ function generateImagePDF() {
   document.getElementById('ip-status').textContent = '⏳ 正在生成 PDF...';
   if (typeof jspdf === 'undefined') {
     var script = document.createElement('script');
-    script.src = 'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.2/jspdf.umd.min.js';
+    script.src = 'https://cdn.jsdelivr.net/npm/jspdf@2.5.2/dist/jspdf.umd.min.js';
     script.onload = function() { doGenerateImagePDF(); };
     script.onerror = function() {
       document.getElementById('ip-status').textContent = '❌ 加载 jsPDF 库失败，请检查网络连接';
@@ -1718,9 +1718,9 @@ function loadPDFForImage() {
   _pdfImageData = [];
   if (typeof pdfjsLib === 'undefined') {
     var script = document.createElement('script');
-    script.src = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js';
+    script.src = 'https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js';
     script.onload = function() {
-      pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+      pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js';
       doLoadPDFForImage(file);
     };
     script.onerror = function() {
@@ -1786,7 +1786,7 @@ async function downloadAllPDFImages() {
   if (_pdfImageData.length === 0) return;
   if (typeof JSZip === 'undefined') {
     var script = document.createElement('script');
-    script.src = 'https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js';
+    script.src = 'https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js';
     script.onload = function() { doDownloadAllPDFImages(); };
     script.onerror = function() {
       _pdfImageData.forEach(function(item) {
@@ -1835,7 +1835,7 @@ function loadWordFile() {
   document.getElementById('wp-status').textContent = '';
   if (typeof JSZip === 'undefined') {
     var script = document.createElement('script');
-    script.src = 'https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js';
+    script.src = 'https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js';
     script.onload = function() { doParseWord(file); };
     script.onerror = function() {
       document.getElementById('wp-loading').innerHTML = '<div style="color:var(--danger);">❌ 加载 JSZip 库失败，请检查网络连接</div>';
@@ -1882,7 +1882,7 @@ function wordToPDF() {
   document.getElementById('wp-status').textContent = '⏳ 正在生成 PDF...';
   if (typeof jspdf === 'undefined') {
     var script = document.createElement('script');
-    script.src = 'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.2/jspdf.umd.min.js';
+    script.src = 'https://cdn.jsdelivr.net/npm/jspdf@2.5.2/dist/jspdf.umd.min.js';
     script.onload = function() { doWordToPDF(text); };
     script.onerror = function() {
       document.getElementById('wp-status').textContent = '❌ 加载 jsPDF 库失败';
@@ -1943,7 +1943,7 @@ function loadExcelForPDF() {
   document.getElementById('ep-status').textContent = '';
   if (typeof XLSX === 'undefined') {
     var script = document.createElement('script');
-    script.src = 'https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js';
+    script.src = 'https://cdn.jsdelivr.net/npm/xlsx@0.20.3/dist/xlsx.full.min.js';
     script.onload = function() { parseExcelForPDF(file); };
     script.onerror = function() {
       document.getElementById('ep-loading').innerHTML = '<div style="color:var(--danger);">❌ 加载 SheetJS 库失败</div>';
@@ -2002,7 +2002,7 @@ function generateExcelPDF() {
   document.getElementById('ep-status').textContent = '⏳ 正在生成 PDF...';
   if (typeof jspdf === 'undefined') {
     var script = document.createElement('script');
-    script.src = 'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.2/jspdf.umd.min.js';
+    script.src = 'https://cdn.jsdelivr.net/npm/jspdf@2.5.2/dist/jspdf.umd.min.js';
     script.onload = function() { doGenerateExcelPDF(sheet, name, orientation); };
     script.onerror = function() {
       document.getElementById('ep-status').textContent = '❌ 加载 jsPDF 库失败';
@@ -2069,7 +2069,7 @@ function mergePDFs() {
   document.getElementById('pm-status').textContent = '';
   if (typeof PDFLib === 'undefined') {
     var script = document.createElement('script');
-    script.src = 'https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js';
+    script.src = 'https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js';
     script.onload = function() { doMergePDFs(); };
     script.onerror = function() {
       document.getElementById('pm-loading').innerHTML = '<div style="color:var(--danger);">❌ 加载 pdf-lib 库失败</div>';
