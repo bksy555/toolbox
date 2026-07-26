@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>免费学习网站 - 10大宝藏学习资源</title>
+  <meta name="description" content="精选10个免费学习网站：辟谣、百科、智库、名校公开课、电子书、素材资源等，全部免费使用">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+      background: linear-gradient(135deg, #f0f4ff 0%, #e8f0fe 100%);
+      color: #1e293b;
+      min-height: 100vh;
+      line-height: 1.6;
+    }
+
+    /* Header */
+    .header {
+      background: linear-gradient(135deg, #1e40af, #3b82f6);
+      color: white;
+      padding: 40px 20px 50px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .header::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 70%);
+      animation: float 20s ease-in-out infinite;
+    }
+    @keyframes float {
+      0%, 100% { transform: translate(0, 0); }
+      50% { transform: translate(30px, -30px); }
+    }
+    .header h1 {
+      font-size: 2.5rem;
+      font-weight: 800;
+      position: relative;
+      z-index: 1;
+    }
+    .header p {
+      font-size: 1.1rem;
+      opacity: 0.9;
+      margin-top: 10px;
+      position: relative;
+      z-index: 1;
+    }
+    .header .back-link {
+      display: inline-block;
+      margin-top: 16px;
+      color: rgba(255,255,255,0.8);
+      text-decoration: none;
+      font-size: 0.9rem;
+      position: relative;
+      z-index: 1;
+      padding: 8px 20px;
+      border: 1px solid rgba(255,255,255,0.3);
+      border-radius: 20px;
+      transition: all 0.3s;
+    }
+    .header .back-link:hover {
+      background: rgba(255,255,255,0.15);
+      color: white;
+    }
+
+    /* Stats bar */
+    .stats-bar {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      padding: 20px;
+      background: white;
+      border-bottom: 1px solid #e2e8f0;
+      flex-wrap: wrap;
+    }
+    .stat-item {
+      text-align: center;
+    }
+    .stat-item .num {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #3b82f6;
+    }
+    .stat-item .label {
+      font-size: 0.85rem;
+      color: #64748b;
+    }
+
+    /* Main content */
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 30px 20px 60px;
+    }
+
+    /* Category sections */
+    .category-section {
+      margin-bottom: 40px;
+    }
+    .category-title {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: #1e40af;
+      padding: 12px 20px;
+      background: white;
+      border-radius: 12px;
+      margin-bottom: 16px;
+      border-left: 4px solid #3b82f6;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    }
+
+    /* Site card */
+    .site-card {
+      background: white;
+      border-radius: 16px;
+      padding: 24px;
+      margin-bottom: 16px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+      transition: all 0.3s ease;
+      border: 1px solid transparent;
+    }
+    .site-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(59, 130, 246, 0.12);
+      border-color: #bfdbfe;
+    }
+    .site-card .card-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+    .site-card .card-number {
+      width: 36px;
+      height: 36px;
+      background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.9rem;
+      flex-shrink: 0;
+    }
+    .site-card .card-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #1e293b;
+    }
+    .site-card .card-badge {
+      font-size: 0.75rem;
+      padding: 2px 10px;
+      border-radius: 20px;
+      font-weight: 600;
+    }
+    .badge-blue { background: #dbeafe; color: #1e40af; }
+    .badge-green { background: #dcfce7; color: #166534; }
+    .badge-purple { background: #f3e8ff; color: #6b21a8; }
+    .badge-orange { background: #fef3c7; color: #92400e; }
+    .badge-red { background: #fee2e2; color: #991b1b; }
+    .badge-teal { background: #ccfbf1; color: #115e59; }
+    .badge-pink { background: #fce7f3; color: #9d174d; }
+
+    .site-card .card-desc {
+      font-size: 0.95rem;
+      color: #475569;
+      line-height: 1.7;
+      margin-bottom: 12px;
+    }
+    .site-card .card-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #f0f4ff;
+      color: #1e40af;
+      padding: 8px 16px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: all 0.2s;
+    }
+    .site-card .card-link:hover {
+      background: #dbeafe;
+      transform: translateX(2px);
+    }
+    .site-card .card-link .arrow {
+      transition: transform 0.2s;
+    }
+    .site-card .card-link:hover .arrow {
+      transform: translateX(3px);
+    }
+    .site-card .card-tags {
+      margin-top: 10px;
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+    .site-card .card-tags span {
+      font-size: 0.75rem;
+      padding: 2px 8px;
+      background: #f1f5f9;
+      color: #64748b;
+      border-radius: 4px;
+    }
+
+    /* Footer */
+    .footer {
+      text-align: center;
+      padding: 30px;
+      color: #94a3b8;
+      font-size: 0.85rem;
+      border-top: 1px solid #e2e8f0;
+      background: white;
+    }
+    .footer a {
+      color: #3b82f6;
+      text-decoration: none;
+    }
+
+    /* Responsive */
+    @media (max-width: 640px) {
+      .header h1 { font-size: 1.8rem; }
+      .stats-bar { gap: 20px; }
+      .site-card { padding: 18px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="header">
+    <h1>📚 10大免费学习网站</h1>
+    <p>精选全球优质教育资源，全部免费可用，助你终身学习</p>
+    <a href="index.html" class="back-link">← 返回工具箱首页</a>
+  </header>
+
+  <!-- Stats -->
+  <div class="stats-bar">
+    <div class="stat-item">
+      <div class="num">10</div>
+      <div class="label">精选网站</div>
+    </div>
+    <div class="stat-item">
+      <div class="num">5</div>
+      <div class="label">分类覆盖</div>
+    </div>
+    <div class="stat-item">
+      <div class="num">∞</div>
+      <div class="label">全部免费</div>
+    </div>
+    <div class="stat-item">
+      <div class="num">🌍</div>
+      <div class="label">全球资源</div>
+    </div>
+  </div>
+
+  <!-- Content -->
+  <div class="container">
+
+    <!-- 一、事实核查类 -->
+    <div class="category-section">
+      <div class="category-title">🔍 一、事实核查类</div>
+
+      <div class="site-card">
+        <div class="card-header">
+          <div class="card-number">1</div>
+          <div class="card-title">Snopes — 终极辟谣神器</div>
+          <span class="card-badge badge-blue">事实核查</span>
+        </div>
+        <div class="card-desc">
+          <strong>一句话简介：</strong>专治各种网络智商税与国际阴谋论。遇到真假难辨的外网新闻、惊悚传闻时，直接丢进搜索框，它会通过严密的数据考证给出"真实（True）"或"虚假（False）"的权威判定。
+        </div>
+        <a href="https://www.snopes.com" target="_blank" class="card-link">
+          🔗 访问 Snopes <span class="arrow">→</span>
+        </a>
+        <div class="card-tags">
+          <span>辟谣</span>
+          <span>事实核查</span>
+          <span>新闻验证</span>
+        </div>
+      </div>
+
+      <div class="site-card">
+        <div class="card-header">
+          <div class="card-number">2</div>
+          <div class="card-title">Wikipedia（英文版）— 维基百科完全体</div>
+          <span class="card-badge badge-green">百科全书</span>
+        </div>
+        <div class="card-desc">
+          <strong>一句话简介：</strong>客观、中立的全人类智慧百科全书。比中文版内容更全、更新更快，由全球学者共同维护。配合浏览器翻译插件看英文版，能触摸到一手知识。
+        </div>
+        <a href="https://en.wikipedia.org" target="_blank" class="card-link">
+          🔗 访问 Wikipedia <span class="arrow">→</span>
+        </a>
+        <div class="card-tags">
+          <span>百科</span>
+          <span>知识库</span>
+          <span>学术</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 二、智库评论类 -->
+    <div class="category-section">
+      <div class="category-title">🧠 二、智库评论类</div>
+
+      <div class="site-card">
+        <div class="card-header">
+          <div class="card-number">3</div>
+          <div class="card-title">Foreign Affairs — 全球精英的思维沙盘</div>
+          <span class="card-badge badge-purple">国际关系</span>
+        </div>
+        <div class="card-desc">
+          <strong>一句话简介：</strong>国际政治与地缘外交评述的"圣经"。由哈佛教授、大国前外交官和顶级学者撰稿，不讲八卦、只讲战略，帮你从底层逻辑看清中美关系和全球大趋势。
+        </div>
+        <a href="https://www.foreignaffairs.com" target="_blank" class="card-link">
+          🔗 访问 Foreign Affairs <span class="arrow">→</span>
+        </a>
+        <div class="card-tags">
+          <span>国际政治</span>
+          <span>地缘战略</span>
+          <span>外交</span>
+        </div>
+      </div>
+
+      <div class="site-card">
+        <div class="card-header">
+          <div class="card-number">4</div>
+          <div class="card-title">Brookings Institution — 布鲁金斯学会</div>
+          <span class="card-badge badge-purple">顶级智库</span>
+        </div>
+        <div class="card-desc">
+          <strong>一句话简介：</strong>全球综合排名第一的超级智库。免费公开无数份质量极高的地缘、经济和科技PDF研究报告。想要提前看清行业政策和科技冷战的走向，看这里就够了。
+        </div>
+        <a href="https://www.brookings.edu" target="_blank" class="card-link">
+          🔗 访问 Brookings <span class="arrow">→</span>
+        </a>
+        <div class="card-tags">
+          <span>智库报告</span>
+          <span>经济研究</span>
+          <span>政策分析</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 三、学术充电类 -->
+    <div class="category-section">
+      <div class="category-title">🎓 三、学术充电类</div>
+
+      <div class="site-card">
+        <div class="card-header">
+          <div class="card-number">5</div>
+          <div class="card-title">Open Yale Courses — 耶鲁大学公开课</div>
+          <span class="card-badge badge-orange">名校课程</span>
+        </div>
+        <div class="card-desc">
+          <strong>一句话简介：</strong>零门槛、零学费修读常春藤名校。100%原汁原味还原耶鲁真实的课堂录像。强烈推荐《哲学导论》和《心理学导论》。网站还提供完整的英文字幕（Transcript）供免费下载。
+        </div>
+        <a href="https://oyc.yale.edu" target="_blank" class="card-link">
+          🔗 访问 Yale Open Courses <span class="arrow">→</span>
+        </a>
+        <div class="card-tags">
+          <span>耶鲁大学</span>
+          <span>公开课</span>
+          <span>名校资源</span>
+        </div>
+      </div>
+
+      <div class="site-card">
+        <div class="card-header">
+          <div class="card-number">6</div>
+          <div class="card-title">Khan Academy — 可汗学院</div>
+          <span class="card-badge badge-green">公益学习</span>
+        </div>
+        <div class="card-desc">
+          <strong>一句话简介：</strong>终身免费、全无广告的公益学习圣地。从基础数学、微积分，到 Python 计算机编程、宏观经济学无缝覆盖。采用独特的"游戏化打怪升级"练习系统，是普通人转行、自学硬核技能的最佳武器。
+        </div>
+        <a href="https://www.khanacademy.org" target="_blank" class="card-link">
+          🔗 访问 Khan Academy <span class="arrow">→</span>
+        </a>
+        <div class="card-tags">
+          <span>数学</span>
+          <span>编程</span>
+          <span>经济学</span>
+          <span>免费</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 四、电子书与数字档案 -->
+    <div class="category-section">
+      <div class="category-title">📖 四、电子书与数字档案</div>
+
+      <div class="site-card">
+        <div class="card-header">
+          <div class="card-number">7</div>
+          <div class="card-title">Project Gutenberg — 古登堡计划</div>
+          <span class="card-badge badge-red">免费电子书</span>
+        </div>
+        <div class="card-desc">
+          <strong>一句话简介：</strong>寻找毫无删减的世界级文学名著。全球最大的公益电子图书馆，专门收录版权过期的世界级巨著（如《1984》、《动物农场》）。一键免费下载 EPUB 格式，完全无广告，无删减。
+        </div>
+        <a href="https://www.gutenberg.org" target="_blank" class="card-link">
+          🔗 访问 Project Gutenberg <span class="arrow">→</span>
+        </a>
+        <div class="card-tags">
+          <span>电子书</span>
+          <span>文学名著</span>
+          <span>免费下载</span>
+        </div>
+      </div>
+
+      <div class="site-card">
+        <div class="card-header">
+          <div class="card-number">8</div>
+          <div class="card-title">Internet Archive — 互联网时光机</div>
+          <span class="card-badge badge-teal">数字档案</span>
+        </div>
+        <div class="card-desc">
+          <strong>一句话简介：</strong>互联网是有记忆的，带你挖掘所有被删除的历史。其核心功能 Wayback Machine 可以 100% 还原过去 20 年间任何网站在特定瞬间的快照。同时还可以凭免费账号在线借阅无数种绝版的人文社科书籍。
+        </div>
+        <a href="https://archive.org" target="_blank" class="card-link">
+          🔗 访问 Internet Archive <span class="arrow">→</span>
+        </a>
+        <div class="card-tags">
+          <span>网页存档</span>
+          <span>绝版书籍</span>
+          <span>历史记录</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 五、自媒体素材与工具 -->
+    <div class="category-section">
+      <div class="category-title">🎨 五、自媒体素材与工具</div>
+
+      <div class="site-card">
+        <div class="card-header">
+          <div class="card-number">9</div>
+          <div class="card-title">Pixabay — 高清无版权素材粮仓</div>
+          <span class="card-badge badge-pink">免费素材</span>
+        </div>
+        <div class="card-desc">
+          <strong>一句话简介：</strong>视频剪辑、独立站、PPT 设计的后勤库。全站几千万张高清照片、4K 视频短片、音频素材全部遵循 <strong>CC0 协议</strong>。你可以免费下载并直接用于任何商业用途，完全不用担心版权官司。
+        </div>
+        <a href="https://pixabay.com" target="_blank" class="card-link">
+          🔗 访问 Pixabay <span class="arrow">→</span>
+        </a>
+        <div class="card-tags">
+          <span>高清图片</span>
+          <span>4K视频</span>
+          <span>CC0协议</span>
+          <span>商业可用</span>
+        </div>
+      </div>
+
+      <div class="site-card">
+        <div class="card-header">
+          <div class="card-number">10</div>
+          <div class="card-title">Pexels — 免费高清图库</div>
+          <span class="card-badge badge-pink">免费图片</span>
+        </div>
+        <div class="card-desc">
+          <strong>一句话简介：</strong>高品质免费图库，所有图片均可免费下载并用于商业用途。支持中文搜索，提供海量高清照片和视频素材，是设计师和内容创作者的必备资源库。
+        </div>
+        <a href="https://www.pexels.com/zh-cn/" target="_blank" class="card-link">
+          🔗 访问 Pexels <span class="arrow">→</span>
+        </a>
+        <div class="card-tags">
+          <span>高清图片</span>
+          <span>免费商用</span>
+          <span>中文支持</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <p>📚 10大免费学习网站 &mdash; 精选全球优质教育资源</p>
+    <p style="margin-top:6px;">
+      数据来源：<a href="https://www.freezq.com/338/.html" target="_blank">freezq.com</a> &middot;
+      收录于 <a href="index.html">ToolBox 工具箱</a>
+    </p>
+    <p style="margin-top:6px;font-size:0.8rem;opacity:0.7;">&copy; 2026 ToolBox. All rights reserved.</p>
+  </footer>
+
+</body>
+</html>
