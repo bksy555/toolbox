@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ToolBox - 免费在线实用工具集</title>
+  <meta name="description" content="ToolBox 提供免费在线工具：文本工具、开发者工具、图片处理、单位换算、密码生成、时间戳转换等，无需安装，打开即用。">
+  <meta name="keywords" content="在线工具,免费工具,文本工具,JSON格式化,密码生成,单位换算,时间戳转换,图片压缩,Base64">
+  <link rel="stylesheet" href="css/style.css">
+  <!-- Google AdSense 广告位预留 -->
+  <meta name="google-adsense-account" content="ca-pub-xxxxxxxxxxxxxx">
+</head>
+<body>
+
+  <!-- ====== Header ====== -->
+  <header class="header">
+    <div class="header-inner">
+      <a href="#" class="logo" onclick="showHome()">
+        <span class="logo-icon">🧰</span>
+        ToolBox
+      </a>
+      <nav class="header-nav">
+        <a href="#" onclick="showHome()" class="active" data-nav="home">首页</a>
+        <a href="#" onclick="scrollToCategory('text')">文本工具</a>
+        <a href="#" onclick="scrollToCategory('dev')">开发者</a>
+        <a href="#" onclick="scrollToCategory('image')">图片处理</a>
+        <a href="#" onclick="scrollToCategory('convert')">转换</a>
+        <a href="#" onclick="scrollToCategory('security')">安全</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ====== Hero ====== -->
+  <section class="hero" id="hero">
+    <h1>🧰 免费在线实用工具</h1>
+    <p>文本处理、开发者工具、图片压缩、单位换算、密码生成……全部免费，无需注册，打开即用</p>
+  </section>
+
+  <!-- ====== Search ====== -->
+  <div class="search-bar">
+    <input type="text" id="searchInput" placeholder="🔍 搜索工具，例如：JSON、密码、压缩..." oninput="searchTools()">
+  </div>
+
+  <!-- ====== Home Page ====== -->
+  <div id="homePage">
+    <div class="categories">
+      <h2>📂 工具分类</h2>
+      <div class="category-grid" id="categoryGrid">
+        <!-- 由 JS 动态生成 -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ====== Category Page ====== -->
+  <div id="categoryPage" style="display:none;"></div>
+
+  <!-- ====== Tool Pages ====== -->
+  <div id="toolPages"></div>
+
+  <!-- ====== Ad Slot ====== -->
+  <div class="ad-slot" id="adSlot">
+    <!-- Google AdSense 广告将在此处展示 -->
+    <span>📢 广告位 —— 在此添加 AdSense 代码</span>
+  </div>
+
+  <!-- ====== Footer ====== -->
+  <footer class="footer">
+    <p>🧰 ToolBox &mdash; 免费在线实用工具集</p>
+    <p style="margin-top:8px;font-size:13px;">
+      <a href="#" onclick="showHome()">首页</a> &middot;
+      <a href="https://github.com" target="_blank">GitHub</a> &middot;
+      工具仅供学习参考使用
+    </p>
+    <p style="margin-top:8px;font-size:12px;opacity:0.6;">&copy; 2026 ToolBox. All rights reserved.</p>
+  </footer>
+
+  <!-- ====== Toast ====== -->
+  <div class="toast" id="toast"></div>
+
+  <!-- ====== Scripts ====== -->
+  <script src="js/tools.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
