@@ -1,4 +1,75 @@
 // ============================================================
+// 视频解析 - 自研，不依赖第三方服务
+// ============================================================
+
+function parseVideoUrl() {
+  var url = document.getElementById('vdl-url').value.trim();
+  if (!url) { toast('⚠️ 请粘贴视频链接'); return; }
+  
+  document.getElementById('vdl-loading').style.display = 'block';
+  document.getElementById('vdl-result').style.display = 'none';
+  document.getElementById('vdl-status').textContent = '';
+  
+  // 调用 Vercel Serverless Function 解析
+  var apiUrl = '/api/parse-video?url=' + encodeURIComponent(url);
+  
+  fetch(apiUrl)
+    .then(function(resp) { return resp.json(); })
+    .then(function(data) {
+      document.getElementById('vdl-loading').style.display = 'none';
+      
+      if (data.error) {
+        document.getElementById('vdl-status').textContent = '❌ ' + data.error;
+        return;
+      }
+      
+      // 显示结果
+      var thumb = document.getElementById('vdl-thumb');
+      if (data.thumbnail) {
+        thumb.innerHTML = '<img src="' + data.thumbnail + '" style="max-width:100%;max-height:250px;border-radius:10px;border:1px solid var(--border);">';
+      } else {
+        thumb.innerHTML = '<div style="padding:30px;background:var(--bg);border-radius:10px;color:var(--text-light);">暂无封面</div>';
+      }
+      
+      var info = document.getElementById('vdl-info');
+      var platformNames = {
+        tiktok: 'TikTok', douyin: '抖音', bilibili: 'B站',
+        xiaohongshu: '小红书', kuaishou: '快手'
+      };
+      info.innerHTML = '<div style="font-size:12px;color:var(--text-light);margin-bottom:4px;">📺 ' + (platformNames[data.platform] || data.platform) + '</div>' +
+        '<div style="font-weight:600;font-size:16px;">' + (data.title || '视频') + '</div>' +
+        (data.author ? '<div style="font-size:13px;color:var(--text-light);margin-top:4px;">👤 ' + data.author + '</div>' : '');
+      
+      var actions = document.getElementById('vdl-actions');
+      actions.innerHTML = '';
+      
+      if (data.videoUrl) {
+        actions.innerHTML = '<button class="btn btn-primary" onclick="window.open(\'' + data.videoUrl + '\', \'_blank\')">▶️ 播放视频</button>' +
+          '<button class="btn btn-success" onclick="downloadVideo(\'' + data.videoUrl + '\')">📥 下载视频</button>';
+      }
+      
+      if (data.note) {
+        document.getElementById('vdl-status').textContent = 'ℹ️ ' + data.note;
+      }
+      
+      document.getElementById('vdl-result').style.display = 'block';
+    })
+    .catch(function(err) {
+      document.getElementById('vdl-loading').style.display = 'none';
+      document.getElementById('vdl-status').textContent = '❌ 解析失败: ' + err.message;
+    });
+}
+
+function downloadVideo(url) {
+  var a = document.createElement('a');
+  a.href = url;
+  a.download = url.split('/').pop() || 'video.mp4';
+  a.target = '_blank';
+  a.click();
+  toast('✅ 正在下载...');
+}
+
+// ============================================================
 // 图片去背景 + 证件照换底色
 // ============================================================
 var _bgImage = null;

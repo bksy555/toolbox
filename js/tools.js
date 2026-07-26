@@ -1237,49 +1237,32 @@ console.log("Hello World!");
 
   // ==================== 新分类：媒体工具 ====================
   {
-    id: 'video-download-guide',
+    id: 'video-download-tool',
     cat: 'media',
     icon: '🎬',
-    name: '视频去水印下载指引',
-    desc: '抖音、快手、小红书等平台视频去水印下载工具汇总',
+    name: '抖音/TikTok 视频解析',
+    desc: '解析抖音/TikTok视频链接，在线预览并下载无水印视频',
     html: `
       <div class="tool-card">
         <div class="input-group">
-          <label>📌 说明</label>
-          <p style="font-size:14px;color:var(--text-light);line-height:1.8;">
-            由于技术限制，本站无法直接下载视频。以下是一些经过验证的第三方免费工具，
-            你可以复制视频分享链接到这些网站，即可去除水印并下载。
-          </p>
+          <label>粘贴视频分享链接</label>
+          <div class="row" style="gap:8px;">
+            <input type="text" id="vdl-url" placeholder="https://v.douyin.com/xxxxx/ 或 https://www.tiktok.com/@xxx/video/xxx" style="flex:1;">
+            <button class="btn btn-primary" onclick="parseVideoUrl()">🔍 解析</button>
+          </div>
+          <p style="font-size:12px;color:var(--text-light);margin-top:6px;">支持：抖音、TikTok、快手、小红书、B站</p>
         </div>
-        <div style="display:grid;gap:12px;margin-top:16px;">
-          <div style="background:var(--bg);border-radius:10px;padding:16px;border:1px solid var(--border);">
-            <div style="font-weight:600;font-size:16px;">🎵 抖音/TikTok 去水印</div>
-            <p style="font-size:13px;color:var(--text-light);margin:4px 0 8px;">支持抖音、TikTok，粘贴链接即可下载无水印视频</p>
-            <a href="https://www.iesdouyin.com/" target="_blank" style="color:var(--primary);">https://www.iesdouyin.com/</a>
-          </div>
-          <div style="background:var(--bg);border-radius:10px;padding:16px;border:1px solid var(--border);">
-            <div style="font-weight:600;font-size:16px;">🎬 SSSTik.io</div>
-            <p style="font-size:13px;color:var(--text-light);margin:4px 0 8px;">全球最流行的TikTok/抖音去水印下载工具，支持HD画质</p>
-            <a href="https://www.ssstik.io/" target="_blank" style="color:var(--primary);">https://www.ssstik.io/</a>
-          </div>
-          <div style="background:var(--bg);border-radius:10px;padding:16px;border:1px solid var(--border);">
-            <div style="font-weight:600;font-size:16px;">⚡ SnapTik</div>
-            <p style="font-size:13px;color:var(--text-light);margin:4px 0 8px;">支持抖音、TikTok、快手、小红书等，无需注册</p>
-            <a href="https://snaptik.app/" target="_blank" style="color:var(--primary);">https://snaptik.app/</a>
-          </div>
-          <div style="background:var(--bg);border-radius:10px;padding:16px;border:1px solid var(--border);">
-            <div style="font-weight:600;font-size:16px;">📱 综合平台去水印</div>
-            <p style="font-size:13px;color:var(--text-light);margin:4px 0 8px;">支持抖音、快手、小红书、微博、B站等</p>
-            <a href="https://www.xiaokai.com/" target="_blank" style="color:var(--primary);">https://www.xiaokai.com/</a>
-          </div>
-          <div style="background:var(--bg);border-radius:10px;padding:16px;border:1px solid var(--border);">
-            <div style="font-weight:600;font-size:16px;">🌍 SaveFrom.net</div>
-            <p style="font-size:13px;color:var(--text-light);margin:4px 0 8px;">支持 YouTube、Facebook、Instagram 等国外平台</p>
-            <a href="https://en.savefrom.net/" target="_blank" style="color:var(--primary);">https://en.savefrom.net/</a>
+        <div id="vdl-loading" style="display:none;text-align:center;padding:20px;color:var(--text-light);">⏳ 正在解析...</div>
+        <div id="vdl-result" style="margin-top:16px;display:none;">
+          <div style="background:var(--bg);border-radius:10px;padding:16px;border:1px solid var(--border);text-align:center;">
+            <div id="vdl-thumb" style="margin-bottom:12px;"></div>
+            <div id="vdl-info" style="font-size:14px;margin-bottom:12px;"></div>
+            <div id="vdl-actions" class="btn-group" style="justify-content:center;"></div>
           </div>
         </div>
-        <div style="margin-top:16px;padding:12px;background:#fef3c7;border-radius:10px;font-size:13px;color:#92400e;">
-          ⚠️ 使用第三方工具时请注意保护个人隐私，不要输入敏感信息。
+        <div id="vdl-status" style="margin-top:8px;font-size:13px;color:var(--text-light);"></div>
+        <div style="margin-top:12px;padding:12px;background:#f0fdf4;border-radius:10px;font-size:13px;color:#166534;">
+          <strong>📌 说明：</strong>本工具使用各平台官方oEmbed API解析视频信息，纯前端实现，不依赖任何第三方服务。
         </div>
       </div>
     `,
@@ -2067,7 +2050,7 @@ const CATEGORIES = [
   { id: 'security', icon: '🔒', name: '安全工具', desc: '密码生成、Hash计算、随机数' },
   { id: 'time', icon: '⏱️', name: '时间工具', desc: '时间戳转换、日期计算' },
   { id: 'color', icon: '🎨', name: '颜色工具', desc: 'HEX/RGB/HSL颜色转换' },
-  { id: 'media', icon: '🎬', name: '媒体工具', desc: '视频转GIF、视频去水印下载指引' },
+  { id: 'media', icon: '🎬', name: '媒体工具', desc: '抖音/TikTok视频解析、视频转GIF' },
   { id: 'ai', icon: '🤖', name: 'AI工具', desc: 'AI聊天、AI Agent安装、免费AI工具推荐' },
   { id: 'voice', icon: '🗣️', name: '群众心声', desc: '提交工具建议、投票排行榜、前3名自动实现' }
 ];
