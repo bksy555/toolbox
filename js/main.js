@@ -1239,23 +1239,369 @@ function renderMarkdown() {
 }
 
 // ============================================================
-// IP 查询
+// 文档转换工具
 // ============================================================
-function lookupIP() {
-  const result = document.getElementById('ip-result');
-  result.style.display = 'block';
-  document.getElementById('ip-v4').textContent = '查询中...';
-  document.getElementById('ip-v6').textContent = '查询中...';
-  document.getElementById('ip-ua').textContent = navigator.userAgent;
+
+// ---- Excel 在线查看器 ----
+let _excelWorkbook = null;
+
+function loadExcelFile() {
+  const file = document.getElementById('ev-file').files[0];
+  if (!file) return;
+  document.getElementById('ev-info').textContent = `📄 ${file.name} (${(file.size/1024).toFixed(1)} KB)`;
+  document.getElementById('ev-loading').style.display = 'block';
+  document.getElementById('ev-controls').style.display = 'none';
+  document.getElementById('ev-table-container').innerHTML = '';
+
+  // 动态加载 SheetJS
+  if (typeof XLSX === 'undefined') {
+    const script = document.createElement('script');
+    script.src = 'https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js';
+    script.onload = () => parseExcelFile(file);
+    script.onerror = () => {
+      document.getElementById('ev-loading').innerHTML = '<div style="color:var(--danger);">❌ 加载 SheetJS 库失败，请检查网络连接</div>';
+    };
+    document.head.appendChild(script);
+  } else {
+    parseExcelFile(file);
+  }
+}
+
+function parseExcelFile(file) {
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    try {
+      const data = new Uint8Array(e.target.result);
+      _excelWorkbook = XLSX.read(data, { type: 'array' });
+      document.getElementById('ev-loading').style.display = 'none';
+      document.getElementById('ev-controls').style.display = 'block';
+      
+      const sheetSelect = document.getElementById('ev-sheet');
+      sheetSelect.innerHTML = _excelWorkbook.SheetNames.map((name, i) =>
+        `<option value="${i}">${name}</option>`
+      ).join('');
+      renderExcelSheet();
+    } catch(err) {
+      document.getElementById('ev-loading').innerHTML = `<div style="color:var(--danger);">❌ 解析失败: ${err.message}</div>`;
+    }
+  };
+  reader.readAsArrayBuffer(file);
+}
+
+function renderExcelSheet() {
+  if (!_excelWorkbook) return;
+  const idx = parseInt(document.getElementById('ev-sheet').value);
+  const sheetName = _excelWorkbook.SheetNames[idx];
+  const sheet = _excelWorkbook.Sheets[sheetName];
+  const html = XLSX.utils.sheet_to_html(sheet);
+  document.getElementById('ev-table-container').innerHTML = html;
+  // 美化表格
+  const table = document.querySelector('#ev-table-container table');
+  if (table) {
+    table.style.width = '100%';
+    table.style.borderCollapse = 'collapse';
+    table.style.fontSize = '14px';
+    table.querySelectorAll('td, th').forEach(cell => {
+      cell.style.border = '1px solid #e2e8f0';
+      cell.style.padding = '8px 12px';
+      cell.style.textAlign = 'left';
+    });
+    table.querySelectorAll('tr:nth-child(even)').forEach(tr => {
+      tr.style.background = '#f8fafc';
+    });
+    table.querySelectorAll('th').forEach(th => {
+      th.style.background = '#f1f5f9';
+      th.style.fontWeight = '600';
+    });
+  }
+}
+
+function exportExcelCSV() {
+  if (!_excelWorkbook) return;
+  const idx = parseInt(document.getElementById('ev-sheet').value);
+  const sheetName = _excelWorkbook.SheetNames[idx];
+  const sheet = _excelWorkbook.Sheets[sheetName];
+  const csv = XLSX.utils.sheet_to_csv(sheet);
+  downloadFile(csv, `${sheetName}.csv`, 'text/csv;charset=utf-8');
+  toast('✅ CSV 文件已下载');
+}
+
+function exportExcelJSON() {
+  if (!_excelWorkbook) return;
+  const idx = parseInt(document.getElementById('ev-sheet').value);
+  const sheetName = _excelWorkbook.SheetNames[idx];
+  const sheet = _excelWorkbook.Sheets[sheetName];
+  const json = XLSX.utils.sheet_to_json(sheet);
+  const str = JSON.stringify(json, null, 2);
+  downloadFile(str, `${sheetName}.json`, 'application/json');
+  toast('✅ JSON 文件已下载');
+}
+
+function exportExcelHTML() {
+  if (!_excelWorkbook) return;
+  const idx = parseInt(document.getElementById('ev-sheet').value);
+  const sheetName = _excelWorkbook.SheetNames[idx];
+  const sheet = _excelWorkbook.Sheets[sheetName];
+  const html = XLSX.utils.sheet_to_html(sheet);
+  const fullHtml = `<!DOCTYPE html><html><head><meta charset="utf-8"><title>${sheetName}</title>
+<style>table{border-collapse:collapse;width:100%;font-size:14px;}td,th{border:1px solid #ccc;padding:8px;text-align:left;}th{background:#f0f0f0;font-weight:600;}tr:nth-child(even){background:#fafafa;}</style>
+</head><body>${html}</body></html>`;
+  downloadFile(fullHtml, `${sheetName}.html`, 'text/html;charset=utf-8');
+  toast('✅ HTML 表格已下载');
+}
+
+function downloadFile(content, filename, mimeType) {
+  const blob = new Blob([content], { type: mimeType });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+// ---- 文本转 PDF ----
+function generateTextPDF() {
+  const text = document.getElementById('tp-input').value;
+  if (!text.trim()) { toast('⚠️ 请输入文本内容'); return; }
   
-  // 使用第三方 API 查询 IP
-  fetch('https://api.ipify.org?format=json')
-    .then(r => r.json())
-    .then(d => { document.getElementById('ip-v4').textContent = d.ip; })
-    .catch(() => { document.getElementById('ip-v4').textContent = '查询失败'; });
+  document.getElementById('tp-status').textContent = '⏳ 正在生成 PDF...';
   
-  fetch('https://api64.ipify.org?format=json')
-    .then(r => r.json())
-    .then(d => { document.getElementById('ip-v6').textContent = d.ip; })
-    .catch(() => { document.getElementById('ip-v6').textContent = '无 IPv6'; });
+  if (typeof jspdf === 'undefined') {
+    const script = document.createElement('script');
+    script.src = 'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.2/jspdf.umd.min.js';
+    script.onload = () => doGenerateTextPDF(text);
+    script.onerror = () => {
+      document.getElementById('tp-status').textContent = '❌ 加载 jsPDF 库失败，请检查网络连接';
+    };
+    document.head.appendChild(script);
+  } else {
+    doGenerateTextPDF(text);
+  }
+}
+
+function doGenerateTextPDF(text) {
+  const { jsPDF } = window.jspdf;
+  const format = document.getElementById('tp-format').value;
+  const fontSize = parseInt(document.getElementById('tp-fontsize').value) || 14;
+  
+  const doc = new jsPDF({ orientation: 'portrait', unit: 'mm', format: format });
+  const pageWidth = doc.internal.pageSize.getWidth();
+  const pageHeight = doc.internal.pageSize.getHeight();
+  const margin = 20;
+  const maxWidth = pageWidth - margin * 2;
+  const lineHeight = fontSize * 0.6;
+  
+  doc.setFontSize(fontSize);
+  
+  // 使用内置字体，支持基础中文
+  const lines = text.split('\n');
+  let y = margin;
+  
+  for (const line of lines) {
+    if (y > pageHeight - margin) {
+      doc.addPage();
+      y = margin;
+    }
+    // 处理空行
+    if (line.trim() === '') {
+      y += lineHeight * 1.2;
+      continue;
+    }
+    // 分割长行
+    const wrappedLines = doc.splitTextToSize(line, maxWidth);
+    for (const wl of wrappedLines) {
+      if (y > pageHeight - margin) {
+        doc.addPage();
+        y = margin;
+      }
+      doc.text(wl, margin, y);
+      y += lineHeight * 1.5;
+    }
+  }
+  
+  doc.save('ToolBox-文本转PDF.pdf');
+  document.getElementById('tp-status').textContent = '✅ PDF 已生成并下载！';
+  toast('✅ PDF 已下载');
+}
+
+// ---- HTML 转 PDF ----
+function generateHTMLPDF() {
+  const html = document.getElementById('hp-input').value;
+  if (!html.trim()) { toast('⚠️ 请输入 HTML 内容'); return; }
+  
+  document.getElementById('hp-status').textContent = '⏳ 正在生成 PDF...';
+  
+  // 显示预览
+  const preview = document.getElementById('hp-preview');
+  preview.innerHTML = html;
+  preview.style.display = 'block';
+  
+  if (typeof jspdf === 'undefined') {
+    const script = document.createElement('script');
+    script.src = 'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.2/jspdf.umd.min.js';
+    script.onload = () => doGenerateHTMLPDF();
+    script.onerror = () => {
+      document.getElementById('hp-status').textContent = '❌ 加载 jsPDF 库失败，请检查网络连接';
+    };
+    document.head.appendChild(script);
+  } else {
+    doGenerateHTMLPDF();
+  }
+}
+
+function doGenerateHTMLPDF() {
+  const { jsPDF } = window.jspdf;
+  const format = document.getElementById('hp-format').value;
+  const margin = parseInt(document.getElementById('hp-margin').value) || 15;
+  
+  const doc = new jsPDF({ orientation: 'portrait', unit: 'mm', format: format });
+  const pageWidth = doc.internal.pageSize.getWidth();
+  const pageHeight = doc.internal.pageSize.getHeight();
+  const maxWidth = pageWidth - margin * 2;
+  
+  doc.setFontSize(12);
+  
+  // 简单解析 HTML 标签并输出文本
+  const html = document.getElementById('hp-input').value;
+  const plainText = html
+    .replace(/<style[^>]*>[\s\S]*?<\/style>/gi, '')
+    .replace(/<script[^>]*>[\s\S]*?<\/script>/gi, '')
+    .replace(/<br\s*\/?>/gi, '\n')
+    .replace(/<\/p>/gi, '\n\n')
+    .replace(/<\/h[1-6]>/gi, '\n')
+    .replace(/<\/li>/gi, '\n')
+    .replace(/<\/tr>/gi, '\n')
+    .replace(/<\/td>/gi, ' | ')
+    .replace(/<\/th>/gi, ' | ')
+    .replace(/<[^>]+>/g, '')
+    .replace(/&nbsp;/g, ' ')
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/&amp;/g, '&')
+    .replace(/\n{3,}/g, '\n\n')
+    .trim();
+  
+  if (!plainText) {
+    document.getElementById('hp-status').textContent = '⚠️ HTML 内容解析后为空，请检查输入';
+    return;
+  }
+  
+  const lines = plainText.split('\n');
+  let y = margin;
+  
+  for (const line of lines) {
+    if (y > pageHeight - margin) {
+      doc.addPage();
+      y = margin;
+    }
+    if (line.trim() === '') {
+      y += 5;
+      continue;
+    }
+    const wrapped = doc.splitTextToSize(line, maxWidth);
+    for (const wl of wrapped) {
+      if (y > pageHeight - margin) {
+        doc.addPage();
+        y = margin;
+      }
+      doc.text(wl, margin, y);
+      y += 8;
+    }
+  }
+  
+  doc.save('ToolBox-HTML转PDF.pdf');
+  document.getElementById('hp-status').textContent = '✅ PDF 已生成并下载！';
+  toast('✅ PDF 已下载');
+}
+
+// ---- PDF 文本提取 ----
+let _pdfDoc = null;
+let _pdfText = '';
+
+function loadPDFFile() {
+  const file = document.getElementById('pe-file').files[0];
+  if (!file) return;
+  
+  document.getElementById('pe-info').textContent = `📄 ${file.name} (${(file.size/1024).toFixed(1)} KB)`;
+  document.getElementById('pe-loading').style.display = 'block';
+  document.getElementById('pe-controls').style.display = 'none';
+  document.getElementById('pe-output').value = '';
+  document.getElementById('pe-pages').textContent = '';
+  _pdfDoc = null;
+  _pdfText = '';
+  
+  if (typeof pdfjsLib === 'undefined') {
+    // 加载 PDF.js
+    const script = document.createElement('script');
+    script.src = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js';
+    script.onload = () => {
+      pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+      doLoadPDF(file);
+    };
+    script.onerror = () => {
+      document.getElementById('pe-loading').innerHTML = '<div style="color:var(--danger);">❌ 加载 PDF.js 库失败，请检查网络连接</div>';
+    };
+    document.head.appendChild(script);
+  } else {
+    doLoadPDF(file);
+  }
+}
+
+function doLoadPDF(file) {
+  const reader = new FileReader();
+  reader.onload = async function(e) {
+    try {
+      const data = new Uint8Array(e.target.result);
+      _pdfDoc = await pdfjsLib.getDocument({ data }).promise;
+      document.getElementById('pe-loading').style.display = 'none';
+      document.getElementById('pe-controls').style.display = 'block';
+      document.getElementById('pe-pages').textContent = `共 ${_pdfDoc.numPages} 页，正在提取...`;
+      
+      _pdfText = '';
+      for (let i = 1; i <= _pdfDoc.numPages; i++) {
+        const page = await _pdfDoc.getPage(i);
+        const content = await page.getTextContent();
+        let pageText = content.items.map(item => item.str).join(' ');
+        
+        // 合并行
+        if (document.getElementById('pe-merge-lines').checked) {
+          pageText = pageText.replace(/\s+/g, ' ').trim();
+        }
+        
+        if (document.getElementById('pe-show-pages').checked) {
+          _pdfText += `--- 第 ${i} 页 ---\n${pageText}\n\n`;
+        } else {
+          _pdfText += pageText + '\n\n';
+        }
+        
+        // 更新进度
+        document.getElementById('pe-pages').textContent = `共 ${_pdfDoc.numPages} 页，正在提取... (${i}/${_pdfDoc.numPages})`;
+      }
+      
+      document.getElementById('pe-output').value = _pdfText;
+      document.getElementById('pe-pages').textContent = `✅ 提取完成，共 ${_pdfDoc.numPages} 页，${_pdfText.length} 个字符`;
+      toast('✅ PDF 文本提取完成');
+    } catch(err) {
+      document.getElementById('pe-loading').innerHTML = `<div style="color:var(--danger);">❌ 提取失败: ${err.message}</div>`;
+    }
+  };
+  reader.readAsArrayBuffer(file);
+}
+
+function renderPDFText() {
+  // 用户修改了设置，重新排列文本
+  if (!_pdfDoc) return;
+  // 暂时简单处理：重新加载文本显示
+  const text = _pdfText;
+  document.getElementById('pe-output').value = text;
+}
+
+function downloadPDFText() {
+  const text = document.getElementById('pe-output').value;
+  if (!text) { toast('⚠️ 没有可下载的文本'); return; }
+  downloadFile(text, 'PDF提取文本.txt', 'text/plain;charset=utf-8');
+  toast('✅ 文本已下载');
 }
