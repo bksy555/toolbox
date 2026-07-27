@@ -11,7 +11,7 @@ const LOTTERY_TYPES = {
     redRange: 33, redCount: 6,
     blueRange: 16, blueCount: 1,
     redName: '红球', blueName: '蓝球',
-    tools: ['filter', 'random', 'ac', 'dantuo', 'compound', 'red-omit', 'blue-omit']
+    tools: ['filter', 'random', 'ac', 'dantuo', 'compound', 'red-omit', 'blue-omit', 'history', 'today']
   },
   dlt: {
     name: '大乐透',
@@ -20,7 +20,7 @@ const LOTTERY_TYPES = {
     redRange: 35, redCount: 5,
     blueRange: 12, blueCount: 2,
     redName: '前区', blueName: '后区',
-    tools: ['filter', 'random', 'dantuo', 'compound', 'history']
+    tools: ['filter', 'random', 'dantuo', 'compound', 'history', 'today']
   },
   qlc: {
     name: '七乐彩',
@@ -28,7 +28,7 @@ const LOTTERY_TYPES = {
     desc: '7个号码(1-30)',
     redRange: 30, redCount: 7, blueRange: 0, blueCount: 0,
     redName: '基本号', blueName: '',
-    tools: ['filter', 'random', 'dantuo', 'compound']
+    tools: ['filter', 'random', 'dantuo', 'compound', 'money-calc', 'history']
   },
   qxc: {
     name: '七星彩',
@@ -77,7 +77,8 @@ const LOTTERY_TYPES = {
     icon: '🎯',
     desc: '5个号码(1-22)',
     redRange: 22, redCount: 5, blueRange: 0, blueCount: 0,
-    tools: ['filter', 'random', 'dantuo', 'compound']
+    redName: '号码', blueName: '',
+    tools: ['filter', 'random', 'dantuo', 'compound', 'money-calc']
   }
 };
 
@@ -103,7 +104,9 @@ const TOOL_NAMES = {
   'tail-omit': '和尾遗漏',
   'daxiao-array': '大小排列',
   'jiou-array': '奇偶排列',
-  'hz-array': '和值排列'
+  'hz-array': '和值排列',
+  'money-calc': '金额计算器',
+  'today': '历史上的今天'
 };
 
 const TOOL_ICONS = {
@@ -127,7 +130,9 @@ const TOOL_ICONS = {
   'tail-omit': '📊',
   'daxiao-array': '🔢',
   'jiou-array': '🔢',
-  'hz-array': '🔢'
+  'hz-array': '🔢',
+  'money-calc': '💰',
+  'today': '📅'
 };
 
 // ---- 当前状态 ----
@@ -398,6 +403,8 @@ function renderToolContent(toolId) {
     case 'daxiao-array': return renderDaxiaoArrayTool();
     case 'jiou-array': return renderJiouArrayTool();
     case 'hz-array': return renderHzArrayTool();
+    case 'money-calc': return renderMoneyCalcTool();
+    case 'today': return renderTodayTool();
     default: return '<p>工具加载中...</p>';
   }
 }
@@ -426,6 +433,8 @@ function initTool(toolId) {
     case 'daxiao-array': initDaxiaoArrayTool(); break;
     case 'jiou-array': initJiouArrayTool(); break;
     case 'hz-array': initHzArrayTool(); break;
+    case 'money-calc': initMoneyCalcTool(); break;
+    case 'today': initTodayTool(); break;
   }
 }
 

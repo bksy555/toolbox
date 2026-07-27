@@ -488,3 +488,90 @@ function runHistoryCompare() {
 
   document.getElementById('histDetail').innerHTML = html;
 }
+
+// ============================================================
+// 历史上的今天
+// ============================================================
+function renderTodayTool() {
+  const lt = LOTTERY_TYPES[currentLottery];
+  const now = new Date();
+  const month = now.getMonth() + 1;
+  const day = now.getDate();
+  return `
+    <div class="lottery-tool-section">
+      <h3>📅 历史上的今天</h3>
+      <div class="lottery-tip">${lt.name}在${month}月${day}日的历史开奖记录</div>
+      <div id="todayContent">
+        <div class="btn-group" style="margin-top:8px;">
+          <button class="btn btn-primary" onclick="loadTodayHistory()">📅 查询</button>
+        </div>
+        <div class="lottery-result" id="todayResult">
+          <div class="result-title">📊 历史今日开奖</div>
+          <div id="todayDetail"></div>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function initTodayTool() {
+  setTimeout(() => loadTodayHistory(), 100);
+}
+
+function loadTodayHistory() {
+  const lt = LOTTERY_TYPES[currentLottery];
+  const now = new Date();
+  const month = now.getMonth() + 1;
+  const day = now.getDate();
+
+  // 模拟历史上的今天开奖数据
+  const data = [];
+  const years = [2025, 2024, 2023, 2022, 2021, 2020, 2019, 2018, 2017, 2016, 2015, 2014, 2013];
+
+  years.forEach(year => {
+    if (lt.isDigit) {
+      data.push({
+        date: `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`,
+        nums: Array.from({length: lt.digitCount || 3}, () => Math.floor(Math.random() * 10))
+      });
+    } else {
+      const reds = [];
+      while (reds.length < lt.redCount) {
+        const n = Math.floor(Math.random() * lt.redRange) + 1;
+        if (!reds.includes(n)) reds.push(n);
+      }
+      reds.sort((a, b) => a - b);
+      let blue = 0;
+      if (lt.blueCount > 0) {
+        blue = Math.floor(Math.random() * lt.blueRange) + 1;
+      }
+      data.push({ date: `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`, reds, blue });
+    }
+  });
+
+  if (data.length === 0) {
+    document.getElementById('todayDetail').innerHTML = '<div class="lottery-tip">暂无数据</div>';
+    return;
+  }
+
+  let html = `<div style="font-size:13px;color:var(--text-light);margin-bottom:12px;">共查询到 ${data.length} 期历史记录</div>`;
+
+  data.forEach(d => {
+    if (lt.isDigit) {
+      html += `<div style="font-size:13px;margin:6px 0;padding:6px 10px;background:var(--bg);border-radius:6px;display:flex;align-items:center;gap:8px;">
+        <span style="font-weight:600;min-width:130px;">${d.date}</span>
+        <span style="font-family:monospace;">
+          ${d.nums.map(n => `<span class="selected-ball" style="width:24px;height:24px;font-size:11px;display:inline-flex;background:var(--primary);color:#fff;">${n}</span>`).join('')}
+        </span>
+      </div>`;
+    } else {
+      html += `<div style="font-size:13px;margin:6px 0;padding:6px 10px;background:var(--bg);border-radius:6px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+        <span style="font-weight:600;min-width:130px;">${d.date}</span>
+        ${d.reds.map(n => `<span class="selected-ball red" style="width:24px;height:24px;font-size:11px;display:inline-flex;">${n < 10 ? '0' + n : n}</span>`).join('')}
+        ${d.blue > 0 ? `<span class="selected-ball blue" style="width:24px;height:24px;font-size:11px;display:inline-flex;">${d.blue < 10 ? '0' + d.blue : d.blue}</span>` : ''}
+      </div>`;
+    }
+  });
+
+  document.getElementById('todayDetail').innerHTML = html;
+}

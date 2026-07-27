@@ -667,19 +667,117 @@ function calcCompound() {
 
 function calcDigitCompound() {
   // 3D/排列五等
+  // ============================================================
+// 金额计算器
+// ============================================================
+function renderMoneyCalcTool() {
   const lt = LOTTERY_TYPES[currentLottery];
-  const digitCount = lt.digitCount || 3;
+  return `
+    <div class="lottery-tool-section">
+      <h3>💰 金额计算器</h3>
+      <div class="lottery-tip">计算${lt.name}各奖级中奖金额及税费</div>
+      <div class="lottery-input-row">
+        <label>中奖等级：</label>
+        <select id="mcPrizeLevel" style="width:200px;">
+          <option value="1">一等奖（浮动奖金）</option>
+          <option value="2">二等奖（浮动奖金）</option>
+          <option value="3">三等奖（固定奖金）</option>
+          <option value="4">四等奖</option>
+          <option value="5">五等奖</option>
+          <option value="6">六等奖</option>
+        </select>
+      </div>
+      <div class="lottery-input-row">
+        <label>预估奖金金额（元）：</label>
+        <input type="number" id="mcPrizeAmount" value="5000000" min="1" style="width:150px;">
+        <span class="lottery-tip" style="display:inline;margin:0 0 0 8px;">（浮动奖按预估计算）</span>
+      </div>
+      <div class="lottery-input-row">
+        <label>投注方式：</label>
+        <select id="mcBetType" style="width:150px;">
+          <option value="single">单式</option>
+          <option value="multiple">复式</option>
+          <option value="dantuo">胆拖</option>
+        </select>
+      </div>
+      <div class="lottery-input-row">
+        <label>倍数：</label>
+        <input type="number" id="mcMultiplier" value="1" min="1" max="99" style="width:80px;">
+      </div>
+      <div class="btn-group" style="margin-top:16px;">
+        <button class="btn btn-primary" onclick="calcMoney()">🧮 计算奖金</button>
+      </div>
+      <div class="lottery-result" id="mcResult">
+        <div class="result-title">📊 奖金计算</div>
+        <div id="mcDetail"></div>
+      </div>
+      <div class="omit-table-wrapper" style="margin-top:12px;">
+        <table class="omit-table" id="mcTable">
+          <thead>
+            <tr>
+              <th>项目</th>
+              <th>金额（元）</th>
+            </tr>
+          </thead>
+          <tbody id="mcBody"></tbody>
+        </table>
+      </div>
+    </div>
+  `;
+}
 
-  let total = 1;
-  for (let i = 0; i < digitCount; i++) {
-    const id = `cp${['Bai','Shi','Ge','Qian','Wan'][i] || 'Wei'+i}`;
-    const grid = document.getElementById(id + 'Grid');
-    if (!grid) { total = 0; break; }
-    const selected = grid.querySelectorAll('.num-btn.selected').length;
-    if (selected === 0) { total = 0; break; }
-    total *= selected;
+function initMoneyCalcTool() {}
+
+function calcMoney() {
+  const level = parseInt(document.getElementById('mcPrizeLevel').value) || 1;
+  const amount = parseFloat(document.getElementById('mcPrizeAmount').value) || 5000000;
+  const multiplier = parseInt(document.getElementById('mcMultiplier').value) || 1;
+
+  const tbody = document.getElementById('mcBody');
+  if (!tbody) return;
+
+  let prizeName = '';
+  let taxRate = 0.2;
+  let isFixed = false;
+
+  if (level <= 2) {
+    prizeName = level === 1 ? '一等奖' : '二等奖';
+    taxRate = 0.2;
+    isFixed = false;
+  } else {
+    prizeName = ['三等奖', '四等奖', '五等奖', '六等奖'][level - 3];
+    isFixed = true;
   }
 
-  document.getElementById('cpCount').textContent = `共 ${total.toLocaleString()} 注`;
-  document.getElementById('cpCost').textContent = `共计 ${(total * 2).toLocaleString()} 元`;
+  const totalPrize = amount * multiplier;
+  const taxFree = level <= 2 ? 0 : 10000;
+  const taxable = Math.max(0, totalPrize - taxFree);
+  const tax = level <= 2 ? Math.max(0, totalPrize * taxRate) : Math.max(0, taxable * taxRate);
+  const afterTax = totalPrize - tax;
+
+  const rows = [
+    ['中奖等级', prizeName],
+    ['预估奖金（单注）', amount.toLocaleString()],
+    ['投注倍数', multiplier + '倍'],
+    ['税前总奖金', totalPrize.toLocaleString()],
+    ['免税额', taxFree.toLocaleString()],
+    ['应纳税额', taxable.toLocaleString()],
+    ['税率', (taxRate * 100) + '%'],
+    ['应缴税款', tax.toLocaleString()],
+    ['税后实得', `<strong style="color:#10b981;font-size:16px;">${afterTax.toLocaleString()}</strong>`]
+  ];
+
+  let html = '';
+  rows.forEach(r => {
+    html += `<tr><td style="font-weight:600;">${r[0]}</td><td>${r[1]}</td></tr>`;
+  });
+  tbody.innerHTML = html;
+
+  document.getElementById('mcDetail').innerHTML = `
+    <div style="font-size:14px;line-height:1.8;">
+      <strong>${prizeName}</strong>（${multiplier}倍）<br>
+      ⚠️ 单注奖金超过1万元需缴纳${(taxRate*100)}%个人所得税<br>
+      ${level <= 2 ? '💡 浮动奖金按输入预估计算，实际以官方公布为准' : '💡 固定奖金按财政部规定'}
+    </div>
+  `;
 }
