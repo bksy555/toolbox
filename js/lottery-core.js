@@ -28,7 +28,7 @@ const LOTTERY_TYPES = {
     desc: '7个号码(1-30)',
     redRange: 30, redCount: 7, blueRange: 0, blueCount: 0,
     redName: '基本号', blueName: '',
-    tools: ['filter', 'random', 'dantuo', 'compound', 'money-calc', 'history']
+    tools: ['filter', 'random', 'dantuo', 'compound', 'money-calc', 'history', 'today']
   },
   qxc: {
     name: '七星彩',
