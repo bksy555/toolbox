@@ -503,3 +503,14 @@ body {
   cursor: pointer;
   padding: 2px;
 }
+
+/* === 新工具通用样式 === */
+.row-3 {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+@media (max-width: 600px) {
+  .row-3 { grid-template-columns: 1fr; }
+}

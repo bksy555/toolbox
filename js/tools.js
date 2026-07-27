@@ -2523,6 +2523,173 @@ openclaw update</code></pre>
       </div>
     `,
     handler: () => {}
+  },
+
+  // ==================== 新工具：九宫格切图 ====================
+  {
+    id: '9grid',
+    cat: 'image',
+    icon: '🧩',
+    name: '九宫格切图',
+    desc: '把图片切成3×3九宫格，发朋友圈专用，支持一键打包下载',
+    html: `
+      <div class="tool-card">
+        <div class="input-group">
+          <label>选择图片（会自动裁剪为正方形）</label>
+          <input type="file" id="ng-file" accept="image/*" class="file-input" style="width:100%;">
+        </div>
+        <div class="btn-group">
+          <button class="btn btn-primary" onclick="nineGridSplit()">✂️ 分割九宫格</button>
+          <button class="btn btn-secondary" id="ng-download-all" onclick="downloadNineGridAll()" style="display:none;">📦 打包下载全部</button>
+        </div>
+        <div id="ng-info" style="font-size:13px;color:var(--text-light);margin-top:8px;"></div>
+        <div id="ng-result" style="margin-top:12px;text-align:center;"></div>
+      </div>
+    `,
+    handler: () => {}
+  },
+
+  // ==================== 新工具：文字转手写体 ====================
+  {
+    id: 'text-handwriting',
+    cat: 'image',
+    icon: '✍️',
+    name: '文字转手写体',
+    desc: '输入文字，生成手写风格图片，支持选择纸张样式、颜色、字号',
+    html: `
+      <div class="tool-card">
+        <div class="input-group">
+          <label>输入文字（支持换行）</label>
+          <textarea id="th-text" placeholder="在此输入文字，每行一个自然段..." rows="4" style="width:100%;"></textarea>
+        </div>
+        <div class="row-3">
+          <div class="input-group">
+            <label>纸张样式</label>
+            <select id="th-paper">
+              <option value="plain">纯色背景</option>
+              <option value="rice" selected>米黄信纸（横线）</option>
+              <option value="grid">方格纸</option>
+            </select>
+          </div>
+          <div class="input-group">
+            <label>背景色</label>
+            <input type="color" id="th-bg" value="#ffffff">
+          </div>
+          <div class="input-group">
+            <label>墨色</label>
+            <input type="color" id="th-ink" value="#000000">
+          </div>
+        </div>
+        <div class="row-3">
+          <div class="input-group">
+            <label>字号</label>
+            <select id="th-size">
+              <option value="28">小</option>
+              <option value="36" selected>中</option>
+              <option value="48">大</option>
+            </select>
+          </div>
+          <div class="input-group">
+            <label>行高</label>
+            <select id="th-lineheight">
+              <option value="48">小</option>
+              <option value="60" selected>中</option>
+              <option value="80">大</option>
+            </select>
+          </div>
+        </div>
+        <div class="btn-group">
+          <button class="btn btn-primary" onclick="textToHandwriting()">✍️ 生成手写体</button>
+          <button class="btn btn-secondary" id="th-download" onclick="downloadHandwriting()" style="display:none;">⬇️ 下载PNG</button>
+        </div>
+        <div id="th-preview" style="margin-top:16px;text-align:center;display:none;">
+          <canvas id="th-canvas" style="max-width:100%;border:1px solid var(--border);border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,0.1);"></canvas>
+        </div>
+      </div>
+    `,
+    handler: () => {}
+  },
+
+  // ==================== 新工具：表情包生成器 ====================
+  {
+    id: 'meme-maker',
+    cat: 'image',
+    icon: '😂',
+    name: '表情包生成器',
+    desc: '选择模板或上传图片，添加文字，一键生成表情包',
+    html: `
+      <div class="tool-card">
+        <div class="row-2">
+          <div class="input-group">
+            <label>选择模板</label>
+            <select id="meme-template" onchange="memeSelectTemplate()">
+              <option value="">-- 选择模板或上传自定义图片 --</option>
+            </select>
+          </div>
+          <div class="input-group">
+            <label>或上传自定义图片</label>
+            <input type="file" id="meme-file" accept="image/*" style="display:none;" onchange="memeUploadImage()">
+            <button class="btn btn-secondary" onclick="document.getElementById('meme-file').click()" style="width:100%;">📁 选择图片</button>
+          </div>
+        </div>
+        <div class="row-2">
+          <div class="input-group">
+            <label>顶部文字</label>
+            <input type="text" id="meme-top-text" placeholder="顶部文字" value="我太难了" style="width:100%;">
+          </div>
+          <div class="input-group">
+            <label>底部文字</label>
+            <input type="text" id="meme-bottom-text" placeholder="底部文字" value="真的太难了" style="width:100%;">
+          </div>
+        </div>
+        <div class="btn-group">
+          <button class="btn btn-primary" onclick="generateMeme()">😂 生成表情包</button>
+          <button class="btn btn-secondary" id="meme-download" onclick="downloadMeme()" style="display:none;">⬇️ 下载PNG</button>
+        </div>
+        <div style="display:none;"><img id="meme-custom-img" style="max-width:200px;margin-top:8px;border-radius:6px;"></div>
+        <div style="margin-top:12px;text-align:center;">
+          <canvas id="meme-canvas" style="max-width:100%;border:1px solid var(--border);border-radius:8px;background:#fff;"></canvas>
+        </div>
+      </div>
+    `,
+    handler: () => { initMemeGenerator(); }
+  },
+
+  // ==================== 新工具：决策转盘 ====================
+  {
+    id: 'decision-wheel',
+    cat: 'fun',
+    icon: '🎯',
+    name: '决策转盘',
+    desc: '输入选项，转动转盘随机决定，选择困难症神器！支持抽奖/抽签',
+    html: `
+      <div class="tool-card">
+        <div class="row-2">
+          <div class="input-group" style="flex:1;">
+            <label>添加选项</label>
+            <div style="display:flex;gap:6px;">
+              <input type="text" id="wheel-input" placeholder="输入选项" style="flex:1;" onkeydown="if(event.key==='Enter')wheelAddOption()">
+              <button class="btn btn-primary" onclick="wheelAddOption()" style="white-space:nowrap;">➕ 添加</button>
+            </div>
+            <textarea id="wheel-textarea" placeholder="或批量输入（每行一个选项）" rows="3" style="width:100%;margin-top:6px;font-size:13px;"></textarea>
+            <button class="btn btn-secondary" onclick="wheelAddFromText()" style="margin-top:4px;width:100%;">📋 批量导入</button>
+          </div>
+          <div style="flex:0 0 180px;text-align:center;">
+            <div id="wheel-list" style="max-height:200px;overflow-y:auto;margin-bottom:6px;">
+              <div style="color:var(--text-light);padding:10px;font-size:13px;">暂无选项，请添加</div>
+            </div>
+            <div id="wheel-count" style="font-size:12px;color:var(--text-light);margin-bottom:4px;">共 0 个选项</div>
+            <button class="btn btn-secondary" onclick="wheelClear()" style="font-size:12px;padding:4px 12px;">🗑️ 清空</button>
+          </div>
+        </div>
+        <div style="text-align:center;margin-top:12px;position:relative;">
+          <canvas id="wheel-canvas" width="400" height="400" style="max-width:100%;border-radius:8px;cursor:pointer;" onclick="wheelSpin()"></canvas>
+          <div id="wheel-result" style="display:none;margin-top:10px;font-size:22px;font-weight:bold;color:var(--primary);"></div>
+          <div style="font-size:13px;color:var(--text-light);margin-top:6px;">👆 点击转盘开始转动</div>
+        </div>
+      </div>
+    `,
+    handler: () => { wheelDraw(); }
   }
 ];
 
@@ -3101,7 +3268,7 @@ function dpCopyText() {
 const CATEGORIES = [
   { id: 'text', icon: '✏️', name: '文本工具', desc: '字数统计、简繁转换、摩斯密码、文本转语音、文本对比' },
   { id: 'dev', icon: '💻', name: '开发者工具', desc: 'JSON格式化、二维码生成、正则测试、Markdown、IP查询' },
-  { id: 'image', icon: '🖼️', name: '图片处理', desc: '去背景换底色、批量压缩、加水印、长图拼接、格式转换、裁剪、OCR' },
+  { id: 'image', icon: '🖼️', name: '图片处理', desc: '去背景换底色、批量压缩、加水印、长图拼接、格式转换、裁剪、OCR、印章制作、九宫格切图、文字转手写体、表情包' },
   { id: 'document', icon: '📄', name: '文档转换', desc: '图片转PDF、PDF转图片、Word解析、Excel转PDF、PDF合并' },
   { id: 'convert', icon: '🔄', name: '转换工具', desc: '单位换算、进制转换' },
   { id: 'security', icon: '🔒', name: '安全工具', desc: '密码生成、Hash计算、随机数' },
@@ -3111,5 +3278,6 @@ const CATEGORIES = [
   { id: 'ai', icon: '🤖', name: 'AI工具', desc: 'AI聊天、AI Agent安装、免费AI工具推荐' },
   { id: 'voice', icon: '🗣️', name: '群众心声', desc: '提交工具建议、投票排行榜、前3名自动实现' },
   { id: 'lottery', icon: '🎰', name: '彩票工具', desc: '双色球、大乐透、福彩3D、排列三…在线过滤缩水、选号、计算器' },
+  { id: 'fun', icon: '🎪', name: '趣味工具', desc: '表情包生成、决策转盘、抽奖抽签、娱乐好玩' },
   { id: 'edu', icon: '📚', name: '教育资源', desc: '电子教材在线阅读、学习资源导航' }
 ];
