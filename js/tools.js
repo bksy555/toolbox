@@ -2042,6 +2042,244 @@ openclaw update</code></pre>
       </div>
     `,
     handler: () => {}
+  },
+
+  // ==================== ⭐ 群众心声前3名自动实现 ====================
+
+  // ---- 第1名: PDF转Word工具 ----
+  {
+    id: 'pdf-to-word',
+    cat: 'document',
+    icon: '📄➡️📝',
+    name: 'PDF转Word工具',
+    desc: '在线免费将PDF文件转换为Word文档，支持批量转换',
+    html: `
+      <div class="tool-card">
+        <div class="input-group">
+          <label>选择 PDF 文件（支持多选）</label>
+          <div class="file-input-wrapper">
+            <span class="file-btn">📁 选择 PDF 文件</span>
+            <input type="file" id="pw-files" accept=".pdf" multiple onchange="loadPDFForWord()">
+          </div>
+          <span id="pw-info" style="margin-left:12px;font-size:13px;color:var(--text-light);"></span>
+        </div>
+        <div class="row">
+          <div class="input-group">
+            <label>输出格式</label>
+            <select id="pw-format" style="width:150px;">
+              <option value="docx">Word (.docx)</option>
+              <option value="txt">纯文本 (.txt)</option>
+            </select>
+          </div>
+          <div class="input-group">
+            <label>提取方式</label>
+            <select id="pw-mode" style="width:150px;">
+              <option value="text">仅文本（快速）</option>
+              <option value="rich">保留格式（慢）</option>
+            </select>
+          </div>
+        </div>
+        <div id="pw-file-list" style="display:none;margin:12px 0;">
+          <ul id="pw-list" style="padding-left:20px;font-size:14px;color:var(--text-light);"></ul>
+        </div>
+        <div class="btn-group">
+          <button class="btn btn-primary" onclick="convertPDFToWord()" id="pw-convert-btn">📄 转换为 Word</button>
+          <button class="btn btn-secondary" onclick="clearPDFForWord()">清空</button>
+        </div>
+        <div id="pw-loading" style="display:none;text-align:center;padding:40px;color:var(--text-light);">
+          <div style="font-size:48px;margin-bottom:12px;">⏳</div>
+          <div id="pw-loading-text">正在加载 PDF 解析引擎...</div>
+        </div>
+        <div id="pw-preview" style="display:none;margin-top:16px;">
+          <div class="input-group">
+            <label>提取内容预览（可编辑后下载）</label>
+            <textarea id="pw-preview-text" rows="10" style="font-family:monospace;font-size:13px;"></textarea>
+          </div>
+          <div class="btn-group">
+            <button class="btn btn-success" onclick="downloadWordFromPreview()" id="pw-download-btn">📥 下载 Word 文档</button>
+            <button class="btn btn-secondary" onclick="copyResult('pw-preview-text')">📋 复制文本</button>
+          </div>
+        </div>
+        <div id="pw-status" style="margin-top:8px;font-size:13px;color:var(--text-light);"></div>
+        <div style="margin-top:12px;padding:12px;background:#f0f9ff;border-radius:10px;font-size:13px;color:#075985;line-height:1.6;">
+          💡 所有处理在浏览器本地完成，文件不会上传到任何服务器。支持批量转换，每个 PDF 会生成独立的 Word 文件。
+        </div>
+      </div>
+    `,
+    handler: () => {}
+  },
+
+  // ---- 第2名: 在线PS修图工具 ----
+  {
+    id: 'ps-editor',
+    cat: 'image',
+    icon: '🎨',
+    name: '在线PS修图工具',
+    desc: '类似Photoshop的在线图片编辑工具，支持图层、滤镜等',
+    html: `
+      <div class="tool-card">
+        <div class="input-group">
+          <label>上传图片编辑</label>
+          <div class="file-input-wrapper">
+            <span class="file-btn">📁 打开图片</span>
+            <input type="file" id="ps-file" accept="image/*" onchange="loadPSImage()">
+          </div>
+          <span id="ps-info" style="margin-left:12px;font-size:13px;color:var(--text-light);"></span>
+        </div>
+        <div id="ps-editor-area" style="display:none;">
+          <div style="display:flex;gap:12px;flex-wrap:wrap;margin:16px 0;">
+            <div style="flex:1;min-width:200px;">
+              <div style="background:var(--bg);border-radius:10px;padding:16px;border:1px solid var(--border);">
+                <h4 style="font-size:14px;font-weight:600;margin-bottom:12px;">🛠️ 基础调整</h4>
+                <div class="input-group" style="margin-bottom:8px;">
+                  <label>亮度 (-100 ~ 100)</label>
+                  <input type="range" id="ps-brightness" min="-100" max="100" value="0" oninput="applyPSFilter()">
+                  <span id="ps-brightness-val" style="font-size:12px;color:var(--text-light);">0</span>
+                </div>
+                <div class="input-group" style="margin-bottom:8px;">
+                  <label>对比度 (-100 ~ 100)</label>
+                  <input type="range" id="ps-contrast" min="-100" max="100" value="0" oninput="applyPSFilter()">
+                  <span id="ps-contrast-val" style="font-size:12px;color:var(--text-light);">0</span>
+                </div>
+                <div class="input-group" style="margin-bottom:8px;">
+                  <label>饱和度 (-100 ~ 100)</label>
+                  <input type="range" id="ps-saturation" min="-100" max="100" value="0" oninput="applyPSFilter()">
+                  <span id="ps-saturation-val" style="font-size:12px;color:var(--text-light);">0</span>
+                </div>
+                <div class="input-group" style="margin-bottom:8px;">
+                  <label>色相 (-180 ~ 180)</label>
+                  <input type="range" id="ps-hue" min="-180" max="180" value="0" oninput="applyPSFilter()">
+                  <span id="ps-hue-val" style="font-size:12px;color:var(--text-light);">0</span>
+                </div>
+                <div class="input-group" style="margin-bottom:8px;">
+                  <label>模糊 (0 ~ 20)</label>
+                  <input type="range" id="ps-blur" min="0" max="20" value="0" step="0.5" oninput="applyPSFilter()">
+                  <span id="ps-blur-val" style="font-size:12px;color:var(--text-light);">0</span>
+                </div>
+              </div>
+            </div>
+            <div style="flex:1;min-width:200px;">
+              <div style="background:var(--bg);border-radius:10px;padding:16px;border:1px solid var(--border);">
+                <h4 style="font-size:14px;font-weight:600;margin-bottom:12px;">🎨 滤镜预设</h4>
+                <div class="btn-group" style="flex-wrap:wrap;">
+                  <button class="btn btn-sm" onclick="applyPSPreset('grayscale')" style="font-size:12px;padding:6px 12px;">⚫ 灰度</button>
+                  <button class="btn btn-sm" onclick="applyPSPreset('sepia')" style="font-size:12px;padding:6px 12px;">🟫 怀旧</button>
+                  <button class="btn btn-sm" onclick="applyPSPreset('invert')" style="font-size:12px;padding:6px 12px;">🔄 反色</button>
+                  <button class="btn btn-sm" onclick="applyPSPreset('vintage')" style="font-size:12px;padding:6px 12px;">📷 复古</button>
+                  <button class="btn btn-sm" onclick="applyPSPreset('cool')" style="font-size:12px;padding:6px 12px;">❄️ 冷色</button>
+                  <button class="btn btn-sm" onclick="applyPSPreset('warm')" style="font-size:12px;padding:6px 12px;">☀️ 暖色</button>
+                  <button class="btn btn-sm" onclick="applyPSPreset('reset')" style="font-size:12px;padding:6px 12px;">🔄 重置</button>
+                </div>
+              </div>
+              <div style="background:var(--bg);border-radius:10px;padding:16px;border:1px solid var(--border);margin-top:12px;">
+                <h4 style="font-size:14px;font-weight:600;margin-bottom:12px;">✂️ 变换操作</h4>
+                <div class="btn-group" style="flex-wrap:wrap;">
+                  <button class="btn btn-sm" onclick="rotatePSImage(90)" style="font-size:12px;padding:6px 12px;">↻ 右旋90°</button>
+                  <button class="btn btn-sm" onclick="rotatePSImage(-90)" style="font-size:12px;padding:6px 12px;">↺ 左旋90°</button>
+                  <button class="btn btn-sm" onclick="flipPSImage('horizontal')" style="font-size:12px;padding:6px 12px;">⇄ 水平翻转</button>
+                  <button class="btn btn-sm" onclick="flipPSImage('vertical')" style="font-size:12px;padding:6px 12px;">⇅ 垂直翻转</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div style="text-align:center;margin-bottom:16px;">
+            <div style="position:relative;display:inline-block;max-width:100%;">
+              <canvas id="ps-canvas" style="max-width:100%;max-height:500px;border-radius:10px;border:1px solid var(--border);background:repeating-conic-gradient(#e2e8f0 0% 25%,transparent 0% 50%) 0 0 / 20px 20px;"></canvas>
+            </div>
+          </div>
+          <div class="btn-group" style="justify-content:center;">
+            <button class="btn btn-primary" onclick="downloadPSImage()">📥 下载编辑后的图片</button>
+            <button class="btn btn-secondary" onclick="resetPSImage()">🔄 重置原图</button>
+          </div>
+        </div>
+        <div id="ps-status" style="margin-top:8px;font-size:13px;color:var(--text-light);"></div>
+        <div style="margin-top:12px;padding:12px;background:#fef3c7;border-radius:10px;font-size:13px;color:#92400e;line-height:1.6;">
+          💡 所有图片处理在浏览器本地完成，不会上传到服务器。支持亮度、对比度、饱和度、色相、模糊等调整，以及多种滤镜预设。
+        </div>
+      </div>
+    `,
+    handler: () => {}
+  },
+
+  // ---- 第3名: 屏幕录制工具 ----
+  {
+    id: 'screen-recorder',
+    cat: 'media',
+    icon: '🎥',
+    name: '屏幕录制工具',
+    desc: '在线录制屏幕，支持选择区域、录制声音，无需安装软件',
+    html: `
+      <div class="tool-card">
+        <div class="input-group">
+          <label>录制设置</label>
+          <div class="row" style="margin-top:8px;">
+            <div class="input-group">
+              <label>录制内容</label>
+              <select id="sr-source" style="width:180px;">
+                <option value="screen">整个屏幕</option>
+                <option value="window">应用窗口</option>
+                <option value="tab">浏览器标签页</option>
+              </select>
+            </div>
+            <div class="input-group">
+              <label>录制声音</label>
+              <select id="sr-audio" style="width:150px;">
+                <option value="microphone">麦克风</option>
+                <option value="system">系统声音</option>
+                <option value="both" selected>麦克风 + 系统声音</option>
+                <option value="none">不录音</option>
+              </select>
+            </div>
+          </div>
+          <div class="row" style="margin-top:8px;">
+            <div class="input-group">
+              <label>视频质量</label>
+              <select id="sr-quality" style="width:150px;">
+                <option value="2160">4K (2160p)</option>
+                <option value="1080" selected>1080p (推荐)</option>
+                <option value="720">720p</option>
+                <option value="480">480p</option>
+              </select>
+            </div>
+            <div class="input-group">
+              <label>帧率</label>
+              <select id="sr-fps" style="width:100px;">
+                <option value="60">60 fps</option>
+                <option value="30" selected>30 fps</option>
+                <option value="15">15 fps</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div style="text-align:center;margin:20px 0;">
+          <div id="sr-preview" style="display:none;margin-bottom:16px;">
+            <video id="sr-preview-video" autoplay muted playsinline style="width:100%;max-height:400px;border-radius:10px;background:black;border:2px solid var(--primary);"></video>
+          </div>
+          <div id="sr-controls" class="btn-group" style="justify-content:center;">
+            <button class="btn btn-primary" onclick="startScreenRecording()" id="sr-start-btn" style="font-size:18px;padding:16px 40px;">
+              🔴 开始录制
+            </button>
+            <button class="btn btn-danger" onclick="stopScreenRecording()" id="sr-stop-btn" style="display:none;font-size:18px;padding:16px 40px;background:var(--danger);color:white;">
+              ⏹ 停止录制
+            </button>
+            <button class="btn btn-success" onclick="downloadScreenRecording()" id="sr-download-btn" style="display:none;font-size:16px;padding:12px 32px;">
+              📥 下载视频
+            </button>
+          </div>
+          <div id="sr-timer" style="font-size:28px;font-weight:700;font-family:monospace;margin:12px 0;color:var(--primary);display:none;">00:00</div>
+          <div id="sr-status" style="margin-top:8px;font-size:14px;color:var(--text-light);"></div>
+        </div>
+        <div id="sr-info" style="display:none;margin-top:12px;padding:16px;background:#f0fdf4;border-radius:10px;border:1px solid #bbf7d0;">
+          <h4 style="font-size:14px;font-weight:600;margin-bottom:8px;color:#166534;">✅ 录制完成</h4>
+          <p id="sr-info-text" style="font-size:13px;color:#166534;line-height:1.6;"></p>
+        </div>
+        <div style="margin-top:12px;padding:12px;background:#f0f9ff;border-radius:10px;font-size:13px;color:#075985;line-height:1.6;">
+          💡 使用浏览器内置的 Screen Capture API，无需安装任何软件。录制的视频保存在本地，不会上传到任何服务器。
+          首次使用需要授予屏幕录制权限，选择要录制的屏幕/窗口/标签页。
+        </div>
+      </div>
+    `,
+    handler: () => {}
   }
 ];
 

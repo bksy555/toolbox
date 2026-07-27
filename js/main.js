@@ -2115,3 +2115,566 @@ function clearPDFsForMerge() {
   document.getElementById('pm-list').innerHTML = '';
   document.getElementById('pm-status').textContent = '';
 }
+
+// ============================================================
+// ⭐ 群众心声前3名：PDF转Word工具
+// ============================================================
+let _pwPDFFiles = [];
+let _pwExtractedTexts = [];
+
+function loadPDFForWord() {
+  var files = document.getElementById('pw-files').files;
+  _pwPDFFiles = Array.from(files);
+  if (_pwPDFFiles.length === 0) return;
+  document.getElementById('pw-info').textContent = '📄 ' + _pwPDFFiles.length + ' 个 PDF 已选择';
+  document.getElementById('pw-file-list').style.display = 'block';
+  var list = document.getElementById('pw-list');
+  list.innerHTML = _pwPDFFiles.map(function(f, i) {
+    return '<li>' + (i+1) + '. ' + f.name + ' (' + (f.size/1024).toFixed(1) + ' KB)</li>';
+  }).join('');
+  document.getElementById('pw-status').textContent = '';
+  document.getElementById('pw-preview').style.display = 'none';
+}
+
+function convertPDFToWord() {
+  if (_pwPDFFiles.length === 0) { toast('⚠️ 请先选择 PDF 文件'); return; }
+  document.getElementById('pw-loading').style.display = 'block';
+  document.getElementById('pw-loading-text').textContent = '正在加载 PDF 解析引擎...';
+  document.getElementById('pw-status').textContent = '';
+
+  if (typeof pdfjsLib === 'undefined') {
+    var script = document.createElement('script');
+    script.src = 'https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js';
+    script.onload = function() {
+      pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js';
+      doConvertPDFToWord();
+    };
+    script.onerror = function() {
+      document.getElementById('pw-loading').style.display = 'none';
+      document.getElementById('pw-status').textContent = '❌ 加载 PDF 引擎失败，请检查网络连接';
+    };
+    document.head.appendChild(script);
+  } else {
+    doConvertPDFToWord();
+  }
+}
+
+async function doConvertPDFToWord() {
+  _pwExtractedTexts = [];
+  var totalPages = 0;
+  var format = document.getElementById('pw-format').value;
+
+  try {
+    for (var i = 0; i < _pwPDFFiles.length; i++) {
+      var file = _pwPDFFiles[i];
+      document.getElementById('pw-loading-text').textContent = '正在处理: ' + file.name + ' (' + (i+1) + '/' + _pwPDFFiles.length + ')';
+      var arrayBuffer = await file.arrayBuffer();
+      var pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+      totalPages += pdf.numPages;
+      var fullText = '';
+      for (var p = 1; p <= pdf.numPages; p++) {
+        var page = await pdf.getPage(p);
+        var textContent = await page.getTextContent();
+        var lastY = null;
+        var pageText = '';
+        for (var item of textContent.items) {
+          if (item.transform && item.transform[5] !== undefined) {
+            if (lastY !== null && Math.abs(item.transform[5] - lastY) > 5) {
+              pageText += '\n';
+            } else if (lastY !== null) {
+              pageText += ' ';
+            }
+            lastY = item.transform[5];
+          }
+          pageText += item.str;
+        }
+        fullText += pageText + '\n\n';
+      }
+      _pwExtractedTexts.push({ name: file.name, text: fullText, pages: pdf.numPages });
+    }
+
+    document.getElementById('pw-loading').style.display = 'none';
+    document.getElementById('pw-status').textContent = '✅ 提取完成！共 ' + _pwPDFFiles.length + ' 个文件，' + totalPages + ' 页';
+
+    // 预览
+    var previewText = _pwExtractedTexts.map(function(item, idx) {
+      return '===== ' + item.name + ' (' + item.pages + ' 页) =====\n\n' + item.text;
+    }).join('\n\n');
+    document.getElementById('pw-preview-text').value = previewText;
+    document.getElementById('pw-preview').style.display = 'block';
+
+    if (format === 'docx') {
+      toast('✅ 提取完成，点击"下载 Word 文档"保存');
+    } else {
+      downloadWordFromPreview();
+    }
+  } catch(err) {
+    document.getElementById('pw-loading').style.display = 'none';
+    document.getElementById('pw-status').textContent = '❌ 转换失败: ' + err.message;
+  }
+}
+
+function downloadWordFromPreview() {
+  var text = document.getElementById('pw-preview-text').value;
+  if (!text) { toast('⚠️ 没有内容可下载'); return; }
+
+  // 生成 Word 兼容的 HTML 文档
+  var html = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">';
+  html += '<head><meta charset="utf-8"><title>PDF转Word</title>';
+  html += '<style>body{font-family:SimSun,SimHei,Microsoft YaHei,sans-serif;font-size:12pt;line-height:1.8;padding:40px;}';
+  html += 'h1{font-size:18pt;color:#333;}';
+  html += 'p{margin:6px 0;}</style></head><body>';
+  html += text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n\n/g, '</p><p>').replace(/\n/g, '<br>');
+  html += '</body></html>';
+
+  var blob = new Blob([html], { type: 'application/msword' });
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url;
+  a.download = 'PDF转Word_结果.doc';
+  a.click();
+  URL.revokeObjectURL(url);
+  toast('✅ Word 文档已下载');
+}
+
+function clearPDFForWord() {
+  _pwPDFFiles = [];
+  _pwExtractedTexts = [];
+  document.getElementById('pw-files').value = '';
+  document.getElementById('pw-info').textContent = '';
+  document.getElementById('pw-file-list').style.display = 'none';
+  document.getElementById('pw-list').innerHTML = '';
+  document.getElementById('pw-preview').style.display = 'none';
+  document.getElementById('pw-status').textContent = '';
+}
+
+// ============================================================
+// ⭐ 群众心声前3名：在线PS修图工具
+// ============================================================
+let _psOriginalImage = null;
+let _psCanvas = null;
+let _psCtx = null;
+let _psFilterState = { brightness: 0, contrast: 0, saturation: 0, hue: 0, blur: 0 };
+
+function loadPSImage() {
+  var file = document.getElementById('ps-file').files[0];
+  if (!file) return;
+  document.getElementById('ps-info').textContent = '已选择: ' + file.name;
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    var img = new Image();
+    img.onload = function() {
+      _psOriginalImage = img;
+      _psFilterState = { brightness: 0, contrast: 0, saturation: 0, hue: 0, blur: 0 };
+      document.getElementById('ps-editor-area').style.display = 'block';
+      document.getElementById('ps-status').textContent = '';
+      initPSCanvas();
+    };
+    img.src = e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+function initPSCanvas() {
+  var canvas = document.getElementById('ps-canvas');
+  var maxW = 800, maxH = 600;
+  var w = _psOriginalImage.width;
+  var h = _psOriginalImage.height;
+  if (w > maxW) { h = h * maxW / w; w = maxW; }
+  if (h > maxH) { w = w * maxH / h; h = maxH; }
+  canvas.width = w;
+  canvas.height = h;
+  _psCanvas = canvas;
+  _psCtx = canvas.getContext('2d');
+  _psCtx.drawImage(_psOriginalImage, 0, 0, w, h);
+}
+
+function applyPSFilter() {
+  if (!_psCanvas || !_psOriginalImage) return;
+  var canvas = _psCanvas;
+  var ctx = _psCtx;
+  var w = canvas.width, h = canvas.height;
+
+  _psFilterState.brightness = parseInt(document.getElementById('ps-brightness').value) || 0;
+  _psFilterState.contrast = parseInt(document.getElementById('ps-contrast').value) || 0;
+  _psFilterState.saturation = parseInt(document.getElementById('ps-saturation').value) || 0;
+  _psFilterState.hue = parseInt(document.getElementById('ps-hue').value) || 0;
+  _psFilterState.blur = parseFloat(document.getElementById('ps-blur').value) || 0;
+
+  document.getElementById('ps-brightness-val').textContent = _psFilterState.brightness;
+  document.getElementById('ps-contrast-val').textContent = _psFilterState.contrast;
+  document.getElementById('ps-saturation-val').textContent = _psFilterState.saturation;
+  document.getElementById('ps-hue-val').textContent = _psFilterState.hue;
+  document.getElementById('ps-blur-val').textContent = _psFilterState.blur;
+
+  // 先绘制原图
+  ctx.drawImage(_psOriginalImage, 0, 0, w, h);
+
+  // 获取像素数据
+  var imageData = ctx.getImageData(0, 0, w, h);
+  var data = imageData.data;
+
+  // 亮度
+  if (_psFilterState.brightness !== 0) {
+    var b = _psFilterState.brightness * 2.55;
+    for (var i = 0; i < data.length; i += 4) {
+      data[i] = Math.min(255, Math.max(0, data[i] + b));
+      data[i+1] = Math.min(255, Math.max(0, data[i+1] + b));
+      data[i+2] = Math.min(255, Math.max(0, data[i+2] + b));
+    }
+  }
+
+  // 对比度
+  if (_psFilterState.contrast !== 0) {
+    var factor = (259 * (_psFilterState.contrast + 255)) / (255 * (259 - _psFilterState.contrast));
+    for (var i = 0; i < data.length; i += 4) {
+      data[i] = Math.min(255, Math.max(0, factor * (data[i] - 128) + 128));
+      data[i+1] = Math.min(255, Math.max(0, factor * (data[i+1] - 128) + 128));
+      data[i+2] = Math.min(255, Math.max(0, factor * (data[i+2] - 128) + 128));
+    }
+  }
+
+  // 饱和度
+  if (_psFilterState.saturation !== 0) {
+    var sFactor = 1 + _psFilterState.saturation / 100;
+    for (var i = 0; i < data.length; i += 4) {
+      var gray = 0.299 * data[i] + 0.587 * data[i+1] + 0.114 * data[i+2];
+      data[i] = Math.min(255, Math.max(0, gray + sFactor * (data[i] - gray)));
+      data[i+1] = Math.min(255, Math.max(0, gray + sFactor * (data[i+1] - gray)));
+      data[i+2] = Math.min(255, Math.max(0, gray + sFactor * (data[i+2] - gray)));
+    }
+  }
+
+  // 色相
+  if (_psFilterState.hue !== 0) {
+    var hueAngle = _psFilterState.hue * Math.PI / 180;
+    var sinA = Math.sin(hueAngle);
+    var cosA = Math.cos(hueAngle);
+    for (var i = 0; i < data.length; i += 4) {
+      var r = data[i], g = data[i+1], b = data[i+2];
+      // 近似色相旋转矩阵
+      data[i] = Math.min(255, Math.max(0, r * (0.213 + 0.787 * cosA - 0.213 * sinA) + g * (0.715 - 0.715 * cosA - 0.715 * sinA) + b * (0.072 - 0.072 * cosA + 0.928 * sinA)));
+      data[i+1] = Math.min(255, Math.max(0, r * (0.213 - 0.213 * cosA + 0.143 * sinA) + g * (0.715 + 0.285 * cosA + 0.140 * sinA) + b * (0.072 - 0.072 * cosA - 0.283 * sinA)));
+      data[i+2] = Math.min(255, Math.max(0, r * (0.213 - 0.213 * cosA - 0.787 * sinA) + g * (0.715 - 0.715 * cosA + 0.715 * sinA) + b * (0.072 + 0.928 * cosA + 0.072 * sinA)));
+    }
+  }
+
+  ctx.putImageData(imageData, 0, 0);
+
+  // 模糊（使用 CSS filter 作为补充）
+  if (_psFilterState.blur > 0) {
+    canvas.style.filter = 'blur(' + _psFilterState.blur + 'px)';
+  } else {
+    canvas.style.filter = 'none';
+  }
+}
+
+function applyPSPreset(preset) {
+  var reset = function() {
+    document.getElementById('ps-brightness').value = 0;
+    document.getElementById('ps-contrast').value = 0;
+    document.getElementById('ps-saturation').value = 0;
+    document.getElementById('ps-hue').value = 0;
+    document.getElementById('ps-blur').value = 0;
+  };
+
+  switch(preset) {
+    case 'grayscale':
+      reset();
+      document.getElementById('ps-saturation').value = -100;
+      break;
+    case 'sepia':
+      reset();
+      document.getElementById('ps-saturation').value = -50;
+      document.getElementById('ps-contrast').value = 20;
+      document.getElementById('ps-brightness').value = 10;
+      break;
+    case 'invert':
+      reset();
+      document.getElementById('ps-hue').value = 180;
+      break;
+    case 'vintage':
+      reset();
+      document.getElementById('ps-contrast').value = -20;
+      document.getElementById('ps-saturation').value = -30;
+      document.getElementById('ps-brightness').value = 15;
+      break;
+    case 'cool':
+      reset();
+      document.getElementById('ps-hue').value = 30;
+      document.getElementById('ps-saturation').value = 20;
+      break;
+    case 'warm':
+      reset();
+      document.getElementById('ps-hue').value = -30;
+      document.getElementById('ps-saturation').value = 20;
+      break;
+    case 'reset':
+      reset();
+      _psCanvas.style.filter = 'none';
+      break;
+  }
+  applyPSFilter();
+}
+
+function rotatePSImage(angle) {
+  if (!_psCanvas || !_psOriginalImage) return;
+  var canvas = _psCanvas;
+  var ctx = _psCtx;
+  var w = canvas.width, h = canvas.height;
+  var rad = angle * Math.PI / 180;
+
+  // 创建临时 canvas 旋转
+  var tempCanvas = document.createElement('canvas');
+  var tempCtx = tempCanvas.getContext('2d');
+  tempCanvas.width = w;
+  tempCanvas.height = h;
+  tempCtx.drawImage(canvas, 0, 0);
+
+  var newW = Math.abs(w * Math.cos(rad)) + Math.abs(h * Math.sin(rad));
+  var newH = Math.abs(w * Math.sin(rad)) + Math.abs(h * Math.cos(rad));
+  canvas.width = newW;
+  canvas.height = newH;
+  ctx.translate(newW/2, newH/2);
+  ctx.rotate(rad);
+  ctx.drawImage(tempCanvas, -w/2, -h/2);
+  ctx.setTransform(1, 0, 0, 1, 0, 0);
+
+  // 更新原图引用
+  var img = new Image();
+  img.src = canvas.toDataURL();
+  img.onload = function() {
+    _psOriginalImage = img;
+    _psFilterState = { brightness: 0, contrast: 0, saturation: 0, hue: 0, blur: 0 };
+    // 重置滑块
+    document.getElementById('ps-brightness').value = 0;
+    document.getElementById('ps-contrast').value = 0;
+    document.getElementById('ps-saturation').value = 0;
+    document.getElementById('ps-hue').value = 0;
+    document.getElementById('ps-blur').value = 0;
+    _psCanvas.style.filter = 'none';
+  };
+}
+
+function flipPSImage(direction) {
+  if (!_psCanvas || !_psOriginalImage) return;
+  var canvas = _psCanvas;
+  var ctx = _psCtx;
+  var w = canvas.width, h = canvas.height;
+
+  var tempCanvas = document.createElement('canvas');
+  var tempCtx = tempCanvas.getContext('2d');
+  tempCanvas.width = w;
+  tempCanvas.height = h;
+  tempCtx.drawImage(canvas, 0, 0);
+
+  ctx.clearRect(0, 0, w, h);
+  if (direction === 'horizontal') {
+    ctx.translate(w, 0);
+    ctx.scale(-1, 1);
+  } else {
+    ctx.translate(0, h);
+    ctx.scale(1, -1);
+  }
+  ctx.drawImage(tempCanvas, 0, 0);
+  ctx.setTransform(1, 0, 0, 1, 0, 0);
+
+  var img = new Image();
+  img.src = canvas.toDataURL();
+  img.onload = function() {
+    _psOriginalImage = img;
+    _psFilterState = { brightness: 0, contrast: 0, saturation: 0, hue: 0, blur: 0 };
+    document.getElementById('ps-brightness').value = 0;
+    document.getElementById('ps-contrast').value = 0;
+    document.getElementById('ps-saturation').value = 0;
+    document.getElementById('ps-hue').value = 0;
+    document.getElementById('ps-blur').value = 0;
+    _psCanvas.style.filter = 'none';
+  };
+}
+
+function downloadPSImage() {
+  if (!_psCanvas) { toast('⚠️ 请先编辑图片'); return; }
+  var canvas = _psCanvas;
+  // 临时移除 blur 滤镜后下载
+  var originalFilter = canvas.style.filter;
+  canvas.style.filter = 'none';
+  var url = canvas.toDataURL('image/png');
+  canvas.style.filter = originalFilter;
+  var a = document.createElement('a');
+  a.href = url;
+  a.download = '编辑后的图片.png';
+  a.click();
+  toast('✅ 图片已下载');
+}
+
+function resetPSImage() {
+  if (!_psOriginalImage) return;
+  _psFilterState = { brightness: 0, contrast: 0, saturation: 0, hue: 0, blur: 0 };
+  document.getElementById('ps-brightness').value = 0;
+  document.getElementById('ps-contrast').value = 0;
+  document.getElementById('ps-saturation').value = 0;
+  document.getElementById('ps-hue').value = 0;
+  document.getElementById('ps-blur').value = 0;
+  document.getElementById('ps-brightness-val').textContent = '0';
+  document.getElementById('ps-contrast-val').textContent = '0';
+  document.getElementById('ps-saturation-val').textContent = '0';
+  document.getElementById('ps-hue-val').textContent = '0';
+  document.getElementById('ps-blur-val').textContent = '0';
+  _psCanvas.style.filter = 'none';
+  initPSCanvas();
+  document.getElementById('ps-status').textContent = '✅ 已重置为原图';
+}
+
+// ============================================================
+// ⭐ 群众心声前3名：屏幕录制工具
+// ============================================================
+let _srMediaRecorder = null;
+let _srRecordedChunks = [];
+let _srStream = null;
+let _srTimerInterval = null;
+let _srSeconds = 0;
+let _srStartTime = null;
+
+async function startScreenRecording() {
+  var source = document.getElementById('sr-source').value;
+  var audio = document.getElementById('sr-audio').value;
+  var quality = parseInt(document.getElementById('sr-quality').value);
+  var fps = parseInt(document.getElementById('sr-fps').value);
+
+  document.getElementById('sr-status').textContent = '⏳ 请选择要录制的屏幕/窗口...';
+
+  try {
+    var displayConstraints = {
+      video: {
+        displaySurface: source === 'window' ? 'window' : source === 'tab' ? 'browser' : 'monitor',
+        width: { ideal: quality },
+        height: { ideal: Math.round(quality * 9 / 16) },
+        frameRate: { ideal: fps }
+      },
+      audio: (audio === 'system' || audio === 'both') ? true : false
+    };
+
+    _srStream = await navigator.mediaDevices.getDisplayMedia(displayConstraints);
+
+    // 如果选择了麦克风，混合音频轨道
+    var tracks = [];
+    tracks.push(_srStream.getVideoTracks()[0]);
+
+    if (audio === 'microphone' || audio === 'both') {
+      try {
+        var micStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        tracks.push(micStream.getAudioTracks()[0]);
+        // 混合音频需要 AudioContext
+        if (audio === 'both' && _srStream.getAudioTracks().length > 0) {
+          var audioCtx = new AudioContext();
+          var dest = audioCtx.createMediaStreamDestination();
+          var source1 = audioCtx.createMediaStreamSource(_srStream);
+          var source2 = audioCtx.createMediaStreamSource(micStream);
+          source1.connect(dest);
+          source2.connect(dest);
+          // 使用混合后的音频轨道
+          tracks = [_srStream.getVideoTracks()[0], dest.stream.getAudioTracks()[0]];
+        }
+      } catch(e) {
+        console.warn('无法获取麦克风:', e.message);
+      }
+    }
+
+    // 检测是否有音频轨道
+    var hasAudio = tracks.length > 1 || (audio === 'system' || audio === 'both') && _srStream.getAudioTracks().length > 0;
+
+    var combinedStream = new MediaStream(tracks);
+    var mimeType = MediaRecorder.isTypeSupported('video/webm;codecs=vp9,opus') ? 'video/webm;codecs=vp9,opus'
+      : MediaRecorder.isTypeSupported('video/webm;codecs=vp8,opus') ? 'video/webm;codecs=vp8,opus'
+      : 'video/webm';
+
+    _srRecordedChunks = [];
+    _srMediaRecorder = new MediaRecorder(combinedStream, { mimeType: mimeType });
+
+    _srMediaRecorder.ondataavailable = function(event) {
+      if (event.data.size > 0) {
+        _srRecordedChunks.push(event.data);
+      }
+    };
+
+    _srMediaRecorder.onstop = function() {
+      // 停止计时器
+      if (_srTimerInterval) {
+        clearInterval(_srTimerInterval);
+        _srTimerInterval = null;
+      }
+      // 停止所有轨道
+      _srStream.getTracks().forEach(function(t) { t.stop(); });
+      document.getElementById('sr-start-btn').style.display = 'inline-flex';
+      document.getElementById('sr-stop-btn').style.display = 'none';
+      document.getElementById('sr-timer').style.display = 'none';
+      document.getElementById('sr-download-btn').style.display = 'inline-flex';
+      document.getElementById('sr-preview').style.display = 'none';
+      document.getElementById('sr-info').style.display = 'block';
+
+      var duration = _srSeconds;
+      var size = _srRecordedChunks.reduce(function(acc, chunk) { return acc + chunk.size; }, 0);
+      document.getElementById('sr-info-text').textContent =
+        '🎬 录制时长: ' + Math.floor(duration / 60) + '分' + (duration % 60) + '秒 | ' +
+        '📦 文件大小: ' + (size / (1024 * 1024)).toFixed(1) + ' MB | ' +
+        '📹 格式: WebM';
+      document.getElementById('sr-status').textContent = '✅ 录制完成！';
+    };
+
+    _srMediaRecorder.start(1000); // 每秒收集数据
+    _srStartTime = Date.now();
+    _srSeconds = 0;
+
+    // 显示预览
+    document.getElementById('sr-preview').style.display = 'block';
+    document.getElementById('sr-preview-video').srcObject = _srStream;
+    document.getElementById('sr-start-btn').style.display = 'none';
+    document.getElementById('sr-stop-btn').style.display = 'inline-flex';
+    document.getElementById('sr-timer').style.display = 'block';
+    document.getElementById('sr-download-btn').style.display = 'none';
+    document.getElementById('sr-info').style.display = 'none';
+    document.getElementById('sr-status').textContent = '🔴 正在录制...';
+
+    // 计时器
+    _srTimerInterval = setInterval(function() {
+      _srSeconds = Math.floor((Date.now() - _srStartTime) / 1000);
+      var min = Math.floor(_srSeconds / 60);
+      var sec = _srSeconds % 60;
+      document.getElementById('sr-timer').textContent =
+        String(min).padStart(2, '0') + ':' + String(sec).padStart(2, '0');
+    }, 1000);
+
+    // 监听用户停止
+    _srStream.getVideoTracks()[0].onended = function() {
+      if (_srMediaRecorder && _srMediaRecorder.state === 'recording') {
+        _srMediaRecorder.stop();
+      }
+    };
+
+  } catch(err) {
+    document.getElementById('sr-status').textContent = '❌ ' + (err.name === 'NotAllowedError' ? '用户取消了录制或未授权' : '录制失败: ' + err.message);
+    document.getElementById('sr-start-btn').style.display = 'inline-flex';
+    document.getElementById('sr-stop-btn').style.display = 'none';
+  }
+}
+
+function stopScreenRecording() {
+  if (_srMediaRecorder && _srMediaRecorder.state === 'recording') {
+    _srMediaRecorder.stop();
+  }
+}
+
+function downloadScreenRecording() {
+  if (_srRecordedChunks.length === 0) { toast('⚠️ 没有录制的视频'); return; }
+  var blob = new Blob(_srRecordedChunks, { type: 'video/webm' });
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url;
+  var now = new Date();
+  var ts = now.getFullYear() + ('0'+(now.getMonth()+1)).slice(-2) + ('0'+now.getDate()).slice(-2) + '_' + ('0'+now.getHours()).slice(-2) + ('0'+now.getMinutes()).slice(-2);
+  a.download = '屏幕录制_' + ts + '.webm';
+  a.click();
+  URL.revokeObjectURL(url);
+  toast('✅ 视频已下载');
+}

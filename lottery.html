@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>彩票缩水工具 - 在线过滤|选号|缩水|计算器</title>
+  <meta name="description" content="免费在线彩票工具：双色球缩水、福彩3D过滤、大乐透缩水、排列三、七乐彩、七星彩、排列五、15选5、11选5、22选5 — 全部自研，无需跳转">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/lottery.css">
+</head>
+<body>
+
+  <!-- ====== Header ====== -->
+  <header class="header">
+    <div class="header-inner">
+      <a href="index.html" class="logo">
+        <span class="logo-icon">🧰</span>
+        ToolBox
+      </a>
+      <nav class="header-nav">
+        <a href="index.html">首页</a>
+        <a href="index.html#categories">工具</a>
+        <a href="lottery.html" class="active" style="background:rgba(255,255,255,0.2);border-radius:20px;padding:6px 16px;">🎰 彩票工具</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ====== Main Layout ====== -->
+  <div class="lottery-layout">
+
+    <!-- ====== Sidebar ====== -->
+    <aside class="lottery-sidebar" id="lotterySidebar">
+      <div class="lottery-sidebar-title">🎰 彩票工具</div>
+
+      <div class="lottery-sidebar-group">
+        <div class="lottery-sidebar-group-label">乐透型</div>
+        <a class="lottery-nav-item" onclick="switchLottery('ssq')">🟥 双色球</a>
+        <a class="lottery-nav-item" onclick="switchLottery('dlt')">🟡 大乐透</a>
+        <a class="lottery-nav-item" onclick="switchLottery('qlc')">🟢 七乐彩</a>
+        <a class="lottery-nav-item" onclick="switchLottery('qxc')">🔵 七星彩</a>
+      </div>
+
+      <div class="lottery-sidebar-group">
+        <div class="lottery-sidebar-group-label">数字型</div>
+        <a class="lottery-nav-item" onclick="switchLottery('d3')">🔢 福彩3D</a>
+        <a class="lottery-nav-item" onclick="switchLottery('p3')">🔢 排列三</a>
+        <a class="lottery-nav-item" onclick="switchLottery('p5')">🔢 排列五</a>
+      </div>
+
+      <div class="lottery-sidebar-group">
+        <div class="lottery-sidebar-group-label">选号型</div>
+        <a class="lottery-nav-item" onclick="switchLottery('x15')">🎯 15选5</a>
+        <a class="lottery-nav-item" onclick="switchLottery('x11')">🎯 11选5</a>
+        <a class="lottery-nav-item" onclick="switchLottery('x22')">🎯 22选5</a>
+      </div>
+    </aside>
+
+    <!-- ====== Content ====== -->
+    <main class="lottery-content" id="lotteryContent">
+      <!-- 由 JS 动态渲染 -->
+    </main>
+
+  </div>
+
+  <!-- ====== Toast ====== -->
+  <div class="toast" id="lotteryToast"></div>
+
+  <!-- ====== Scripts ====== -->
+  <script src="js/lottery.js"></script>
+</body>
+</html>
