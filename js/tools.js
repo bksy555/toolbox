@@ -1093,6 +1093,64 @@ const TOOLS = [
     handler: () => {}
   },
 
+  // ==================== 印章工具 ====================
+  {
+    id: 'stamp-maker',
+    cat: 'image',
+    icon: '📜',
+    name: '在线制作印章',
+    desc: '在线生成多种风格、多种字体的个性印章，支持12种样式、8种字体，支持下载PNG',
+    html: `
+      <div class="tool-card">
+        <div class="row-2">
+          <div class="input-group">
+            <label>印章字体</label>
+            <select id="stamp-font" onchange="renderStamp()">
+              <option value="weibei">魏碑</option>
+              <option value="songti">宋体</option>
+              <option value="fangsong" selected>方篆</option>
+              <option value="zhuanshu">篆书</option>
+              <option value="lishu">隶书</option>
+              <option value="heiti">黑体</option>
+              <option value="yuanti">圆体</option>
+              <option value="jinwen">金文</option>
+            </select>
+          </div>
+          <div class="input-group">
+            <label>印章样式</label>
+            <select id="stamp-style" onchange="renderStamp()">
+              <option value="1">样式一：方形阳刻圆角</option>
+              <option value="2">样式二：方形阴刻圆角</option>
+              <option value="3">样式三：方形阳刻印章</option>
+              <option value="4">样式四：方形阴刻印章</option>
+              <option value="5">样式五：圆形阴刻印章</option>
+              <option value="6">样式六：圆形阳刻印章</option>
+              <option value="7">样式七：圆形龙纹印章</option>
+              <option value="8">样式八：长方形印章</option>
+              <option value="9">样式九：仿古方形阴刻印章</option>
+              <option value="10">样式十：仿古方形阳刻汉印</option>
+              <option value="11">样式十一：仿古圆形阳刻印戳</option>
+              <option value="12">样式十二：仿古圆形阴刻印章</option>
+            </select>
+          </div>
+        </div>
+        <div class="input-group">
+          <label>输入印章文字（2~4个汉字）</label>
+          <input type="text" id="stamp-text" placeholder="例如：李白、王羲之、浩然印" value="李白" maxlength="4" oninput="renderStamp()" style="font-size:18px;max-width:300px;">
+        </div>
+        <div class="btn-group">
+          <button class="btn btn-primary" onclick="renderStamp()">🖌️ 制作印章</button>
+          <button class="btn btn-secondary" id="stamp-download-btn" onclick="downloadStamp()" style="display:none;">⬇️ 下载印章PNG</button>
+        </div>
+        <div id="stamp-preview" style="margin-top:20px;text-align:center;min-height:260px;display:flex;flex-direction:column;align-items:center;">
+          <canvas id="stamp-canvas" width="400" height="400" style="max-width:100%;border:1px dashed var(--border);border-radius:8px;background:#fafafa;"></canvas>
+          <div id="stamp-tip" style="margin-top:10px;font-size:13px;color:var(--text-light);"></div>
+        </div>
+      </div>
+    `,
+    handler: () => { renderStamp(); }
+  },
+
   // ==================== 新：开发者工具 (续) ====================
   {
     id: 'qrcode-gen',
@@ -2696,7 +2754,7 @@ function tbSelectSubject(level, subject) {
     return;
   }
   
-  // 用 GitHub API 获取目录列表
+  // 获取科目路径
   const path = TEXTBOOK_PATH_MAP[level] && TEXTBOOK_PATH_MAP[level][subject];
   if (!path) {
     const ghUrl = `https://github.com/TapXWorld/ChinaTextbook/tree/master/${encodeURIComponent(level)}/${encodeURIComponent(subject)}`;
@@ -2707,69 +2765,161 @@ function tbSelectSubject(level, subject) {
     return;
   }
   
-  const apiUrl = `https://api.github.com/repos/TapXWorld/ChinaTextbook/contents/${path}`;
-  fetch(apiUrl)
-    .then(r => {
-      if (!r.ok) throw new Error('无法获取目录');
+  // 尝试从缓存读取
+  const cacheKey = 'tb_tree_' + path;
+  let cached;
+  try { cached = JSON.parse(localStorage.getItem(cacheKey)); } catch(e) {}
+  if (cached && cached.length > 0) {
+    tbRenderBooks(cached);
+    return;
+  }
+  
+  // 加载整个仓库树（递归），然后本地过滤
+  tbLoadTree(path, cacheKey, div);
+}
+
+// 全局缓存：整个仓库的树结构
+var _tbRepoTree = null;
+
+function tbLoadTree(path, cacheKey, div) {
+  // 先尝试全局缓存
+  if (_tbRepoTree) {
+    var books = tbFilterBooks(_tbRepoTree, path);
+    if (books.length > 0) {
+      try { localStorage.setItem(cacheKey, JSON.stringify(books)); } catch(e) {}
+      tbRenderBooks(books);
+    } else {
+      tbShowFallback(path, div);
+    }
+    return;
+  }
+  
+  // 尝试从 localStorage 读取全局树
+  var globalCache;
+  try { globalCache = JSON.parse(localStorage.getItem('tb_repo_tree')); } catch(e) {}
+  if (globalCache && globalCache.tree) {
+    _tbRepoTree = globalCache;
+    var books = tbFilterBooks(_tbRepoTree, path);
+    if (books.length > 0) {
+      try { localStorage.setItem(cacheKey, JSON.stringify(books)); } catch(e) {}
+      tbRenderBooks(books);
+    } else {
+      tbShowFallback(path, div);
+    }
+    return;
+  }
+  
+  // 请求整个仓库树（一次请求，覆盖所有科目）
+  div.innerHTML = '<div style="padding:20px;text-align:center;color:var(--text-light);">⏳ 正在加载教材目录，请稍候...</div>';
+  fetch('https://api.github.com/repos/TapXWorld/ChinaTextbook/git/trees/master?recursive=1')
+    .then(function(r) {
+      if (!r.ok) throw new Error('HTTP ' + r.status);
       return r.json();
     })
-    .then(data => {
-      if (!Array.isArray(data) || data.length === 0) {
-        div.innerHTML = '<div style="padding:20px;text-align:center;color:var(--text-light);">该科目暂无教材文件</div>';
-        return;
-      }
-      // 按类型分组：目录和文件
-      const dirs = data.filter(item => item.type === 'dir');
-      const files = data.filter(item => item.type === 'file' && item.name.endsWith('.pdf'));
+    .then(function(data) {
+      if (!data || !data.tree || data.tree.length === 0) throw new Error('无数据');
+      _tbRepoTree = data;
+      // 缓存全局树（7天有效）
+      try {
+        localStorage.setItem('tb_repo_tree', JSON.stringify(data));
+        // 设置过期时间
+        localStorage.setItem('tb_repo_tree_expire', String(Date.now() + 7 * 86400000));
+      } catch(e) {}
       
-      if (dirs.length === 0 && files.length === 0) {
-        // 可能是深层目录，直接链接到GitHub
-        const ghUrl = `https://github.com/TapXWorld/ChinaTextbook/tree/master/${path}`;
-        div.innerHTML = `<div style="padding:20px;text-align:center;color:var(--text-light);">
-          该目录包含多个子目录。<br>
-          <a href="${ghUrl}" target="_blank" style="color:var(--primary);font-size:14px;">📂 在 GitHub 上浏览 →</a>
-        </div>`;
-        return;
+      var books = tbFilterBooks(data, path);
+      if (books.length > 0) {
+        try { localStorage.setItem(cacheKey, JSON.stringify(books)); } catch(e) {}
+        tbRenderBooks(books);
+      } else {
+        tbShowFallback(path, div);
       }
-      
-      let html = '';
-      // 显示子目录
-      if (dirs.length > 0) {
-        html += '<div style="margin-bottom:12px;"><strong style="font-size:13px;color:var(--text-light);">📁 子目录</strong></div>';
-        html += '<div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px;">';
-        dirs.forEach(d => {
-          const ghUrl = `https://github.com/TapXWorld/ChinaTextbook/tree/master/${d.path}`;
-          html += `<a href="${ghUrl}" target="_blank" style="padding:8px 14px;background:var(--card-bg);border:1px solid var(--border);border-radius:8px;font-size:13px;color:var(--text);text-decoration:none;display:inline-flex;align-items:center;gap:6px;" onmouseover="this.style.borderColor='var(--primary)'" onmouseout="this.style.borderColor='var(--border)'">📂 ${d.name}</a>`;
-        });
-        html += '</div>';
-      }
-      // 显示PDF文件
-      if (files.length > 0) {
-        html += '<div style="margin-bottom:8px;"><strong style="font-size:13px;color:var(--text-light);">📄 PDF 文件</strong></div>';
-        html += '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;">';
-        files.forEach(f => {
-          const name = f.name.replace('.pdf', '');
-          html += `<div style="padding:12px 16px;background:var(--card-bg);border:1px solid var(--border);border-radius:10px;cursor:pointer;transition:all 0.2s;display:flex;align-items:center;gap:10px;"
-               onmouseover="this.style.borderColor='var(--primary)';this.style.boxShadow='0 2px 8px rgba(99,102,241,0.1)'"
-               onmouseout="this.style.borderColor='var(--border)';this.style.boxShadow='none'"
-               onclick="tbOpenBook('${name.replace(/'/g, "\\'")}','${f.download_url}')">
-            <span style="font-size:24px;">📖</span>
-            <div>
-              <div style="font-weight:600;font-size:14px;">${name}</div>
-              <div style="font-size:12px;color:var(--text-light);">点击在线阅读</div>
-            </div>
-          </div>`;
-        });
-        html += '</div>';
-      }
-      div.innerHTML = html;
     })
-    .catch(err => {
-      const ghUrl = `https://github.com/TapXWorld/ChinaTextbook/tree/master/${path}`;
-      div.innerHTML = `<div style="padding:20px;text-align:center;color:var(--text-light);">
-        ⚠️ 加载失败: ${err.message}<br>
-        <a href="${ghUrl}" target="_blank" style="color:var(--primary);font-size:14px;margin-top:8px;display:inline-block;">📂 在 GitHub 上浏览 →</a>
-      </div>`;
+    .catch(function(err) {
+      // 尝试逐个目录请求（降级）
+      tbFetchLegacy(path, cacheKey, div);
+    });
+}
+
+function tbFilterBooks(treeData, path) {
+  var prefix = path;
+  var results = [];
+  if (!treeData || !treeData.tree) return results;
+  
+  for (var i = 0; i < treeData.tree.length; i++) {
+    var item = treeData.tree[i];
+    // 只匹配该路径下的文件
+    if (item.type === 'blob' && item.path.startsWith(prefix + '/') && item.path.endsWith('.pdf')) {
+      var name = item.path.replace(prefix + '/', '').replace('.pdf', '');
+      var rawUrl = 'https://raw.githubusercontent.com/TapXWorld/ChinaTextbook/master/' + item.path;
+      results.push({ name: name, url: rawUrl });
+    }
+  }
+  return results;
+}
+
+function tbShowFallback(path, div) {
+  var ghUrl = 'https://github.com/TapXWorld/ChinaTextbook/tree/master/' + path;
+  div.innerHTML = '<div style="padding:20px;text-align:center;color:var(--text-light);">' +
+    '该目录下未找到PDF文件，请直接在 GitHub 上浏览。<br>' +
+    '<a href="' + ghUrl + '" target="_blank" style="color:var(--primary);font-size:14px;margin-top:8px;display:inline-block;">📂 在 GitHub 上浏览 →</a>' +
+    '</div>';
+}
+
+// 降级方案：逐个目录请求（兼容旧API）
+function tbFetchLegacy(path, cacheKey, div) {
+  var apiUrl = 'https://api.github.com/repos/TapXWorld/ChinaTextbook/contents/' + path;
+  fetch(apiUrl)
+    .then(function(r) {
+      if (!r.ok) throw new Error('HTTP ' + r.status);
+      return r.json();
+    })
+    .then(function(data) {
+      if (!Array.isArray(data)) throw new Error('无数据');
+      var files = data.filter(function(item) { return item.type === 'file' && item.name.endsWith('.pdf'); });
+      var dirs = data.filter(function(item) { return item.type === 'dir'; });
+      
+      if (files.length > 0) {
+        var books = files.map(function(f) { return { name: f.name.replace('.pdf', ''), url: f.download_url }; });
+        try { localStorage.setItem(cacheKey, JSON.stringify(books)); } catch(e) {}
+        tbRenderBooks(books);
+      } else if (dirs.length > 0) {
+        // 有子目录，递归读取
+        tbFetchLegacyDirs(dirs, path, div, 0, []);
+      } else {
+        tbShowFallback(path, div);
+      }
+    })
+    .catch(function() {
+      tbShowFallback(path, div);
+    });
+}
+
+function tbFetchLegacyDirs(dirs, basePath, div, idx, allBooks) {
+  if (idx >= dirs.length) {
+    if (allBooks.length > 0) {
+      var cacheKey = 'tb_tree_' + basePath;
+      try { localStorage.setItem(cacheKey, JSON.stringify(allBooks)); } catch(e) {}
+      tbRenderBooks(allBooks);
+    } else {
+      tbShowFallback(basePath, div);
+    }
+    return;
+  }
+  
+  fetch(dirs[idx].url)
+    .then(function(r) { return r.ok ? r.json() : []; })
+    .then(function(subData) {
+      if (Array.isArray(subData)) {
+        subData.forEach(function(item) {
+          if (item.type === 'file' && item.name.endsWith('.pdf')) {
+            allBooks.push({ name: item.name.replace('.pdf', ''), url: item.download_url });
+          }
+        });
+      }
+      tbFetchLegacyDirs(dirs, basePath, div, idx + 1, allBooks);
+    })
+    .catch(function() {
+      tbFetchLegacyDirs(dirs, basePath, div, idx + 1, allBooks);
     });
 }
 

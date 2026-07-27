@@ -269,6 +269,11 @@ body {
   grid-template-columns: 1fr 1fr;
   gap: 16px;
 }
+.tool-card .row-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
 .tool-card .row-3 {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
@@ -408,6 +413,7 @@ body {
   .header-nav { justify-content: center; }
   .category-grid { grid-template-columns: 1fr 1fr; }
   .tool-card .row { grid-template-columns: 1fr; }
+  .tool-card .row-2 { grid-template-columns: 1fr; }
   .tool-card .row-3 { grid-template-columns: 1fr; }
 }
 @media (max-width: 480px) {
