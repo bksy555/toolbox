@@ -235,7 +235,7 @@ function getHourPillar(dayGanIdx, hourZhiIdx) {
   // 时干: 日干 × 2 + 时支序数 (mod 10)
   // 时支序数: 子=0, 丑=1, ..., 亥=11
   const ganIdx = ((dayGanIdx % 5) * 2 + hourZhiIdx) % 10;
-  return { gan: TIAN_GAN[ganIdx], zhi: DI_ZHI[hourZhiIdx], ganIdx, zhiIdx };
+  return { gan: TIAN_GAN[ganIdx], zhi: DI_ZHI[hourZhiIdx], ganIdx, zhiIdx: hourZhiIdx };
 }
 
 // ============================================================
