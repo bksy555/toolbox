@@ -2280,6 +2280,31 @@ openclaw update</code></pre>
       </div>
     `,
     handler: () => {}
+  },
+
+  // ==================== 彩票工具 ====================
+  {
+    id: 'lottery-tools',
+    cat: 'lottery',
+    icon: '🎰',
+    name: '彩票缩水工具集',
+    desc: '双色球、大乐透、福彩3D、排列三、七星彩等10种彩票的在线过滤缩水、选号、计算器',
+    html: `
+      <div class="tool-card" style="text-align:center;padding:60px 20px;">
+        <div style="font-size:80px;margin-bottom:20px;">🎰</div>
+        <h3 style="font-size:28px;margin-bottom:10px;">彩票缩水工具集</h3>
+        <p style="font-size:15px;color:var(--text-light);line-height:1.8;margin-bottom:24px;max-width:500px;margin-left:auto;margin-right:auto;">
+          双色球 · 大乐透 · 福彩3D · 排列三 · 七乐彩<br>
+          七星彩 · 排列五 · 15选5 · 11选5 · 22选5<br><br>
+          🔍 在线过滤缩水 &nbsp;🎲 随机选号 &nbsp;📐 AC值计算<br>
+          🎯 胆拖计算 &nbsp;🧮 复式计算 &nbsp;📊 遗漏统计
+        </p>
+        <a href="lottery.html" style="display:inline-block;background:linear-gradient(135deg,#f59e0b,#ef4444);color:white;padding:16px 40px;border-radius:30px;text-decoration:none;font-size:18px;font-weight:700;box-shadow:0 4px 14px rgba(239,68,68,0.3);transition:all 0.3s;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
+          🚀 进入彩票工具 →
+        </a>
+      </div>
+    `,
+    handler: () => {}
   }
 ];
 
@@ -2297,5 +2322,6 @@ const CATEGORIES = [
   { id: 'color', icon: '🎨', name: '颜色工具', desc: 'HEX/RGB/HSL颜色转换' },
   { id: 'media', icon: '🎬', name: '媒体工具', desc: '抖音/TikTok去水印下载、视频转GIF' },
   { id: 'ai', icon: '🤖', name: 'AI工具', desc: 'AI聊天、AI Agent安装、免费AI工具推荐' },
-  { id: 'voice', icon: '🗣️', name: '群众心声', desc: '提交工具建议、投票排行榜、前3名自动实现' }
+  { id: 'voice', icon: '🗣️', name: '群众心声', desc: '提交工具建议、投票排行榜、前3名自动实现' },
+  { id: 'lottery', icon: '🎰', name: '彩票工具', desc: '双色球、大乐透、福彩3D、排列三…在线过滤缩水、选号、计算器' }
 ];
