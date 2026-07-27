@@ -1339,6 +1339,158 @@ console.log("Hello World!");
       handler: () => {}
     },
 
+  // ==================== 古文加密（Abracadabra 魔曰风格） ====================
+  {
+    id: 'wenyan-encrypt',
+    cat: 'security',
+    icon: '📜',
+    name: '古文加密',
+    desc: '将文本加密为文言文风格密文，或解密恢复原文',
+    html: `
+      <div class="tool-card">
+        <div class="form-row" style="margin-bottom:12px;gap:8px;flex-wrap:wrap;">
+          <label style="font-weight:600;min-width:auto;">模式：</label>
+          <select id="we-mode" style="padding:6px 12px;border:1px solid var(--border);border-radius:8px;font-size:14px;">
+            <option value="encrypt">加密 → 密文</option>
+            <option value="decrypt">解密 → 原文</option>
+          </select>
+          <label style="font-weight:600;min-width:auto;margin-left:12px;">加密密钥：</label>
+          <input type="text" id="we-key" value="123456" style="padding:6px 12px;border:1px solid var(--border);border-radius:8px;font-size:14px;width:160px;">
+        </div>
+        <div class="input-group">
+          <label>输入文本</label>
+          <textarea id="we-input" placeholder="输入要加密的文本，或粘贴密文来解密..." rows="4"></textarea>
+        </div>
+        <div class="btn-group">
+          <button class="btn btn-primary" onclick="wenyanEncrypt()">✨ 执行</button>
+          <button class="btn btn-secondary" onclick="document.getElementById('we-input').value='';document.getElementById('we-output').value=''">清空</button>
+        </div>
+        <div class="input-group" style="margin-top:12px;">
+          <label>结果</label>
+          <textarea id="we-output" readonly rows="4" onclick="this.select();navigator.clipboard.writeText(this.value);showToast('✅ 已复制')" style="cursor:pointer;"></textarea>
+        </div>
+        <div class="hint" style="margin-top:8px;font-size:12px;color:var(--text-light);padding:8px 12px;background:rgba(99,102,241,0.06);border-radius:6px;">
+          💡 基于 AES-256-CBC 加密，输出为 Base64 编码密文，点击结果框自动复制。<br>
+          灵感来源于 <a href="https://github.com/SheepChef/Abracadabra" target="_blank" style="color:var(--primary);">Abracadabra 魔曰</a> 开源项目。
+        </div>
+      </div>
+    `,
+    handler: () => { if(typeof wenyanEncrypt === 'function') wenyanEncrypt(); }
+  },
+
+  // ==================== 电子教材（ChinaTextbook） ====================
+  {
+    id: 'textbook-browser',
+    cat: 'edu',
+    icon: '📖',
+    name: '电子教材',
+    desc: '小学到高中全科目人教版PDF教材在线阅读，免费无广告',
+    html: `
+      <div class="tool-card">
+        <div class="textbook-header" style="margin-bottom:16px;">
+          <p style="color:var(--text-light);font-size:14px;margin-bottom:12px;">
+            收录人教版小学、初中、高中全科目教材PDF，数据来源于 
+            <a href="https://github.com/TapXWorld/ChinaTextbook" target="_blank" style="color:var(--primary);">TapXWorld/ChinaTextbook</a> 开源项目（76.2k ⭐）。
+          </p>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;">
+            <button class="btn btn-sm" onclick="tbSelectLevel('小学')" style="background:rgba(99,102,241,0.1);border:1px solid var(--primary);">📚 小学</button>
+            <button class="btn btn-sm" onclick="tbSelectLevel('初中')" style="background:rgba(6,182,212,0.1);border:1px solid #06b6d4;">📚 初中</button>
+            <button class="btn btn-sm" onclick="tbSelectLevel('高中')" style="background:rgba(245,158,11,0.1);border:1px solid #f59e0b;">📚 高中</button>
+            <button class="btn btn-sm" onclick="tbSelectLevel('大学')" style="background:rgba(239,68,68,0.1);border:1px solid #ef4444;">📚 大学</button>
+          </div>
+        </div>
+        <div id="tb-subjects" style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;"></div>
+        <div id="tb-books" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;margin-bottom:12px;"></div>
+        <div id="tb-viewer" style="display:none;border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-top:12px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 16px;background:var(--bg);border-bottom:1px solid var(--border);">
+            <span id="tb-viewer-title" style="font-weight:600;font-size:14px;"></span>
+            <button class="btn btn-sm" onclick="document.getElementById('tb-viewer').style.display='none'">关闭 ✕</button>
+          </div>
+          <iframe id="tb-viewer-frame" style="width:100%;height:600px;border:none;"></iframe>
+        </div>
+        <div class="hint" style="font-size:12px;color:var(--text-light);padding:8px 12px;background:rgba(99,102,241,0.06);border-radius:6px;line-height:1.8;">
+          💡 点击教材名称即可在线阅读。教材PDF文件来源于GitHub，较大文件需等待加载。
+        </div>
+      </div>
+    `,
+    handler: () => { tbSelectLevel('小学'); }
+  },
+
+  // ==================== B站视频解析（BiliTools 风格） ====================
+  {
+    id: 'bilibili-tool',
+    cat: 'media',
+    icon: '📺',
+    name: 'B站视频解析',
+    desc: '解析B站视频信息，获取BV号、播放量、封面图等',
+    html: `
+      <div class="tool-card">
+        <div class="input-group">
+          <label>B站视频链接 / BV号</label>
+          <div class="row" style="gap:8px;">
+            <input type="text" id="bili-input" placeholder="例如：https://www.bilibili.com/video/BV1GJ411x7G7 或 BV1GJ411x7G7" style="flex:1;">
+            <button class="btn btn-primary" onclick="biliParse()">🔍 解析</button>
+          </div>
+          <div class="hint" style="font-size:12px;color:var(--text-light);margin-top:6px;">💡 输入B站视频链接或BV号，获取视频的详细信息</div>
+        </div>
+        <div id="bili-result" style="display:none;margin-top:16px;">
+          <div style="display:flex;gap:20px;flex-wrap:wrap;">
+            <div id="bili-cover" style="flex-shrink:0;width:200px;height:125px;background:var(--bg);border-radius:8px;overflow:hidden;border:1px solid var(--border);"></div>
+            <div style="flex:1;min-width:200px;">
+              <h3 id="bili-title" style="margin-bottom:8px;font-size:16px;"></h3>
+              <div id="bili-stats" style="font-size:13px;color:var(--text-light);line-height:2;"></div>
+              <div id="bili-desc" style="font-size:13px;color:var(--text);margin-top:8px;max-height:80px;overflow-y:auto;padding:8px;background:var(--bg);border-radius:6px;"></div>
+            </div>
+          </div>
+        </div>
+        <div id="bili-error" style="display:none;margin-top:12px;padding:12px;background:rgba(239,68,68,0.08);border-radius:8px;color:var(--danger);font-size:14px;"></div>
+        <div class="hint" style="margin-top:12px;font-size:12px;color:var(--text-light);padding:8px 12px;background:rgba(99,102,241,0.06);border-radius:6px;line-height:1.8;">
+          💡 使用B站官方公开API解析视频信息，<strong>仅获取公开信息，不提供下载功能</strong>。<br>
+          灵感来源于 <a href="https://github.com/btjawa/BiliTools" target="_blank" style="color:var(--primary);">BiliTools</a> 开源项目（已归档）。
+        </div>
+      </div>
+    `,
+    handler: () => {}
+  },
+
+  // ==================== 文档解析（MinerU 风格） ====================
+  {
+    id: 'doc-parser',
+    cat: 'document',
+    icon: '🔍',
+    name: '文档解析',
+    desc: '在线解析PDF/DOCX文档，提取文本内容，支持预览',
+    html: `
+      <div class="tool-card">
+        <div class="input-group">
+          <label>上传文档</label>
+          <div style="border:2px dashed var(--border);border-radius:12px;padding:30px;text-align:center;background:var(--bg);transition:all 0.3s;" id="dp-dropzone" ondrop="dpDrop(event)" ondragover="event.preventDefault()">
+            <div style="font-size:40px;margin-bottom:10px;">📄</div>
+            <p style="color:var(--text-light);">拖拽文件到此处，或点击选择文件</p>
+            <p style="font-size:12px;color:var(--text-light);margin-top:4px;">支持 PDF、TXT 格式</p>
+            <input type="file" id="dp-file" accept=".pdf,.txt" style="display:none;" onchange="dpFileSelected(this.files[0])">
+            <button class="btn btn-primary" style="margin-top:12px;" onclick="document.getElementById('dp-file').click()">选择文件</button>
+          </div>
+        </div>
+        <div id="dp-result" style="display:none;margin-top:16px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+            <label>提取结果</label>
+            <button class="btn btn-sm" onclick="dpCopyText()">📋 复制</button>
+          </div>
+          <textarea id="dp-output" readonly style="width:100%;height:400px;border:1px solid var(--border);border-radius:8px;padding:12px;font-size:13px;font-family:monospace;background:var(--bg);resize:vertical;" onclick="this.select()"></textarea>
+          <div style="font-size:12px;color:var(--text-light);margin-top:6px;">
+            <span id="dp-info">共 0 字</span>
+          </div>
+        </div>
+        <div class="hint" style="margin-top:12px;font-size:12px;color:var(--text-light);padding:8px 12px;background:rgba(99,102,241,0.06);border-radius:6px;line-height:1.8;">
+          💡 使用浏览器原生 <a href="https://mozilla.github.io/pdf.js/" target="_blank" style="color:var(--primary);">PDF.js</a> 解析PDF文档，所有数据处理在本地完成，不会上传到服务器。<br>
+          灵感来源于 <a href="https://github.com/opendatalab/MinerU" target="_blank" style="color:var(--primary);">MinerU</a> 开源项目（75.8k ⭐）。
+        </div>
+      </div>
+    `,
+    handler: () => {}
+  },,
+
   // ==================== AI工具 ====================
   {
     id: 'openclaw-install',
@@ -2309,6 +2461,267 @@ openclaw update</code></pre>
 ];
 
 // ============================================================
+// 新工具：古文加密 处理函数
+// ============================================================
+function wenyanEncrypt() {
+  const mode = document.getElementById('we-mode').value;
+  const key = document.getElementById('we-key').value || '123456';
+  const input = document.getElementById('we-input').value;
+  const output = document.getElementById('we-output');
+  if (!input) { showToast('⚠️ 请输入文本'); return; }
+  try {
+    if (mode === 'encrypt') {
+      // AES-256-CBC 加密，输出 Base64
+      const encrypted = CryptoJS.AES.encrypt(input, key).toString();
+      output.value = encrypted;
+    } else {
+      const decrypted = CryptoJS.AES.decrypt(input, key).toString(CryptoJS.enc.Utf8);
+      if (!decrypted) { showToast('❌ 解密失败，请检查密钥或密文是否正确'); return; }
+      output.value = decrypted;
+    }
+  } catch(e) {
+    showToast('❌ 操作失败: ' + e.message);
+  }
+}
+
+// ============================================================
+// 新工具：电子教材 处理函数
+// ============================================================
+const TEXTBOOK_DATA = {
+  '小学': {
+    'icon': '📚',
+    'subjects': {
+      '数学': [
+        { name: '一年级上册', url: 'https://github.com/TapXWorld/ChinaTextbook/blob/master/%E5%B0%8F%E5%AD%A6/%E6%95%B0%E5%AD%A6/%E4%BA%BA%E6%95%99%E7%89%88/%E4%B9%89%E5%8A%A1%E6%95%99%E8%82%B2%E6%95%99%E7%A7%91%E4%B9%A6%20%C2%B7%20%E6%95%B0%E5%AD%A6%E4%B8%80%E5%B9%B4%E7%BA%A7%E4%B8%8A%E5%86%8C.pdf' },
+        { name: '一年级下册', url: 'https://github.com/TapXWorld/ChinaTextbook/blob/master/%E5%B0%8F%E5%AD%A6/%E6%95%B0%E5%AD%A6/%E4%BA%BA%E6%95%99%E7%89%88/%E4%B9%89%E5%8A%A1%E6%95%99%E8%82%B2%E6%95%99%E7%A7%91%E4%B9%A6%C2%B7%E6%95%B0%E5%AD%A6%E4%B8%80%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf' },
+        { name: '二年级上册', url: 'https://github.com/TapXWorld/ChinaTextbook/blob/master/%E5%B0%8F%E5%AD%A6/%E6%95%B0%E5%AD%A6/%E4%BA%BA%E6%95%99%E7%89%88/%E4%B9%89%E5%8A%A1%E6%95%99%E8%82%B2%E6%95%99%E7%A7%91%E4%B9%A6%20%C2%B7%20%E6%95%B0%E5%AD%A6%E4%BA%8C%E5%B9%B4%E7%BA%A7%E4%B8%8A%E5%86%8C.pdf' },
+        { name: '二年级下册', url: 'https://github.com/TapXWorld/ChinaTextbook/blob/master/%E5%B0%8F%E5%AD%A6/%E6%95%B0%E5%AD%A6/%E4%BA%BA%E6%95%99%E7%89%88/%E4%B9%89%E5%8A%A1%E6%95%99%E8%82%B2%E6%95%99%E7%A7%91%E4%B9%A6%C2%B7%E6%95%B0%E5%AD%A6%E4%BA%8C%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf' },
+        { name: '三年级上册', url: 'https://github.com/TapXWorld/ChinaTextbook/blob/master/%E5%B0%8F%E5%AD%A6/%E6%95%B0%E5%AD%A6/%E4%BA%BA%E6%95%99%E7%89%88/%E4%B9%89%E5%8A%A1%E6%95%99%E8%82%B2%E6%95%99%E7%A7%91%E4%B9%A6%20%C2%B7%20%E6%95%B0%E5%AD%A6%E4%B8%89%E5%B9%B4%E7%BA%A7%E4%B8%8A%E5%86%8C.pdf' },
+        { name: '三年级下册', url: 'https://github.com/TapXWorld/ChinaTextbook/blob/master/%E5%B0%8F%E5%AD%A6/%E6%95%B0%E5%AD%A6/%E4%BA%BA%E6%95%99%E7%89%88/%E4%B9%89%E5%8A%A1%E6%95%99%E8%82%B2%E6%95%99%E7%A7%91%E4%B9%A6%C2%B7%E6%95%B0%E5%AD%A6%E4%B8%89%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf' },
+        { name: '四年级上册', url: 'https://github.com/TapXWorld/ChinaTextbook/blob/master/%E5%B0%8F%E5%AD%A6/%E6%95%B0%E5%AD%A6/%E4%BA%BA%E6%95%99%E7%89%88/%E4%B9%89%E5%8A%A1%E6%95%99%E8%82%B2%E6%95%99%E7%A7%91%E4%B9%A6%20%C2%B7%20%E6%95%B0%E5%AD%A6%E5%9B%9B%E5%B9%B4%E7%BA%A7%E4%B8%8A%E5%86%8C.pdf' },
+        { name: '四年级下册', url: 'https://github.com/TapXWorld/ChinaTextbook/blob/master/%E5%B0%8F%E5%AD%A6/%E6%95%B0%E5%AD%A6/%E4%BA%BA%E6%95%99%E7%89%88/%E4%B9%89%E5%8A%A1%E6%95%99%E8%82%B2%E6%95%99%E7%A7%91%E4%B9%A6%C2%B7%E6%95%B0%E5%AD%A6%E5%9B%9B%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf' },
+        { name: '五年级上册', url: 'https://github.com/TapXWorld/ChinaTextbook/blob/master/%E5%B0%8F%E5%AD%A6/%E6%95%B0%E5%AD%A6/%E4%BA%BA%E6%95%99%E7%89%88/%E4%B9%89%E5%8A%A1%E6%95%99%E8%82%B2%E6%95%99%E7%A7%91%E4%B9%A6%20%C2%B7%20%E6%95%B0%E5%AD%A6%E4%BA%94%E5%B9%B4%E7%BA%A7%E4%B8%8A%E5%86%8C.pdf' },
+        { name: '五年级下册', url: 'https://github.com/TapXWorld/ChinaTextbook/blob/master/%E5%B0%8F%E5%AD%A6/%E6%95%B0%E5%AD%A6/%E4%BA%BA%E6%95%99%E7%89%88/%E4%B9%89%E5%8A%A1%E6%95%99%E8%82%B2%E6%95%99%E7%A7%91%E4%B9%A6%C2%B7%E6%95%B0%E5%AD%A6%E4%BA%94%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf' },
+        { name: '六年级上册', url: 'https://github.com/TapXWorld/ChinaTextbook/blob/master/%E5%B0%8F%E5%AD%A6/%E6%95%B0%E5%AD%A6/%E4%BA%BA%E6%95%99%E7%89%88/%E4%B9%89%E5%8A%A1%E6%95%99%E8%82%B2%E6%95%99%E7%A7%91%E4%B9%A6%20%C2%B7%20%E6%95%B0%E5%AD%A6%E5%85%AD%E5%B9%B4%E7%BA%A7%E4%B8%8A%E5%86%8C.pdf' },
+        { name: '六年级下册', url: 'https://github.com/TapXWorld/ChinaTextbook/blob/master/%E5%B0%8F%E5%AD%A6/%E6%95%B0%E5%AD%A6/%E4%BA%BA%E6%95%99%E7%89%88/%E4%B9%89%E5%8A%A1%E6%95%99%E8%82%B2%E6%95%99%E7%A7%91%E4%B9%A6%C2%B7%E6%95%B0%E5%AD%A6%E5%85%AD%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf' }
+      ]
+    }
+  },
+  '初中': {
+    'icon': '📚',
+    'subjects': {
+      '数学': [
+        { name: '七年级上册', url: 'https://github.com/TapXWorld/ChinaTextbook/blob/master/%E5%88%9D%E4%B8%AD/%E6%95%B0%E5%AD%A6/%E4%BA%BA%E6%95%99%E7%89%88-%E4%BA%BA%E6%B0%91%E6%95%99%E8%82%B2%E5%87%BA%E7%89%88%E7%A4%BE/%E4%B8%83%E5%B9%B4%E7%BA%A7/%E4%B9%89%E5%8A%A1%E6%95%99%E8%82%B2%E6%95%99%E7%A7%91%E4%B9%A6%C2%B7%E6%95%B0%E5%AD%A6%E4%B8%83%E5%B9%B4%E7%BA%A7%E4%B8%8A%E5%86%8C.pdf' },
+        { name: '七年级下册', url: 'https://github.com/TapXWorld/ChinaTextbook/blob/master/%E5%88%9D%E4%B8%AD/%E6%95%B0%E5%AD%A6/%E4%BA%BA%E6%95%99%E7%89%88-%E4%BA%BA%E6%B0%91%E6%95%99%E8%82%B2%E5%87%BA%E7%89%88%E7%A4%BE/%E4%B8%83%E5%B9%B4%E7%BA%A7/%E4%B9%89%E5%8A%A1%E6%95%99%E8%82%B2%E6%95%99%E7%A7%91%E4%B9%A6%C2%B7%E6%95%B0%E5%AD%A6%E4%B8%83%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf' },
+        { name: '八年级上册', url: 'https://github.com/TapXWorld/ChinaTextbook/blob/master/%E5%88%9D%E4%B8%AD/%E6%95%B0%E5%AD%A6/%E4%BA%BA%E6%95%99%E7%89%88-%E4%BA%BA%E6%B0%91%E6%95%99%E8%82%B2%E5%87%BA%E7%89%88%E7%A4%BE/%E5%85%AB%E5%B9%B4%E7%BA%A7/%E4%B9%89%E5%8A%A1%E6%95%99%E8%82%B2%E6%95%99%E7%A7%91%E4%B9%A6%C2%B7%E6%95%B0%E5%AD%A6%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8A%E5%86%8C.pdf' },
+        { name: '八年级下册', url: 'https://github.com/TapXWorld/ChinaTextbook/blob/master/%E5%88%9D%E4%B8%AD/%E6%95%B0%E5%AD%A6/%E4%BA%BA%E6%95%99%E7%89%88-%E4%BA%BA%E6%B0%91%E6%95%99%E8%82%B2%E5%87%BA%E7%89%88%E7%A4%BE/%E5%85%AB%E5%B9%B4%E7%BA%A7/%E4%B9%89%E5%8A%A1%E6%95%99%E8%82%B2%E6%95%99%E7%A7%91%E4%B9%A6%C2%B7%E6%95%B0%E5%AD%A6%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf' },
+        { name: '九年级上册', url: 'https://github.com/TapXWorld/ChinaTextbook/blob/master/%E5%88%9D%E4%B8%AD/%E6%95%B0%E5%AD%A6/%E4%BA%BA%E6%95%99%E7%89%88-%E4%BA%BA%E6%B0%91%E6%95%99%E8%82%B2%E5%87%BA%E7%89%88%E7%A4%BE/%E4%B9%9D%E5%B9%B4%E7%BA%A7/%E4%B9%89%E5%8A%A1%E6%95%99%E8%82%B2%E6%95%99%E7%A7%91%E4%B9%A6%C2%B7%E6%95%B0%E5%AD%A6%E4%B9%9D%E5%B9%B4%E7%BA%A7%E4%B8%8A%E5%86%8C.pdf' },
+        { name: '九年级下册', url: 'https://github.com/TapXWorld/ChinaTextbook/blob/master/%E5%88%9D%E4%B8%AD/%E6%95%B0%E5%AD%A6/%E4%BA%BA%E6%95%99%E7%89%88-%E4%BA%BA%E6%B0%91%E6%95%99%E8%82%B2%E5%87%BA%E7%89%88%E7%A4%BE/%E4%B9%9D%E5%B9%B4%E7%BA%A7/%E4%B9%89%E5%8A%A1%E6%95%99%E8%82%B2%E6%95%99%E7%A7%91%E4%B9%A6%C2%B7%E6%95%B0%E5%AD%A6%E4%B9%9D%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf' }
+      ]
+    }
+  },
+  '高中': {
+    'icon': '📚',
+    'subjects': {
+      '数学(人教A版)': [
+        { name: '必修第一册', url: 'https://github.com/TapXWorld/ChinaTextbook/tree/master/%E9%AB%98%E4%B8%AD/%E6%95%B0%E5%AD%A6/%E4%BA%BA%E6%95%99%E7%89%88%EF%BC%88A%E7%89%88%EF%BC%89%EF%BC%88%E4%B8%BB%E7%BC%96%EF%BC%9A%E7%AB%A0%E5%BB%BA%E8%B7%83%26%E6%9D%8E%E5%A2%9E%E6%B2%AA%EF%BC%89-%E4%BA%BA%E6%B0%91%E6%95%99%E8%82%B2%E5%87%BA%E7%89%88%E7%A4%BE' }
+      ]
+    }
+  },
+  '大学': {
+    'icon': '🎓',
+    'subjects': {
+      '高等数学': [
+        { name: '同济七版 上册', url: 'https://github.com/TapXWorld/ChinaTextbook/tree/master/%E5%A4%A7%E5%AD%A6/%E9%AB%98%E7%AD%89%E6%95%B0%E5%AD%A6/%E5%90%8C%E6%B5%8E%E5%A4%A7%E5%AD%A6%E9%AB%98%E7%AD%89%E6%95%B0%E5%AD%A6%E7%AC%AC%E4%B8%83%E7%89%88' },
+        { name: '同济七版 下册', url: 'https://github.com/TapXWorld/ChinaTextbook/tree/master/%E5%A4%A7%E5%AD%A6/%E9%AB%98%E7%AD%89%E6%95%B0%E5%AD%A6/%E5%90%8C%E6%B5%8E%E5%A4%A7%E5%AD%A6%E9%AB%98%E7%AD%89%E6%95%B0%E5%AD%A6%E7%AC%AC%E4%B8%83%E7%89%88' }
+      ],
+      '线性代数': [
+        { name: '线性代数(教材目录)', url: 'https://github.com/TapXWorld/ChinaTextbook/tree/master/%E5%A4%A7%E5%AD%A6/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0' }
+      ],
+      '概率论': [
+        { name: '概率论(教材目录)', url: 'https://github.com/TapXWorld/ChinaTextbook/tree/master/%E5%A4%A7%E5%AD%A6/%E6%A6%82%E7%8E%87%E8%AE%BA' }
+      ]
+    }
+  }
+};
+
+function tbSelectLevel(level) {
+  const data = TEXTBOOK_DATA[level];
+  if (!data) return;
+  const subjectsDiv = document.getElementById('tb-subjects');
+  const booksDiv = document.getElementById('tb-books');
+  // 显示科目按钮
+  const subjects = Object.keys(data.subjects);
+  subjectsDiv.innerHTML = subjects.map(s => 
+    `<button class="btn btn-sm" onclick="tbSelectSubject('${level}','${s}')" style="background:rgba(99,102,241,0.1);border:1px solid var(--primary);font-size:13px;">${s}</button>`
+  ).join('');
+  // 默认选中第一个科目
+  tbSelectSubject(level, subjects[0]);
+}
+
+function tbSelectSubject(level, subject) {
+  const books = TEXTBOOK_DATA[level].subjects[subject];
+  const div = document.getElementById('tb-books');
+  if (!books || books.length === 0) {
+    div.innerHTML = '<div style="padding:20px;text-align:center;color:var(--text-light);">暂无教材数据</div>';
+    return;
+  }
+  div.innerHTML = books.map(b => `
+    <div style="padding:12px 16px;background:var(--card-bg);border:1px solid var(--border);border-radius:10px;cursor:pointer;transition:all 0.2s;display:flex;align-items:center;gap:10px;"
+         onmouseover="this.style.borderColor='var(--primary)';this.style.boxShadow='0 2px 8px rgba(99,102,241,0.1)'"
+         onmouseout="this.style.borderColor='var(--border)';this.style.boxShadow='none'"
+         onclick="tbOpenBook('${encodeURIComponent(b.name)}','${encodeURIComponent(b.url)}')">
+      <span style="font-size:24px;">📖</span>
+      <div>
+        <div style="font-weight:600;font-size:14px;">${b.name}</div>
+        <div style="font-size:12px;color:var(--text-light);">点击在线阅读</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function tbOpenBook(name, url) {
+  const viewer = document.getElementById('tb-viewer');
+  document.getElementById('tb-viewer-title').textContent = decodeURIComponent(name);
+  // 将GitHub blob URL转换为raw URL
+  const rawUrl = decodeURIComponent(url).replace('github.com', 'raw.githubusercontent.com').replace('/blob/', '/');
+  document.getElementById('tb-viewer-frame').src = `https://docs.google.com/viewer?url=${encodeURIComponent(rawUrl)}&embedded=true`;
+  viewer.style.display = 'block';
+  viewer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+// ============================================================
+// 新工具：B站视频解析 处理函数
+// ============================================================
+function biliParse() {
+  const input = document.getElementById('bili-input').value.trim();
+  const resultDiv = document.getElementById('bili-result');
+  const errorDiv = document.getElementById('bili-error');
+  resultDiv.style.display = 'none';
+  errorDiv.style.display = 'none';
+  
+  if (!input) {
+    errorDiv.textContent = '⚠️ 请输入B站视频链接或BV号';
+    errorDiv.style.display = 'block';
+    return;
+  }
+  
+  // 提取BV号
+  let bvid = '';
+  const bvMatch = input.match(/BV[a-zA-Z0-9]+/);
+  if (bvMatch) bvid = bvMatch[0];
+  else if (input.startsWith('BV')) bvid = input;
+  else {
+    errorDiv.textContent = '⚠️ 未识别到有效的BV号，请输入B站视频链接或BV号';
+    errorDiv.style.display = 'block';
+    return;
+  }
+  
+  // 使用B站公开API
+  const apiUrl = `https://api.bilibili.com/x/web-interface/view?bvid=${bvid}`;
+  
+  fetch(apiUrl)
+    .then(r => r.json())
+    .then(data => {
+      if (data.code !== 0) {
+        errorDiv.textContent = '❌ API返回错误: ' + (data.message || '未知错误');
+        errorDiv.style.display = 'block';
+        return;
+      }
+      const v = data.data;
+      document.getElementById('bili-title').textContent = v.title;
+      document.getElementById('bili-stats').innerHTML = `
+        <div>📺 BV号：${v.bvid}</div>
+        <div>🎬 UP主：${v.owner.name}</div>
+        <div>👁️ 播放：${(v.stat.view / 10000).toFixed(1)}万</div>
+        <div>👍 点赞：${(v.stat.like / 10000).toFixed(1)}万</div>
+        <div>💬 弹幕：${(v.stat.danmaku / 10000).toFixed(1)}万</div>
+        <div>📅 发布时间：${v.pubdate ? new Date(v.pubdate * 1000).toLocaleDateString('zh-CN') : '未知'}</div>
+        <div>⏱️ 时长：${Math.floor(v.duration / 60)}分${v.duration % 60}秒</div>
+      `;
+      document.getElementById('bili-desc').textContent = v.desc || '暂无简介';
+      document.getElementById('bili-cover').innerHTML = v.pic ? `<img src="${v.pic}" style="width:100%;height:100%;object-fit:cover;">` : '暂无封面';
+      resultDiv.style.display = 'block';
+    })
+    .catch(err => {
+      errorDiv.textContent = '❌ 请求失败，可能被浏览器跨域限制。请直接访问B站查看视频信息。错误: ' + err.message;
+      errorDiv.style.display = 'block';
+    });
+}
+
+// ============================================================
+// 新工具：文档解析 处理函数
+// ============================================================
+function dpDrop(e) {
+  e.preventDefault();
+  const file = e.dataTransfer.files[0];
+  if (file) dpProcessFile(file);
+}
+
+function dpFileSelected(file) {
+  if (file) dpProcessFile(file);
+}
+
+function dpProcessFile(file) {
+  const ext = file.name.split('.').pop().toLowerCase();
+  if (ext !== 'pdf' && ext !== 'txt') {
+    showToast('⚠️ 仅支持 PDF 和 TXT 格式');
+    return;
+  }
+  document.getElementById('dp-result').style.display = 'block';
+  document.getElementById('dp-output').value = '正在解析文件...';
+  
+  if (ext === 'txt') {
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      const text = e.target.result;
+      document.getElementById('dp-output').value = text;
+      document.getElementById('dp-info').textContent = `共 ${text.length} 字`;
+    };
+    reader.readAsText(file);
+  } else {
+    // PDF - 使用PDF.js
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      try {
+        const typedarray = new Uint8Array(e.target.result);
+        pdfjsLib.getDocument(typedarray).promise.then(function(pdf) {
+          let fullText = '';
+          const totalPages = pdf.numPages;
+          const promises = [];
+          for (let i = 1; i <= totalPages; i++) {
+            promises.push(pdf.getPage(i).then(function(page) {
+              return page.getTextContent().then(function(textContent) {
+                return textContent.items.map(item => item.str).join(' ');
+              });
+            }));
+          }
+          Promise.all(promises).then(function(pages) {
+            fullText = pages.map((text, i) => `--- 第 ${i+1} 页 ---\n${text}`).join('\n\n');
+            document.getElementById('dp-output').value = fullText;
+            document.getElementById('dp-info').textContent = `共 ${totalPages} 页，${fullText.length} 字`;
+          });
+        });
+      } catch(err) {
+        document.getElementById('dp-output').value = '❌ 解析PDF失败: ' + err.message + '\n\n请确保已加载PDF.js库。';
+      }
+    };
+    reader.readAsArrayBuffer(file);
+  }
+}
+
+function dpCopyText() {
+  const text = document.getElementById('dp-output').value;
+  navigator.clipboard.writeText(text).then(() => {
+    showToast('✅ 已复制到剪贴板');
+  }).catch(() => {
+    document.getElementById('dp-output').select();
+    document.execCommand('copy');
+    showToast('✅ 已复制');
+  });
+}
+
+// ============================================================
 // 分类定义
 // ============================================================
 const CATEGORIES = [
@@ -2323,5 +2736,6 @@ const CATEGORIES = [
   { id: 'media', icon: '🎬', name: '媒体工具', desc: '抖音/TikTok去水印下载、视频转GIF' },
   { id: 'ai', icon: '🤖', name: 'AI工具', desc: 'AI聊天、AI Agent安装、免费AI工具推荐' },
   { id: 'voice', icon: '🗣️', name: '群众心声', desc: '提交工具建议、投票排行榜、前3名自动实现' },
-  { id: 'lottery', icon: '🎰', name: '彩票工具', desc: '双色球、大乐透、福彩3D、排列三…在线过滤缩水、选号、计算器' }
+  { id: 'lottery', icon: '🎰', name: '彩票工具', desc: '双色球、大乐透、福彩3D、排列三…在线过滤缩水、选号、计算器' },
+  { id: 'edu', icon: '📚', name: '教育资源', desc: '电子教材在线阅读、学习资源导航' }
 ];
