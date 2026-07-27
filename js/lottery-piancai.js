@@ -230,7 +230,7 @@ function getDayPillar(year, month, day) {
   return { gan: TIAN_GAN[ganIdx], zhi: DI_ZHI[zhiIdx], ganIdx, zhiIdx };
 }
 
-// 计算时柱（默认午时11-13点）
+// 计算时柱
 function getHourPillar(dayGanIdx, hourZhiIdx) {
   // 时干: 日干 × 2 + 时支序数 (mod 10)
   // 时支序数: 子=0, 丑=1, ..., 亥=11
@@ -469,12 +469,14 @@ function getBaziString(bazi) {
 // ============================================================
 // 主入口：计算偏财日
 // ============================================================
-function calcPiancai(solarYear, solarMonth, solarDay, gender) {
+function calcPiancai(solarYear, solarMonth, solarDay, gender, hourZhiIdx) {
   // 1. 计算八字
   const yearPillar = getYearPillar(solarYear);
   const monthPillar = getMonthPillar(solarYear, solarMonth, solarDay);
   const dayPillar = getDayPillar(solarYear, solarMonth, solarDay);
-  const hourPillar = getHourPillar(dayPillar.ganIdx, 6); // 默认午时
+  // 使用用户输入的时辰；如果未知（-1）则默认午时
+  const hIdx = (hourZhiIdx !== undefined && hourZhiIdx >= 0) ? hourZhiIdx : 6;
+  const hourPillar = getHourPillar(dayPillar.ganIdx, hIdx);
   
   const bazi = {
     year: yearPillar,

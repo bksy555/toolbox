@@ -369,6 +369,26 @@
       </div>
 
       <div class="form-row">
+        <label>出生时辰：</label>
+        <select id="birthHour" style="width:160px;">
+          <option value="-1">未知（默认午时）</option>
+          <option value="0">子时（23:00-01:00）</option>
+          <option value="1">丑时（01:00-03:00）</option>
+          <option value="2">寅时（03:00-05:00）</option>
+          <option value="3">卯时（05:00-07:00）</option>
+          <option value="4">辰时（07:00-09:00）</option>
+          <option value="5">巳时（09:00-11:00）</option>
+          <option value="6" selected>午时（11:00-13:00）</option>
+          <option value="7">未时（13:00-15:00）</option>
+          <option value="8">申时（15:00-17:00）</option>
+          <option value="9">酉时（17:00-19:00）</option>
+          <option value="10">戌时（19:00-21:00）</option>
+          <option value="11">亥时（21:00-23:00）</option>
+        </select>
+        <span style="font-size:12px;color:var(--text-light);">（知道出生时辰请选择，精确到两小时范围）</span>
+      </div>
+
+      <div class="form-row">
         <label>性别：</label>
         <select id="gender" style="width:120px;">
           <option value="male">男</option>
@@ -510,11 +530,14 @@
         </div>
       `;
       
+      // 出生时辰
+      const hourZhiIdx = parseInt(document.getElementById('birthHour').value);
+      
       // 使用setTimeout让UI更新
       setTimeout(() => {
         try {
-          const result = calcPiancai(year, month, day, gender);
-          renderResult(result, year, month, day, mode, gender);
+          const result = calcPiancai(year, month, day, gender, hourZhiIdx);
+          renderResult(result, year, month, day, mode, gender, hourZhiIdx);
         } catch (e) {
           console.error(e);
           document.getElementById('resultContent').innerHTML = `
@@ -528,8 +551,12 @@
     }
     
     // ---- 渲染结果 ----
-    function renderResult(result, year, month, day, mode, gender) {
+    function renderResult(result, year, month, day, mode, gender, hourZhiIdx) {
       const { results, strength, dayGan, dayWuxing, targetGanzhi, baziString, bazi } = result;
+      
+      // 时辰文字
+      const SHICHEN_NAMES = ['子', '丑', '寅', '卯', '辰', '巳', '午', '未', '申', '酉', '戌', '亥'];
+      const hourText = hourZhiIdx >= 0 ? SHICHEN_NAMES[hourZhiIdx] + '时' : '（时辰未知）';
       
       // 农历日期
       const lunarDate = getLunarDateString(year, month, day);
@@ -537,7 +564,7 @@
       
       let html = `
         <div class="result-summary">
-          <div style="font-size:14px;color:var(--text-light);">${mode === 'solar' ? '公历' : '农历'}出生：${year}年${month}月${day}日（${lunarDate}）</div>
+          <div style="font-size:14px;color:var(--text-light);">${mode === 'solar' ? '公历' : '农历'}出生：${year}年${month}月${day}日 ${hourText}（${lunarDate}）</div>
           <div class="bazi-display">
             八字：${baziString}
           </div>
