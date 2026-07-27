@@ -42,14 +42,14 @@ const LOTTERY_TYPES = {
     icon: '🔢',
     desc: '3位数字，每位0-9（直选/组三/组六/豹子）',
     isDigit: true, digitCount: 3, digitRange: 10,
-    tools: ['filter', 'random', 'omits']
+    tools: ['filter', 'random', 'zhui-hao', 'omits', 'sum-omit', 'num-omit', 'oe-omit', 'size-omit', 'prime-omit', 'span-omit', 'd012-omit', 'tail-omit', 'daxiao-array', 'jiou-array', 'hz-array']
   },
   p3: {
     name: '排列三',
     icon: '🔢',
     desc: '3位数字，每位0-9（直选/组三/组六/豹子）',
     isDigit: true, digitCount: 3, digitRange: 10,
-    tools: ['filter', 'random', 'omits']
+    tools: ['filter', 'random', 'zhui-hao', 'omits', 'sum-omit', 'num-omit', 'oe-omit', 'size-omit', 'prime-omit', 'span-omit', 'd012-omit', 'tail-omit', 'daxiao-array', 'jiou-array', 'hz-array']
   },
   p5: {
     name: '排列五',
@@ -84,14 +84,26 @@ const LOTTERY_TYPES = {
 // ---- 工具名称映射 ----
 const TOOL_NAMES = {
   filter: '在线过滤/缩水',
-  random: '在线机选/随机选号',
+  random: '在线机选',
   ac: 'AC值计算器',
   dantuo: '胆拖计算器',
   compound: '复式计算器',
-  'red-omit': '红球遗漏统计',
-  'blue-omit': '蓝球遗漏统计',
-  history: '历史开奖对比',
-  omits: '遗漏统计'
+  'red-omit': '红球遗漏',
+  'blue-omit': '蓝球遗漏',
+  history: '历史对比',
+  omits: '号码遗漏',
+  'zhui-hao': '追号计算器',
+  'sum-omit': '和值遗漏',
+  'num-omit': '数字遗漏',
+  'oe-omit': '单双遗漏',
+  'size-omit': '大小遗漏',
+  'prime-omit': '质合遗漏',
+  'span-omit': '跨度遗漏',
+  'd012-omit': '012路遗漏',
+  'tail-omit': '和尾遗漏',
+  'daxiao-array': '大小排列',
+  'jiou-array': '奇偶排列',
+  'hz-array': '和值排列'
 };
 
 const TOOL_ICONS = {
@@ -103,7 +115,19 @@ const TOOL_ICONS = {
   'red-omit': '📊',
   'blue-omit': '📊',
   history: '📅',
-  omits: '📊'
+  omits: '📊',
+  'zhui-hao': '🏃',
+  'sum-omit': '📊',
+  'num-omit': '📊',
+  'oe-omit': '📊',
+  'size-omit': '📊',
+  'prime-omit': '📊',
+  'span-omit': '📊',
+  'd012-omit': '📊',
+  'tail-omit': '📊',
+  'daxiao-array': '🔢',
+  'jiou-array': '🔢',
+  'hz-array': '🔢'
 };
 
 // ---- 当前状态 ----
@@ -362,6 +386,18 @@ function renderToolContent(toolId) {
     case 'blue-omit': return renderBlueOmitTool();
     case 'history': return renderHistoryTool();
     case 'omits': return render3DOmitsTool();
+    case 'zhui-hao': return renderZhuiHaoTool();
+    case 'sum-omit': return renderSumOmitTool();
+    case 'num-omit': return renderNumOmitTool();
+    case 'oe-omit': return renderOeOmitTool();
+    case 'size-omit': return renderSizeOmitTool();
+    case 'prime-omit': return renderPrimeOmitTool();
+    case 'span-omit': return renderSpanOmitTool();
+    case 'd012-omit': return renderD012OmitTool();
+    case 'tail-omit': return renderTailOmitTool();
+    case 'daxiao-array': return renderDaxiaoArrayTool();
+    case 'jiou-array': return renderJiouArrayTool();
+    case 'hz-array': return renderHzArrayTool();
     default: return '<p>工具加载中...</p>';
   }
 }
@@ -378,6 +414,18 @@ function initTool(toolId) {
     case 'blue-omit': initBlueOmitTool(); break;
     case 'history': initHistoryTool(); break;
     case 'omits': init3DOmitsTool(); break;
+    case 'zhui-hao': initZhuiHaoTool(); break;
+    case 'sum-omit': initSumOmitTool(); break;
+    case 'num-omit': initNumOmitTool(); break;
+    case 'oe-omit': initOeOmitTool(); break;
+    case 'size-omit': initSizeOmitTool(); break;
+    case 'prime-omit': initPrimeOmitTool(); break;
+    case 'span-omit': initSpanOmitTool(); break;
+    case 'd012-omit': initD012OmitTool(); break;
+    case 'tail-omit': initTailOmitTool(); break;
+    case 'daxiao-array': initDaxiaoArrayTool(); break;
+    case 'jiou-array': initJiouArrayTool(); break;
+    case 'hz-array': initHzArrayTool(); break;
   }
 }
 
