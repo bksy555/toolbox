@@ -1339,43 +1339,51 @@ console.log("Hello World!");
       handler: () => {}
     },
 
-  // ==================== 古文加密（Abracadabra 魔曰风格） ====================
+  // ==================== 古文加密（Abracadabra 魔曰） ====================
   {
     id: 'wenyan-encrypt',
     cat: 'security',
     icon: '📜',
     name: '古文加密',
-    desc: '将文本加密为文言文风格密文，或解密恢复原文',
+    desc: '魔曰(Abracadabra) — 将文本加密为文言文风格密文，或解密恢复原文',
     html: `
       <div class="tool-card">
-        <div class="form-row" style="margin-bottom:12px;gap:8px;flex-wrap:wrap;">
-          <label style="font-weight:600;min-width:auto;">模式：</label>
-          <select id="we-mode" style="padding:6px 12px;border:1px solid var(--border);border-radius:8px;font-size:14px;">
-            <option value="encrypt">加密 → 密文</option>
-            <option value="decrypt">解密 → 原文</option>
-          </select>
-          <label style="font-weight:600;min-width:auto;margin-left:12px;">加密密钥：</label>
-          <input type="text" id="we-key" value="123456" style="padding:6px 12px;border:1px solid var(--border);border-radius:8px;font-size:14px;width:160px;">
+        <div id="we-loading" style="text-align:center;padding:40px;color:var(--text-light);font-size:14px;">
+          ⏳ 正在加载魔曰加密引擎...
         </div>
-        <div class="input-group">
-          <label>输入文本</label>
-          <textarea id="we-input" placeholder="输入要加密的文本，或粘贴密文来解密..." rows="4"></textarea>
-        </div>
-        <div class="btn-group">
-          <button class="btn btn-primary" onclick="wenyanEncrypt()">✨ 执行</button>
-          <button class="btn btn-secondary" onclick="document.getElementById('we-input').value='';document.getElementById('we-output').value=''">清空</button>
-        </div>
-        <div class="input-group" style="margin-top:12px;">
-          <label>结果</label>
-          <textarea id="we-output" readonly rows="4" onclick="this.select();navigator.clipboard.writeText(this.value);showToast('✅ 已复制')" style="cursor:pointer;"></textarea>
-        </div>
-        <div class="hint" style="margin-top:8px;font-size:12px;color:var(--text-light);padding:8px 12px;background:rgba(99,102,241,0.06);border-radius:6px;">
-          💡 基于 AES-256-CBC 加密，输出为 Base64 编码密文，点击结果框自动复制。<br>
-          灵感来源于 <a href="https://github.com/SheepChef/Abracadabra" target="_blank" style="color:var(--primary);">Abracadabra 魔曰</a> 开源项目。
+        <div id="we-body" style="display:none;">
+          <div class="form-row" style="margin-bottom:12px;gap:8px;flex-wrap:wrap;">
+            <label style="font-weight:600;min-width:auto;">模式：</label>
+            <select id="we-mode" style="padding:6px 12px;border:1px solid var(--border);border-radius:8px;font-size:14px;">
+              <option value="wenyan-encrypt">文言文加密</option>
+              <option value="wenyan-decrypt">文言文解密</option>
+              <option value="old-encrypt">传统加密</option>
+              <option value="old-decrypt">传统解密</option>
+            </select>
+            <label style="font-weight:600;min-width:auto;margin-left:12px;">密钥：</label>
+            <input type="text" id="we-key" value="ABRACADABRA" style="padding:6px 12px;border:1px solid var(--border);border-radius:8px;font-size:14px;width:160px;">
+          </div>
+          <div class="input-group">
+            <label>输入文本</label>
+            <textarea id="we-input" placeholder="输入要加密的文本，或粘贴古文/传统密文来解密..." rows="4"></textarea>
+          </div>
+          <div class="btn-group">
+            <button class="btn btn-primary" onclick="wenyanEncrypt()">✨ 执行</button>
+            <button class="btn btn-secondary" onclick="document.getElementById('we-input').value='';document.getElementById('we-output').value=''">清空</button>
+          </div>
+          <div class="input-group" style="margin-top:12px;">
+            <label>结果</label>
+            <textarea id="we-output" readonly rows="6" onclick="this.select();navigator.clipboard.writeText(this.value);showToast('✅ 已复制')" style="cursor:pointer;"></textarea>
+          </div>
+          <div class="hint" style="margin-top:8px;font-size:12px;color:var(--text-light);padding:8px 12px;background:rgba(99,102,241,0.06);border-radius:6px;line-height:1.8;">
+            💡 <strong>文言文加密</strong>：将文本加密为仿真文言文密文，参考《古文观止》等典籍。<br>
+            💡 <strong>传统加密</strong>：经典加密模式，输出汉字密文，兼容熊曰解密。<br>
+            💡 基于 <a href="https://github.com/SheepChef/Abracadabra" target="_blank" style="color:var(--primary);">Abracadabra 魔曰</a> v3.5.0 开源项目（2.4k ⭐）。
+          </div>
         </div>
       </div>
     `,
-    handler: () => { if(typeof wenyanEncrypt === 'function') wenyanEncrypt(); }
+    handler: () => { loadAbracadabra(); }
   },
 
   // ==================== 电子教材（ChinaTextbook） ====================
@@ -1489,7 +1497,7 @@ console.log("Hello World!");
       </div>
     `,
     handler: () => {}
-  },,
+  },
 
   // ==================== AI工具 ====================
   {
@@ -2461,26 +2469,75 @@ openclaw update</code></pre>
 ];
 
 // ============================================================
-// 新工具：古文加密 处理函数
+// 新工具：古文加密（Abracadabra 魔曰）处理函数
 // ============================================================
+let _abraLoaded = false;
+
+function loadAbracadabra() {
+  if (_abraLoaded) {
+    document.getElementById('we-loading').style.display = 'none';
+    document.getElementById('we-body').style.display = 'block';
+    return;
+  }
+  document.getElementById('we-loading').style.display = 'block';
+  document.getElementById('we-body').style.display = 'none';
+  const script = document.createElement('script');
+  script.type = 'module';
+  script.textContent = `
+    import { Abracadabra } from 'https://cdn.jsdelivr.net/npm/abracadabra-cn@3.5.0/dist/abracadabra-cn.js';
+    window.Abracadabra = Abracadabra;
+    window._abraReady = true;
+    document.getElementById('we-loading').style.display = 'none';
+    document.getElementById('we-body').style.display = 'block';
+  `;
+  document.body.appendChild(script);
+  _abraLoaded = true;
+}
+
 function wenyanEncrypt() {
   const mode = document.getElementById('we-mode').value;
-  const key = document.getElementById('we-key').value || '123456';
+  const key = document.getElementById('we-key').value || 'ABRACADABRA';
   const input = document.getElementById('we-input').value;
   const output = document.getElementById('we-output');
   if (!input) { showToast('⚠️ 请输入文本'); return; }
+  
+  if (!window.Abracadabra) {
+    showToast('⚠️ 魔曰引擎尚未加载完毕，请稍候...');
+    return;
+  }
+  
   try {
-    if (mode === 'encrypt') {
-      // AES-256-CBC 加密，输出 Base64
-      const encrypted = CryptoJS.AES.encrypt(input, key).toString();
-      output.value = encrypted;
-    } else {
-      const decrypted = CryptoJS.AES.decrypt(input, key).toString(CryptoJS.enc.Utf8);
-      if (!decrypted) { showToast('❌ 解密失败，请检查密钥或密文是否正确'); return; }
-      output.value = decrypted;
+    const Abra = window.Abracadabra;
+    
+    if (mode === 'wenyan-encrypt') {
+      // 文言文加密
+      const abra = new Abra(Abra.TEXT, Abra.TEXT);
+      abra.WenyanInput(input, Abra.ENCRYPT, key);
+      output.value = abra.Output();
+      showToast('✅ 加密成功！已生成文言文密文');
+    } else if (mode === 'wenyan-decrypt') {
+      // 文言文解密
+      const abra = new Abra(Abra.TEXT, Abra.TEXT);
+      abra.WenyanInput(input, Abra.DECRYPT, key);
+      output.value = abra.Output();
+      showToast('✅ 解密成功！');
+    } else if (mode === 'old-encrypt') {
+      // 传统加密
+      const abra = new Abra(Abra.TEXT, Abra.TEXT);
+      abra.OldInput(input, Abra.ENCRYPT, key);
+      output.value = abra.Output();
+      showToast('✅ 加密成功！已生成汉字密文');
+    } else if (mode === 'old-decrypt') {
+      // 传统解密（自动识别密文类型）
+      const abra = new Abra(Abra.TEXT, Abra.TEXT);
+      abra.OldInput(input, Abra.AUTO, key);
+      output.value = abra.Output();
+      showToast('✅ 解密成功！');
     }
   } catch(e) {
-    showToast('❌ 操作失败: ' + e.message);
+    output.value = '❌ 操作失败: ' + e.message;
+    showToast('❌ 操作失败');
+    console.error('Abracadabra error:', e);
   }
 }
 
@@ -2772,12 +2829,17 @@ function biliParse() {
     return;
   }
   
-  // 使用B站公开API
+  // 使用B站公开API（通过CORS代理）
   const apiUrl = `https://api.bilibili.com/x/web-interface/view?bvid=${bvid}`;
+  const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(apiUrl)}`;
   
-  fetch(apiUrl)
+  const btn = document.querySelector('.btn-primary[onclick="biliParse()"]');
+  if (btn) btn.textContent = '⏳ 解析中...';
+  
+  fetch(proxyUrl, { signal: AbortSignal.timeout(10000) })
     .then(r => r.json())
     .then(data => {
+      if (btn) btn.textContent = '🔍 解析';
       if (data.code !== 0) {
         errorDiv.textContent = '❌ API返回错误: ' + (data.message || '未知错误');
         errorDiv.style.display = 'block';
@@ -2795,12 +2857,19 @@ function biliParse() {
         <div>⏱️ 时长：${Math.floor(v.duration / 60)}分${v.duration % 60}秒</div>
       `;
       document.getElementById('bili-desc').textContent = v.desc || '暂无简介';
-      document.getElementById('bili-cover').innerHTML = v.pic ? `<img src="${v.pic}" style="width:100%;height:100%;object-fit:cover;">` : '暂无封面';
+      document.getElementById('bili-cover').innerHTML = v.pic ? `<img src="${v.pic}@200w_125h" style="width:100%;height:100%;object-fit:cover;" onerror="this.src='${v.pic}'">` : '暂无封面';
       resultDiv.style.display = 'block';
     })
     .catch(err => {
-      errorDiv.textContent = '❌ 请求失败，可能被浏览器跨域限制。请直接访问B站查看视频信息。错误: ' + err.message;
-      errorDiv.style.display = 'block';
+      if (btn) btn.textContent = '🔍 解析';
+      // 如果代理失败，尝试直接请求
+      fetch(apiUrl, { mode: 'no-cors' }).then(() => {
+        errorDiv.textContent = '⚠️ 浏览器跨域限制导致无法直接获取数据，请尝试使用B站直接查看视频信息。\n\n或者试试其他视频解析工具。';
+        errorDiv.style.display = 'block';
+      }).catch(() => {
+        errorDiv.textContent = '❌ 请求失败，此工具需要后端代理支持。您可以手动在B站搜索该视频。\n\n错误: ' + err.message;
+        errorDiv.style.display = 'block';
+      });
     });
 }
 
