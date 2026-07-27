@@ -772,6 +772,16 @@
   gap: 4px;
 }
 
+/* ---- 指定数字出号过滤 ---- */
+.digit-count-condition {
+  position: relative;
+  transition: all 0.2s ease;
+}
+
+.digit-count-condition:hover {
+  border-color: var(--primary) !important;
+}
+
 /* ---- 追号计算器 ---- */
 #zhBody tr:hover {
   background: rgba(99, 102, 241, 0.05);

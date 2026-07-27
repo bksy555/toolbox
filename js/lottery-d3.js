@@ -179,6 +179,19 @@ function render3DFilterTool() {
         </div>
       </div>
 
+      <div class="section-divider"></div>
+
+      <div style="margin-bottom:16px;">
+        <div class="section-desc"><strong>10. 指定数字出号过滤</strong>（选择数字并指定出现个数，多个条件同时生效）</div>
+        <div id="d3DigitCountContainer">
+          <!-- 动态添加条件 -->
+        </div>
+        <div class="btn-group" style="margin-top:8px;gap:8px;">
+          <button class="btn btn-secondary" style="font-size:13px;padding:6px 14px;" onclick="addDigitCountCondition()">➕ 添加条件</button>
+          <button class="btn btn-secondary" style="font-size:13px;padding:6px 14px;background:var(--bg);color:var(--text-light);" onclick="clearDigitCountConditions()">清空所有条件</button>
+        </div>
+      </div>
+
       <div class="btn-group" style="margin-top:16px;">
         <button class="btn btn-primary" onclick="run3DFilter()">🔍 开始过滤</button>
         <button class="btn btn-secondary" onclick="reset3DFilter()">🔄 重置</button>
@@ -256,6 +269,9 @@ function init3DFilterTool() {
       });
     }
   });
+  // 清空并添加一个默认条件
+  clearDigitCountConditions();
+  addDigitCountCondition();
 }
 
 // ---- 3D 执行过滤 ----
@@ -418,6 +434,20 @@ function run3DFilter() {
     });
   }
 
+  // 指定数字出号过滤
+  const digitConditions = getDigitCountConditions();
+  if (digitConditions.length > 0) {
+    allNums = allNums.filter(n => {
+      return digitConditions.every(cond => {
+        let matchCount = 0;
+        for (const d of n) {
+          if (cond.digits.includes(d)) matchCount++;
+        }
+        return matchCount === cond.count;
+      });
+    });
+  }
+
   // 显示结果
   const total = allNums.length;
   document.getElementById('filterCount').textContent = `共 ${total.toLocaleString()} 注`;
@@ -447,6 +477,79 @@ function reset3DFilter() {
     if (c.dataset.v === 'any' || c.dataset.v === 'none') c.classList.add('selected');
     else c.classList.remove('selected');
   });
+  clearDigitCountConditions();
+}
+
+// ============================================================
+// 指定数字出号过滤
+// ============================================================
+let digitCountIdx = 0;
+
+function addDigitCountCondition() {
+  const container = document.getElementById('d3DigitCountContainer');
+  if (!container) return;
+  const idx = digitCountIdx++;
+  const div = document.createElement('div');
+  div.className = 'digit-count-condition';
+  div.id = 'dcc-' + idx;
+  div.style.cssText = 'margin-bottom:12px;padding:12px;border:1px solid var(--border);border-radius:8px;background:var(--bg);position:relative;';
+  div.innerHTML = `
+    <button onclick="removeDigitCountCondition(${idx})" style="position:absolute;top:6px;right:8px;background:none;border:none;font-size:18px;cursor:pointer;color:var(--text-light);" title="删除条件">✕</button>
+    <div style="font-size:13px;font-weight:600;margin-bottom:6px;color:var(--text);">条件 ${idx + 1}</div>
+    <div class="lottery-input-row">
+      <label style="min-width:60px;">选择数字：</label>
+      <div class="wei-balls" id="dcc-digits-${idx}">
+        ${Array.from({length:10}, (_, i) => `
+          <button class="num-btn small" onclick="toggleDccDigit(${idx}, ${i})" data-selected="false">${i}</button>
+        `).join('')}
+      </div>
+    </div>
+    <div class="lottery-input-row">
+      <label style="min-width:60px;">出 <input type="number" id="dcc-count-${idx}" value="1" min="0" max="3" style="width:60px;text-align:center;"> 个</label>
+      <span style="font-size:12px;color:var(--text-light);">（所选数字在号码中出现的次数）</span>
+    </div>
+  `;
+  container.appendChild(div);
+}
+
+function toggleDccDigit(idx, num) {
+  const btn = document.querySelector(`#dcc-digits-${idx} .num-btn:nth-child(${num + 1})`);
+  if (!btn) return;
+  const isSelected = btn.dataset.selected === 'true';
+  btn.dataset.selected = isSelected ? 'false' : 'true';
+  btn.classList.toggle('selected', !isSelected);
+}
+
+function removeDigitCountCondition(idx) {
+  const el = document.getElementById('dcc-' + idx);
+  if (el) el.remove();
+}
+
+function clearDigitCountConditions() {
+  const container = document.getElementById('d3DigitCountContainer');
+  if (container) container.innerHTML = '';
+  digitCountIdx = 0;
+}
+
+function getDigitCountConditions() {
+  const conditions = [];
+  const container = document.getElementById('d3DigitCountContainer');
+  if (!container) return conditions;
+  const items = container.querySelectorAll('.digit-count-condition');
+  items.forEach(item => {
+    const id = item.id.replace('dcc-', '');
+    const digits = [];
+    item.querySelectorAll('.num-btn').forEach(btn => {
+      if (btn.dataset.selected === 'true') {
+        digits.push(parseInt(btn.textContent));
+      }
+    });
+    const count = parseInt(document.getElementById('dcc-count-' + id)?.value) || 0;
+    if (digits.length > 0 && count >= 0) {
+      conditions.push({ digits, count });
+    }
+  });
+  return conditions;
 }
 
 // ============================================================
@@ -469,6 +572,19 @@ function renderQxcFilterTool() {
       </div>`;
   }
   html += `
+      <div class="section-divider"></div>
+
+      <div style="margin-bottom:16px;">
+        <div class="section-desc"><strong>10. 指定数字出号过滤</strong>（选择数字并指定出现个数，多个条件同时生效）</div>
+        <div id="d3DigitCountContainer">
+          <!-- 动态添加条件 -->
+        </div>
+        <div class="btn-group" style="margin-top:8px;gap:8px;">
+          <button class="btn btn-secondary" style="font-size:13px;padding:6px 14px;" onclick="addDigitCountCondition()">➕ 添加条件</button>
+          <button class="btn btn-secondary" style="font-size:13px;padding:6px 14px;background:var(--bg);color:var(--text-light);" onclick="clearDigitCountConditions()">清空所有条件</button>
+        </div>
+      </div>
+
       <div class="btn-group" style="margin-top:16px;">
         <button class="btn btn-primary" onclick="runQxcFilter()">🔍 生成</button>
       </div>
