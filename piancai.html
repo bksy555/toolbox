@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>偏财日查询 - 八字择日|彩票吉日|偏财运势</title>
+  <meta name="description" content="根据出生年月日自动生成2026年度的偏财日和偏财时，基于八字原理（子平渊海、子平真诠），结合大运流年判断身强身弱，推荐适合购买彩票的吉日良辰与方位。本程序不做任何记录存档，请放心使用。">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/lottery.css">
+  <style>
+    .piancai-page {
+      padding: 24px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    .piancai-page h1 {
+      font-size: 26px;
+      margin-bottom: 8px;
+    }
+    .piancai-page .subtitle {
+      color: var(--text-light);
+      font-size: 14px;
+      line-height: 1.8;
+      margin-bottom: 24px;
+      padding: 16px;
+      background: linear-gradient(135deg, rgba(245,158,11,0.08), rgba(239,68,68,0.05));
+      border-radius: 12px;
+      border: 1px solid rgba(245,158,11,0.15);
+    }
+    .piancai-page .subtitle strong {
+      color: var(--primary);
+    }
+    .piancai-form {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 24px;
+    }
+    .piancai-form .form-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+    .piancai-form .form-row label {
+      font-size: 14px;
+      font-weight: 600;
+      min-width: 100px;
+      color: var(--text);
+    }
+    .piancai-form select, .piancai-form input {
+      padding: 8px 12px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 14px;
+      outline: none;
+      background: var(--bg);
+      color: var(--text);
+    }
+    .piancai-form select:focus, .piancai-form input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 2px rgba(99,102,241,0.15);
+    }
+    .piancai-form .date-group {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+    .piancai-form .date-group select {
+      width: 90px;
+    }
+    .piancai-form .date-group select.day {
+      width: 80px;
+    }
+    .piancai-form .btn-submit {
+      padding: 10px 32px;
+      font-size: 15px;
+      font-weight: 600;
+      border: none;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #f59e0b, #ef4444);
+      color: #fff;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    .piancai-form .btn-submit:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 16px rgba(239,68,68,0.3);
+    }
+    .piancai-form .btn-submit:active {
+      transform: translateY(0);
+    }
+    .piancai-form .btn-submit:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+    .piancai-form .tab-switch {
+      display: flex;
+      gap: 0;
+      margin-bottom: 20px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+      width: fit-content;
+    }
+    .piancai-form .tab-switch button {
+      padding: 8px 20px;
+      border: none;
+      background: var(--bg);
+      font-size: 14px;
+      cursor: pointer;
+      color: var(--text-light);
+      transition: all 0.2s;
+    }
+    .piancai-form .tab-switch button.active {
+      background: var(--primary);
+      color: #fff;
+    }
+    .piancai-form .tab-switch button:first-child {
+      border-right: 1px solid var(--border);
+    }
+    .piancai-form .lunar-hint {
+      font-size: 12px;
+      color: var(--text-light);
+      margin-top: 4px;
+      padding: 8px 12px;
+      background: rgba(99,102,241,0.06);
+      border-radius: 6px;
+    }
+    .piancai-result {
+      display: none;
+    }
+    .piancai-result.show {
+      display: block;
+    }
+    .result-summary {
+      background: linear-gradient(135deg, rgba(245,158,11,0.1), rgba(239,68,68,0.08));
+      border: 1px solid rgba(245,158,11,0.2);
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+    .result-summary .bazi-display {
+      font-size: 20px;
+      font-family: 'KaiTi', 'STKaiti', serif;
+      letter-spacing: 4px;
+      margin: 8px 0;
+    }
+    .result-summary .bazi-display .day-master {
+      color: #ef4444;
+      font-weight: 700;
+      font-size: 24px;
+    }
+    .result-summary .strength-badge {
+      display: inline-block;
+      padding: 4px 16px;
+      border-radius: 20px;
+      font-size: 14px;
+      font-weight: 600;
+      margin: 8px 0;
+    }
+    .result-summary .strength-badge.strong {
+      background: rgba(239,68,68,0.15);
+      color: #ef4444;
+    }
+    .result-summary .strength-badge.weak {
+      background: rgba(59,130,246,0.15);
+      color: #3b82f6;
+    }
+    .result-summary .detail-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-top: 12px;
+      font-size: 13px;
+    }
+    .result-summary .detail-grid .item {
+      padding: 6px 0;
+    }
+    .result-summary .detail-grid .item .label {
+      color: var(--text-light);
+    }
+    .piancai-date-list {
+      display: grid;
+      gap: 10px;
+    }
+    .piancai-date-card {
+      display: flex;
+      align-items: center;
+      padding: 14px 18px;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      transition: all 0.2s;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .piancai-date-card:hover {
+      border-color: var(--primary);
+      box-shadow: 0 2px 8px rgba(99,102,241,0.1);
+    }
+    .piancai-date-card .date-info {
+      min-width: 120px;
+    }
+    .piancai-date-card .date-info .date-num {
+      font-size: 18px;
+      font-weight: 700;
+    }
+    .piancai-date-card .date-info .date-weekday {
+      font-size: 12px;
+      color: var(--text-light);
+    }
+    .piancai-date-card .ganzhi-badge {
+      background: linear-gradient(135deg, rgba(245,158,11,0.15), rgba(239,68,68,0.1));
+      padding: 4px 14px;
+      border-radius: 6px;
+      font-size: 16px;
+      font-weight: 700;
+      font-family: 'KaiTi', 'STKaiti', serif;
+      letter-spacing: 2px;
+    }
+    .piancai-date-card .time-info {
+      font-size: 14px;
+      color: var(--primary);
+      font-weight: 600;
+    }
+    .piancai-date-card .direction-info {
+      font-size: 14px;
+      color: #f59e0b;
+      font-weight: 600;
+    }
+    .piancai-date-card .lunar-info {
+      font-size: 12px;
+      color: var(--text-light);
+    }
+    .piancai-empty {
+      text-align: center;
+      padding: 40px;
+      color: var(--text-light);
+      font-size: 15px;
+    }
+    .piancai-loading {
+      text-align: center;
+      padding: 40px;
+      color: var(--text-light);
+    }
+    .piancai-loading .spinner {
+      display: inline-block;
+      width: 32px;
+      height: 32px;
+      border: 3px solid var(--border);
+      border-top-color: var(--primary);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    .section-title {
+      font-size: 16px;
+      font-weight: 700;
+      margin: 20px 0 12px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid var(--border);
+    }
+    .month-group {
+      margin-bottom: 16px;
+    }
+    .month-group .month-label {
+      font-size: 15px;
+      font-weight: 600;
+      padding: 8px 12px;
+      background: rgba(99,102,241,0.06);
+      border-radius: 8px;
+      margin-bottom: 8px;
+    }
+    .disclaimer {
+      margin-top: 24px;
+      padding: 16px;
+      background: rgba(245,158,11,0.06);
+      border: 1px solid rgba(245,158,11,0.15);
+      border-radius: 10px;
+      font-size: 13px;
+      color: var(--text-light);
+      line-height: 1.8;
+    }
+    .disclaimer strong {
+      color: #f59e0b;
+    }
+    @media (max-width: 600px) {
+      .piancai-page { padding: 12px; }
+      .piancai-form .form-row { flex-direction: column; align-items: stretch; }
+      .piancai-form .form-row label { min-width: auto; }
+      .piancai-date-card { flex-direction: column; align-items: flex-start; }
+      .result-summary .detail-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="header">
+    <div class="header-inner">
+      <a href="index.html" class="logo">
+        <span class="logo-icon">🧰</span>
+        ToolBox
+      </a>
+      <nav class="header-nav">
+        <a href="index.html">首页</a>
+        <a href="index.html#categories">工具</a>
+        <a href="lottery.html" style="background:rgba(255,255,255,0.2);border-radius:20px;padding:6px 16px;">🎰 彩票工具</a>
+        <a href="piancai.html" class="active" style="background:rgba(255,255,255,0.2);border-radius:20px;padding:6px 16px;">💰 偏财日</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="piancai-page">
+
+    <h1>💰 偏财日查询</h1>
+    <div class="subtitle">
+      根据自己出生年月日，系统自动帮您生成本年度（2026年）的偏财日和偏财时。<br>
+      基于<strong>《子平渊海》</strong>和<strong>《子平真诠》</strong>等八字命理原理，结合大运和流年综合判断身强身弱：
+      <strong>身强</strong>则选择日主所克五行的干支日期（财星日），<strong>身弱</strong>则选择生助日主五行的干支日期（印比日）。<br>
+      在偏财日和偏财时购买彩票，中奖概率会有一定提升——<strong>不可迷信，只当一个好彩头</strong>。<br>
+      本程序<strong>不做任何记录存档</strong>，所有数据仅在本地计算，请放心使用。
+    </div>
+
+    <!-- 输入表单 -->
+    <div class="piancai-form">
+      <div class="tab-switch">
+        <button class="active" onclick="switchInputMode('solar')" id="tabSolar">公历</button>
+        <button onclick="switchInputMode('lunar')" id="tabLunar">农历</button>
+      </div>
+
+      <div id="solarInput">
+        <div class="form-row">
+          <label>出生日期：</label>
+          <div class="date-group">
+            <select id="birthYear">
+              <option value="">年</option>
+            </select>
+            <select id="birthMonth">
+              <option value="">月</option>
+            </select>
+            <select id="birthDay" class="day">
+              <option value="">日</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div id="lunarInput" style="display:none;">
+        <div class="form-row">
+          <label>出生日期（农历）：</label>
+          <div class="date-group">
+            <select id="lunarYear">
+              <option value="">年</option>
+            </select>
+            <select id="lunarMonth">
+              <option value="">月</option>
+            </select>
+            <select id="lunarDay" class="day">
+              <option value="">日</option>
+            </select>
+          </div>
+        </div>
+        <div class="lunar-hint">💡 农历年份从春节开始，请选择对应的农历年月日</div>
+      </div>
+
+      <div class="form-row">
+        <label>性别：</label>
+        <select id="gender" style="width:120px;">
+          <option value="male">男</option>
+          <option value="female">女</option>
+        </select>
+        <span style="font-size:12px;color:var(--text-light);">（用于大运推算）</span>
+      </div>
+
+      <div class="form-row">
+        <button class="btn-submit" onclick="doQuery()">🔮 查询偏财日</button>
+      </div>
+    </div>
+
+    <!-- 结果 -->
+    <div class="piancai-result" id="resultArea">
+      <div id="resultContent"></div>
+    </div>
+
+  </div>
+
+  <!-- ====== Toast ====== -->
+  <div class="toast" id="lotteryToast"></div>
+
+  <script src="js/lottery-piancai.js"></script>
+  <script>
+    // ---- 初始化年月日选择器 ----
+    function initSelectors() {
+      const yearSelect = document.getElementById('birthYear');
+      const lunarYearSelect = document.getElementById('lunarYear');
+      const currentYear = new Date().getFullYear();
+      
+      for (let y = currentYear; y >= 1940; y--) {
+        const opt1 = document.createElement('option');
+        opt1.value = y;
+        opt1.textContent = y + '年';
+        yearSelect.appendChild(opt1);
+        
+        const opt2 = document.createElement('option');
+        opt2.value = y;
+        opt2.textContent = y + '年';
+        lunarYearSelect.appendChild(opt2);
+      }
+      
+      const monthSelect = document.getElementById('birthMonth');
+      const lunarMonthSelect = document.getElementById('lunarMonth');
+      for (let m = 1; m <= 12; m++) {
+        const opt1 = document.createElement('option');
+        opt1.value = m;
+        opt1.textContent = m + '月';
+        monthSelect.appendChild(opt1);
+        
+        const opt2 = document.createElement('option');
+        opt2.value = m;
+        opt2.textContent = m + '月';
+        lunarMonthSelect.appendChild(opt2);
+      }
+      
+      updateDays();
+      updateLunarDays();
+    }
+    
+    function updateDays() {
+      const year = parseInt(document.getElementById('birthYear').value) || 2026;
+      const month = parseInt(document.getElementById('birthMonth').value) || 1;
+      const daySelect = document.getElementById('birthDay');
+      const daysInMonth = new Date(year, month, 0).getDate();
+      
+      daySelect.innerHTML = '<option value="">日</option>';
+      for (let d = 1; d <= daysInMonth; d++) {
+        const opt = document.createElement('option');
+        opt.value = d;
+        opt.textContent = d + '日';
+        daySelect.appendChild(opt);
+      }
+    }
+    
+    function updateLunarDays() {
+      const daySelect = document.getElementById('lunarDay');
+      daySelect.innerHTML = '<option value="">日</option>';
+      for (let d = 1; d <= 30; d++) {
+        const opt = document.createElement('option');
+        opt.value = d;
+        opt.textContent = d + '日';
+        daySelect.appendChild(opt);
+      }
+    }
+    
+    document.getElementById('birthYear').addEventListener('change', updateDays);
+    document.getElementById('birthMonth').addEventListener('change', updateDays);
+    
+    // ---- 切换公历/农历 ----
+    function switchInputMode(mode) {
+      document.getElementById('tabSolar').className = mode === 'solar' ? 'active' : '';
+      document.getElementById('tabLunar').className = mode === 'lunar' ? 'active' : '';
+      document.getElementById('solarInput').style.display = mode === 'solar' ? 'block' : 'none';
+      document.getElementById('lunarInput').style.display = mode === 'lunar' ? 'block' : 'none';
+    }
+    
+    // ---- 查询 ----
+    function doQuery() {
+      const mode = document.getElementById('tabSolar').classList.contains('active') ? 'solar' : 'lunar';
+      let year, month, day, gender;
+      
+      if (mode === 'solar') {
+        year = parseInt(document.getElementById('birthYear').value);
+        month = parseInt(document.getElementById('birthMonth').value);
+        day = parseInt(document.getElementById('birthDay').value);
+      } else {
+        const lunarYear = parseInt(document.getElementById('lunarYear').value);
+        const lunarMonth = parseInt(document.getElementById('lunarMonth').value);
+        const lunarDay = parseInt(document.getElementById('lunarDay').value);
+        
+        if (!lunarYear || !lunarMonth || !lunarDay) {
+          showToast('⚠️ 请选择完整的出生日期');
+          return;
+        }
+        
+        // 农历近似转公历
+        const solarDate = lunarToSolar(lunarYear, lunarMonth, lunarDay, false);
+        year = solarDate.getFullYear();
+        month = solarDate.getMonth() + 1;
+        day = solarDate.getDate();
+      }
+      
+      gender = document.getElementById('gender').value;
+      
+      if (!year || !month || !day) {
+        showToast('⚠️ 请选择完整的出生日期');
+        return;
+      }
+      
+      // 显示加载
+      const resultArea = document.getElementById('resultArea');
+      resultArea.classList.add('show');
+      document.getElementById('resultContent').innerHTML = `
+        <div class="piancai-loading">
+          <div class="spinner"></div>
+          <div style="margin-top:12px;">🔮 正在推算八字...</div>
+        </div>
+      `;
+      
+      // 使用setTimeout让UI更新
+      setTimeout(() => {
+        try {
+          const result = calcPiancai(year, month, day, gender);
+          renderResult(result, year, month, day, mode, gender);
+        } catch (e) {
+          console.error(e);
+          document.getElementById('resultContent').innerHTML = `
+            <div class="piancai-empty">
+              😅 计算出现错误，请检查输入或重试<br>
+              <span style="font-size:12px;">${e.message}</span>
+            </div>
+          `;
+        }
+      }, 100);
+    }
+    
+    // ---- 渲染结果 ----
+    function renderResult(result, year, month, day, mode, gender) {
+      const { results, strength, dayGan, dayWuxing, targetGanzhi, baziString, bazi } = result;
+      
+      // 农历日期
+      const lunarDate = getLunarDateString(year, month, day);
+      const lunarYearName = getLunarYearName(year);
+      
+      let html = `
+        <div class="result-summary">
+          <div style="font-size:14px;color:var(--text-light);">${mode === 'solar' ? '公历' : '农历'}出生：${year}年${month}月${day}日（${lunarDate}）</div>
+          <div class="bazi-display">
+            八字：${baziString}
+          </div>
+          <div style="font-size:13px;color:var(--text-light);margin-bottom:8px;">
+            日主：<strong style="color:#ef4444;font-size:18px;font-family:'KaiTi','STKaiti',serif;">${dayGan}</strong>（${dayWuxing}） 
+            ${gender === 'male' ? '男' : '女'}命
+          </div>
+          <div>
+            <span class="strength-badge ${strength.isStrong ? 'strong' : 'weak'}">
+              ${strength.isStrong ? '💪 身强' : '🌿 身弱'}
+            </span>
+          </div>
+          <div class="detail-grid">
+            <div class="item"><span class="label">当前大运：</span> ${strength.detail.currentDayun}</div>
+            <div class="item"><span class="label">流年：</span> ${strength.detail.liunian}年（2026年）</div>
+            <div class="item"><span class="label">原局支持：</span> ${strength.detail.baseSupport} vs 克泄：${strength.detail.baseDrain}</div>
+            <div class="item"><span class="label">大运流年调整：</span> ${strength.adjustment > 0 ? '+' : ''}${strength.adjustment}</div>
+            <div class="item"><span class="label">推荐干支：</span> ${targetGanzhi.join('、')}</div>
+          </div>
+        </div>
+        <div class="section-title">📅 2026年偏财日一览</div>
+      `;
+      
+      if (results.length === 0) {
+        html += `<div class="piancai-empty">😅 本年度暂无符合条件的偏财日</div>`;
+      } else {
+        // 按月份分组
+        const byMonth = {};
+        const WEEKDAYS = ['日', '一', '二', '三', '四', '五', '六'];
+        
+        results.forEach(r => {
+          const m = r.date.getMonth() + 1;
+          if (!byMonth[m]) byMonth[m] = [];
+          byMonth[m].push(r);
+        });
+        
+        html += `<div class="piancai-date-list">`;
+        let count = 0;
+        for (const [m, dates] of Object.entries(byMonth).sort((a, b) => a[0] - b[0])) {
+          html += `<div class="month-group">
+            <div class="month-label">📆 ${m}月（共${dates.length}天）</div>`;
+          
+          dates.forEach(r => {
+            count++;
+            const d = r.date.getDate();
+            const weekday = '星期' + WEEKDAYS[r.date.getDay()];
+            const lunar = getLunarDateString(r.date.getFullYear(), r.date.getMonth() + 1, d);
+            html += `
+              <div class="piancai-date-card">
+                <div class="date-info">
+                  <div class="date-num">${m}月${d}日</div>
+                  <div class="date-weekday">${weekday} · ${lunar}</div>
+                </div>
+                <div class="ganzhi-badge">${r.ganzhiFull}</div>
+                <div class="time-info">🕐 ${r.shichenPeriod}</div>
+                <div class="direction-info">🧭 宜${r.fangwei}方位</div>
+              </div>
+            `;
+          });
+          
+          html += `</div>`;
+        }
+        html += `</div>`;
+        
+        html += `<div style="font-size:14px;color:var(--text-light);text-align:center;margin-top:12px;">
+          全年共 <strong style="color:var(--primary);">${results.length}</strong> 个偏财日
+        </div>`;
+      }
+      
+      html += `
+        <div class="disclaimer">
+          <strong>⚠️ 温馨提示</strong><br>
+          · 本工具基于《子平渊海》《子平真诠》等传统命理原理，仅供娱乐参考<br>
+          · 偏财日选择基于八字身强身弱判断，结合当前大运和流年综合分析<br>
+          · 彩票中奖主要取决于运气，请理性购彩，切勿沉迷<br>
+          · 本程序完全在本地浏览器运行，<strong>不会记录或上传任何个人信息</strong><br>
+          · 推荐在偏财日的偏财时，前往对应方位附近的彩票店购买，图个好彩头 🍀
+        </div>
+      `;
+      
+      document.getElementById('resultContent').innerHTML = html;
+      document.getElementById('resultArea').classList.add('show');
+      // 滚动到结果区域
+      document.getElementById('resultArea').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+    
+    // ---- Toast ----
+    function showToast(msg) {
+      const toast = document.getElementById('lotteryToast');
+      if (!toast) return;
+      toast.textContent = msg;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 3000);
+    }
+    
+    // ---- 初始化 ----
+    initSelectors();
+  </script>
+</body>
+</html>
