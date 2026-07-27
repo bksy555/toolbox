@@ -2485,92 +2485,244 @@ function wenyanEncrypt() {
 }
 
 // ============================================================
-// 新工具：电子教材 处理函数
+// 新工具：电子教材 处理函数（全科目，使用 GitHub API 动态加载）
 // ============================================================
-const TEXTBOOK_DATA = {
+// 所有学段和科目定义（科目映射到GitHub路径）
+const TEXTBOOK_LEVELS = {
   '小学': {
-    'icon': '📚',
-    'subjects': {
-      '数学': [
-        { name: '一年级上册', url: 'https://github.com/TapXWorld/ChinaTextbook/blob/master/%E5%B0%8F%E5%AD%A6/%E6%95%B0%E5%AD%A6/%E4%BA%BA%E6%95%99%E7%89%88/%E4%B9%89%E5%8A%A1%E6%95%99%E8%82%B2%E6%95%99%E7%A7%91%E4%B9%A6%20%C2%B7%20%E6%95%B0%E5%AD%A6%E4%B8%80%E5%B9%B4%E7%BA%A7%E4%B8%8A%E5%86%8C.pdf' },
-        { name: '一年级下册', url: 'https://github.com/TapXWorld/ChinaTextbook/blob/master/%E5%B0%8F%E5%AD%A6/%E6%95%B0%E5%AD%A6/%E4%BA%BA%E6%95%99%E7%89%88/%E4%B9%89%E5%8A%A1%E6%95%99%E8%82%B2%E6%95%99%E7%A7%91%E4%B9%A6%C2%B7%E6%95%B0%E5%AD%A6%E4%B8%80%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf' },
-        { name: '二年级上册', url: 'https://github.com/TapXWorld/ChinaTextbook/blob/master/%E5%B0%8F%E5%AD%A6/%E6%95%B0%E5%AD%A6/%E4%BA%BA%E6%95%99%E7%89%88/%E4%B9%89%E5%8A%A1%E6%95%99%E8%82%B2%E6%95%99%E7%A7%91%E4%B9%A6%20%C2%B7%20%E6%95%B0%E5%AD%A6%E4%BA%8C%E5%B9%B4%E7%BA%A7%E4%B8%8A%E5%86%8C.pdf' },
-        { name: '二年级下册', url: 'https://github.com/TapXWorld/ChinaTextbook/blob/master/%E5%B0%8F%E5%AD%A6/%E6%95%B0%E5%AD%A6/%E4%BA%BA%E6%95%99%E7%89%88/%E4%B9%89%E5%8A%A1%E6%95%99%E8%82%B2%E6%95%99%E7%A7%91%E4%B9%A6%C2%B7%E6%95%B0%E5%AD%A6%E4%BA%8C%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf' },
-        { name: '三年级上册', url: 'https://github.com/TapXWorld/ChinaTextbook/blob/master/%E5%B0%8F%E5%AD%A6/%E6%95%B0%E5%AD%A6/%E4%BA%BA%E6%95%99%E7%89%88/%E4%B9%89%E5%8A%A1%E6%95%99%E8%82%B2%E6%95%99%E7%A7%91%E4%B9%A6%20%C2%B7%20%E6%95%B0%E5%AD%A6%E4%B8%89%E5%B9%B4%E7%BA%A7%E4%B8%8A%E5%86%8C.pdf' },
-        { name: '三年级下册', url: 'https://github.com/TapXWorld/ChinaTextbook/blob/master/%E5%B0%8F%E5%AD%A6/%E6%95%B0%E5%AD%A6/%E4%BA%BA%E6%95%99%E7%89%88/%E4%B9%89%E5%8A%A1%E6%95%99%E8%82%B2%E6%95%99%E7%A7%91%E4%B9%A6%C2%B7%E6%95%B0%E5%AD%A6%E4%B8%89%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf' },
-        { name: '四年级上册', url: 'https://github.com/TapXWorld/ChinaTextbook/blob/master/%E5%B0%8F%E5%AD%A6/%E6%95%B0%E5%AD%A6/%E4%BA%BA%E6%95%99%E7%89%88/%E4%B9%89%E5%8A%A1%E6%95%99%E8%82%B2%E6%95%99%E7%A7%91%E4%B9%A6%20%C2%B7%20%E6%95%B0%E5%AD%A6%E5%9B%9B%E5%B9%B4%E7%BA%A7%E4%B8%8A%E5%86%8C.pdf' },
-        { name: '四年级下册', url: 'https://github.com/TapXWorld/ChinaTextbook/blob/master/%E5%B0%8F%E5%AD%A6/%E6%95%B0%E5%AD%A6/%E4%BA%BA%E6%95%99%E7%89%88/%E4%B9%89%E5%8A%A1%E6%95%99%E8%82%B2%E6%95%99%E7%A7%91%E4%B9%A6%C2%B7%E6%95%B0%E5%AD%A6%E5%9B%9B%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf' },
-        { name: '五年级上册', url: 'https://github.com/TapXWorld/ChinaTextbook/blob/master/%E5%B0%8F%E5%AD%A6/%E6%95%B0%E5%AD%A6/%E4%BA%BA%E6%95%99%E7%89%88/%E4%B9%89%E5%8A%A1%E6%95%99%E8%82%B2%E6%95%99%E7%A7%91%E4%B9%A6%20%C2%B7%20%E6%95%B0%E5%AD%A6%E4%BA%94%E5%B9%B4%E7%BA%A7%E4%B8%8A%E5%86%8C.pdf' },
-        { name: '五年级下册', url: 'https://github.com/TapXWorld/ChinaTextbook/blob/master/%E5%B0%8F%E5%AD%A6/%E6%95%B0%E5%AD%A6/%E4%BA%BA%E6%95%99%E7%89%88/%E4%B9%89%E5%8A%A1%E6%95%99%E8%82%B2%E6%95%99%E7%A7%91%E4%B9%A6%C2%B7%E6%95%B0%E5%AD%A6%E4%BA%94%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf' },
-        { name: '六年级上册', url: 'https://github.com/TapXWorld/ChinaTextbook/blob/master/%E5%B0%8F%E5%AD%A6/%E6%95%B0%E5%AD%A6/%E4%BA%BA%E6%95%99%E7%89%88/%E4%B9%89%E5%8A%A1%E6%95%99%E8%82%B2%E6%95%99%E7%A7%91%E4%B9%A6%20%C2%B7%20%E6%95%B0%E5%AD%A6%E5%85%AD%E5%B9%B4%E7%BA%A7%E4%B8%8A%E5%86%8C.pdf' },
-        { name: '六年级下册', url: 'https://github.com/TapXWorld/ChinaTextbook/blob/master/%E5%B0%8F%E5%AD%A6/%E6%95%B0%E5%AD%A6/%E4%BA%BA%E6%95%99%E7%89%88/%E4%B9%89%E5%8A%A1%E6%95%99%E8%82%B2%E6%95%99%E7%A7%91%E4%B9%A6%C2%B7%E6%95%B0%E5%AD%A6%E5%85%AD%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf' }
-      ]
-    }
+    icon: '📚',
+    subjects: [
+      '数学', '语文', '英语', '科学', '道德与法治',
+      '体育与健康', '音乐', '美术', '艺术', '语文·书法练习指导'
+    ]
   },
   '初中': {
-    'icon': '📚',
-    'subjects': {
-      '数学': [
-        { name: '七年级上册', url: 'https://github.com/TapXWorld/ChinaTextbook/blob/master/%E5%88%9D%E4%B8%AD/%E6%95%B0%E5%AD%A6/%E4%BA%BA%E6%95%99%E7%89%88-%E4%BA%BA%E6%B0%91%E6%95%99%E8%82%B2%E5%87%BA%E7%89%88%E7%A4%BE/%E4%B8%83%E5%B9%B4%E7%BA%A7/%E4%B9%89%E5%8A%A1%E6%95%99%E8%82%B2%E6%95%99%E7%A7%91%E4%B9%A6%C2%B7%E6%95%B0%E5%AD%A6%E4%B8%83%E5%B9%B4%E7%BA%A7%E4%B8%8A%E5%86%8C.pdf' },
-        { name: '七年级下册', url: 'https://github.com/TapXWorld/ChinaTextbook/blob/master/%E5%88%9D%E4%B8%AD/%E6%95%B0%E5%AD%A6/%E4%BA%BA%E6%95%99%E7%89%88-%E4%BA%BA%E6%B0%91%E6%95%99%E8%82%B2%E5%87%BA%E7%89%88%E7%A4%BE/%E4%B8%83%E5%B9%B4%E7%BA%A7/%E4%B9%89%E5%8A%A1%E6%95%99%E8%82%B2%E6%95%99%E7%A7%91%E4%B9%A6%C2%B7%E6%95%B0%E5%AD%A6%E4%B8%83%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf' },
-        { name: '八年级上册', url: 'https://github.com/TapXWorld/ChinaTextbook/blob/master/%E5%88%9D%E4%B8%AD/%E6%95%B0%E5%AD%A6/%E4%BA%BA%E6%95%99%E7%89%88-%E4%BA%BA%E6%B0%91%E6%95%99%E8%82%B2%E5%87%BA%E7%89%88%E7%A4%BE/%E5%85%AB%E5%B9%B4%E7%BA%A7/%E4%B9%89%E5%8A%A1%E6%95%99%E8%82%B2%E6%95%99%E7%A7%91%E4%B9%A6%C2%B7%E6%95%B0%E5%AD%A6%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8A%E5%86%8C.pdf' },
-        { name: '八年级下册', url: 'https://github.com/TapXWorld/ChinaTextbook/blob/master/%E5%88%9D%E4%B8%AD/%E6%95%B0%E5%AD%A6/%E4%BA%BA%E6%95%99%E7%89%88-%E4%BA%BA%E6%B0%91%E6%95%99%E8%82%B2%E5%87%BA%E7%89%88%E7%A4%BE/%E5%85%AB%E5%B9%B4%E7%BA%A7/%E4%B9%89%E5%8A%A1%E6%95%99%E8%82%B2%E6%95%99%E7%A7%91%E4%B9%A6%C2%B7%E6%95%B0%E5%AD%A6%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf' },
-        { name: '九年级上册', url: 'https://github.com/TapXWorld/ChinaTextbook/blob/master/%E5%88%9D%E4%B8%AD/%E6%95%B0%E5%AD%A6/%E4%BA%BA%E6%95%99%E7%89%88-%E4%BA%BA%E6%B0%91%E6%95%99%E8%82%B2%E5%87%BA%E7%89%88%E7%A4%BE/%E4%B9%9D%E5%B9%B4%E7%BA%A7/%E4%B9%89%E5%8A%A1%E6%95%99%E8%82%B2%E6%95%99%E7%A7%91%E4%B9%A6%C2%B7%E6%95%B0%E5%AD%A6%E4%B9%9D%E5%B9%B4%E7%BA%A7%E4%B8%8A%E5%86%8C.pdf' },
-        { name: '九年级下册', url: 'https://github.com/TapXWorld/ChinaTextbook/blob/master/%E5%88%9D%E4%B8%AD/%E6%95%B0%E5%AD%A6/%E4%BA%BA%E6%95%99%E7%89%88-%E4%BA%BA%E6%B0%91%E6%95%99%E8%82%B2%E5%87%BA%E7%89%88%E7%A4%BE/%E4%B9%9D%E5%B9%B4%E7%BA%A7/%E4%B9%89%E5%8A%A1%E6%95%99%E8%82%B2%E6%95%99%E7%A7%91%E4%B9%A6%C2%B7%E6%95%B0%E5%AD%A6%E4%B9%9D%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf' }
-      ]
-    }
+    icon: '📚',
+    subjects: [
+      '数学', '语文', '英语', '物理', '化学', '生物学',
+      '历史', '地理', '地理图册', '道德与法治', '体育与健康',
+      '科学', '美术', '艺术', '音乐', '人文地理',
+      '俄语', '日语'
+    ]
   },
   '高中': {
-    'icon': '📚',
-    'subjects': {
-      '数学(人教A版)': [
-        { name: '必修第一册', url: 'https://github.com/TapXWorld/ChinaTextbook/tree/master/%E9%AB%98%E4%B8%AD/%E6%95%B0%E5%AD%A6/%E4%BA%BA%E6%95%99%E7%89%88%EF%BC%88A%E7%89%88%EF%BC%89%EF%BC%88%E4%B8%BB%E7%BC%96%EF%BC%9A%E7%AB%A0%E5%BB%BA%E8%B7%83%26%E6%9D%8E%E5%A2%9E%E6%B2%AA%EF%BC%89-%E4%BA%BA%E6%B0%91%E6%95%99%E8%82%B2%E5%87%BA%E7%89%88%E7%A4%BE' }
-      ]
-    }
+    icon: '📚',
+    subjects: [
+      '数学', '语文', '英语', '物理', '化学', '生物学',
+      '历史', '地理', '地理图册', '思想政治', '体育与健康',
+      '信息技术', '通用技术', '美术', '艺术', '音乐',
+      '俄语', '日语'
+    ]
   },
   '大学': {
-    'icon': '🎓',
-    'subjects': {
-      '高等数学': [
-        { name: '同济七版 上册', url: 'https://github.com/TapXWorld/ChinaTextbook/tree/master/%E5%A4%A7%E5%AD%A6/%E9%AB%98%E7%AD%89%E6%95%B0%E5%AD%A6/%E5%90%8C%E6%B5%8E%E5%A4%A7%E5%AD%A6%E9%AB%98%E7%AD%89%E6%95%B0%E5%AD%A6%E7%AC%AC%E4%B8%83%E7%89%88' },
-        { name: '同济七版 下册', url: 'https://github.com/TapXWorld/ChinaTextbook/tree/master/%E5%A4%A7%E5%AD%A6/%E9%AB%98%E7%AD%89%E6%95%B0%E5%AD%A6/%E5%90%8C%E6%B5%8E%E5%A4%A7%E5%AD%A6%E9%AB%98%E7%AD%89%E6%95%B0%E5%AD%A6%E7%AC%AC%E4%B8%83%E7%89%88' }
-      ],
-      '线性代数': [
-        { name: '线性代数(教材目录)', url: 'https://github.com/TapXWorld/ChinaTextbook/tree/master/%E5%A4%A7%E5%AD%A6/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0' }
-      ],
-      '概率论': [
-        { name: '概率论(教材目录)', url: 'https://github.com/TapXWorld/ChinaTextbook/tree/master/%E5%A4%A7%E5%AD%A6/%E6%A6%82%E7%8E%87%E8%AE%BA' }
-      ]
-    }
+    icon: '🎓',
+    subjects: [
+      '高等数学', '线性代数', '概率论', '离散数学'
+    ]
+  }
+};
+
+// 部分科目的固定教材数据（直接已知PDF路径）
+const TEXTBOOK_FIXED_DATA = {
+  '小学': {
+    '数学': [
+      { name: '一年级上册', url: 'https://github.com/TapXWorld/ChinaTextbook/blob/master/%E5%B0%8F%E5%AD%A6/%E6%95%B0%E5%AD%A6/%E4%BA%BA%E6%95%99%E7%89%88/%E4%B9%89%E5%8A%A1%E6%95%99%E8%82%B2%E6%95%99%E7%A7%91%E4%B9%A6%20%C2%B7%20%E6%95%B0%E5%AD%A6%E4%B8%80%E5%B9%B4%E7%BA%A7%E4%B8%8A%E5%86%8C.pdf' },
+      { name: '一年级下册', url: 'https://github.com/TapXWorld/ChinaTextbook/blob/master/%E5%B0%8F%E5%AD%A6/%E6%95%B0%E5%AD%A6/%E4%BA%BA%E6%95%99%E7%89%88/%E4%B9%89%E5%8A%A1%E6%95%99%E8%82%B2%E6%95%99%E7%A7%91%E4%B9%A6%C2%B7%E6%95%B0%E5%AD%A6%E4%B8%80%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf' },
+      { name: '二年级上册', url: 'https://github.com/TapXWorld/ChinaTextbook/blob/master/%E5%B0%8F%E5%AD%A6/%E6%95%B0%E5%AD%A6/%E4%BA%BA%E6%95%99%E7%89%88/%E4%B9%89%E5%8A%A1%E6%95%99%E8%82%B2%E6%95%99%E7%A7%91%E4%B9%A6%20%C2%B7%20%E6%95%B0%E5%AD%A6%E4%BA%8C%E5%B9%B4%E7%BA%A7%E4%B8%8A%E5%86%8C.pdf' },
+      { name: '二年级下册', url: 'https://github.com/TapXWorld/ChinaTextbook/blob/master/%E5%B0%8F%E5%AD%A6/%E6%95%B0%E5%AD%A6/%E4%BA%BA%E6%95%99%E7%89%88/%E4%B9%89%E5%8A%A1%E6%95%99%E8%82%B2%E6%95%99%E7%A7%91%E4%B9%A6%C2%B7%E6%95%B0%E5%AD%A6%E4%BA%8C%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf' },
+      { name: '三年级上册', url: 'https://github.com/TapXWorld/ChinaTextbook/blob/master/%E5%B0%8F%E5%AD%A6/%E6%95%B0%E5%AD%A6/%E4%BA%BA%E6%95%99%E7%89%88/%E4%B9%89%E5%8A%A1%E6%95%99%E8%82%B2%E6%95%99%E7%A7%91%E4%B9%A6%20%C2%B7%20%E6%95%B0%E5%AD%A6%E4%B8%89%E5%B9%B4%E7%BA%A7%E4%B8%8A%E5%86%8C.pdf' },
+      { name: '三年级下册', url: 'https://github.com/TapXWorld/ChinaTextbook/blob/master/%E5%B0%8F%E5%AD%A6/%E6%95%B0%E5%AD%A6/%E4%BA%BA%E6%95%99%E7%89%88/%E4%B9%89%E5%8A%A1%E6%95%99%E8%82%B2%E6%95%99%E7%A7%91%E4%B9%A6%C2%B7%E6%95%B0%E5%AD%A6%E4%B8%89%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf' },
+      { name: '四年级上册', url: 'https://github.com/TapXWorld/ChinaTextbook/blob/master/%E5%B0%8F%E5%AD%A6/%E6%95%B0%E5%AD%A6/%E4%BA%BA%E6%95%99%E7%89%88/%E4%B9%89%E5%8A%A1%E6%95%99%E8%82%B2%E6%95%99%E7%A7%91%E4%B9%A6%20%C2%B7%20%E6%95%B0%E5%AD%A6%E5%9B%9B%E5%B9%B4%E7%BA%A7%E4%B8%8A%E5%86%8C.pdf' },
+      { name: '四年级下册', url: 'https://github.com/TapXWorld/ChinaTextbook/blob/master/%E5%B0%8F%E5%AD%A6/%E6%95%B0%E5%AD%A6/%E4%BA%BA%E6%95%99%E7%89%88/%E4%B9%89%E5%8A%A1%E6%95%99%E8%82%B2%E6%95%99%E7%A7%91%E4%B9%A6%C2%B7%E6%95%B0%E5%AD%A6%E5%9B%9B%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf' },
+      { name: '五年级上册', url: 'https://github.com/TapXWorld/ChinaTextbook/blob/master/%E5%B0%8F%E5%AD%A6/%E6%95%B0%E5%AD%A6/%E4%BA%BA%E6%95%99%E7%89%88/%E4%B9%89%E5%8A%A1%E6%95%99%E8%82%B2%E6%95%99%E7%A7%91%E4%B9%A6%20%C2%B7%20%E6%95%B0%E5%AD%A6%E4%BA%94%E5%B9%B4%E7%BA%A7%E4%B8%8A%E5%86%8C.pdf' },
+      { name: '五年级下册', url: 'https://github.com/TapXWorld/ChinaTextbook/blob/master/%E5%B0%8F%E5%AD%A6/%E6%95%B0%E5%AD%A6/%E4%BA%BA%E6%95%99%E7%89%88/%E4%B9%89%E5%8A%A1%E6%95%99%E8%82%B2%E6%95%99%E7%A7%91%E4%B9%A6%C2%B7%E6%95%B0%E5%AD%A6%E4%BA%94%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf' },
+      { name: '六年级上册', url: 'https://github.com/TapXWorld/ChinaTextbook/blob/master/%E5%B0%8F%E5%AD%A6/%E6%95%B0%E5%AD%A6/%E4%BA%BA%E6%95%99%E7%89%88/%E4%B9%89%E5%8A%A1%E6%95%99%E8%82%B2%E6%95%99%E7%A7%91%E4%B9%A6%20%C2%B7%20%E6%95%B0%E5%AD%A6%E5%85%AD%E5%B9%B4%E7%BA%A7%E4%B8%8A%E5%86%8C.pdf' },
+      { name: '六年级下册', url: 'https://github.com/TapXWorld/ChinaTextbook/blob/master/%E5%B0%8F%E5%AD%A6/%E6%95%B0%E5%AD%A6/%E4%BA%BA%E6%95%99%E7%89%88/%E4%B9%89%E5%8A%A1%E6%95%99%E8%82%B2%E6%95%99%E7%A7%91%E4%B9%A6%C2%B7%E6%95%B0%E5%AD%A6%E5%85%AD%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf' }
+    ]
+  },
+  '初中': {
+    '数学': [
+      { name: '七年级上册', url: 'https://github.com/TapXWorld/ChinaTextbook/blob/master/%E5%88%9D%E4%B8%AD/%E6%95%B0%E5%AD%A6/%E4%BA%BA%E6%95%99%E7%89%88-%E4%BA%BA%E6%B0%91%E6%95%99%E8%82%B2%E5%87%BA%E7%89%88%E7%A4%BE/%E4%B8%83%E5%B9%B4%E7%BA%A7/%E4%B9%89%E5%8A%A1%E6%95%99%E8%82%B2%E6%95%99%E7%A7%91%E4%B9%A6%C2%B7%E6%95%B0%E5%AD%A6%E4%B8%83%E5%B9%B4%E7%BA%A7%E4%B8%8A%E5%86%8C.pdf' },
+      { name: '七年级下册', url: 'https://github.com/TapXWorld/ChinaTextbook/blob/master/%E5%88%9D%E4%B8%AD/%E6%95%B0%E5%AD%A6/%E4%BA%BA%E6%95%99%E7%89%88-%E4%BA%BA%E6%B0%91%E6%95%99%E8%82%B2%E5%87%BA%E7%89%88%E7%A4%BE/%E4%B8%83%E5%B9%B4%E7%BA%A7/%E4%B9%89%E5%8A%A1%E6%95%99%E8%82%B2%E6%95%99%E7%A7%91%E4%B9%A6%C2%B7%E6%95%B0%E5%AD%A6%E4%B8%83%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf' },
+      { name: '八年级上册', url: 'https://github.com/TapXWorld/ChinaTextbook/blob/master/%E5%88%9D%E4%B8%AD/%E6%95%B0%E5%AD%A6/%E4%BA%BA%E6%95%99%E7%89%88-%E4%BA%BA%E6%B0%91%E6%95%99%E8%82%B2%E5%87%BA%E7%89%88%E7%A4%BE/%E5%85%AB%E5%B9%B4%E7%BA%A7/%E4%B9%89%E5%8A%A1%E6%95%99%E8%82%B2%E6%95%99%E7%A7%91%E4%B9%A6%C2%B7%E6%95%B0%E5%AD%A6%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8A%E5%86%8C.pdf' },
+      { name: '八年级下册', url: 'https://github.com/TapXWorld/ChinaTextbook/blob/master/%E5%88%9D%E4%B8%AD/%E6%95%B0%E5%AD%A6/%E4%BA%BA%E6%95%99%E7%89%88-%E4%BA%BA%E6%B0%91%E6%95%99%E8%82%B2%E5%87%BA%E7%89%88%E7%A4%BE/%E5%85%AB%E5%B9%B4%E7%BA%A7/%E4%B9%89%E5%8A%A1%E6%95%99%E8%82%B2%E6%95%99%E7%A7%91%E4%B9%A6%C2%B7%E6%95%B0%E5%AD%A6%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf' },
+      { name: '九年级上册', url: 'https://github.com/TapXWorld/ChinaTextbook/blob/master/%E5%88%9D%E4%B8%AD/%E6%95%B0%E5%AD%A6/%E4%BA%BA%E6%95%99%E7%89%88-%E4%BA%BA%E6%B0%91%E6%95%99%E8%82%B2%E5%87%BA%E7%89%88%E7%A4%BE/%E4%B9%9D%E5%B9%B4%E7%BA%A7/%E4%B9%89%E5%8A%A1%E6%95%99%E8%82%B2%E6%95%99%E7%A7%91%E4%B9%A6%C2%B7%E6%95%B0%E5%AD%A6%E4%B9%9D%E5%B9%B4%E7%BA%A7%E4%B8%8A%E5%86%8C.pdf' },
+      { name: '九年级下册', url: 'https://github.com/TapXWorld/ChinaTextbook/blob/master/%E5%88%9D%E4%B8%AD/%E6%95%B0%E5%AD%A6/%E4%BA%BA%E6%95%99%E7%89%88-%E4%BA%BA%E6%B0%91%E6%95%99%E8%82%B2%E5%87%BA%E7%89%88%E7%A4%BE/%E4%B9%9D%E5%B9%B4%E7%BA%A7/%E4%B9%89%E5%8A%A1%E6%95%99%E8%82%B2%E6%95%99%E7%A7%91%E4%B9%A6%C2%B7%E6%95%B0%E5%AD%A6%E4%B9%9D%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf' }
+    ]
+  }
+};
+
+// 科目对应的GitHub路径映射
+const TEXTBOOK_PATH_MAP = {
+  '小学': {
+    '数学': '小学/数学/人教版',
+    '语文': '小学/语文/统编版',
+    '英语': '小学/英语',
+    '科学': '小学/科学',
+    '道德与法治': '小学/道德与法治/统编版',
+    '体育与健康': '小学/体育与健康',
+    '音乐': '小学/音乐',
+    '美术': '小学/美术',
+    '艺术': '小学/艺术',
+    '语文·书法练习指导': '小学/语文·书法练习指导'
+  },
+  '初中': {
+    '数学': '初中/数学/人教版-人民教育出版社',
+    '语文': '初中/语文/统编版-人民教育出版社',
+    '英语': '初中/英语',
+    '物理': '初中/物理',
+    '化学': '初中/化学',
+    '生物学': '初中/生物学',
+    '历史': '初中/历史/统编版-人民教育出版社',
+    '地理': '初中/地理',
+    '地理图册': '初中/地理图册',
+    '道德与法治': '初中/道德与法治/统编版-人民教育出版社',
+    '体育与健康': '初中/体育与健康',
+    '科学': '初中/科学',
+    '美术': '初中/美术',
+    '艺术': '初中/艺术',
+    '音乐': '初中/音乐',
+    '人文地理': '初中/人文地理/统编版-人民教育出版社',
+    '俄语': '初中/俄语/人教版-人民教育出版社',
+    '日语': '初中/日语/人教版-人民教育出版社'
+  },
+  '高中': {
+    '数学': '高中/数学',
+    '语文': '高中/语文/统编版-人民教育出版社',
+    '英语': '高中/英语',
+    '物理': '高中/物理',
+    '化学': '高中/化学',
+    '生物学': '高中/生物学',
+    '历史': '高中/历史/统编版-人民教育出版社',
+    '地理': '高中/地理',
+    '地理图册': '高中/地理图册',
+    '思想政治': '高中/思想政治/统编版-人民教育出版社',
+    '体育与健康': '高中/体育与健康',
+    '信息技术': '高中/信息技术',
+    '通用技术': '高中/通用技术',
+    '美术': '高中/美术',
+    '艺术': '高中/艺术',
+    '音乐': '高中/音乐',
+    '俄语': '高中/俄语/人教版-人民教育出版社',
+    '日语': '高中/日语/人教版-人民教育出版社'
+  },
+  '大学': {
+    '高等数学': '大学/高等数学/同济大学高等数学第七版',
+    '线性代数': '大学/线性代数',
+    '概率论': '大学/概率论',
+    '离散数学': '大学/离散数学'
   }
 };
 
 function tbSelectLevel(level) {
-  const data = TEXTBOOK_DATA[level];
-  if (!data) return;
+  const levelData = TEXTBOOK_LEVELS[level];
+  if (!levelData) return;
   const subjectsDiv = document.getElementById('tb-subjects');
   const booksDiv = document.getElementById('tb-books');
+  booksDiv.innerHTML = '<div style="padding:20px;text-align:center;color:var(--text-light);">⬆️ 请选择上方科目查看教材</div>';
   // 显示科目按钮
-  const subjects = Object.keys(data.subjects);
-  subjectsDiv.innerHTML = subjects.map(s => 
-    `<button class="btn btn-sm" onclick="tbSelectSubject('${level}','${s}')" style="background:rgba(99,102,241,0.1);border:1px solid var(--primary);font-size:13px;">${s}</button>`
+  subjectsDiv.innerHTML = levelData.subjects.map(s =>
+    `<button class="btn btn-sm" onclick="tbSelectSubject('${level}','${s}')" style="background:rgba(99,102,241,0.1);border:1px solid var(--primary);font-size:13px;margin:2px;">${s}</button>`
   ).join('');
   // 默认选中第一个科目
-  tbSelectSubject(level, subjects[0]);
+  tbSelectSubject(level, levelData.subjects[0]);
 }
 
 function tbSelectSubject(level, subject) {
-  const books = TEXTBOOK_DATA[level].subjects[subject];
   const div = document.getElementById('tb-books');
-  if (!books || books.length === 0) {
-    div.innerHTML = '<div style="padding:20px;text-align:center;color:var(--text-light);">暂无教材数据</div>';
+  div.innerHTML = '<div style="padding:20px;text-align:center;color:var(--text-light);">⏳ 加载中...</div>';
+  
+  // 先检查是否有固定数据（如数学）
+  const fixed = TEXTBOOK_FIXED_DATA[level] && TEXTBOOK_FIXED_DATA[level][subject];
+  if (fixed && fixed.length > 0) {
+    tbRenderBooks(fixed);
     return;
   }
+  
+  // 用 GitHub API 获取目录列表
+  const path = TEXTBOOK_PATH_MAP[level] && TEXTBOOK_PATH_MAP[level][subject];
+  if (!path) {
+    const ghUrl = `https://github.com/TapXWorld/ChinaTextbook/tree/master/${encodeURIComponent(level)}/${encodeURIComponent(subject)}`;
+    div.innerHTML = `<div style="padding:20px;text-align:center;color:var(--text-light);">
+      暂无该科目教材数据。<br>
+      <a href="${ghUrl}" target="_blank" style="color:var(--primary);">去 GitHub 查看 →</a>
+    </div>`;
+    return;
+  }
+  
+  const apiUrl = `https://api.github.com/repos/TapXWorld/ChinaTextbook/contents/${path}`;
+  fetch(apiUrl)
+    .then(r => {
+      if (!r.ok) throw new Error('无法获取目录');
+      return r.json();
+    })
+    .then(data => {
+      if (!Array.isArray(data) || data.length === 0) {
+        div.innerHTML = '<div style="padding:20px;text-align:center;color:var(--text-light);">该科目暂无教材文件</div>';
+        return;
+      }
+      // 按类型分组：目录和文件
+      const dirs = data.filter(item => item.type === 'dir');
+      const files = data.filter(item => item.type === 'file' && item.name.endsWith('.pdf'));
+      
+      if (dirs.length === 0 && files.length === 0) {
+        // 可能是深层目录，直接链接到GitHub
+        const ghUrl = `https://github.com/TapXWorld/ChinaTextbook/tree/master/${path}`;
+        div.innerHTML = `<div style="padding:20px;text-align:center;color:var(--text-light);">
+          该目录包含多个子目录。<br>
+          <a href="${ghUrl}" target="_blank" style="color:var(--primary);font-size:14px;">📂 在 GitHub 上浏览 →</a>
+        </div>`;
+        return;
+      }
+      
+      let html = '';
+      // 显示子目录
+      if (dirs.length > 0) {
+        html += '<div style="margin-bottom:12px;"><strong style="font-size:13px;color:var(--text-light);">📁 子目录</strong></div>';
+        html += '<div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px;">';
+        dirs.forEach(d => {
+          const ghUrl = `https://github.com/TapXWorld/ChinaTextbook/tree/master/${d.path}`;
+          html += `<a href="${ghUrl}" target="_blank" style="padding:8px 14px;background:var(--card-bg);border:1px solid var(--border);border-radius:8px;font-size:13px;color:var(--text);text-decoration:none;display:inline-flex;align-items:center;gap:6px;" onmouseover="this.style.borderColor='var(--primary)'" onmouseout="this.style.borderColor='var(--border)'">📂 ${d.name}</a>`;
+        });
+        html += '</div>';
+      }
+      // 显示PDF文件
+      if (files.length > 0) {
+        html += '<div style="margin-bottom:8px;"><strong style="font-size:13px;color:var(--text-light);">📄 PDF 文件</strong></div>';
+        html += '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;">';
+        files.forEach(f => {
+          const name = f.name.replace('.pdf', '');
+          html += `<div style="padding:12px 16px;background:var(--card-bg);border:1px solid var(--border);border-radius:10px;cursor:pointer;transition:all 0.2s;display:flex;align-items:center;gap:10px;"
+               onmouseover="this.style.borderColor='var(--primary)';this.style.boxShadow='0 2px 8px rgba(99,102,241,0.1)'"
+               onmouseout="this.style.borderColor='var(--border)';this.style.boxShadow='none'"
+               onclick="tbOpenBook('${name.replace(/'/g, "\\'")}','${f.download_url}')">
+            <span style="font-size:24px;">📖</span>
+            <div>
+              <div style="font-weight:600;font-size:14px;">${name}</div>
+              <div style="font-size:12px;color:var(--text-light);">点击在线阅读</div>
+            </div>
+          </div>`;
+        });
+        html += '</div>';
+      }
+      div.innerHTML = html;
+    })
+    .catch(err => {
+      const ghUrl = `https://github.com/TapXWorld/ChinaTextbook/tree/master/${path}`;
+      div.innerHTML = `<div style="padding:20px;text-align:center;color:var(--text-light);">
+        ⚠️ 加载失败: ${err.message}<br>
+        <a href="${ghUrl}" target="_blank" style="color:var(--primary);font-size:14px;margin-top:8px;display:inline-block;">📂 在 GitHub 上浏览 →</a>
+      </div>`;
+    });
+}
+
+function tbRenderBooks(books) {
+  const div = document.getElementById('tb-books');
   div.innerHTML = books.map(b => `
     <div style="padding:12px 16px;background:var(--card-bg);border:1px solid var(--border);border-radius:10px;cursor:pointer;transition:all 0.2s;display:flex;align-items:center;gap:10px;"
          onmouseover="this.style.borderColor='var(--primary)';this.style.boxShadow='0 2px 8px rgba(99,102,241,0.1)'"
          onmouseout="this.style.borderColor='var(--border)';this.style.boxShadow='none'"
-         onclick="tbOpenBook('${encodeURIComponent(b.name)}','${encodeURIComponent(b.url)}')">
+         onclick="tbOpenBook('${b.name.replace(/'/g, "\\'")}','${b.url}')">
       <span style="font-size:24px;">📖</span>
       <div>
         <div style="font-weight:600;font-size:14px;">${b.name}</div>
@@ -2582,9 +2734,12 @@ function tbSelectSubject(level, subject) {
 
 function tbOpenBook(name, url) {
   const viewer = document.getElementById('tb-viewer');
-  document.getElementById('tb-viewer-title').textContent = decodeURIComponent(name);
-  // 将GitHub blob URL转换为raw URL
-  const rawUrl = decodeURIComponent(url).replace('github.com', 'raw.githubusercontent.com').replace('/blob/', '/');
+  document.getElementById('tb-viewer-title').textContent = name;
+  // 将GitHub blob URL转换为raw URL，或直接使用raw URL
+  let rawUrl = url;
+  if (url.includes('github.com') && url.includes('/blob/')) {
+    rawUrl = url.replace('github.com', 'raw.githubusercontent.com').replace('/blob/', '/');
+  }
   document.getElementById('tb-viewer-frame').src = `https://docs.google.com/viewer?url=${encodeURIComponent(rawUrl)}&embedded=true`;
   viewer.style.display = 'block';
   viewer.scrollIntoView({ behavior: 'smooth', block: 'start' });
