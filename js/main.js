@@ -85,7 +85,7 @@ function renderToolPages() {
           <div class="ad-slot" style="margin-top:24px;">
             <ins class="adsbygoogle"
                  style="display:block"
-                 data-ad-client="ca-pub-xxxxxxxxxxxxxx"
+                 data-ad-client="ca-pub-5900252791243247"
                  data-ad-slot="xxxxxxxxxx"
                  data-ad-format="auto"
                  data-full-width-responsive="true"></ins>
