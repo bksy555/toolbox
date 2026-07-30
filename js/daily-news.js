@@ -1,33 +1,28 @@
 // ============================================================
 // 每日新闻摘要 - 客户端脚本
-// 从 API 获取并展示在首页
+// 从静态 JSON 文件加载新闻数据
 // ============================================================
 
 var _dailyNewsTimer = null;
-var _dailyNewsIndex = 0;
-var _dailyNewsData = null;
 
 // 获取新闻数据
 function fetchDailyNews() {
-  var apiUrl = '/api/daily-news';
-  // 如果是本地文件，用 Vercel 部署路径
-  if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') {
-    apiUrl = 'https://toolbox-qlkw-jbbxa0ths-bksy556.vercel.app/api/daily-news';
-  }
+  var jsonUrl = 'data/daily-news.json';
   
-  fetch(apiUrl)
-    .then(function(r) { return r.json(); })
+  fetch(jsonUrl + '?t=' + Date.now())
+    .then(function(r) { 
+      if (!r.ok) throw new Error('HTTP ' + r.status);
+      return r.json(); 
+    })
     .then(function(data) {
-      _dailyNewsData = data;
       renderDailyNews(data);
     })
     .catch(function(err) {
-      console.log('每日新闻获取失败:', err);
-      // 显示静态占位
+      console.log('每日新闻加载失败:', err);
       var banner = document.getElementById('daily-news-banner');
       if (banner) {
         banner.innerHTML = '<div class="news-banner-inner" style="text-align:center;padding:20px;">' +
-          '<span style="font-size:14px;color:var(--text-light);">📰 今日资讯加载中… 刷新页面重试</span></div>';
+          '<span style="font-size:14px;color:var(--text-light);">📰 今日资讯正在加载中，请稍后刷新查看…</span></div>';
       }
     });
 }
@@ -55,12 +50,9 @@ function renderDailyNews(data) {
   
   if (allItems.length === 0) {
     banner.innerHTML = '<div class="news-banner-inner" style="text-align:center;padding:20px;">' +
-      '<span style="font-size:14px;color:var(--text-light);">📰 暂无今日资讯</span></div>';
+      '<span style="font-size:14px;color:var(--text-light);">📰 暂无今日资讯，请稍后再来</span></div>';
     return;
   }
-  
-  _dailyNewsData = allItems;
-  _dailyNewsIndex = 0;
   
   // 构建HTML
   var html = '<div class="news-banner-inner">' +
@@ -164,7 +156,6 @@ function startNewsScroll(type) {
   var items = scrollContainer.querySelectorAll('.news-item');
   if (items.length <= 1) return;
   
-  // 自动滚动：每隔几秒滚动到下一个
   var currentIdx = 0;
   items[0].classList.add('highlight');
   
@@ -172,13 +163,11 @@ function startNewsScroll(type) {
     items[currentIdx].classList.remove('highlight');
     currentIdx = (currentIdx + 1) % items.length;
     items[currentIdx].classList.add('highlight');
-    // 滚动到可见区域
     items[currentIdx].scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   }, 4000);
 }
 
 // 初始化
 document.addEventListener('DOMContentLoaded', function() {
-  // 延迟加载，确保页面其他元素已渲染
   setTimeout(fetchDailyNews, 500);
 });
