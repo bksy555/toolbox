@@ -83,7 +83,13 @@ function renderToolPages() {
           <p class="tool-desc">${tool.desc}</p>
           ${tool.html}
           <div class="ad-slot" style="margin-top:24px;">
-            <span>📢 广告位 —— 在此添加 AdSense 代码</span>
+            <ins class="adsbygoogle"
+                 style="display:block"
+                 data-ad-client="ca-pub-xxxxxxxxxxxxxx"
+                 data-ad-slot="xxxxxxxxxx"
+                 data-ad-format="auto"
+                 data-full-width-responsive="true"></ins>
+            <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
           </div>
         </div>
       `;
