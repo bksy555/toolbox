@@ -8,7 +8,56 @@
       "label": "新闻联播",
       "data": {
         "source": "新闻联播",
-        "items": [],
+        "items": [
+          {
+            "title": "习近平致电祝贺诺瓦当选连任圣多美和普林西比总统",
+            "url": "https://tv.cctv.com/2026/07/29/VIDErK42PN9WCKKIsoO7FRkp260729.shtml"
+          },
+          {
+            "title": "【新思想引领新征程】锚定农业农村现代化 乡村全面振兴扎实推进",
+            "url": "https://tv.cctv.com/2026/07/29/VIDEEa7NKiotkEyqphoOBCG7260729.shtml"
+          },
+          {
+            "title": "厚植家国情怀 共襄复兴伟业——习近平总书记对侨务工作作出重要指示引发热烈反响",
+            "url": "https://tv.cctv.com/2026/07/29/VIDEnLpzqMocWh7Zn7t9ZtkA260729.shtml"
+          },
+          {
+            "title": "李强会见斯洛伐克总统",
+            "url": "https://tv.cctv.com/2026/07/29/VIDE5FJcfhYSmWrDrdhnoDqj260729.shtml"
+          },
+          {
+            "title": "赵乐际会见斯洛伐克总统",
+            "url": "https://tv.cctv.com/2026/07/29/VIDEJsfJBcO1XeTks2LWAoDD260729.shtml"
+          },
+          {
+            "title": "【树立和践行正确政绩观】校准干事创业价值坐标 推动学习教育成果转化",
+            "url": "https://tv.cctv.com/2026/07/29/VIDEAI3hXR0sziSDRUFjyPQX260729.shtml"
+          },
+          {
+            "title": "【\"十五五\"开好局起好步】2030年我国知识产权综合实力进一步增强",
+            "url": "https://tv.cctv.com/2026/07/29/VIDEr09JVeS2HRYEgMdoNK65260729.shtml"
+          },
+          {
+            "title": "\"新新三样\"成中国出口新名片",
+            "url": "https://tv.cctv.com/2026/07/29/VIDEu5L8tg7S4YulTUv1LNzi260729.shtml"
+          },
+          {
+            "title": "中央宣传部授予王戟\"时代楷模\"称号",
+            "url": "https://tv.cctv.com/2026/07/29/VIDEdW3bqhwkNpo2GAqegc2I260729.shtml"
+          },
+          {
+            "title": "国内联播快讯",
+            "url": "https://tv.cctv.com/2026/07/29/VIDE92xlREfZhESmSiDrRbaL260729.shtml"
+          },
+          {
+            "title": "日本熊本县地震已致14人死亡",
+            "url": "https://tv.cctv.com/2026/07/29/VIDE9A0Nbxc2ez9yrGE2T8LF260729.shtml"
+          },
+          {
+            "title": "美称拦截伊朗多枚导弹 伊称打击约旦的美军基地",
+            "url": "https://tv.cctv.com/2026/07/29/VIDESrfrUj6Eu6NQlz41H9AH260729.shtml"
+          }
+        ],
         "updateTime": "2026-07-30T01:16:15Z"
       }
     },
