@@ -20,34 +20,59 @@ mkdir -p "$DATA_DIR"
 # ---- 1. 获取新闻联播 ----
 echo "📺 获取新闻联播..."
 
-NEWS_HTML=$(curl -sL --max-time 15 -H "User-Agent: $UA" "https://mrxwlb.com/" 2>/dev/null) || NEWS_HTML=""
+# 尝试多个数据源
+python3 -c "
+import urllib.request, ssl, re, json, sys
 
-if [ -n "$NEWS_HTML" ]; then
-  echo "$NEWS_HTML" | python3 -c "
-import sys, re, json
-html = sys.stdin.read()
 items = []
 seen = set()
-for pattern in [
-    re.compile(r'<h[23][^>]*>.*?<a\s+href=\"([^\"]+)\"[^>]*>([^<]+)</a>', re.DOTALL),
-    re.compile(r'<a\s+href=\"([^\"]+)\"[^>]*>([^<]{10,})</a>')
-]:
+UA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36'
+ctx = ssl.create_default_context()
+
+# 数据源1: 央视网 (tv.cctv.com)
+try:
+    req = urllib.request.Request('https://tv.cctv.com/lm/xwlb/', headers={'User-Agent': UA})
+    resp = urllib.request.urlopen(req, context=ctx, timeout=10)
+    html = resp.read().decode('utf-8', errors='replace')
+    pattern = re.compile(r'<a\s+href=\"(https://tv\.cctv\.com/2026/[^\"]+)\"[^>]*>(.*?)</a>', re.DOTALL)
     for m in pattern.finditer(html):
-        title = m.group(2).strip()
         url = m.group(1)
-        if not url.startswith('http'):
-            url = 'https://mrxwlb.com' + url
-        if title not in seen and len(title) > 6 and '广告' not in title and '首页' not in title and '新闻联播' not in title:
+        title = m.group(2).strip()
+        title = re.sub(r'<[^>]+>', '', title).strip()
+        title = re.sub(r'^完整版\[视频\]', '', title).strip()
+        if title not in seen and len(title) > 8 and '完整版' not in title and '新闻联播' not in title:
             seen.add(title)
             items.append({'title': title, 'url': url})
+    print(f'  央视网: 获取到 {len(items)} 条新闻')
+except Exception as e:
+    print(f'  央视网失败: {e}')
+
+# 数据源2: mrxwlb.com (备用)
+if len(items) < 5:
+    try:
+        req = urllib.request.Request('https://mrxwlb.com/', headers={'User-Agent': UA})
+        ctx2 = ssl.create_default_context()
+        ctx2.check_hostname = False
+        ctx2.verify_mode = ssl.CERT_NONE
+        resp = urllib.request.urlopen(req, context=ctx2, timeout=10)
+        html = resp.read().decode('utf-8', errors='replace')
+        pattern = re.compile(r'<a\s+href=\"([^\"]+)\"[^>]*>([^<]{10,})</a>')
+        for m in pattern.finditer(html):
+            url = m.group(1)
+            if not url.startswith('http'):
+                url = 'https://mrxwlb.com' + url
+            title = m.group(2).strip()
+            if title not in seen and len(title) > 6 and '广告' not in title and '首页' not in title:
+                seen.add(title)
+                items.append({'title': title, 'url': url})
+        print(f'  mrxwlb: 获取到 {len(items)} 条新闻 (累计)')
+    except Exception as e:
+        print(f'  mrxwlb失败: {e}')
+
 with open('$DATA_DIR/news_items.json', 'w', encoding='utf-8') as f:
     json.dump(items[:20], f, ensure_ascii=False)
-print(f'  获取到 {len(items)} 条新闻')
+print(f'  ✅ 共获取 {len(items)} 条新闻联播')
 " 2>&1
-else
-  echo '[]' > "$DATA_DIR/news_items.json"
-  echo "  获取到 0 条新闻"
-fi
 
 # ---- 2. 获取AI科技日报 ----
 echo "🤖 获取AI科技日报..."
