@@ -62,11 +62,6 @@ function getPeriodNum(year, month, day) {
   return year + String(dayOfYear).padStart(3, '0');
 }
 
-// 判断是否有效开奖日（周日不开奖）
-function isValidDrawDay(weekday) {
-  return weekday !== 0;
-}
-
 // 获取亥时天干
 function getHaiHourGan(year, month, day) {
   const dayPillar = getDayPillar(year, month, day);
@@ -74,39 +69,60 @@ function getHaiHourGan(year, month, day) {
   return TIAN_GAN[hourPillar.ganIdx];
 }
 
+// 判断中奖结果
+function calcResult(dans, drawNum) {
+  if (!drawNum || drawNum.length !== 3) return null;
+  const drawArr = drawNum.split('').map(Number);
+  const matchCount = dans.filter(d => drawArr.includes(d)).length;
+  return matchCount >= 1 ? '✅' : '❌';
+}
+
+// 已知中奖号码
+const KNOWN_DRAW_NUMS = {
+  '2026199': '558', '2026200': '026', '2026201': '906',
+  '2026202': '425', '2026203': '254', '2026204': '283',
+  '2026205': '275', '2026206': '419', '2026207': '232',
+  '2026208': '685', '2026209': '591', '2026210': '912',
+  '2026211': '321', '2026212': '988'
+};
+
 // 主逻辑
 const bj = getBeijingDate();
 const today = new Date(bj.year, bj.month - 1, bj.day);
 
-// 生成15期预测（从明天开始，跳过周日）
+// 生成15期预测（从今天往前14天 + 明天 = 共15期）
 const predictions = [];
-let cursor = new Date(today);
-cursor.setDate(cursor.getDate() + 1);
+const start = new Date(today);
+start.setDate(start.getDate() - 14);
 
-while (predictions.length < 15) {
+for (let i = 0; i < 16; i++) {
+  const cursor = new Date(start);
+  cursor.setDate(start.getDate() + i);
   const y = cursor.getFullYear();
   const m = cursor.getMonth() + 1;
   const d = cursor.getDate();
   const w = cursor.getDay();
 
-  if (isValidDrawDay(w)) {
-    const gan = getHaiHourGan(y, m, d);
-    const dans = GAN_TO_DAN[gan] || [];
-    const period = getPeriodNum(y, m, d);
-    
-    predictions.push({
-      period: period,
-      year: y,
-      month: m,
-      day: d,
-      weekday: w,
-      haiGan: gan,
-      dans: dans,
-      isPast: (y < bj.year || (y === bj.year && m < bj.month) || (y === bj.year && m === bj.month && d < bj.day)),
-      isToday: (y === bj.year && m === bj.month && d === bj.day)
-    });
-  }
-  cursor.setDate(cursor.getDate() + 1);
+  const gan = getHaiHourGan(y, m, d);
+  const dans = GAN_TO_DAN[gan] || [];
+  const period = getPeriodNum(y, m, d);
+  
+  predictions.push({
+    period: period,
+    year: y,
+    month: m,
+    day: d,
+    weekday: w,
+    haiGan: gan,
+    dans: dans,
+    isPast: (y < bj.year || (y === bj.year && m < bj.month) || (y === bj.year && m === bj.month && d < bj.day)),
+    isToday: (y === bj.year && m === bj.month && d === bj.day)
+  });
+}
+
+// 只保留15期
+while (predictions.length > 15) {
+  predictions.shift();
 }
 
 // 读取已有数据
@@ -124,6 +140,8 @@ try {
 for (const p of predictions) {
   const key = p.period;
   if (!stored[key]) {
+    const knownDraw = KNOWN_DRAW_NUMS[key] || null;
+    const result = knownDraw ? calcResult(p.dans, knownDraw) : null;
     stored[key] = {
       period: p.period,
       year: p.year,
@@ -132,14 +150,18 @@ for (const p of predictions) {
       weekday: p.weekday,
       haiGan: p.haiGan,
       dans: p.dans,
-      drawNum: null,
-      result: null,
-      updatedAt: null
+      drawNum: knownDraw,
+      result: result,
+      updatedAt: knownDraw ? new Date().toISOString() : null
     };
   } else {
     // 更新预测胆码（如果天干变了）
     stored[key].haiGan = p.haiGan;
     stored[key].dans = p.dans;
+    // 如果有中奖号码，更新结果
+    if (stored[key].drawNum) {
+      stored[key].result = calcResult(p.dans, stored[key].drawNum);
+    }
   }
 }
 

@@ -416,11 +416,7 @@
   <div class="piancai-page" style="margin-top:40px;border-top:2px dashed var(--border);padding-top:40px;">
     <h1>🎯 福彩3D预测 - 3胆中1</h1>
     <div class="subtitle">
-      基于<strong>八字天干择数法</strong>，每日19:25更新次日预测（逢周日停更）。<br>
-      取当日<strong>亥时（21:00-23:00）</strong>对应的天干，按以下规则生成3个胆码：<br>
-      <strong>甲→1,4,8</strong> · <strong>乙→3,4,8</strong> · <strong>丙→3,4,9</strong> · <strong>丁→2,4,9</strong> · <strong>戊→3,4,9</strong><br>
-      <strong>己→2,4,9</strong> · <strong>庚→2,7,9</strong> · <strong>辛→2,6,7</strong> · <strong>壬→1,6,7</strong> · <strong>癸→1,6,8</strong><br>
-      预测3个号码中1个及以上即为<strong style="color:#22c55e;">正确 ✅</strong>，小于1个为<strong style="color:#ef4444;">错误 ❌</strong>。
+      每日19:25更新次日预测，预测3个号码中1个及以上即为<strong style="color:#22c55e;">正确 ✅</strong>，小于1个为<strong style="color:#ef4444;">错误 ❌</strong>。
     </div>
 
     <div class="piancai-form">
@@ -445,8 +441,7 @@
             <tr>
               <th style="width:70px;">期数</th>
               <th style="width:100px;">日期</th>
-              <th style="width:90px;">星期</th>
-              <th>亥时天干</th>
+              <th style="width:70px;">星期</th>
               <th>预测3胆</th>
               <th style="width:120px;">中奖号码</th>
               <th style="width:80px;">结果</th>
@@ -454,7 +449,7 @@
             </tr>
           </thead>
           <tbody id="d3PredBody">
-            <tr><td colspan="8" style="text-align:center;padding:40px;color:var(--text-light);">
+            <tr><td colspan="7" style="text-align:center;padding:40px;color:var(--text-light);">
               <div class="piancai-loading"><div class="spinner"></div><div style="margin-top:12px;">⏳ 正在生成预测...</div></div>
             </td></tr>
           </tbody>
@@ -547,78 +542,65 @@
       };
     }
 
-    // ---- 判断是否有效预测日（周日不开奖，不预测） ----
-    function isValidDrawDay(weekday) {
-      return weekday !== 0; // 周日不开奖
-    }
+    // ---- 已知中奖号码（历史数据，供自动填充） ----
+    const KNOWN_DRAW_NUMS = {
+      '2026199': '558', '2026200': '026', '2026201': '906',
+      '2026202': '425', '2026203': '254', '2026204': '283',
+      '2026205': '275', '2026206': '419', '2026207': '232',
+      '2026208': '685', '2026209': '591', '2026210': '912',
+      '2026211': '321', '2026212': '988'
+    };
 
     // ---- 获取15期预测数据 ----
     function generateD3Predictions() {
       const bj = getBeijingDate();
       const today = new Date(bj.year, bj.month - 1, bj.day);
-      const todayBJ = {
-        year: bj.year,
-        month: bj.month,
-        day: bj.day,
-        weekday: bj.weekday,
-        hour: bj.hour
-      };
 
-      // 确定"明天"：从明天开始，跳过周日
-      let count = 0;
+      // 从今天往前推14天 + 明天 = 15期
       const predictions = [];
-      let cursor = new Date(today);
-      cursor.setDate(cursor.getDate() + 1); // 从明天开始
-
-      // 先找明天的有效日期
-      while (count < 15) {
+      const start = new Date(today);
+      start.setDate(start.getDate() - 14);
+      
+      for (let i = 0; i < 16; i++) {
+        const cursor = new Date(start);
+        cursor.setDate(start.getDate() + i);
         const y = cursor.getFullYear();
         const m = cursor.getMonth() + 1;
         const d = cursor.getDate();
         const w = cursor.getDay();
 
-        if (isValidDrawDay(w)) {
-          const gan = getHaiHourGan(y, m, d);
-          const dans = getDanFromGan(gan);
-          predictions.push({
-            year: y,
-            month: m,
-            day: d,
-            weekday: w,
-            period: getPeriodNum(y, m, d),
-            haiGan: gan,
-            dans: dans,
-            // 预测时是否已过开奖时间
-            // 如果是今天之前的日期，视为已过
-            // 如果是今天，看当前时间是否 > 21:15
-            isPast: (y < todayBJ.year || (y === todayBJ.year && m < todayBJ.month) || (y === todayBJ.year && m === todayBJ.month && d < todayBJ.day)),
-            isToday: (y === todayBJ.year && m === todayBJ.month && d === todayBJ.day),
-            isFuture: false
-          });
-          count++;
-        }
-        cursor.setDate(cursor.getDate() + 1);
+        const gan = getHaiHourGan(y, m, d);
+        const dans = getDanFromGan(gan);
+        const period = getPeriodNum(y, m, d);
+        
+        predictions.push({
+          year: y,
+          month: m,
+          day: d,
+          weekday: w,
+          period: period,
+          haiGan: gan,
+          dans: dans,
+          isPast: (y < bj.year || (y === bj.year && m < bj.month) || (y === bj.year && m === bj.month && d < bj.day)),
+          isToday: (y === bj.year && m === bj.month && d === bj.day),
+          isFuture: (y > bj.year || (y === bj.year && m > bj.month) || (y === bj.year && m === bj.month && d > bj.day))
+        });
       }
-
-      // 标记未来/过去
-      const nowBJ = todayBJ;
-      for (const p of predictions) {
-        if (p.year > nowBJ.year || (p.year === nowBJ.year && p.month > nowBJ.month) || (p.year === nowBJ.year && p.month === nowBJ.month && p.day > nowBJ.day)) {
-          p.isFuture = true;
-          p.isPast = false;
-          p.isToday = false;
-        } else if (p.year === nowBJ.year && p.month === nowBJ.month && p.day === nowBJ.day) {
-          p.isFuture = false;
-          p.isPast = false;
-          p.isToday = true;
-        } else {
-          p.isPast = true;
-          p.isFuture = false;
-          p.isToday = false;
-        }
+      
+      // 只保留15期（去掉最旧的一期，让明天始终在最后）
+      while (predictions.length > 15) {
+        predictions.shift();
       }
 
       return predictions;
+    }
+
+    // ---- 判断中奖结果 ----
+    function calcResult(dans, drawNum) {
+      if (!drawNum || drawNum.length !== 3) return null;
+      const drawArr = drawNum.split('').map(Number);
+      const matchCount = dans.filter(d => drawArr.includes(d)).length;
+      return matchCount >= 1 ? '✅' : '❌';
     }
 
     // ---- 保存预测数据到localStorage ----
@@ -631,6 +613,9 @@
         for (const p of predictions) {
           const key = p.period;
           if (!stored[key]) {
+            // 检查是否有已知中奖号码
+            const knownDraw = KNOWN_DRAW_NUMS[key] || null;
+            const result = knownDraw ? calcResult(p.dans, knownDraw) : null;
             stored[key] = {
               period: p.period,
               year: p.year,
@@ -639,14 +624,18 @@
               weekday: p.weekday,
               haiGan: p.haiGan,
               dans: p.dans,
-              drawNum: null,
-              result: null,
-              updatedAt: null
+              drawNum: knownDraw,
+              result: result,
+              updatedAt: knownDraw ? new Date().toISOString() : null
             };
           } else {
             // 更新预测数字（如果天干变化了）
             stored[key].haiGan = p.haiGan;
             stored[key].dans = p.dans;
+            // 如果已有中奖号码，更新结果
+            if (stored[key].drawNum) {
+              stored[key].result = calcResult(p.dans, stored[key].drawNum);
+            }
           }
         }
         
@@ -753,7 +742,6 @@
             <td style="font-weight:600;">${p.period}</td>
             <td>${dateStr}</td>
             <td>${weekdayStr}</td>
-            <td><span class="d3-gan-badge">${p.haiGan}</span></td>
             <td>${dansStr}</td>
             <td>${drawStr}</td>
             <td style="font-size:18px;font-weight:700;">${resultStr}</td>
@@ -863,7 +851,6 @@
                 <tr>
                   <th>期数</th>
                   <th>日期</th>
-                  <th>天干</th>
                   <th>预测3胆</th>
                   <th>中奖号码</th>
                   <th>结果</th>
@@ -882,7 +869,6 @@
           <tr>
             <td style="font-weight:600;">${r.period}</td>
             <td>${dateStr}</td>
-            <td><span class="d3-gan-badge">${r.haiGan || '—'}</span></td>
             <td>${dansStr}</td>
             <td>${drawStr}</td>
             <td style="font-size:18px;font-weight:700;">${resultStr}</td>

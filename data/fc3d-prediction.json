@@ -1,4 +1,212 @@
 {
+  "2026200": {
+    "period": "2026200",
+    "year": 2026,
+    "month": 7,
+    "day": 19,
+    "weekday": 0,
+    "haiGan": "丁",
+    "dans": [
+      2,
+      4,
+      9
+    ],
+    "drawNum": "026",
+    "result": "✅",
+    "updatedAt": "2026-07-31T16:02:51.853Z"
+  },
+  "2026201": {
+    "period": "2026201",
+    "year": 2026,
+    "month": 7,
+    "day": 20,
+    "weekday": 1,
+    "haiGan": "己",
+    "dans": [
+      2,
+      4,
+      9
+    ],
+    "drawNum": "906",
+    "result": "✅",
+    "updatedAt": "2026-07-31T16:02:51.853Z"
+  },
+  "2026202": {
+    "period": "2026202",
+    "year": 2026,
+    "month": 7,
+    "day": 21,
+    "weekday": 2,
+    "haiGan": "辛",
+    "dans": [
+      2,
+      6,
+      7
+    ],
+    "drawNum": "425",
+    "result": "✅",
+    "updatedAt": "2026-07-31T16:02:51.853Z"
+  },
+  "2026203": {
+    "period": "2026203",
+    "year": 2026,
+    "month": 7,
+    "day": 22,
+    "weekday": 3,
+    "haiGan": "癸",
+    "dans": [
+      1,
+      6,
+      8
+    ],
+    "drawNum": "254",
+    "result": "❌",
+    "updatedAt": "2026-07-31T16:02:51.853Z"
+  },
+  "2026204": {
+    "period": "2026204",
+    "year": 2026,
+    "month": 7,
+    "day": 23,
+    "weekday": 4,
+    "haiGan": "乙",
+    "dans": [
+      3,
+      4,
+      8
+    ],
+    "drawNum": "283",
+    "result": "✅",
+    "updatedAt": "2026-07-31T16:02:51.853Z"
+  },
+  "2026205": {
+    "period": "2026205",
+    "year": 2026,
+    "month": 7,
+    "day": 24,
+    "weekday": 5,
+    "haiGan": "丁",
+    "dans": [
+      2,
+      4,
+      9
+    ],
+    "drawNum": "275",
+    "result": "✅",
+    "updatedAt": "2026-07-31T16:02:51.853Z"
+  },
+  "2026206": {
+    "period": "2026206",
+    "year": 2026,
+    "month": 7,
+    "day": 25,
+    "weekday": 6,
+    "haiGan": "己",
+    "dans": [
+      2,
+      4,
+      9
+    ],
+    "drawNum": "419",
+    "result": "✅",
+    "updatedAt": "2026-07-31T16:02:51.853Z"
+  },
+  "2026207": {
+    "period": "2026207",
+    "year": 2026,
+    "month": 7,
+    "day": 26,
+    "weekday": 0,
+    "haiGan": "辛",
+    "dans": [
+      2,
+      6,
+      7
+    ],
+    "drawNum": "232",
+    "result": "✅",
+    "updatedAt": "2026-07-31T16:02:51.853Z"
+  },
+  "2026208": {
+    "period": "2026208",
+    "year": 2026,
+    "month": 7,
+    "day": 27,
+    "weekday": 1,
+    "haiGan": "癸",
+    "dans": [
+      1,
+      6,
+      8
+    ],
+    "drawNum": "685",
+    "result": "✅",
+    "updatedAt": "2026-07-31T16:02:51.853Z"
+  },
+  "2026209": {
+    "period": "2026209",
+    "year": 2026,
+    "month": 7,
+    "day": 28,
+    "weekday": 2,
+    "haiGan": "乙",
+    "dans": [
+      3,
+      4,
+      8
+    ],
+    "drawNum": "591",
+    "result": "❌",
+    "updatedAt": "2026-07-31T16:02:51.853Z"
+  },
+  "2026210": {
+    "period": "2026210",
+    "year": 2026,
+    "month": 7,
+    "day": 29,
+    "weekday": 3,
+    "haiGan": "丁",
+    "dans": [
+      2,
+      4,
+      9
+    ],
+    "drawNum": "912",
+    "result": "✅",
+    "updatedAt": "2026-07-31T16:02:51.853Z"
+  },
+  "2026211": {
+    "period": "2026211",
+    "year": 2026,
+    "month": 7,
+    "day": 30,
+    "weekday": 4,
+    "haiGan": "己",
+    "dans": [
+      2,
+      4,
+      9
+    ],
+    "drawNum": "321",
+    "result": "✅",
+    "updatedAt": "2026-07-31T16:02:51.853Z"
+  },
+  "2026212": {
+    "period": "2026212",
+    "year": 2026,
+    "month": 7,
+    "day": 31,
+    "weekday": 5,
+    "haiGan": "辛",
+    "dans": [
+      2,
+      6,
+      7
+    ],
+    "drawNum": "988",
+    "result": "❌",
+    "updatedAt": "2026-07-31T16:02:51.853Z"
+  },
   "2026213": {
     "period": "2026213",
     "year": 2026,
@@ -9,6 +217,22 @@
     "dans": [
       1,
       6,
+      8
+    ],
+    "drawNum": null,
+    "result": null,
+    "updatedAt": null
+  },
+  "2026214": {
+    "period": "2026214",
+    "year": 2026,
+    "month": 8,
+    "day": 2,
+    "weekday": 0,
+    "haiGan": "乙",
+    "dans": [
+      3,
+      4,
       8
     ],
     "drawNum": null,
