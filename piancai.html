@@ -412,10 +412,529 @@
 
   </div>
 
+  <!-- ====== 福彩3D预测-3胆中1 ====== -->
+  <div class="piancai-page" style="margin-top:40px;border-top:2px dashed var(--border);padding-top:40px;">
+    <h1>🎯 福彩3D预测 - 3胆中1</h1>
+    <div class="subtitle">
+      基于<strong>八字天干择数法</strong>，每日19:25更新次日预测（逢周日停更）。<br>
+      取当日<strong>亥时（21:00-23:00）</strong>对应的天干，按以下规则生成3个胆码：<br>
+      <strong>甲→1,4,8</strong> · <strong>乙→3,4,8</strong> · <strong>丙→3,4,9</strong> · <strong>丁→2,4,9</strong> · <strong>戊→3,4,9</strong><br>
+      <strong>己→2,4,9</strong> · <strong>庚→2,7,9</strong> · <strong>辛→2,6,7</strong> · <strong>壬→1,6,7</strong> · <strong>癸→1,6,8</strong><br>
+      预测3个号码中1个及以上即为<strong style="color:#22c55e;">正确 ✅</strong>，小于1个为<strong style="color:#ef4444;">错误 ❌</strong>。
+    </div>
+
+    <div class="piancai-form">
+      <div class="form-row" style="justify-content:space-between;flex-wrap:wrap;">
+        <div>
+          <span style="font-size:15px;font-weight:600;">📊 近15期预测记录</span>
+          <span style="font-size:12px;color:var(--text-light);margin-left:8px;" id="d3UpdateTime"></span>
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <button class="btn-submit" style="padding:6px 16px;font-size:13px;background:linear-gradient(135deg,#6366f1,#8b5cf6);" onclick="refreshD3Prediction()">🔄 刷新预测</button>
+          <button class="btn-submit" style="padding:6px 16px;font-size:13px;background:linear-gradient(135deg,#22c55e,#16a34a);" onclick="showD3History()">📜 历史记录</button>
+        </div>
+      </div>
+
+      <!-- 统计信息 -->
+      <div id="d3Stats" style="display:none;margin-bottom:16px;padding:12px 16px;background:rgba(99,102,241,0.06);border-radius:10px;font-size:14px;"></div>
+
+      <!-- 预测表格 -->
+      <div style="overflow-x:auto;">
+        <table class="d3-pred-table" id="d3PredTable">
+          <thead>
+            <tr>
+              <th style="width:70px;">期数</th>
+              <th style="width:100px;">日期</th>
+              <th style="width:90px;">星期</th>
+              <th>亥时天干</th>
+              <th>预测3胆</th>
+              <th style="width:120px;">中奖号码</th>
+              <th style="width:80px;">结果</th>
+              <th style="width:60px;">操作</th>
+            </tr>
+          </thead>
+          <tbody id="d3PredBody">
+            <tr><td colspan="8" style="text-align:center;padding:40px;color:var(--text-light);">
+              <div class="piancai-loading"><div class="spinner"></div><div style="margin-top:12px;">⏳ 正在生成预测...</div></div>
+            </td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="form-row" style="margin-top:12px;justify-content:space-between;">
+        <span style="font-size:13px;color:var(--text-light);" id="d3Accuracy"></span>
+        <span style="font-size:12px;color:var(--text-light);">💡 点击"✏️"可手动输入中奖号码更新结果</span>
+      </div>
+    </div>
+
+    <div class="disclaimer">
+      <strong>⚠️ 温馨提示</strong><br>
+      · 本预测基于传统八字命理天干择数法，<strong>仅供娱乐参考</strong>，请理性购彩，切勿沉迷<br>
+      · 福彩3D每日开奖（约21:15），22:00后可更新中奖号码<br>
+      · 预测数据存储在浏览器本地（localStorage），清除浏览器数据会丢失<br>
+      · 3胆中1即预测的3个号码中包含1个及以上中奖号码即为正确 ✅<br>
+      · 本工具不保证中奖，<strong>彩票有风险，投注需谨慎</strong> 🍀
+    </div>
+  </div>
+
   <!-- ====== Toast ====== -->
   <div class="toast" id="lotteryToast"></div>
 
   <script src="js/lottery-piancai.js"></script>
+  <script>
+    // ============================================================
+    // 福彩3D预测 - 3胆中1
+    // ============================================================
+
+    // 天干→3胆映射
+    const GAN_TO_DAN = {
+      '甲': [1, 4, 8],
+      '乙': [3, 4, 8],
+      '丙': [3, 4, 9],
+      '丁': [2, 4, 9],
+      '戊': [3, 4, 9],
+      '己': [2, 4, 9],
+      '庚': [2, 7, 9],
+      '辛': [2, 6, 7],
+      '壬': [1, 6, 7],
+      '癸': [1, 6, 8]
+    };
+
+    // 星期名称
+    const WEEKDAY_NAMES = ['日', '一', '二', '三', '四', '五', '六'];
+
+    // localStorage key
+    const D3_STORAGE_KEY = 'fc3d_prediction_data';
+
+    // ---- 获取某日亥时的天干 ----
+    function getHaiHourGan(year, month, day) {
+      const dayPillar = getDayPillar(year, month, day);
+      const hourPillar = getHourPillar(dayPillar.ganIdx, 11); // 亥时 = 11
+      return hourPillar.gan;
+    }
+
+    // ---- 根据亥时天干获取3胆 ----
+    function getDanFromGan(gan) {
+      return GAN_TO_DAN[gan] || [];
+    }
+
+    // ---- 格式化日期 ----
+    function formatDateStr(year, month, day) {
+      return year + '-' + String(month).padStart(2, '0') + '-' + String(day).padStart(2, '0');
+    }
+
+    // ---- 获取期号 ----
+    function getPeriodNum(year, month, day) {
+      // 每年1月1日 = 第1天
+      const start = new Date(year, 0, 0);
+      const target = new Date(year, month - 1, day);
+      const dayOfYear = Math.round((target - start) / (24 * 60 * 60 * 1000));
+      return year + String(dayOfYear).padStart(3, '0');
+    }
+
+    // ---- 获取北京日期 ----
+    function getBeijingDate() {
+      const now = new Date();
+      // 转换为北京时间 (UTC+8)
+      const beijing = new Date(now.getTime() + 8 * 60 * 60 * 1000);
+      return {
+        year: beijing.getUTCFullYear(),
+        month: beijing.getUTCMonth() + 1,
+        day: beijing.getUTCDate(),
+        hour: beijing.getUTCHours(),
+        minute: beijing.getUTCMinutes(),
+        weekday: beijing.getUTCDay()
+      };
+    }
+
+    // ---- 判断是否有效预测日（周日不开奖，不预测） ----
+    function isValidDrawDay(weekday) {
+      return weekday !== 0; // 周日不开奖
+    }
+
+    // ---- 获取15期预测数据 ----
+    function generateD3Predictions() {
+      const bj = getBeijingDate();
+      const today = new Date(bj.year, bj.month - 1, bj.day);
+      const todayBJ = {
+        year: bj.year,
+        month: bj.month,
+        day: bj.day,
+        weekday: bj.weekday,
+        hour: bj.hour
+      };
+
+      // 确定"明天"：从明天开始，跳过周日
+      let count = 0;
+      const predictions = [];
+      let cursor = new Date(today);
+      cursor.setDate(cursor.getDate() + 1); // 从明天开始
+
+      // 先找明天的有效日期
+      while (count < 15) {
+        const y = cursor.getFullYear();
+        const m = cursor.getMonth() + 1;
+        const d = cursor.getDate();
+        const w = cursor.getDay();
+
+        if (isValidDrawDay(w)) {
+          const gan = getHaiHourGan(y, m, d);
+          const dans = getDanFromGan(gan);
+          predictions.push({
+            year: y,
+            month: m,
+            day: d,
+            weekday: w,
+            period: getPeriodNum(y, m, d),
+            haiGan: gan,
+            dans: dans,
+            // 预测时是否已过开奖时间
+            // 如果是今天之前的日期，视为已过
+            // 如果是今天，看当前时间是否 > 21:15
+            isPast: (y < todayBJ.year || (y === todayBJ.year && m < todayBJ.month) || (y === todayBJ.year && m === todayBJ.month && d < todayBJ.day)),
+            isToday: (y === todayBJ.year && m === todayBJ.month && d === todayBJ.day),
+            isFuture: false
+          });
+          count++;
+        }
+        cursor.setDate(cursor.getDate() + 1);
+      }
+
+      // 标记未来/过去
+      const nowBJ = todayBJ;
+      for (const p of predictions) {
+        if (p.year > nowBJ.year || (p.year === nowBJ.year && p.month > nowBJ.month) || (p.year === nowBJ.year && p.month === nowBJ.month && p.day > nowBJ.day)) {
+          p.isFuture = true;
+          p.isPast = false;
+          p.isToday = false;
+        } else if (p.year === nowBJ.year && p.month === nowBJ.month && p.day === nowBJ.day) {
+          p.isFuture = false;
+          p.isPast = false;
+          p.isToday = true;
+        } else {
+          p.isPast = true;
+          p.isFuture = false;
+          p.isToday = false;
+        }
+      }
+
+      return predictions;
+    }
+
+    // ---- 保存预测数据到localStorage ----
+    function saveD3Data(predictions) {
+      try {
+        // 从storage读取已有数据
+        let stored = loadD3Data();
+        
+        // 合并：更新已有记录，添加新记录
+        for (const p of predictions) {
+          const key = p.period;
+          if (!stored[key]) {
+            stored[key] = {
+              period: p.period,
+              year: p.year,
+              month: p.month,
+              day: p.day,
+              weekday: p.weekday,
+              haiGan: p.haiGan,
+              dans: p.dans,
+              drawNum: null,
+              result: null,
+              updatedAt: null
+            };
+          } else {
+            // 更新预测数字（如果天干变化了）
+            stored[key].haiGan = p.haiGan;
+            stored[key].dans = p.dans;
+          }
+        }
+        
+        localStorage.setItem(D3_STORAGE_KEY, JSON.stringify(stored));
+        return stored;
+      } catch (e) {
+        console.warn('localStorage保存失败:', e);
+        return null;
+      }
+    }
+
+    // ---- 从localStorage加载数据 ----
+    function loadD3Data() {
+      try {
+        const raw = localStorage.getItem(D3_STORAGE_KEY);
+        if (raw) return JSON.parse(raw);
+      } catch (e) {
+        console.warn('localStorage读取失败:', e);
+      }
+      return {};
+    }
+
+    // ---- 更新中奖号码 ----
+    function updateD3DrawNum(period, drawNum) {
+      const stored = loadD3Data();
+      if (!stored[period]) return false;
+      
+      stored[period].drawNum = drawNum;
+      
+      // 判断是否正确：3个预测号码中1个及以上匹配即为正确
+      if (drawNum && drawNum.length === 3) {
+        const dans = stored[period].dans;
+        const drawArr = drawNum.split('').map(Number);
+        const matchCount = dans.filter(d => drawArr.includes(d)).length;
+        stored[period].result = matchCount >= 1 ? '✅' : '❌';
+        stored[period].matchCount = matchCount;
+      } else {
+        stored[period].result = null;
+        stored[period].matchCount = null;
+      }
+      
+      stored[period].updatedAt = new Date().toISOString();
+      
+      try {
+        localStorage.setItem(D3_STORAGE_KEY, JSON.stringify(stored));
+        return true;
+      } catch (e) {
+        console.warn('保存失败:', e);
+        return false;
+      }
+    }
+
+    // ---- 渲染预测表格 ----
+    function renderD3Table() {
+      const predictions = generateD3Predictions();
+      const stored = saveD3Data(predictions);
+      
+      const tbody = document.getElementById('d3PredBody');
+      if (!tbody) return;
+      
+      let html = '';
+      let correctCount = 0;
+      let totalResolved = 0;
+      
+      // 展示顺序：最新的在前（明天在最上面）
+      for (let i = predictions.length - 1; i >= 0; i--) {
+        const p = predictions[i];
+        const key = p.period;
+        const record = stored ? stored[key] : null;
+        
+        const dateStr = formatDateStr(p.year, p.month, p.day);
+        const weekdayStr = '星期' + WEEKDAY_NAMES[p.weekday];
+        const dansStr = p.dans.map(n => `<span class="d3-ball">${n}</span>`).join(' ');
+        
+        // 中奖号码
+        let drawStr = '';
+        let resultStr = '';
+        let editBtn = '';
+        
+        if (record && record.drawNum) {
+          const drawArr = record.drawNum.split('');
+          drawStr = drawArr.map(n => `<span class="d3-ball ${record.result === '✅' ? 'd3-ball-hit' : ''}">${n}</span>`).join(' ');
+          resultStr = record.result || '';
+          if (record.result === '✅') correctCount++;
+          totalResolved++;
+          editBtn = `<button class="d3-edit-btn" onclick="editDrawNum('${key}')" title="修改中奖号码">✏️</button>`;
+        } else if (p.isPast || p.isToday) {
+          // 已过期的日期，可以编辑
+          drawStr = '<span style="color:var(--text-light);font-size:12px;">待更新</span>';
+          resultStr = '⏳';
+          editBtn = `<button class="d3-edit-btn" onclick="editDrawNum('${key}')" title="输入中奖号码">✏️</button>`;
+        } else {
+          // 未来的日期
+          drawStr = '<span style="color:var(--text-light);font-size:12px;">—</span>';
+          resultStr = '🔮';
+          editBtn = '';
+        }
+        
+        // 行样式
+        const rowClass = p.isToday ? 'd3-row-today' : (p.isFuture ? 'd3-row-future' : 'd3-row-past');
+        
+        html += `
+          <tr class="${rowClass}">
+            <td style="font-weight:600;">${p.period}</td>
+            <td>${dateStr}</td>
+            <td>${weekdayStr}</td>
+            <td><span class="d3-gan-badge">${p.haiGan}</span></td>
+            <td>${dansStr}</td>
+            <td>${drawStr}</td>
+            <td style="font-size:18px;font-weight:700;">${resultStr}</td>
+            <td>${editBtn}</td>
+          </tr>
+        `;
+      }
+      
+      tbody.innerHTML = html;
+      
+      // 更新统计
+      const accuracy = totalResolved > 0 ? Math.round(correctCount / totalResolved * 100) : 0;
+      const statsEl = document.getElementById('d3Stats');
+      if (statsEl) {
+        if (totalResolved > 0) {
+          statsEl.style.display = 'block';
+          statsEl.innerHTML = `
+            📈 已开奖 ${totalResolved} 期 · 正确 <strong style="color:#22c55e;">${correctCount}</strong> 期 · 
+            错误 <strong style="color:#ef4444;">${totalResolved - correctCount}</strong> 期 · 
+            准确率 <strong style="color:var(--primary);">${accuracy}%</strong>
+          `;
+        } else {
+          statsEl.style.display = 'none';
+        }
+      }
+      
+      const accEl = document.getElementById('d3Accuracy');
+      if (accEl) {
+        if (totalResolved > 0) {
+          accEl.textContent = `📊 已开奖 ${totalResolved} 期，正确 ${correctCount} 期（${accuracy}%）`;
+        } else {
+          accEl.textContent = '📊 暂无已开奖记录';
+        }
+      }
+      
+      // 更新时间
+      const updateEl = document.getElementById('d3UpdateTime');
+      if (updateEl) {
+        const bj = getBeijingDate();
+        updateEl.textContent = `🕐 更新于 ${bj.year}-${String(bj.month).padStart(2,'0')}-${String(bj.day).padStart(2,'0')} ${String(bj.hour).padStart(2,'0')}:${String(bj.minute).padStart(2,'0')} 北京时间`;
+      }
+    }
+
+    // ---- 编辑中奖号码 ----
+    function editDrawNum(period) {
+      const stored = loadD3Data();
+      const record = stored[period];
+      if (!record) return;
+      
+      const current = record.drawNum || '';
+      const input = prompt(`请输入期号 ${period} 的中奖号码（3位数字，如 123）：`, current);
+      
+      if (input === null) return; // 取消
+      
+      const trimmed = input.trim();
+      if (trimmed === '') {
+        showToast('⚠️ 请输入3位数字');
+        return;
+      }
+      
+      // 验证：必须是3位数字
+      if (!/^\d{3}$/.test(trimmed)) {
+        showToast('⚠️ 请输入3位数字，如 123');
+        return;
+      }
+      
+      if (updateD3DrawNum(period, trimmed)) {
+        showToast('✅ 中奖号码已更新');
+        renderD3Table();
+      } else {
+        showToast('⚠️ 保存失败，请重试');
+      }
+    }
+
+    // ---- 刷新预测 ----
+    function refreshD3Prediction() {
+      renderD3Table();
+      showToast('🔄 预测已刷新');
+    }
+
+    // ---- 查看历史记录 ----
+    function showD3History() {
+      const stored = loadD3Data();
+      const records = Object.values(stored);
+      
+      if (records.length === 0) {
+        showToast('📜 暂无历史记录');
+        return;
+      }
+      
+      // 按日期排序（最新的在前）
+      records.sort((a, b) => {
+        const da = new Date(a.year, a.month - 1, a.day);
+        const db = new Date(b.year, b.month - 1, b.day);
+        return db - da;
+      });
+      
+      let html = `
+        <div style="padding:16px;background:var(--card-bg);border:1px solid var(--border);border-radius:12px;margin-top:16px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+            <span style="font-size:16px;font-weight:600;">📜 全部历史记录（共 ${records.length} 期）</span>
+            <button class="btn-submit" style="padding:4px 12px;font-size:12px;background:linear-gradient(135deg,#ef4444,#dc2626);" onclick="clearD3History()">🗑️ 清空记录</button>
+          </div>
+          <div style="overflow-x:auto;max-height:400px;overflow-y:auto;">
+            <table class="d3-pred-table">
+              <thead>
+                <tr>
+                  <th>期数</th>
+                  <th>日期</th>
+                  <th>天干</th>
+                  <th>预测3胆</th>
+                  <th>中奖号码</th>
+                  <th>结果</th>
+                </tr>
+              </thead>
+              <tbody>
+      `;
+      
+      for (const r of records) {
+        const dateStr = formatDateStr(r.year, r.month, r.day);
+        const dansStr = r.dans ? r.dans.join(',') : '—';
+        const drawStr = r.drawNum || '—';
+        const resultStr = r.result || (r.drawNum ? '—' : '⏳');
+        
+        html += `
+          <tr>
+            <td style="font-weight:600;">${r.period}</td>
+            <td>${dateStr}</td>
+            <td><span class="d3-gan-badge">${r.haiGan || '—'}</span></td>
+            <td>${dansStr}</td>
+            <td>${drawStr}</td>
+            <td style="font-size:18px;font-weight:700;">${resultStr}</td>
+          </tr>
+        `;
+      }
+      
+      html += `
+              </tbody>
+            </table>
+          </div>
+          <div class="form-row" style="margin-top:12px;justify-content:center;">
+            <button class="btn-submit" style="padding:6px 20px;font-size:13px;background:linear-gradient(135deg,#6366f1,#8b5cf6);" onclick="closeD3History()">关闭</button>
+          </div>
+        </div>
+      `;
+      
+      // 插入到表格后面
+      const existing = document.querySelector('.d3-history-overlay');
+      if (existing) existing.remove();
+      
+      const overlay = document.createElement('div');
+      overlay.className = 'd3-history-overlay';
+      overlay.innerHTML = html;
+      document.getElementById('d3PredTable').parentElement.appendChild(overlay);
+    }
+
+    function closeD3History() {
+      const el = document.querySelector('.d3-history-overlay');
+      if (el) el.remove();
+    }
+
+    function clearD3History() {
+      if (!confirm('确定要清空所有历史记录吗？此操作不可恢复！')) return;
+      try {
+        localStorage.removeItem(D3_STORAGE_KEY);
+        showToast('✅ 历史记录已清空');
+        renderD3Table();
+        closeD3History();
+      } catch (e) {
+        showToast('⚠️ 清空失败');
+      }
+    }
+
+    // ---- 初始化 ----
+    document.addEventListener('DOMContentLoaded', function() {
+      // 等待 lottery-piancai.js 加载完成
+      setTimeout(function() {
+        renderD3Table();
+      }, 200);
+    });
+  </script>
   <script>
     // ---- 初始化年月日选择器 ----
     function initSelectors() {

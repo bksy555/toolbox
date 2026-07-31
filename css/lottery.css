@@ -811,3 +811,122 @@
   color: var(--text-light);
   margin: 8px 0;
 }
+
+/* ============================================
+   福彩3D预测 - 3胆中1
+   ============================================ */
+.d3-pred-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.d3-pred-table thead th {
+  background: rgba(99, 102, 241, 0.08);
+  padding: 10px 8px;
+  text-align: center;
+  font-weight: 600;
+  font-size: 13px;
+  color: var(--text);
+  border-bottom: 2px solid var(--border);
+  white-space: nowrap;
+}
+
+.d3-pred-table tbody td {
+  padding: 10px 8px;
+  text-align: center;
+  border-bottom: 1px solid var(--border);
+  font-size: 13px;
+  vertical-align: middle;
+}
+
+.d3-pred-table tbody tr:hover {
+  background: rgba(99, 102, 241, 0.03);
+}
+
+.d3-pred-table tbody tr.d3-row-today {
+  background: rgba(245, 158, 11, 0.06);
+  border-left: 3px solid #f59e0b;
+}
+
+.d3-pred-table tbody tr.d3-row-future {
+  background: rgba(99, 102, 241, 0.04);
+}
+
+.d3-pred-table tbody tr.d3-row-past {
+  opacity: 0.85;
+}
+
+.d3-ball {
+  display: inline-flex;
+  width: 30px;
+  height: 30px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+  margin: 0 2px;
+}
+
+.d3-ball.d3-ball-hit {
+  background: linear-gradient(135deg, #22c55e, #16a34a);
+  box-shadow: 0 0 8px rgba(34, 197, 94, 0.4);
+}
+
+.d3-gan-badge {
+  display: inline-block;
+  padding: 3px 12px;
+  border-radius: 6px;
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.2), rgba(239, 68, 68, 0.15));
+  font-size: 16px;
+  font-weight: 700;
+  font-family: 'KaiTi', 'STKaiti', serif;
+  letter-spacing: 2px;
+  color: #d97706;
+}
+
+.d3-edit-btn {
+  padding: 4px 8px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--card-bg);
+  font-size: 13px;
+  cursor: pointer;
+  color: var(--text-light);
+  transition: all 0.2s;
+}
+
+.d3-edit-btn:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+  background: rgba(99, 102, 241, 0.08);
+}
+
+.d3-history-overlay {
+  margin-top: 12px;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 600px) {
+  .d3-pred-table {
+    font-size: 12px;
+  }
+  .d3-pred-table thead th,
+  .d3-pred-table tbody td {
+    padding: 6px 4px;
+    font-size: 11px;
+  }
+  .d3-ball {
+    width: 24px;
+    height: 24px;
+    font-size: 11px;
+  }
+}
