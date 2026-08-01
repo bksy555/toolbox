@@ -703,12 +703,17 @@
         const dateStr = formatDateStr(p.year, p.month, p.day);
         const weekdayStr = '星期' + WEEKDAY_NAMES[p.weekday];
         
-        // 预测3胆：仅过去日期显示，今日显示待更新
+        // 预测3胆：今日19:25后显示，之前显示待更新
         let dansStr = '';
         if (p.isPast) {
           dansStr = p.dans.map(n => `<span class="d3-ball">${n}</span>`).join(' ');
         } else if (p.isToday) {
-          dansStr = '<span style="color:var(--text-light);font-size:12px;">待19:25更新</span>';
+          const bj = getBeijingDate();
+          if (bj.hour > 19 || (bj.hour === 19 && bj.minute >= 25)) {
+            dansStr = p.dans.map(n => `<span class="d3-ball">${n}</span>`).join(' ');
+          } else {
+            dansStr = '<span style="color:var(--text-light);font-size:12px;">待19:25更新</span>';
+          }
         }
         
         // 中奖号码
