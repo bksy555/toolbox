@@ -378,32 +378,38 @@ async function handleRefreshCache(req, res) {
   });
 }
 
-// 获取 QQ 音乐榜单
+// 获取 QQ 音乐榜单（使用旧版API，返回songmid格式）
 async function fetchQQTopList(topId, num) {
-  const params = {
-    detail: {
-      module: 'musicToplist.ToplistInfoServer',
-      method: 'GetDetail',
-      param: { topId, offset: 0, num }
-    }
-  };
-  
-  const url = `https://u.y.qq.com/cgi-bin/musicu.fcg?format=json&data=${encodeURIComponent(JSON.stringify(params))}`;
-  const resp = await fetch(url, {
-    headers: { 'User-Agent': 'Mozilla/5.0', 'Referer': 'https://y.qq.com/' }
-  });
-  const data = await resp.json();
-  const songList = data?.detail?.data?.songList || [];
-  
-  return songList.map(s => {
-    const info = s.songInfo || {};
-    return {
-      id: info.mid || '',
-      name: info.name || '',
-      artists: (info.singer || []).map(sg => sg.name || ''),
-      album: info.album?.name || '',
-      albumPic: info.album?.mid ? `https://y.gtimg.cn/music/photo_new/T002R300x300M000${info.album.mid}.jpg` : '',
-      duration: (info.interval || 0) * 1000
-    };
-  }).filter(s => s.id && s.name);
+  try {
+    const url = `https://c.y.qq.com/v8/fcg-bin/fcg_v8_toplist_cp.fcg?topid=${topId}&type=top&song_begin=0&song_num=${num}`;
+    const resp = await fetch(url, {
+      headers: { 'User-Agent': 'Mozilla/5.0', 'Referer': 'https://y.qq.com/' }
+    });
+    // 响应是 GBK 编码，需要处理
+    const buffer = await resp.arrayBuffer();
+    const decoder = new TextDecoder('gbk');
+    let text = decoder.decode(buffer);
+    // 找到 JSON 起始位置
+    const start = text.indexOf('{');
+    if (start < 0) return [];
+    text = text.substring(start);
+    const data = JSON.parse(text);
+    const songList = data?.songlist || [];
+    
+    return songList.map(s => {
+      const info = s.data || {};
+      const singer = info.singer || [];
+      return {
+        id: info.songmid || '',
+        name: info.songname || '',
+        artists: singer.map(sg => sg.name || ''),
+        album: info.albumname || '',
+        albumPic: info.albummid ? `https://y.gtimg.cn/music/photo_new/T002R300x300M000${info.albummid}.jpg` : '',
+        duration: (info.interval || 0) * 1000
+      };
+    }).filter(s => s.id && s.name);
+  } catch (e) {
+    console.error('获取QQ榜单失败:', e.message);
+    return [];
+  }
 }
