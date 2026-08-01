@@ -21,8 +21,6 @@ export default async function handler(req, res) {
         return await handleSearch(req, res);
       case 'url':
         return await handleUrl(req, res);
-      case 'search_all':
-        return await handleSearchAll(req, res);
       default:
         res.status(400).json({ error: 'unknown action' });
     }
@@ -34,7 +32,6 @@ export default async function handler(req, res) {
 
 // ==================== 搜索 ====================
 
-// 仅 NetEase 搜索（用于首页搜索结果）
 async function handleSearch(req, res) {
   const keyword = req.query.keyword || '';
   const page = parseInt(req.query.page) || 1;
@@ -45,62 +42,46 @@ async function handleSearch(req, res) {
     return res.json({ songs: [], total: 0 });
   }
   
-  const songs = await searchNetease(keyword, offset, limit);
-  res.json(songs);
-}
-
-// 全平台搜索（聚合结果）
-async function handleSearchAll(req, res) {
-  const keyword = req.query.keyword || '';
-  if (!keyword.trim()) {
-    return res.json({ songs: [] });
-  }
-  
-  const [neteaseSongs, qqSongs, kugouSongs] = await Promise.all([
-    searchNetease(keyword, 0, 10),
+  // 并行搜索多个平台
+  const [neteaseSongs, qqSongs] = await Promise.all([
+    searchNetease(keyword, offset, limit),
     searchQQ(keyword),
-    searchKugou(keyword)
   ]);
   
-  // 合并去重
+  // 合并，优先显示 NetEase 结果，QQ 补充
   const seen = new Set();
-  const allSongs = [];
+  const merged = [];
   
-  for (const song of [...neteaseSongs.songs, ...qqSongs, ...kugouSongs]) {
+  for (const song of [...neteaseSongs, ...qqSongs]) {
     const key = `${song.name}|${song.artists?.join(',') || ''}`;
     if (!seen.has(key)) {
       seen.add(key);
-      allSongs.push(song);
+      merged.push(song);
     }
   }
   
-  res.json({ songs: allSongs.slice(0, 30) });
+  res.json({ songs: merged.slice(0, 30), total: merged.length });
 }
 
-// ==================== 多源搜索实现 ====================
-
 async function searchNetease(keyword, offset, limit) {
-  const url = `${NETEASE_API}/search?keywords=${encodeURIComponent(keyword)}&offset=${offset}&limit=${limit}`;
   try {
+    const url = `${NETEASE_API}/search?keywords=${encodeURIComponent(keyword)}&offset=${offset}&limit=${limit}`;
     const resp = await fetch(url, {
       headers: { 'User-Agent': 'Mozilla/5.0', 'Referer': 'https://music.163.com/' }
     });
     const data = await resp.json();
-    if (!data.result?.songs) return { songs: [], total: 0 };
-    return {
-      songs: data.result.songs.map(s => ({
-        id: String(s.id),
-        name: s.name,
-        artists: s.artists ? s.artists.map(a => a.name) : [],
-        album: s.album?.name || '',
-        albumPic: s.album?.picUrl || s.album?.artist?.img1v1Url || '',
-        duration: s.duration || 0,
-        source: 'netease'
-      })),
-      total: data.result.songCount || 0
-    };
+    if (!data.result?.songs) return [];
+    return data.result.songs.map(s => ({
+      id: String(s.id),
+      name: s.name,
+      artists: s.artists ? s.artists.map(a => a.name) : [],
+      album: s.album?.name || '',
+      albumPic: s.album?.picUrl || s.album?.artist?.img1v1Url || '',
+      duration: s.duration || 0,
+      source: 'netease'
+    }));
   } catch {
-    return { songs: [], total: 0 };
+    return [];
   }
 }
 
@@ -126,29 +107,6 @@ async function searchQQ(keyword) {
   }
 }
 
-async function searchKugou(keyword) {
-  try {
-    const url = `https://search.kugou.com/api/v3/search/song?keyword=${encodeURIComponent(keyword)}&page=1&pagesize=10&platform=web&filter=0`;
-    const resp = await fetch(url, {
-      headers: { 'User-Agent': 'Mozilla/5.0', 'Referer': 'https://www.kugou.com/' }
-    });
-    const data = await resp.json();
-    const list = data?.data?.lists || data?.data?.info || [];
-    return list.map(s => ({
-      id: s.hash || s.FileHash || '',
-      name: s.SongName || s.songname || s.Name || '',
-      artists: [(s.SingerName || s.singername || s.AuthorName || '').replace(/、/g, '/')],
-      album: s.AlbumName || s.album_name || '',
-      albumPic: s.img || s.album_img || `https://www.kugou.com/static/images/singer/singer_placeholder.png`,
-      duration: (s.duration || s.Duration || 0) * 1000,
-      source: 'kugou',
-      albumId: s.album_id || s.AlbumID || ''
-    }));
-  } catch {
-    return [];
-  }
-}
-
 // ==================== 多源获取播放 URL ====================
 
 async function handleUrl(req, res) {
@@ -159,11 +117,8 @@ async function handleUrl(req, res) {
     return res.status(400).json({ error: 'no song id' });
   }
   
-  // 按来源获取播放链接，自动多源回退
   let result = null;
-  const sources = source === 'auto' 
-    ? ['netease', 'qq', 'kugou']
-    : [source];
+  const sources = source === 'auto' ? ['netease', 'qq'] : [source];
   
   for (const s of sources) {
     switch (s) {
@@ -172,9 +127,6 @@ async function handleUrl(req, res) {
         break;
       case 'qq':
         result = await getQQUrl(id);
-        break;
-      case 'kugou':
-        result = await getKugouUrl(id, req.query.album_id);
         break;
     }
     if (result) break;
@@ -205,8 +157,8 @@ async function getNeteaseUrl(id) {
 
 async function getQQUrl(songmid) {
   try {
-    // QQ Music 获取播放链接需要先获取 vkey
-    const dataStr = JSON.stringify({
+    // QQ Music 获取播放链接
+    const data = {
       req: {
         module: 'CDN.SrfCdnDispatchServer',
         method: 'GetCdnDispatch',
@@ -224,40 +176,30 @@ async function getQQUrl(songmid) {
           platform: '20'
         }
       }
-    });
+    };
     
-    const url = `https://u.y.qq.com/cgi-bin/musicu.fcg?data=${encodeURIComponent(dataStr)}`;
+    const url = `https://u.y.qq.com/cgi-bin/musicu.fcg?data=${encodeURIComponent(JSON.stringify(data))}`;
     const resp = await fetch(url, {
       headers: { 'User-Agent': 'Mozilla/5.0', 'Referer': 'https://y.qq.com/' }
     });
-    const data = await resp.json();
-    const sip = data?.req_0?.data?.sip?.[0] || 'https://ws.stream.qqmusic.qq.com/';
-    const midUrlInfo = data?.req_0?.data?.midurlinfo?.[0];
+    const result = await resp.json();
     
-    if (midUrlInfo?.purl) {
-      return { url: sip + midUrlInfo.purl, source: 'qq', br: 128000 };
+    // 从响应中提取播放 URL
+    const reqData = result?.req?.data;
+    const req0Data = result?.req_0?.data;
+    
+    // 方式1: 从 keepalivefile 构建 URL
+    if (reqData?.sip?.[0] && reqData?.keepalivefile) {
+      const fullUrl = reqData.sip[0] + reqData.keepalivefile;
+      return { url: fullUrl, source: 'qq', br: 128000 };
     }
-    return null;
-  } catch {
-    return null;
-  }
-}
-
-async function getKugouUrl(hash, albumId) {
-  try {
-    // Kugou 获取播放链接
-    const url = `https://www.kugou.com/yy/index.php?r=play/getdata&hash=${hash}&album_id=${albumId || ''}`;
-    const resp = await fetch(url, {
-      headers: { 
-        'User-Agent': 'Mozilla/5.0', 
-        'Referer': 'https://www.kugou.com/',
-        'Cookie': 'kg_mid=1234567890'
-      }
-    });
-    const data = await resp.json();
-    if (data?.data?.play_url) {
-      return { url: data.data.play_url, source: 'kugou', br: data.data.bitRate || 128000 };
+    
+    // 方式2: 从 midurlinfo 构建 URL
+    if (req0Data?.sip?.[0] && req0Data?.midurlinfo?.[0]?.purl) {
+      const fullUrl = req0Data.sip[0] + req0Data.midurlinfo[0].purl;
+      return { url: fullUrl, source: 'qq', br: 128000 };
     }
+    
     return null;
   } catch {
     return null;
