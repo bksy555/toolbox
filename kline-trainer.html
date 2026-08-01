@@ -47,7 +47,7 @@ body {
   background:var(--card); border-radius:12px; padding:10px; margin-bottom:12px;
   position:relative;
 }
-#chart { width:100%; height:420px; }
+#chart { width:100%; height:500px; }
 
 /* Position info */
 .pos-bar {
@@ -344,19 +344,35 @@ let chart = null;
 function initChart() {
   chart = echarts.init(document.getElementById('chart'));
   chart.setOption({
-    animation:false, grid:{left:'3%',right:'3%',top:'8%',bottom:'8%'},
-    xAxis:{type:'category',data:[],axisLine:{lineStyle:{color:'#2a2a44'}},
-           axisLabel:{color:'#8888aa',fontSize:10}},
-    yAxis:{scale:true,splitLine:{lineStyle:{color:'#1a1a2e'}},
-           axisLabel:{color:'#8888aa',fontSize:10}},
+    animation:false,
+    grid:[
+      {left:'3%',right:'3%',top:'5%',bottom:'30%'},
+      {left:'3%',right:'3%',top:'72%',bottom:'5%'}
+    ],
+    xAxis:[
+      {type:'category',data:[],axisLine:{lineStyle:{color:'#2a2a44'}},
+       axisLabel:{color:'#8888aa',fontSize:10},gridIndex:0},
+      {type:'category',data:[],axisLine:{lineStyle:{color:'#2a2a44'}},
+       axisLabel:{color:'#8888aa',fontSize:9},gridIndex:1,
+       axisTick:{show:false}}
+    ],
+    yAxis:[
+      {scale:true,splitLine:{lineStyle:{color:'#1a1a2e'}},
+       axisLabel:{color:'#8888aa',fontSize:10},gridIndex:0},
+      {scale:true,splitLine:{show:false},
+       axisLabel:{color:'#8888aa',fontSize:9,formatter:v=>v>=10000?(v/10000).toFixed(0)+'万':v},
+       gridIndex:1}
+    ],
     tooltip:{trigger:'axis',axisPointer:{type:'cross'},
              backgroundColor:'#1a1a2e',borderColor:'#2a2a44',
              textStyle:{color:'#e0e0e0',fontSize:12}},
-    series:[{
-      type:'candlestick',name:'K线',
-      data:[],itemStyle:{color:'#ef4444',color0:'#10b981',
-        borderColor:'#ef4444',borderColor0:'#10b981'}
-    }]
+    series:[
+      {type:'candlestick',name:'K线',xAxisIndex:0,yAxisIndex:0,
+       data:[],itemStyle:{color:'#ef4444',color0:'#10b981',
+         borderColor:'#ef4444',borderColor0:'#10b981'}},
+      {type:'bar',name:'成交量',xAxisIndex:1,yAxisIndex:1,
+       data:[],itemStyle:{color:'#ef4444',color0:'#10b981'}}
+    ]
   });
 }
 
@@ -364,7 +380,20 @@ function updateChart(history, revealed) {
   const allDates = [...history.map(d=>d[0]), ...revealed.map(d=>d[0])];
   const allData = [...history.map(d=>[+d[1],+d[2],+d[4],+d[3]]),
                    ...revealed.map(d=>[+d[1],+d[2],+d[4],+d[3]])];
-  chart.setOption({xAxis:{data:allDates}, series:[{data:allData}]});
+  // Volume: green if close>=open, red if close<open
+  const allVol = [...history.map(d=>{
+    const vol = +d[5] || 0;
+    const isUp = +d[2] >= +d[1];
+    return {value: vol, itemStyle:{color: isUp ? '#10b981' : '#ef4444'}};
+  }), ...revealed.map(d=>{
+    const vol = +d[5] || 0;
+    const isUp = +d[2] >= +d[1];
+    return {value: vol, itemStyle:{color: isUp ? '#10b981' : '#ef4444'}};
+  })];
+  chart.setOption({
+    xAxis:[{data:allDates},{data:allDates}],
+    series:[{data:allData},{data:allVol}]
+  });
 }
 
 // ============================================================
