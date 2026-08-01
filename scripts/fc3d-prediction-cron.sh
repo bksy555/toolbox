@@ -13,8 +13,95 @@ cd "$WORK_DIR" || exit 1
 echo "=== 福彩3D预测 - 3胆中1 数据更新 ==="
 echo "时间: $(date '+%Y-%m-%d %H:%M:%S')"
 
-# 生成预测数据（Node.js脚本）
+# ============================================
+# 步骤1：从网络获取最新中奖号码
+# ============================================
+echo "--- 步骤1: 从 zhcw.com 获取最新中奖号码 ---"
+
+# 使用curl获取最新福彩3D分析文章
+# 先获取首页，找到最新分析文章的URL
+HOME_HTML=$(curl -sL 'https://www.zhcw.com/' \
+  -H 'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36' \
+  --max-time 15 2>/dev/null)
+
+# 提取最新福彩3D分析文章的期号
+LATEST_ISSUE=$(echo "$HOME_HTML" | grep -oP '福彩3D第\d+期组选分析' | grep -oP '\d+' | sort -rn | head -1)
+
+FETCHED_DRAW=""
+FETCHED_PERIOD=""
+
+if [ -n "$LATEST_ISSUE" ]; then
+  echo "最新分析文章: 福彩3D第${LATEST_ISSUE}期"
+  
+  # 尝试从首页提取文章URL
+  # 用node解析HTML（跨行匹配）
+  ARTICLE_URL=$(node -e "
+const html = require('fs').readFileSync('/dev/stdin', 'utf8');
+// 查找福彩3D第X期组选分析链接（跨行匹配）
+// 先找期号位置，再往前找href
+const idx = html.indexOf('福彩3D第${LATEST_ISSUE}期组选分析');
+if (idx > -1) {
+  const before = html.substring(0, idx);
+  const hrefMatch = before.match(/href=\"(\/c\/2026-[^\"]*?925\d+\.shtml)\"[^>]*>[\s\S]*$/);
+  if (hrefMatch) {
+    console.log(hrefMatch[1]);
+  } else {
+    // 更宽松匹配
+    const m = before.match(/href=\"(\/c\/2026-[^\"]*?925\d+\.shtml)\"/g);
+    if (m) {
+      console.log(m[m.length-1].replace(/^href=\"/,'').replace(/\"/,''));
+    }
+  }
+}
+" <<< "$HOME_HTML")
+  
+  if [ -z "$ARTICLE_URL" ]; then
+    # 备用：直接尝试已知的文章URL模式
+    # 2026203期: /c/2026-08-01/925106.shtml
+    # 2026202期: /c/2026-07-31/925025.shtml
+    # 2026201期: /c/2026-07-30/924927.shtml
+    ARTICLE_URL=$(echo "$HOME_HTML" | grep -oP 'href="(/c/2026-[^"]*?925\d+\.shtml)"' | sed 's/href="//;s/"//' | head -1)
+  fi
+  
+  if [ -n "$ARTICLE_URL" ]; then
+    echo "文章URL: https://www.zhcw.com${ARTICLE_URL}"
+    
+    # 获取文章内容
+    ARTICLE_HTML=$(curl -sL "https://www.zhcw.com${ARTICLE_URL}" \
+      -H 'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36' \
+      --max-time 15 2>/dev/null)
+    
+    # 提取上期开奖结果
+    DRAW_RESULT=$(echo "$ARTICLE_HTML" | grep -oP '福彩3D上期开奖结果\d \d \d' | head -1)
+    
+    if [ -n "$DRAW_RESULT" ]; then
+      PREV_ISSUE=$((LATEST_ISSUE - 1))
+      FETCHED_DRAW=$(echo "$DRAW_RESULT" | grep -oP '\d \d \d' | tr -d ' ')
+      FETCHED_PERIOD="$PREV_ISSUE"
+      echo "✅ 获取到中奖号码: 第${FETCHED_PERIOD}期 = ${FETCHED_DRAW}"
+    else
+      echo "⚠️ 文章内容中未找到开奖结果"
+    fi
+  else
+    echo "⚠️ 未找到文章URL"
+  fi
+else
+  echo "⚠️ 未找到福彩3D分析文章"
+fi
+
+# ============================================
+# 步骤2：生成预测数据（Node.js脚本）
+# ============================================
+echo "--- 步骤2: 生成预测数据 ---"
+
 node -e "
+const fs = require('fs');
+const DATA_FILE = '$DATA_FILE';
+
+// 网络获取的最新中奖号码
+const FETCHED_PERIOD = '$FETCHED_PERIOD';
+const FETCHED_DRAW = '$FETCHED_DRAW';
+
 // 天干→3胆映射
 const GAN_TO_DAN = {
   '甲': [1, 4, 8], '乙': [3, 4, 8], '丙': [3, 4, 9],
@@ -23,7 +110,6 @@ const GAN_TO_DAN = {
 };
 
 const TIAN_GAN = ['甲', '乙', '丙', '丁', '戊', '己', '庚', '辛', '壬', '癸'];
-const DI_ZHI = ['子', '丑', '寅', '卯', '辰', '巳', '午', '未', '申', '酉', '戌', '亥'];
 
 // 计算日柱
 function getDayPillar(year, month, day) {
@@ -77,15 +163,6 @@ function calcResult(dans, drawNum) {
   return matchCount >= 1 ? '✅' : '❌';
 }
 
-// 已知中奖号码
-const KNOWN_DRAW_NUMS = {
-  '2026199': '558', '2026200': '026', '2026201': '906',
-  '2026202': '425', '2026203': '254', '2026204': '283',
-  '2026205': '275', '2026206': '419', '2026207': '232',
-  '2026208': '685', '2026209': '591', '2026210': '912',
-  '2026211': '321', '2026212': '988'
-};
-
 // 主逻辑
 const bj = getBeijingDate();
 const today = new Date(bj.year, bj.month - 1, bj.day);
@@ -128,20 +205,29 @@ while (predictions.length > 15) {
 // 读取已有数据
 let stored = {};
 try {
-  const fs = require('fs');
-  if (fs.existsSync('$DATA_FILE')) {
-    stored = JSON.parse(fs.readFileSync('$DATA_FILE', 'utf8'));
+  if (fs.existsSync(DATA_FILE)) {
+    stored = JSON.parse(fs.readFileSync(DATA_FILE, 'utf8'));
+    console.log('读取已有数据: ' + Object.keys(stored).length + ' 期记录');
   }
 } catch(e) {
   console.warn('读取已有数据失败，将新建');
+}
+
+// 如果有从网络获取的最新中奖号码，更新到stored
+if (FETCHED_PERIOD && FETCHED_DRAW) {
+  const key = FETCHED_PERIOD;
+  if (!stored[key]) {
+    stored[key] = { period: key };
+  }
+  stored[key].drawNum = FETCHED_DRAW;
+  stored[key].updatedAt = new Date().toISOString();
+  console.log('📥 从网络更新中奖号码: 第' + key + '期 = ' + FETCHED_DRAW);
 }
 
 // 合并新预测
 for (const p of predictions) {
   const key = p.period;
   if (!stored[key]) {
-    const knownDraw = KNOWN_DRAW_NUMS[key] || null;
-    const result = knownDraw ? calcResult(p.dans, knownDraw) : null;
     stored[key] = {
       period: p.period,
       year: p.year,
@@ -150,29 +236,40 @@ for (const p of predictions) {
       weekday: p.weekday,
       haiGan: p.haiGan,
       dans: p.dans,
-      drawNum: knownDraw,
-      result: result,
-      updatedAt: knownDraw ? new Date().toISOString() : null
+      drawNum: null,
+      result: null,
+      updatedAt: null
     };
   } else {
     // 更新预测胆码（如果天干变了）
     stored[key].haiGan = p.haiGan;
     stored[key].dans = p.dans;
-    // 如果有中奖号码，更新结果
-    if (stored[key].drawNum) {
-      stored[key].result = calcResult(p.dans, stored[key].drawNum);
-    }
+    // 补充缺失的日期信息
+    if (!stored[key].year) Object.assign(stored[key], { year: p.year, month: p.month, day: p.day, weekday: p.weekday });
+  }
+  // 如果有中奖号码，更新结果
+  if (stored[key].drawNum) {
+    stored[key].result = calcResult(stored[key].dans, stored[key].drawNum);
   }
 }
 
 // 保存
-const fs = require('fs');
-fs.writeFileSync('$DATA_FILE', JSON.stringify(stored, null, 2), 'utf8');
+fs.writeFileSync(DATA_FILE, JSON.stringify(stored, null, 2), 'utf8');
 console.log('✅ 预测数据已保存: ' + Object.keys(stored).length + ' 期记录');
+
+// 显示最近有中奖号码的记录
+const entries = Object.entries(stored)
+  .filter(([k, v]) => v.drawNum)
+  .sort(([a], [b]) => b.localeCompare(a))
+  .slice(0, 5);
+console.log('最近中奖号码:');
+for (const [k, v] of entries) {
+  console.log('  第' + k + '期: ' + v.drawNum + ' ' + (v.result || ''));
+}
 "
 
 # 推送到GitHub
-echo "📤 推送到 GitHub..."
+echo "--- 步骤3: 推送到 GitHub ---"
 git add -A
 git commit -m "🤖 福彩3D预测自动更新 $(date '+%Y-%m-%d %H:%M')" 2>/dev/null || echo "  无新变更"
 git push 2>/dev/null && echo "  ✅ 已推送到 GitHub" || echo "  ⚠️ 推送失败（可能无变更）"
