@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>K线训练器 - ToolBox</title>
+<link rel="stylesheet" href="css/style.css">
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
+<style>
+:root {
+  --bg: #0f0f1a;
+  --card: #1a1a2e;
+  --card-hover: #252540;
+  --text: #e0e0e0;
+  --text-light: #8888aa;
+  --border: #2a2a44;
+  --primary: #6366f1;
+  --green: #10b981;
+  --red: #ef4444;
+  --gold: #f59e0b;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+}
+.page { max-width: 960px; margin:0 auto; padding:20px 16px 100px; }
+
+/* Header */
+.header { text-align:center; padding:20px 0 16px; }
+.header h1 { font-size:28px; background:linear-gradient(135deg,#6366f1,#a78bfa); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+.header p { color:var(--text-light); font-size:13px; margin-top:4px; }
+
+/* Round info */
+.round-info {
+  display:flex; justify-content:space-between; align-items:center;
+  padding:12px 16px; background:var(--card); border-radius:12px; margin-bottom:12px;
+}
+.round-info .round { font-size:16px; font-weight:600; }
+.round-info .stock { color:var(--text-light); font-size:13px; }
+.round-info .score { font-size:15px; font-weight:600; color:var(--gold); }
+
+/* Chart */
+.chart-wrap {
+  background:var(--card); border-radius:12px; padding:10px; margin-bottom:12px;
+  position:relative;
+}
+#chart { width:100%; height:420px; }
+
+/* Position info */
+.pos-bar {
+  display:flex; gap:12px; padding:10px 16px; background:var(--card);
+  border-radius:12px; margin-bottom:12px; flex-wrap:wrap;
+}
+.pos-item { flex:1; min-width:100px; text-align:center; }
+.pos-item .label { font-size:11px; color:var(--text-light); }
+.pos-item .value { font-size:18px; font-weight:700; margin-top:2px; }
+.pos-item .value.up { color:var(--green); }
+.pos-item .value.down { color:var(--red); }
+
+/* Candle progress */
+.candle-progress {
+  display:flex; gap:4px; margin-bottom:12px; padding:8px 12px;
+  background:var(--card); border-radius:12px; align-items:center;
+}
+.candle-progress .label { font-size:12px; color:var(--text-light); margin-right:8px; white-space:nowrap; }
+.candle-dots { display:flex; gap:3px; flex-wrap:wrap; flex:1; }
+.candle-dot {
+  width:14px; height:14px; border-radius:3px; background:var(--border);
+  flex-shrink:0; transition:all 0.2s;
+}
+.candle-dot.up { background:var(--green); }
+.candle-dot.down { background:var(--red); }
+.candle-dot.current { border:2px solid var(--primary); }
+.candle-dot.blank { background:var(--border); opacity:0.3; }
+
+/* Controls */
+.controls {
+  display:flex; gap:10px; margin-bottom:12px; justify-content:center;
+}
+.ctrl-btn {
+  flex:1; max-width:180px; padding:14px; border:none; border-radius:12px;
+  font-size:16px; font-weight:600; cursor:pointer; transition:all 0.15s;
+  color:#fff;
+}
+.ctrl-btn:disabled { opacity:0.35; cursor:not-allowed; transform:none !important; }
+.ctrl-btn:not(:disabled):hover { transform:translateY(-2px); }
+.ctrl-btn:not(:disabled):active { transform:translateY(0); }
+.ctrl-btn.buy { background:linear-gradient(135deg,#ef4444,#dc2626); }
+.ctrl-btn.buy:hover { box-shadow:0 4px 16px rgba(239,68,68,0.3); }
+.ctrl-btn.sell { background:linear-gradient(135deg,#10b981,#059669); }
+.ctrl-btn.sell:hover { box-shadow:0 4px 16px rgba(16,185,129,0.3); }
+.ctrl-btn.hold { background:linear-gradient(135deg,#6366f1,#8b5cf6); }
+.ctrl-btn.hold:hover { box-shadow:0 4px 16px rgba(99,102,241,0.3); }
+.ctrl-btn.next { background:linear-gradient(135deg,#f59e0b,#d97706); max-width:120px; }
+.ctrl-btn.next:hover { box-shadow:0 4px 16px rgba(245,158,11,0.3); }
+
+/* Trade log */
+.trade-log-wrap {
+  background:var(--card); border-radius:12px; padding:12px 16px; margin-bottom:12px;
+  max-height:160px; overflow-y:auto;
+}
+.trade-log-wrap::-webkit-scrollbar { width:4px; }
+.trade-log-wrap::-webkit-scrollbar-track { background:transparent; }
+.trade-log-wrap::-webkit-scrollbar-thumb { background:var(--border); border-radius:2px; }
+.trade-log-title { font-size:13px; font-weight:600; color:var(--text-light); margin-bottom:8px; }
+.trade-item {
+  display:flex; justify-content:space-between; align-items:center;
+  padding:4px 0; font-size:12px; border-bottom:1px solid rgba(42,42,68,0.5);
+}
+.trade-item:last-child { border-bottom:none; }
+.trade-item .td-action { font-weight:600; }
+.trade-item .td-action.b { color:var(--red); }
+.trade-item .td-action.s { color:var(--green); }
+.trade-item .td-price { color:var(--text-light); }
+.trade-item .td-pnl { font-weight:600; }
+.trade-item .td-pnl.up { color:var(--green); }
+.trade-item .td-pnl.down { color:var(--red); }
+
+/* Round Result */
+.round-result-overlay {
+  display:none; position:fixed; inset:0; background:rgba(0,0,0,0.7);
+  z-index:200; align-items:center; justify-content:center;
+}
+.round-result-overlay.show { display:flex; }
+.round-result-card {
+  background:var(--card); border-radius:16px; padding:32px; max-width:420px; width:90%;
+  text-align:center; border:1px solid var(--border);
+}
+.round-result-card h2 { font-size:22px; margin-bottom:8px; }
+.round-result-card .pnl { font-size:48px; font-weight:800; margin:12px 0; }
+.round-result-card .pnl.up { color:var(--green); }
+.round-result-card .pnl.down { color:var(--red); }
+.round-result-card .detail { font-size:13px; color:var(--text-light); margin-bottom:16px; line-height:1.8; }
+.round-result-card .next-btn {
+  padding:12px 36px; border:none; border-radius:12px;
+  background:linear-gradient(135deg,#6366f1,#8b5cf6); color:#fff;
+  font-size:16px; font-weight:600; cursor:pointer; transition:all 0.15s;
+}
+.round-result-card .next-btn:hover { transform:translateY(-2px); box-shadow:0 4px 16px rgba(99,102,241,0.3); }
+
+/* Final Result */
+.final-overlay {
+  display:none; position:fixed; inset:0; background:rgba(0,0,0,0.8);
+  z-index:300; align-items:center; justify-content:center; overflow-y:auto;
+  padding:20px;
+}
+.final-overlay.show { display:flex; }
+.final-card {
+  background:var(--card); border-radius:16px; padding:32px; max-width:520px; width:100%;
+  text-align:center; border:1px solid var(--border);
+}
+.final-card h2 { font-size:24px; margin-bottom:4px; }
+.final-card .subtitle { font-size:13px; color:var(--text-light); margin-bottom:16px; }
+.final-total { font-size:56px; font-weight:800; margin:8px 0; }
+.final-total.up { color:var(--green); }
+.final-total.down { color:var(--red); }
+.final-stats {
+  display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:16px;
+}
+.final-stat { padding:10px; background:rgba(42,42,68,0.5); border-radius:8px; }
+.final-stat .fs-label { font-size:11px; color:var(--text-light); }
+.final-stat .fs-value { font-size:20px; font-weight:700; margin-top:2px; }
+
+.advice-box {
+  background:rgba(99,102,241,0.08); border:1px solid rgba(99,102,241,0.2);
+  border-radius:12px; padding:16px; text-align:left; margin-bottom:16px;
+}
+.advice-box h3 { font-size:14px; color:var(--primary); margin-bottom:8px; }
+.advice-box ul { padding-left:18px; font-size:13px; line-height:1.8; color:var(--text-light); }
+.advice-box ul li { margin-bottom:2px; }
+
+.final-restart {
+  padding:12px 36px; border:none; border-radius:12px;
+  background:linear-gradient(135deg,#10b981,#059669); color:#fff;
+  font-size:16px; font-weight:600; cursor:pointer; transition:all 0.15s;
+}
+.final-restart:hover { transform:translateY(-2px); box-shadow:0 4px 16px rgba(16,185,129,0.3); }
+
+/* Start screen */
+.start-screen {
+  text-align:center; padding:60px 20px;
+}
+.start-screen .icon { font-size:72px; margin-bottom:16px; }
+.start-screen h2 { font-size:24px; margin-bottom:8px; }
+.start-screen p { color:var(--text-light); font-size:14px; line-height:1.8; margin-bottom:20px; }
+.start-btn {
+  padding:16px 48px; border:none; border-radius:16px;
+  background:linear-gradient(135deg,#6366f1,#8b5cf6); color:#fff;
+  font-size:18px; font-weight:700; cursor:pointer; transition:all 0.2s;
+  box-shadow:0 4px 20px rgba(99,102,241,0.3);
+}
+.start-btn:hover { transform:translateY(-3px); box-shadow:0 8px 30px rgba(99,102,241,0.4); }
+
+.hidden { display:none !important; }
+
+@media (max-width:640px) {
+  #chart { height:320px; }
+  .controls { flex-wrap:wrap; }
+  .ctrl-btn { max-width:none; min-width:80px; }
+  .round-info { flex-wrap:wrap; gap:4px; }
+  .pos-item .value { font-size:15px; }
+  .final-total { font-size:40px; }
+}
+</style>
+</head>
+<body>
+
+<div class="page" id="app">
+  <div class="header">
+    <h1>📊 K线训练器</h1>
+    <p>真实历史K线数据 · 模拟交易训练 · 提升操盘能力</p>
+  </div>
+
+  <div id="startScreen" class="start-screen">
+    <div class="icon">📈</div>
+    <h2>准备好训练了吗？</h2>
+    <p>
+      每局训练会随机选取一只A股<br>
+      先展示 <strong>近3个月的历史K线</strong> 作为参考<br>
+      然后逐步揭示 <strong>30根K线</strong>，每根做出买卖判断<br>
+      共 <strong>20局</strong>，结束后统计总盈亏<br>
+      <span style="color:var(--text-light);font-size:12px;">数据来源：腾讯财经 · 真实A股行情</span>
+    </p>
+    <button class="start-btn" onclick="startGame()">🎯 开始训练</button>
+  </div>
+
+  <div id="gameUI" class="hidden">
+    <div class="round-info">
+      <div class="round">第 <span id="roundNum">0</span>/20 局</div>
+      <div class="stock" id="stockInfo">加载中...</div>
+      <div class="score">累计: <span id="totalScore">0.00%</span></div>
+    </div>
+
+    <div class="chart-wrap">
+      <div id="chart"></div>
+    </div>
+
+    <div class="pos-bar" id="posBar">
+      <div class="pos-item">
+        <div class="label">可用资金</div>
+        <div class="value" id="cashDisplay">100,000</div>
+      </div>
+      <div class="pos-item">
+        <div class="label">持仓市值</div>
+        <div class="value" id="holdingsDisplay">0</div>
+      </div>
+      <div class="pos-item">
+        <div class="label">总资产</div>
+        <div class="value" id="totalDisplay">100,000</div>
+      </div>
+      <div class="pos-item">
+        <div class="label">浮动盈亏</div>
+        <div class="value" id="pnlDisplay">0.00%</div>
+      </div>
+    </div>
+
+    <div class="candle-progress">
+      <span class="label">K线进度:</span>
+      <div class="candle-dots" id="candleDots"></div>
+      <span class="label" id="candleLabel" style="margin-left:8px;">0/30</span>
+    </div>
+
+    <div class="controls">
+      <button class="ctrl-btn buy" id="btnBuy" onclick="doAction('buy')">📈 买入</button>
+      <button class="ctrl-btn sell" id="btnSell" onclick="doAction('sell')">📉 卖出</button>
+      <button class="ctrl-btn hold" id="btnHold" onclick="doAction('hold')">⏸ 持仓</button>
+      <button class="ctrl-btn next" id="btnNext" onclick="nextCandle()">👉 下一根</button>
+    </div>
+
+    <div class="trade-log-wrap" id="tradeLog">
+      <div class="trade-log-title">📋 交易记录</div>
+      <div id="tradeList" style="font-size:12px;color:var(--text-light);">暂无交易</div>
+    </div>
+  </div>
+</div>
+
+<div class="round-result-overlay" id="roundResult">
+  <div class="round-result-card">
+    <h2>🏁 第 <span id="rrRound">0</span> 局结束</h2>
+    <div class="pnl" id="rrPnl">0.00%</div>
+    <div class="detail" id="rrDetail"></div>
+    <button class="next-btn" id="rrBtn" onclick="nextRound()">下一局 →</button>
+  </div>
+</div>
+
+<div class="final-overlay" id="finalResult">
+  <div class="final-card">
+    <h2>🏆 训练完成！</h2>
+    <div class="subtitle">20局训练总结</div>
+    <div class="final-total" id="finalTotal">0.00%</div>
+    <div class="final-stats">
+      <div class="final-stat">
+        <div class="fs-label">盈利局数</div>
+        <div class="fs-value" id="winCount" style="color:var(--green)">0</div>
+      </div>
+      <div class="final-stat">
+        <div class="fs-label">亏损局数</div>
+        <div class="fs-value" id="loseCount" style="color:var(--red)">0</div>
+      </div>
+      <div class="final-stat">
+        <div class="fs-label">胜率</div>
+        <div class="fs-value" id="winRate">0%</div>
+      </div>
+      <div class="final-stat">
+        <div class="fs-label">最大单局盈利</div>
+        <div class="fs-value" id="maxWin" style="color:var(--green)">0%</div>
+      </div>
+    </div>
+    <div class="advice-box" id="adviceBox"></div>
+    <button class="final-restart" onclick="restartGame()">🔄 再来一次</button>
+  </div>
+</div>
+
+<script>
+// ============================================================
+const STOCKS = [
+  {name:'贵州茅台', code:'sh600519'},{name:'宁德时代', code:'sz300750'},
+  {name:'中国平安', code:'sh601318'},{name:'招商银行', code:'sh600036'},
+  {name:'五粮液', code:'sz000858'},{name:'比亚迪', code:'sz002594'},
+  {name:'美的集团', code:'sz000333'},{name:'药明康德', code:'sh603259'},
+  {name:'中信证券', code:'sh600030'},{name:'伊利股份', code:'sh600887'},
+  {name:'海尔智家', code:'sh600690'},{name:'格力电器', code:'sz000651'},
+  {name:'迈瑞医疗', code:'sz300760'},{name:'海康威视', code:'sz002415'},
+  {name:'长江电力', code:'sh600900'},{name:'隆基绿能', code:'sh601012'},
+  {name:'万华化学', code:'sh600309'},{name:'三一重工', code:'sh600031'},
+  {name:'紫金矿业', code:'sh601899'},{name:'东方财富', code:'sz300059'},
+  {name:'中芯国际', code:'sh688981'},{name:'中国石油', code:'sh601857'},
+  {name:'中国银行', code:'sh601988'},{name:'中国神华', code:'sh601088'},
+  {name:'万科A', code:'sz000002'},
+];
+const HISTORY_CNT = 60, BLANK_CNT = 30, TOTAL_ROUNDS = 20, INIT_CASH = 100000;
+
+// ============================================================
+// GAME STATE
+let state = {
+  round:0, totalPnl:0, wins:0, losses:0, maxWin:0, maxLoss:0,
+  roundResults:[],
+};
+let round = {}; // current round state
+
+// ============================================================
+// ECharts
+let chart = null;
+function initChart() {
+  chart = echarts.init(document.getElementById('chart'));
+  chart.setOption({
+    animation:false, grid:{left:'3%',right:'3%',top:'8%',bottom:'8%'},
+    xAxis:{type:'category',data:[],axisLine:{lineStyle:{color:'#2a2a44'}},
+           axisLabel:{color:'#8888aa',fontSize:10}},
+    yAxis:{scale:true,splitLine:{lineStyle:{color:'#1a1a2e'}},
+           axisLabel:{color:'#8888aa',fontSize:10}},
+    tooltip:{trigger:'axis',axisPointer:{type:'cross'},
+             backgroundColor:'#1a1a2e',borderColor:'#2a2a44',
+             textStyle:{color:'#e0e0e0',fontSize:12}},
+    series:[{
+      type:'candlestick',name:'K线',
+      data:[],itemStyle:{color:'#ef4444',color0:'#10b981',
+        borderColor:'#ef4444',borderColor0:'#10b981'}
+    }]
+  });
+}
+
+function updateChart(history, revealed) {
+  const allDates = [...history.map(d=>d[0]), ...revealed.map(d=>d[0])];
+  const allData = [...history.map(d=>[+d[1],+d[2],+d[4],+d[3]]),
+                   ...revealed.map(d=>[+d[1],+d[2],+d[4],+d[3]])];
+  chart.setOption({xAxis:{data:allDates}, series:[{data:allData}]});
+}
+
+// ============================================================
+// API
+async function fetchKlines(code) {
+  const url = `https://web.ifzq.gtimg.cn/appstock/app/fqkline/get?param=${code},day,,,200,qfq`;
+  const resp = await fetch(url);
+  const data = await resp.json();
+  const key = Object.keys(data.data)[0];
+  const klines = data.data[key].qfqday || data.data[key].day || [];
+  return klines;
+}
+
+// ============================================================
+// GAME LOGIC
+function shuffle(arr) {
+  for(let i=arr.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[arr[i],arr[j]]=[arr[j],arr[i]];}
+  return arr;
+}
+
+function pickStock() {
+  // Pick a random stock, but avoid repeating the same one too often
+  const used = state.roundResults.map(r=>r.stock);
+  const available = STOCKS.filter(s => !used.includes(s.code));
+  const pool = available.length > 3 ? available : STOCKS;
+  return pool[Math.floor(Math.random() * pool.length)];
+}
+
+async function startGame() {
+  state = {round:0,totalPnl:0,wins:0,losses:0,maxWin:0,maxLoss:0,roundResults:[]};
+  document.getElementById('startScreen').classList.add('hidden');
+  document.getElementById('gameUI').classList.remove('hidden');
+  document.getElementById('finalResult').classList.remove('show');
+  initChart();
+  await startRound();
+}
+
+async function startRound() {
+  state.round++;
+  if (state.round > TOTAL_ROUNDS) { showFinal(); return; }
+  
+  document.getElementById('roundNum').textContent = state.round;
+  document.getElementById('totalScore').textContent = (state.totalPnl >= 0 ? '+' : '') + state.totalPnl.toFixed(2) + '%';
+  
+  round = {
+    stock: pickStock(),
+    history:[], revealed:[], blankCnt:BLANK_CNT,
+    candleIdx:0, action:'', position:'cash',
+    cash:INIT_CASH, shares:0, costBasis:0,
+    trades:[], done:false
+  };
+  
+  document.getElementById('stockInfo').textContent = `${round.stock.name} (${round.stock.code})`;
+  document.getElementById('btnBuy').disabled = false;
+  document.getElementById('btnSell').disabled = true;
+  document.getElementById('btnHold').disabled = false;
+  document.getElementById('btnNext').disabled = true;
+  document.getElementById('tradeList').innerHTML = '暂无交易';
+  
+  updatePosDisplay();
+  renderCandleDots();
+  document.getElementById('candleLabel').textContent = `0/${BLANK_CNT}`;
+  
+  try {
+    const klines = await fetchKlines(round.stock.code);
+    if (klines.length < HISTORY_CNT + BLANK_CNT + 10) {
+      // Not enough data, try another stock
+      await startRound();
+      return;
+    }
+    
+    // Pick a random starting point
+    const maxStart = klines.length - HISTORY_CNT - BLANK_CNT - 1;
+    const startIdx = Math.floor(Math.random() * maxStart);
+    
+    round.history = klines.slice(startIdx, startIdx + HISTORY_CNT);
+    round.future = klines.slice(startIdx + HISTORY_CNT, startIdx + HISTORY_CNT + BLANK_CNT);
+    round.revealed = [];
+    
+    updateChart(round.history, []);
+    document.getElementById('btnNext').disabled = false;
+    
+  } catch(e) {
+    showToast('数据加载失败，重试中...');
+    state.round--;
+    setTimeout(startRound, 1000);
+  }
+}
+
+function doAction(action) {
+  if (round.done) return;
+  
+  round.action = action;
+  
+  if (action === 'buy') {
+    if (round.cash <= 0) { showToast('💰 资金不足'); return; }
+    if (round.shares > 0) { showToast('⚠️ 已持仓，请先卖出或持仓'); return; }
+    // Execute at next candle's open price — will be done when candle is revealed
+    document.getElementById('btnBuy').disabled = true;
+    document.getElementById('btnSell').disabled = false;
+    document.getElementById('btnHold').disabled = false;
+  } else if (action === 'sell') {
+    if (round.shares === 0) { showToast('⚠️ 没有持仓可卖'); return; }
+    document.getElementById('btnBuy').disabled = false;
+    document.getElementById('btnSell').disabled = true;
+    document.getElementById('btnHold').disabled = false;
+  } else if (action === 'hold') {
+    document.getElementById('btnBuy').disabled = false;
+    document.getElementById('btnSell').disabled = round.shares === 0;
+    document.getElementById('btnHold').disabled = true;
+  }
+}
+
+function nextCandle() {
+  if (round.done) return;
+  if (round.candleIdx >= BLANK_CNT) return;
+  if (!round.action) { showToast('请先选择操作：买入/卖出/持仓'); return; }
+  
+  const candle = round.future[round.candleIdx];
+  const openPx = +candle[1];
+  const closePx = +candle[2];
+  const highPx = +candle[3];
+  const lowPx = +candle[4];
+  const isUp = closePx >= openPx;
+  
+  // Execute the action
+  let tradeInfo = '';
+  if (round.action === 'buy' && round.cash > 0) {
+    const shares = Math.floor(round.cash / openPx / 100) * 100;
+    if (shares >= 100) {
+      const cost = shares * openPx;
+      round.cash -= cost;
+      round.shares += shares;
+      round.costBasis = openPx;
+      tradeInfo = `买入 ${shares}股 @ ${openPx.toFixed(2)}`;
+      round.trades.push({type:'buy', price:openPx, shares, date:candle[0]});
+    }
+  } else if (round.action === 'sell' && round.shares > 0) {
+    const revenue = round.shares * openPx;
+    const pnl = revenue - round.shares * round.costBasis;
+    const pnlPct = (pnl / (round.shares * round.costBasis)) * 100;
+    round.cash += revenue;
+    tradeInfo = `卖出 ${round.shares}股 @ ${openPx.toFixed(2)} (盈亏: ${pnlPct >= 0 ? '+' : ''}${pnlPct.toFixed(2)}%)`;
+    round.trades.push({type:'sell', price:openPx, shares:round.shares, pnl, pnlPct, date:candle[0]});
+    round.shares = 0;
+    round.costBasis = 0;
+  }
+  
+  // Reveal the candle
+  round.revealed.push(candle);
+  round.candleIdx++;
+  
+  // Update chart
+  updateChart(round.history, round.revealed);
+  
+  // Update display
+  updatePosDisplay();
+  updateCandleDots(isUp);
+  document.getElementById('candleLabel').textContent = `${round.candleIdx}/${BLANK_CNT}`;
+  
+  // Add trade log
+  if (tradeInfo) {
+    addTradeLog(tradeInfo, candle[0]);
+  }
+  
+  // Reset action
+  round.action = '';
+  document.getElementById('btnBuy').disabled = false;
+  document.getElementById('btnSell').disabled = round.shares === 0;
+  document.getElementById('btnHold').disabled = false;
+  
+  // Check if round is done
+  if (round.candleIdx >= BLANK_CNT) {
+    round.done = true;
+    document.getElementById('btnBuy').disabled = true;
+    document.getElementById('btnSell').disabled = true;
+    document.getElementById('btnHold').disabled = true;
+    document.getElementById('btnNext').disabled = true;
+    showRoundResult();
+  }
+}
+
+function updatePosDisplay() {
+  const lastClose = round.revealed.length > 0 ? +round.revealed[round.revealed.length-1][2] : 0;
+  const holdValue = round.shares * lastClose;
+  const total = round.cash + holdValue;
+  const pnlPct = ((total - INIT_CASH) / INIT_CASH) * 100;
+  
+  document.getElementById('cashDisplay').textContent = Math.round(round.cash).toLocaleString();
+  document.getElementById('holdingsDisplay').textContent = Math.round(holdValue).toLocaleString();
+  document.getElementById('totalDisplay').textContent = Math.round(total).toLocaleString();
+  
+  const pnlEl = document.getElementById('pnlDisplay');
+  pnlEl.textContent = (pnlPct >= 0 ? '+' : '') + pnlPct.toFixed(2) + '%';
+  pnlEl.className = 'value' + (pnlPct >= 0 ? ' up' : ' down');
+}
+
+function renderCandleDots() {
+  const dots = document.getElementById('candleDots');
+  let html = '';
+  for (let i = 0; i < BLANK_CNT; i++) {
+    html += `<div class="candle-dot blank" id="dot${i}"></div>`;
+  }
+  dots.innerHTML = html;
+}
+
+function updateCandleDots(isUp) {
+  const idx = round.candleIdx - 1;
+  const dot = document.getElementById(`dot${idx}`);
+  if (dot) {
+    dot.className = 'candle-dot ' + (isUp ? 'up' : 'down');
+  }
+}
+
+function addTradeLog(text, date) {
+  const el = document.getElementById('tradeList');
+  if (el.innerHTML === '暂无交易') el.innerHTML = '';
+  el.innerHTML = `<div class="trade-item"><span>${date || ''}</span><span>${text}</span></div>` + el.innerHTML;
+}
+
+function showRoundResult() {
+  const lastClose = round.revealed.length > 0 ? +round.revealed[round.revealed.length-1][2] : 0;
+  const holdValue = round.shares * lastClose;
+  const total = round.cash + holdValue;
+  const pnlPct = ((total - INIT_CASH) / INIT_CASH) * 100;
+  
+  state.totalPnl += pnlPct;
+  if (pnlPct > 0) state.wins++;
+  else state.losses++;
+  if (pnlPct > state.maxWin) state.maxWin = pnlPct;
+  if (pnlPct < state.maxLoss) state.maxLoss = pnlPct;
+  
+  state.roundResults.push({
+    round: state.round, stock: round.stock.name, pnl: pnlPct,
+    trades: round.trades.length
+  });
+  
+  document.getElementById('rrRound').textContent = state.round;
+  const pnlEl = document.getElementById('rrPnl');
+  pnlEl.textContent = (pnlPct >= 0 ? '+' : '') + pnlPct.toFixed(2) + '%';
+  pnlEl.className = 'pnl ' + (pnlPct >= 0 ? 'up' : 'down');
+  
+  const trades = round.trades;
+  let detail = '';
+  if (trades.length === 0) {
+    detail = '整局未交易，不亏不赚';
+  } else {
+    detail = `交易次数: ${trades.length} 次`;
+    if (trades.filter(t=>t.type==='sell').length > 0) {
+      const closedPnl = trades.filter(t=>t.type==='sell').reduce((s,t)=>s+(t.pnlPct||0),0);
+      detail += ` | 已实现盈亏: ${closedPnl >= 0 ? '+' : ''}${closedPnl.toFixed(2)}%`;
+    }
+  }
+  if (round.shares > 0) {
+    detail += ` | 持仓: ${round.shares}股`;
+  }
+  document.getElementById('rrDetail').textContent = detail;
+  
+  document.getElementById('roundResult').classList.add('show');
+}
+
+function nextRound() {
+  document.getElementById('roundResult').classList.remove('show');
+  if (state.round < TOTAL_ROUNDS) {
+    startRound();
+  } else {
+    showFinal();
+  }
+}
+
+function showFinal() {
+  document.getElementById('gameUI').classList.add('hidden');
+  document.getElementById('finalResult').classList.add('show');
+  
+  const totalPnl = state.totalPnl;
+  const winRate = TOTAL_ROUNDS > 0 ? (state.wins / TOTAL_ROUNDS * 100) : 0;
+  
+  const totalEl = document.getElementById('finalTotal');
+  totalEl.textContent = (totalPnl >= 0 ? '+' : '') + totalPnl.toFixed(2) + '%';
+  totalEl.className = 'final-total ' + (totalPnl >= 0 ? 'up' : 'down');
+  
+  document.getElementById('winCount').textContent = state.wins;
+  document.getElementById('loseCount').textContent = state.losses;
+  document.getElementById('winRate').textContent = winRate.toFixed(0) + '%';
+  document.getElementById('maxWin').textContent = (state.maxWin >= 0 ? '+' : '') + state.maxWin.toFixed(2) + '%';
+  
+  // Generate advice
+  const advice = generateAdvice(totalPnl, winRate, state.wins, state.losses);
+  document.getElementById('adviceBox').innerHTML = `<h3>💡 操盘建议</h3><ul>${advice.map(a=>'<li>'+a+'</li>').join('')}</ul>`;
+}
+
+function generateAdvice(totalPnl, winRate, wins, losses) {
+  const advices = [];
+  
+  if (winRate >= 60) {
+    advices.push('🎯 胜率较高，说明你的判断能力不错，继续保持！');
+  } else if (winRate >= 40) {
+    advices.push('📊 胜率中等，建议多关注趋势判断，减少追涨杀跌。');
+  } else {
+    advices.push('⚠️ 胜率偏低，建议先学习基础K线形态和趋势分析。');
+  }
+  
+  if (totalPnl > 10) {
+    advices.push('💰 总收益为正，操盘能力优秀！可以尝试更深入的技术分析。');
+  } else if (totalPnl > 0) {
+    advices.push('👍 小幅盈利，注意控制回撤，稳定盈利比暴利更重要。');
+  } else if (totalPnl > -10) {
+    advices.push('📉 小幅亏损，建议设置止损位，不要等亏损扩大再割肉。');
+  } else {
+    advices.push('📉 亏损较大，建议暂停实盘交易，多做模拟训练找到问题。');
+  }
+  
+  if (wins > 0 && losses > 0 && totalPnl < 0) {
+    advices.push('🔍 盈利次数多但总收益为负，说明盈利时赚得少、亏损时亏得多——建议"截断亏损，让利润奔跑"。');
+  }
+  
+  if (state.roundResults.filter(r => Math.abs(r.pnl) < 1).length > 5) {
+    advices.push('⏸ 多次交易收益微薄，建议减少交易频率，把握大趋势。');
+  }
+  
+  advices.push('📚 推荐学习：K线组合形态、支撑位/阻力位判断、成交量分析、均线系统。');
+  
+  return advices;
+}
+
+function restartGame() {
+  document.getElementById('finalResult').classList.remove('show');
+  document.getElementById('startScreen').classList.remove('hidden');
+  state = {round:0,totalPnl:0,wins:0,losses:0,maxWin:0,maxLoss:0,roundResults:[]};
+}
+
+function showToast(msg) {
+  const t = document.createElement('div');
+  t.textContent = msg;
+  t.style.cssText = 'position:fixed;top:20px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,0.85);color:#fff;padding:10px 20px;border-radius:8px;font-size:13px;z-index:9999;animation:fadeIn 0.2s;';
+  document.body.appendChild(t);
+  setTimeout(()=>t.remove(),2500);
+}
+
+// Window resize
+window.addEventListener('resize', () => { if(chart) chart.resize(); });
+
+// Keyboard shortcuts
+document.addEventListener('keydown', e => {
+  if (e.target.tagName === 'INPUT') return;
+  if (e.key === '1' || e.key === 'b') document.getElementById('btnBuy')?.click();
+  if (e.key === '2' || e.key === 's') document.getElementById('btnSell')?.click();
+  if (e.key === '3' || e.key === 'h') document.getElementById('btnHold')?.click();
+  if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); document.getElementById('btnNext')?.click(); }
+});
+</script>
+</body>
+</html>
