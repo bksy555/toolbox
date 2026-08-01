@@ -315,24 +315,28 @@ function getMonthZhiIndex(month, day) {
 function getMonthPillar(year, month, day) {
   const zhiIdx = getMonthZhiIndex(month, day);
   
-  // 月干：年干 × 2 + 月支序数 (mod 10)
-  // 月支序数: 寅=2, 卯=3, ..., 丑=1
+  // 月干：月干起算 + 月支序数 (mod 10)
+  // 甲己之年丙作首(2), 乙庚之年戊为头(4), 丙辛之年寻庚上(6),
+  // 丁壬壬寅顺水流(8), 若问戊癸何处起, 甲寅之上好追求(0)
+  // 月支序数: 寅=0, 卯=1, ..., 丑=11
   const yearPillar = getYearPillar(year);
   const monthZhiOrder = (zhiIdx - 2 + 12) % 12; // 寅=0, 卯=1, ...
-  const ganIdx = ((yearPillar.ganIdx % 5) * 2 + monthZhiOrder) % 10;
+  const ganIdx = ((yearPillar.ganIdx % 5) * 2 + 2 + monthZhiOrder) % 10;
   
   return { gan: TIAN_GAN[ganIdx], zhi: DI_ZHI[zhiIdx], ganIdx, zhiIdx };
 }
 
-// 计算日柱（从1900-01-01起算，调整偏移使2026-01-01=丙子日）
+// 计算日柱（从1900-01-01起算）
+// 验证：2014-10-16 = 庚申日, 2026-01-01 = 乙亥日
 function getDayPillar(year, month, day) {
   const ref = new Date(1900, 0, 1); // 1900-01-01
   const target = new Date(year, month - 1, day);
   const diff = Math.round((target - ref) / (24 * 60 * 60 * 1000));
   
-  // 60天周期偏移量，使2026-01-01=丙子日（60-cycle=12）
-  // 46021 % 60 = 1, 需要 offset = 12 - 1 = 11
-  const cycleOffset = 11;
+  // 1900-01-01 = 甲子日（0），偏移量验证：
+  // 2014-10-16: diff=41926, (41926+10)%60=56 → 庚申 ✓
+  // 2026-01-01: diff=46021, (46021+10)%60=11 → 乙亥日 ✓
+  const cycleOffset = 10;
   const cycleNum = ((diff + cycleOffset) % 60 + 60) % 60;
   const ganIdx = cycleNum % 10;
   const zhiIdx = cycleNum % 12;
