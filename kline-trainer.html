@@ -228,7 +228,6 @@ body {
   <div id="gameUI" class="hidden">
     <div class="round-info">
       <div class="round">第 <span id="roundNum">0</span>/20 局</div>
-      <div class="stock" id="stockInfo">加载中...</div>
       <div class="score">累计: <span id="totalScore">0.00%</span></div>
     </div>
 
@@ -475,10 +474,30 @@ function updateChart(history, revealed) {
 }
 
 // ============================================================
+// API
+async function fetchKlines(code) {
+  const url = `https://web.ifzq.gtimg.cn/appstock/app/fqkline/get?param=${code},day,,,800,qfq`;
+  try {
+    const resp = await fetch(url);
+    const data = await resp.json();
+    const key = Object.keys(data.data)[0];
+    const klines = data.data[key].qfqday || data.data[key].day || [];
+    if (klines.length > 0) return klines;
+  } catch(e) {}
+  // Fallback: try non-adjusted data
+  try {
+    const url2 = `https://web.ifzq.gtimg.cn/appstock/app/kline/mkline?param=${code},day,,,800`;
+    const resp2 = await fetch(url2);
+    const data2 = await resp2.json();
+    const key2 = Object.keys(data2.data)[0];
+    return data2.data[key2].day || [];
+  } catch(e) {}
+  return [];
+}
 
 function pickStock() {
   // Pick a random stock, but avoid repeating the same one too often
-  const used = state.roundResults.map(r=>r.stock);
+  const used = state.roundResults.map(r => r.stock.code);
   const available = STOCKS.filter(s => !used.includes(s.code));
   const pool = available.length > 3 ? available : STOCKS;
   return pool[Math.floor(Math.random() * pool.length)];
@@ -508,7 +527,7 @@ async function startRound() {
     trades:[], done:false
   };
   
-  document.getElementById('stockInfo').textContent = `${round.stock.name} (${round.stock.code})`;
+  document.getElementById('stockInfo').textContent = '';
   document.getElementById('btnBuy').disabled = false;
   document.getElementById('btnSell').disabled = true;
   document.getElementById('btnHold').disabled = false;
