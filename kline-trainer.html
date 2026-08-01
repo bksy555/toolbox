@@ -317,6 +317,40 @@ body {
 
 <script>
 // ============================================================
+// 均线配置
+const MA_PERIODS = [5,10,20,55,89,144,233,377,450,610];
+const MA_COLORS = [
+  '#F5A623','#4A90D9','#E74C3C','#9B59B6','#2ECC71',
+  '#E67E22','#1ABC9C','#E91E63','#00BCD4','#8E44AD'
+];
+const MA_NAMES = ['MA5','MA10','MA20','MA55','MA89','MA144','MA233','MA377','MA450','MA610'];
+
+function calcMAs(allKlines, visibleDates) {
+  // allKlines: full dataset [date,open,close,high,low,volume]
+  // visibleDates: the dates currently visible on chart
+  // Returns array of {name, data: [{value, date}]} for each MA
+  const closes = allKlines.map(d => +d[2]);
+  // Build a map of date -> MA values for quick lookup
+  const dateMap = {};
+  allKlines.forEach((d, i) => {
+    dateMap[d[0]] = {};
+    MA_PERIODS.forEach((p, pi) => {
+      if (i + 1 >= p) {
+        let sum = 0;
+        for (let j = 0; j < p; j++) sum += closes[i - j];
+        dateMap[d[0]][p] = sum / p;
+      }
+    });
+  });
+  // Build series data for visible dates
+  return MA_PERIODS.map((p, pi) => ({
+    name: MA_NAMES[pi],
+    data: visibleDates.map(date => {
+      const val = dateMap[date]?.[p];
+      return val !== undefined ? val : null;
+    })
+  }));
+}
 const STOCKS = [
   {name:'贵州茅台', code:'sh600519'},{name:'宁德时代', code:'sz300750'},
   {name:'中国平安', code:'sh601318'},{name:'招商银行', code:'sh600036'},
@@ -333,14 +367,6 @@ const STOCKS = [
   {name:'万科A', code:'sz000002'},
 ];
 const HISTORY_CNT = 60, BLANK_CNT = 30, TOTAL_ROUNDS = 20, INIT_CASH = 100000;
-
-// ============================================================
-// GAME STATE
-let state = {
-  round:0, totalPnl:0, wins:0, losses:0, maxWin:0, maxLoss:0,
-  roundResults:[],
-};
-let round = {}; // current round state
 
 // ============================================================
 // 配色模式
@@ -378,7 +404,7 @@ function initChart() {
   chart.setOption({
     animation:false,
     grid:[
-      {left:'3%',right:'3%',top:'5%',bottom:'30%'},
+      {left:'3%',right:'3%',top:'12%',bottom:'30%'},
       {left:'3%',right:'3%',top:'72%',bottom:'5%'}
     ],
     xAxis:[
@@ -398,12 +424,24 @@ function initChart() {
     tooltip:{trigger:'axis',axisPointer:{type:'cross'},
              backgroundColor:'#1a1a2e',borderColor:'#2a2a44',
              textStyle:{color:'#e0e0e0',fontSize:12}},
+    legend:{
+      data:['K线','成交量',...MA_NAMES],
+      textStyle:{color:'#8888aa',fontSize:10},
+      top:0,right:10,itemWidth:16,itemHeight:10,
+      selectedMode:'multiple'
+    },
     series:[
       {type:'candlestick',name:'K线',xAxisIndex:0,yAxisIndex:0,
        data:[],itemStyle:{color:cols.up,color0:cols.down,
          borderColor:cols.up,borderColor0:cols.down}},
       {type:'bar',name:'成交量',xAxisIndex:1,yAxisIndex:1,
-       data:[],itemStyle:{color:cols.up,color0:cols.down}}
+       data:[],itemStyle:{color:cols.up,color0:cols.down}},
+      // MA lines - will be populated by updateChart
+      ...MA_PERIODS.map((p,pi) => ({
+        type:'line',name:MA_NAMES[pi],xAxisIndex:0,yAxisIndex:0,
+        data:[],smooth:true,symbol:'none',lineStyle:{width:1.2,color:MA_COLORS[pi]},
+        z:2
+      }))
     ]
   });
 }
@@ -422,29 +460,21 @@ function updateChart(history, revealed) {
     const isUp = +d[2] >= +d[1];
     return {value: vol, itemStyle:{color: isUp ? cols.up : cols.down}};
   })];
+  
+  // Calculate MAs from full stock data
+  const maSeries = round.allKlines ? calcMAs(round.allKlines, allDates) : [];
+  
   chart.setOption({
     xAxis:[{data:allDates},{data:allDates}],
-    series:[{data:allData},{data:allVol}]
+    series:[
+      {data:allData},
+      {data:allVol},
+      ...maSeries.map(ma => ({data:ma.data}))
+    ]
   });
 }
 
 // ============================================================
-// API
-async function fetchKlines(code) {
-  const url = `https://web.ifzq.gtimg.cn/appstock/app/fqkline/get?param=${code},day,,,200,qfq`;
-  const resp = await fetch(url);
-  const data = await resp.json();
-  const key = Object.keys(data.data)[0];
-  const klines = data.data[key].qfqday || data.data[key].day || [];
-  return klines;
-}
-
-// ============================================================
-// GAME LOGIC
-function shuffle(arr) {
-  for(let i=arr.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[arr[i],arr[j]]=[arr[j],arr[i]];}
-  return arr;
-}
 
 function pickStock() {
   // Pick a random stock, but avoid repeating the same one too often
@@ -495,6 +525,9 @@ async function startRound() {
       await startRound();
       return;
     }
+    
+    // Store full data for MA calculation
+    round.allKlines = klines;
     
     // Pick a random starting point
     const maxStart = klines.length - HISTORY_CNT - BLANK_CNT - 1;
