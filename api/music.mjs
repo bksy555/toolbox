@@ -48,11 +48,12 @@ async function handleSearch(req, res) {
     searchQQ(keyword),
   ]);
   
-  // 合并，优先显示 NetEase 结果，QQ 补充
+  // 合并，优先显示 QQ 音乐结果（链接成功率更高），NetEase 补充
   const seen = new Set();
   const merged = [];
   
-  for (const song of [...neteaseSongs, ...qqSongs]) {
+  // QQ 在前，NetEase 在后
+  for (const song of [...qqSongs, ...neteaseSongs]) {
     const key = `${song.name}|${song.artists?.join(',') || ''}`;
     if (!seen.has(key)) {
       seen.add(key);

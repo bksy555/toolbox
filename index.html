@@ -261,6 +261,19 @@
       .music-now-ctrl { order: 1; }
       .music-progress-wrap { order: 2; }
     }
+    /* 标签页 */
+    .music-tab {
+      flex: 1; padding: 6px 8px; border: none; border-radius: 8px 8px 0 0;
+      background: rgba(255,255,255,0.03); color: #8888aa; font-size: 12px;
+      cursor: pointer; transition: all 0.15s; white-space: nowrap;
+    }
+    .music-tab:hover { background: rgba(255,255,255,0.06); color: #e0e0e0; }
+    .music-tab-active { background: #0f0f1a; color: #e0e0e0; font-weight: 600; }
+    .music-panel { min-height: 60px; }
+    /* 收藏按钮 */
+    .music-fav-star { cursor:pointer; font-size:16px; transition:transform 0.15s; flex-shrink:0; width:24px; text-align:center; }
+    .music-fav-star:hover { transform:scale(1.2); }
+    .music-fav-star.active { color:#fbbf24; }
   </style>
 </head>
 <body>
@@ -333,7 +346,7 @@
     <div class="music-widget-body" id="musicWidgetBody">
       <!-- 搜索区域 -->
       <div class="music-search-row">
-        <input type="text" class="music-search-input" id="musicSearchInput" 
+        <input type="text" class="music-search-input" id="musicSearchInput"
                placeholder="搜索歌曲、歌手..." onkeydown="if(event.key==='Enter') musicSearch()">
         <button class="music-search-btn" id="musicSearchBtn" onclick="musicSearch()">搜索</button>
       </div>
@@ -360,12 +373,50 @@
           </div>
           <span class="music-time" id="musicTotalTime">0:00</span>
         </div>
+        <div class="music-volume-row" style="flex:0 0 100%;display:flex;align-items:center;gap:6px;margin-top:2px;">
+          <span id="musicVolBtn" style="cursor:pointer;font-size:14px;" onclick="musicToggleMute()">🔊</span>
+          <div class="music-vol-bar" onclick="musicSetVol(event)" style="flex:1;height:4px;background:#2a2a44;border-radius:2px;cursor:pointer;position:relative;max-width:120px;">
+            <div class="music-vol-fill" id="musicVolFill" style="height:100%;background:#8888aa;border-radius:2px;width:60%;"></div>
+          </div>
+          <span class="music-time" id="musicVolPct" style="min-width:28px;">60%</span>
+          <button class="music-ctrl-btn" onclick="musicAddToPlaylist(musicState.currentIndex)" title="加入播放列表" style="font-size:13px;margin-left:auto;">📋</button>
+          <button class="music-ctrl-btn" onclick="musicToggleFav(musicState.currentIndex)" title="收藏/取消收藏" id="musicFavBtn" style="font-size:14px;">☆</button>
+        </div>
       </div>
-      <!-- 结果列表 -->
-      <div class="music-results" id="musicResults">
-        <div class="music-results-empty">
-          <span class="music-empty-icon">🎶</span>
-          <span>输入歌名或歌手，点击搜索</span>
+      <!-- 标签页: 搜索结果 / 播放列表 / 收藏夹 -->
+      <div class="music-tabs" style="display:flex;gap:4px;margin-bottom:8px;">
+        <button class="music-tab music-tab-active" id="tabSearch" onclick="musicSwitchTab('search')">🎵 搜索结果</button>
+        <button class="music-tab" id="tabPlaylist" onclick="musicSwitchTab('playlist')">📋 播放列表 <span id="playlistCount" style="font-size:10px;color:#8888aa;"></span></button>
+        <button class="music-tab" id="tabFav" onclick="musicSwitchTab('fav')">⭐ 收藏夹 <span id="favCount" style="font-size:10px;color:#8888aa;"></span></button>
+      </div>
+      <!-- 搜索结果面板 -->
+      <div class="music-panel" id="panelSearch">
+        <div class="music-results" id="musicResults">
+          <div class="music-results-empty">
+            <span class="music-empty-icon">🎶</span>
+            <span>输入歌名或歌手，点击搜索</span>
+          </div>
+        </div>
+      </div>
+      <!-- 播放列表面板 -->
+      <div class="music-panel" id="panelPlaylist" style="display:none;">
+        <div class="music-results" id="musicPlaylistContent">
+          <div class="music-results-empty">
+            <span class="music-empty-icon">📋</span>
+            <span>播放列表为空<br>点击歌曲旁的 📋 按钮加入</span>
+          </div>
+        </div>
+      </div>
+      <!-- 收藏夹面板 -->
+      <div class="music-panel" id="panelFav" style="display:none;">
+        <div style="text-align:right;margin-bottom:6px;">
+          <button class="music-search-btn" style="padding:5px 14px;font-size:12px;" onclick="musicPlayAllFav()">▶ 全部播放</button>
+        </div>
+        <div class="music-results" id="musicFavContent">
+          <div class="music-results-empty">
+            <span class="music-empty-icon">⭐</span>
+            <span>收藏夹为空<br>点击歌曲旁的 ☆ 收藏喜欢的歌</span>
+          </div>
         </div>
       </div>
     </div>
@@ -441,13 +492,18 @@
   <script src="js/daily-news.js"></script>
   <!-- ====== 音乐播放器脚本 ====== -->
   <script>
-  // 音乐播放器状态
+  // ====== 状态 ======
   const musicState = {
     songs: [],
     currentIndex: -1,
     isPlaying: false,
-    isCollapsed: false
+    isCollapsed: false,
+    playlist: [],       // 播放队列 [{song, idx}]
+    playlistIdx: -1,    // 当前在播放列表中的位置
+    favorites: []       // 收藏夹
   };
+
+  // ====== DOM 引用 ======
   const mAudio = document.getElementById('musicAudio');
   const mSearchInput = document.getElementById('musicSearchInput');
   const mSearchBtn = document.getElementById('musicSearchBtn');
@@ -464,11 +520,26 @@
   const mTotalTime = document.getElementById('musicTotalTime');
   const mWidgetBody = document.getElementById('musicWidgetBody');
   const mWidgetToggle = document.getElementById('musicWidgetToggle');
+  const mVolFill = document.getElementById('musicVolFill');
+  const mVolBtn = document.getElementById('musicVolBtn');
+  const mVolPct = document.getElementById('musicVolPct');
+  const mFavBtn = document.getElementById('musicFavBtn');
+  const mPlaylistContent = document.getElementById('musicPlaylistContent');
+  const mFavContent = document.getElementById('musicFavContent');
+  const mPlaylistCount = document.getElementById('playlistCount');
+  const mFavCount = document.getElementById('favCount');
 
-  // 搜索
+  // ====== 初始化收藏夹 ======
+  try {
+    const saved = localStorage.getItem('musicFavorites');
+    if (saved) musicState.favorites = JSON.parse(saved);
+  } catch(e) {}
+
+  // ====== 搜索 ======
   async function musicSearch() {
     const kw = mSearchInput.value.trim();
     if (!kw) return;
+    musicSwitchTab('search');
     mSearchBtn.disabled = true;
     mSearchBtn.textContent = '搜索中...';
     mResults.innerHTML = '<div class="music-loading">🔍 搜索中...</div>';
@@ -476,6 +547,7 @@
       const resp = await fetch('/api/music?action=search&keyword=' + encodeURIComponent(kw) + '&limit=24');
       const data = await resp.json();
       const songs = data.songs || [];
+      musicState.songs = songs;
       renderMusicResults(songs);
     } catch(e) {
       mResults.innerHTML = '<div class="music-error">搜索失败，请重试</div>';
@@ -486,7 +558,6 @@
   }
 
   function renderMusicResults(songs) {
-    musicState.songs = songs;
     if (!songs.length) {
       mResults.innerHTML = '<div class="music-results-empty"><span class="music-empty-icon">😕</span><span>未找到相关歌曲</span></div>';
       return;
@@ -496,24 +567,28 @@
       const artists = (s.artists || []).join(' / ');
       const pic = s.albumPic || '';
       const isActive = i === musicState.currentIndex;
-      html += `<div class="music-result-item ${isActive?'playing':''}" onclick="musicPlay(${i})" data-idx="${i}">
-        <div class="music-result-album">${pic ? '<img src="'+pic+'?param=100y100" alt="" loading="lazy">' : '🎵'}</div>
-        <div class="music-result-info">
+      const isFav = musicState.favorites.some(f => f.id === s.id && f.source === s.source);
+      html += `<div class="music-result-item ${isActive?'playing':''}" data-idx="${i}">
+        <div class="music-result-album" onclick="musicPlay(${i})">${pic ? '<img src="'+pic+'?param=100y100" alt="" loading="lazy">' : '🎵'}</div>
+        <div class="music-result-info" onclick="musicPlay(${i})">
           <div class="music-result-name">${escHtml(s.name)}</div>
           <div class="music-result-artist">${escHtml(artists)}</div>
         </div>
         <span class="music-result-source" style="background:${s.source==='qq'?'rgba(0,180,255,0.15)':'rgba(99,102,241,0.15)'};color:${s.source==='qq'?'#00b4ff':'#6366f1'}">${s.source||'netease'}</span>
-        <span class="music-result-play">${isActive ? '🔊' : '▶'}</span>
+        <span class="music-fav-star ${isFav?'active':''}" onclick="musicToggleFav(${i})" title="${isFav?'取消收藏':'收藏'}">${isFav?'⭐':'☆'}</span>
+        <span class="music-result-play" onclick="musicPlay(${i})">${isActive ? '🔊' : '▶'}</span>
       </div>`;
     });
     mResults.innerHTML = html;
   }
 
-  // 播放
+  // ====== 播放 ======
   async function musicPlay(idx) {
     const song = musicState.songs[idx];
     if (!song) return;
     musicState.currentIndex = idx;
+    // 同步到播放列表
+    syncPlaylistToCurrent();
     // 更新播放栏
     mNowPlaying.style.display = 'flex';
     mNowName.textContent = song.name;
@@ -526,9 +601,10 @@
       mNowImg.style.display = 'none';
       mNowPlaceholder.style.display = 'flex';
     }
+    updateFavBtn();
     // 获取播放链接
     try {
-      const resp = await fetch('/api/music?action=url&id=' + song.id + '&source=' + (song.source || 'auto') + '&album_id=' + (song.albumId||''));
+      const resp = await fetch('/api/music?action=url&id=' + song.id + '&source=' + (song.source || 'auto'));
       const data = await resp.json();
       const srcName = document.getElementById('musicNowSource');
       if (data.url) {
@@ -556,6 +632,8 @@
     document.querySelectorAll('.music-result-item').forEach(el => {
       el.classList.toggle('playing', parseInt(el.dataset.idx) === idx);
     });
+    renderPlaylist();
+    renderFavorites();
   }
 
   function musicTogglePlay() {
@@ -569,15 +647,23 @@
   }
 
   function musicPrev() {
-    if (musicState.songs.length === 0) return;
-    const idx = (musicState.currentIndex - 1 + musicState.songs.length) % musicState.songs.length;
-    musicPlay(idx);
+    if (musicState.playlist.length > 0) {
+      const idx = (musicState.playlistIdx - 1 + musicState.playlist.length) % musicState.playlist.length;
+      playFromPlaylist(idx);
+    } else if (musicState.songs.length > 0) {
+      const idx = (musicState.currentIndex - 1 + musicState.songs.length) % musicState.songs.length;
+      musicPlay(idx);
+    }
   }
 
   function musicNext() {
-    if (musicState.songs.length === 0) return;
-    const idx = (musicState.currentIndex + 1) % musicState.songs.length;
-    musicPlay(idx);
+    if (musicState.playlist.length > 0) {
+      const idx = (musicState.playlistIdx + 1) % musicState.playlist.length;
+      playFromPlaylist(idx);
+    } else if (musicState.songs.length > 0) {
+      const idx = (musicState.currentIndex + 1) % musicState.songs.length;
+      musicPlay(idx);
+    }
   }
 
   function musicSeek(e) {
@@ -586,24 +672,231 @@
     if (mAudio.duration) mAudio.currentTime = pct * mAudio.duration;
   }
 
+  // ====== 音量控制 ======
+  function musicSetVol(e) {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const pct = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+    mAudio.volume = pct;
+    updateVolUI();
+  }
+  function musicToggleMute() {
+    mAudio.muted = !mAudio.muted;
+    updateVolUI();
+  }
+  function updateVolUI() {
+    const vol = mAudio.muted ? 0 : mAudio.volume;
+    mVolFill.style.width = (vol * 100) + '%';
+    mVolPct.textContent = Math.round(vol * 100) + '%';
+    mVolBtn.textContent = vol === 0 ? '🔇' : vol < 0.3 ? '🔈' : vol < 0.7 ? '🔉' : '🔊';
+  }
+  mAudio.addEventListener('volumechange', updateVolUI);
+  updateVolUI();
+
+  // ====== 播放列表 ======
+  function musicAddToPlaylist(idx) {
+    if (idx < 0 || idx >= musicState.songs.length) return;
+    const song = musicState.songs[idx];
+    musicState.playlist.push({ song, idx });
+    // 如果是第一个加入的，自动播放
+    if (musicState.playlist.length === 1) {
+      musicState.playlistIdx = 0;
+      playFromPlaylist(0);
+    }
+    renderPlaylist();
+    musicToast('✅ 已加入播放列表');
+    musicSwitchTab('playlist');
+  }
+
+  function musicRemoveFromPlaylist(plIdx) {
+    musicState.playlist.splice(plIdx, 1);
+    if (musicState.playlistIdx >= musicState.playlist.length) {
+      musicState.playlistIdx = musicState.playlist.length - 1;
+    }
+    if (musicState.playlist.length === 0) {
+      musicState.playlistIdx = -1;
+    }
+    renderPlaylist();
+  }
+
+  function playFromPlaylist(plIdx) {
+    if (plIdx < 0 || plIdx >= musicState.playlist.length) return;
+    musicState.playlistIdx = plIdx;
+    const item = musicState.playlist[plIdx];
+    // 如果这个 song 在搜索结果中，同步 currentIndex
+    const searchIdx = musicState.songs.findIndex(s => s.id === item.song.id && s.source === item.song.source);
+    if (searchIdx >= 0) musicState.currentIndex = searchIdx;
+    // 临时设置 songs 为播放列表的歌曲，让 musicPlay 能工作
+    // 改用播放列表播放
+    const tempSongs = musicState.songs;
+    musicState.songs = musicState.playlist.map(p => p.song);
+    musicPlay(plIdx);
+    musicState.songs = tempSongs;
+    renderPlaylist();
+  }
+
+  function syncPlaylistToCurrent() {
+    // 当从搜索结果直接播放时，同步到播放列表
+    if (musicState.currentIndex < 0 || musicState.currentIndex >= musicState.songs.length) return;
+    const song = musicState.songs[musicState.currentIndex];
+    // 检查是否已在播放列表中
+    const found = musicState.playlist.findIndex(p => p.song.id === song.id && p.song.source === song.source);
+    if (found >= 0) {
+      musicState.playlistIdx = found;
+    } else {
+      musicState.playlist.push({ song, idx: musicState.currentIndex });
+      musicState.playlistIdx = musicState.playlist.length - 1;
+    }
+    renderPlaylist();
+  }
+
+  function renderPlaylist() {
+    const list = musicState.playlist;
+    if (!list.length) {
+      mPlaylistContent.innerHTML = '<div class="music-results-empty"><span class="music-empty-icon">📋</span><span>播放列表为空<br>点击歌曲旁的 📋 按钮加入</span></div>';
+      mPlaylistCount.textContent = '';
+      return;
+    }
+    mPlaylistCount.textContent = '(' + list.length + ')';
+    let html = '';
+    list.forEach((item, i) => {
+      const s = item.song;
+      const artists = (s.artists || []).join(' / ');
+      const pic = s.albumPic || '';
+      const isActive = i === musicState.playlistIdx;
+      html += `<div class="music-result-item ${isActive?'playing':''}">
+        <div class="music-result-album" onclick="playFromPlaylist(${i})">${pic ? '<img src="'+pic+'?param=100y100" alt="" loading="lazy">' : '🎵'}</div>
+        <div class="music-result-info" onclick="playFromPlaylist(${i})">
+          <div class="music-result-name">${escHtml(s.name)}</div>
+          <div class="music-result-artist">${escHtml(artists)}</div>
+        </div>
+        <span class="music-result-play" style="cursor:pointer;color:#f87171;font-size:13px;" onclick="musicRemoveFromPlaylist(${i})" title="移除">✕</span>
+      </div>`;
+    });
+    mPlaylistContent.innerHTML = html;
+  }
+
+  // ====== 收藏夹 ======
+  function musicToggleFav(idx) {
+    if (idx < 0 || idx >= musicState.songs.length) return;
+    const song = musicState.songs[idx];
+    const found = musicState.favorites.findIndex(f => f.id === song.id && f.source === song.source);
+    if (found >= 0) {
+      musicState.favorites.splice(found, 1);
+      musicToast('已取消收藏');
+    } else {
+      musicState.favorites.push(JSON.parse(JSON.stringify(song)));
+      musicToast('⭐ 已收藏');
+    }
+    saveFavorites();
+    renderMusicResults(musicState.songs);
+    renderFavorites();
+    updateFavBtn();
+  }
+
+  function musicRemoveFav(favIdx) {
+    musicState.favorites.splice(favIdx, 1);
+    saveFavorites();
+    renderFavorites();
+    renderMusicResults(musicState.songs);
+    updateFavBtn();
+  }
+
+  function musicPlayAllFav() {
+    if (!musicState.favorites.length) return;
+    musicState.playlist = musicState.favorites.map(s => ({ song: s, idx: -1 }));
+    musicState.playlistIdx = 0;
+    playFromPlaylist(0);
+    musicSwitchTab('playlist');
+    musicToast('▶ 正在播放收藏夹');
+  }
+
+  function saveFavorites() {
+    try {
+      localStorage.setItem('musicFavorites', JSON.stringify(musicState.favorites));
+    } catch(e) {}
+  }
+
+  function renderFavorites() {
+    const list = musicState.favorites;
+    if (!list.length) {
+      mFavContent.innerHTML = '<div class="music-results-empty"><span class="music-empty-icon">⭐</span><span>收藏夹为空<br>点击歌曲旁的 ☆ 收藏喜欢的歌</span></div>';
+      mFavCount.textContent = '';
+      return;
+    }
+    mFavCount.textContent = '(' + list.length + ')';
+    let html = '';
+    list.forEach((s, i) => {
+      const artists = (s.artists || []).join(' / ');
+      const pic = s.albumPic || '';
+      const isActive = musicState.playlistIdx >= 0 && musicState.playlist[musicState.playlistIdx]?.song?.id === s.id;
+      html += `<div class="music-result-item ${isActive?'playing':''}">
+        <div class="music-result-album" onclick="musicFavPlay(${i})">${pic ? '<img src="'+pic+'?param=100y100" alt="" loading="lazy">' : '🎵'}</div>
+        <div class="music-result-info" onclick="musicFavPlay(${i})">
+          <div class="music-result-name">${escHtml(s.name)}</div>
+          <div class="music-result-artist">${escHtml(artists)}</div>
+        </div>
+        <span class="music-result-source" style="background:${s.source==='qq'?'rgba(0,180,255,0.15)':'rgba(99,102,241,0.15)'};color:${s.source==='qq'?'#00b4ff':'#6366f1'}">${s.source||'netease'}</span>
+        <span class="music-result-play" style="cursor:pointer;color:#f87171;font-size:13px;" onclick="musicRemoveFav(${i})" title="移除">✕</span>
+      </div>`;
+    });
+    mFavContent.innerHTML = html;
+  }
+
+  function musicFavPlay(i) {
+    const song = musicState.favorites[i];
+    // 临时设置 songs 为 favorites
+    const tempSongs = musicState.songs;
+    musicState.songs = musicState.favorites;
+    musicPlay(i);
+    musicState.songs = tempSongs;
+  }
+
+  function updateFavBtn() {
+    if (musicState.currentIndex < 0 || musicState.currentIndex >= musicState.songs.length) {
+      mFavBtn.textContent = '☆';
+      return;
+    }
+    const song = musicState.songs[musicState.currentIndex];
+    const isFav = musicState.favorites.some(f => f.id === song.id && f.source === song.source);
+    mFavBtn.textContent = isFav ? '⭐' : '☆';
+  }
+
+  // ====== 标签切换 ======
+  function musicSwitchTab(tab) {
+    document.querySelectorAll('.music-tab').forEach(t => t.classList.remove('music-tab-active'));
+    document.querySelectorAll('.music-panel').forEach(p => p.style.display = 'none');
+    if (tab === 'search') {
+      document.getElementById('tabSearch').classList.add('music-tab-active');
+      document.getElementById('panelSearch').style.display = 'block';
+    } else if (tab === 'playlist') {
+      document.getElementById('tabPlaylist').classList.add('music-tab-active');
+      document.getElementById('panelPlaylist').style.display = 'block';
+      renderPlaylist();
+    } else if (tab === 'fav') {
+      document.getElementById('tabFav').classList.add('music-tab-active');
+      document.getElementById('panelFav').style.display = 'block';
+      renderFavorites();
+    }
+  }
+
   function toggleMusicWidget() {
     musicState.isCollapsed = !musicState.isCollapsed;
     mWidgetBody.classList.toggle('hidden', musicState.isCollapsed);
     mWidgetToggle.classList.toggle('collapsed', musicState.isCollapsed);
   }
 
-  // 工具
+  // ====== 工具 ======
   function escHtml(s) { return String(s).replace(/[&<>"]/g, function(m){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]||m;}); }
   function musicToast(msg) {
     const t = document.createElement('div');
     t.textContent = msg;
     t.style.cssText = 'position:fixed;top:20px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,0.85);color:#fff;padding:8px 18px;border-radius:8px;font-size:13px;z-index:9999;';
     document.body.appendChild(t);
-    setTimeout(()=>t.remove(), 3000);
+    setTimeout(()=>t.remove(), 2500);
   }
   function fmtTime(s) { if(!s||isNaN(s)) return '0:00'; const m=Math.floor(s/60), sec=Math.floor(s%60); return m+':'+sec.toString().padStart(2,'0'); }
 
-  // 音频事件
+  // ====== 音频事件 ======
   mAudio.addEventListener('timeupdate', () => {
     if (mAudio.duration) {
       mProgressFill.style.width = (mAudio.currentTime / mAudio.duration * 100) + '%';
