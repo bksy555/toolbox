@@ -304,17 +304,23 @@ async function handleRefreshCache(req, res) {
   const results = [];
   const errors = [];
   
-  // 1. 从多个榜单获取热门歌曲
+  // 1. 从多个榜单获取热门歌曲（覆盖不同风格）
   const topLists = [
-    { name: 'QQ热歌榜', topId: 4 },      // QQ音乐热歌榜
-    { name: 'QQ新歌榜', topId: 27 },     // QQ音乐新歌榜
-    { name: 'QQ流行指数榜', topId: 62 }, // QQ音乐流行指数榜
-    { name: 'QQ网络歌曲榜', topId: 36 }, // QQ音乐网络歌曲榜
+    { name: 'QQ热歌榜', topId: 4 },       // 总热榜
+    { name: 'QQ新歌榜', topId: 27 },      // 新歌
+    { name: 'QQ流行指数榜', topId: 26 },  // 流行趋势
+    { name: 'QQ网络歌曲榜', topId: 36 },  // 网络热门
+    { name: 'QQ内地榜', topId: 28 },      // 内地
+    { name: 'QQ港台榜', topId: 29 },      // 港台
+    { name: 'QQKTV金曲榜', topId: 52 },   // KTV经典
+    { name: 'QQ影视金曲榜', topId: 65 },  // 影视OST
+    { name: 'QQACG榜', topId: 78 },       // 二次元
+    { name: 'QQ欧美榜', topId: 106 },     // 欧美
   ];
   
   for (const list of topLists) {
     try {
-      const songs = await fetchQQTopList(list.topId, 50);
+      const songs = await fetchQQTopList(list.topId, 30);
       console.log(`  📋 ${list.name}: 获取到 ${songs.length} 首`);
       
       for (const song of songs) {
