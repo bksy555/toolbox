@@ -871,6 +871,13 @@
   margin: 0 2px;
 }
 
+.d3-ball.d3-ball-draw {
+  width: 36px;
+  height: 36px;
+  font-size: 15px;
+  margin: 0 6px;
+}
+
 .d3-ball.d3-ball-hit {
   background: linear-gradient(135deg, #22c55e, #16a34a);
   box-shadow: 0 0 8px rgba(34, 197, 94, 0.4);
@@ -928,5 +935,11 @@
     width: 24px;
     height: 24px;
     font-size: 11px;
+  }
+  .d3-ball.d3-ball-draw {
+    width: 30px;
+    height: 30px;
+    font-size: 13px;
+    margin: 0 4px;
   }
 }

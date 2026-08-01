@@ -416,7 +416,7 @@
   <div class="piancai-page" style="margin-top:40px;border-top:2px dashed var(--border);padding-top:40px;">
     <h1>🎯 福彩3D预测 - 3胆中1</h1>
     <div class="subtitle">
-      每日19:25更新次日预测，预测3个号码中1个及以上即为<strong style="color:#22c55e;">正确 ✅</strong>，小于1个为<strong style="color:#ef4444;">错误 ❌</strong>。
+      每日19:25更新当日预测，预测3个号码中1个及以上即为<strong style="color:#22c55e;">正确 ✅</strong>，小于1个为<strong style="color:#ef4444;">错误 ❌</strong>。
     </div>
 
     <div class="piancai-form">
@@ -439,17 +439,16 @@
         <table class="d3-pred-table" id="d3PredTable">
           <thead>
             <tr>
-              <th style="width:70px;">期数</th>
-              <th style="width:100px;">日期</th>
+              <th style="width:80px;">期数</th>
+              <th style="width:105px;">日期</th>
               <th style="width:70px;">星期</th>
-              <th>预测3胆</th>
-              <th style="width:120px;">中奖号码</th>
+              <th style="width:160px;">预测3胆</th>
+              <th style="width:180px;">中奖号码</th>
               <th style="width:80px;">结果</th>
-              <th style="width:60px;">操作</th>
             </tr>
           </thead>
           <tbody id="d3PredBody">
-            <tr><td colspan="7" style="text-align:center;padding:40px;color:var(--text-light);">
+            <tr><td colspan="6" style="text-align:center;padding:40px;color:var(--text-light);">
               <div class="piancai-loading"><div class="spinner"></div><div style="margin-top:12px;">⏳ 正在生成预测...</div></div>
             </td></tr>
           </tbody>
@@ -458,13 +457,13 @@
 
       <div class="form-row" style="margin-top:12px;justify-content:space-between;">
         <span style="font-size:13px;color:var(--text-light);" id="d3Accuracy"></span>
-        <span style="font-size:12px;color:var(--text-light);">💡 点击"✏️"可手动输入中奖号码更新结果</span>
+        <span style="font-size:12px;color:var(--text-light);"></span>
       </div>
     </div>
 
     <div class="disclaimer">
       <strong>⚠️ 温馨提示</strong><br>
-      · 本预测基于传统八字命理天干择数法，<strong>仅供娱乐参考</strong>，请理性购彩，切勿沉迷<br>
+      · 本预测基于传统易经相关算法，<strong>仅供娱乐参考</strong>，请理性购彩，切勿沉迷<br>
       · 福彩3D每日开奖（约21:15），22:00后可更新中奖号码<br>
       · 预测数据存储在浏览器本地（localStorage），清除浏览器数据会丢失<br>
       · 3胆中1即预测的3个号码中包含1个及以上中奖号码即为正确 ✅<br>
@@ -556,12 +555,12 @@
       const bj = getBeijingDate();
       const today = new Date(bj.year, bj.month - 1, bj.day);
 
-      // 从今天往前推14天 + 明天 = 15期
+      // 从今天往前推14天 = 15期（不含未来日期）
       const predictions = [];
       const start = new Date(today);
       start.setDate(start.getDate() - 14);
       
-      for (let i = 0; i < 16; i++) {
+      for (let i = 0; i < 15; i++) {
         const cursor = new Date(start);
         cursor.setDate(start.getDate() + i);
         const y = cursor.getFullYear();
@@ -585,11 +584,6 @@
           isToday: (y === bj.year && m === bj.month && d === bj.day),
           isFuture: (y > bj.year || (y === bj.year && m > bj.month) || (y === bj.year && m === bj.month && d > bj.day))
         });
-      }
-      
-      // 只保留15期（去掉最旧的一期，让明天始终在最后）
-      while (predictions.length > 15) {
-        predictions.shift();
       }
 
       return predictions;
@@ -700,7 +694,7 @@
       let correctCount = 0;
       let totalResolved = 0;
       
-      // 展示顺序：最新的在前（明天在最上面）
+      // 展示顺序：最新的在前
       for (let i = predictions.length - 1; i >= 0; i--) {
         const p = predictions[i];
         const key = p.period;
@@ -708,30 +702,31 @@
         
         const dateStr = formatDateStr(p.year, p.month, p.day);
         const weekdayStr = '星期' + WEEKDAY_NAMES[p.weekday];
-        const dansStr = p.dans.map(n => `<span class="d3-ball">${n}</span>`).join(' ');
+        
+        // 预测3胆：仅过去日期显示，今日显示待更新
+        let dansStr = '';
+        if (p.isPast) {
+          dansStr = p.dans.map(n => `<span class="d3-ball">${n}</span>`).join(' ');
+        } else if (p.isToday) {
+          dansStr = '<span style="color:var(--text-light);font-size:12px;">待19:25更新</span>';
+        }
         
         // 中奖号码
         let drawStr = '';
         let resultStr = '';
-        let editBtn = '';
         
         if (record && record.drawNum) {
           const drawArr = record.drawNum.split('');
-          drawStr = drawArr.map(n => `<span class="d3-ball ${record.result === '✅' ? 'd3-ball-hit' : ''}">${n}</span>`).join(' ');
+          drawStr = drawArr.map(n => `<span class="d3-ball d3-ball-draw ${record.result === '✅' ? 'd3-ball-hit' : ''}">${n}</span>`).join(' ');
           resultStr = record.result || '';
           if (record.result === '✅') correctCount++;
           totalResolved++;
-          editBtn = `<button class="d3-edit-btn" onclick="editDrawNum('${key}')" title="修改中奖号码">✏️</button>`;
         } else if (p.isPast || p.isToday) {
-          // 已过期的日期，可以编辑
           drawStr = '<span style="color:var(--text-light);font-size:12px;">待更新</span>';
           resultStr = '⏳';
-          editBtn = `<button class="d3-edit-btn" onclick="editDrawNum('${key}')" title="输入中奖号码">✏️</button>`;
         } else {
-          // 未来的日期
           drawStr = '<span style="color:var(--text-light);font-size:12px;">—</span>';
           resultStr = '🔮';
-          editBtn = '';
         }
         
         // 行样式
@@ -745,7 +740,6 @@
             <td>${dansStr}</td>
             <td>${drawStr}</td>
             <td style="font-size:18px;font-weight:700;">${resultStr}</td>
-            <td>${editBtn}</td>
           </tr>
         `;
       }
