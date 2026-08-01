@@ -1,7 +1,41 @@
-// /api/music.mjs - 音乐播放器 API 代理（多源回退版）
-// 多源搜索和获取播放链接，支持 NetEase → QQ → Kugou → Kuwo 回退
+// /api/music.mjs - 音乐播放器 API 代理（多源回退 + 热歌缓存版）
+// 多源搜索和获取播放链接，支持 QQ → NetEase 回退
+// 热歌缓存：预加载热门歌曲播放链接，提升播放成功率
 
 const NETEASE_API = 'https://netease-cloud-music-api-xi-pied.vercel.app';
+const CACHE_FILE = './data/music-cache.json';
+
+// 读取缓存
+let musicCache = null;
+function getCache() {
+  if (musicCache) return musicCache;
+  try {
+    const fs = require('fs');
+    if (fs.existsSync(CACHE_FILE)) {
+      const raw = fs.readFileSync(CACHE_FILE, 'utf8');
+      musicCache = JSON.parse(raw);
+      console.log(`🎵 热歌缓存已加载: ${musicCache.songs?.length || 0} 首`);
+    }
+  } catch (e) {
+    console.error('读取缓存失败:', e.message);
+  }
+  musicCache = musicCache || { songs: [] };
+  return musicCache;
+}
+
+// 写入缓存
+function saveCache(cache) {
+  try {
+    const fs = require('fs');
+    cache.updatedAt = new Date().toISOString();
+    fs.writeFileSync(CACHE_FILE, JSON.stringify(cache, null, 2), 'utf8');
+    console.log(`💾 缓存已保存: ${cache.songs.length} 首`);
+    return true;
+  } catch (e) {
+    console.error('保存缓存失败:', e.message);
+    return false;
+  }
+}
 
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -21,6 +55,10 @@ export default async function handler(req, res) {
         return await handleSearch(req, res);
       case 'url':
         return await handleUrl(req, res);
+      case 'hot_songs':
+        return await handleHotSongs(req, res);
+      case 'refresh_cache':
+        return await handleRefreshCache(req, res);
       default:
         res.status(400).json({ error: 'unknown action' });
     }
@@ -52,7 +90,6 @@ async function handleSearch(req, res) {
   const seen = new Set();
   const merged = [];
   
-  // QQ 在前，NetEase 在后
   for (const song of [...qqSongs, ...neteaseSongs]) {
     const key = `${song.name}|${song.artists?.join(',') || ''}`;
     if (!seen.has(key)) {
@@ -113,11 +150,37 @@ async function searchQQ(keyword) {
 async function handleUrl(req, res) {
   const id = req.query.id;
   const source = req.query.source || 'auto';
+  const songName = req.query.name || '';
+  const artistName = req.query.artist || '';
   
   if (!id) {
     return res.status(400).json({ error: 'no song id' });
   }
   
+  // 1. 先检查缓存（按 songId 或 歌曲名+歌手名）
+  const cache = getCache();
+  let cachedResult = null;
+  
+  if (id) {
+    cachedResult = cache.songs.find(s => s.id === id);
+  }
+  if (!cachedResult && songName && artistName) {
+    cachedResult = cache.songs.find(s => 
+      s.name === songName && s.artists?.join('/') === artistName
+    );
+  }
+  
+  if (cachedResult?.url) {
+    console.log(`💿 命中缓存: ${cachedResult.name} - ${cachedResult.artists?.join('/')}`);
+    return res.json({
+      url: cachedResult.url,
+      source: cachedResult.cacheSource || cachedResult.source || 'cache',
+      br: cachedResult.br || 128000,
+      cached: true
+    });
+  }
+  
+  // 2. 缓存未命中，从外部源获取
   let result = null;
   const sources = source === 'auto' ? ['netease', 'qq'] : [source];
   
@@ -134,7 +197,7 @@ async function handleUrl(req, res) {
   }
   
   if (result) {
-    res.json({ url: result.url, source: result.source, br: result.br || 128000 });
+    res.json({ url: result.url, source: result.source, br: result.br || 128000, cached: false });
   } else {
     res.json({ url: null, source: 'none' });
   }
@@ -185,7 +248,6 @@ async function getQQUrl(songmid) {
     });
     const result = await resp.json();
     
-    // 从响应中提取播放 URL
     const reqData = result?.req?.data;
     const req0Data = result?.req_0?.data;
     
@@ -201,8 +263,147 @@ async function getQQUrl(songmid) {
       return { url: fullUrl, source: 'qq', br: 128000 };
     }
     
+    // 方式3: 尝试备选 sip
+    if (req0Data?.sip?.length > 1 && req0Data?.midurlinfo?.[0]?.purl) {
+      for (const host of req0Data.sip) {
+        if (host) {
+          return { url: host + req0Data.midurlinfo[0].purl, source: 'qq', br: 128000 };
+        }
+      }
+    }
+    
     return null;
   } catch {
     return null;
   }
+}
+
+// ==================== 热歌缓存 ====================
+
+// 获取热歌缓存列表
+async function handleHotSongs(req, res) {
+  const cache = getCache();
+  const limit = parseInt(req.query.limit) || 50;
+  res.json({
+    songs: cache.songs.slice(0, limit),
+    total: cache.songs.length,
+    updatedAt: cache.updatedAt
+  });
+}
+
+// 刷新热歌缓存（从外部API获取热门歌曲并缓存）
+async function handleRefreshCache(req, res) {
+  const maxSongs = Math.min(parseInt(req.query.max) || 300, 500);
+  const key = req.query.key || '';
+  
+  // 简单鉴权，防止滥用
+  if (key !== 'toolbox-music-cache-2026') {
+    return res.status(403).json({ error: 'invalid key' });
+  }
+  
+  const results = [];
+  const errors = [];
+  
+  // 1. 从多个榜单获取热门歌曲
+  const topLists = [
+    { name: 'QQ热歌榜', topId: 4 },      // QQ音乐热歌榜
+    { name: 'QQ新歌榜', topId: 27 },     // QQ音乐新歌榜
+    { name: 'QQ流行指数榜', topId: 62 }, // QQ音乐流行指数榜
+    { name: 'QQ网络歌曲榜', topId: 36 }, // QQ音乐网络歌曲榜
+  ];
+  
+  for (const list of topLists) {
+    try {
+      const songs = await fetchQQTopList(list.topId, 50);
+      console.log(`  📋 ${list.name}: 获取到 ${songs.length} 首`);
+      
+      for (const song of songs) {
+        if (results.length >= maxSongs) break;
+        
+        // 获取播放URL
+        const urlResult = await getQQUrl(song.id);
+        if (urlResult) {
+          results.push({
+            id: song.id,
+            name: song.name,
+            artists: song.artists,
+            album: song.album || '',
+            albumPic: song.albumPic || '',
+            duration: song.duration || 0,
+            url: urlResult.url,
+            source: urlResult.source,
+            br: urlResult.br || 128000,
+            cacheSource: 'qq',
+            addedAt: new Date().toISOString()
+          });
+        } else {
+          errors.push({ name: song.name, reason: 'no_url' });
+        }
+        
+        // 控制速率
+        await new Promise(r => setTimeout(r, 300));
+      }
+    } catch (e) {
+      console.error(`  ❌ ${list.name}: ${e.message}`);
+    }
+    
+    if (results.length >= maxSongs) break;
+  }
+  
+  // 2. 更新缓存
+  const cache = getCache();
+  
+  // 合并：新结果在前，旧结果补充（去重）
+  const seen = new Set();
+  const merged = [];
+  
+  for (const song of [...results, ...cache.songs]) {
+    const key = `${song.name}|${song.artists?.join(',') || ''}`;
+    if (!seen.has(key)) {
+      seen.add(key);
+      merged.push(song);
+    }
+  }
+  
+  cache.songs = merged;
+  cache.version = (cache.version || 0) + 1;
+  saveCache(cache);
+  
+  res.json({
+    success: true,
+    newSongs: results.length,
+    totalSongs: cache.songs.length,
+    errors: errors.length,
+    updatedAt: cache.updatedAt
+  });
+}
+
+// 获取 QQ 音乐榜单
+async function fetchQQTopList(topId, num) {
+  const params = {
+    detail: {
+      module: 'musicToplist.ToplistInfoServer',
+      method: 'GetDetail',
+      param: { topId, offset: 0, num }
+    }
+  };
+  
+  const url = `https://u.y.qq.com/cgi-bin/musicu.fcg?format=json&data=${encodeURIComponent(JSON.stringify(params))}`;
+  const resp = await fetch(url, {
+    headers: { 'User-Agent': 'Mozilla/5.0', 'Referer': 'https://y.qq.com/' }
+  });
+  const data = await resp.json();
+  const songList = data?.detail?.data?.songList || [];
+  
+  return songList.map(s => {
+    const info = s.songInfo || {};
+    return {
+      id: info.mid || '',
+      name: info.name || '',
+      artists: (info.singer || []).map(sg => sg.name || ''),
+      album: info.album?.name || '',
+      albumPic: info.album?.mid ? `https://y.gtimg.cn/music/photo_new/T002R300x300M000${info.album.mid}.jpg` : '',
+      duration: (info.interval || 0) * 1000
+    };
+  }).filter(s => s.id && s.name);
 }
