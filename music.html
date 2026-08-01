@@ -87,6 +87,85 @@
     .search-btn:hover { opacity: 0.85; }
     .search-btn:disabled { opacity: 0.5; cursor: not-allowed; }
 
+    /* 热门推荐 */
+    .hot-section {
+      margin-bottom: 20px;
+    }
+    .hot-header {
+      font-size: 16px;
+      font-weight: 600;
+      padding: 10px 0 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .hot-header .badge {
+      font-size: 11px;
+      background: linear-gradient(135deg, #6366f1, #8b5cf6);
+      color: #fff;
+      padding: 2px 8px;
+      border-radius: 10px;
+      font-weight: 500;
+    }
+    .hot-header .update-time {
+      font-size: 11px;
+      color: var(--music-text-light);
+      font-weight: 400;
+      margin-left: auto;
+    }
+    .hot-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 8px;
+    }
+    .hot-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 12px;
+      border-radius: 10px;
+      background: var(--music-card);
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    .hot-item:hover { background: var(--music-card-hover); }
+    .hot-item .rank {
+      width: 24px;
+      text-align: center;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--music-text-light);
+      flex-shrink: 0;
+    }
+    .hot-item .rank.top3 { color: #f59e0b; }
+    .hot-item .hot-info {
+      flex: 1;
+      min-width: 0;
+    }
+    .hot-item .hot-info .name {
+      font-size: 13px;
+      font-weight: 600;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .hot-item .hot-info .artist {
+      font-size: 11px;
+      color: var(--music-text-light);
+      margin-top: 1px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .hot-item .play-icon {
+      font-size: 14px;
+      color: var(--music-primary);
+      flex-shrink: 0;
+      opacity: 0;
+      transition: opacity 0.15s;
+    }
+    .hot-item:hover .play-icon { opacity: 1; }
+
     /* 搜索结果 */
     .search-status {
       text-align: center;
@@ -362,15 +441,29 @@
   <!-- 搜索框 -->
   <div class="search-box">
     <input type="text" id="searchInput" placeholder="搜索歌曲、歌手..." 
-           onkeydown="if(event.key==='Enter') searchMusic()">
+           onkeydown="if(event.key==='Enter') searchMusic(); if(event.key==='Escape') clearSearch()">
     <button class="search-btn" id="searchBtn" onclick="searchMusic()">🔍 搜索</button>
   </div>
 
+  <!-- 热门推荐 -->
+  <div class="hot-section" id="hotSection">
+    <div class="hot-header">
+      🔥 热门推荐
+      <span class="badge">预加载 秒播放</span>
+      <span class="update-time" id="hotUpdateTime"></span>
+    </div>
+    <div class="hot-grid" id="hotGrid">
+      <div class="search-status" style="padding:20px">
+        <div class="text">加载中...</div>
+      </div>
+    </div>
+  </div>
+
   <!-- 搜索结果 -->
-  <div id="searchResults">
+  <div id="searchResults" style="display:none">
     <div class="search-status">
       <div class="icon">🎶</div>
-      <div class="text">输入歌名或歌手，点击搜索<br>支持网易云音乐海量曲库</div>
+      <div class="text">输入歌名或歌手，点击搜索<br>支持多平台海量曲库</div>
     </div>
   </div>
 </div>
@@ -443,10 +536,80 @@ const searchBtn = document.getElementById('searchBtn');
 audio.volume = 0.6;
 updateVolUI();
 
+// ---- 热门推荐 ----
+const hotSection = document.getElementById('hotSection');
+const hotGrid = document.getElementById('hotGrid');
+const hotUpdateTime = document.getElementById('hotUpdateTime');
+
+async function loadHotSongs() {
+  try {
+    const resp = await fetch(`${API_BASE}?action=hot_songs&limit=48`);
+    const data = await resp.json();
+    const songs = data.songs || [];
+    
+    if (songs.length === 0) {
+      hotGrid.innerHTML = '<div class="search-status" style="padding:20px"><div class="text">暂无热门歌曲，试试搜索吧</div></div>';
+      return;
+    }
+    
+    if (data.updatedAt) {
+      const d = new Date(data.updatedAt);
+      hotUpdateTime.textContent = `更新于 ${d.getMonth()+1}/${d.getDate()} ${d.getHours().toString().padStart(2,'0')}:${d.getMinutes().toString().padStart(2,'0')}`;
+    }
+    
+    let html = '';
+    songs.forEach((song, idx) => {
+      const rank = idx + 1;
+      const rankClass = rank <= 3 ? 'top3' : '';
+      const artists = song.artists?.join(' / ') || '';
+      const playIcon = currentSongList.find(s => s.id === song.id) ? '🔊' : '▶';
+      html += `
+        <div class="hot-item" onclick="playHotSong(${idx})" data-hot-index="${idx}">
+          <div class="rank ${rankClass}">${rank}</div>
+          <div class="hot-info">
+            <div class="name">${song.name}</div>
+            <div class="artist">${artists}</div>
+          </div>
+          <div class="play-icon">${playIcon}</div>
+        </div>
+      `;
+    });
+    
+    hotGrid.innerHTML = html;
+    
+    // 保存到全局，用于播放
+    window._hotSongs = songs;
+  } catch (e) {
+    hotGrid.innerHTML = '<div class="search-status" style="padding:20px"><div class="text">加载失败，试试搜索</div></div>';
+  }
+}
+
+function playHotSong(index) {
+  const songs = window._hotSongs || [];
+  const song = songs[index];
+  if (!song) return;
+  
+  // 将热门歌曲添加到播放列表
+  const existingIdx = currentSongList.findIndex(s => s.id === song.id);
+  if (existingIdx >= 0) {
+    playSong(existingIdx);
+  } else {
+    currentSongList.unshift(song);
+    playSong(0);
+  }
+}
+
+// 页面加载时显示热门歌曲
+loadHotSongs();
+
 // ---- 搜索 ----
 async function searchMusic() {
   const keyword = searchInput.value.trim();
   if (!keyword) return;
+  
+  // 切换显示
+  hotSection.style.display = 'none';
+  searchResults.style.display = 'block';
   
   searchBtn.disabled = true;
   searchBtn.textContent = '⏳ 搜索中...';
@@ -462,6 +625,15 @@ async function searchMusic() {
     searchBtn.disabled = false;
     searchBtn.textContent = '🔍 搜索';
   }
+}
+
+// 清空搜索，返回热门推荐
+function clearSearch() {
+  searchInput.value = '';
+  searchResults.style.display = 'none';
+  hotSection.style.display = 'block';
+  // 重新加载热门歌曲（刷新）
+  loadHotSongs();
 }
 
 function renderSongs(songs) {
