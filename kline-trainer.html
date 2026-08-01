@@ -195,7 +195,7 @@ body {
 .hidden { display:none !important; }
 
 @media (max-width:640px) {
-  #chart { height:320px; }
+  #chart { height:400px; }
   .controls { flex-wrap:wrap; }
   .ctrl-btn { max-width:none; min-width:80px; }
   .round-info { flex-wrap:wrap; gap:4px; }
@@ -233,6 +233,10 @@ body {
     </div>
 
     <div class="chart-wrap">
+      <div style="display:flex;justify-content:flex-end;align-items:center;gap:8px;padding:0 4px 6px;">
+        <span style="font-size:12px;color:var(--text-light);">配色：</span>
+        <button id="colorToggle" class="color-toggle" onclick="toggleColorMode()" style="background:var(--card);border:1px solid var(--border);border-radius:6px;padding:3px 10px;font-size:12px;color:var(--text);cursor:pointer;transition:all 0.15s;">红涨绿跌</button>
+      </div>
       <div id="chart"></div>
     </div>
 
@@ -339,10 +343,38 @@ let state = {
 let round = {}; // current round state
 
 // ============================================================
+// 配色模式
+function getColorMode() {
+  // 'cn' = 红涨绿跌, 'intl' = 绿涨红跌
+  return localStorage.getItem('kline_color_mode') || 'cn';
+}
+function getColors() {
+  const mode = getColorMode();
+  if (mode === 'cn') return {up:'#ef4444', down:'#10b981'};   // 红涨绿跌
+  return {up:'#10b981', down:'#ef4444'};                      // 绿涨红跌
+}
+function toggleColorMode() {
+  const cur = getColorMode();
+  const next = cur === 'cn' ? 'intl' : 'cn';
+  localStorage.setItem('kline_color_mode', next);
+  document.getElementById('colorToggle').textContent = next === 'cn' ? '红涨绿跌' : '绿涨红跌';
+  // 更新图表
+  if (chart) {
+    const cols = getColors();
+    chart.setOption({
+      series:[
+        {itemStyle:{color:cols.up, color0:cols.down, borderColor:cols.up, borderColor0:cols.down}},
+        {itemStyle:{color:cols.up, color0:cols.down}}
+      ]
+    });
+  }
+}
+
 // ECharts
 let chart = null;
 function initChart() {
   chart = echarts.init(document.getElementById('chart'));
+  const cols = getColors();
   chart.setOption({
     animation:false,
     grid:[
@@ -368,10 +400,10 @@ function initChart() {
              textStyle:{color:'#e0e0e0',fontSize:12}},
     series:[
       {type:'candlestick',name:'K线',xAxisIndex:0,yAxisIndex:0,
-       data:[],itemStyle:{color:'#ef4444',color0:'#10b981',
-         borderColor:'#ef4444',borderColor0:'#10b981'}},
+       data:[],itemStyle:{color:cols.up,color0:cols.down,
+         borderColor:cols.up,borderColor0:cols.down}},
       {type:'bar',name:'成交量',xAxisIndex:1,yAxisIndex:1,
-       data:[],itemStyle:{color:'#ef4444',color0:'#10b981'}}
+       data:[],itemStyle:{color:cols.up,color0:cols.down}}
     ]
   });
 }
@@ -380,15 +412,15 @@ function updateChart(history, revealed) {
   const allDates = [...history.map(d=>d[0]), ...revealed.map(d=>d[0])];
   const allData = [...history.map(d=>[+d[1],+d[2],+d[4],+d[3]]),
                    ...revealed.map(d=>[+d[1],+d[2],+d[4],+d[3]])];
-  // Volume: green if close>=open, red if close<open
+  const cols = getColors();
   const allVol = [...history.map(d=>{
     const vol = +d[5] || 0;
     const isUp = +d[2] >= +d[1];
-    return {value: vol, itemStyle:{color: isUp ? '#10b981' : '#ef4444'}};
+    return {value: vol, itemStyle:{color: isUp ? cols.up : cols.down}};
   }), ...revealed.map(d=>{
     const vol = +d[5] || 0;
     const isUp = +d[2] >= +d[1];
-    return {value: vol, itemStyle:{color: isUp ? '#10b981' : '#ef4444'}};
+    return {value: vol, itemStyle:{color: isUp ? cols.up : cols.down}};
   })];
   chart.setOption({
     xAxis:[{data:allDates},{data:allDates}],
@@ -724,6 +756,9 @@ function showToast(msg) {
 
 // Window resize
 window.addEventListener('resize', () => { if(chart) chart.resize(); });
+
+// 初始化配色按钮文字
+document.getElementById('colorToggle').textContent = getColorMode() === 'cn' ? '红涨绿跌' : '绿涨红跌';
 
 // Keyboard shortcuts
 document.addEventListener('keydown', e => {
