@@ -94,8 +94,6 @@ body {
 .ctrl-btn.sell:hover { box-shadow:0 4px 16px rgba(16,185,129,0.3); }
 .ctrl-btn.hold { background:linear-gradient(135deg,#6366f1,#8b5cf6); }
 .ctrl-btn.hold:hover { box-shadow:0 4px 16px rgba(99,102,241,0.3); }
-.ctrl-btn.next { background:linear-gradient(135deg,#f59e0b,#d97706); max-width:120px; }
-.ctrl-btn.next:hover { box-shadow:0 4px 16px rgba(245,158,11,0.3); }
 
 /* Trade log */
 .trade-log-wrap {
@@ -267,7 +265,6 @@ body {
       <button class="ctrl-btn buy" id="btnBuy" onclick="doAction('buy')">📈 买入</button>
       <button class="ctrl-btn sell" id="btnSell" onclick="doAction('sell')">📉 卖出</button>
       <button class="ctrl-btn hold" id="btnHold" onclick="doAction('hold')">⏸ 持仓</button>
-      <button class="ctrl-btn next" id="btnNext" onclick="nextCandle()">👉 下一根</button>
     </div>
 
     <div class="trade-log-wrap" id="tradeLog">
@@ -424,7 +421,6 @@ async function startRound() {
   document.getElementById('btnBuy').disabled = false;
   document.getElementById('btnSell').disabled = true;
   document.getElementById('btnHold').disabled = false;
-  document.getElementById('btnNext').disabled = true;
   document.getElementById('tradeList').innerHTML = '暂无交易';
   
   updatePosDisplay();
@@ -448,7 +444,6 @@ async function startRound() {
     round.revealed = [];
     
     updateChart(round.history, []);
-    document.getElementById('btnNext').disabled = false;
     
   } catch(e) {
     showToast('数据加载失败，重试中...');
@@ -458,30 +453,22 @@ async function startRound() {
 }
 
 function doAction(action) {
-  if (round.done) return;
+  if (round.done || round.candleIdx >= BLANK_CNT) return;
   
   round.action = action;
   
   if (action === 'buy') {
     if (round.cash <= 0) { showToast('💰 资金不足'); return; }
     if (round.shares > 0) { showToast('⚠️ 已持仓，请先卖出或持仓'); return; }
-    // Execute at next candle's open price — will be done when candle is revealed
-    document.getElementById('btnBuy').disabled = true;
-    document.getElementById('btnSell').disabled = false;
-    document.getElementById('btnHold').disabled = false;
   } else if (action === 'sell') {
     if (round.shares === 0) { showToast('⚠️ 没有持仓可卖'); return; }
-    document.getElementById('btnBuy').disabled = false;
-    document.getElementById('btnSell').disabled = true;
-    document.getElementById('btnHold').disabled = false;
-  } else if (action === 'hold') {
-    document.getElementById('btnBuy').disabled = false;
-    document.getElementById('btnSell').disabled = round.shares === 0;
-    document.getElementById('btnHold').disabled = true;
   }
+  
+  // 自动执行下一根K线
+  executeCandle();
 }
 
-function nextCandle() {
+function executeCandle() {
   if (round.done) return;
   if (round.candleIdx >= BLANK_CNT) return;
   if (!round.action) { showToast('请先选择操作：买入/卖出/持仓'); return; }
@@ -545,7 +532,6 @@ function nextCandle() {
     document.getElementById('btnBuy').disabled = true;
     document.getElementById('btnSell').disabled = true;
     document.getElementById('btnHold').disabled = true;
-    document.getElementById('btnNext').disabled = true;
     showRoundResult();
   }
 }
@@ -716,7 +702,6 @@ document.addEventListener('keydown', e => {
   if (e.key === '1' || e.key === 'b') document.getElementById('btnBuy')?.click();
   if (e.key === '2' || e.key === 's') document.getElementById('btnSell')?.click();
   if (e.key === '3' || e.key === 'h') document.getElementById('btnHold')?.click();
-  if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); document.getElementById('btnNext')?.click(); }
 });
 </script>
 </body>
