@@ -446,7 +446,6 @@ function initChart() {
 }
 
 function updateChart(history, revealed) {
-  console.log('[DEBUG] updateChart called, history=' + (history ? history.length : 0) + ' revealed=' + (revealed ? revealed.length : 0));
   const allDates = [...history.map(d=>d[0]), ...revealed.map(d=>d[0])];
   const allData = [...history.map(d=>[+d[1],+d[2],+d[4],+d[3]]),
                    ...revealed.map(d=>[+d[1],+d[2],+d[4],+d[3]])];
@@ -461,16 +460,8 @@ function updateChart(history, revealed) {
     return {value: vol, itemStyle:{color: isUp ? cols.up : cols.down}};
   })];
   
-  console.log('[DEBUG] allDates=' + allDates.length + ' allData=' + allData.length + ' allVol=' + allVol.length);
-  
   // Calculate MAs from full stock data
   const maSeries = round.allKlines ? calcMAs(round.allKlines, allDates) : [];
-  console.log('[DEBUG] maSeries=' + maSeries.length + ' maSeries[0].data=' + (maSeries[0] ? maSeries[0].data.length : 0));
-  
-  console.log('[DEBUG] chart=' + (typeof chart) + ' ' + (chart ? 'exists' : 'null'));
-  if (chart) {
-    console.log('[DEBUG] chart width=' + chart.getWidth() + ' height=' + chart.getHeight());
-  }
   
   chart.setOption({
     xAxis:[{data:allDates},{data:allDates}],
@@ -480,43 +471,27 @@ function updateChart(history, revealed) {
       ...maSeries.map(ma => ({data:ma.data}))
     ]
   });
-  console.log('[DEBUG] setOption completed');
-  
-  // Verify
-  var opts = chart.getOption();
-  console.log('[DEBUG] after setOption: series[0].data=' + (opts.series[0].data ? opts.series[0].data.length : 0));
 }
 
 // ============================================================
 // API
 async function fetchKlines(code) {
-  console.log('[DEBUG] fetchKlines start: ' + code);
   const url = `https://web.ifzq.gtimg.cn/appstock/app/fqkline/get?param=${code},day,,,800,qfq`;
   try {
-    console.log('[DEBUG] fetch URL: ' + url);
     const resp = await fetch(url);
-    console.log('[DEBUG] fetch status: ' + resp.status);
     const data = await resp.json();
-    console.log('[DEBUG] fetch response keys: ' + Object.keys(data));
     const key = Object.keys(data.data)[0];
-    console.log('[DEBUG] data key: ' + key);
     const klines = data.data[key].qfqday || data.data[key].day || [];
-    console.log('[DEBUG] klines count: ' + klines.length);
     if (klines.length > 0) return klines;
-  } catch(e) {
-    console.log('[DEBUG] fetch error: ' + e.message);
-  }
+  } catch(e) {}
   // Fallback: try non-adjusted data
-  console.log('[DEBUG] trying fallback URL');
   try {
     const url2 = `https://web.ifzq.gtimg.cn/appstock/app/kline/mkline?param=${code},day,,,800`;
     const resp2 = await fetch(url2);
     const data2 = await resp2.json();
     const key2 = Object.keys(data2.data)[0];
     return data2.data[key2].day || [];
-  } catch(e) {
-    console.log('[DEBUG] fallback error: ' + e.message);
-  }
+  } catch(e) {}
   return [];
 }
 
@@ -529,21 +504,15 @@ function pickStock() {
 }
 
 async function startGame() {
-  console.log('[DEBUG] startGame called');
   state = {round:0,totalPnl:0,wins:0,losses:0,maxWin:0,maxLoss:0,roundResults:[]};
   document.getElementById('startScreen').classList.add('hidden');
   document.getElementById('gameUI').classList.remove('hidden');
   document.getElementById('finalResult').classList.remove('show');
-  console.log('[DEBUG] calling initChart');
   initChart();
-  console.log('[DEBUG] chart initialized, chart=' + (typeof chart) + ' width=' + chart.getWidth());
-  console.log('[DEBUG] calling startRound');
   await startRound();
-  console.log('[DEBUG] startGame completed');
 }
 
 async function startRound() {
-  console.log('[DEBUG] startRound called, state.round=' + state.round);
   state.round++;
   if (state.round > TOTAL_ROUNDS) { showFinal(); return; }
   
@@ -557,7 +526,6 @@ async function startRound() {
     cash:INIT_CASH, shares:0, costBasis:0,
     trades:[], done:false
   };
-  console.log('[DEBUG] picked stock: ' + round.stock.name + ' ' + round.stock.code);
   document.getElementById('btnBuy').disabled = false;
   document.getElementById('btnSell').disabled = true;
   document.getElementById('btnHold').disabled = false;
@@ -568,11 +536,9 @@ async function startRound() {
   document.getElementById('candleLabel').textContent = `0/${BLANK_CNT}`;
   
   try {
-    console.log('[DEBUG] fetching klines for ' + round.stock.code);
     const klines = await fetchKlines(round.stock.code);
-    console.log('[DEBUG] got ' + klines.length + ' klines');
     if (klines.length < HISTORY_CNT + BLANK_CNT + 10) {
-      console.log('[DEBUG] not enough klines, trying another stock');
+      // Not enough data, try another stock
       await startRound();
       return;
     }
@@ -587,14 +553,10 @@ async function startRound() {
     round.history = klines.slice(startIdx, startIdx + HISTORY_CNT);
     round.future = klines.slice(startIdx + HISTORY_CNT, startIdx + HISTORY_CNT + BLANK_CNT);
     round.revealed = [];
-    console.log('[DEBUG] history=' + round.history.length + ' future=' + round.future.length);
     
-    console.log('[DEBUG] calling updateChart, chart=' + (typeof chart) + ' ' + (chart ? 'exists' : 'null'));
     updateChart(round.history, []);
-    console.log('[DEBUG] updateChart done');
     
   } catch(e) {
-    console.log('[DEBUG] startRound error: ' + e.message + ' ' + e.stack);
     showToast('数据加载失败，重试中...');
     state.round--;
     setTimeout(startRound, 1000);
