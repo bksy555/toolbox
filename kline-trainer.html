@@ -591,25 +591,33 @@ function executeCandle() {
   const lowPx = +candle[4];
   const isUp = closePx >= openPx;
   
+  // 用已出现的最后一根K线的收盘价作为买入/卖出价
+  const execPrice = round.revealed.length > 0
+    ? +round.revealed[round.revealed.length - 1][2]  // 已揭示的最后一根收盘价
+    : +round.history[round.history.length - 1][2];    // 参考历史的最后一根收盘价
+  const execDate = round.revealed.length > 0
+    ? round.revealed[round.revealed.length - 1][0]
+    : round.history[round.history.length - 1][0];
+  
   // Execute the action
   let tradeInfo = '';
   if (round.action === 'buy' && round.cash > 0) {
-    const shares = Math.floor(round.cash / openPx / 100) * 100;
+    const shares = Math.floor(round.cash / execPrice / 100) * 100;
     if (shares >= 100) {
-      const cost = shares * openPx;
+      const cost = shares * execPrice;
       round.cash -= cost;
       round.shares += shares;
-      round.costBasis = openPx;
-      tradeInfo = `买入 ${shares}股 @ ${openPx.toFixed(2)}`;
-      round.trades.push({type:'buy', price:openPx, shares, date:candle[0]});
+      round.costBasis = execPrice;
+      tradeInfo = `买入 ${shares}股 @ ${execPrice.toFixed(2)}`;
+      round.trades.push({type:'buy', price:execPrice, shares, date:execDate});
     }
   } else if (round.action === 'sell' && round.shares > 0) {
-    const revenue = round.shares * openPx;
+    const revenue = round.shares * execPrice;
     const pnl = revenue - round.shares * round.costBasis;
     const pnlPct = (pnl / (round.shares * round.costBasis)) * 100;
     round.cash += revenue;
-    tradeInfo = `卖出 ${round.shares}股 @ ${openPx.toFixed(2)} (盈亏: ${pnlPct >= 0 ? '+' : ''}${pnlPct.toFixed(2)}%)`;
-    round.trades.push({type:'sell', price:openPx, shares:round.shares, pnl, pnlPct, date:candle[0]});
+    tradeInfo = `卖出 ${round.shares}股 @ ${execPrice.toFixed(2)} (盈亏: ${pnlPct >= 0 ? '+' : ''}${pnlPct.toFixed(2)}%)`;
+    round.trades.push({type:'sell', price:execPrice, shares:round.shares, pnl, pnlPct, date:execDate});
     round.shares = 0;
     round.costBasis = 0;
   }
