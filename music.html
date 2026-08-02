@@ -59,6 +59,16 @@
       color: #fff; padding: 2px 8px; border-radius: 10px; font-weight: 500;
     }
     .hot-header .update-time { font-size: 11px; color: var(--music-text-light); font-weight: 400; margin-left: auto; }
+    .fav-section { border-top: 1px solid var(--music-border); margin-top: 20px; padding-top: 4px; }
+    .fav-list { display: flex; flex-wrap: wrap; gap: 8px; padding: 8px 0 4px; }
+    .fav-tag {
+      display: inline-flex; align-items: center; gap: 4px;
+      padding: 6px 12px; background: var(--music-card); border: 1px solid var(--music-border);
+      border-radius: 20px; font-size: 13px; cursor: pointer; transition: all 0.2s;
+    }
+    .fav-tag:hover { border-color: var(--music-primary); background: var(--music-card-hover); }
+    .fav-tag .del { font-size: 11px; opacity: 0.5; cursor: pointer; margin-left: 4px; }
+    .fav-tag .del:hover { opacity: 1; }
     .hot-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 8px; }
     .hot-item {
       display: flex; align-items: center; gap: 10px; padding: 10px 12px;
@@ -91,6 +101,8 @@
     .song-name { font-size: 14px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .song-artist { font-size: 12px; color: var(--music-text-light); margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .song-duration { font-size: 12px; color: var(--music-text-light); flex-shrink: 0; }
+    .song-fav-star { cursor: pointer; font-size: 16px; padding: 0 8px; user-select: none; flex-shrink: 0; transition: transform 0.15s; }
+    .song-fav-star:hover { transform: scale(1.2); }
     .song-play-icon { font-size: 18px; color: var(--music-primary); flex-shrink: 0; width: 32px; text-align: center; }
     .player-bar {
       position: fixed; bottom: 0; left: 0; right: 0; background: var(--music-player-bg);
@@ -239,6 +251,13 @@
     </div>
     <div class="hot-grid" id="hotGrid">
       <div class="search-status" style="padding:20px"><div class="text">加载中...</div></div>
+    </div>
+    <!-- 已收藏的歌曲 -->
+    <div class="fav-section" id="favSection" style="display:none;margin-top:20px">
+      <div class="hot-header">
+        ⭐ 我的收藏 <span class="badge" id="favCount">(0)</span>
+      </div>
+      <div class="fav-list" id="favList"></div>
     </div>
   </div>
 
@@ -480,11 +499,11 @@ async function loadAllCachedSongs() {
 }
 
 function renderSmoothList() {
-  const faved = getFavorites();
+  const favs = getFavorites();
   let html = '';
   _allCachedSongs.forEach((song, idx) => {
     const artists = song.artists?.join(' / ') || '';
-    const isFaved = faved.includes(song.id);
+    const isFaved = favs.some(s => s.id === song.id);
     html += `
       <div class="smooth-item" onclick="playSmooth(${idx})" data-index="${idx}">
         <div class="s-index">${idx + 1}</div>
@@ -507,20 +526,42 @@ function playSmooth(index) {
   playSong(index);
 }
 
-// ---- 收藏 ----
+// ---- 收藏（持久化存储完整歌曲数据） ----
 function getFavorites() {
   try { return JSON.parse(localStorage.getItem('musicFavs') || '[]'); } catch { return []; }
 }
 function saveFavorites(favs) { localStorage.setItem('musicFavs', JSON.stringify(favs)); }
 
 function toggleFav(songId) {
+  // 从当前歌曲列表中找到完整歌曲数据
+  const song = currentSongList.find(s => s.id === songId) || _allCachedSongs.find(s => s.id === songId);
+  if (!song) return;
+  
   let favs = getFavorites();
-  const idx = favs.indexOf(songId);
-  if (idx >= 0) favs.splice(idx, 1);
-  else favs.push(songId);
+  const idx = favs.findIndex(s => s.id === songId);
+  if (idx >= 0) {
+    favs.splice(idx, 1);
+  } else {
+    // 存入完整数据：id, name, artists, albumPic, duration
+    favs.push({
+      id: song.id,
+      name: song.name,
+      artists: song.artists || [],
+      albumPic: song.albumPic || '',
+      duration: song.duration || 0
+    });
+  }
   saveFavorites(favs);
-  renderSmoothList();
   renderFavSection();
+  refreshSongListFavs();
+}
+
+function refreshSongListFavs() {
+  const favs = getFavorites();
+  document.querySelectorAll('.fav-star').forEach(el => {
+    const id = el.dataset.sid;
+    el.textContent = favs.some(s => s.id === id) ? '⭐' : '☆';
+  });
 }
 
 function renderFavSection() {
@@ -532,18 +573,25 @@ function renderFavSection() {
   favSection.style.display = 'block';
   favCount.textContent = `(${favs.length})`;
   let html = '';
-  favs.forEach(id => {
-    const song = _allCachedSongs.find(s => s.id === id);
-    const name = song ? song.name : id;
-    html += `<div class="fav-tag" onclick="playFav('${id}')">⭐ ${name} <span class="del" onclick="event.stopPropagation(); toggleFav('${id}')">✕</span></div>`;
+  favs.forEach(song => {
+    const name = song.name || song.id;
+    const artists = (song.artists || []).join(' / ');
+    html += `<div class="fav-tag" onclick="playFavById('${song.id}')" title="${name} - ${artists}">
+      ⭐ ${name} <span class="del" onclick="event.stopPropagation(); toggleFav('${song.id}')">✕</span>
+    </div>`;
   });
   favList.innerHTML = html;
 }
 renderFavSection();
 
-function playFav(songId) {
-  const idx = _allCachedSongs.findIndex(s => s.id === songId);
-  if (idx >= 0) playSmooth(idx);
+function playFavById(songId) {
+  // 先从当前列表找，再从收藏数据里找
+  const song = currentSongList.find(s => s.id === songId) || _allCachedSongs.find(s => s.id === songId) || getFavorites().find(s => s.id === songId);
+  if (!song) return;
+  // 构建歌曲数据并播放
+  const songData = { id: song.id, name: song.name, artists: song.artists || [], albumPic: song.albumPic || '', duration: song.duration || 0, source: 'netease' };
+  currentSongList = [songData];
+  playSong(0);
 }
 
 function renderSongs(songs) {
@@ -558,6 +606,8 @@ function renderSongs(songs) {
     const duration = formatDuration(song.duration);
     const albumPic = song.albumPic || '';
     const isActive = idx === currentIndex;
+    const favs = getFavorites();
+    const isFaved = favs.some(s => s.id === song.id);
     html += `
       <div class="song-item ${isActive ? 'playing' : ''}" onclick="playSong(${idx})" data-index="${idx}">
         <div class="song-album-art">
@@ -568,6 +618,7 @@ function renderSongs(songs) {
           <div class="song-artist">${artists}</div>
         </div>
         <div class="song-duration">${duration}</div>
+        <div class="song-fav-star fav-star" data-sid="${song.id}" onclick="event.stopPropagation(); toggleFav('${song.id}')">${isFaved ? '⭐' : '☆'}</div>
         <div class="song-play-icon">${isActive ? '🔊' : '▶'}</div>
       </div>
     `;
