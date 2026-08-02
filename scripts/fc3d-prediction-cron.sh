@@ -20,72 +20,55 @@ echo "时间: $(date '+%Y-%m-%d %H:%M:%S')"
 # ============================================
 echo "--- 步骤1: 从 zhcw.com 获取最新中奖号码 ---"
 
-# 使用curl获取最新福彩3D分析文章
-# 先获取首页，找到最新分析文章的URL
-HOME_HTML=$(curl -sL 'https://www.zhcw.com/' \
+# 从3D分析列表页获取最新分析文章URL
+# 这个页面列出了所有分析文章，比首页更容易解析
+ANALYSIS_PAGE=$(curl -sL 'https://www.zhcw.com/czfw/sjfx/3d/' \
   -H 'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36' \
   --max-time 15 2>/dev/null)
-
-# 提取最新福彩3D分析文章的期号
-LATEST_ISSUE=$(echo "$HOME_HTML" | grep -oP '福彩3D第\d+期组选分析' | grep -oP '\d+' | sort -rn | head -1)
 
 FETCHED_DRAW=""
 FETCHED_PERIOD=""
 
-if [ -n "$LATEST_ISSUE" ]; then
-  echo "最新分析文章: 福彩3D第${LATEST_ISSUE}期"
-  
-  # 尝试从首页提取文章URL
-  # 用node解析HTML（跨行匹配）
-  ARTICLE_URL=$(node -e "
+# 用node解析列表页，提取最新组选分析文章的URL和期号
+PARSED=$(node -e "
 const html = require('fs').readFileSync('/dev/stdin', 'utf8');
-// 查找福彩3D第X期组选分析链接（跨行匹配）
-// 先找期号位置，再往前找href
-const idx = html.indexOf('福彩3D第${LATEST_ISSUE}期组选分析');
-if (idx > -1) {
-  const before = html.substring(0, idx);
-  const hrefMatch = before.match(/href=\"(\/c\/2026-[^\"]*?925\d+\.shtml)\"[^>]*>[\s\S]*$/);
-  if (hrefMatch) {
-    console.log(hrefMatch[1]);
-  } else {
-    // 更宽松匹配
-    const m = before.match(/href=\"(\/c\/2026-[^\"]*?925\d+\.shtml)\"/g);
-    if (m) {
-      console.log(m[m.length-1].replace(/^href=\"/,'').replace(/\"/,''));
-    }
-  }
+// 找到所有福彩3D第X期组选分析的文章链接
+const regex = /href=\"(\/c\/2026-\d{2}-\d{2}\/(\d+)\.shtml)\">[\s\S]*?福彩3D第(\d+)期组选分析/g;
+let match;
+let results = [];
+while ((match = regex.exec(html)) !== null) {
+  results.push({ url: match[1], articleId: match[2], issue: parseInt(match[3]) });
 }
-" <<< "$HOME_HTML")
+// 按期号排序，取最新的
+results.sort((a, b) => b.issue - a.issue);
+if (results.length > 0) {
+  console.log(results[0].url + '|' + results[0].issue);
+} else {
+  console.log('');
+}
+" <<< "$ANALYSIS_PAGE")
+
+if [ -n "$PARSED" ]; then
+  ARTICLE_URL=$(echo "$PARSED" | cut -d'|' -f1)
+  LATEST_ISSUE=$(echo "$PARSED" | cut -d'|' -f2)
+  echo "最新分析文章: 福彩3D第${LATEST_ISSUE}期组选分析"
+  echo "文章URL: https://www.zhcw.com${ARTICLE_URL}"
   
-  if [ -z "$ARTICLE_URL" ]; then
-    # 备用：直接尝试已知的文章URL模式
-    # 2026203期: /c/2026-08-01/925106.shtml
-    # 2026202期: /c/2026-07-31/925025.shtml
-    # 2026201期: /c/2026-07-30/924927.shtml
-    ARTICLE_URL=$(echo "$HOME_HTML" | grep -oP 'href="(/c/2026-[^"]*?925\d+\.shtml)"' | sed 's/href="//;s/"//' | head -1)
-  fi
+  # 获取文章内容
+  ARTICLE_HTML=$(curl -sL "https://www.zhcw.com${ARTICLE_URL}" \
+    -H 'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36' \
+    --max-time 15 2>/dev/null)
   
-  if [ -n "$ARTICLE_URL" ]; then
-    echo "文章URL: https://www.zhcw.com${ARTICLE_URL}"
-    
-    # 获取文章内容
-    ARTICLE_HTML=$(curl -sL "https://www.zhcw.com${ARTICLE_URL}" \
-      -H 'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36' \
-      --max-time 15 2>/dev/null)
-    
-    # 提取上期开奖结果
-    DRAW_RESULT=$(echo "$ARTICLE_HTML" | grep -oP '福彩3D上期开奖结果\d \d \d' | head -1)
-    
-    if [ -n "$DRAW_RESULT" ]; then
-      PREV_ISSUE=$((LATEST_ISSUE - 1))
-      FETCHED_DRAW=$(echo "$DRAW_RESULT" | grep -oP '\d \d \d' | tr -d ' ')
-      FETCHED_PERIOD="$PREV_ISSUE"
-      echo "✅ 获取到中奖号码: 第${FETCHED_PERIOD}期 = ${FETCHED_DRAW}"
-    else
-      echo "⚠️ 文章内容中未找到开奖结果"
-    fi
+  # 提取上期开奖结果
+  DRAW_RESULT=$(echo "$ARTICLE_HTML" | grep -oP '福彩3D上期开奖结果\d \d \d' | head -1)
+  
+  if [ -n "$DRAW_RESULT" ]; then
+    PREV_ISSUE=$((LATEST_ISSUE - 1))
+    FETCHED_DRAW=$(echo "$DRAW_RESULT" | grep -oP '\d \d \d' | tr -d ' ')
+    FETCHED_PERIOD="$PREV_ISSUE"
+    echo "✅ 获取到中奖号码: 第${FETCHED_PERIOD}期 = ${FETCHED_DRAW}"
   else
-    echo "⚠️ 未找到文章URL"
+    echo "⚠️ 文章内容中未找到开奖结果"
   fi
 else
   echo "⚠️ 未找到福彩3D分析文章"
