@@ -86,7 +86,7 @@ function renderToolPages() {
             <ins class="adsbygoogle"
                  style="display:block"
                  data-ad-client="ca-pub-5900252791243247"
-                 data-ad-slot="xxxxxxxxxx"
+                 data-ad-slot="1197450994"
                  data-ad-format="auto"
                  data-full-width-responsive="true"></ins>
             <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
