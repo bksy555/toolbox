@@ -1,8 +1,10 @@
-// /api/music.mjs - 音乐播放器 API 代理（多源回退 + 热歌缓存版）
-// 多源搜索和获取播放链接，支持 QQ → NetEase 回退
-// 热歌缓存：预加载热门歌曲播放链接，提升播放成功率
+// /api/music.mjs - 音乐播放器 API（基于 LX Music 生态 + 网易云音乐）
+// 搜索：网易云 API
+// 播放：ChKSz API（https://api.chksz.top/）- 来自 LX Music 生态
+// 热歌缓存：网易云热歌榜 → ChKSz 解析播放链接
 
 const NETEASE_API = 'https://netease-cloud-music-api-xi-pied.vercel.app';
+const CHKSZ_API = 'https://api.chksz.top/api/163_music';
 const CACHE_FILE = './data/music-cache.json';
 
 // 读取缓存
@@ -68,7 +70,7 @@ export default async function handler(req, res) {
   }
 }
 
-// ==================== 搜索 ====================
+// ==================== 搜索（仅网易云） ====================
 
 async function handleSearch(req, res) {
   const keyword = req.query.keyword || '';
@@ -80,76 +82,35 @@ async function handleSearch(req, res) {
     return res.json({ songs: [], total: 0 });
   }
   
-  // 并行搜索多个平台
-  const [neteaseSongs, qqSongs] = await Promise.all([
-    searchNetease(keyword, offset, limit),
-    searchQQ(keyword),
-  ]);
-  
-  // 合并，优先显示 QQ 音乐结果（链接成功率更高），NetEase 补充
-  const seen = new Set();
-  const merged = [];
-  
-  for (const song of [...qqSongs, ...neteaseSongs]) {
-    const key = `${song.name}|${song.artists?.join(',') || ''}`;
-    if (!seen.has(key)) {
-      seen.add(key);
-      merged.push(song);
-    }
-  }
-  
-  res.json({ songs: merged.slice(0, 30), total: merged.length });
-}
-
-async function searchNetease(keyword, offset, limit) {
   try {
     const url = `${NETEASE_API}/search?keywords=${encodeURIComponent(keyword)}&offset=${offset}&limit=${limit}`;
     const resp = await fetch(url, {
       headers: { 'User-Agent': 'Mozilla/5.0', 'Referer': 'https://music.163.com/' }
     });
     const data = await resp.json();
-    if (!data.result?.songs) return [];
-    return data.result.songs.map(s => ({
+    const songs = data.result?.songs || [];
+    
+    const result = songs.map(s => ({
       id: String(s.id),
       name: s.name,
       artists: s.artists ? s.artists.map(a => a.name) : [],
       album: s.album?.name || '',
-      albumPic: s.album?.picUrl || s.album?.artist?.img1v1Url || '',
+      albumPic: s.album?.picUrl || '',
       duration: s.duration || 0,
       source: 'netease'
     }));
-  } catch {
-    return [];
+    
+    res.json({ songs: result, total: data.result?.songCount || result.length });
+  } catch (e) {
+    console.error('搜索失败:', e);
+    res.json({ songs: [], total: 0 });
   }
 }
 
-async function searchQQ(keyword) {
-  try {
-    const url = `https://c.y.qq.com/soso/fcgi-bin/client_search_cp?w=${encodeURIComponent(keyword)}&format=json&p=1&n=10&cr=1&aggr=1`;
-    const resp = await fetch(url, {
-      headers: { 'User-Agent': 'Mozilla/5.0', 'Referer': 'https://y.qq.com/' }
-    });
-    const data = await resp.json();
-    const list = data?.data?.song?.list || [];
-    return list.map(s => ({
-      id: s.songmid,
-      name: s.songname || s.name || '',
-      artists: (s.singer || []).map(a => a.name),
-      album: s.albumname || '',
-      albumPic: s.albummid ? `https://y.gtimg.cn/music/photo_new/T002R300x300M000${s.albummid}.jpg` : '',
-      duration: (s.interval || 0) * 1000,
-      source: 'qq'
-    }));
-  } catch {
-    return [];
-  }
-}
-
-// ==================== 多源获取播放 URL ====================
+// ==================== 获取播放 URL（通过 ChKSz API） ====================
 
 async function handleUrl(req, res) {
   const id = req.query.id;
-  const source = req.query.source || 'auto';
   const songName = req.query.name || '';
   const artistName = req.query.artist || '';
   
@@ -157,7 +118,7 @@ async function handleUrl(req, res) {
     return res.status(400).json({ error: 'no song id' });
   }
   
-  // 1. 先检查缓存（按 songId 或 歌曲名+歌手名）
+  // 1. 先检查缓存
   const cache = getCache();
   let cachedResult = null;
   
@@ -174,108 +135,57 @@ async function handleUrl(req, res) {
     console.log(`💿 命中缓存: ${cachedResult.name} - ${cachedResult.artists?.join('/')}`);
     return res.json({
       url: cachedResult.url,
-      source: cachedResult.cacheSource || cachedResult.source || 'cache',
+      source: 'netease',
       br: cachedResult.br || 128000,
       cached: true
     });
   }
   
-  // 2. 缓存未命中，从外部源获取
-  let result = null;
-  const sources = source === 'auto' ? ['netease', 'qq'] : [source];
-  
-  for (const s of sources) {
-    switch (s) {
-      case 'netease':
-        result = await getNeteaseUrl(id);
-        break;
-      case 'qq':
-        result = await getQQUrl(id);
-        break;
+  // 2. 缓存未命中，通过 ChKSz API 获取
+  try {
+    const result = await getNeteaseUrl(id);
+    if (result) {
+      // 写入缓存
+      const songInfo = cache.songs.find(s => s.id === id);
+      if (songInfo) {
+        songInfo.url = result.url;
+        songInfo.br = result.br;
+        saveCache(cache);
+      }
+      return res.json({ url: result.url, source: 'netease', br: result.br || 128000, cached: false });
     }
-    if (result) break;
+  } catch (e) {
+    console.error('ChKSz API 错误:', e.message);
   }
   
-  if (result) {
-    res.json({ url: result.url, source: result.source, br: result.br || 128000, cached: false });
-  } else {
-    res.json({ url: null, source: 'none' });
-  }
+  res.json({ url: null, source: 'none' });
 }
 
 async function getNeteaseUrl(id) {
-  try {
-    const url = `${NETEASE_API}/song/url?id=${id}&br=320000`;
-    const resp = await fetch(url, {
-      headers: { 'User-Agent': 'Mozilla/5.0', 'Referer': 'https://music.163.com/' }
-    });
-    const data = await resp.json();
-    if (data.data?.[0]?.url) {
-      return { url: data.data[0].url, source: 'netease', br: data.data[0].br || 320000 };
-    }
-    return null;
-  } catch {
-    return null;
-  }
-}
-
-async function getQQUrl(songmid) {
-  try {
-    // QQ Music 获取播放链接
-    const data = {
-      req: {
-        module: 'CDN.SrfCdnDispatchServer',
-        method: 'GetCdnDispatch',
-        param: { guid: '1234567890', calltype: 0, userip: '' }
-      },
-      req_0: {
-        module: 'vkey.GetVkeyServer',
-        method: 'CgiGetVkey',
-        param: {
-          guid: '1234567890',
-          songmid: [songmid],
-          songtype: [0],
-          uin: '0',
-          loginflag: 1,
-          platform: '20'
-        }
+  // 尝试多个音质级别
+  const levels = ['jymaster', 'sky', 'hires', 'flac', '320k', '192k', '128k'];
+  
+  for (const level of levels) {
+    try {
+      const url = `${CHKSZ_API}?id=${id}&level=${level}`;
+      const resp = await fetch(url, {
+        headers: { 'User-Agent': 'Mozilla/5.0', 'Referer': 'https://music.163.com/' }
+      });
+      const data = await resp.json();
+      
+      if (data.code === 200 && data.data?.url) {
+        return {
+          url: data.data.url,
+          source: 'netease',
+          br: data.data.br || 128000
+        };
       }
-    };
-    
-    const url = `https://u.y.qq.com/cgi-bin/musicu.fcg?data=${encodeURIComponent(JSON.stringify(data))}`;
-    const resp = await fetch(url, {
-      headers: { 'User-Agent': 'Mozilla/5.0', 'Referer': 'https://y.qq.com/' }
-    });
-    const result = await resp.json();
-    
-    const reqData = result?.req?.data;
-    const req0Data = result?.req_0?.data;
-    
-    // 方式1: 从 keepalivefile 构建 URL
-    if (reqData?.sip?.[0] && reqData?.keepalivefile) {
-      const fullUrl = reqData.sip[0] + reqData.keepalivefile;
-      return { url: fullUrl, source: 'qq', br: 128000 };
+    } catch (e) {
+      // 继续尝试下一个音质级别
     }
-    
-    // 方式2: 从 midurlinfo 构建 URL
-    if (req0Data?.sip?.[0] && req0Data?.midurlinfo?.[0]?.purl) {
-      const fullUrl = req0Data.sip[0] + req0Data.midurlinfo[0].purl;
-      return { url: fullUrl, source: 'qq', br: 128000 };
-    }
-    
-    // 方式3: 尝试备选 sip
-    if (req0Data?.sip?.length > 1 && req0Data?.midurlinfo?.[0]?.purl) {
-      for (const host of req0Data.sip) {
-        if (host) {
-          return { url: host + req0Data.midurlinfo[0].purl, source: 'qq', br: 128000 };
-        }
-      }
-    }
-    
-    return null;
-  } catch {
-    return null;
   }
+  
+  return null;
 }
 
 // ==================== 热歌缓存 ====================
@@ -291,12 +201,12 @@ async function handleHotSongs(req, res) {
   });
 }
 
-// 刷新热歌缓存（从外部API获取热门歌曲并缓存）
+// 刷新热歌缓存（从网易云热歌榜获取 + ChKSz 解析）
 async function handleRefreshCache(req, res) {
   const maxSongs = Math.min(parseInt(req.query.max) || 300, 500);
   const key = req.query.key || '';
   
-  // 简单鉴权，防止滥用
+  // 简单鉴权
   if (key !== 'toolbox-music-cache-2026') {
     return res.status(403).json({ error: 'invalid key' });
   }
@@ -304,30 +214,25 @@ async function handleRefreshCache(req, res) {
   const results = [];
   const errors = [];
   
-  // 1. 从多个榜单获取热门歌曲（覆盖不同风格）
-  const topLists = [
-    { name: 'QQ热歌榜', topId: 4 },       // 总热榜
-    { name: 'QQ新歌榜', topId: 27 },      // 新歌
-    { name: 'QQ流行指数榜', topId: 26 },  // 流行趋势
-    { name: 'QQ网络歌曲榜', topId: 36 },  // 网络热门
-    { name: 'QQ内地榜', topId: 28 },      // 内地
-    { name: 'QQ港台榜', topId: 29 },      // 港台
-    { name: 'QQKTV金曲榜', topId: 52 },   // KTV经典
-    { name: 'QQ影视金曲榜', topId: 65 },  // 影视OST
-    { name: 'QQACG榜', topId: 78 },       // 二次元
-    { name: 'QQ欧美榜', topId: 106 },     // 欧美
+  // 从网易云多个榜单获取热门歌曲
+  const topListIds = [
+    { name: '热歌榜', id: 3778678, limit: 100 },
+    { name: '新歌榜', id: 3779629, limit: 100 },
+    { name: '飙升榜', id: 19723756, limit: 100 },
+    { name: '网络热歌榜', id: 6723173524, limit: 100 },
+    { name: '黑胶VIP热歌榜', id: 7785066739, limit: 50 },
   ];
   
-  for (const list of topLists) {
+  for (const list of topListIds) {
     try {
-      const songs = await fetchQQTopList(list.topId, 30);
+      const songs = await fetchNeteaseTopList(list.id, list.limit);
       console.log(`  📋 ${list.name}: 获取到 ${songs.length} 首`);
       
       for (const song of songs) {
         if (results.length >= maxSongs) break;
         
-        // 获取播放URL
-        const urlResult = await getQQUrl(song.id);
+        // 尝试获取播放URL
+        const urlResult = await getNeteaseUrl(song.id);
         if (urlResult) {
           results.push({
             id: song.id,
@@ -337,17 +242,17 @@ async function handleRefreshCache(req, res) {
             albumPic: song.albumPic || '',
             duration: song.duration || 0,
             url: urlResult.url,
-            source: urlResult.source,
+            source: 'netease',
             br: urlResult.br || 128000,
-            cacheSource: 'qq',
+            cacheSource: 'netease',
             addedAt: new Date().toISOString()
           });
         } else {
           errors.push({ name: song.name, reason: 'no_url' });
         }
         
-        // 控制速率
-        await new Promise(r => setTimeout(r, 300));
+        // 控制速率，避免被封
+        await new Promise(r => setTimeout(r, 200));
       }
     } catch (e) {
       console.error(`  ❌ ${list.name}: ${e.message}`);
@@ -356,10 +261,8 @@ async function handleRefreshCache(req, res) {
     if (results.length >= maxSongs) break;
   }
   
-  // 2. 更新缓存
+  // 更新缓存（去重合并）
   const cache = getCache();
-  
-  // 合并：新结果在前，旧结果补充（去重）
   const seen = new Set();
   const merged = [];
   
@@ -381,40 +284,30 @@ async function handleRefreshCache(req, res) {
     totalSongs: cache.songs.length,
     errors: errors.length,
     updatedAt: cache.updatedAt,
-    songs: cache.songs.slice(0, 500)  // 返回歌曲数据供本地保存
+    songs: cache.songs.slice(0, 500)
   });
 }
 
-// 获取 QQ 音乐榜单（使用旧版API，返回songmid格式）
-async function fetchQQTopList(topId, num) {
+// 获取网易云榜单歌曲
+async function fetchNeteaseTopList(topId, limit) {
   try {
-    const url = `https://c.y.qq.com/v8/fcg-bin/fcg_v8_toplist_cp.fcg?topid=${topId}&type=top&song_begin=0&song_num=${num}`;
+    const url = `${NETEASE_API}/playlist/track/all?id=${topId}&limit=${limit}`;
     const resp = await fetch(url, {
-      headers: { 'User-Agent': 'Mozilla/5.0', 'Referer': 'https://y.qq.com/' }
+      headers: { 'User-Agent': 'Mozilla/5.0', 'Referer': 'https://music.163.com/' }
     });
-    // 响应是 UTF-8 编码，直接读取文本
-    let text = await resp.text();
-    // 找到 JSON 起始位置
-    const start = text.indexOf('{');
-    if (start < 0) return [];
-    text = text.substring(start);
-    const data = JSON.parse(text);
-    const songList = data?.songlist || [];
+    const data = await resp.json();
+    const songs = data.songs || [];
     
-    return songList.map(s => {
-      const info = s.data || {};
-      const singer = info.singer || [];
-      return {
-        id: info.songmid || '',
-        name: info.songname || '',
-        artists: singer.map(sg => sg.name || ''),
-        album: info.albumname || '',
-        albumPic: info.albummid ? `https://y.gtimg.cn/music/photo_new/T002R300x300M000${info.albummid}.jpg` : '',
-        duration: (info.interval || 0) * 1000
-      };
-    }).filter(s => s.id && s.name);
+    return songs.map(s => ({
+      id: String(s.id),
+      name: s.name,
+      artists: (s.ar || []).map(a => a.name),
+      album: s.al?.name || '',
+      albumPic: s.al?.picUrl || '',
+      duration: s.dt || 0
+    })).filter(s => s.id && s.name);
   } catch (e) {
-    console.error('获取QQ榜单失败:', e.message);
+    console.error('获取榜单失败:', e.message);
     return [];
   }
 }
