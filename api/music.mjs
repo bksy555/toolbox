@@ -392,10 +392,8 @@ async function fetchQQTopList(topId, num) {
     const resp = await fetch(url, {
       headers: { 'User-Agent': 'Mozilla/5.0', 'Referer': 'https://y.qq.com/' }
     });
-    // 响应是 GBK 编码，需要处理
-    const buffer = await resp.arrayBuffer();
-    const decoder = new TextDecoder('gbk');
-    let text = decoder.decode(buffer);
+    // 响应是 UTF-8 编码，直接读取文本
+    let text = await resp.text();
     // 找到 JSON 起始位置
     const start = text.indexOf('{');
     if (start < 0) return [];
