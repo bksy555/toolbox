@@ -163,7 +163,6 @@ function startNewsScroll(type) {
     items[currentIdx].classList.remove('highlight');
     currentIdx = (currentIdx + 1) % items.length;
     items[currentIdx].classList.add('highlight');
-    items[currentIdx].scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   }, 4000);
 }
 
