@@ -82,14 +82,13 @@ function renderToolPages() {
           <h1>${tool.icon} ${tool.name}</h1>
           <p class="tool-desc">${tool.desc}</p>
           ${tool.html}
-          <div class="ad-slot" style="margin-top:24px;">
+          <div class="ad-slot" id="ad-tool-${tool.id}" style="margin-top:24px;display:none;">
             <ins class="adsbygoogle"
                  style="display:block"
                  data-ad-client="ca-pub-5900252791243247"
                  data-ad-slot="1197450994"
                  data-ad-format="auto"
                  data-full-width-responsive="true"></ins>
-            <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
           </div>
         </div>
       `;
@@ -103,6 +102,10 @@ function showHome() {
   document.getElementById('homePage').style.display = 'block';
   document.getElementById('categoryPage').style.display = 'none';
   document.querySelectorAll('.tool-page').forEach(p => p.classList.remove('active'));
+  // 隐藏所有工具页广告
+  document.querySelectorAll('[id^="ad-tool-"]').forEach(function(el) {
+    el.style.display = 'none';
+  });
   document.querySelectorAll('[data-nav]').forEach(a => a.classList.remove('active'));
   const homeNav = document.querySelector('[data-nav="home"]');
   if (homeNav) homeNav.classList.add('active');
@@ -161,6 +164,17 @@ function showToolPage(toolId) {
   }
   document.getElementById('hero').style.display = 'none';
   document.getElementById('adSlot').style.display = 'none';
+  
+  // 动态插入广告：只在打开工具页面时显示广告位
+  setTimeout(function() {
+    var adSlot = document.getElementById('ad-tool-' + toolId);
+    if (adSlot) {
+      adSlot.style.display = 'block';
+      // 重新推送广告
+      (adsbygoogle = window.adsbygoogle || []).push({});
+    }
+  }, 100);
+  
   // 定位到工具页面内容区域，而不是页面顶部
   setTimeout(function() {
     var toolPage = document.getElementById('page-' + toolId);
