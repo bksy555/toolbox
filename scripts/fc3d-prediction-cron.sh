@@ -22,22 +22,23 @@ echo "--- 步骤1: 从 zhcw.com 获取最新中奖号码 ---"
 
 # 从3D分析列表页获取最新分析文章URL
 # 这个页面列出了所有分析文章，比首页更容易解析
-ANALYSIS_PAGE=$(curl -sL 'https://www.zhcw.com/czfw/sjfx/3d/' \
+curl -sL 'https://www.zhcw.com/czfw/sjfx/3d/' \
   -H 'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36' \
-  --max-time 15 2>/dev/null)
+  --max-time 15 -o /tmp/zhcw_analysis.html 2>/dev/null
 
 FETCHED_DRAW=""
 FETCHED_PERIOD=""
 
 # 用node解析列表页，提取最新组选分析文章的URL和期号
 PARSED=$(node -e "
-const html = require('fs').readFileSync('/dev/stdin', 'utf8');
+const fs = require('fs');
+const html = fs.readFileSync('/tmp/zhcw_analysis.html', 'utf8');
 // 找到所有福彩3D第X期组选分析的文章链接
-const regex = /href=\"(\/c\/2026-\d{2}-\d{2}\/(\d+)\.shtml)\">[\s\S]*?福彩3D第(\d+)期组选分析/g;
+const regex = /href=\"(\/c\/2026-\d{2}-\d{2}\/\d+\.shtml)\"[\s\S]*?福彩3D第(\d+)期组选分析/g;
 let match;
 let results = [];
 while ((match = regex.exec(html)) !== null) {
-  results.push({ url: match[1], articleId: match[2], issue: parseInt(match[3]) });
+  results.push({ url: match[1], issue: parseInt(match[2]) });
 }
 // 按期号排序，取最新的
 results.sort((a, b) => b.issue - a.issue);
@@ -46,7 +47,7 @@ if (results.length > 0) {
 } else {
   console.log('');
 }
-" <<< "$ANALYSIS_PAGE")
+")
 
 if [ -n "$PARSED" ]; then
   ARTICLE_URL=$(echo "$PARSED" | cut -d'|' -f1)
