@@ -161,7 +161,13 @@ function showToolPage(toolId) {
   }
   document.getElementById('hero').style.display = 'none';
   document.getElementById('adSlot').style.display = 'none';
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+  // 定位到工具页面内容区域，而不是页面顶部
+  setTimeout(function() {
+    var toolPage = document.getElementById('page-' + toolId);
+    if (toolPage) {
+      toolPage.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }, 50);
 }
 
 function scrollToCategory(catId) {
