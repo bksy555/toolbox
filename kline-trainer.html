@@ -558,8 +558,6 @@ async function startRound() {
     trades:[], done:false
   };
   console.log('[DEBUG] picked stock: ' + round.stock.name + ' ' + round.stock.code);
-  
-  document.getElementById('stockInfo').textContent = '';
   document.getElementById('btnBuy').disabled = false;
   document.getElementById('btnSell').disabled = true;
   document.getElementById('btnHold').disabled = false;
