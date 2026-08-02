@@ -128,11 +128,13 @@
     .progress-bar { flex: 1; height: 4px; background: var(--music-progress); border-radius: 2px; cursor: pointer; position: relative; }
     .progress-fill { height: 100%; background: linear-gradient(90deg, #6366f1, #a78bfa); border-radius: 2px; width: 0%; transition: width 0.1s linear; }
     .progress-bar:hover .progress-fill { height: 6px; margin-top: -1px; }
-    .player-volume { flex: 0 0 160px; display: flex; align-items: center; gap: 6px; justify-content: flex-end; }
+    .player-volume { flex: 0 0 190px; display: flex; align-items: center; gap: 4px; justify-content: flex-end; }
     .player-volume .vol-btn,
-    .player-volume #lyricsBtn { background: none; border: none; color: var(--music-text-light); font-size: 16px; cursor: pointer; padding: 2px; line-height: 1; }
+    .player-volume #lyricsBtn { background: none; border: none; color: var(--music-text-light); font-size: 13px; cursor: pointer; padding: 3px 6px; line-height: 1; white-space: nowrap; border-radius: 4px; transition: all 0.15s; }
     .player-volume .vol-btn:hover,
-    .player-volume #lyricsBtn:hover { color: var(--music-text); }
+    .player-volume #lyricsBtn:hover { color: var(--music-text); background: rgba(99,102,241,0.15); }
+    .player-volume #lyricsBtn.has-lyrics { color: #a78bfa; }
+    .player-volume #lyricsBtn.active { color: #fff; background: rgba(99,102,241,0.2); }
     .vol-bar { width: 60px; height: 4px; background: var(--music-progress); border-radius: 2px; cursor: pointer; position: relative; }
 
     /* ---- 歌词面板 ---- */
@@ -310,7 +312,7 @@
       </div>
     </div>
     <div class="player-volume">
-      <button id="lyricsBtn" onclick="toggleLyrics()" title="歌词">📜</button>
+      <button id="lyricsBtn" onclick="toggleLyrics()" title="歌词">📜 词</button>
       <button class="vol-btn" id="volBtn" onclick="toggleMute()">🔊</button>
       <div class="vol-bar" onclick="setVolume(event)">
         <div class="vol-fill" id="volFill"></div>
@@ -718,6 +720,7 @@ async function loadLyrics(songId) {
     }
     _currentLyrics = parseLrc(lrcText);
     lyricsEmpty.style.display = 'none';
+    document.getElementById('lyricsBtn').classList.add('has-lyrics');
     let html = '';
     _currentLyrics.forEach((line, i) => {
       html += `<div class="lyrics-line" data-lyric-index="${i}">${escapeHtml(line.text) || '⋯'}</div>`;
@@ -797,11 +800,11 @@ function toggleLyrics() {
   const btn = document.getElementById('lyricsBtn');
   if (panel.style.display === 'none') {
     panel.style.display = 'block';
-    btn.style.opacity = '1';
+    btn.classList.add('active');
     if (_currentLyrics.length > 0) updateLyrics();
   } else {
     panel.style.display = 'none';
-    btn.style.opacity = '0.6';
+    btn.classList.remove('active');
   }
 }
 
