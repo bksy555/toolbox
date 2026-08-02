@@ -128,9 +128,11 @@
     .progress-bar { flex: 1; height: 4px; background: var(--music-progress); border-radius: 2px; cursor: pointer; position: relative; }
     .progress-fill { height: 100%; background: linear-gradient(90deg, #6366f1, #a78bfa); border-radius: 2px; width: 0%; transition: width 0.1s linear; }
     .progress-bar:hover .progress-fill { height: 6px; margin-top: -1px; }
-    .player-volume { flex: 0 0 120px; display: flex; align-items: center; gap: 8px; justify-content: flex-end; }
-    .player-volume .vol-btn { background: none; border: none; color: var(--music-text-light); font-size: 16px; cursor: pointer; padding: 2px; }
-    .player-volume .vol-btn:hover { color: var(--music-text); }
+    .player-volume { flex: 0 0 160px; display: flex; align-items: center; gap: 6px; justify-content: flex-end; }
+    .player-volume .vol-btn,
+    .player-volume #lyricsBtn { background: none; border: none; color: var(--music-text-light); font-size: 16px; cursor: pointer; padding: 2px; line-height: 1; }
+    .player-volume .vol-btn:hover,
+    .player-volume #lyricsBtn:hover { color: var(--music-text); }
     .vol-bar { width: 60px; height: 4px; background: var(--music-progress); border-radius: 2px; cursor: pointer; position: relative; }
 
     /* ---- 歌词面板 ---- */
@@ -308,7 +310,7 @@
       </div>
     </div>
     <div class="player-volume">
-      <button class="player-btn" id="lyricsBtn" onclick="toggleLyrics()" title="歌词">📜</button>
+      <button id="lyricsBtn" onclick="toggleLyrics()" title="歌词">📜</button>
       <button class="vol-btn" id="volBtn" onclick="toggleMute()">🔊</button>
       <div class="vol-bar" onclick="setVolume(event)">
         <div class="vol-fill" id="volFill"></div>
