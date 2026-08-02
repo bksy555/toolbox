@@ -380,7 +380,8 @@ async function handleRefreshCache(req, res) {
     newSongs: results.length,
     totalSongs: cache.songs.length,
     errors: errors.length,
-    updatedAt: cache.updatedAt
+    updatedAt: cache.updatedAt,
+    songs: cache.songs.slice(0, 500)  // 返回歌曲数据供本地保存
   });
 }
 

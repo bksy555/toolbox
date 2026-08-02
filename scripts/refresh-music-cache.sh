@@ -1,9 +1,9 @@
 #!/bin/bash
 # ============================================================
 # 热歌缓存生成脚本
-# 1. 调用 Vercel API 刷新缓存
-# 2. 从 API 拉取最新缓存
-# 3. 保存到本地并推送到 GitHub
+# 1. 调用 Vercel API 刷新缓存，API 直接返回歌曲数据
+# 2. 从响应中提取歌曲数据保存到本地
+# 3. 推送到 GitHub
 # ============================================================
 
 set -e
@@ -17,7 +17,7 @@ echo "=== 热歌缓存生成 ==="
 echo "时间: $(date -u '+%Y-%m-%d %H:%M:%S UTC')"
 echo ""
 
-# 1. 调用 Vercel API 刷新缓存（最多300首）
+# 1. 调用 Vercel API 刷新缓存（最多300首），同时获取歌曲数据
 echo "📡 调用刷新缓存 API..."
 RESPONSE=$(curl -s --max-time 600 "${VERCEL_URL}/api/music?action=refresh_cache&key=${CACHE_KEY}&max=300" 2>&1)
 echo "  响应: $RESPONSE"
@@ -25,15 +25,21 @@ echo "  响应: $RESPONSE"
 # 检查是否成功
 if echo "$RESPONSE" | grep -q '"success":true'; then
   echo "  ✅ 缓存刷新成功"
+  # 从响应中提取 songs 数组，保存到本地文件
+  echo "$RESPONSE" | python3 -c "
+import sys, json
+data = json.load(sys.stdin)
+if 'songs' in data and data['songs']:
+  cache = {'songs': data['songs'], 'total': len(data['songs']), 'updatedAt': data.get('updatedAt', '')}
+  with open('$CACHE_FILE', 'w') as f:
+    json.dump(cache, f, ensure_ascii=False)
+  print(f'  ✅ 已保存 {len(data[\"songs\"])} 首歌曲到本地')
+else:
+  print('  ⚠️ 响应中无歌曲数据')
+" 2>&1
 else
-  echo "  ⚠️ 缓存刷新失败，继续尝试拉取现有缓存"
+  echo "  ⚠️ 缓存刷新失败"
 fi
-
-# 2. 从 API 拉取最新缓存数据
-echo ""
-echo "📥 拉取最新缓存数据..."
-curl -s --max-time 30 "${VERCEL_URL}/api/music?action=hot_songs&limit=500" > "$CACHE_FILE" 2>&1
-echo "  保存到: $CACHE_FILE"
 
 # 3. 验证缓存文件
 echo ""
