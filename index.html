@@ -281,6 +281,8 @@
     .music-lyrics-line { padding: 2px 0; transition: color 0.2s; }
     .music-lyrics-line.active { color: #a78bfa; font-weight: 600; font-size: 15px; }
     .music-lyrics-line.past { color: #666; font-size: 13px; }
+    #musicLyricsContent::-webkit-scrollbar { width: 4px; }
+    #musicLyricsContent::-webkit-scrollbar-thumb { background: #2a2a44; border-radius: 2px; }
   </style>
 </head>
 <body>
@@ -441,7 +443,7 @@
         <span>📜 歌词</span>
         <span style="cursor:pointer;" onclick="musicToggleLyrics()">✕</span>
       </div>
-      <div id="musicLyricsContent" style="text-align:center;line-height:2;font-size:14px;color:#ccc;">
+      <div id="musicLyricsContent" style="text-align:center;line-height:2;font-size:14px;color:#ccc;max-height:260px;overflow-y:auto;scroll-behavior:smooth;">
         <div style="color:#666;padding:20px;">暂无歌词</div>
       </div>
     </div>
@@ -920,7 +922,10 @@
     if (activeIdx >= 0) {
       var active = lines[activeIdx];
       if (active) {
-        active.scrollIntoView({ block: 'center', behavior: 'smooth' });
+        var container = document.getElementById('musicLyricsContent');
+        var offset = active.offsetTop - container.offsetTop;
+        var targetScroll = offset - container.clientHeight / 2 + active.clientHeight / 2;
+        container.scrollTop = Math.max(0, targetScroll);
       }
     }
   }
