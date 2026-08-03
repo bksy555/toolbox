@@ -123,9 +123,9 @@
       4,
       8
     ],
-    "drawNum": "558",
-    "result": "✅",
-    "updatedAt": "2026-08-03T19:42:51.688824+08:00"
+    "drawNum": "591",
+    "result": "❌",
+    "updatedAt": "2026-08-03T23:02:22.412656+08:00"
   },
   "2026200": {
     "period": "2026200",
@@ -590,5 +590,17 @@
     "drawNum": null,
     "result": null,
     "updatedAt": null
+  },
+  "2026191": {
+    "period": "2026191",
+    "year": 2026,
+    "month": 7,
+    "day": 20,
+    "weekday": 1,
+    "haiGan": "庚",
+    "dans": [],
+    "drawNum": "906",
+    "result": "",
+    "updatedAt": "2026-08-03T23:02:22.412656+08:00"
   }
 }
