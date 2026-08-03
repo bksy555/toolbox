@@ -22,12 +22,13 @@ def get_beijing_date():
     return now.year, now.month, now.day
 
 def get_period_num(year, month, day):
-    """获取期号"""
+    """获取期号：2026年福彩3D从1月11日才开始出第一期，所以期号=日历年天数-10"""
     from datetime import date
     start = date(year, 1, 1)
     target = date(year, month, day)
     day_of_year = (target - start).days + 1
-    return f"{year}{day_of_year:03d}"
+    period_num = day_of_year - 10  # 前10天无开奖，减10得到真实期号
+    return f"{year}{period_num:03d}"
 
 def try_source_zhcw():
     """数据源1: 中彩网 zhcw.com"""

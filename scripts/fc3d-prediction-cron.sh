@@ -126,12 +126,13 @@ function getBeijingDate() {
   };
 }
 
-// 获取期号
+// 获取期号（2026年福彩3D从1月11日才开始出第一期，期号=日历年天数-10）
 function getPeriodNum(year, month, day) {
   const start = new Date(year, 0, 0);
   const target = new Date(year, month - 1, day);
   const dayOfYear = Math.round((target - start) / (24 * 60 * 60 * 1000));
-  return year + String(dayOfYear).padStart(3, '0');
+  const periodNum = dayOfYear - 10;  // 前10天无开奖
+  return year + String(periodNum).padStart(3, '0');
 }
 
 // 获取亥时天干
