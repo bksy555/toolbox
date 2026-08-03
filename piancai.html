@@ -608,8 +608,8 @@
         for (const p of predictions) {
           const key = p.period;
           if (!stored[key]) {
-            // 检查是否有已知中奖号码
-            const knownDraw = KNOWN_DRAW_NUMS[key] || null;
+            // 只对已过去的期数应用已知中奖号码（当日开奖结果未出）
+            const knownDraw = (p.isPast && KNOWN_DRAW_NUMS[key]) ? KNOWN_DRAW_NUMS[key] : null;
             const result = knownDraw ? calcResult(p.dans, knownDraw) : null;
             stored[key] = {
               period: p.period,
