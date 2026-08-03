@@ -123,9 +123,9 @@
       4,
       8
     ],
-    "drawNum": null,
-    "result": null,
-    "updatedAt": null
+    "drawNum": "558",
+    "result": "✅",
+    "updatedAt": "2026-08-03T19:42:51.688824+08:00"
   },
   "2026200": {
     "period": "2026200",
@@ -205,7 +205,7 @@
     ],
     "drawNum": "978",
     "result": "✅",
-    "updatedAt": "2026-08-03T11:25:17.305Z"
+    "updatedAt": "2026-08-03T14:00:21.861Z"
   },
   "2026205": {
     "period": "2026205",
