@@ -197,6 +197,7 @@
       cursor: pointer; padding: 4px 6px; transition: color 0.15s; line-height: 1;
     }
     .music-ctrl-btn:hover { color: #e0e0e0; }
+    .music-ctrl-btn.active { color: #a78bfa; }
     .music-play-btn {
       width: 34px; height: 34px; border-radius: 50%;
       background: #6366f1; color: #fff !important;
@@ -274,6 +275,12 @@
     .music-fav-star { cursor:pointer; font-size:16px; transition:transform 0.15s; flex-shrink:0; width:24px; text-align:center; }
     .music-fav-star:hover { transform:scale(1.2); }
     .music-fav-star.active { color:#fbbf24; }
+    /* 歌词面板 */
+    .music-lyrics-panel::-webkit-scrollbar { width: 4px; }
+    .music-lyrics-panel::-webkit-scrollbar-thumb { background: #2a2a44; border-radius: 2px; }
+    .music-lyrics-line { padding: 2px 0; transition: color 0.2s; }
+    .music-lyrics-line.active { color: #a78bfa; font-weight: 600; font-size: 15px; }
+    .music-lyrics-line.past { color: #666; font-size: 13px; }
   </style>
 </head>
 <body>
@@ -383,6 +390,7 @@
             <div class="music-vol-fill" id="musicVolFill" style="height:100%;background:#8888aa;border-radius:2px;width:60%;"></div>
           </div>
           <span class="music-time" id="musicVolPct" style="min-width:28px;">60%</span>
+          <button class="music-ctrl-btn" id="musicLyricsBtn" onclick="musicToggleLyrics()" title="歌词" style="font-size:13px;">📜</button>
           <button class="music-ctrl-btn" onclick="musicAddToPlaylist(musicState.currentIndex)" title="加入播放列表" style="font-size:13px;margin-left:auto;">📋</button>
           <button class="music-ctrl-btn" onclick="musicToggleFav(musicState.currentIndex)" title="收藏/取消收藏" id="musicFavBtn" style="font-size:14px;">☆</button>
         </div>
@@ -426,6 +434,17 @@
     </div>
     <!-- 隐藏的 audio -->
     <audio id="musicAudio" preload="auto" controlsList="nodownload" style="display:none"></audio>
+    
+    <!-- 歌词面板 -->
+    <div class="music-lyrics-panel" id="musicLyricsPanel" style="display:none;margin-top:12px;padding:12px 16px;background:#1a1a2e;border-radius:12px;border:1px solid #2a2a44;max-height:300px;overflow-y:auto;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;font-size:13px;color:#8888aa;">
+        <span>📜 歌词</span>
+        <span style="cursor:pointer;" onclick="musicToggleLyrics()">✕</span>
+      </div>
+      <div id="musicLyricsContent" style="text-align:center;line-height:2;font-size:14px;color:#ccc;">
+        <div style="color:#666;padding:20px;">暂无歌词</div>
+      </div>
+    </div>
   </section>
 
   <!-- ====== 新闻下方广告 ====== -->
@@ -632,6 +651,8 @@
       document.getElementById('musicNowSource').textContent = '⚠️ 获取链接失败';
       musicToast('⚠️ 获取播放链接失败');
     }
+    // 获取歌词
+    musicFetchLyrics(song.id);
     // 高亮
     document.querySelectorAll('.music-result-item').forEach(el => {
       el.classList.toggle('playing', parseInt(el.dataset.idx) === idx);
@@ -805,6 +826,109 @@
     updateFavBtn();
   }
 
+  // ====== 歌词 ======
+  var _musicLyricsId = null;
+  var _musicLyrics = [];
+  var _musicLyricsTimer = null;
+
+  function musicToggleLyrics() {
+    var panel = document.getElementById('musicLyricsPanel');
+    var btn = document.getElementById('musicLyricsBtn');
+    if (panel.style.display === 'none') {
+      panel.style.display = 'block';
+      btn.classList.add('active');
+      if (_musicLyrics.length > 0) musicUpdateLyricsDisplay();
+    } else {
+      panel.style.display = 'none';
+      btn.classList.remove('active');
+    }
+  }
+
+  function musicFetchLyrics(songId) {
+    _musicLyricsId = songId;
+    _musicLyrics = [];
+    var content = document.getElementById('musicLyricsContent');
+    content.innerHTML = '<div style="color:#666;padding:20px;">⏳ 加载歌词...</div>';
+    var btn = document.getElementById('musicLyricsBtn');
+    btn.classList.remove('active');
+    // 使用网易云API获取歌词
+    fetch('https://lxmusicapi.virxact.com/lyric?id=' + songId)
+      .then(function(r) { return r.json(); })
+      .then(function(data) {
+        var lrcText = data.lrc && data.lrc.lyric ? data.lrc.lyric : '';
+        if (!lrcText) {
+          content.innerHTML = '<div style="color:#666;padding:20px;">📜 暂无歌词</div>';
+          return;
+        }
+        _musicLyrics = musicParseLrc(lrcText);
+        if (_musicLyrics.length > 0) {
+          content.innerHTML = _musicLyrics.map(function(l, i) {
+            return '<div class="music-lyrics-line" data-lyric-index="' + i + '">' + musicEscapeHtml(l.text) + '</div>';
+          }).join('');
+          if (document.getElementById('musicLyricsPanel').style.display !== 'none') {
+            musicUpdateLyricsDisplay();
+          }
+        }
+      })
+      .catch(function() {
+        content.innerHTML = '<div style="color:#666;padding:20px;">😅 歌词加载失败</div>';
+      });
+  }
+
+  function musicParseLrc(lrc) {
+    var lines = lrc.split('\n');
+    var result = [];
+    var timeRegex = /\[(\d{2}):(\d{2})\.(\d{2,3})\]/;
+    for (var i = 0; i < lines.length; i++) {
+      var line = lines[i].trim();
+      if (!line) continue;
+      var match = timeRegex.exec(line);
+      if (match) {
+        var minutes = parseInt(match[1], 10);
+        var seconds = parseInt(match[2], 10);
+        var millis = parseInt(match[3], 10);
+        if (match[3].length === 2) millis *= 10;
+        var time = minutes * 60 + seconds + millis / 1000;
+        var text = line.replace(timeRegex, '').trim();
+        if (text) result.push({ time: time, text: text });
+      } else {
+        if (line && result.length > 0) {
+          result.push({ time: result[result.length - 1].time, text: line });
+        }
+      }
+    }
+    result.sort(function(a, b) { return a.time - b.time; });
+    return result;
+  }
+
+  function musicUpdateLyricsDisplay() {
+    if (_musicLyrics.length === 0) return;
+    var audio = document.getElementById('musicAudio');
+    var currentTime = audio.currentTime;
+    var activeIdx = -1;
+    for (var i = 0; i < _musicLyrics.length; i++) {
+      if (currentTime >= _musicLyrics[i].time) {
+        activeIdx = i;
+      }
+    }
+    var lines = document.querySelectorAll('.music-lyrics-line');
+    for (var j = 0; j < lines.length; j++) {
+      lines[j].className = 'music-lyrics-line';
+      if (j < activeIdx) lines[j].classList.add('past');
+      else if (j === activeIdx) lines[j].classList.add('active');
+    }
+    if (activeIdx >= 0) {
+      var active = lines[activeIdx];
+      if (active) {
+        active.scrollIntoView({ block: 'center', behavior: 'smooth' });
+      }
+    }
+  }
+
+  function musicEscapeHtml(str) {
+    return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  }
+
   function musicPlayAllFav() {
     if (!musicState.favorites.length) return;
     musicState.playlist = musicState.favorites.map(s => ({ song: s, idx: -1 }));
@@ -905,6 +1029,10 @@
     if (mAudio.duration) {
       mProgressFill.style.width = (mAudio.currentTime / mAudio.duration * 100) + '%';
       mCurTime.textContent = fmtTime(mAudio.currentTime);
+    }
+    // 同步歌词
+    if (_musicLyrics.length > 0 && document.getElementById('musicLyricsPanel').style.display !== 'none') {
+      musicUpdateLyricsDisplay();
     }
   });
   mAudio.addEventListener('loadedmetadata', () => { mTotalTime.textContent = fmtTime(mAudio.duration); });
