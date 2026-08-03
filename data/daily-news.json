@@ -1,6 +1,6 @@
 {
-  "date": "2026-08-02",
-  "updateTime": "2026-08-02T06:00:25Z",
+  "date": "2026-08-03",
+  "updateTime": "2026-08-03T04:47:06Z",
   "items": [
     {
       "type": "news",
@@ -10,47 +10,39 @@
         "source": "新闻联播",
         "items": [
           {
-            "title": "《求是》杂志发表习近平总书记重要文章《加快建设健康中国》",
-            "url": "https://tv.cctv.com/2026/08/01/VIDEPoge6lPjxTGFiJUv2Zco260801.shtml"
+            "title": "【奋力开创中国式现代化建设新局面——习近平总书记今年以来治国理政纪实】坚定不移推动高质量发展 努力实现“十五五”良好开局",
+            "url": "https://tv.cctv.com/2026/08/02/VIDEtPA3ezj4Hi93shNkv9io260802.shtml"
           },
           {
-            "title": "【新思想引领新征程】在党的旗帜下书写强军兴军新荣光",
-            "url": "https://tv.cctv.com/2026/08/01/VIDElPteeaz3MdT7M4z0E5Eg260801.shtml"
+            "title": "我国美丽乡村建设实现良好开局",
+            "url": "https://tv.cctv.com/2026/08/02/VIDE9ktitB2DJaWXmj2Z3Rad260802.shtml"
           },
           {
-            "title": "我国现代化水网建设提速",
-            "url": "https://tv.cctv.com/2026/08/01/VIDEEM6hHNqWfLFZtAq1pygg260801.shtml"
+            "title": "我国轻工业经济运行稳中有进",
+            "url": "https://tv.cctv.com/2026/08/02/VIDEZ3ROp3PT31HgTyejnCg4260802.shtml"
           },
           {
-            "title": "邮政行业寄递业务量2030年将达2900亿件",
-            "url": "https://tv.cctv.com/2026/08/01/VIDE9JZKHqbuC9DeL6XMxZhm260801.shtml"
+            "title": "传统工业品适配新需求 老产业跑出转型加速度",
+            "url": "https://tv.cctv.com/2026/08/02/VIDEp69Ey6uXolblReecSKiP260802.shtml"
           },
           {
-            "title": "第十二批国家组织药品集采开标 药品可及性持续提升",
-            "url": "https://tv.cctv.com/2026/08/01/VIDEVmDVzb5MYip6u2IQBqv7260801.shtml"
+            "title": "新场景新体验 暑期旅游持续升温",
+            "url": "https://tv.cctv.com/2026/08/02/VIDExJongA18D7siSy1gXqig260802.shtml"
           },
           {
-            "title": "超长期特别国债资金精准发力 加快补齐民生短板",
-            "url": "https://tv.cctv.com/2026/08/01/VIDEOqVzUyG1z8lkwcr90gwa260801.shtml"
+            "title": "守护藏羚羊迁徙之旅 人与自然和谐共生",
+            "url": "https://tv.cctv.com/2026/08/02/VIDEOqcsVG4KU0LRM6wPNgOk260802.shtml"
           },
           {
-            "title": "铁路暑运过半 消夏旅游列车激发消费活力",
-            "url": "https://tv.cctv.com/2026/08/01/VIDEdFzdkz4GCH6CLqIL2qqR260801.shtml"
+            "title": "美总统称同意取消大规模打击伊朗的行动",
+            "url": "https://tv.cctv.com/2026/08/02/VIDEtT2GAoeOgD8Mx30mXJcN260802.shtml"
           },
           {
-            "title": "美媒披露美以欲猛烈轰炸伊朗能源设施 伊朗称已制定全面应对计划",
-            "url": "https://tv.cctv.com/2026/08/01/VIDEw1jpXKT2Tc2eDY2H4VjK260801.shtml"
-          },
-          {
-            "title": "西班牙飞地移民危机死亡人数升至67人",
-            "url": "https://tv.cctv.com/2026/08/01/VIDEunn3sNYQCIwcmSpFaDpw260801.shtml"
-          },
-          {
-            "title": "法国东南部林火再度蔓延 罗马尼亚全国因干旱缺电进入警报状态",
-            "url": "https://tv.cctv.com/2026/08/01/VIDEwNyuuiuHHYyrM8awbicF260801.shtml"
+            "title": "欧洲多国遭遇干旱 多地河流水位大幅降至历史新低",
+            "url": "https://tv.cctv.com/2026/08/02/VIDEPKgiPw17JoXSfxfAOtRm260802.shtml"
           }
         ],
-        "updateTime": "2026-08-02T06:00:25Z"
+        "updateTime": "2026-08-03T04:47:06Z"
       }
     },
     {
@@ -61,19 +53,31 @@
         "source": "AI科技日报",
         "items": [
           {
-            "title": "德国法院裁定AI音乐生成器Suno侵犯版权，驳回合理使用抗辩",
-            "summary": "慕尼黑法院裁定，AI音乐生成器Suno在训练过程及输出结果中均侵犯版权，并驳回其合理使用抗辩。法院认定Suno 3.5和4版本模型可复现六首知名歌曲的原创元素，构成\"记忆化\"侵权，且责任归于Suno而非用户。该判决还认定美国版权法下的合理使用不适用于此案，目前尚未最终生效。",
-            "url": "https://the-decoder.com/german-court-rules-ai-music-generator-suno-violated-copyrights-rejects-fair-use-defense",
-            "category": "industry"
+            "title": "Qwen3.8-Max 发布：开源最强编码与协作模型，2.4T 参数",
+            "summary": "Qwen 正式发布 Qwen3.8-Max，这是 Qwen 家族迄今最强的模型，拥有 2.4T 参数（95B 激活），并首次开源 Qwen-Max 级权重，开放权重将于下周发布。",
+            "url": "https://qwen.ai/blog?id=qwen3.8",
+            "category": "ai-models"
           },
           {
-            "title": "OpenAI Astra 以约2000美元证明10项数学难题",
-            "summary": "OpenAI 用下一代模型 Astra 内部版解决了数学与理论计算机科学领域的10项重大进展，总成本约2000美元（按 Sol API 价格计算）。Astra 证明了非 sofic 群的存在，并推翻 Connes 刚性猜想，成果涵盖 von Neumann 代数、高维球堆积、电路复杂度等。OpenAI 已发布全部10项证明，附 Lean 证书与 CoT 逐步推导。",
-            "url": "https://x.com/gdb/status/2083457463337287721",
-            "category": "paper"
+            "title": "OpenAI 新模型 Astra 数学表现出色，但被过度吹捧",
+            "summary": "OpenAI 内部测试的新模型 Astra 在数学问题上表现惊艳，但 Gary Marcus 指出相关讨论犯了\"合成谬误\"：擅长某类数学不等于擅长所有数学、科学乃至一切认知任务。数学之所以成为突破口，是因为它便于用符号工具验证且能廉价生成海量合成数据，而开放世界问题无法如此模拟。此外，OpenAI 未公布方法细节，尚无法评估其真实意义。",
+            "url": "https://garymarcus.substack.com/p/openais-amazing-but-vastly-oversold",
+            "category": "tip"
+          },
+          {
+            "title": "Codex 用 Sol 指挥 Luna Max 省额度翻倍产出",
+            "summary": "Codex 高阶玩法：让 Sol 在 `~/.codex/agents/` 下创建 `luna-worker.toml` 子代理，模型设 `gpt-5.6-luna`、reasoning effort 设 max，Sol 负责拆任务与审代码，具体实现自动委托给 Luna Max。",
+            "url": "https://x.com/AYi_AInotes/status/2083867265179537565",
+            "category": "tip"
+          },
+          {
+            "title": "Grok 支持分析任意视频",
+            "summary": "Grok 可以分析任何视频 https://grok.com/share/bGVnYWN5_8013f7a3-f604-4351-8cd7-acecf3ef165b",
+            "url": "https://x.com/elonmusk/status/2083800942927839307",
+            "category": "ai-products"
           }
         ],
-        "updateTime": "2026-08-02T06:00:25Z"
+        "updateTime": "2026-08-03T04:47:06Z"
       }
     }
   ]
