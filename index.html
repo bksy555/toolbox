@@ -852,7 +852,7 @@
     var btn = document.getElementById('musicLyricsBtn');
     btn.classList.remove('active');
     // 使用网易云API获取歌词
-    fetch('https://lxmusicapi.virxact.com/lyric?id=' + songId)
+    fetch('https://netease-cloud-music-api-xi-pied.vercel.app/lyric?id=' + songId)
       .then(function(r) { return r.json(); })
       .then(function(data) {
         var lrcText = data.lrc && data.lrc.lyric ? data.lrc.lyric : '';
