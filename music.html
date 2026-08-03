@@ -123,18 +123,19 @@
     .player-btn:hover { color: var(--music-primary); }
     .player-btn.play-btn { width: 40px; height: 40px; border-radius: 50%; background: var(--music-primary); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 18px; }
     .player-btn.play-btn:hover { opacity: 0.85; }
-    .player-btn.lyrics-btn { font-size: 16px; padding: 4px; margin-left: 4px; position: relative; }
-    .player-btn.lyrics-btn.has-lyrics::after { content: ''; position: absolute; top: 2px; right: 2px; width: 6px; height: 6px; border-radius: 50%; background: #a78bfa; }
-    .player-btn.lyrics-btn.active { color: #a78bfa; }
     .player-progress { width: 100%; max-width: 400px; display: flex; align-items: center; gap: 10px; }
     .progress-time { font-size: 11px; color: var(--music-text-light); min-width: 36px; font-variant-numeric: tabular-nums; }
     .progress-bar { flex: 1; height: 4px; background: var(--music-progress); border-radius: 2px; cursor: pointer; position: relative; }
     .progress-fill { height: 100%; background: linear-gradient(90deg, #6366f1, #a78bfa); border-radius: 2px; width: 0%; transition: width 0.1s linear; }
     .progress-bar:hover .progress-fill { height: 6px; margin-top: -1px; }
-    .player-volume { flex: 0 0 100px; display: flex; align-items: center; gap: 4px; justify-content: flex-end; }
+    .player-volume { display: flex; align-items: center; gap: 4px; min-width: 130px; justify-content: flex-end; }
     .player-volume .vol-btn { background: none; border: none; color: var(--music-text-light); font-size: 16px; cursor: pointer; padding: 2px; transition: color 0.15s; }
     .player-volume .vol-btn:hover { color: var(--music-text); }
     .vol-bar { width: 60px; height: 4px; background: var(--music-progress); border-radius: 2px; cursor: pointer; position: relative; }
+    .player-volume .lyrics-btn { font-size: 18px; padding: 2px 4px; margin-left: 8px; position: relative; background: none; border: none; color: var(--music-text); cursor: pointer; line-height: 1; }
+    .player-volume .lyrics-btn:hover { color: var(--music-primary); }
+    .player-volume .lyrics-btn.active { color: #a78bfa; }
+    .player-volume .lyrics-btn.has-lyrics::after { content: ''; position: absolute; top: 0; right: 0; width: 6px; height: 6px; border-radius: 50%; background: #a78bfa; }
 
     /* ---- 歌词面板 ---- */
     .lyrics-panel {
@@ -301,7 +302,6 @@
         <button class="player-btn" onclick="prevSong()" title="上一首">⏮</button>
         <button class="player-btn play-btn" id="playBtn" onclick="togglePlay()">▶</button>
         <button class="player-btn" onclick="nextSong()" title="下一首">⏭</button>
-        <button class="player-btn lyrics-btn" id="lyricsBtn" onclick="toggleLyrics()" title="歌词">📜</button>
       </div>
       <div class="player-progress">
         <span class="progress-time" id="currentTime">0:00</span>
@@ -316,6 +316,7 @@
       <div class="vol-bar" onclick="setVolume(event)">
         <div class="vol-fill" id="volFill"></div>
       </div>
+      <button class="player-btn lyrics-btn" id="lyricsBtn" onclick="toggleLyrics()" title="歌词">📜</button>
     </div>
   </div>
 </div>
