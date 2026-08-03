@@ -1,4 +1,132 @@
 {
+  "2026192": {
+    "period": "2026192",
+    "year": 2026,
+    "month": 7,
+    "day": 21,
+    "weekday": 2,
+    "haiGan": "辛",
+    "dans": [
+      2,
+      6,
+      7
+    ],
+    "drawNum": null,
+    "result": null,
+    "updatedAt": null
+  },
+  "2026193": {
+    "period": "2026193",
+    "year": 2026,
+    "month": 7,
+    "day": 22,
+    "weekday": 3,
+    "haiGan": "癸",
+    "dans": [
+      1,
+      6,
+      8
+    ],
+    "drawNum": null,
+    "result": null,
+    "updatedAt": null
+  },
+  "2026194": {
+    "period": "2026194",
+    "year": 2026,
+    "month": 7,
+    "day": 23,
+    "weekday": 4,
+    "haiGan": "乙",
+    "dans": [
+      3,
+      4,
+      8
+    ],
+    "drawNum": null,
+    "result": null,
+    "updatedAt": null
+  },
+  "2026195": {
+    "period": "2026195",
+    "year": 2026,
+    "month": 7,
+    "day": 24,
+    "weekday": 5,
+    "haiGan": "丁",
+    "dans": [
+      2,
+      4,
+      9
+    ],
+    "drawNum": null,
+    "result": null,
+    "updatedAt": null
+  },
+  "2026196": {
+    "period": "2026196",
+    "year": 2026,
+    "month": 7,
+    "day": 25,
+    "weekday": 6,
+    "haiGan": "己",
+    "dans": [
+      2,
+      4,
+      9
+    ],
+    "drawNum": null,
+    "result": null,
+    "updatedAt": null
+  },
+  "2026197": {
+    "period": "2026197",
+    "year": 2026,
+    "month": 7,
+    "day": 26,
+    "weekday": 0,
+    "haiGan": "辛",
+    "dans": [
+      2,
+      6,
+      7
+    ],
+    "drawNum": null,
+    "result": null,
+    "updatedAt": null
+  },
+  "2026198": {
+    "period": "2026198",
+    "year": 2026,
+    "month": 7,
+    "day": 27,
+    "weekday": 1,
+    "haiGan": "癸",
+    "dans": [
+      1,
+      6,
+      8
+    ],
+    "drawNum": null,
+    "result": null,
+    "updatedAt": null
+  },
+  "2026199": {
+    "period": "2026199",
+    "year": 2026,
+    "month": 7,
+    "day": 28,
+    "weekday": 2,
+    "haiGan": "乙",
+    "dans": [
+      3,
+      4,
+      8
+    ],
+    "drawNum": null,
+    "result": null,
+    "updatedAt": null
+  },
   "2026200": {
     "period": "2026200",
     "year": 2026,
@@ -77,7 +205,7 @@
     ],
     "drawNum": "978",
     "result": "✅",
-    "updatedAt": "2026-08-02T20:30:16.379Z"
+    "updatedAt": "2026-08-03T11:25:17.305Z"
   },
   "2026205": {
     "period": "2026205",
