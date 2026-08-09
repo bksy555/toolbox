@@ -1,6 +1,6 @@
 {
-  "date": "2026-08-08",
-  "updateTime": "2026-08-08T22:00:29Z",
+  "date": "2026-08-09",
+  "updateTime": "2026-08-09T14:10:14Z",
   "items": [
     {
       "type": "news",
@@ -10,51 +10,47 @@
         "source": "新闻联播",
         "items": [
           {
-            "title": "【新思想引领新征程】完善全民健身公共服务体系 让发展成果惠及全体人民",
-            "url": "https://tv.cctv.com/2026/08/08/VIDE4p7WpVuSDpKeKKQZySqo260808.shtml"
+            "title": "【新思想引领新征程】丰收背后的“稳”与“进”",
+            "url": "https://tv.cctv.com/2026/08/09/VIDEabECLRQCah67lR6gS0gu260809.shtml"
           },
           {
-            "title": "【树立和践行正确政绩观】坚持民生优先 推动学习教育成果落到实处",
-            "url": "https://tv.cctv.com/2026/08/08/VIDEUoqNO0e8EkoIWhU9KcRd260808.shtml"
+            "title": "我国加快推进算力网建设",
+            "url": "https://tv.cctv.com/2026/08/09/VIDEoO2S1rOKRHhoRQpgf6zD260809.shtml"
           },
           {
-            "title": "上半年我国经营主体结构持续优化",
-            "url": "https://tv.cctv.com/2026/08/08/VIDEVhg3p4hu9gNMmUYqC5vp260808.shtml"
+            "title": "我国加强对基础研究的长期稳定支持",
+            "url": "https://tv.cctv.com/2026/08/09/VIDE8pU23H91dRc8UaIrUUaX260809.shtml"
           },
           {
-            "title": "上半年我国医药工业创新加速突破",
-            "url": "https://tv.cctv.com/2026/08/08/VIDEyv1JYEZoWwTWADpDxMzR260808.shtml"
+            "title": "台风“白海豚”登陆 各地各部门全力应对",
+            "url": "https://tv.cctv.com/2026/08/09/VIDEEZGTozXF67kBayc5SChA260809.shtml"
           },
           {
-            "title": "全国用电负荷创新高 电力保供积极应对",
-            "url": "https://tv.cctv.com/2026/08/08/VIDEsNSGEXV6ZQ8eLBZcT42W260808.shtml"
+            "title": "7月份居民消费价格指数保持温和上涨",
+            "url": "https://tv.cctv.com/2026/08/09/VIDEJaRlAbduybx5gQ6J1GBK260809.shtml"
           },
           {
-            "title": "【一线调研】轨道串起消费新活力",
-            "url": "https://tv.cctv.com/2026/08/08/VIDE93ybzhKKN7HA8ZI2O7yP260808.shtml"
+            "title": "我国加快自然资源“一张图”平台建设",
+            "url": "https://tv.cctv.com/2026/08/09/VIDE2hlaQwjCek3sSXEuqof4260809.shtml"
           },
           {
-            "title": "暑期研学游升温 在旅途中增长知识",
-            "url": "https://tv.cctv.com/2026/08/08/VIDE78obkSHB0nkwlx078TeK260808.shtml"
+            "title": "我国生态修复治理取得新成效",
+            "url": "https://tv.cctv.com/2026/08/09/VIDEYZaJY7RtREc6DzM6WMBU260809.shtml"
           },
           {
-            "title": "台风“白海豚”逼近 各地加强防范",
-            "url": "https://tv.cctv.com/2026/08/08/VIDE07agVkQERMyORfz2f4YK260808.shtml"
+            "title": "【文化中国行】平遥古城活态保护焕发新光彩",
+            "url": "https://tv.cctv.com/2026/08/09/VIDEIhAm4EqEp0BSNMKvj4sF260809.shtml"
           },
           {
-            "title": "移民问题引发分歧 西班牙出台针对意大利反制措施",
-            "url": "https://tv.cctv.com/2026/08/08/VIDEsLMe4KahxtHZkP76WRIE260808.shtml"
+            "title": "伊朗称在美国接受其条件前不会重新开放霍尔木兹海峡",
+            "url": "https://tv.cctv.com/2026/08/09/VIDEGHeHVJz7pdAM7RwQlMkf260809.shtml"
           },
           {
-            "title": "伊朗称与阿曼已明确霍尔木兹海峡协议的总体框架",
-            "url": "https://tv.cctv.com/2026/08/08/VIDE8oyA38VMBfgHWbXSUDsH260808.shtml"
-          },
-          {
-            "title": "沙特土耳其巴基斯坦签署共同防务协议",
-            "url": "https://tv.cctv.com/2026/08/08/VIDEXXJy0KTMxO61zJpEgltV260808.shtml"
+            "title": "加拿大不列颠哥伦比亚省因林火快速蔓延进入紧急状态 大批居民撤离",
+            "url": "https://tv.cctv.com/2026/08/09/VIDEjvrE2j09HPrx8sNDhbjM260809.shtml"
           }
         ],
-        "updateTime": "2026-08-08T22:00:29Z"
+        "updateTime": "2026-08-09T14:10:14Z"
       }
     },
     {
@@ -64,6 +60,24 @@
       "data": {
         "source": "AI科技日报",
         "items": [
+          {
+            "title": "用DistilBERT LoRA与TF-IDF基线做IMDb情感分析：校准、可解释性与半监督学习",
+            "summary": "本教程基于Stanford IMDb数据集构建端到端情感分析流程，对比TF-IDF逻辑回归基线与LoRA微调的DistilBERT。模型评估涵盖准确率、macro-F1、ROC-AUC及期望校准误差，并分析置信错误、长度影响与词级遮挡显著性。最后利用未标注IMDb数据做置信度伪标注，比较半监督模型与基线，保存合并后的Transformer用于推理。",
+            "url": "https://www.marktechpost.com/2026/08/09/imdb-sentiment-analysis-with-distilbert-lora-tf-idf-baselines-calibration-interpretability-robustness-testing-and-semi-supervised-learning",
+            "category": "tip"
+          },
+          {
+            "title": "Seedance 2.5 上线一周新增六种创意玩法",
+            "summary": "Seedance 2.5 上线一周后，国内外社区涌现出时间静止、超级英雄变身、创意广告、K-pop MV、电商广告、拉片复刻等六类热门玩法。经实测，该版本人物面部告别\"AI 油腻感\"，动作自然度与镜头切换较 2.0 更合理，单次生成超长视频时长拉至 300 秒，并支持片段重拍与智能续写。通过 LibTV 年费会员，生成成本最低可至 0.4 元/秒。",
+            "url": "https://mp.weixin.qq.com/s?__biz=Mzg3MTk3NzYzNw%3D%3D&mid=2247509275&idx=1&sn=48cc15b0f9b22173ce93350da61f15dc",
+            "category": "tip"
+          },
+          {
+            "title": "OpenAI 桌面端 ChatGPT 上线语音交互功能，可语音操控电脑执行多步骤任务",
+            "summary": "OpenAI 更新 ChatGPT 桌面应用，新增对 ChatGPT Voice 的支持，用户可直接通过语音对话控制 AI 智能体并让其在电脑上执行任务。该功能基于全新语音模型系列 ChatGPT-Live，支持 ChatGPT Work 和 Codex，在 macOS 上还可借助 Appshots 访问屏幕内容。",
+            "url": "https://www.ithome.com/0/987/452.htm",
+            "category": "ai-products"
+          },
           {
             "title": "Grok Imagine 图像编辑迎来重大升级",
             "summary": "Grok Imagine 图像编辑功能重大升级\n\n【引用 @XFreeze】：你可以直接悬停在 Grok Imagine 中的任意特定区域，并即时进行编辑",
@@ -75,33 +89,9 @@
             "summary": "OpenAI 在 Black Hat 安全大会上公布了\"Hugging Face 事件\"的完整时间线，确认其内部 AI 智能体在训练实验模型时，通过 Artifactory 漏洞意外攻击了 Hugging Face。",
             "url": "https://simonwillison.net/2026/Aug/7/openai-timeline",
             "category": "industry"
-          },
-          {
-            "title": "Cloudflare：AI 机器人流量已超越人类，预计五年后人机流量比达 1：1000 近乎\"误差\"",
-            "summary": "Cloudflare 在 2026 年第二季度财报电话会议上披露，AI 机器人等非人类流量已于 2026 年 5 月正式超过人类流量，比 CEO 此前预测的 2027 年底大幅提前。公司预测若趋势延续，五年后非人类流量将达人类流量的 1000 倍，人类在互联网上的存在将变得微不足道。该季度营收 6.96 亿美元，同比增长 36%，净亏损 2.057 亿美元。",
-            "url": "https://www.ithome.com/0/987/438.htm",
-            "category": "industry"
-          },
-          {
-            "title": "DeepMind 的 WeatherNext 飓风模型为预报员争取到额外一天预警时间",
-            "summary": "Google DeepMind 与 Google Research 开发的 AI 模型 WeatherNext，在 2025 年 10 月飓风 Melissa 登陆前 5 天，以 80% 的置信度预测其将以 5 级飓风强度袭击牙买加。据发表于《自然》的论文，该模型对气旋的预测准确率空前，平均比现有模型多提供一天预警时间，即其三天的预测精度相当于现有模型两天的水平。",
-            "url": "https://arstechnica.com/science/2026/08/deepminds-hurricane-model-bought-forecasters-an-extra-day",
-            "category": "paper"
-          },
-          {
-            "title": "苹果 Mac 简体中文支持文档更新，\"Apple 智能\"阿里千问扩展现身",
-            "summary": "苹果官网 Mac 简体中文使用手册新增《在 Mac 上配合 Apple 智能使用千问》支持文档，明确 Apple 智能可配合阿里巴巴千问模型工作。千问扩展适用于 macOS 26.6 或更高版本，需中国大陆 Apple 账户及机型，支持写作工具与 Siri，用户需登录千问账户使用。",
-            "url": "https://www.ithome.com/0/987/366.htm",
-            "category": "ai-products"
-          },
-          {
-            "title": "OpenAI：因网络安全风险，延缓 Astra 模型发布",
-            "summary": "OpenAI 因内部与专家评估显示 Astra 在智能体编程和网络安全领域取得重大突破，依据《准备框架》将其列为旗下首个网络安全风险达\"关键\"级别的模型，决定延缓发布。OpenAI 已采取隔离测试环境、限制网络与工具访问、强化权重保护与加密、全局监控智能体应用及审查思维链等管控措施，并与政府机构和 AI 安全组织合作测试。CEO 萨姆·奥尔特曼表示 Astra 性能强劲，正全力推进公开发布。",
-            "url": "https://www.ithome.com/0/987/221.htm",
-            "category": "industry"
           }
         ],
-        "updateTime": "2026-08-08T22:00:29Z"
+        "updateTime": "2026-08-09T14:10:14Z"
       }
     }
   ]
