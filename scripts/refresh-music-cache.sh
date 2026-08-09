@@ -21,7 +21,7 @@ echo "📡 通过 API 获取热门歌曲..."
 cd "$TOOLS_WEBSITE"
 
 # 调用 API 的 refresh_cache 端点
-API_URL="https://toolbox-one.vercel.app/api/music?action=refresh_cache&key=toolbox-music-cache-2026&max=300"
+API_URL="https://tools-website-rust.vercel.app/api/music?action=refresh_cache&key=toolbox-music-cache-2026&max=300"
 echo "  API: $API_URL"
 
 RESULT=$(curl -s "$API_URL" --max-time 600 2>/dev/null)
