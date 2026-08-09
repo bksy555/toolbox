@@ -542,16 +542,40 @@
       };
     }
 
-    // ---- 已知中奖号码（历史数据，供自动填充） ----
-    const KNOWN_DRAW_NUMS = {
-      '2026191': '906', '2026192': '425', '2026193': '254',
-      '2026194': '283', '2026195': '275', '2026196': '419',
-      '2026197': '232', '2026198': '685', '2026199': '591',
-      '2026200': '912', '2026201': '321', '2026202': '988',
-      '2026203': '435', '2026204': '978', '2026205': '814',
-      '2026206': '942', '2026207': '415', '2026208': '632',
-      '2026209': '289', '2026210': '755'
-    };
+    // ---- 已知中奖号码（从 JSON 动态加载，避免硬编码） ----
+    // 说明：中奖号码由 data/fc3d-prediction.json 提供，页面加载时自动拉取最新数据。
+    // 这样更新中奖号码时只需更新 JSON 文件，HTML 无需改动，部署更快、缓存更可控。
+    let KNOWN_DRAW_NUMS = {};
+    const D3_DRAW_CACHE_KEY = 'fc3d_known_draw_nums';
+
+    // 从 fc3d-prediction.json 动态加载中奖号码（带时间戳破缓存）
+    function loadKnownDrawNums() {
+      return new Promise(function(resolve) {
+        // 1. 先读 localStorage 缓存，立即用于渲染（秒开）
+        let cachedNums = {};
+        try { cachedNums = JSON.parse(localStorage.getItem(D3_DRAW_CACHE_KEY)) || {}; } catch(e) { cachedNums = {}; }
+        if (Object.keys(cachedNums).length > 0) KNOWN_DRAW_NUMS = cachedNums;
+
+        // 2. 后台从 JSON 拉取最新数据（no-store + 时间戳，绕过 CDN/浏览器缓存）
+        fetch('data/fc3d-prediction.json?t=' + Date.now(), { cache: 'no-store' })
+          .then(function(res) { if (!res.ok) throw new Error(res.status); return res.json(); })
+          .then(function(data) {
+            const nums = {};
+            for (const k in data) {
+              if (data[k] && data[k].drawNum) nums[k] = String(data[k].drawNum);
+            }
+            if (Object.keys(nums).length > 0) {
+              KNOWN_DRAW_NUMS = nums;
+              try { localStorage.setItem(D3_DRAW_CACHE_KEY, JSON.stringify(nums)); } catch(e) {}
+            }
+            resolve();
+          })
+          .catch(function() {
+            // 拉取失败时使用缓存数据，不阻塞页面
+            resolve();
+          });
+      });
+    }
 
     // ---- 获取15期预测数据 ----
     function generateD3Predictions() {
@@ -629,6 +653,12 @@
             // 更新预测数字（如果天干变化了）
             stored[key].haiGan = p.haiGan;
             stored[key].dans = p.dans;
+            // 如果之前没有中奖号码，从 KNOWN_DRAW_NUMS 补全（动态加载后刷新）
+            if (!stored[key].drawNum && KNOWN_DRAW_NUMS[key] && (p.isPast || p.isToday)) {
+              stored[key].drawNum = KNOWN_DRAW_NUMS[key];
+              stored[key].result = calcResult(p.dans, KNOWN_DRAW_NUMS[key]);
+              stored[key].updatedAt = new Date().toISOString();
+            }
             // 如果已有中奖号码，更新结果
             if (stored[key].drawNum) {
               stored[key].result = calcResult(p.dans, stored[key].drawNum);
@@ -820,8 +850,10 @@
 
     // ---- 刷新预测 ----
     function refreshD3Prediction() {
-      renderD3Table();
-      showToast('🔄 预测已刷新');
+      loadKnownDrawNums().then(function() {
+        renderD3Table();
+        showToast('🔄 预测已刷新（数据已重新拉取）');
+      });
     }
 
     // ---- 查看历史记录 ----
@@ -919,7 +951,10 @@
     document.addEventListener('DOMContentLoaded', function() {
       // 等待 lottery-piancai.js 加载完成
       setTimeout(function() {
-        renderD3Table();
+        // 先加载中奖号码数据（含缓存快速渲染），再渲染表格
+        loadKnownDrawNums().then(function() {
+          renderD3Table();
+        });
       }, 200);
     });
   </script>
