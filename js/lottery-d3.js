@@ -454,11 +454,18 @@ function run3DFilter() {
   document.getElementById('filterCost').textContent = `共计 ${(total * 2).toLocaleString()} 元`;
 
   if (total > 0) {
-    const show = allNums.slice(0, 100);
-    let detailHtml = `<div style="font-size:12px;color:var(--text-light);margin-bottom:8px;">前${Math.min(100, total)}注示例：</div>`;
-    show.forEach((n, i) => {
-      detailHtml += `<div style="margin:2px 0;font-size:13px;font-family:monospace;">${i+1}. ${n.join(' ')}</div>`;
-    });
+    let detailHtml = '';
+    let lineNums = [];
+    for (const n of allNums) {
+      lineNums.push(n.join(''));
+      if (lineNums.length === 10) {
+        detailHtml += '<div style="font-size:13px;font-family:monospace;">' + lineNums.join(' ') + '</div>';
+        lineNums = [];
+      }
+    }
+    if (lineNums.length > 0) {
+      detailHtml += '<div style="font-size:13px;font-family:monospace;">' + lineNums.join(' ') + '</div>';
+    }
     document.getElementById('filterDetail').innerHTML = detailHtml;
   } else {
     document.getElementById('filterDetail').innerHTML = '<div style="color:var(--text-light);">无符合条件的组合，请调整条件</div>';
