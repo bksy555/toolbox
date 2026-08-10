@@ -454,22 +454,52 @@ function run3DFilter() {
   document.getElementById('filterCost').textContent = `共计 ${(total * 2).toLocaleString()} 元`;
 
   if (total > 0) {
-    let detailHtml = '';
+    // 构建纯文本格式（用于复制）：每组2个号码，空格分隔，换行
+    let textLines = [];
     let lineNums = [];
     for (const n of allNums) {
       lineNums.push(n.join(''));
-      if (lineNums.length === 10) {
-        detailHtml += '<div style="font-size:13px;font-family:monospace;">' + lineNums.join(' ') + '</div>';
+      if (lineNums.length === 2) {
+        textLines.push(lineNums.join(' '));
         lineNums = [];
       }
     }
     if (lineNums.length > 0) {
-      detailHtml += '<div style="font-size:13px;font-family:monospace;">' + lineNums.join(' ') + '</div>';
+      textLines.push(lineNums.join(' '));
     }
+    const copyText = textLines.join('\n');
+
+    let detailHtml = '<div style="margin-bottom:8px;display:flex;align-items:center;gap:10px;">';
+    detailHtml += '<span style="font-size:12px;color:var(--text-light);">共 ' + total.toLocaleString() + ' 注</span>';
+    detailHtml += '<button onclick="copyFilterResult()" style="padding:4px 12px;font-size:12px;cursor:pointer;border:1px solid var(--border);border-radius:4px;background:var(--bg);color:var(--text);">📋 一键复制</button>';
+    detailHtml += '</div>';
+    detailHtml += '<div id="filterResultText" style="display:none;">' + copyText.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</div>';
+    detailHtml += '<div style="font-size:13px;font-family:monospace;line-height:1.8;">' + textLines.join('<br>') + '</div>';
     document.getElementById('filterDetail').innerHTML = detailHtml;
   } else {
     document.getElementById('filterDetail').innerHTML = '<div style="color:var(--text-light);">无符合条件的组合，请调整条件</div>';
   }
+}
+
+// 一键复制过滤结果
+function copyFilterResult() {
+  const el = document.getElementById('filterResultText');
+  if (!el) return;
+  const text = el.textContent || el.innerText;
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(() => {
+      const btn = document.querySelector('[onclick="copyFilterResult()"]');
+      if (btn) { btn.textContent = '✅ 已复制'; setTimeout(() => { btn.textContent = '📋 一键复制'; }, 2000); }
+    }).catch(() => { fallbackCopy(text); });
+  } else { fallbackCopy(text); }
+}
+function fallbackCopy(text) {
+  const ta = document.createElement('textarea');
+  ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
+  document.body.appendChild(ta); ta.select();
+  document.execCommand('copy'); document.body.removeChild(ta);
+  const btn = document.querySelector('[onclick="copyFilterResult()"]');
+  if (btn) { btn.textContent = '✅ 已复制'; setTimeout(() => { btn.textContent = '📋 一键复制'; }, 2000); }
 }
 
 function reset3DFilter() {
