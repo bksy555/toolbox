@@ -230,7 +230,7 @@ var monitorLog = [];
 function toDateStr(d) { return d.toISOString().slice(0, 10); }
 function escapeHtml(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 function getSelStr() {
-  return Array.from(document.querySelectorAll('#strategyList input:checked')).map(function(inp) {
+  return Array.from(document.querySelectorAll('#btStrategyList input:checked')).map(function(inp) {
     return inp.closest('.strategy-option').dataset.name;
   });
 }
