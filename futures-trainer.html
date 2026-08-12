@@ -267,12 +267,14 @@ body {
       </div>
     </div>
 
-    <div class="candle-progress" id="leverBar">
-      <span style="font-size:12px;color:var(--text-light);">杠杆:</span>
-      <button class="lever-btn" data-lever="5" onclick="setLeverage(5)" style="background:var(--card);border:1px solid var(--border);border-radius:6px;padding:2px 10px;font-size:12px;color:var(--text);cursor:pointer;">5x</button>
-      <button class="lever-btn active" data-lever="10" onclick="setLeverage(10)" style="background:var(--primary);border:1px solid var(--primary);border-radius:6px;padding:2px 10px;font-size:12px;color:#fff;cursor:pointer;">10x</button>
-      <button class="lever-btn" data-lever="20" onclick="setLeverage(20)" style="background:var(--card);border:1px solid var(--border);border-radius:6px;padding:2px 10px;font-size:12px;color:var(--text);cursor:pointer;">20x</button>
-      <span style="font-size:11px;color:var(--text-light);margin-left:6px;">(开仓前可调)</span>
+    <div class="candle-progress" id="leverBar" style="justify-content:space-between;">
+      <span style="font-size:12px;color:var(--text-light);">杠杆: <span id="leverDisplay">10</span>x</span>
+      <span style="display:flex;gap:4px;">
+        <button class="lever-btn" data-lever="5" onclick="setLeverage(5)" style="background:var(--card);border:1px solid var(--border);border-radius:6px;padding:2px 10px;font-size:12px;color:var(--text);cursor:pointer;">5x</button>
+        <button class="lever-btn active" data-lever="10" onclick="setLeverage(10)" style="background:var(--primary);border:1px solid var(--primary);border-radius:6px;padding:2px 10px;font-size:12px;color:#fff;cursor:pointer;">10x</button>
+        <button class="lever-btn" data-lever="20" onclick="setLeverage(20)" style="background:var(--card);border:1px solid var(--border);border-radius:6px;padding:2px 10px;font-size:12px;color:var(--text);cursor:pointer;">20x</button>
+      </span>
+      <span style="font-size:11px;color:var(--text-light);">(开仓前可调)</span>
     </div>
 
     <div class="candle-progress">
