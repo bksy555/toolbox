@@ -6,18 +6,67 @@
 
 // ──────────────────────────
 // 1. 数据请求工具（API 支持 CORS，直接用 fetch）
+// 支持超时、重试、备用数据源
 // ──────────────────────────
-async function qFetch(url) {
-  const resp = await fetch(url);
-  if (!resp.ok) throw new Error('行情数据请求失败 (HTTP ' + resp.status + ')');
-  const text = await resp.text();
+// 腾讯API主地址
+const TENCENT_API = 'https://web.ifzq.gtimg.cn/appstock/app/fqkline/get';
+
+async function qFetch(url, retries) {
+  if (retries === undefined) retries = 2;
+  // 带超时的 fetch
+  const controller = new AbortController();
+  const timeoutId = setTimeout(function() { controller.abort(); }, 15000);
   try {
-    return JSON.parse(text);
+    const resp = await fetch(url, { signal: controller.signal, mode: 'cors', cache: 'no-cache' });
+    clearTimeout(timeoutId);
+    if (!resp.ok) throw new Error('行情数据请求失败 (HTTP ' + resp.status + ')');
+    const text = await resp.text();
+    try {
+      return JSON.parse(text);
+    } catch(e) {
+      // 尝试解析 JSONP 格式：callback({...})
+      const match = text.match(/^[^(]*\(([\s\S]*)\)\s*;?\s*$/);
+      if (match) return JSON.parse(match[1]);
+      throw new Error('行情数据格式异常');
+    }
   } catch(e) {
-    // 尝试解析 JSONP 格式：callback({...})
-    const match = text.match(/^[^(]*\(([\s\S]*)\)\s*;?\s*$/);
-    if (match) return JSON.parse(match[1]);
-    throw new Error('行情数据格式异常');
+    clearTimeout(timeoutId);
+    if (retries > 0) {
+      // 重试
+      return qFetch(url, retries - 1);
+    }
+    throw e;
+  }
+}
+
+// 备用数据源：东方财富 JSON 日K线
+async function fetchKlineFallback(symbol, count) {
+  const code = normalizeSymbol(symbol);
+  // 东方财富 secid：1=沪市, 0=深市
+  const market = code.startsWith('sh') ? '1' : '0';
+  const stockCode = code.replace(/^(sh|sz|bj)/, '');
+  const url = `https://push2his.eastmoney.com/api/qt/stock/kline/get?secid=${market}.${stockCode}&fields1=f1,f2,f3,f4,f5,f6&fields2=f51,f52,f53,f54,f55,f56,f57&klt=101&fqt=1&end=20500101&lmt=${count}`;
+  try {
+    const resp = await fetch(url, { mode: 'cors', cache: 'no-cache' });
+    if (!resp.ok) throw new Error();
+    const data = await resp.json();
+    const klines = data && data.data && data.data.klines;
+    if (!klines || !klines.length) throw new Error('数据不足');
+    return klines.map(function(line) {
+      // 格式: "2026-07-30,1323.00,1361.76,1362.00,1322.00,71873,9712135434.00"
+      const p = line.split(',');
+      return {
+        date: p[0].replace(/-/g, ''),
+        open: parseFloat(p[1]) || 0,
+        close: parseFloat(p[2]) || 0,
+        high: parseFloat(p[3]) || 0,
+        low: parseFloat(p[4]) || 0,
+        volume: parseInt(p[5]) || 0,
+        amount: parseFloat(p[6]) || 0
+      };
+    });
+  } catch(e) {
+    throw new Error('行情数据获取失败（已尝试所有数据源）');
   }
 }
 
@@ -34,31 +83,36 @@ function normalizeSymbol(symbol) {
 // ──────────────────────────
 // 2. 数据获取
 // ──────────────────────────
-// 腾讯日K线接口（前复权）
+// 腾讯日K线接口（前复权）+ 自动备用数据源
 async function fetchKline(symbol, count, endDate) {
   const code = normalizeSymbol(symbol);
   const end = endDate || '';
-  // param: code,type,start,end,count,extend  extend=qfq 前复权
-  // Tencent qfqday 格式: [date, open, close, high, low, volume]
-  const url = `https://web.ifzq.gtimg.cn/appstock/app/fqkline/get?param=${code},day,,,${count},qfq`;
-  const data = await qFetch(url);
-  const d = data && data.data;
-  if (!d) throw new Error('未获取到行情数据');
-  const stock = d[code] || d[symbol] || searchStock(d);
-  if (!stock) throw new Error('未获取到行情数据，请检查股票代码');
-  const lines = stock.qfqday || stock.day;
-  if (!lines || !lines.length) throw new Error('未获取到K线数据');
-  return lines.map(function(arr) {
-    return {
-      date: arr[0],
-      open: Number(arr[1]),
-      close: Number(arr[2]),
-      high: Number(arr[3]),
-      low: Number(arr[4]),
-      volume: Number(arr[5]) || 0,
-      amount: Number(arr[6]) || 0
-    };
-  });
+  // 优先使用腾讯接口
+  const url = `${TENCENT_API}?param=${code},day,,,${count},qfq`;
+  try {
+    const data = await qFetch(url);
+    const d = data && data.data;
+    if (!d) throw new Error('未获取到行情数据');
+    const stock = d[code] || d[symbol] || searchStock(d);
+    if (!stock) throw new Error('未获取到行情数据，请检查股票代码');
+    const lines = stock.qfqday || stock.day;
+    if (!lines || !lines.length) throw new Error('未获取到K线数据');
+    return lines.map(function(arr) {
+      return {
+        date: arr[0],
+        open: Number(arr[1]),
+        close: Number(arr[2]),
+        high: Number(arr[3]),
+        low: Number(arr[4]),
+        volume: Number(arr[5]) || 0,
+        amount: Number(arr[6]) || 0
+      };
+    });
+  } catch(e) {
+    // 腾讯接口失败，尝试备用数据源
+    console.warn('腾讯行情接口失败，尝试备用数据源:', e.message);
+    return fetchKlineFallback(symbol, count);
+  }
 }
 function searchStock(d) {
   if (d && typeof d === 'object') {
@@ -74,8 +128,13 @@ function searchStock(d) {
 async function fetchStockName(symbol) {
   const code = normalizeSymbol(symbol);
   try {
-    const data = await qJsonp(`https://qt.gtimg.cn/q=${code}`, '_');
-    // qt.gtimg.cn 返回 "v_sh600519=\"1~贵州茅台~...\"" 风格，走 JSONP 拿不到，改用真实查询
+    const resp = await fetch(`https://qt.gtimg.cn/q=${code}`, { mode: 'cors', cache: 'no-cache' });
+    const text = await resp.text();
+    var m = text.match(/"([^"]+)"/);
+    if (m && m[1]) {
+      var parts = m[1].split('~');
+      if (parts.length > 1) return parts[1];
+    }
     return code;
   } catch (e) {
     return code;
@@ -808,27 +867,35 @@ async function fetchRealtimeQuote(symbol) {
 // 获取K线 + 实时行情（一次请求同时拿到历史K线和当前实时报价）
 async function fetchKlineWithQuote(symbol, count) {
   const code = normalizeSymbol(symbol);
-  const url = `https://web.ifzq.gtimg.cn/appstock/app/fqkline/get?param=${code},day,,,${count},qfq`;
-  const data = await qFetch(url);
-  const d = data && data.data;
-  if (!d) throw new Error('未获取到行情数据');
-  const stock = d[code] || d[symbol] || searchStock(d);
-  if (!stock) throw new Error('未获取到行情数据，请检查股票代码');
-  const lines = stock.qfqday || stock.day;
-  if (!lines || !lines.length) throw new Error('未获取到K线数据');
-  const kline = lines.map(function(arr) {
-    return {
-      date: arr[0],
-      open: Number(arr[1]),
-      close: Number(arr[2]),
-      high: Number(arr[3]),
-      low: Number(arr[4]),
-      volume: Number(arr[5]) || 0,
-      amount: Number(arr[6]) || 0
-    };
-  });
-  const quote = extractQuoteFromStock(stock, code);
-  return { kline: kline, quote: quote };
+  const url = `${TENCENT_API}?param=${code},day,,,${count},qfq`;
+  try {
+    const data = await qFetch(url);
+    const d = data && data.data;
+    if (!d) throw new Error('未获取到行情数据');
+    const stock = d[code] || d[symbol] || searchStock(d);
+    if (!stock) throw new Error('未获取到行情数据，请检查股票代码');
+    const lines = stock.qfqday || stock.day;
+    if (!lines || !lines.length) throw new Error('未获取到K线数据');
+    const kline = lines.map(function(arr) {
+      return {
+        date: arr[0],
+        open: Number(arr[1]),
+        close: Number(arr[2]),
+        high: Number(arr[3]),
+        low: Number(arr[4]),
+        volume: Number(arr[5]) || 0,
+        amount: Number(arr[6]) || 0
+      };
+    });
+    const quote = extractQuoteFromStock(stock, code);
+    return { kline: kline, quote: quote };
+  } catch(e) {
+    // 备用数据源（无实时行情，用最新K线近似）
+    const kline = await fetchKlineFallback(symbol, count);
+    const last = kline[kline.length - 1];
+    const quote = { code: code, name: symbol, price: last.close, changePercent: 0, high: last.high, low: last.low, open: last.open, volume: last.volume, amount: last.amount, date: last.date, time: '' };
+    return { kline: kline, quote: quote };
+  }
 }
 
 // 判断当前市场趋势状态

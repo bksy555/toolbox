@@ -378,7 +378,11 @@ function startMonitor() {
   }).catch(function(e) {
     monitorRunning = false;
     renderMonitorBtn();
-    document.getElementById('monitorArea').innerHTML = '<div class="error-box">❌ ' + escapeHtml(e.message || String(e)) + '</div>';
+    var msg = e.message || String(e);
+    if (/failed to fetch|networkerror|load failed|abort/i.test(msg)) {
+      msg = '行情服务器连接失败（网络/防火墙可能拦截了行情接口）。已自动切换备用数据源重试，如仍失败请稍后再试。';
+    }
+    document.getElementById('monitorArea').innerHTML = '<div class="error-box">❌ ' + escapeHtml(msg) + '</div>';
   });
 }
 
@@ -743,7 +747,12 @@ async function runBacktest() {
 
     renderResults(df, results, names, capital, symbol, hasPositionMode);
   } catch (e) {
-    document.getElementById('resultArea').innerHTML = '<div class="error-box">❌ ' + escapeHtml(e.message || String(e)) + '</div>';
+    var msg = e.message || String(e);
+    // 浏览器网络层错误给出更友好的提示
+    if (/failed to fetch|networkerror|load failed|abort/i.test(msg)) {
+      msg = '行情服务器连接失败（网络/防火墙可能拦截了行情接口）。已自动切换备用数据源重试，如仍失败请稍后再试。';
+    }
+    document.getElementById('resultArea').innerHTML = '<div class="error-box">❌ ' + escapeHtml(msg) + '</div>';
   } finally {
     document.getElementById('runBtn').disabled = false;
   }
