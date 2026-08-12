@@ -609,31 +609,52 @@
       };
     }
 
-    // ---- 已知中奖号码（从 JSON 动态加载，避免硬编码） ----
-    // 说明：中奖号码由 data/fc3d-prediction.json 提供，页面加载时自动拉取最新数据。
-    // 这样更新中奖号码时只需更新 JSON 文件，HTML 无需改动，部署更快、缓存更可控。
+    // ---- 已知中奖号码和冷号数据（从 JSON 动态加载） ----
+    // 说明：数据由 data/fc3d-prediction.json 提供（服务器端脚本每日更新），
+    // 页面加载时自动拉取最新。冷号3胆在服务器端计算，数据更稳定、更准确。
     let KNOWN_DRAW_NUMS = {};
+    let KNOWN_COLD_DATA = {}; // {period: {coldDans: [...], coldResult: '✅'|'❌'}}
     const D3_DRAW_CACHE_KEY = 'fc3d_known_draw_nums';
 
-    // 从 fc3d-prediction.json 动态加载中奖号码（带时间戳破缓存）
+    // 从 fc3d-prediction.json 动态加载中奖号码和冷号数据（带时间戳破缓存）
     function loadKnownDrawNums() {
       return new Promise(function(resolve) {
         // 1. 先读 localStorage 缓存，立即用于渲染（秒开）
         let cachedNums = {};
         try { cachedNums = JSON.parse(localStorage.getItem(D3_DRAW_CACHE_KEY)) || {}; } catch(e) { cachedNums = {}; }
-        if (Object.keys(cachedNums).length > 0) KNOWN_DRAW_NUMS = cachedNums;
+        if (Object.keys(cachedNums).length > 0) {
+          KNOWN_DRAW_NUMS = cachedNums;
+          // 冷号数据也从缓存读取
+          try {
+            const cachedCold = JSON.parse(localStorage.getItem('fc3d_cold_data')) || {};
+            if (Object.keys(cachedCold).length > 0) KNOWN_COLD_DATA = cachedCold;
+          } catch(e) {}
+        }
 
         // 2. 后台从 JSON 拉取最新数据（no-store + 时间戳，绕过 CDN/浏览器缓存）
         fetch('data/fc3d-prediction.json?t=' + Date.now(), { cache: 'no-store' })
           .then(function(res) { if (!res.ok) throw new Error(res.status); return res.json(); })
           .then(function(data) {
             const nums = {};
+            const coldData = {};
             for (const k in data) {
-              if (data[k] && data[k].drawNum) nums[k] = String(data[k].drawNum);
+              const v = data[k];
+              if (v && v.drawNum) nums[k] = String(v.drawNum);
+              // 加载服务器端计算的冷号数据
+              if (v && v.coldDans && Array.isArray(v.coldDans) && v.coldDans.length > 0) {
+                coldData[k] = {
+                  coldDans: v.coldDans,
+                  coldResult: v.coldResult || null
+                };
+              }
             }
             if (Object.keys(nums).length > 0) {
               KNOWN_DRAW_NUMS = nums;
               try { localStorage.setItem(D3_DRAW_CACHE_KEY, JSON.stringify(nums)); } catch(e) {}
+            }
+            if (Object.keys(coldData).length > 0) {
+              KNOWN_COLD_DATA = coldData;
+              try { localStorage.setItem('fc3d_cold_data', JSON.stringify(coldData)); } catch(e) {}
             }
             resolve();
           })
@@ -1029,27 +1050,33 @@
     // ---- 计算某期之前20期的冷号3胆 ----
     // 返回 { dans: [3个数字], freq: {数字:次数} }
     function calcColdDans(period) {
+      // 优先使用服务器端计算的冷号数据（更稳定、更准确）
+      if (KNOWN_COLD_DATA[period] && KNOWN_COLD_DATA[period].coldDans) {
+        return {
+          dans: KNOWN_COLD_DATA[period].coldDans,
+          freq: null,
+          windowLen: 20,
+          fromServer: true
+        };
+      }
+      // 回退到客户端计算
       const sorted = getSortedDrawList();
-      // 找该期之前的所有开奖（不含当前期）
       const before = [];
       for (const item of sorted) {
         if (item.period < period) before.push(item);
         else break;
       }
-      // 取最近20期
       const window = before.slice(-20);
-      if (window.length < 20) return { dans: null, freq: null, windowLen: window.length };
+      if (window.length < 20) return { dans: null, freq: null, windowLen: window.length, fromServer: false };
 
-      // 统计0-9出现次数
       const freq = new Array(10).fill(0);
       for (const item of window) {
         for (const ch of item.drawNum) freq[parseInt(ch)]++;
       }
-      // 按次数排序取最冷的3个
       const ranked = freq.map(function(f, d) { return { d: d, f: f }; })
         .sort(function(a, b) { return a.f - b.f || a.d - b.d; });
       const dans = ranked.slice(0, 3).map(function(x) { return x.d; });
-      return { dans: dans, freq: freq, windowLen: window.length };
+      return { dans: dans, freq: freq, windowLen: window.length, fromServer: false };
     }
 
     // ---- 生成15期冷号预测数据 ----
@@ -1118,7 +1145,13 @@
 
         if (record && (p.isPast || p.isToday)) {
           const drawArr = record.split('');
-          const hit = p.dans ? p.dans.some(d => drawArr.map(Number).includes(d)) : false;
+          // 优先使用服务器端结果，回退到客户端计算
+          let hit = false;
+          if (KNOWN_COLD_DATA[p.period] && KNOWN_COLD_DATA[p.period].coldResult) {
+            hit = KNOWN_COLD_DATA[p.period].coldResult === '✅';
+          } else if (p.dans) {
+            hit = p.dans.some(d => drawArr.map(Number).includes(d));
+          }
           drawStr = drawArr.map(n => `<span class="d3-ball d3-ball-draw ${hit ? 'd3-ball-hit' : ''}">${n}</span>`).join(' ');
           resultStr = hit ? '✅' : '❌';
           if (p.dans) {
