@@ -98,6 +98,8 @@ body {
 .ctrl-btn.close:hover { box-shadow:0 4px 16px rgba(99,102,241,0.3); }
 .ctrl-btn.short { background:linear-gradient(135deg,#10b981,#059669); }
 .ctrl-btn.short:hover { box-shadow:0 4px 16px rgba(16,185,129,0.3); }
+.ctrl-btn.hold { background:linear-gradient(135deg,#6366f1,#8b5cf6); }
+.ctrl-btn.hold:hover { box-shadow:0 4px 16px rgba(99,102,241,0.3); }
 
 /* Trade log */
 .trade-log-wrap {
@@ -286,7 +288,8 @@ body {
     <div class="controls">
       <button class="ctrl-btn long" id="btnLong" onclick="doAction('long')">📈 做多</button>
       <button class="ctrl-btn short" id="btnShort" onclick="doAction('short')">📉 做空</button>
-      <button class="ctrl-btn close" id="btnClose" onclick="doAction('close')">⏸ 平仓</button>
+      <button class="ctrl-btn hold" id="btnHold" onclick="doAction('hold')">⏸ 持仓</button>
+      <button class="ctrl-btn close" id="btnClose" onclick="doAction('close')">🔒 平仓</button>
     </div>
 
     <div class="trade-log-wrap" id="tradeLog">
@@ -558,6 +561,7 @@ async function startRound() {
   document.getElementById('contractName').textContent = round.contract.name;
   document.getElementById('btnLong').disabled = false;
   document.getElementById('btnShort').disabled = false;
+  document.getElementById('btnHold').disabled = false;
   document.getElementById('btnClose').disabled = true;
   document.getElementById('tradeList').innerHTML = '暂无交易';
   document.querySelectorAll('.lever-btn').forEach(function(b) { b.disabled = false; });
@@ -621,6 +625,9 @@ function doAction(action) {
     if (round.position !== 'cash') { showToast('⚠️ 已有持仓，请先平仓'); return; }
     round.position = 'short';
     round.action = action;
+  } else if (action === 'hold') {
+    // 持仓：不改变仓位，直接看下一根K线
+    round.action = action;
   } else if (action === 'close') {
     if (round.position === 'cash') { showToast('⚠️ 无持仓可平'); return; }
     round.action = action;
@@ -665,6 +672,7 @@ function executeCandle() {
     round.trades.push({type:'open_long', price:execPrice, leverage:lever, date:execDate});
     document.getElementById('btnLong').disabled = true;
     document.getElementById('btnShort').disabled = true;
+    document.getElementById('btnHold').disabled = false;
     document.getElementById('btnClose').disabled = false;
     // 锁定杠杆
     document.querySelectorAll('.lever-btn').forEach(function(b) { b.disabled = true; });
@@ -680,8 +688,23 @@ function executeCandle() {
     round.trades.push({type:'open_short', price:execPrice, leverage:lever, date:execDate});
     document.getElementById('btnLong').disabled = true;
     document.getElementById('btnShort').disabled = true;
+    document.getElementById('btnHold').disabled = false;
     document.getElementById('btnClose').disabled = false;
     document.querySelectorAll('.lever-btn').forEach(function(b) { b.disabled = true; });
+  }
+  // 持仓：不做任何操作，仅揭示下一根K线（浮动盈亏在显示中体现，结算时统一处理）
+  else if (round.action === 'hold') {
+    if (round.position !== 'cash') {
+      const isLong = round.position === 'long';
+      const entryPx = round.entryPrice;
+      const priceChange = isLong ? (execPrice - entryPx) / entryPx : (entryPx - execPrice) / entryPx;
+      const holdPnl = priceChange * lever * 100;
+      tradeInfo = '持仓 ' + (isLong ? '多' : '空') + ' @ ' + execPrice.toFixed(2) + ' (' + (holdPnl >= 0 ? '+' : '') + holdPnl.toFixed(2) + '%)';
+      round.trades.push({type:'hold', price:execPrice, pnlPct: holdPnl, date:execDate, direction: isLong ? 'long' : 'short'});
+    } else {
+      tradeInfo = '观望 @ ' + execPrice.toFixed(2);
+      round.trades.push({type:'hold', price:execPrice, pnlPct: 0, date:execDate, direction:'none'});
+    }
   }
   // 平仓
   else if (round.action === 'close' && round.position !== 'cash') {
@@ -705,6 +728,7 @@ function executeCandle() {
     round.marginUsed = 0;
     document.getElementById('btnLong').disabled = false;
     document.getElementById('btnShort').disabled = false;
+    document.getElementById('btnHold').disabled = false;
     document.getElementById('btnClose').disabled = true;
     document.querySelectorAll('.lever-btn').forEach(function(b) { b.disabled = false; });
   }
@@ -727,8 +751,9 @@ function executeCandle() {
   if (round.candleIdx >= BLANK_CNT) {
     round.done = true;
     document.getElementById('btnLong').disabled = true;
-    document.getElementById('btnClose').disabled = true;
     document.getElementById('btnShort').disabled = true;
+    document.getElementById('btnHold').disabled = true;
+    document.getElementById('btnClose').disabled = true;
     showRoundResult();
   }
 }
@@ -793,21 +818,21 @@ function addTradeLog(text, date) {
 }
 
 function showRoundResult() {
-  // 计算本局最终权益
+  // 计算本局最终权益（无论是否平仓，统一按权益变化计算盈亏）
   const lastClose = round.revealed.length > 0 ? +round.revealed[round.revealed.length-1][2] : 0;
   let equity = round.margin;
-  let pnlPct = 0;
   const lever = round.leverage || 10;
   
-  if (round.position === 'long') {
-    const entryPx = round.entryPrice || lastClose;
-    pnlPct = lastClose > 0 && entryPx > 0 ? ((lastClose - entryPx) / entryPx) * lever * 100 : 0;
+  if (round.position === 'long' && round.entryPrice) {
+    const entryPx = round.entryPrice;
     equity = round.margin + round.margin * ((lastClose - entryPx) / entryPx) * lever;
-  } else if (round.position === 'short') {
-    const entryPx = round.entryPrice || lastClose;
-    pnlPct = lastClose > 0 && entryPx > 0 ? ((entryPx - lastClose) / entryPx) * lever * 100 : 0;
+  } else if (round.position === 'short' && round.entryPrice) {
+    const entryPx = round.entryPrice;
     equity = round.margin + round.margin * ((entryPx - lastClose) / entryPx) * lever;
   }
+  
+  // 本局盈亏 = (结算权益 - 初始保证金) / 初始保证金
+  const pnlPct = ((equity - INIT_MARGIN) / INIT_MARGIN) * 100;
   
   state.totalPnl += pnlPct;
   if (pnlPct > 0) state.wins++;
@@ -841,6 +866,9 @@ function showRoundResult() {
     detail += ' | 持仓: ' + (round.position === 'long' ? '多' : '空') + ' (杠杆' + lever + 'x)';
   }
   document.getElementById('rrDetail').textContent = detail;
+  
+  // 立即更新右上角累计盈亏
+  document.getElementById('totalScore').textContent = (state.totalPnl >= 0 ? '+' : '') + state.totalPnl.toFixed(2) + '%';
   
   document.getElementById('roundResult').classList.add('show');
 }
@@ -933,8 +961,9 @@ document.getElementById('colorToggle').textContent = getColorMode() === 'cn' ? '
 document.addEventListener('keydown', e => {
   if (e.target.tagName === 'INPUT') return;
   if (e.key === '1' || e.key === 'b') document.getElementById('btnLong')?.click();
-  if (e.key === '2' || e.key === 'c') document.getElementById('btnClose')?.click();
-  if (e.key === '3' || e.key === 's') document.getElementById('btnShort')?.click();
+  if (e.key === '2' || e.key === 's') document.getElementById('btnShort')?.click();
+  if (e.key === '3' || e.key === 'h' || e.key === ' ') { e.preventDefault(); document.getElementById('btnHold')?.click(); }
+  if (e.key === '4' || e.key === 'c') document.getElementById('btnClose')?.click();
 });
 </script>
 
