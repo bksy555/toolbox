@@ -1117,6 +1117,8 @@
       if (!tbody) return;
 
       const predictions = generateColdPredictions();
+      // 与主表格共用同一个数据源（localStorage stored），保证中奖号码一致
+      const stored = saveD3Data(generateD3Predictions());
       let html = '';
       let correctCount = 0;
       let totalResolved = 0;
@@ -1138,13 +1140,13 @@
           dansStr = '<span style="color:var(--text-light);font-size:12px;">待更新</span>';
         }
 
-        // 中奖号码
+        // 中奖号码：与主表格完全一致，从 stored 读取
         let drawStr = '';
         let resultStr = '';
-        const record = KNOWN_DRAW_NUMS[p.period];
+        const record = stored ? stored[p.period] : null;
 
-        if (record && (p.isPast || p.isToday)) {
-          const drawArr = record.split('');
+        if (record && record.drawNum && (p.isPast || p.isToday)) {
+          const drawArr = record.drawNum.split('');
           // 优先使用服务器端结果，回退到客户端计算
           let hit = false;
           if (KNOWN_COLD_DATA[p.period] && KNOWN_COLD_DATA[p.period].coldResult) {
