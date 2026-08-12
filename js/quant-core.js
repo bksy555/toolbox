@@ -1,42 +1,24 @@
 // ============================================================
 // quant-core.js — 小白量化交易工具核心引擎（纯前端版）
 // 选股票 → 选策略 → 调参数 → 看结果
-// 数据来源：腾讯财经公开 JSONP 接口（浏览器直连，无需服务器）
+// 数据来源：腾讯财经公开接口（浏览器直连，无需服务器）
 // ============================================================
 
 // ──────────────────────────
-// 1. JSONP 工具
+// 1. 数据请求工具（API 支持 CORS，直接用 fetch）
 // ──────────────────────────
-function qJsonp(url, callbackName) {
-  return new Promise((resolve, reject) => {
-    const cbN = callbackName || 'callback';
-    const cb = 'q_cb_' + Date.now() + '_' + Math.floor(Math.random() * 1e6);
-    window[cb] = function(data) {
-      delete window[cb];
-      const s = document.getElementById(cb);
-      if (s) s.remove();
-      resolve(data);
-    };
-    const sep = url.includes('?') ? '&' : '?';
-    const script = document.createElement('script');
-    script.id = cb;
-    script.src = url + sep + cbN + '=' + cb;
-    script.onerror = function() {
-      delete window[cb];
-      const s = document.getElementById(cb);
-      if (s) s.remove();
-      reject(new Error('行情数据请求失败'));
-    };
-    document.head.appendChild(script);
-    setTimeout(function() {
-      if (window[cb]) {
-        delete window[cb];
-        const s = document.getElementById(cb);
-        if (s) s.remove();
-        reject(new Error('行情数据请求超时'));
-      }
-    }, 15000);
-  });
+async function qFetch(url) {
+  const resp = await fetch(url);
+  if (!resp.ok) throw new Error('行情数据请求失败 (HTTP ' + resp.status + ')');
+  const text = await resp.text();
+  try {
+    return JSON.parse(text);
+  } catch(e) {
+    // 尝试解析 JSONP 格式：callback({...})
+    const match = text.match(/^[^(]*\(([\s\S]*)\)\s*;?\s*$/);
+    if (match) return JSON.parse(match[1]);
+    throw new Error('行情数据格式异常');
+  }
 }
 
 // 规范股票代码为带市场前缀
@@ -59,7 +41,7 @@ async function fetchKline(symbol, count, endDate) {
   // param: code,type,start,end,count,extend  extend=qfq 前复权
   // Tencent qfqday 格式: [date, open, close, high, low, volume]
   const url = `https://web.ifzq.gtimg.cn/appstock/app/fqkline/get?param=${code},day,,,${count},qfq`;
-  const data = await qJsonp(url, 'callback');
+  const data = await qFetch(url);
   const d = data && data.data;
   if (!d) throw new Error('未获取到行情数据');
   const stock = d[code] || d[symbol] || searchStock(d);
@@ -816,7 +798,7 @@ function extractQuoteFromStock(stock, code) {
 async function fetchRealtimeQuote(symbol) {
   const code = normalizeSymbol(symbol);
   const url = `https://web.ifzq.gtimg.cn/appstock/app/fqkline/get?param=${code},day,,,1,qfq`;
-  const data = await qJsonp(url, 'callback');
+  const data = await qFetch(url);
   const d = data && data.data;
   if (!d) return null;
   const stock = d[code] || (d[symbol]) || searchStock(d);
@@ -827,7 +809,7 @@ async function fetchRealtimeQuote(symbol) {
 async function fetchKlineWithQuote(symbol, count) {
   const code = normalizeSymbol(symbol);
   const url = `https://web.ifzq.gtimg.cn/appstock/app/fqkline/get?param=${code},day,,,${count},qfq`;
-  const data = await qJsonp(url, 'callback');
+  const data = await qFetch(url);
   const d = data && data.data;
   if (!d) throw new Error('未获取到行情数据');
   const stock = d[code] || d[symbol] || searchStock(d);
