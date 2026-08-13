@@ -96,7 +96,8 @@ function getDayPillar(year, month, day) {
   const ref = new Date(1900, 0, 1);
   const target = new Date(year, month - 1, day);
   const diff = Math.round((target - ref) / (24 * 60 * 60 * 1000));
-  const cycleOffset = 11;
+  // 与前端 js/lottery-piancai.js 保持一致：offset=10（经参考点验证：2014-10-16=庚申日, 2026-01-01=乙亥日）
+  const cycleOffset = 10;
   const cycleNum = ((diff + cycleOffset) % 60 + 60) % 60;
   return { ganIdx: cycleNum % 10, zhiIdx: cycleNum % 12 };
 }
