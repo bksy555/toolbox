@@ -30,15 +30,20 @@ def fetch():
         return None
     period = m_period.group(1)
 
-    # 号码: 开奖号码： <li>1</li><li>7</li><li>2</li> 或分隔数字
+    # 号码: 开奖号码： <li>1</li><li>7</li><li>2</li> 或 "<li>等待开奖</li>"
     idx = html.find("开奖号码：")
     num = None
     if idx > 0:
         chunk = html[idx:idx + 400]
+        # 先检查是否包含"等待开奖"（未开奖，此时试机号在前，不能混淆）
+        plain_txt = re.sub(r'<[^>]+>', '', chunk)
+        if "等待开奖" in plain_txt:
+            # 未开奖，返回空
+            return None
         # 提取数字（去标签）
         txt = re.sub(r'<[^>]+>', '|', chunk)
         nums = re.findall(r'[0-9]', txt)
-        # 找连续三个数字（1|7|2 -> '1','7','2'，试机号前的）
+        # 找连续三个数字
         if len(nums) >= 3:
             num = nums[0] + nums[1] + nums[2]
 
