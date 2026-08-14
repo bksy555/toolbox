@@ -11,7 +11,7 @@ WORKSPACE="/run/csi/mount-root/nas/4079184d856ecc166ed19d4887083405/workspaces/d
 TOOLS_WEBSITE="$WORKSPACE/tools-website"
 
 echo "=== 每日新闻数据生成与部署 ==="
-echo "时间: $(date -u '+%Y-%m-%d %H:%M:%S UTC')"
+echo "时间: $(TZ=Asia/Shanghai date '+%Y-%m-%d %H:%M:%S 北京时间')"
 echo ""
 
 # 1. 运行新闻数据生成脚本

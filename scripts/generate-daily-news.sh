@@ -12,7 +12,7 @@ DATA_DIR="$TOOLS_WEBSITE/data"
 UA="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
 
 echo "=== 每日新闻数据生成 ==="
-echo "时间: $(date -u '+%Y-%m-%d %H:%M:%S UTC')"
+echo "时间: $(TZ=Asia/Shanghai date '+%Y-%m-%d %H:%M:%S 北京时间')"
 echo ""
 
 mkdir -p "$DATA_DIR"
@@ -138,8 +138,9 @@ fi
 
 # ---- 3. 生成最终 JSON ----
 echo "📝 生成最终 JSON 文件..."
-NOW=$(date -u '+%Y-%m-%dT%H:%M:%SZ')
-TODAY=$(date -u '+%Y-%m-%d')
+# 统一使用北京时间生成日期（避免 UTC 日期偏差导致"落后一天"）
+NOW=$(TZ=Asia/Shanghai date '+%Y-%m-%dT%H:%M:%S+08:00')
+TODAY=$(TZ=Asia/Shanghai date '+%Y-%m-%d')
 
 python3 -c "
 import json
