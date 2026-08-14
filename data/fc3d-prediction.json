@@ -5347,15 +5347,20 @@
     "month": 8,
     "day": 15,
     "weekday": 3,
-    "haiGan": "辛",
+    "haiGan": "己",
     "dans": [
       2,
-      6,
-      7
+      4,
+      9
     ],
     "drawNum": null,
     "result": null,
-    "updatedAt": null
+    "updatedAt": null,
+    "coldDans": [
+      0,
+      6,
+      3
+    ]
   },
   "2026218": {
     "period": "2026218",
