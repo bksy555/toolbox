@@ -5311,14 +5311,15 @@
       4,
       8
     ],
-    "drawNum": null,
-    "result": null,
-    "updatedAt": null,
+    "drawNum": "172",
+    "result": "❌",
+    "updatedAt": "2026-08-14T06:20:32.598Z",
     "coldDans": [
       0,
       6,
       3
-    ]
+    ],
+    "coldResult": "❌"
   },
   "2026216": {
     "period": "2026216",
