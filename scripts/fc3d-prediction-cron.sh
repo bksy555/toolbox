@@ -3,9 +3,11 @@
 # 福彩3D预测 - 3胆中1 + 冷号3胆 数据更新脚本
 # ============================================================
 # 每天19:25（北京时间）更新次日预测
-# 每天04:30（北京时间）更新前一日中奖号码
-# 说明：开奖时间21:15，但zhcw.com分析文章次日04:01才发布（含"上期开奖结果"）
-#       22:00时文章未发布，静态HTML抓不到动态数据，所以改为次日04:30执行
+# 每天22:00（北京时间）更新当日中奖号码
+# 数据源（2026-08-14 修复，解决"抓不到当天号码"bug）：
+#   主源: 500彩票网 zx.500.com/sd/（curl 直接可访问，无验证码，开奖当天即有）
+#   备源: 百度移动版搜索官方福彩卡片（playwright 模拟浏览器，频率过高会触发验证码）
+#   兜底: zhcw.com 分析文章（滞后约1天，仅回溯用）
 # ============================================================
 
 WORK_DIR="$(cd "$(dirname "$0")/.." && pwd)"
@@ -16,20 +18,58 @@ echo "=== 福彩3D预测 - 3胆中1 + 冷号3胆 数据更新 ==="
 echo "时间: $(date '+%Y-%m-%d %H:%M:%S')"
 
 # ============================================
-# 步骤1：从网络获取最新中奖号码
+# 步骤1：从网络获取最新中奖号码（多源回退）
 # ============================================
-echo "--- 步骤1: 从 zhcw.com 获取最新中奖号码 ---"
-
-# 从3D分析列表页获取最新分析文章URL
-curl -sL 'https://www.zhcw.com/czfw/sjfx/3d/' \
-  -H 'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36' \
-  --max-time 15 -o /tmp/zhcw_analysis.html 2>/dev/null
+echo "--- 步骤1: 获取最新中奖号码 ---"
 
 FETCHED_DRAW=""
 FETCHED_PERIOD=""
 
-# 用node解析列表页，提取最新组选分析文章的URL和期号
-PARSED=$(node -e "
+# ---- 数据源1（主源）: 500彩票网 首页（curl，无验证码）----
+echo "尝试数据源1: 500彩票网 zx.500.com/sd/ ..."
+RESULT_500=$(timeout 30 python3 scripts/fc3d-500-fetch.py 2>/dev/null)
+if [ -n "$RESULT_500" ] && [ "$RESULT_500" != "" ]; then
+  FETCHED_PERIOD=$(echo "$RESULT_500" | cut -d'|' -f1)
+  FETCHED_DRAW=$(echo "$RESULT_500" | cut -d'|' -f2)
+  FETCHED_DATE=$(echo "$RESULT_500" | cut -d'|' -f3)
+  echo "✅ 从500彩票网获取: 第${FETCHED_PERIOD}期 = ${FETCHED_DRAW} (${FETCHED_DATE})"
+fi
+
+# ---- 数据源2（备源）: 百度移动版官方福彩卡片（playwright）----
+if [ -z "$FETCHED_DRAW" ]; then
+  echo "尝试数据源2: 百度移动版搜索官方福彩卡片 ..."
+  # 先查本地最新期号，搜下一期（当天开奖后即出）
+  LOCAL_LATEST=$(python3 -c "
+import json
+with open('$DATA_FILE') as f:
+    d = json.load(f)
+keys = sorted([k for k in d.keys() if k.startswith('2026') and d[k].get('drawNum') and d[k]['drawNum'] != '' and d[k]['drawNum'] != ' '], reverse=True)
+print(keys[0] if keys else '')
+" 2>/dev/null)
+  if [ -n "$LOCAL_LATEST" ]; then
+    NEXT_PERIOD=$((10#$LOCAL_LATEST + 1))
+    RESULT_BD=$(timeout 90 python3 scripts/fc3d-baidu-fetch.py "$NEXT_PERIOD" 2>/dev/null)
+    if [ -n "$RESULT_BD" ] && [ "$RESULT_BD" != "" ]; then
+      FETCHED_PERIOD=$(echo "$RESULT_BD" | cut -d'|' -f1)
+      FETCHED_DRAW=$(echo "$RESULT_BD" | cut -d'|' -f2)
+      FETCHED_DATE=$(echo "$RESULT_BD" | cut -d'|' -f3)
+      echo "✅ 从百度获取: 第${FETCHED_PERIOD}期 = ${FETCHED_DRAW} (${FETCHED_DATE})"
+    else
+      echo "⚠️ 百度未能获取（可能未开奖或触发验证码）"
+    fi
+  fi
+fi
+
+# ---- 数据源3（兜底，仅回溯）: zhcw.com 分析文章 ----
+if [ -z "$FETCHED_DRAW" ]; then
+  echo "尝试数据源3: zhcw.com 分析文章（兜底）..."
+  # 从3D分析列表页获取最新分析文章URL
+  curl -sL 'https://www.zhcw.com/czfw/sjfx/3d/' \
+    -H 'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36' \
+    --max-time 15 -o /tmp/zhcw_analysis.html 2>/dev/null
+
+  # 用node解析列表页，提取最新组选分析文章的URL和期号
+  PARSED=$(node -e "
 const fs = require('fs');
 const html = fs.readFileSync('/tmp/zhcw_analysis.html', 'utf8');
 const regex = /href=\"(\/c\/2026-\d{2}-\d{2}\/\d+\.shtml)\"[\s\S]*?福彩3D第(\d+)期组选分析/g;
@@ -46,28 +86,29 @@ if (results.length > 0) {
 }
 ")
 
-if [ -n "$PARSED" ]; then
-  ARTICLE_URL=$(echo "$PARSED" | cut -d'|' -f1)
-  LATEST_ISSUE=$(echo "$PARSED" | cut -d'|' -f2)
-  echo "最新分析文章: 福彩3D第${LATEST_ISSUE}期组选分析"
-  echo "文章URL: https://www.zhcw.com${ARTICLE_URL}"
-  
-  ARTICLE_HTML=$(curl -sL "https://www.zhcw.com${ARTICLE_URL}" \
-    -H 'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36' \
-    --max-time 15 2>/dev/null)
-  
-  DRAW_RESULT=$(echo "$ARTICLE_HTML" | grep -oP '福彩3D上期开奖结果\d \d \d' | head -1)
-  
-  if [ -n "$DRAW_RESULT" ]; then
-    PREV_ISSUE=$((LATEST_ISSUE - 1))
-    FETCHED_DRAW=$(echo "$DRAW_RESULT" | grep -oP '\d \d \d' | tr -d ' ')
-    FETCHED_PERIOD="$PREV_ISSUE"
-    echo "✅ 获取到中奖号码: 第${FETCHED_PERIOD}期 = ${FETCHED_DRAW}"
+  if [ -n "$PARSED" ]; then
+    ARTICLE_URL=$(echo "$PARSED" | cut -d'|' -f1)
+    LATEST_ISSUE=$(echo "$PARSED" | cut -d'|' -f2)
+    echo "最新分析文章: 福彩3D第${LATEST_ISSUE}期组选分析"
+    echo "文章URL: https://www.zhcw.com${ARTICLE_URL}"
+
+    ARTICLE_HTML=$(curl -sL "https://www.zhcw.com${ARTICLE_URL}" \
+      -H 'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36' \
+      --max-time 15 2>/dev/null)
+
+    DRAW_RESULT=$(echo "$ARTICLE_HTML" | grep -oP '福彩3D上期开奖结果\d \d \d' | head -1)
+
+    if [ -n "$DRAW_RESULT" ]; then
+      PREV_ISSUE=$((LATEST_ISSUE - 1))
+      FETCHED_DRAW=$(echo "$DRAW_RESULT" | grep -oP '\d \d \d' | tr -d ' ')
+      FETCHED_PERIOD="$PREV_ISSUE"
+      echo "✅ 从zhcw获取: 第${FETCHED_PERIOD}期 = ${FETCHED_DRAW}"
+    else
+      echo "⚠️ 文章内容中未找到开奖结果"
+    fi
   else
-    echo "⚠️ 文章内容中未找到开奖结果"
+    echo "⚠️ 未找到福彩3D分析文章"
   fi
-else
-  echo "⚠️ 未找到福彩3D分析文章"
 fi
 
 # ============================================
