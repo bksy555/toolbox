@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>九宫格切图教程：3步把照片切成朋友圈九宫格（免费在线） - ToolBox 工具箱指南</title>
+  <meta name="description" content="免费在线九宫格切图工具完全教程：自动裁剪为正方形、一键切成3×3九宫格、单块下载或打包下载，发朋友圈、小红书、微博九宫格必备神器。">
+  <meta name="keywords" content="九宫格切图,朋友圈九宫格,在线切图,九宫格图片,图片切割,朋友圈发图,小红书九宫格,免费九宫格工具">
+  <meta name="author" content="ToolBox">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://toolai.ccwu.cc/guides/nine-grid-guide.html">
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    :root {
+      --bg: #0f0f1a;
+      --bg-card: #1a1a2e;
+      --text: #e0e0e0;
+      --text-light: #8888aa;
+      --border: #2a2a44;
+      --accent: #6366f1;
+      --accent-hover: #4f46e5;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Noto Sans SC', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      margin: 0;
+      line-height: 1.8;
+    }
+    .guide-header {
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+      border-bottom: 1px solid var(--border);
+      padding: 20px 0;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(10px);
+    }
+    .guide-header-inner {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 0 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .guide-header a {
+      color: var(--accent);
+      text-decoration: none;
+      font-size: 14px;
+    }
+    .guide-header a:hover { color: var(--accent-hover); }
+    .guide-container {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 40px 20px 80px;
+    }
+    .guide-breadcrumb {
+      font-size: 13px;
+      color: var(--text-light);
+      margin-bottom: 20px;
+    }
+    .guide-breadcrumb a { color: var(--accent); text-decoration: none; }
+    .guide-breadcrumb a:hover { text-decoration: underline; }
+    h1 {
+      font-size: 32px;
+      font-weight: 700;
+      margin: 0 0 10px;
+      line-height: 1.3;
+      background: linear-gradient(135deg, #e0e0e0, #a78bfa);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .guide-meta {
+      font-size: 13px;
+      color: var(--text-light);
+      margin-bottom: 30px;
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .guide-meta span { display: flex; align-items: center; gap: 4px; }
+    h2 {
+      font-size: 22px;
+      font-weight: 600;
+      margin: 40px 0 16px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border);
+      color: #e0e0e0;
+    }
+    h3 {
+      font-size: 18px;
+      font-weight: 600;
+      margin: 28px 0 12px;
+      color: #ccc;
+    }
+    p { margin: 0 0 16px; color: #ccc; }
+    .guide-step {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px;
+      margin: 24px 0;
+      position: relative;
+    }
+    .guide-step-number {
+      position: absolute;
+      top: -12px;
+      left: 20px;
+      background: var(--accent);
+      color: #fff;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: 700;
+    }
+    .guide-step h3 { margin-top: 0; }
+    .guide-img {
+      max-width: 100%;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      margin: 16px 0;
+      display: block;
+    }
+    .guide-img-caption {
+      text-align: center;
+      font-size: 13px;
+      color: var(--text-light);
+      margin: 4px 0 16px;
+    }
+    .guide-tip {
+      background: rgba(99,102,241,0.1);
+      border-left: 4px solid var(--accent);
+      padding: 12px 16px;
+      border-radius: 0 8px 8px 0;
+      margin: 16px 0;
+      font-size: 14px;
+      color: #ccc;
+    }
+    .guide-tip strong { color: #a78bfa; }
+    .guide-cover {
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      margin: 24px 0;
+      max-width: 100%;
+      display: block;
+    }
+    .guide-gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 16px;
+      margin: 16px 0;
+    }
+    .guide-gallery-item {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+      text-align: center;
+    }
+    .guide-gallery-item img { width: 100%; display: block; }
+    .guide-gallery-item .label {
+      padding: 8px;
+      font-size: 13px;
+      color: var(--text-light);
+    }
+    .guide-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16px 0;
+      font-size: 14px;
+    }
+    .guide-table th, .guide-table td {
+      border: 1px solid var(--border);
+      padding: 10px 14px;
+      text-align: left;
+    }
+    .guide-table th { background: var(--bg-card); color: #e0e0e0; font-weight: 600; }
+    .guide-table td { color: #ccc; }
+    .guide-cta {
+      text-align: center;
+      background: linear-gradient(135deg, #1a1a2e, #16213e);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 32px;
+      margin: 40px 0;
+    }
+    .guide-cta p { font-size: 16px; margin-bottom: 20px; }
+    .guide-cta .btn {
+      display: inline-block;
+      background: linear-gradient(135deg, #6366f1, #8b5cf6);
+      color: #fff;
+      padding: 12px 32px;
+      border-radius: 30px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 16px;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .guide-cta .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(99,102,241,0.3); }
+    .footer-nav {
+      margin-top: 40px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      font-size: 14px;
+    }
+    .footer-nav a { color: var(--accent); text-decoration: none; }
+    .footer-nav a:hover { text-decoration: underline; }
+    @media (max-width: 600px) {
+      h1 { font-size: 24px; }
+      .guide-container { padding: 20px 16px 60px; }
+      .guide-step { padding: 20px 16px; }
+      .guide-gallery { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <header class="guide-header">
+    <div class="guide-header-inner">
+      <a href="https://toolai.ccwu.cc/">🧰 ToolBox 首页</a>
+      <a href="../index.html#guides">📖 工具箱指南</a>
+    </div>
+  </header>
+
+  <div class="guide-container">
+    <!-- 面包屑 -->
+    <div class="guide-breadcrumb">
+      <a href="https://toolai.ccwu.cc/">首页</a> / <a href="../index.html#guides">工具箱指南</a> / 九宫格切图
+    </div>
+
+    <h1>九宫格切图：3步把照片切成朋友圈九宫格</h1>
+
+    <div class="guide-meta">
+      <span>📅 2026-08-15</span>
+      <span>✏️ ToolBox 编辑部</span>
+      <span>📖 阅读约 4 分钟</span>
+    </div>
+
+    <p>想发一条高点赞的朋友圈，却发现别人的照片总是九张拼成一大张、点开来还能看到细节？那其实就是「九宫格」的玩法——把一张照片切成 3×3 共 9 小块，发圈时按顺序选上，朋友圈主页就会拼成一张完整的超大图，效果惊艳。</p>
+
+    <p>以前要实现这个效果，得下载各种 APP，或者打开 PS 手动切割，麻烦还容易切歪。<strong>九宫格切图工具</strong> 把整个过程压缩到 3 步：选图 → 一键分割 → 下载，全程在浏览器里完成，不需要注册，完全免费。</p>
+
+    <img src="images/9grid-cover.png" alt="九宫格切图效果示意：一张风景照切成9块拼成朋友圈九宫格" class="guide-cover">
+    <div class="guide-img-caption">▲ 一张风景照切成 9 块，发朋友圈自动拼成完整大图的效果</div>
+
+    <!-- ====== 第一步 ====== -->
+    <div class="guide-step">
+      <div class="guide-step-number">1</div>
+      <h3>打开九宫格切图工具并选择图片</h3>
+      <p>进入 ToolBox 首页，点击「图片处理」分类，找到「🧩 九宫格切图」工具卡片，点击进入。</p>
+      <p>工具界面非常简洁：一个「选择图片」按钮和一个「分割九宫格」按钮。点击 <strong>选择图片</strong>，从电脑里挑出你想切的照片即可。</p>
+      <div class="guide-tip">
+        <strong>💡 小技巧：</strong> 工具会自动把图片<strong>居中裁剪为正方形</strong>，切割后每一块都是严格等大的正方形，保证朋友圈拼图严丝合缝。方形构图或主体居中的照片效果最好。
+      </div>
+      <img src="images/9grid-step1-select.png" alt="九宫格切图工具界面 - 选择图片" class="guide-img">
+      <div class="guide-img-caption">▲ 进入工具后点击「选择图片」，支持 JPG / PNG / WebP 等常见格式</div>
+    </div>
+
+    <!-- ====== 第二步 ====== -->
+    <div class="guide-step">
+      <div class="guide-step-number">2</div>
+      <h3>一键分割九宫格</h3>
+      <p>图片选好后，点击 <strong>✂️ 分割九宫格</strong> 按钮，工具会立刻把图片切成 3×3 共 9 张等大的小图，并全部展示在下方。</p>
+      <p>切割是在你的浏览器里本地完成的，图片<strong>不会上传到任何服务器</strong>，隐私安全有保障。</p>
+      <img src="images/9grid-step2-result.png" alt="九宫格切图工具 - 分割完成显示九张图" class="guide-img">
+      <div class="guide-img-caption">▲ 点击「分割九宫格」后，9 张切好的图片立即展示，每块都可单独下载</div>
+    </div>
+
+    <!-- ====== 第三步 ====== -->
+    <div class="guide-step">
+      <div class="guide-step-number">3</div>
+      <h3>单独下载 or 一键打包下载</h3>
+      <p>切好之后有两种下载方式：</p>
+      <ul style="color:#ccc;padding-left:20px;margin:0 0 16px;">
+        <li><strong>单块下载：</strong>点击任意一块小图，即可单独保存对应那一片。</li>
+        <li><strong>📦 打包下载全部：</strong>点击「打包下载全部」按钮，9 张图会一次性打包成 ZIP 压缩包，解压后就能直接发朋友圈了。</li>
+      </ul>
+      <p>拿到 9 张图后，打开朋友圈，按从左到右、从上到下的顺序依次选中它们发布，主页上就会自动拼成一张完整的九宫格大图。</p>
+      <div class="guide-tip">
+        <strong>📌 注意顺序：</strong> 发朋友圈时选图顺序就是拼图顺序。第一张左上、第三张右上、第七张左下、第九张右下。选乱了拼出来就会错位哦。
+      </div>
+    </div>
+
+    <!-- ====== 使用场景 ====== -->
+    <h2>🎯 九宫格切图的 5 个实用场景</h2>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin:20px 0;">
+      <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:16px;text-align:center;">
+        <div style="font-size:28px;margin-bottom:8px;">💬</div>
+        <div style="font-weight:600;font-size:14px;margin-bottom:4px;">微信朋友圈</div>
+        <div style="font-size:12px;color:var(--text-light);">九张拼一张，主页效果爆炸</div>
+      </div>
+      <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:16px;text-align:center;">
+        <div style="font-size:28px;margin-bottom:8px;">📕</div>
+        <div style="font-weight:600;font-size:14px;margin-bottom:4px;">小红书 / 微博</div>
+        <div style="font-size:12px;color:var(--text-light);">封面拼图吸睛，点击单张看细节</div>
+      </div>
+      <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:16px;text-align:center;">
+        <div style="font-size:28px;margin-bottom:8px;">🎨</div>
+        <div style="font-weight:600;font-size:14px;margin-bottom:4px;">个性头像墙</div>
+        <div style="font-size:12px;color:var(--text-light);">一张大图切成九格当头像九连发</div>
+      </div>
+      <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:16px;text-align:center;">
+        <div style="font-size:28px;margin-bottom:8px;">🏞️</div>
+        <div style="font-weight:600;font-size:14px;margin-bottom:4px;">摄影作品展示</div>
+        <div style="font-size:12px;color:var(--text-light);">长图分块展示更有故事感</div>
+      </div>
+      <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:16px;text-align:center;">
+        <div style="font-size:28px;margin-bottom:8px;">🃏</div>
+        <div style="font-weight:600;font-size:14px;margin-bottom:4px;">拼图游戏素材</div>
+        <div style="font-size:12px;color:var(--text-light);">切成九块做互动小游戏</div>
+      </div>
+    </div>
+
+    <!-- ====== 常见问题 ====== -->
+    <h2>❓ 常见问题</h2>
+
+    <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:20px;margin:16px 0;">
+      <p><strong>Q：图片不是正方形，会被怎么处理？</strong></p>
+      <p>工具会自动把图片<strong>居中裁剪为正方形</strong>再切割。如果照片主体不在正中间，建议先自己裁好构图，效果更可控。</p>
+    </div>
+    <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:20px;margin:16px 0;">
+      <p><strong>Q：图片会上传到服务器吗？安全吗？</strong></p>
+      <p>不会。整个切割过程都在你的浏览器本地完成，图片不离开你的设备，隐私绝对安全。</p>
+    </div>
+    <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:20px;margin:16px 0;">
+      <p><strong>Q：打包下载是什么格式？</strong></p>
+      <p>9 张图会打包成一个 ZIP 压缩包，解压后即可获得 9 张独立的 JPG/PNG 图片，直接发朋友圈即可。</p>
+    </div>
+    <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:20px;margin:16px 0;">
+      <p><strong>Q：有使用次数限制吗？</strong></p>
+      <p>完全没有，免费、无限次使用，也不需要注册登录。</p>
+    </div>
+
+    <!-- ====== CTA ====== -->
+    <div class="guide-cta">
+      <p>📌 挑一张好看的照片，现在就切成你的第一组朋友圈九宫格吧</p>
+      <a href="https://toolai.ccwu.cc/" class="btn">🧩 去切图 →</a>
+    </div>
+
+    <!-- ====== 底部导航 ====== -->
+    <div class="footer-nav">
+      <a href="../index.html#guides">← 返回工具箱指南列表</a>
+      <a href="https://toolai.ccwu.cc/">🏠 回到首页</a>
+    </div>
+  </div>
+</body>
+</html>
