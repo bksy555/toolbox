@@ -346,10 +346,10 @@
         <span class="music-widget-badge" id="musicWidgetBadge">搜歌听歌</span>
       </div>
       <div class="music-widget-controls">
-        <span class="music-widget-toggle" id="musicWidgetToggle">▼</span>
+        <span class="music-widget-toggle collapsed" id="musicWidgetToggle">▼</span>
       </div>
     </div>
-    <div class="music-widget-body" id="musicWidgetBody">
+    <div class="music-widget-body hidden" id="musicWidgetBody">
       <!-- 搜索区域 -->
       <div class="music-search-row">
         <input type="text" class="music-search-input" id="musicSearchInput"
@@ -517,7 +517,7 @@
     songs: [],
     currentIndex: -1,
     isPlaying: false,
-    isCollapsed: false,
+    isCollapsed: true,
     playlist: [],       // 播放队列 [{song, idx}]
     playlistIdx: -1,    // 当前在播放列表中的位置
     favorites: []       // 收藏夹
