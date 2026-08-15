@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🔍 深探 - 未解之谜与世界真相 | ToolBox</title>
+  <meta name="description" content="探索外星文明、未解之谜、各国隐秘事件——每天一个深度话题，带你看见世界不为人知的另一面。">
+  <meta name="keywords" content="外星文明,UFO,未解之谜,维基解密,隐秘事件,深度探索,揭秘">
+  <meta name="author" content="ToolBox">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://toolai.ccwu.cc/wikileaks.html">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    body {
+      background: #0a0a12;
+      color: #d0d0d0;
+    }
+    .wl-header {
+      background: linear-gradient(135deg, #0a0a12 0%, #1a0a2e 50%, #0a0a12 100%);
+      border-bottom: 1px solid #2a1a4e;
+      padding: 60px 20px 40px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .wl-header::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle at 30% 50%, rgba(99,102,241,0.05) 0%, transparent 50%),
+                  radial-gradient(circle at 70% 50%, rgba(139,92,246,0.05) 0%, transparent 50%);
+      animation: wlGlow 8s ease-in-out infinite alternate;
+    }
+    @keyframes wlGlow {
+      0% { transform: translate(0, 0); }
+      100% { transform: translate(-20px, -20px); }
+    }
+    .wl-header-inner {
+      position: relative;
+      z-index: 1;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    .wl-header h1 {
+      font-size: 36px;
+      font-weight: 800;
+      margin: 0 0 10px;
+      background: linear-gradient(135deg, #a78bfa, #6366f1, #06b6d4);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .wl-header .subtitle {
+      font-size: 16px;
+      color: #8888aa;
+      margin: 0 0 20px;
+    }
+    .wl-header .badge {
+      display: inline-block;
+      background: rgba(99,102,241,0.15);
+      border: 1px solid rgba(99,102,241,0.3);
+      color: #a78bfa;
+      padding: 4px 14px;
+      border-radius: 20px;
+      font-size: 12px;
+    }
+    .wl-container {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 30px 20px 60px;
+    }
+    .wl-article {
+      background: #12121e;
+      border: 1px solid #2a2a44;
+      border-radius: 16px;
+      overflow: hidden;
+      margin-bottom: 30px;
+    }
+    .wl-article-image {
+      width: 100%;
+      height: 360px;
+      object-fit: cover;
+      display: block;
+      background: #1a1a2e;
+    }
+    .wl-article-body {
+      padding: 28px 30px;
+    }
+    .wl-article-tag {
+      display: inline-block;
+      background: rgba(99,102,241,0.15);
+      color: #a78bfa;
+      font-size: 12px;
+      padding: 3px 12px;
+      border-radius: 20px;
+      margin-bottom: 12px;
+    }
+    .wl-article-body h2 {
+      font-size: 24px;
+      font-weight: 700;
+      color: #e0e0e0;
+      margin: 0 0 16px;
+      line-height: 1.4;
+    }
+    .wl-article-body .date {
+      font-size: 13px;
+      color: #666688;
+      margin-bottom: 16px;
+    }
+    .wl-article-body p {
+      font-size: 15px;
+      line-height: 1.9;
+      color: #b0b0c0;
+      margin: 0 0 14px;
+    }
+    .wl-article-body p:last-child { margin-bottom: 0; }
+    .wl-article-body .highlight {
+      background: linear-gradient(135deg, rgba(99,102,241,0.1), rgba(139,92,246,0.1));
+      border-left: 3px solid #6366f1;
+      padding: 16px 20px;
+      border-radius: 0 8px 8px 0;
+      margin: 18px 0;
+      font-size: 14px;
+      color: #c0c0d0;
+    }
+    .wl-article-body .highlight strong { color: #a78bfa; }
+    .wl-article-body .source {
+      font-size: 12px;
+      color: #555577;
+      margin-top: 16px;
+      padding-top: 14px;
+      border-top: 1px solid #2a2a44;
+    }
+    .wl-article-body .source a { color: #6366f1; text-decoration: none; }
+    .wl-article-body .source a:hover { text-decoration: underline; }
+
+    .wl-archive {
+      background: #12121e;
+      border: 1px solid #2a2a44;
+      border-radius: 16px;
+      padding: 24px 30px;
+      margin-top: 20px;
+    }
+    .wl-archive h3 {
+      font-size: 18px;
+      font-weight: 600;
+      color: #e0e0e0;
+      margin: 0 0 16px;
+    }
+    .wl-archive-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .wl-archive-list li {
+      padding: 10px 0;
+      border-bottom: 1px solid #2a2a44;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .wl-archive-list li:last-child { border-bottom: none; }
+    .wl-archive-list a {
+      color: #b0b0c0;
+      text-decoration: none;
+      font-size: 14px;
+      transition: color 0.2s;
+    }
+    .wl-archive-list a:hover { color: #a78bfa; }
+    .wl-archive-list .arch-date {
+      font-size: 12px;
+      color: #555577;
+    }
+    .wl-empty {
+      text-align: center;
+      padding: 60px 20px;
+      color: #666688;
+    }
+    .wl-empty .icon { font-size: 48px; margin-bottom: 16px; }
+    .wl-empty p { font-size: 15px; color: #8888aa; }
+
+    .wl-nav {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 16px 20px 0;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .wl-nav a {
+      color: #8888aa;
+      text-decoration: none;
+      font-size: 14px;
+      transition: color 0.2s;
+    }
+    .wl-nav a:hover { color: #a78bfa; }
+    .wl-nav .logo-link {
+      font-weight: 700;
+      color: #a78bfa;
+      font-size: 16px;
+    }
+
+    @media (max-width: 600px) {
+      .wl-header h1 { font-size: 26px; }
+      .wl-article-image { height: 220px; }
+      .wl-article-body { padding: 20px; }
+      .wl-article-body h2 { font-size: 20px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wl-nav">
+    <a href="index.html" class="logo-link">🧰 ToolBox</a>
+    <span style="color:#444466;">/</span>
+    <a href="index.html#wikileaks">🔍 深探专栏</a>
+  </div>
+
+  <header class="wl-header">
+    <div class="wl-header-inner">
+      <h1>🔍 深探</h1>
+      <p class="subtitle">外星文明 · 未解之谜 · 世界隐秘事件 —— 每天一个深度话题</p>
+      <span class="badge" id="wl-today-badge">📅 今日更新</span>
+    </div>
+  </header>
+
+  <div class="wl-container" id="wl-container">
+    <div class="wl-empty" id="wl-loading">
+      <div class="icon">🔍</div>
+      <p>正在加载今日内容…</p>
+    </div>
+  </div>
+
+  <script>
+    // ====== 加载文章数据 ======
+    function loadWikileaks() {
+      fetch('data/wikileaks.json?t=' + Date.now())
+        .then(function(r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+        .then(function(data) { renderWikileaks(data); })
+        .catch(function(err) {
+          console.log('深探加载失败:', err);
+          document.getElementById('wl-container').innerHTML =
+            '<div class="wl-empty"><div class="icon">📡</div><p>内容加载中，请稍后刷新查看…</p></div>';
+        });
+    }
+
+    function renderWikileaks(data) {
+      var container = document.getElementById('wl-container');
+      var html = '';
+
+      if (data.today) {
+        var article = data.today;
+        html += '<div class="wl-article">';
+        if (article.image) {
+          html += '<img class="wl-article-image" src="' + article.image + '" alt="' + escapeHtml(article.title) + '" loading="lazy" onerror="this.style.display=\'none\'">';
+        }
+        html += '<div class="wl-article-body">';
+        html += '<span class="wl-article-tag">' + escapeHtml(article.tag || '今日探索') + '</span>';
+        html += '<h2>' + escapeHtml(article.title) + '</h2>';
+        html += '<div class="date">📅 ' + (article.date || '') + ' &nbsp;|&nbsp; ⏱ ' + (article.readTime || '约5分钟') + '</div>';
+        var paragraphs = article.content || [];
+        for (var i = 0; i < paragraphs.length; i++) {
+          var p = paragraphs[i];
+          if (p.type === 'highlight') {
+            html += '<div class="highlight">' + p.text + '</div>';
+          } else {
+            html += '<p>' + p.text + '</p>';
+          }
+        }
+        if (article.sources && article.sources.length > 0) {
+          html += '<div class="source">📚 参考来源：';
+          for (var s = 0; s < article.sources.length; s++) {
+            html += '<a href="' + article.sources[s].url + '" target="_blank" rel="noopener">' + escapeHtml(article.sources[s].name) + '</a>';
+            if (s < article.sources.length - 1) html += ' · ';
+          }
+          html += '</div>';
+        }
+        html += '</div></div>';
+
+        document.getElementById('wl-today-badge').textContent = '📅 ' + (article.date || '今日更新');
+      } else {
+        html += '<div class="wl-empty"><div class="icon">📡</div><p>今日内容正在准备中，请稍后再来…</p></div>';
+      }
+
+      // 历史文章
+      if (data.archive && data.archive.length > 0) {
+        html += '<div class="wl-archive"><h3>📜 往期探索</h3><ul class="wl-archive-list">';
+        for (var i = 0; i < data.archive.length; i++) {
+          var a = data.archive[i];
+          html += '<li><a href="wikileaks.html?article=' + encodeURIComponent(a.id) + '">' + escapeHtml(a.title) + '</a><span class="arch-date">' + (a.date || '') + '</span></li>';
+        }
+        html += '</ul></div>';
+      }
+
+      container.innerHTML = html;
+    }
+
+    function escapeHtml(text) {
+      if (!text) return '';
+      var div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      setTimeout(loadWikileaks, 300);
+    });
+  </script>
+  <footer class="footer" style="margin-top:0;">
+    <p>🔍 深探 &mdash; 探索未知，看见真相</p>
+    <p style="margin-top:8px;font-size:13px;">
+      <a href="index.html">首页</a> &middot;
+      <a href="privacy.html">隐私政策</a> &middot;
+      <a href="about.html">关于我们</a> &middot;
+      <a href="contact.html">联系我们</a>
+    </p>
+    <p style="margin-top:8px;font-size:12px;opacity:0.6;">&copy; 2026 ToolBox. All rights reserved.</p>
+  </footer>
+</body>
+</html>

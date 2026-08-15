@@ -98,6 +98,7 @@
         <a href="#" onclick="scrollToCategory('ai')">AI工具</a>
         <a href="#" onclick="scrollToCategory('voice')">群众心声</a>
         <a href="#guides" onclick="document.getElementById('guides').scrollIntoView({behavior:'smooth'});return false;">📖 指南</a>
+        <a href="wikileaks.html">🔍 深探</a>
       </nav>
     </div>
   </header>
@@ -118,6 +119,9 @@
       </a>
       <a href="#guides" style="display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,#f59e0b,#d97706);color:white;padding:10px 24px;border-radius:30px;text-decoration:none;font-weight:700;font-size:0.95rem;box-shadow:0 4px 12px rgba(0,0,0,0.1);transition:all 0.2s;margin-left:10px;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
         📖 工具箱指南 →
+      </a>
+      <a href="wikileaks.html" style="display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,#7c3aed,#6366f1);color:white;padding:10px 24px;border-radius:30px;text-decoration:none;font-weight:700;font-size:0.95rem;box-shadow:0 4px 12px rgba(0,0,0,0.1);transition:all 0.2s;margin-left:10px;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
+        🔍 深探专栏 →
       </a>
     </div>
   </section>
@@ -162,6 +166,20 @@
 
   <!-- ====== Tool Pages ====== -->
   <div id="toolPages"></div>
+
+  <!-- ====== 深探专栏 ====== -->
+  <section class="wl-home-section" id="wikileaks">
+    <div class="wl-home-header">
+      <h2>🔍 深探专栏</h2>
+      <p>外星文明 · 未解之谜 · 世界隐秘事件 —— 每天一个深度话题</p>
+    </div>
+    <div class="wl-home-article" id="wl-home-article">
+      <div class="wl-home-loading">📡 加载中…</div>
+    </div>
+    <div style="text-align:center;margin-top:16px;">
+      <a href="wikileaks.html" class="wl-home-more">📖 查看全部探索 →</a>
+    </div>
+  </section>
 
   <!-- ====== 工具箱指南 ====== -->
   <section class="guides-section" id="guides">
@@ -220,6 +238,43 @@
   <script src="js/new_handlers2.js"></script>
   <script src="js/tools-new.js"></script>
   <script src="js/daily-news.js"></script>
+  <script>
+  // ====== 深探专栏首页加载 ======
+  function loadWLHome() {
+    fetch('data/wikileaks.json?t=' + Date.now())
+      .then(function(r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+      .then(function(data) {
+        var container = document.getElementById('wl-home-article');
+        if (!container) return;
+        if (data.today) {
+          var a = data.today;
+          var html = '<a href="wikileaks.html" class="wl-home-card">';
+          if (a.image && a.image_home) {
+            html += '<img class="wl-home-card-img" src="' + a.image_home + '" alt="' + escHtml(a.title) + '" loading="lazy" onerror="this.style.display=\'none\'">';
+          } else if (a.image) {
+            html += '<img class="wl-home-card-img" src="' + a.image + '" alt="' + escHtml(a.title) + '" loading="lazy" onerror="this.style.display=\'none\'">';
+          }
+          var summary = '';
+          if (a.content && a.content.length > 0) {
+            summary = a.content[0].text || '';
+          }
+          html += '<div class="wl-home-card-body">';
+          html += '<span class="wl-home-card-tag">' + escHtml(a.tag || '今日探索') + '</span>';
+          html += '<h3>' + escHtml(a.title) + '</h3>';
+          html += '<p>' + escHtml(summary.replace(/<[^>]*>/g, '').substring(0, 120)) + '…</p>';
+          html += '</div></a>';
+          container.innerHTML = html;
+        } else {
+          container.innerHTML = '<div class="wl-home-loading" style="padding:24px;">📡 今日内容正在准备中，请稍后再来</div>';
+        }
+      })
+      .catch(function(err) {
+        var container = document.getElementById('wl-home-article');
+        if (container) container.innerHTML = '<div class="wl-home-loading" style="padding:24px;">📡 内容加载中，请稍后刷新</div>';
+      });
+  }
+  document.addEventListener('DOMContentLoaded', function() { setTimeout(loadWLHome, 800); });
+  </script>
   <!-- ====== 音乐播放器脚本 ====== -->
   <script>
   // ====== 状态 ======

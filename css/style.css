@@ -395,6 +395,107 @@ body {
   justify-content: center;
 }
 
+/* ---- Wikileaks Home Section ---- */
+.wl-home-section {
+  max-width: 960px;
+  margin: 40px auto;
+  padding: 0 20px;
+}
+.wl-home-header {
+  text-align: center;
+  margin-bottom: 24px;
+}
+.wl-home-header h2 {
+  font-size: 26px;
+  font-weight: 700;
+  margin: 0 0 8px;
+  color: var(--text);
+}
+.wl-home-header p {
+  color: var(--text-light);
+  font-size: 14px;
+  margin: 0;
+}
+.wl-home-article {
+  background: linear-gradient(135deg, #f8f6ff, #f0eeff);
+  border: 1px solid #e0d8ff;
+  border-radius: 14px;
+  overflow: hidden;
+  min-height: 120px;
+}
+.wl-home-loading {
+  text-align: center;
+  padding: 40px;
+  color: var(--text-light);
+  font-size: 14px;
+}
+.wl-home-card {
+  display: flex;
+  gap: 0;
+  text-decoration: none;
+  color: inherit;
+  min-height: 160px;
+}
+.wl-home-card-img {
+  width: 260px;
+  min-height: 160px;
+  flex-shrink: 0;
+  object-fit: cover;
+  display: block;
+  background: #e0d8ff;
+}
+.wl-home-card-body {
+  flex: 1;
+  padding: 20px 24px;
+  display: flex;
+  flex-direction: column;
+}
+.wl-home-card-tag {
+  display: inline-block;
+  background: rgba(99,102,241,0.12);
+  color: #6366f1;
+  font-size: 11px;
+  padding: 2px 10px;
+  border-radius: 20px;
+  margin-bottom: 8px;
+  align-self: flex-start;
+}
+.wl-home-card-body h3 {
+  font-size: 17px;
+  font-weight: 600;
+  margin: 0 0 8px;
+  line-height: 1.4;
+  color: #1e293b;
+}
+.wl-home-card-body p {
+  font-size: 13px;
+  color: #64748b;
+  margin: 0;
+  flex: 1;
+  line-height: 1.6;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.wl-home-more {
+  display: inline-block;
+  color: #6366f1;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 8px 20px;
+  border-radius: 20px;
+  transition: background 0.2s;
+}
+.wl-home-more:hover { background: rgba(99,102,241,0.08); }
+
+@media (max-width: 600px) {
+  .wl-home-card { flex-direction: column; }
+  .wl-home-card-img { width: 100%; height: 180px; }
+  .wl-home-card-body { padding: 16px; }
+}
+
 /* ---- Guides Section ---- */
 .guides-section {
   max-width: 960px;
