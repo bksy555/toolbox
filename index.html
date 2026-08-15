@@ -97,6 +97,7 @@
         <a href="#" onclick="scrollToCategory('edu')">📚 教材</a>
         <a href="#" onclick="scrollToCategory('ai')">AI工具</a>
         <a href="#" onclick="scrollToCategory('voice')">群众心声</a>
+        <a href="#guides" onclick="document.getElementById('guides').scrollIntoView({behavior:'smooth'});return false;">📖 指南</a>
       </nav>
     </div>
   </header>
@@ -114,6 +115,9 @@
       </a>
       <a href="#" onclick="document.getElementById('categoryGrid').scrollIntoView({behavior:'smooth'});return false;" style="display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,#10b981,#059669);color:white;padding:10px 24px;border-radius:30px;text-decoration:none;font-weight:700;font-size:0.95rem;box-shadow:0 4px 12px rgba(0,0,0,0.1);transition:all 0.2s;margin-left:10px;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
         🧰 全部工具 →
+      </a>
+      <a href="#guides" style="display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,#f59e0b,#d97706);color:white;padding:10px 24px;border-radius:30px;text-decoration:none;font-weight:700;font-size:0.95rem;box-shadow:0 4px 12px rgba(0,0,0,0.1);transition:all 0.2s;margin-left:10px;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
+        📖 工具箱指南 →
       </a>
     </div>
   </section>
@@ -158,6 +162,27 @@
 
   <!-- ====== Tool Pages ====== -->
   <div id="toolPages"></div>
+
+  <!-- ====== 工具箱指南 ====== -->
+  <section class="guides-section" id="guides">
+    <div class="guides-header">
+      <h2>📖 工具箱指南</h2>
+      <p>学会用工具，效率翻倍——每篇指南都配有图文步骤，边看边用</p>
+    </div>
+    <div class="guides-grid">
+      <a href="guides/stamp-maker-guide.html" class="guide-card">
+        <div class="guide-card-img">
+          <img src="guides/images/stamp-default.png" alt="在线制作印章教程" loading="lazy">
+        </div>
+        <div class="guide-card-body">
+          <span class="guide-card-tag">🔖 图片处理</span>
+          <h3>在线制作印章：3步生成你的专属电子印章</h3>
+          <p>12种样式、8种字体，从方形名章到龙纹印章，图文详解每一步操作。</p>
+          <span class="guide-card-link">阅读全文 →</span>
+        </div>
+      </a>
+    </div>
+  </section>
 
   <!-- ====== 首页广告位 ====== -->
   <div class="ad-slot" id="adSlot">

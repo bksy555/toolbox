@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>在线制作印章：3步生成专属电子印章（12种样式） - ToolBox 工具箱指南</title>
+  <meta name="description" content="图文详解在线制作印章的完整步骤，支持12种印章样式、8种字体，方形圆形仿古龙纹全都有，免费在线使用，无需注册。">
+  <meta name="keywords" content="在线制作印章,电子印章,印章生成器,在线印章,免费印章,个人印章,签名章">
+  <meta name="author" content="ToolBox">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://toolai.ccwu.cc/guides/stamp-maker-guide.html">
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    :root {
+      --bg: #0f0f1a;
+      --bg-card: #1a1a2e;
+      --text: #e0e0e0;
+      --text-light: #8888aa;
+      --border: #2a2a44;
+      --accent: #6366f1;
+      --accent-hover: #4f46e5;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Noto Sans SC', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      margin: 0;
+      line-height: 1.8;
+    }
+    .guide-header {
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+      border-bottom: 1px solid var(--border);
+      padding: 20px 0;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(10px);
+    }
+    .guide-header-inner {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 0 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .guide-header a {
+      color: var(--accent);
+      text-decoration: none;
+      font-size: 14px;
+    }
+    .guide-header a:hover { color: var(--accent-hover); }
+    .guide-container {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 40px 20px 80px;
+    }
+    .guide-breadcrumb {
+      font-size: 13px;
+      color: var(--text-light);
+      margin-bottom: 20px;
+    }
+    .guide-breadcrumb a { color: var(--accent); text-decoration: none; }
+    .guide-breadcrumb a:hover { text-decoration: underline; }
+    h1 {
+      font-size: 32px;
+      font-weight: 700;
+      margin: 0 0 10px;
+      line-height: 1.3;
+      background: linear-gradient(135deg, #e0e0e0, #a78bfa);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .guide-meta {
+      font-size: 13px;
+      color: var(--text-light);
+      margin-bottom: 30px;
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .guide-meta span { display: flex; align-items: center; gap: 4px; }
+    h2 {
+      font-size: 22px;
+      font-weight: 600;
+      margin: 40px 0 16px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border);
+      color: #e0e0e0;
+    }
+    h3 {
+      font-size: 18px;
+      font-weight: 600;
+      margin: 28px 0 12px;
+      color: #ccc;
+    }
+    p { margin: 0 0 16px; color: #ccc; }
+    .guide-step {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px;
+      margin: 24px 0;
+      position: relative;
+    }
+    .guide-step-number {
+      position: absolute;
+      top: -12px;
+      left: 20px;
+      background: var(--accent);
+      color: #fff;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: 700;
+    }
+    .guide-step h3 { margin-top: 0; }
+    .guide-img {
+      max-width: 100%;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      margin: 16px 0;
+      display: block;
+    }
+    .guide-img-caption {
+      text-align: center;
+      font-size: 13px;
+      color: var(--text-light);
+      margin: 4px 0 16px;
+    }
+    .guide-tip {
+      background: rgba(99,102,241,0.1);
+      border-left: 4px solid var(--accent);
+      padding: 12px 16px;
+      border-radius: 0 8px 8px 0;
+      margin: 16px 0;
+      font-size: 14px;
+      color: #ccc;
+    }
+    .guide-tip strong { color: #a78bfa; }
+    .guide-gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 16px;
+      margin: 16px 0;
+    }
+    .guide-gallery-item {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+      text-align: center;
+    }
+    .guide-gallery-item img { width: 100%; display: block; }
+    .guide-gallery-item .label {
+      padding: 8px;
+      font-size: 13px;
+      color: var(--text-light);
+    }
+    .guide-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16px 0;
+      font-size: 14px;
+    }
+    .guide-table th, .guide-table td {
+      border: 1px solid var(--border);
+      padding: 10px 14px;
+      text-align: left;
+    }
+    .guide-table th { background: var(--bg-card); color: #e0e0e0; font-weight: 600; }
+    .guide-table td { color: #ccc; }
+    .guide-cta {
+      text-align: center;
+      background: linear-gradient(135deg, #1a1a2e, #16213e);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 32px;
+      margin: 40px 0;
+    }
+    .guide-cta p { font-size: 16px; margin-bottom: 20px; }
+    .guide-cta .btn {
+      display: inline-block;
+      background: linear-gradient(135deg, #6366f1, #8b5cf6);
+      color: #fff;
+      padding: 12px 32px;
+      border-radius: 30px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 16px;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .guide-cta .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(99,102,241,0.3); }
+    .footer-nav {
+      margin-top: 40px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      font-size: 14px;
+    }
+    .footer-nav a { color: var(--accent); text-decoration: none; }
+    .footer-nav a:hover { text-decoration: underline; }
+    @media (max-width: 600px) {
+      h1 { font-size: 24px; }
+      .guide-container { padding: 20px 16px 60px; }
+      .guide-step { padding: 20px 16px; }
+      .guide-gallery { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <header class="guide-header">
+    <div class="guide-header-inner">
+      <a href="https://toolai.ccwu.cc/">🧰 ToolBox 首页</a>
+      <a href="../index.html#guides">📖 工具箱指南</a>
+    </div>
+  </header>
+
+  <div class="guide-container">
+    <!-- 面包屑 -->
+    <div class="guide-breadcrumb">
+      <a href="https://toolai.ccwu.cc/">首页</a> / <a href="../index.html#guides">工具箱指南</a> / 在线制作印章
+    </div>
+
+    <h1>在线制作印章：3步生成你的专属电子印章</h1>
+
+    <div class="guide-meta">
+      <span>📅 2026-08-15</span>
+      <span>✏️ ToolBox 编辑部</span>
+      <span>📖 阅读约 5 分钟</span>
+    </div>
+
+    <p>你有没有遇到过这种情况？签电子合同需要盖章，手边没有实体印章；做设计加水印，想要一个个性签名图案；或者只是想给朋友做一枚有趣的"名章"当礼物……</p>
+
+    <p><strong>在线制作印章</strong> 就是解决这些问题的。选好字体和样式，输入你的名字，3 步就能生成一枚可以直接下载的电子印章。支持 12 种样式、8 种字体，从传统的方形名章到仿古龙纹印章，从质朴的阴刻到精致的阳刻——总有一款适合你。</p>
+
+    <p>而且全程在浏览器里完成，不需要装软件，不需要注册账号，完全免费。</p>
+
+    <!-- ====== 第一步 ====== -->
+    <div class="guide-step">
+      <div class="guide-step-number">1</div>
+      <h3>打开印章制作工具</h3>
+      <p>进入 ToolBox 首页，点击「图片处理」分类，找到「在线制作印章」工具卡片；或者直接点击下方按钮快速进入。</p>
+      <div style="text-align:center;margin:16px 0;">
+        <a href="https://toolai.ccwu.cc/" class="guide-cta-btn" style="display:inline-block;background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff;padding:10px 24px;border-radius:30px;text-decoration:none;font-weight:600;font-size:15px;" onclick="alert('请先回到首页，点击「图片处理」分类找到「在线制作印章」工具')">🚀 打开印章工具</a>
+      </div>
+      <p>工具的界面非常简洁，从上到下依次是：<strong>字体选择</strong>、<strong>样式选择</strong>、<strong>文字输入</strong>、<strong>制作按钮</strong> 和 <strong>预览区域</strong>。默认已经预填了"李白"两个字，并选择了方篆字体和方形阳刻圆角样式，打开就能看到效果。</p>
+      <img src="images/stamp-default.png" alt="在线制作印章工具界面 - 默认样式" class="guide-img">
+      <div class="guide-img-caption">▲ 打开工具后默认显示的样式，输入框、字体和样式选择一目了然</div>
+    </div>
+
+    <!-- ====== 第二步 ====== -->
+    <div class="guide-step">
+      <div class="guide-step-number">2</div>
+      <h3>选样式、选字体、输入文字</h3>
+      <p>这是最有趣的一步。你可以像搭积木一样组合出自己想要的印章效果：</p>
+
+      <h3>🎨 12 种印章样式一览</h3>
+      <table class="guide-table">
+        <thead>
+          <tr><th>样式</th><th>名称</th><th>适用场景</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>样式一</td><td>方形阳刻圆角</td><td>日常签名、电子合同，最百搭</td></tr>
+          <tr><td>样式二</td><td>方形阴刻圆角</td><td>白底印章效果，适合浅色背景</td></tr>
+          <tr><td>样式三</td><td>方形阳刻印章</td><td>传统名章，书法作品落款</td></tr>
+          <tr><td>样式四</td><td>方形阴刻印章</td><td>古朴风格，适合书画作品</td></tr>
+          <tr><td>样式五</td><td>圆形阴刻印章</td><td>公章风格，正式文件</td></tr>
+          <tr><td>样式六</td><td>圆形阳刻印章</td><td>圆章效果，水印专用</td></tr>
+          <tr><td>样式七</td><td><strong>圆形龙纹印章</strong></td><td>最炫酷！龙纹边框，个性十足 🔥</td></tr>
+          <tr><td>样式八</td><td>长方形印章</td><td>横长条，适合狭小空间</td></tr>
+          <tr><td>样式九</td><td>仿古方形阴刻</td><td>仿古做旧，古风爱好者首选</td></tr>
+          <tr><td>样式十</td><td>仿古方形阳刻汉印</td><td>汉代印章风格，有历史感</td></tr>
+          <tr><td>样式十一</td><td><strong>仿古圆形阳刻印戳</strong></td><td>印戳风格，复古文艺 🔥</td></tr>
+          <tr><td>样式十二</td><td>仿古圆形阴刻</td><td>意境感强，适合艺术创作</td></tr>
+        </tbody>
+      </table>
+
+      <h3>🔤 8 种字体可选</h3>
+      <p>方篆（默认）、魏碑、宋体、篆书、隶书、黑体、圆体、金文。每种字体配合不同的样式效果完全不同，建议多试几种组合看看效果。</p>
+
+      <div class="guide-tip">
+        <strong>💡 小技巧：</strong> 输入 2 个字的姓名效果最紧凑好看。3~4 个字（如"浩然印"）适合更宽的仿古样式。文字过长效果反而不好。
+      </div>
+
+      <p>下面两张图展示了不同样式 + 不同文字的效果对比：</p>
+
+      <div class="guide-gallery">
+        <div class="guide-gallery-item">
+          <img src="images/stamp-dragon.png" alt="圆形龙纹印章效果">
+          <div class="label">🐉 样式七：圆形龙纹印章 — 文字"李白"</div>
+        </div>
+        <div class="guide-gallery-item">
+          <img src="images/stamp-antique.png" alt="仿古圆形阳刻印戳效果">
+          <div class="label">🏺 样式十一：仿古圆形阳刻印戳 — 文字"浩然印"</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ====== 第三步 ====== -->
+    <div class="guide-step">
+      <div class="guide-step-number">3</div>
+      <h3>生成并下载 PNG 图片</h3>
+      <p>选好组合后，点击「🖌️ 制作印章」按钮，印章就会立刻渲染在画布上。如果满意，点击「⬇️ 下载印章PNG」按钮，图片会自动保存到你的电脑。</p>
+      <p>下载的图片是 <strong>400×400 像素的 PNG 格式</strong>，带透明背景（阴刻样式为白底），可以直接用于电子文档、水印、设计素材等场景。</p>
+
+      <div class="guide-tip">
+        <strong>📌 使用建议：</strong> 下载后可以插入到 Word/PDF 文档中作为签名章，或作为图片水印叠加到你的作品上。龙纹印章做水印效果特别出彩！
+      </div>
+    </div>
+
+    <!-- ====== 使用场景 ====== -->
+    <h2>🎯 电子印章的 5 个实用场景</h2>
+
+    <p>做好的印章图片能用在哪些地方？这里列举几个最常见的场景：</p>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin:20px 0;">
+      <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:16px;text-align:center;">
+        <div style="font-size:28px;margin-bottom:8px;">📄</div>
+        <div style="font-weight:600;font-size:14px;margin-bottom:4px;">电子合同签名</div>
+        <div style="font-size:12px;color:var(--text-light);">插入 Word/PDF 作为签名章</div>
+      </div>
+      <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:16px;text-align:center;">
+        <div style="font-size:28px;margin-bottom:8px;">💧</div>
+        <div style="font-weight:600;font-size:14px;margin-bottom:4px;">图片水印</div>
+        <div style="font-size:12px;color:var(--text-light);">叠加到作品照片上防盗用</div>
+      </div>
+      <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:16px;text-align:center;">
+        <div style="font-size:28px;margin-bottom:8px;">🎨</div>
+        <div style="font-weight:600;font-size:14px;margin-bottom:4px;">设计素材</div>
+        <div style="font-size:12px;color:var(--text-light);">海报、贺卡、名片装饰</div>
+      </div>
+      <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:16px;text-align:center;">
+        <div style="font-size:28px;margin-bottom:8px;">🎁</div>
+        <div style="font-weight:600;font-size:14px;margin-bottom:4px;">个性礼物</div>
+        <div style="font-size:12px;color:var(--text-light);">给朋友做一枚名章当纪念</div>
+      </div>
+      <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:16px;text-align:center;">
+        <div style="font-size:28px;margin-bottom:8px;">📝</div>
+        <div style="font-weight:600;font-size:14px;margin-bottom:4px;">书法落款</div>
+        <div style="font-size:12px;color:var(--text-light);">数字书法作品的虚拟印章</div>
+      </div>
+    </div>
+
+    <!-- ====== 常见问题 ====== -->
+    <h2>❓ 常见问题</h2>
+
+    <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:20px;margin:16px 0;">
+      <p><strong>Q：生成的印章能做商业用途吗？</strong></p>
+      <p>可以。工具本身不限制用途，生成的图片归你所有。</p>
+    </div>
+    <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:20px;margin:16px 0;">
+      <p><strong>Q：能保存为透明背景的图片吗？</strong></p>
+      <p>阳刻（红字白底）样式默认透明背景，下载后可直接叠加使用。阴刻（白字红底）样式为白底。</p>
+    </div>
+    <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:20px;margin:16px 0;">
+      <p><strong>Q：最多能输入几个字？</strong></p>
+      <p>支持 2~4 个汉字。2 个字效果最紧凑，3~4 个字建议选较宽的仿古样式。</p>
+    </div>
+    <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:20px;margin:16px 0;">
+      <p><strong>Q：能做出和实体印章一样的效果吗？</strong></p>
+      <p>电子印章是数字生成的，效果精美但无法完全模拟实体印章的凹凸感。如果需要实体印章，建议用这个工具设计好样式后，找刻章店制作。</p>
+    </div>
+
+    <!-- ====== CTA ====== -->
+    <div class="guide-cta">
+      <p>📌 还没试过？现在就去生成一枚属于自己的电子印章吧</p>
+      <a href="https://toolai.ccwu.cc/" class="btn">🎨 去制作印章 →</a>
+    </div>
+
+    <!-- ====== 底部导航 ====== -->
+    <div class="footer-nav">
+      <a href="../index.html#guides">← 返回工具箱指南列表</a>
+      <a href="https://toolai.ccwu.cc/">🏠 回到首页</a>
+    </div>
+  </div>
+</body>
+</html>
