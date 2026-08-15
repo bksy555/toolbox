@@ -253,16 +253,30 @@ async function handleRefreshCache(req, res) {
     if (results.length >= maxSongs) break;
   }
   
-  // 更新缓存（去重合并）
+  // 更新缓存（去重合并：新歌优先，但保留旧缓存中已有的播放URL）
   const cache = getCache();
   const seen = new Set();
   const merged = [];
+  const oldByKey = new Map();
+  for (const song of cache.songs) {
+    const key = `${song.name}|${song.artists?.join(',') || ''}`;
+    oldByKey.set(key, song);
+  }
   
   for (const song of [...results, ...cache.songs]) {
     const key = `${song.name}|${song.artists?.join(',') || ''}`;
     if (!seen.has(key)) {
       seen.add(key);
-      merged.push(song);
+      // 新歌没有URL，但从旧缓存能拿到URL则补上（保留播放能力）
+      const enrichedSong = { ...song };
+      if (!enrichedSong.url) {
+        const old = oldByKey.get(key);
+        if (old && old.url) {
+          enrichedSong.url = old.url;
+          enrichedSong.br = old.br || enrichedSong.br;
+        }
+      }
+      merged.push(enrichedSong);
     }
   }
   
