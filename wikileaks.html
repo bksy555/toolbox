@@ -234,11 +234,49 @@
   </div>
 
   <script>
+    // ====== 从URL获取文章ID ======
+    function getArticleId() {
+      var match = window.location.search.match(/article=([^&]+)/);
+      return match ? decodeURIComponent(match[1]) : null;
+    }
+
+    // ====== 渲染单篇文章（通用函数，同时支持today和archive） ======
+    function renderArticleHTML(article) {
+      var html = '<div class="wl-article">';
+      if (article.image) {
+        html += '<img class="wl-article-image" src="' + article.image + '" alt="' + escapeHtml(article.title) + '" loading="lazy" onerror="this.style.display=\'none\'">';
+      }
+      html += '<div class="wl-article-body">';
+      html += '<span class="wl-article-tag">' + escapeHtml(article.tag || '探索') + '</span>';
+      html += '<h2>' + escapeHtml(article.title) + '</h2>';
+      html += '<div class="date">📅 ' + (article.date || '') + ' &nbsp;|&nbsp; ⏱ ' + (article.readTime || '约5分钟') + '</div>';
+      var paragraphs = article.content || [];
+      for (var i = 0; i < paragraphs.length; i++) {
+        var p = paragraphs[i];
+        if (p.type === 'highlight') {
+          html += '<div class="highlight">' + p.text + '</div>';
+        } else {
+          html += '<p>' + p.text + '</p>';
+        }
+      }
+      if (article.sources && article.sources.length > 0) {
+        html += '<div class="source">📚 参考来源：';
+        for (var s = 0; s < article.sources.length; s++) {
+          html += '<a href="' + article.sources[s].url + '" target="_blank" rel="noopener">' + escapeHtml(article.sources[s].name) + '</a>';
+          if (s < article.sources.length - 1) html += ' · ';
+        }
+        html += '</div>';
+      }
+      html += '</div></div>';
+      return html;
+    }
+
     // ====== 加载文章数据 ======
     function loadWikileaks() {
+      var articleId = getArticleId();
       fetch('data/wikileaks.json?t=' + Date.now())
         .then(function(r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
-        .then(function(data) { renderWikileaks(data); })
+        .then(function(data) { renderWikileaks(data, articleId); })
         .catch(function(err) {
           console.log('深探加载失败:', err);
           document.getElementById('wl-container').innerHTML =
@@ -246,45 +284,35 @@
         });
     }
 
-    function renderWikileaks(data) {
+    function renderWikileaks(data, articleId) {
       var container = document.getElementById('wl-container');
       var html = '';
 
-      if (data.today) {
-        var article = data.today;
-        html += '<div class="wl-article">';
-        if (article.image) {
-          html += '<img class="wl-article-image" src="' + article.image + '" alt="' + escapeHtml(article.title) + '" loading="lazy" onerror="this.style.display=\'none\'">';
-        }
-        html += '<div class="wl-article-body">';
-        html += '<span class="wl-article-tag">' + escapeHtml(article.tag || '今日探索') + '</span>';
-        html += '<h2>' + escapeHtml(article.title) + '</h2>';
-        html += '<div class="date">📅 ' + (article.date || '') + ' &nbsp;|&nbsp; ⏱ ' + (article.readTime || '约5分钟') + '</div>';
-        var paragraphs = article.content || [];
-        for (var i = 0; i < paragraphs.length; i++) {
-          var p = paragraphs[i];
-          if (p.type === 'highlight') {
-            html += '<div class="highlight">' + p.text + '</div>';
-          } else {
-            html += '<p>' + p.text + '</p>';
+      // 判断是否要显示某篇特定文章
+      var targetArticle = null;
+      if (articleId && data.archive) {
+        for (var i = 0; i < data.archive.length; i++) {
+          if (data.archive[i].id === articleId) {
+            targetArticle = data.archive[i];
+            break;
           }
         }
-        if (article.sources && article.sources.length > 0) {
-          html += '<div class="source">📚 参考来源：';
-          for (var s = 0; s < article.sources.length; s++) {
-            html += '<a href="' + article.sources[s].url + '" target="_blank" rel="noopener">' + escapeHtml(article.sources[s].name) + '</a>';
-            if (s < article.sources.length - 1) html += ' · ';
-          }
-          html += '</div>';
-        }
-        html += '</div></div>';
+      }
 
-        document.getElementById('wl-today-badge').textContent = '📅 ' + (article.date || '今日更新');
+      if (targetArticle) {
+        // 显示往期文章
+        html += '<div style="margin-bottom:16px;"><a href="wikileaks.html" style="color:#6366f1;text-decoration:none;font-size:14px;">← 返回今日文章</a></div>';
+        html += renderArticleHTML(targetArticle);
+        document.getElementById('wl-today-badge').textContent = '📜 往期探索';
+      } else if (data.today) {
+        // 显示今日文章
+        html += renderArticleHTML(data.today);
+        document.getElementById('wl-today-badge').textContent = '📅 ' + (data.today.date || '今日更新');
       } else {
         html += '<div class="wl-empty"><div class="icon">📡</div><p>今日内容正在准备中，请稍后再来…</p></div>';
       }
 
-      // 历史文章
+      // 历史文章列表
       if (data.archive && data.archive.length > 0) {
         html += '<div class="wl-archive"><h3>📜 往期探索</h3><ul class="wl-archive-list">';
         for (var i = 0; i < data.archive.length; i++) {
