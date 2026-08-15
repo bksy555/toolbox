@@ -2665,8 +2665,308 @@ openclaw update</code></pre>
       </div>
     `,
     handler: () => { wheelDraw(); }
+  },
+
+  // ==================== 新工具：CSS渐变生成器 ====================
+  {
+    id: 'css-gradient',
+    cat: 'color',
+    icon: '🌈',
+    name: 'CSS渐变生成器',
+    desc: '可视化生成CSS渐变背景代码，支持线性渐变、多色阶、角度控制，一键复制',
+    html: `
+      <div class="tool-card">
+        <div class="gradient-preview" id="gd-preview" style="height:120px;border-radius:12px;background:linear-gradient(135deg,#6366f1,#ec4899);margin-bottom:16px;transition:background 0.3s;"></div>
+        <div class="row-3">
+          <div class="input-group">
+            <label>起始颜色</label>
+            <div style="display:flex;gap:8px;align-items:center;">
+              <input type="color" id="gd-color1" value="#6366f1" onchange="updateGradient()" style="width:48px;height:40px;border:none;cursor:pointer;padding:0;border-radius:6px;">
+              <input type="text" id="gd-color1-hex" value="#6366f1" oninput="syncGradientColor(1)" style="flex:1;font-family:monospace;font-size:13px;">
+            </div>
+          </div>
+          <div class="input-group">
+            <label>结束颜色</label>
+            <div style="display:flex;gap:8px;align-items:center;">
+              <input type="color" id="gd-color2" value="#ec4899" onchange="updateGradient()" style="width:48px;height:40px;border:none;cursor:pointer;padding:0;border-radius:6px;">
+              <input type="text" id="gd-color2-hex" value="#ec4899" oninput="syncGradientColor(2)" style="flex:1;font-family:monospace;font-size:13px;">
+            </div>
+          </div>
+          <div class="input-group">
+            <label>中间色（可选）</label>
+            <div style="display:flex;gap:8px;align-items:center;">
+              <input type="color" id="gd-color3" value="#ffffff" onchange="updateGradient()" style="width:48px;height:40px;border:none;cursor:pointer;padding:0;border-radius:6px;">
+              <input type="text" id="gd-color3-hex" value="#ffffff" oninput="syncGradientColor(3)" style="flex:1;font-family:monospace;font-size:13px;">
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="input-group">
+            <label>角度：<strong id="gd-angle-val">135</strong>°</label>
+            <input type="range" id="gd-angle" min="0" max="360" value="135" oninput="document.getElementById('gd-angle-val').textContent=this.value;updateGradient()">
+          </div>
+          <div class="input-group">
+            <label>渐变类型</label>
+            <select id="gd-type" onchange="updateGradient()">
+              <option value="linear">线性渐变 (linear)</option>
+              <option value="radial">径向渐变 (radial)</option>
+            </select>
+          </div>
+        </div>
+        <div class="input-group">
+          <label>CSS 代码</label>
+          <div style="display:flex;gap:8px;">
+            <input type="text" id="gd-css-output" readonly style="flex:1;font-family:monospace;font-size:13px;background:#1a1a2e;color:#a78bfa;padding:10px 14px;" value="background: linear-gradient(135deg, #6366f1, #ec4899);">
+            <button class="btn btn-secondary" onclick="copyGradientCSS()">📋 复制</button>
+          </div>
+        </div>
+        <div class="row" style="margin-top:8px;">
+          <button class="btn btn-secondary" onclick="randomGradient()">🎲 随机渐变</button>
+          <button class="btn btn-secondary" onclick="document.getElementById('gd-color3-hex').value='#ffffff';updateGradient()">❌ 清除中间色</button>
+        </div>
+      </div>
+    `,
+    handler: () => { updateGradient(); }
+  },
+
+  // ==================== 新工具：社交媒体图片尺寸调整 ====================
+  {
+    id: 'social-resizer',
+    cat: 'image',
+    icon: '📱',
+    name: '社交媒体图片尺寸调整',
+    desc: '一键将图片调整为各大社交媒体平台推荐尺寸，支持Facebook、Instagram、Twitter、LinkedIn、YouTube等',
+    html: `
+      <div class="tool-card">
+        <div class="input-group">
+          <label>上传图片</label>
+          <input type="file" id="sr-upload" accept="image/*" onchange="loadSocialImage(event)" style="width:100%;">
+        </div>
+        <div class="row">
+          <div class="input-group">
+            <label>选择平台</label>
+            <select id="sr-platform" onchange="socialPlatformChange()">
+              <option value="ig-square">Instagram 正方形 (1080×1080)</option>
+              <option value="ig-portrait">Instagram 竖版 (1080×1350)</option>
+              <option value="ig-story">Instagram 快拍 (1080×1920)</option>
+              <option value="fb-post">Facebook 帖子 (1200×630)</option>
+              <option value="fb-cover">Facebook 封面 (820×312)</option>
+              <option value="tw-post">Twitter/X 帖子 (1200×675)</option>
+              <option value="tw-header">Twitter/X 横幅 (1500×500)</option>
+              <option value="li-post">LinkedIn 帖子 (1200×627)</option>
+              <option value="li-banner">LinkedIn 封面 (1584×396)</option>
+              <option value="yt-thumb">YouTube 缩略图 (1280×720)</option>
+              <option value="yt-banner">YouTube 横幅 (2560×1440)</option>
+              <option value="pin">Pinterest 图钉 (1000×1500)</option>
+            </select>
+          </div>
+          <div class="input-group">
+            <label>缩放模式</label>
+            <select id="sr-fit">
+              <option value="cover">裁剪填充 (cover)</option>
+              <option value="contain">适应留白 (contain)</option>
+              <option value="fill">拉伸填充 (fill)</option>
+            </select>
+          </div>
+        </div>
+        <div id="sr-preview-area" style="text-align:center;min-height:160px;display:flex;flex-direction:column;align-items:center;justify-content:center;border:2px dashed var(--border);border-radius:12px;padding:20px;margin:12px 0;">
+          <div style="font-size:40px;opacity:0.4;">🖼️</div>
+          <div style="font-size:14px;color:var(--text-light);margin-top:8px;">请先上传图片</div>
+        </div>
+        <div class="row">
+          <button class="btn btn-primary" id="sr-resize-btn" onclick="resizeSocialImage()" disabled style="flex:1;">🔄 调整尺寸</button>
+          <button class="btn btn-secondary" id="sr-download-btn" onclick="downloadSocialImage()" disabled>⬇️ 下载</button>
+        </div>
+        <div id="sr-info" style="font-size:13px;color:var(--text-light);text-align:center;margin-top:8px;"></div>
+      </div>
+    `,
+    handler: () => {}
   }
 ];
+
+// ============================================================
+// CSS渐变生成器 处理函数
+// ============================================================
+function updateGradient() {
+  var c1 = document.getElementById('gd-color1').value;
+  var c2 = document.getElementById('gd-color2').value;
+  var c3 = document.getElementById('gd-color3-hex').value;
+  var angle = document.getElementById('gd-angle').value;
+  var type = document.getElementById('gd-type').value;
+  var preview = document.getElementById('gd-preview');
+  var output = document.getElementById('gd-css-output');
+  
+  // Sync hex inputs
+  document.getElementById('gd-color1-hex').value = c1;
+  document.getElementById('gd-color2-hex').value = c2;
+  
+  var css;
+  if (type === 'linear') {
+    if (c3 && c3 !== '#ffffff' && c3 !== '#FFFFFF') {
+      css = 'background: linear-gradient(' + angle + 'deg, ' + c1 + ', ' + c3 + ', ' + c2 + ');';
+      preview.style.background = 'linear-gradient(' + angle + 'deg, ' + c1 + ', ' + c3 + ', ' + c2 + ')';
+    } else {
+      css = 'background: linear-gradient(' + angle + 'deg, ' + c1 + ', ' + c2 + ');';
+      preview.style.background = 'linear-gradient(' + angle + 'deg, ' + c1 + ', ' + c2 + ')';
+    }
+  } else {
+    if (c3 && c3 !== '#ffffff' && c3 !== '#FFFFFF') {
+      css = 'background: radial-gradient(circle, ' + c1 + ', ' + c3 + ', ' + c2 + ');';
+      preview.style.background = 'radial-gradient(circle, ' + c1 + ', ' + c3 + ', ' + c2 + ')';
+    } else {
+      css = 'background: radial-gradient(circle, ' + c1 + ', ' + c2 + ');';
+      preview.style.background = 'radial-gradient(circle, ' + c1 + ', ' + c2 + ')';
+    }
+  }
+  output.value = css;
+}
+
+function syncGradientColor(idx) {
+  var hex = document.getElementById('gd-color' + idx + '-hex').value.trim();
+  if (/^#[0-9a-fA-F]{6}$/.test(hex)) {
+    document.getElementById('gd-color' + idx).value = hex;
+    updateGradient();
+  }
+}
+
+function copyGradientCSS() {
+  var output = document.getElementById('gd-css-output');
+  output.select();
+  navigator.clipboard.writeText(output.value).then(function() {
+    showToast('✅ CSS代码已复制');
+  }).catch(function() {
+    document.execCommand('copy');
+    showToast('✅ CSS代码已复制');
+  });
+}
+
+function randomGradient() {
+  function randColor() { return '#' + Math.floor(Math.random()*16777215).toString(16).padStart(6,'0'); }
+  document.getElementById('gd-color1').value = randColor();
+  document.getElementById('gd-color2').value = randColor();
+  document.getElementById('gd-angle').value = Math.floor(Math.random() * 360);
+  document.getElementById('gd-angle-val').textContent = document.getElementById('gd-angle').value;
+  updateGradient();
+}
+
+// ============================================================
+// 社交媒体图片尺寸调整 处理函数
+// ============================================================
+var _srImage = null;
+var _srCanvas = null;
+var _srResultBlob = null;
+
+var SR_PLATFORMS = {
+  'ig-square': { name: 'Instagram 正方形', w: 1080, h: 1080 },
+  'ig-portrait': { name: 'Instagram 竖版', w: 1080, h: 1350 },
+  'ig-story': { name: 'Instagram 快拍', w: 1080, h: 1920 },
+  'fb-post': { name: 'Facebook 帖子', w: 1200, h: 630 },
+  'fb-cover': { name: 'Facebook 封面', w: 820, h: 312 },
+  'tw-post': { name: 'Twitter/X 帖子', w: 1200, h: 675 },
+  'tw-header': { name: 'Twitter/X 横幅', w: 1500, h: 500 },
+  'li-post': { name: 'LinkedIn 帖子', w: 1200, h: 627 },
+  'li-banner': { name: 'LinkedIn 封面', w: 1584, h: 396 },
+  'yt-thumb': { name: 'YouTube 缩略图', w: 1280, h: 720 },
+  'yt-banner': { name: 'YouTube 横幅', w: 2560, h: 1440 },
+  'pin': { name: 'Pinterest 图钉', w: 1000, h: 1500 }
+};
+
+function loadSocialImage(event) {
+  var file = event.target.files[0];
+  if (!file) return;
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    var img = new Image();
+    img.onload = function() {
+      _srImage = img;
+      document.getElementById('sr-resize-btn').disabled = false;
+      document.getElementById('sr-preview-area').innerHTML = '<img src="' + e.target.result + '" style="max-width:100%;max-height:240px;border-radius:8px;object-fit:contain;" alt="预览">';
+      document.getElementById('sr-info').textContent = '原始尺寸: ' + img.width + ' × ' + img.height + 'px';
+    };
+    img.src = e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+function socialPlatformChange() {
+  if (_srImage) {
+    resizeSocialImage();
+  }
+}
+
+function resizeSocialImage() {
+  if (!_srImage) { showToast('⚠️ 请先上传图片'); return; }
+  
+  var platform = document.getElementById('sr-platform').value;
+  var fit = document.getElementById('sr-fit').value;
+  var info = SR_PLATFORMS[platform];
+  var tw = info.w, th = info.h;
+  
+  var canvas = document.createElement('canvas');
+  canvas.width = tw;
+  canvas.height = th;
+  var ctx = canvas.getContext('2d');
+  
+  // 背景（白色）
+  ctx.fillStyle = '#ffffff';
+  ctx.fillRect(0, 0, tw, th);
+  
+  var sw = _srImage.width, sh = _srImage.height;
+  var sx = 0, sy = 0, sww = sw, shh = sh;
+  var dx = 0, dy = 0, dww = tw, dhh = th;
+  
+  if (fit === 'cover') {
+    // 裁剪填充：保持比例，裁剪多余部分
+    var scale = Math.max(tw / sw, th / sh);
+    sww = tw / scale;
+    shh = th / scale;
+    sx = (sw - sww) / 2;
+    sy = (sh - shh) / 2;
+  } else if (fit === 'contain') {
+    // 适应留白
+    var scale = Math.min(tw / sw, th / sh);
+    dww = sw * scale;
+    dhh = sh * scale;
+    dx = (tw - dww) / 2;
+    dy = (th - dhh) / 2;
+  }
+  // fill: 拉伸，直接画满
+  
+  ctx.drawImage(_srImage, sx, sy, sww, shh, dx, dy, dww, dhh);
+  
+  _srCanvas = canvas;
+  var preview = document.getElementById('sr-preview-area');
+  preview.innerHTML = '<canvas id="sr-result-canvas" style="max-width:100%;max-height:240px;border-radius:8px;"></canvas>';
+  var resultCanvas = document.getElementById('sr-result-canvas');
+  resultCanvas.width = tw;
+  resultCanvas.height = th;
+  var rctx = resultCanvas.getContext('2d');
+  // 缩放显示
+  var displayScale = Math.min(240 / th, preview.offsetWidth / tw, 1);
+  resultCanvas.style.width = Math.round(tw * displayScale) + 'px';
+  resultCanvas.style.height = Math.round(th * displayScale) + 'px';
+  rctx.drawImage(canvas, 0, 0, resultCanvas.width, resultCanvas.height);
+  
+  document.getElementById('sr-download-btn').disabled = false;
+  document.getElementById('sr-info').textContent = info.name + ': ' + tw + ' × ' + th + 'px';
+  
+  // 生成下载blob
+  canvas.toBlob(function(blob) {
+    _srResultBlob = blob;
+  }, 'image/png');
+}
+
+function downloadSocialImage() {
+  if (!_srResultBlob) { showToast('⚠️ 请先调整尺寸'); return; }
+  var platform = document.getElementById('sr-platform').value;
+  var info = SR_PLATFORMS[platform];
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(_srResultBlob);
+  a.download = info.name.replace(/\s+/g, '_') + '_' + info.w + 'x' + info.h + '.png';
+  a.click();
+  URL.revokeObjectURL(a.href);
+  showToast('✅ 图片已下载');
+}
 
 // ============================================================
 // 新工具：古文加密（Abracadabra 魔曰）处理函数
@@ -3243,12 +3543,12 @@ function dpCopyText() {
 const CATEGORIES = [
   { id: 'text', icon: '✏️', name: '文本工具', desc: '字数统计、简繁转换、摩斯密码、文本转语音、文本对比' },
   { id: 'dev', icon: '💻', name: '开发者工具', desc: 'JSON格式化、二维码生成、正则测试、Markdown、IP查询' },
-  { id: 'image', icon: '🖼️', name: '图片处理', desc: '去背景换底色、批量压缩、加水印、长图拼接、格式转换、裁剪、OCR、印章制作、九宫格切图、文字转手写体、表情包' },
+  { id: 'image', icon: '🖼️', name: '图片处理', desc: '去背景换底色、批量压缩、加水印、长图拼接、格式转换、裁剪、OCR、印章制作、九宫格切图、文字转手写体、表情包、社交媒体图片尺寸调整' },
   { id: 'document', icon: '📄', name: '文档转换', desc: '图片转PDF、PDF转图片、Word解析、Excel转PDF、PDF合并' },
   { id: 'convert', icon: '🔄', name: '转换工具', desc: '单位换算、进制转换' },
   { id: 'security', icon: '🔒', name: '安全工具', desc: '密码生成、Hash计算、随机数' },
   { id: 'time', icon: '⏱️', name: '时间工具', desc: '时间戳转换、日期计算' },
-  { id: 'color', icon: '🎨', name: '颜色工具', desc: 'HEX/RGB/HSL颜色转换' },
+  { id: 'color', icon: '🎨', name: '颜色工具', desc: 'HEX/RGB/HSL颜色转换、CSS渐变生成器' },
   { id: 'media', icon: '🎬', name: '媒体工具', desc: '抖音/TikTok去水印下载、视频转GIF' },
   { id: 'ai', icon: '🤖', name: 'AI工具', desc: 'AI聊天、AI Agent安装、免费AI工具推荐' },
   { id: 'voice', icon: '🗣️', name: '群众心声', desc: '提交工具建议、投票排行榜、前3名自动实现' },

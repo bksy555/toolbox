@@ -39,6 +39,7 @@ function toast(msg) {
   t.classList.add('show');
   setTimeout(() => t.classList.remove('show'), 2500);
 }
+function showToast(msg) { toast(msg); }
 
 // ---- 复制 ----
 function copyId(el) {
