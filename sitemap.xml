@@ -2,15 +2,27 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://tools-website-rust.vercel.app/</loc>
-    <lastmod>2026-07-30</lastmod>
+    <lastmod>2026-08-15</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://tools-website-rust.vercel.app/lottery.html</loc>
-    <lastmod>2026-07-30</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.8</priority>
+    <loc>https://tools-website-rust.vercel.app/privacy.html</loc>
+    <lastmod>2026-08-15</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://tools-website-rust.vercel.app/about.html</loc>
+    <lastmod>2026-08-15</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://tools-website-rust.vercel.app/contact.html</loc>
+    <lastmod>2026-08-15</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
   </url>
   <url>
     <loc>https://tools-website-rust.vercel.app/study.html</loc>
@@ -25,8 +37,8 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://tools-website-rust.vercel.app/piancai.html</loc>
-    <lastmod>2026-07-30</lastmod>
+    <loc>https://tools-website-rust.vercel.app/music.html</loc>
+    <lastmod>2026-08-15</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>

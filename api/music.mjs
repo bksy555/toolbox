@@ -231,28 +231,20 @@ async function handleRefreshCache(req, res) {
       for (const song of songs) {
         if (results.length >= maxSongs) break;
         
-        // 尝试获取播放URL
-        const urlResult = await getNeteaseUrl(song.id);
-        if (urlResult) {
-          results.push({
-            id: song.id,
-            name: song.name,
-            artists: song.artists,
-            album: song.album || '',
-            albumPic: song.albumPic || '',
-            duration: song.duration || 0,
-            url: urlResult.url,
-            source: 'netease',
-            br: urlResult.br || 128000,
-            cacheSource: 'netease',
-            addedAt: new Date().toISOString()
-          });
-        } else {
-          errors.push({ name: song.name, reason: 'no_url' });
-        }
-        
-        // 控制速率，避免被封
-        await new Promise(r => setTimeout(r, 200));
+        // ⚡ 优化：URL 按需获取（播放时自动缓存），这里只存歌曲元数据
+        // 避免 Vercel 60s 超时（5 榜单 × 100 首 × 200ms 延迟 > 60s）
+        results.push({
+          id: song.id,
+          name: song.name,
+          artists: song.artists,
+          album: song.album || '',
+          albumPic: song.albumPic || '',
+          duration: song.duration || 0,
+          url: null,          // URL 在 handleUrl 播放时按需获取
+          source: 'netease',
+          br: null,
+          addedAt: new Date().toISOString()
+        });
       }
     } catch (e) {
       console.error(`  ❌ ${list.name}: ${e.message}`);
