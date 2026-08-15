@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🔧 工具合集 - ToolBox</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    body {
+      background: #0f0f1a;
+      color: #d0d0d0;
+    }
+    .tc-nav {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 16px 20px 0;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .tc-nav a {
+      color: #8888aa;
+      text-decoration: none;
+      font-size: 14px;
+      transition: color 0.2s;
+    }
+    .tc-nav a:hover { color: #a78bfa; }
+    .tc-nav .logo-link {
+      font-weight: 700;
+      color: #a78bfa;
+      font-size: 16px;
+    }
+
+    .tc-header {
+      text-align: center;
+      padding: 50px 20px 30px;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+    .tc-header h1 {
+      font-size: 32px;
+      font-weight: 800;
+      margin: 0 0 10px;
+      background: linear-gradient(135deg, #f59e0b, #ef4444, #6366f1);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .tc-header p {
+      font-size: 15px;
+      color: #8888aa;
+      line-height: 1.7;
+    }
+    .tc-header .badge {
+      display: inline-block;
+      background: rgba(239,68,68,0.15);
+      border: 1px solid rgba(239,68,68,0.3);
+      color: #f87171;
+      padding: 4px 14px;
+      border-radius: 20px;
+      font-size: 12px;
+      margin-top: 8px;
+    }
+
+    .tc-grid {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 20px 60px;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 16px;
+    }
+
+    .tc-card {
+      background: #16162a;
+      border: 1px solid #2a2a4a;
+      border-radius: 16px;
+      padding: 24px;
+      text-decoration: none;
+      color: inherit;
+      transition: all 0.25s;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
+    }
+    .tc-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      border-radius: 16px 16px 0 0;
+    }
+    .tc-card:hover {
+      transform: translateY(-4px);
+      border-color: #6366f1;
+      box-shadow: 0 8px 24px rgba(99,102,241,0.15);
+    }
+
+    .tc-card .icon { font-size: 36px; margin-bottom: 12px; }
+    .tc-card h3 { font-size: 17px; font-weight: 700; margin: 0 0 8px; color: #e0e0e0; }
+    .tc-card p { font-size: 13px; color: #8888aa; line-height: 1.6; margin: 0; flex: 1; }
+    .tc-card .tag {
+      display: inline-block;
+      font-size: 11px;
+      padding: 2px 10px;
+      border-radius: 12px;
+      margin-top: 12px;
+      align-self: flex-start;
+    }
+
+    /* 不同配色 */
+    .tc-card.red::before { background: linear-gradient(90deg, #ef4444, #f97316); }
+    .tc-card.red .tag { background: rgba(239,68,68,0.15); color: #f87171; }
+
+    .tc-card.green::before { background: linear-gradient(90deg, #22c55e, #10b981); }
+    .tc-card.green .tag { background: rgba(34,197,94,0.15); color: #4ade80; }
+
+    .tc-card.blue::before { background: linear-gradient(90deg, #3b82f6, #6366f1); }
+    .tc-card.blue .tag { background: rgba(99,102,241,0.15); color: #a78bfa; }
+
+    .tc-card.purple::before { background: linear-gradient(90deg, #a855f7, #d946ef); }
+    .tc-card.purple .tag { background: rgba(168,85,247,0.15); color: #c084fc; }
+
+    .tc-card.orange::before { background: linear-gradient(90deg, #f59e0b, #f97316); }
+    .tc-card.orange .tag { background: rgba(245,158,11,0.15); color: #fbbf24; }
+
+    .tc-card.cyan::before { background: linear-gradient(90deg, #06b6d4, #0891b2); }
+    .tc-card.cyan .tag { background: rgba(6,182,212,0.15); color: #22d3ee; }
+
+    .tc-note {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 20px 40px;
+      text-align: center;
+    }
+    .tc-note p {
+      font-size: 13px;
+      color: #666688;
+      background: #12121e;
+      border: 1px solid #2a2a44;
+      border-radius: 12px;
+      padding: 16px 20px;
+      display: inline-block;
+    }
+
+    @media (max-width: 600px) {
+      .tc-header h1 { font-size: 24px; }
+      .tc-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="tc-nav">
+    <a href="index.html" class="logo-link">🧰 ToolBox</a>
+    <span style="color:#444466;">/</span>
+    <a href="index.html">首页</a>
+  </div>
+
+  <div class="tc-header">
+    <h1>🔧 工具合集</h1>
+    <p>所有工具一网打尽，方便随时使用</p>
+    <span class="badge">⚡ 独立页面，不影响首页广告审核</span>
+  </div>
+
+  <div class="tc-grid">
+    <!-- 福彩3D预测 -->
+    <a href="piancai.html" class="tc-card red">
+      <div class="icon">🎯</div>
+      <h3>福彩3D预测分析</h3>
+      <p>福彩3D开奖号码查询、冷热号分析、预测工具、历史数据统计</p>
+      <span class="tag">彩票分析</span>
+    </a>
+
+    <!-- 彩票工具 -->
+    <a href="lottery.html" class="tc-card orange">
+      <div class="icon">🎰</div>
+      <h3>彩票组合工具</h3>
+      <p>彩票号码组合生成、筛选过滤、历史开奖数据查询</p>
+      <span class="tag">彩票工具</span>
+    </a>
+
+    <!-- K线训练器 -->
+    <a href="kline-trainer.html" class="tc-card green">
+      <div class="icon">📈</div>
+      <h3>K线训练器</h3>
+      <p>通过历史K线模拟交易训练，提升你的股票技术分析能力</p>
+      <span class="tag">投资训练</span>
+    </a>
+
+    <!-- 期货训练器 -->
+    <a href="futures-trainer.html" class="tc-card blue">
+      <div class="icon">⚡</div>
+      <h3>期货训练器</h3>
+      <p>双向交易训练，支持做多/做空，带杠杆模拟，实战演练</p>
+      <span class="tag">期货训练</span>
+    </a>
+
+    <!-- 量化工具 -->
+    <a href="quant.html" class="tc-card purple">
+      <div class="icon">📊</div>
+      <h3>量化分析工具</h3>
+      <p>股票量化分析、技术指标计算、回测平台、策略研究</p>
+      <span class="tag">量化分析</span>
+    </a>
+
+    <!-- 音乐播放器 -->
+    <a href="music.html" class="tc-card cyan">
+      <div class="icon">🎵</div>
+      <h3>音乐播放器</h3>
+      <p>在线音乐播放，支持搜索、歌单、热门歌曲推荐</p>
+      <span class="tag">音乐娱乐</span>
+    </a>
+  </div>
+
+  <div class="tc-note">
+    <p>💡 这些工具在首页广告审核期间暂时隐藏了入口，但功能完全正常。<br>
+    <a href="index.html" style="color:#6366f1;text-decoration:none;">← 返回首页</a></p>
+  </div>
+</body>
+</html>
