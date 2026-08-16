@@ -2781,6 +2781,148 @@ openclaw update</code></pre>
       </div>
     `,
     handler: () => {}
+  },
+
+  // ==================== 新工具：在线简历生成器 ====================
+  {
+    id: 'resume-builder',
+    cat: 'document',
+    icon: '📋',
+    name: '在线简历生成器',
+    desc: '在线制作专业简历，输入信息即可生成精美简历，支持下载PDF',
+    html: `      <div class="tool-card">
+        <div class="row-2">
+          <div class="input-group">
+            <label>👤 姓名</label>
+            <input type="text" id="rb-name" value="张三" oninput="renderResume()" style="font-size:18px;font-weight:700;">
+          </div>
+          <div class="input-group">
+            <label>🏷️ 求职意向 / 职位</label>
+            <input type="text" id="rb-title" value="高级前端工程师" oninput="renderResume()">
+          </div>
+        </div>
+        <div class="row-2">
+          <div class="input-group">
+            <label>📧 邮箱</label>
+            <input type="email" id="rb-email" value="zhangsan@example.com" oninput="renderResume()">
+          </div>
+          <div class="input-group">
+            <label>📞 电话</label>
+            <input type="tel" id="rb-phone" value="138-0000-0000" oninput="renderResume()">
+          </div>
+        </div>
+        <div class="input-group">
+          <label>📍 地址</label>
+          <input type="text" id="rb-address" value="北京市海淀区" oninput="renderResume()">
+        </div>
+        <div class="input-group">
+          <label>📝 个人简介</label>
+          <textarea id="rb-summary" rows="3" oninput="renderResume()" placeholder="简短介绍自己...">拥有8年前端开发经验，精通React、Vue、TypeScript等技术栈，曾在多家知名互联网公司担任技术负责人，具备良好的团队协作和项目管理能力。</textarea>
+        </div>
+        <div class="input-group">
+          <label>💼 工作经历（每行一条，格式：公司 | 职位 | 时间 | 描述）</label>
+          <textarea id="rb-experience" rows="4" oninput="renderResume()" placeholder="例如：字节跳动 | 高级前端工程师 | 2020-2024 | 负责核心业务前端架构设计...">字节跳动 | 高级前端工程师 | 2020-2024 | 负责核心业务前端架构设计与开发，带领5人团队完成多个大型项目，提升开发效率30%。
+阿里巴巴 | 前端工程师 | 2017-2020 | 参与电商平台前端开发，主导组件库建设，服务200+业务线。</textarea>
+        </div>
+        <div class="input-group">
+          <label>🎓 教育背景（每行一条，格式：学校 | 专业 | 时间 | 学历）</label>
+          <textarea id="rb-education" rows="2" oninput="renderResume()" placeholder="例如：北京大学 | 计算机科学与技术 | 2013-2017 | 本科">北京大学 | 计算机科学与技术 | 2013-2017 | 本科</textarea>
+        </div>
+        <div class="input-group">
+          <label>🔧 技能标签（逗号分隔）</label>
+          <input type="text" id="rb-skills" value="JavaScript,TypeScript,React,Vue,Node.js,CSS,Webpack,Git" oninput="renderResume()">
+        </div>
+        <div class="input-group">
+          <label>🎨 简历模板</label>
+          <select id="rb-template" onchange="renderResume()" style="width:200px;">
+            <option value="modern">现代简约</option>
+            <option value="classic">经典专业</option>
+            <option value="creative">创意活泼</option>
+          </select>
+        </div>
+        <div class="btn-group">
+          <button class="btn btn-primary" onclick="downloadResumePDF()">📄 下载 PDF</button>
+          <button class="btn btn-secondary" onclick="downloadResumeHTML()">🌐 下载 HTML</button>
+        </div>
+        <div class="result-box show" style="margin-top:16px;overflow:hidden;">
+          <div class="label">简历预览</div>
+          <div id="rb-preview" style="background:white;border-radius:8px;min-height:300px;padding:0;overflow:hidden;"></div>
+        </div>
+        <div id="rb-status" style="margin-top:8px;font-size:13px;color:var(--text-light);"></div>
+        <div style="margin-top:10px;padding:10px;background:#f0f9ff;border-radius:8px;font-size:12px;color:#075985;line-height:1.6;">💡 灵感来源于 Novoresume、Zety 等付费简历工具（$20-30/月），我们的免费版支持简历排版预览和PDF导出，所有数据保存在本地浏览器。</div>
+      </div>
+    `,
+    handler: () => { setTimeout(renderResume, 100); }
+  },
+
+  // ==================== 新工具：在线电子签名生成器 ====================
+  {
+    id: 'signature-maker',
+    cat: 'document',
+    icon: '✍️',
+    name: '在线电子签名',
+    desc: '在线生成手写电子签名，支持鼠标/触摸绘制、文字签名，可导出透明PNG',
+    html: `      <div class="tool-card">
+        <div class="row-2">
+          <div class="input-group">
+            <label>签名方式</label>
+            <select id="sm-mode" onchange="switchSignatureMode()" style="width:150px;">
+              <option value="draw">手写绘制</option>
+              <option value="text">文字签名</option>
+            </select>
+          </div>
+          <div class="input-group" id="sm-font-group" style="display:none;">
+            <label>字体风格</label>
+            <select id="sm-font" onchange="renderTextSignature()" style="width:150px;">
+              <option value="cursive">手写体</option>
+              <option value="elegant">优雅体</option>
+              <option value="bold">粗体</option>
+              <option value="calligraphy">书法体</option>
+            </select>
+          </div>
+        </div>
+        <div class="input-group" id="sm-text-group" style="display:none;">
+          <label>输入签名文字</label>
+          <input type="text" id="sm-text" value="张三" oninput="renderTextSignature()" placeholder="输入你的名字" style="font-size:20px;max-width:300px;">
+        </div>
+        <div class="row-2">
+          <div class="input-group">
+            <label>笔触颜色</label>
+            <input type="color" id="sm-color" value="#1e40af" onchange="updateSignature()">
+          </div>
+          <div class="input-group">
+            <label>笔触粗细</label>
+            <select id="sm-size" onchange="updateSignature()" style="width:120px;">
+              <option value="2">细</option>
+              <option value="4" selected>中</option>
+              <option value="6">粗</option>
+              <option value="8">特粗</option>
+            </select>
+          </div>
+        </div>
+        <div class="input-group" id="sm-draw-area">
+          <label>签名绘制区域（鼠标或手指拖动绘制）</label>
+          <div style="border:2px dashed var(--border);border-radius:10px;background:white;position:relative;overflow:hidden;touch-action:none;width:100%;max-width:500px;margin:8px auto;">
+            <canvas id="sm-canvas" width="500" height="200" style="width:100%;height:auto;display:block;cursor:crosshair;background:white;"></canvas>
+          </div>
+          <div style="display:flex;gap:8px;justify-content:center;margin-top:8px;">
+            <button class="btn btn-secondary" onclick="clearSignature()">🗑️ 清空</button>
+            <button class="btn btn-secondary" onclick="undoSignature()">↩️ 撤销</button>
+          </div>
+        </div>
+        <div class="btn-group" style="justify-content:center;margin-top:12px;">
+          <button class="btn btn-primary" onclick="downloadSignature()">📥 下载签名 (PNG)</button>
+          <button class="btn btn-secondary" onclick="copySignature()">📋 复制到剪贴板</button>
+        </div>
+        <div id="sm-preview" style="text-align:center;margin-top:12px;min-height:80px;display:none;background:var(--bg);border-radius:10px;padding:20px;border:1px solid var(--border);">
+          <div class="label" style="margin-bottom:8px;">签名预览</div>
+          <img id="sm-preview-img" style="max-height:100px;background:white;border-radius:4px;padding:8px;">
+        </div>
+        <div id="sm-status" style="margin-top:8px;font-size:13px;color:var(--text-light);"></div>
+        <div style="margin-top:10px;padding:10px;background:#f0f9ff;border-radius:8px;font-size:12px;color:#075985;line-height:1.6;">💡 灵感来源于 DocuSign、HelloSign 等付费电子签名工具（$10-15/月），我们的免费版支持手写绘制和文字签名，生成的PNG带透明背景，可用于合同、文件等场景。</div>
+      </div>
+    `,
+    handler: () => { setTimeout(initSignatureMaker, 100); }
   }
 ];
 
@@ -3544,7 +3686,7 @@ const CATEGORIES = [
   { id: 'text', icon: '✏️', name: '文本工具', desc: '字数统计、简繁转换、摩斯密码、文本转语音、文本对比' },
   { id: 'dev', icon: '💻', name: '开发者工具', desc: 'JSON格式化、二维码生成、正则测试、Markdown、IP查询' },
   { id: 'image', icon: '🖼️', name: '图片处理', desc: '去背景换底色、批量压缩、加水印、长图拼接、格式转换、裁剪、OCR、印章制作、九宫格切图、文字转手写体、表情包、社交媒体图片尺寸调整' },
-  { id: 'document', icon: '📄', name: '文档转换', desc: '图片转PDF、PDF转图片、Word解析、Excel转PDF、PDF合并' },
+  { id: 'document', icon: '📄', name: '文档转换', desc: '图片转PDF、PDF转图片、Word解析、Excel转PDF、PDF合并、简历生成、电子签名' },
   { id: 'convert', icon: '🔄', name: '转换工具', desc: '单位换算、进制转换' },
   { id: 'security', icon: '🔒', name: '安全工具', desc: '密码生成、Hash计算、随机数' },
   { id: 'time', icon: '⏱️', name: '时间工具', desc: '时间戳转换、日期计算' },

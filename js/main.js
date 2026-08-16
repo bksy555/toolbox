@@ -2705,3 +2705,427 @@ function downloadScreenRecording() {
   URL.revokeObjectURL(url);
   toast('✅ 视频已下载');
 }
+
+// ============================================================
+// 在线简历生成器 处理函数
+// ============================================================
+function renderResume() {
+  var name = document.getElementById('rb-name').value || '姓名';
+  var title = document.getElementById('rb-title').value || '职位';
+  var email = document.getElementById('rb-email').value || '';
+  var phone = document.getElementById('rb-phone').value || '';
+  var address = document.getElementById('rb-address').value || '';
+  var summary = document.getElementById('rb-summary').value || '';
+  var experience = document.getElementById('rb-experience').value || '';
+  var education = document.getElementById('rb-education').value || '';
+  var skills = document.getElementById('rb-skills').value || '';
+  var template = document.getElementById('rb-template').value || 'modern';
+
+  var preview = document.getElementById('rb-preview');
+  var skillTags = skills.split(',').map(function(s) { return s.trim(); }).filter(function(s) { return s; });
+
+  var expLines = experience.split('\n').filter(function(l) { return l.trim(); });
+  var eduLines = education.split('\n').filter(function(l) { return l.trim(); });
+
+  var templateStyle = '';
+  var headerBg = '';
+  var headerColor = '';
+  var sectionColor = '';
+
+  if (template === 'modern') {
+    headerBg = 'linear-gradient(135deg, #6366f1, #4f46e5)';
+    headerColor = 'white';
+    sectionColor = '#6366f1';
+    templateStyle = 'font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;';
+  } else if (template === 'classic') {
+    headerBg = '#1e293b';
+    headerColor = 'white';
+    sectionColor = '#1e293b';
+    templateStyle = 'font-family: "Times New Roman", Times, serif;';
+  } else {
+    headerBg = '#f0fdf4';
+    headerColor = '#166534';
+    sectionColor = '#16a34a';
+    templateStyle = 'font-family: "Georgia", serif;';
+  }
+
+  var expHtml = '';
+  expLines.forEach(function(line) {
+    var parts = line.split('|').map(function(p) { return p.trim(); });
+    if (parts.length >= 3) {
+      expHtml += '<div style="margin-bottom:10px;padding:8px 12px;background:#f8fafc;border-left:3px solid ' + sectionColor + ';border-radius:0 6px 6px 0;">';
+      expHtml += '<div style="font-weight:600;font-size:14px;">' + parts[0] + '</div>';
+      expHtml += '<div style="font-size:13px;color:#64748b;">' + parts[1] + ' | ' + parts.slice(2).join(' | ') + '</div>';
+      expHtml += '</div>';
+    } else {
+      expHtml += '<div style="margin-bottom:6px;font-size:13px;color:#334155;">' + line + '</div>';
+    }
+  });
+
+  var eduHtml = '';
+  eduLines.forEach(function(line) {
+    var parts = line.split('|').map(function(p) { return p.trim(); });
+    if (parts.length >= 3) {
+      eduHtml += '<div style="margin-bottom:6px;padding:8px 12px;background:#f8fafc;border-left:3px solid ' + sectionColor + ';border-radius:0 6px 6px 0;">';
+      eduHtml += '<div style="font-weight:600;font-size:14px;">' + parts[0] + '</div>';
+      eduHtml += '<div style="font-size:13px;color:#64748b;">' + parts.slice(1).join(' | ') + '</div>';
+      eduHtml += '</div>';
+    } else {
+      eduHtml += '<div style="margin-bottom:6px;padding:8px 12px;background:#f8fafc;font-size:13px;">' + line + '</div>';
+    }
+  });
+
+  var skillHtml = '';
+  skillTags.forEach(function(tag) {
+    skillHtml += '<span style="display:inline-block;padding:4px 12px;margin:3px;background:' + sectionColor + ';color:white;border-radius:20px;font-size:12px;font-weight:500;">' + tag + '</span>';
+  });
+
+  var html = '<div style="' + templateStyle + 'max-width:700px;margin:0 auto;border:1px solid #e2e8f0;border-radius:8px;overflow:hidden;">';
+  // Header
+  html += '<div style="background:' + headerBg + ';color:' + headerColor + ';padding:24px 30px;">';
+  html += '<h1 style="margin:0;font-size:26px;font-weight:700;margin-bottom:4px;">' + name + '</h1>';
+  html += '<div style="font-size:16px;opacity:0.9;margin-bottom:8px;">' + title + '</div>';
+  html += '<div style="font-size:13px;opacity:0.8;display:flex;gap:12px;flex-wrap:wrap;">';
+  if (email) html += '<span>📧 ' + email + '</span>';
+  if (phone) html += '<span>📞 ' + phone + '</span>';
+  if (address) html += '<span>📍 ' + address + '</span>';
+  html += '</div></div>';
+  // Body
+  html += '<div style="padding:20px 30px;">';
+  if (summary) {
+    html += '<div style="margin-bottom:16px;">';
+    html += '<h3 style="font-size:15px;font-weight:600;color:' + sectionColor + ';border-bottom:2px solid ' + sectionColor + ';padding-bottom:4px;margin-bottom:8px;">📝 个人简介</h3>';
+    html += '<p style="font-size:13px;color:#334155;line-height:1.6;">' + summary + '</p>';
+    html += '</div>';
+  }
+  if (expHtml) {
+    html += '<div style="margin-bottom:16px;">';
+    html += '<h3 style="font-size:15px;font-weight:600;color:' + sectionColor + ';border-bottom:2px solid ' + sectionColor + ';padding-bottom:4px;margin-bottom:8px;">💼 工作经历</h3>';
+    html += expHtml;
+    html += '</div>';
+  }
+  if (eduHtml) {
+    html += '<div style="margin-bottom:16px;">';
+    html += '<h3 style="font-size:15px;font-weight:600;color:' + sectionColor + ';border-bottom:2px solid ' + sectionColor + ';padding-bottom:4px;margin-bottom:8px;">🎓 教育背景</h3>';
+    html += eduHtml;
+    html += '</div>';
+  }
+  if (skillHtml) {
+    html += '<div>';
+    html += '<h3 style="font-size:15px;font-weight:600;color:' + sectionColor + ';border-bottom:2px solid ' + sectionColor + ';padding-bottom:4px;margin-bottom:8px;">🔧 技能标签</h3>';
+    html += '<div>' + skillHtml + '</div>';
+    html += '</div>';
+  }
+  html += '</div></div>';
+
+  preview.innerHTML = html;
+  document.getElementById('rb-status').textContent = '✅ 预览已更新';
+}
+
+function downloadResumePDF() {
+  var preview = document.getElementById('rb-preview');
+  var html = preview.innerHTML;
+  if (!html || html === '') { showToast('⚠️ 请先填写简历信息'); return; }
+
+  var css = 'body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; margin: 0; padding: 0; }';
+  var printWindow = window.open('', '_blank', 'width=800,height=600');
+  printWindow.document.write('<html><head><style>' + css + '</style></head><body>' + preview.innerHTML + '</body></html>');
+  printWindow.document.close();
+  printWindow.focus();
+  printWindow.print();
+  showToast('✅ 已打开打印窗口，请选择"另存为 PDF"');
+}
+
+function downloadResumeHTML() {
+  var preview = document.getElementById('rb-preview');
+  var html = preview.innerHTML;
+  if (!html || html === '') { showToast('⚠️ 请先填写简历信息'); return; }
+
+  var fullHtml = '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>我的简历</title><style>body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;margin:20px;padding:0;}</style></head><body>' + html + '</body></html>';
+
+  var blob = new Blob([fullHtml], { type: 'text/html;charset=utf-8' });
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url;
+  a.download = '我的简历.html';
+  a.click();
+  URL.revokeObjectURL(url);
+  showToast('✅ 简历 HTML 已下载');
+}
+
+// ============================================================
+// 在线电子签名生成器 处理函数
+// ============================================================
+var _smIsDrawing = false;
+var _smLastX = 0;
+var _smLastY = 0;
+var _smDrawHistory = [];
+
+function initSignatureMaker() {
+  var canvas = document.getElementById('sm-canvas');
+  if (!canvas) return;
+  var ctx = canvas.getContext('2d');
+  ctx.fillStyle = 'white';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  canvas.addEventListener('mousedown', startDraw);
+  canvas.addEventListener('mousemove', draw);
+  canvas.addEventListener('mouseup', stopDraw);
+  canvas.addEventListener('mouseleave', stopDraw);
+  canvas.addEventListener('touchstart', touchStart);
+  canvas.addEventListener('touchmove', touchMove);
+  canvas.addEventListener('touchend', stopDraw);
+}
+
+function startDraw(e) {
+  _smIsDrawing = true;
+  var rect = e.target.getBoundingClientRect();
+  _smLastX = (e.clientX - rect.left) * (e.target.width / rect.width);
+  _smLastY = (e.clientY - rect.top) * (e.target.height / rect.height);
+  _smDrawHistory.push({ type: 'start', x: _smLastX, y: _smLastY });
+}
+
+function draw(e) {
+  if (!_smIsDrawing) return;
+  var canvas = e.target;
+  var ctx = canvas.getContext('2d');
+  var rect = canvas.getBoundingClientRect();
+  var x = (e.clientX - rect.left) * (canvas.width / rect.width);
+  var y = (e.clientY - rect.top) * (canvas.height / rect.height);
+
+  ctx.beginPath();
+  var color = document.getElementById('sm-color').value;
+  var size = parseInt(document.getElementById('sm-size').value);
+  ctx.strokeStyle = color;
+  ctx.lineWidth = size;
+  ctx.lineCap = 'round';
+  ctx.lineJoin = 'round';
+  ctx.moveTo(_smLastX, _smLastY);
+  ctx.lineTo(x, y);
+  ctx.stroke();
+
+  _smLastX = x;
+  _smLastY = y;
+  _smDrawHistory.push({ type: 'draw', x: x, y: y });
+  showSignaturePreview();
+}
+
+function stopDraw() {
+  _smIsDrawing = false;
+}
+
+function touchStart(e) {
+  e.preventDefault();
+  var touch = e.touches[0];
+  var canvas = document.getElementById('sm-canvas');
+  _smIsDrawing = true;
+  var rect = canvas.getBoundingClientRect();
+  _smLastX = (touch.clientX - rect.left) * (canvas.width / rect.width);
+  _smLastY = (touch.clientY - rect.top) * (canvas.height / rect.height);
+  _smDrawHistory.push({ type: 'start', x: _smLastX, y: _smLastY });
+}
+
+function touchMove(e) {
+  e.preventDefault();
+  if (!_smIsDrawing) return;
+  var touch = e.touches[0];
+  var canvas = document.getElementById('sm-canvas');
+  var ctx = canvas.getContext('2d');
+  var rect = canvas.getBoundingClientRect();
+  var x = (touch.clientX - rect.left) * (canvas.width / rect.width);
+  var y = (touch.clientY - rect.top) * (canvas.height / rect.height);
+
+  ctx.beginPath();
+  var color = document.getElementById('sm-color').value;
+  var size = parseInt(document.getElementById('sm-size').value);
+  ctx.strokeStyle = color;
+  ctx.lineWidth = size;
+  ctx.lineCap = 'round';
+  ctx.lineJoin = 'round';
+  ctx.moveTo(_smLastX, _smLastY);
+  ctx.lineTo(x, y);
+  ctx.stroke();
+
+  _smLastX = x;
+  _smLastY = y;
+  _smDrawHistory.push({ type: 'draw', x: x, y: y });
+  showSignaturePreview();
+}
+
+function clearSignature() {
+  var canvas = document.getElementById('sm-canvas');
+  var ctx = canvas.getContext('2d');
+  ctx.fillStyle = 'white';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  _smDrawHistory = [];
+  document.getElementById('sm-preview').style.display = 'none';
+  document.getElementById('sm-status').textContent = '🗑️ 已清空';
+}
+
+function undoSignature() {
+  if (_smDrawHistory.length === 0) return;
+  var canvas = document.getElementById('sm-canvas');
+  var ctx = canvas.getContext('2d');
+  ctx.fillStyle = 'white';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  // 找到最后一个 start 之前的所有操作
+  var lastStart = -1;
+  for (var i = _smDrawHistory.length - 2; i >= 0; i--) {
+    if (_smDrawHistory[i].type === 'start') {
+      lastStart = i;
+      break;
+    }
+  }
+  if (lastStart === -1) {
+    // 全部撤销
+    _smDrawHistory = [];
+    document.getElementById('sm-preview').style.display = 'none';
+    document.getElementById('sm-status').textContent = '🗑️ 已清空';
+    return;
+  }
+  _smDrawHistory = _smDrawHistory.slice(0, lastStart);
+
+  // 重绘
+  var color = document.getElementById('sm-color').value;
+  var size = parseInt(document.getElementById('sm-size').value);
+  ctx.beginPath();
+  var isDown = false;
+  _smDrawHistory.forEach(function(pt) {
+    if (pt.type === 'start') {
+      ctx.moveTo(pt.x, pt.y);
+      isDown = false;
+    } else {
+      ctx.strokeStyle = color;
+      ctx.lineWidth = size;
+      ctx.lineCap = 'round';
+      ctx.lineJoin = 'round';
+      ctx.lineTo(pt.x, pt.y);
+      if (!isDown) { ctx.beginPath(); ctx.moveTo(pt.x, pt.y); isDown = true; }
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(pt.x, pt.y);
+    }
+  });
+  showSignaturePreview();
+  document.getElementById('sm-status').textContent = '↩️ 已撤销一步';
+}
+
+function switchSignatureMode() {
+  var mode = document.getElementById('sm-mode').value;
+  if (mode === 'draw') {
+    document.getElementById('sm-draw-area').style.display = 'block';
+    document.getElementById('sm-text-group').style.display = 'none';
+    document.getElementById('sm-font-group').style.display = 'none';
+  } else {
+    document.getElementById('sm-draw-area').style.display = 'none';
+    document.getElementById('sm-text-group').style.display = 'block';
+    document.getElementById('sm-font-group').style.display = 'block';
+    renderTextSignature();
+  }
+}
+
+function renderTextSignature() {
+  var text = document.getElementById('sm-text').value || '签名';
+  var font = document.getElementById('sm-font').value;
+  var color = document.getElementById('sm-color').value;
+
+  var fontMap = {
+    'cursive': '"Brush Script MT", "Segoe Script", cursive',
+    'elegant': '"Palatino Linotype", "Book Antiqua", Palatino, serif',
+    'bold': 'Arial, Helvetica, sans-serif',
+    'calligraphy': '"Lucida Handwriting", "Snell Roundhand", cursive'
+  };
+  var fontFamily = fontMap[font] || fontMap['cursive'];
+
+  var canvas = document.getElementById('sm-canvas');
+  var ctx = canvas.getContext('2d');
+  ctx.fillStyle = 'white';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  ctx.fillStyle = color;
+  ctx.font = 'bold 48px ' + fontFamily;
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText(text, canvas.width / 2, canvas.height / 2);
+  _smDrawHistory = [];
+  showSignaturePreview();
+  document.getElementById('sm-status').textContent = '✅ 文字签名已生成';
+}
+
+function updateSignature() {
+  var mode = document.getElementById('sm-mode').value;
+  if (mode === 'text') {
+    renderTextSignature();
+  }
+}
+
+function showSignaturePreview() {
+  var canvas = document.getElementById('sm-canvas');
+  var dataUrl = canvas.toDataURL('image/png');
+  var preview = document.getElementById('sm-preview');
+  preview.style.display = 'block';
+  document.getElementById('sm-preview-img').src = dataUrl;
+}
+
+function downloadSignature() {
+  var canvas = document.getElementById('sm-canvas');
+  // 检查是否有内容
+  var ctx = canvas.getContext('2d');
+  var imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+  var hasContent = false;
+  for (var i = 0; i < imageData.data.length; i += 4) {
+    if (imageData.data[i] !== 255 || imageData.data[i+1] !== 255 || imageData.data[i+2] !== 255) {
+      hasContent = true;
+      break;
+    }
+  }
+  if (!hasContent) { showToast('⚠️ 请先绘制或输入签名'); return; }
+
+  // 裁剪白色边框
+  var sx = canvas.width, sy = canvas.height, ex = 0, ey = 0;
+  for (var y = 0; y < canvas.height; y++) {
+    for (var x = 0; x < canvas.width; x++) {
+      var idx = (y * canvas.width + x) * 4;
+      if (imageData.data[idx] !== 255 || imageData.data[idx+1] !== 255 || imageData.data[idx+2] !== 255) {
+        sx = Math.min(sx, x);
+        sy = Math.min(sy, y);
+        ex = Math.max(ex, x);
+        ey = Math.max(ey, y);
+      }
+    }
+  }
+  var cw = ex - sx + 20;
+  var ch = ey - sy + 20;
+  if (cw < 10 || ch < 10) { cw = canvas.width; ch = canvas.height; sx = 0; sy = 0; }
+
+  var tempCanvas = document.createElement('canvas');
+  tempCanvas.width = cw;
+  tempCanvas.height = ch;
+  var tempCtx = tempCanvas.getContext('2d');
+  tempCtx.drawImage(canvas, sx - 10, sy - 10, cw, ch, 0, 0, cw, ch);
+
+  var dataUrl = tempCanvas.toDataURL('image/png');
+  var a = document.createElement('a');
+  a.href = dataUrl;
+  a.download = '电子签名.png';
+  a.click();
+  showToast('✅ 签名已下载 (PNG, 透明背景)');
+}
+
+function copySignature() {
+  var canvas = document.getElementById('sm-canvas');
+  canvas.toBlob(function(blob) {
+    try {
+      navigator.clipboard.write([
+        new ClipboardItem({ 'image/png': blob })
+      ]).then(function() {
+        showToast('✅ 已复制到剪贴板');
+      }).catch(function() {
+        showToast('⚠️ 复制失败，请使用下载功能');
+      });
+    } catch(e) {
+      showToast('⚠️ 复制失败，请使用下载功能');
+    }
+  });
+}
