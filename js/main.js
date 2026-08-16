@@ -3150,23 +3150,131 @@ var _smLastX = 0;
 var _smLastY = 0;
 var _smDrawHistory = [];
 
+var SM_CANVAS_SIZES = {
+  'small': { w: 300, h: 120 },
+  'medium': { w: 500, h: 200 },
+  'large': { w: 700, h: 280 }
+};
+
+var SM_FONT_MAP = {
+  'cursive': '"Brush Script MT", "Segoe Script", "KaiTi", cursive',
+  'elegant': '"Palatino Linotype", "Book Antiqua", Palatino, serif',
+  'bold': 'Arial, Helvetica, "Microsoft YaHei", sans-serif',
+  'calligraphy': '"Lucida Handwriting", "Snell Roundhand", cursive',
+  'signature': '"Segoe Script", "Comic Sans MS", "KaiTi", cursive',
+  'comic': '"Comic Sans MS", "Chalkboard SE", cursive'
+};
+
+// 绘制画布背景
+function drawSigBg() {
+  var canvas = document.getElementById('sm-canvas');
+  var ctx = canvas.getContext('2d');
+  var bgOpt = document.getElementById('sm-bg').value;
+  var ulOpt = document.getElementById('sm-underline').value;
+
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  if (bgOpt === 'white' || bgOpt === 'lined' || bgOpt === 'grid' || bgOpt === 'contract') {
+    ctx.fillStyle = '#ffffff';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+  }
+
+  if (bgOpt === 'lined') {
+    ctx.strokeStyle = '#d0d5dd';
+    ctx.lineWidth = 0.5;
+    for (var ly = 24; ly < canvas.height; ly += 24) {
+      ctx.beginPath();
+      ctx.moveTo(0, ly);
+      ctx.lineTo(canvas.width, ly);
+      ctx.stroke();
+    }
+  } else if (bgOpt === 'grid') {
+    ctx.strokeStyle = '#d0d5dd';
+    ctx.lineWidth = 0.5;
+    for (var gx = 0; gx <= canvas.width; gx += 20) {
+      ctx.beginPath();
+      ctx.moveTo(gx, 0);
+      ctx.lineTo(gx, canvas.height);
+      ctx.stroke();
+    }
+    for (var gy = 0; gy <= canvas.height; gy += 20) {
+      ctx.beginPath();
+      ctx.moveTo(0, gy);
+      ctx.lineTo(canvas.width, gy);
+      ctx.stroke();
+    }
+  }
+
+  // 签名线
+  if (ulOpt !== 'none') {
+    var lineY = canvas.height - 20;
+    ctx.strokeStyle = '#94a3b8';
+    ctx.lineWidth = 1.5;
+    ctx.setLineDash(ulOpt === 'dashed' ? [6, 4] : (ulOpt === 'dotted' ? [2, 4] : []));
+    ctx.beginPath();
+    ctx.moveTo(20, lineY);
+    ctx.lineTo(canvas.width - 20, lineY);
+    ctx.stroke();
+    ctx.setLineDash([]);
+  }
+
+  if (bgOpt === 'contract') {
+    ctx.fillStyle = '#94a3b8';
+    ctx.font = '12px sans-serif';
+    ctx.textAlign = 'right';
+    ctx.textBaseline = 'top';
+    ctx.fillText('请在此处签名', canvas.width - 20, lineY + 4);
+    ctx.strokeStyle = '#cbd5e1';
+    ctx.lineWidth = 0.5;
+    ctx.beginPath();
+    ctx.moveTo(20, 40);
+    ctx.lineTo(canvas.width - 20, 40);
+    ctx.stroke();
+    ctx.fillStyle = '#94a3b8';
+    ctx.font = '11px sans-serif';
+    ctx.textAlign = 'left';
+    ctx.textBaseline = 'middle';
+    ctx.fillText('日期:', 20, 20);
+  }
+}
+
+// 获取旋转后的画布
+function getRotatedCanvas() {
+  var canvas = document.getElementById('sm-canvas');
+  var rotateDeg = parseInt(document.getElementById('sm-rotate').value) || 0;
+  if (rotateDeg === 0) return null;
+
+  var tempCanvas = document.createElement('canvas');
+  var w = canvas.width, h = canvas.height;
+  var rad = rotateDeg * Math.PI / 180;
+  var cos = Math.abs(Math.cos(rad));
+  var sin = Math.abs(Math.sin(rad));
+  var nw = Math.ceil(w * cos + h * sin);
+  var nh = Math.ceil(w * sin + h * cos);
+  tempCanvas.width = nw;
+  tempCanvas.height = nh;
+  var ctx = tempCanvas.getContext('2d');
+  ctx.translate(nw / 2, nh / 2);
+  ctx.rotate(rad);
+  ctx.drawImage(canvas, -w / 2, -h / 2);
+  return tempCanvas;
+}
+
 function initSignatureMaker() {
   var canvas = document.getElementById('sm-canvas');
   if (!canvas) return;
-  var ctx = canvas.getContext('2d');
-  ctx.fillStyle = 'white';
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  drawSigBg();
 
-  canvas.addEventListener('mousedown', startDraw);
-  canvas.addEventListener('mousemove', draw);
-  canvas.addEventListener('mouseup', stopDraw);
-  canvas.addEventListener('mouseleave', stopDraw);
-  canvas.addEventListener('touchstart', touchStart);
-  canvas.addEventListener('touchmove', touchMove);
-  canvas.addEventListener('touchend', stopDraw);
+  canvas.addEventListener('mousedown', smStartDraw);
+  canvas.addEventListener('mousemove', smDraw);
+  canvas.addEventListener('mouseup', smStopDraw);
+  canvas.addEventListener('mouseleave', smStopDraw);
+  canvas.addEventListener('touchstart', smTouchStart, { passive: false });
+  canvas.addEventListener('touchmove', smTouchMove, { passive: false });
+  canvas.addEventListener('touchend', smStopDraw);
 }
 
-function startDraw(e) {
+function smStartDraw(e) {
   _smIsDrawing = true;
   var rect = e.target.getBoundingClientRect();
   _smLastX = (e.clientX - rect.left) * (e.target.width / rect.width);
@@ -3174,36 +3282,24 @@ function startDraw(e) {
   _smDrawHistory.push({ type: 'start', x: _smLastX, y: _smLastY });
 }
 
-function draw(e) {
+function smDraw(e) {
   if (!_smIsDrawing) return;
   var canvas = e.target;
-  var ctx = canvas.getContext('2d');
   var rect = canvas.getBoundingClientRect();
   var x = (e.clientX - rect.left) * (canvas.width / rect.width);
   var y = (e.clientY - rect.top) * (canvas.height / rect.height);
-
-  ctx.beginPath();
-  var color = document.getElementById('sm-color').value;
-  var size = parseInt(document.getElementById('sm-size').value);
-  ctx.strokeStyle = color;
-  ctx.lineWidth = size;
-  ctx.lineCap = 'round';
-  ctx.lineJoin = 'round';
-  ctx.moveTo(_smLastX, _smLastY);
-  ctx.lineTo(x, y);
-  ctx.stroke();
-
+  smDrawStroke(_smLastX, _smLastY, x, y);
   _smLastX = x;
   _smLastY = y;
   _smDrawHistory.push({ type: 'draw', x: x, y: y });
   showSignaturePreview();
 }
 
-function stopDraw() {
+function smStopDraw() {
   _smIsDrawing = false;
 }
 
-function touchStart(e) {
+function smTouchStart(e) {
   e.preventDefault();
   var touch = e.touches[0];
   var canvas = document.getElementById('sm-canvas');
@@ -3214,87 +3310,103 @@ function touchStart(e) {
   _smDrawHistory.push({ type: 'start', x: _smLastX, y: _smLastY });
 }
 
-function touchMove(e) {
+function smTouchMove(e) {
   e.preventDefault();
   if (!_smIsDrawing) return;
   var touch = e.touches[0];
   var canvas = document.getElementById('sm-canvas');
-  var ctx = canvas.getContext('2d');
   var rect = canvas.getBoundingClientRect();
   var x = (touch.clientX - rect.left) * (canvas.width / rect.width);
   var y = (touch.clientY - rect.top) * (canvas.height / rect.height);
-
-  ctx.beginPath();
-  var color = document.getElementById('sm-color').value;
-  var size = parseInt(document.getElementById('sm-size').value);
-  ctx.strokeStyle = color;
-  ctx.lineWidth = size;
-  ctx.lineCap = 'round';
-  ctx.lineJoin = 'round';
-  ctx.moveTo(_smLastX, _smLastY);
-  ctx.lineTo(x, y);
-  ctx.stroke();
-
+  smDrawStroke(_smLastX, _smLastY, x, y);
   _smLastX = x;
   _smLastY = y;
   _smDrawHistory.push({ type: 'draw', x: x, y: y });
   showSignaturePreview();
 }
 
-function clearSignature() {
+// 核心绘制函数（支持多种笔触）
+function smDrawStroke(fromX, fromY, toX, toY) {
   var canvas = document.getElementById('sm-canvas');
   var ctx = canvas.getContext('2d');
-  ctx.fillStyle = 'white';
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  var color = document.getElementById('sm-color').value;
+  var size = parseInt(document.getElementById('sm-size').value);
+  var brush = document.getElementById('sm-brush').value;
+
+  ctx.beginPath();
+  switch (brush) {
+    case 'brush':
+      var dist = Math.sqrt((toX - fromX) * (toX - fromX) + (toY - fromY) * (toY - fromY));
+      var w = Math.max(size * 0.5, size * (1 - Math.min(dist / 50, 0.6)));
+      ctx.strokeStyle = color;
+      ctx.lineWidth = w;
+      ctx.lineCap = 'round';
+      ctx.lineJoin = 'round';
+      ctx.moveTo(fromX, fromY);
+      ctx.lineTo(toX, toY);
+      ctx.stroke();
+      ctx.strokeStyle = color + '40';
+      ctx.lineWidth = w * 0.4;
+      ctx.beginPath();
+      ctx.moveTo(fromX - 1, fromY - 1);
+      ctx.lineTo(toX - 1, toY - 1);
+      ctx.stroke();
+      break;
+    case 'marker':
+      ctx.strokeStyle = color + '80';
+      ctx.lineWidth = size * 1.5;
+      ctx.lineCap = 'square';
+      ctx.lineJoin = 'round';
+      ctx.moveTo(fromX, fromY);
+      ctx.lineTo(toX, toY);
+      ctx.stroke();
+      break;
+    case 'highlighter':
+      ctx.strokeStyle = color + '30';
+      ctx.lineWidth = size * 3;
+      ctx.lineCap = 'round';
+      ctx.lineJoin = 'round';
+      ctx.moveTo(fromX, fromY);
+      ctx.lineTo(toX, toY);
+      ctx.stroke();
+      break;
+    default: // pen
+      ctx.strokeStyle = color;
+      ctx.lineWidth = size;
+      ctx.lineCap = 'round';
+      ctx.lineJoin = 'round';
+      ctx.moveTo(fromX, fromY);
+      ctx.lineTo(toX, toY);
+      ctx.stroke();
+      break;
+  }
+}
+
+function clearSignature() {
   _smDrawHistory = [];
+  drawSigBg();
   document.getElementById('sm-preview').style.display = 'none';
   document.getElementById('sm-status').textContent = '🗑️ 已清空';
 }
 
 function undoSignature() {
   if (_smDrawHistory.length === 0) return;
-  var canvas = document.getElementById('sm-canvas');
-  var ctx = canvas.getContext('2d');
-  ctx.fillStyle = 'white';
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-  // 找到最后一个 start 之前的所有操作
   var lastStart = -1;
   for (var i = _smDrawHistory.length - 2; i >= 0; i--) {
-    if (_smDrawHistory[i].type === 'start') {
-      lastStart = i;
-      break;
-    }
+    if (_smDrawHistory[i].type === 'start') { lastStart = i; break; }
   }
   if (lastStart === -1) {
-    // 全部撤销
-    _smDrawHistory = [];
+    _smDrawHistory = []; drawSigBg();
     document.getElementById('sm-preview').style.display = 'none';
     document.getElementById('sm-status').textContent = '🗑️ 已清空';
     return;
   }
   _smDrawHistory = _smDrawHistory.slice(0, lastStart);
-
-  // 重绘
-  var color = document.getElementById('sm-color').value;
-  var size = parseInt(document.getElementById('sm-size').value);
-  ctx.beginPath();
-  var isDown = false;
+  drawSigBg();
+  var lx = 0, ly = 0;
   _smDrawHistory.forEach(function(pt) {
-    if (pt.type === 'start') {
-      ctx.moveTo(pt.x, pt.y);
-      isDown = false;
-    } else {
-      ctx.strokeStyle = color;
-      ctx.lineWidth = size;
-      ctx.lineCap = 'round';
-      ctx.lineJoin = 'round';
-      ctx.lineTo(pt.x, pt.y);
-      if (!isDown) { ctx.beginPath(); ctx.moveTo(pt.x, pt.y); isDown = true; }
-      ctx.stroke();
-      ctx.beginPath();
-      ctx.moveTo(pt.x, pt.y);
-    }
+    if (pt.type === 'start') { lx = pt.x; ly = pt.y; }
+    else { smDrawStroke(lx, ly, pt.x, pt.y); lx = pt.x; ly = pt.y; }
   });
   showSignaturePreview();
   document.getElementById('sm-status').textContent = '↩️ 已撤销一步';
@@ -3307,7 +3419,7 @@ function switchSignatureMode() {
     document.getElementById('sm-text-group').style.display = 'none';
     document.getElementById('sm-font-group').style.display = 'none';
   } else {
-    document.getElementById('sm-draw-area').style.display = 'none';
+    document.getElementById('sm-draw-area').style.display = 'block';
     document.getElementById('sm-text-group').style.display = 'block';
     document.getElementById('sm-font-group').style.display = 'block';
     renderTextSignature();
@@ -3318,103 +3430,116 @@ function renderTextSignature() {
   var text = document.getElementById('sm-text').value || '签名';
   var font = document.getElementById('sm-font').value;
   var color = document.getElementById('sm-color').value;
-
-  var fontMap = {
-    'cursive': '"Brush Script MT", "Segoe Script", cursive',
-    'elegant': '"Palatino Linotype", "Book Antiqua", Palatino, serif',
-    'bold': 'Arial, Helvetica, sans-serif',
-    'calligraphy': '"Lucida Handwriting", "Snell Roundhand", cursive'
-  };
-  var fontFamily = fontMap[font] || fontMap['cursive'];
-
+  var align = document.getElementById('sm-align').value;
+  var fontFamily = SM_FONT_MAP[font] || SM_FONT_MAP['cursive'];
   var canvas = document.getElementById('sm-canvas');
-  var ctx = canvas.getContext('2d');
-  ctx.fillStyle = 'white';
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
 
+  drawSigBg();
+  var ctx = canvas.getContext('2d');
   ctx.fillStyle = color;
   ctx.font = 'bold 48px ' + fontFamily;
-  ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
-  ctx.fillText(text, canvas.width / 2, canvas.height / 2);
+  if (align === 'left') { ctx.textAlign = 'left'; ctx.fillText(text, 30, canvas.height / 2 - 10); }
+  else if (align === 'right') { ctx.textAlign = 'right'; ctx.fillText(text, canvas.width - 30, canvas.height / 2 - 10); }
+  else { ctx.textAlign = 'center'; ctx.fillText(text, canvas.width / 2, canvas.height / 2 - 10); }
   _smDrawHistory = [];
   showSignaturePreview();
   document.getElementById('sm-status').textContent = '✅ 文字签名已生成';
 }
 
 function updateSignature() {
-  var mode = document.getElementById('sm-mode').value;
-  if (mode === 'text') {
-    renderTextSignature();
-  }
+  if (document.getElementById('sm-mode').value === 'text') renderTextSignature();
+}
+
+function redrawSignatureCanvas() {
+  drawSigBg();
+  if (document.getElementById('sm-mode').value === 'text') { renderTextSignature(); return; }
+  var lx = 0, ly = 0;
+  _smDrawHistory.forEach(function(pt) {
+    if (pt.type === 'start') { lx = pt.x; ly = pt.y; }
+    else { smDrawStroke(lx, ly, pt.x, pt.y); lx = pt.x; ly = pt.y; }
+  });
+  showSignaturePreview();
+}
+
+function resizeSignatureCanvas() {
+  var sizeKey = document.getElementById('sm-canvas-size').value;
+  var size = SM_CANVAS_SIZES[sizeKey] || SM_CANVAS_SIZES['medium'];
+  var canvas = document.getElementById('sm-canvas');
+  canvas.width = size.w; canvas.height = size.h;
+  _smDrawHistory = [];
+  drawSigBg();
+  if (document.getElementById('sm-mode').value === 'text') renderTextSignature();
+  document.getElementById('sm-preview').style.display = 'none';
+  document.getElementById('sm-status').textContent = '📐 画布已调整为 ' + sizeKey;
 }
 
 function showSignaturePreview() {
-  var canvas = document.getElementById('sm-canvas');
-  var dataUrl = canvas.toDataURL('image/png');
-  var preview = document.getElementById('sm-preview');
-  preview.style.display = 'block';
+  var rotatedCanvas = getRotatedCanvas();
+  var dataUrl = (rotatedCanvas || document.getElementById('sm-canvas')).toDataURL('image/png');
+  document.getElementById('sm-preview').style.display = 'block';
   document.getElementById('sm-preview-img').src = dataUrl;
+}
+
+function randomSignatureStyle() {
+  var colors = ['#1e40af','#dc2626','#059669','#7c3aed','#d97706','#0891b2','#be185d','#000000'];
+  var brushes = ['pen','brush','marker','highlighter'];
+  var sizes = [2,4,6,8];
+  var bgs = ['transparent','white','lined','grid'];
+  var underlines = ['none','solid','dashed'];
+  var fonts = ['cursive','elegant','bold','calligraphy','signature'];
+  document.getElementById('sm-color').value = colors[Math.floor(Math.random()*colors.length)];
+  document.getElementById('sm-brush').value = brushes[Math.floor(Math.random()*brushes.length)];
+  document.getElementById('sm-size').value = sizes[Math.floor(Math.random()*sizes.length)];
+  document.getElementById('sm-bg').value = bgs[Math.floor(Math.random()*bgs.length)];
+  document.getElementById('sm-underline').value = underlines[Math.floor(Math.random()*underlines.length)];
+  document.getElementById('sm-font').value = fonts[Math.floor(Math.random()*fonts.length)];
+  drawSigBg();
+  if (document.getElementById('sm-mode').value === 'text') renderTextSignature();
+  else redrawSignatureCanvas();
+  showToast('🎲 已随机生成新风格！');
 }
 
 function downloadSignature() {
   var canvas = document.getElementById('sm-canvas');
-  // 检查是否有内容
   var ctx = canvas.getContext('2d');
-  var imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-  var hasContent = false;
-  for (var i = 0; i < imageData.data.length; i += 4) {
-    if (imageData.data[i] !== 255 || imageData.data[i+1] !== 255 || imageData.data[i+2] !== 255) {
-      hasContent = true;
-      break;
-    }
-  }
-  if (!hasContent) { showToast('⚠️ 请先绘制或输入签名'); return; }
+  var imgData = ctx.getImageData(0,0,canvas.width,canvas.height);
+  var has = false;
+  for (var i=0;i<imgData.data.length;i+=4){if(imgData.data[i]!==255||imgData.data[i+1]!==255||imgData.data[i+2]!==255){has=true;break;}}
+  if(!has){showToast('⚠️ 请先绘制或输入签名');return;}
 
-  // 裁剪白色边框
-  var sx = canvas.width, sy = canvas.height, ex = 0, ey = 0;
-  for (var y = 0; y < canvas.height; y++) {
-    for (var x = 0; x < canvas.width; x++) {
-      var idx = (y * canvas.width + x) * 4;
-      if (imageData.data[idx] !== 255 || imageData.data[idx+1] !== 255 || imageData.data[idx+2] !== 255) {
-        sx = Math.min(sx, x);
-        sy = Math.min(sy, y);
-        ex = Math.max(ex, x);
-        ey = Math.max(ey, y);
-      }
-    }
-  }
-  var cw = ex - sx + 20;
-  var ch = ey - sy + 20;
-  if (cw < 10 || ch < 10) { cw = canvas.width; ch = canvas.height; sx = 0; sy = 0; }
-
-  var tempCanvas = document.createElement('canvas');
-  tempCanvas.width = cw;
-  tempCanvas.height = ch;
-  var tempCtx = tempCanvas.getContext('2d');
-  tempCtx.drawImage(canvas, sx - 10, sy - 10, cw, ch, 0, 0, cw, ch);
-
-  var dataUrl = tempCanvas.toDataURL('image/png');
-  var a = document.createElement('a');
-  a.href = dataUrl;
-  a.download = '电子签名.png';
-  a.click();
+  var srcCanvas = getRotatedCanvas()||canvas;
+  var srcCtx = srcCanvas.getContext('2d');
+  var srcData = srcCtx.getImageData(0,0,srcCanvas.width,srcCanvas.height);
+  var sx=srcCanvas.width,sy=srcCanvas.height,ex=0,ey=0;
+  for(var y=0;y<srcCanvas.height;y++){for(var x=0;x<srcCanvas.width;x++){
+    var idx=(y*srcCanvas.width+x)*4;
+    if(srcData.data[idx]!==255||srcData.data[idx+1]!==255||srcData.data[idx+2]!==255){sx=Math.min(sx,x);sy=Math.min(sy,y);ex=Math.max(ex,x);ey=Math.max(ey,y);}
+  }}
+  var cw=ex-sx+20,ch=ey-sy+20;
+  if(cw<10||ch<10){cw=srcCanvas.width;ch=srcCanvas.height;sx=0;sy=0;}
+  var tmp=document.createElement('canvas');tmp.width=cw;tmp.height=ch;
+  tmp.getContext('2d').drawImage(srcCanvas,sx-10,sy-10,cw,ch,0,0,cw,ch);
+  var a=document.createElement('a');a.href=tmp.toDataURL('image/png');a.download='电子签名.png';a.click();
   showToast('✅ 签名已下载 (PNG, 透明背景)');
 }
 
-function copySignature() {
+function downloadSignatureSVG() {
   var canvas = document.getElementById('sm-canvas');
-  canvas.toBlob(function(blob) {
-    try {
-      navigator.clipboard.write([
-        new ClipboardItem({ 'image/png': blob })
-      ]).then(function() {
-        showToast('✅ 已复制到剪贴板');
-      }).catch(function() {
-        showToast('⚠️ 复制失败，请使用下载功能');
-      });
-    } catch(e) {
-      showToast('⚠️ 复制失败，请使用下载功能');
-    }
-  });
+  var ctx = canvas.getContext('2d');
+  var imgData = ctx.getImageData(0,0,canvas.width,canvas.height);
+  var has = false;
+  for(var i=0;i<imgData.data.length;i+=4){if(imgData.data[i]<250||imgData.data[i+1]<250||imgData.data[i+2]<250){has=true;break;}}
+  if(!has){showToast('⚠️ 请先绘制或输入签名');return;}
+  var svg='<svg xmlns="http://www.w3.org/2000/svg" width="'+canvas.width+'" height="'+canvas.height+'"><image width="100%" height="100%" href="'+canvas.toDataURL('image/png')+'"/></svg>';
+  var blob=new Blob([svg],{type:'image/svg+xml'});
+  var url=URL.createObjectURL(blob);
+  var a=document.createElement('a');a.href=url;a.download='电子签名.svg';a.click();
+  URL.revokeObjectURL(url);
+  showToast('✅ 签名已下载 (SVG)');
+}
+
+function copySignature() {
+  var rotatedCanvas = getRotatedCanvas()||document.getElementById('sm-canvas');
+  rotatedCanvas.toBlob(function(blob){try{navigator.clipboard.write([new ClipboardItem({'image/png':blob})]).then(function(){showToast('✅ 已复制到剪贴板');}).catch(function(){showToast('⚠️ 复制失败，请使用下载功能');});}catch(e){showToast('⚠️ 复制失败，请使用下载功能');}});
 }

@@ -3033,65 +3033,139 @@ openclaw update</code></pre>
     cat: 'document',
     icon: '✍️',
     name: '在线电子签名',
-    desc: '在线生成手写电子签名，支持鼠标/触摸绘制、文字签名，可导出透明PNG',
+    desc: '在线生成手写电子签名，支持多种笔触风格、背景样式，可导出透明PNG',
     html: `      <div class="tool-card">
-        <div class="row-2">
-          <div class="input-group">
-            <label>签名方式</label>
-            <select id="sm-mode" onchange="switchSignatureMode()" style="width:150px;">
-              <option value="draw">手写绘制</option>
-              <option value="text">文字签名</option>
-            </select>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+          <!-- 左侧：签名输入 -->
+          <div style="border-right:1px solid var(--border);padding-right:16px;">
+            <h4 style="font-size:15px;font-weight:600;margin-bottom:12px;color:var(--primary);">✍️ 签名输入</h4>
+            <div class="row-2" style="margin-bottom:10px;">
+              <div class="input-group">
+                <label>签名方式</label>
+                <select id="sm-mode" onchange="switchSignatureMode()" style="width:100%;">
+                  <option value="draw">手写绘制</option>
+                  <option value="text">文字签名</option>
+                </select>
+              </div>
+              <div class="input-group" id="sm-font-group" style="display:none;">
+                <label>字体风格</label>
+                <select id="sm-font" onchange="renderTextSignature()" style="width:100%;">
+                  <option value="cursive">手写体</option>
+                  <option value="elegant">优雅体</option>
+                  <option value="bold">粗体</option>
+                  <option value="calligraphy">书法体</option>
+                  <option value="signature">签名体</option>
+                  <option value="comic">漫画体</option>
+                </select>
+              </div>
+            </div>
+            <div class="input-group" id="sm-text-group" style="display:none;margin-bottom:10px;">
+              <label>输入签名文字</label>
+              <input type="text" id="sm-text" value="张三" oninput="renderTextSignature()" placeholder="输入你的名字" style="font-size:20px;max-width:300px;">
+            </div>
+            <div class="row-2" style="margin-bottom:10px;">
+              <div class="input-group">
+                <label>🎨 笔触颜色</label>
+                <input type="color" id="sm-color" value="#1e40af" onchange="updateSignature()" style="width:100%;height:36px;padding:2px;cursor:pointer;">
+              </div>
+              <div class="input-group">
+                <label>📏 笔触粗细</label>
+                <select id="sm-size" onchange="updateSignature()" style="width:100%;">
+                  <option value="1">极细</option>
+                  <option value="2">细</option>
+                  <option value="4" selected>中</option>
+                  <option value="6">粗</option>
+                  <option value="8">特粗</option>
+                  <option value="12">极粗</option>
+                </select>
+              </div>
+            </div>
+            <div class="row-2" style="margin-bottom:10px;">
+              <div class="input-group">
+                <label>🖊️ 画笔风格</label>
+                <select id="sm-brush" onchange="updateSignature()" style="width:100%;">
+                  <option value="pen">🖊️ 钢笔</option>
+                  <option value="brush">🖌️ 毛笔</option>
+                  <option value="marker">🖍️ 马克笔</option>
+                  <option value="highlighter">🟡 荧光笔</option>
+                </select>
+              </div>
+              <div class="input-group">
+                <label>📐 画布尺寸</label>
+                <select id="sm-canvas-size" onchange="resizeSignatureCanvas()" style="width:100%;">
+                  <option value="small">小 (300×120)</option>
+                  <option value="medium" selected>中 (500×200)</option>
+                  <option value="large">大 (700×280)</option>
+                </select>
+              </div>
+            </div>
+            <div class="row-2" style="margin-bottom:10px;">
+              <div class="input-group">
+                <label>↔️ 文字对齐</label>
+                <select id="sm-align" onchange="renderTextSignature()" style="width:100%;">
+                  <option value="center">居中</option>
+                  <option value="left">左对齐</option>
+                  <option value="right">右对齐</option>
+                </select>
+              </div>
+              <div class="input-group">
+                <label>🔄 旋转角度</label>
+                <div style="display:flex;align-items:center;gap:6px;">
+                  <input type="range" id="sm-rotate" min="-30" max="30" value="0" oninput="document.getElementById('sm-rotate-val').textContent=this.value+'°';updateSignature()" style="flex:1;">
+                  <span id="sm-rotate-val" style="font-size:13px;color:var(--text-light);min-width:30px;">0°</span>
+                </div>
+              </div>
+            </div>
+            <div class="row-2" style="margin-bottom:10px;">
+              <div class="input-group">
+                <label>📄 签名背景</label>
+                <select id="sm-bg" onchange="redrawSignatureCanvas()" style="width:100%;">
+                  <option value="transparent">透明背景</option>
+                  <option value="white">白底</option>
+                  <option value="lined">信纸横线</option>
+                  <option value="contract">合同横线</option>
+                  <option value="grid">网格纸</option>
+                </select>
+              </div>
+              <div class="input-group">
+                <label>〰️ 签名线</label>
+                <select id="sm-underline" onchange="redrawSignatureCanvas()" style="width:100%;">
+                  <option value="none">无</option>
+                  <option value="solid">实线</option>
+                  <option value="dashed">虚线</option>
+                  <option value="dotted">点线</option>
+                </select>
+              </div>
+            </div>
           </div>
-          <div class="input-group" id="sm-font-group" style="display:none;">
-            <label>字体风格</label>
-            <select id="sm-font" onchange="renderTextSignature()" style="width:150px;">
-              <option value="cursive">手写体</option>
-              <option value="elegant">优雅体</option>
-              <option value="bold">粗体</option>
-              <option value="calligraphy">书法体</option>
-            </select>
+
+          <!-- 右侧：签名绘制区 -->
+          <div style="padding-left:16px;">
+            <h4 style="font-size:15px;font-weight:600;margin-bottom:12px;color:var(--primary);">🎨 签名绘制</h4>
+            <div class="input-group" id="sm-draw-area">
+              <label>绘制区域（鼠标或手指拖动）</label>
+              <div id="sm-canvas-wrapper" style="border:2px dashed var(--border);border-radius:10px;position:relative;overflow:hidden;touch-action:none;width:100%;max-width:500px;margin:8px auto;">
+                <canvas id="sm-canvas" width="500" height="200" style="width:100%;height:auto;display:block;cursor:crosshair;"></canvas>
+              </div>
+              <div style="display:flex;gap:8px;justify-content:center;margin-top:8px;flex-wrap:wrap;">
+                <button class="btn btn-secondary" onclick="clearSignature()">🗑️ 清空</button>
+                <button class="btn btn-secondary" onclick="undoSignature()">↩️ 撤销</button>
+                <button class="btn btn-secondary" onclick="randomSignatureStyle()">🎲 随机风格</button>
+              </div>
+            </div>
+            <div class="btn-group" style="justify-content:center;margin-top:12px;flex-wrap:wrap;">
+              <button class="btn btn-primary" onclick="downloadSignature()">📥 下载 PNG</button>
+              <button class="btn btn-secondary" onclick="copySignature()">📋 复制到剪贴板</button>
+              <button class="btn btn-secondary" onclick="downloadSignatureSVG()">📄 下载 SVG</button>
+            </div>
+            <div id="sm-preview" style="text-align:center;margin-top:12px;min-height:80px;display:none;background:var(--bg);border-radius:10px;padding:20px;border:1px solid var(--border);">
+              <div class="label" style="margin-bottom:8px;">签名预览</div>
+              <img id="sm-preview-img" style="max-height:120px;border-radius:4px;padding:8px;">
+            </div>
+            <div id="sm-status" style="margin-top:8px;font-size:13px;color:var(--text-light);text-align:center;"></div>
           </div>
         </div>
-        <div class="input-group" id="sm-text-group" style="display:none;">
-          <label>输入签名文字</label>
-          <input type="text" id="sm-text" value="张三" oninput="renderTextSignature()" placeholder="输入你的名字" style="font-size:20px;max-width:300px;">
-        </div>
-        <div class="row-2">
-          <div class="input-group">
-            <label>笔触颜色</label>
-            <input type="color" id="sm-color" value="#1e40af" onchange="updateSignature()">
-          </div>
-          <div class="input-group">
-            <label>笔触粗细</label>
-            <select id="sm-size" onchange="updateSignature()" style="width:120px;">
-              <option value="2">细</option>
-              <option value="4" selected>中</option>
-              <option value="6">粗</option>
-              <option value="8">特粗</option>
-            </select>
-          </div>
-        </div>
-        <div class="input-group" id="sm-draw-area">
-          <label>签名绘制区域（鼠标或手指拖动绘制）</label>
-          <div style="border:2px dashed var(--border);border-radius:10px;background:white;position:relative;overflow:hidden;touch-action:none;width:100%;max-width:500px;margin:8px auto;">
-            <canvas id="sm-canvas" width="500" height="200" style="width:100%;height:auto;display:block;cursor:crosshair;background:white;"></canvas>
-          </div>
-          <div style="display:flex;gap:8px;justify-content:center;margin-top:8px;">
-            <button class="btn btn-secondary" onclick="clearSignature()">🗑️ 清空</button>
-            <button class="btn btn-secondary" onclick="undoSignature()">↩️ 撤销</button>
-          </div>
-        </div>
-        <div class="btn-group" style="justify-content:center;margin-top:12px;">
-          <button class="btn btn-primary" onclick="downloadSignature()">📥 下载签名 (PNG)</button>
-          <button class="btn btn-secondary" onclick="copySignature()">📋 复制到剪贴板</button>
-        </div>
-        <div id="sm-preview" style="text-align:center;margin-top:12px;min-height:80px;display:none;background:var(--bg);border-radius:10px;padding:20px;border:1px solid var(--border);">
-          <div class="label" style="margin-bottom:8px;">签名预览</div>
-          <img id="sm-preview-img" style="max-height:100px;background:white;border-radius:4px;padding:8px;">
-        </div>
-        <div id="sm-status" style="margin-top:8px;font-size:13px;color:var(--text-light);"></div>
-        <div style="margin-top:10px;padding:10px;background:#f0f9ff;border-radius:8px;font-size:12px;color:#075985;line-height:1.6;">💡 灵感来源于 DocuSign、HelloSign 等付费电子签名工具（$10-15/月），我们的免费版支持手写绘制和文字签名，生成的PNG带透明背景，可用于合同、文件等场景。</div>
+        <div style="margin-top:10px;padding:10px;background:#f0f9ff;border-radius:8px;font-size:12px;color:#075985;line-height:1.6;">💡 灵感来源于 DocuSign、HelloSign 等付费电子签名工具（$10-15/月），我们的免费版支持多种笔触风格和背景，生成的PNG带透明背景，可用于合同、文件等场景。</div>
       </div>
     `,
     handler: () => { setTimeout(initSignatureMaker, 100); }
