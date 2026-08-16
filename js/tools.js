@@ -3261,6 +3261,123 @@ openclaw update</code></pre>
       </div>
     `,
     handler: () => { setTimeout(initSignatureMaker, 100); }
+  },
+
+  // ==================== SVG 在线编辑器 ====================
+  {
+    id: 'svg-editor',
+    cat: 'image',
+    icon: '🎨',
+    name: 'SVG 在线编辑器',
+    desc: '在线绘制和编辑SVG图形，支持矩形、圆形、线条、文字，可导出为SVG文件',
+    html: `
+      <div class="tool-card">
+        <div class="row-2" style="margin-bottom:10px;">
+          <div class="input-group">
+            <label>🟦 形状工具</label>
+            <div style="display:flex;gap:6px;flex-wrap:wrap;">
+              <button class="btn btn-secondary" onclick="svgSetTool('rect')" style="font-size:12px;padding:4px 10px;flex:1;">⬜ 矩形</button>
+              <button class="btn btn-secondary" onclick="svgSetTool('circle')" style="font-size:12px;padding:4px 10px;flex:1;">⚪ 圆形</button>
+              <button class="btn btn-secondary" onclick="svgSetTool('line')" style="font-size:12px;padding:4px 10px;flex:1;">📏 线条</button>
+              <button class="btn btn-secondary" onclick="svgSetTool('text')" style="font-size:12px;padding:4px 10px;flex:1;">🔤 文字</button>
+              <button class="btn btn-secondary" onclick="svgSetTool('select')" style="font-size:12px;padding:4px 10px;flex:1;">👆 选择</button>
+            </div>
+          </div>
+          <div class="input-group">
+            <label>🎨 样式</label>
+            <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;">
+              <input type="color" id="svg-fill" value="#6366f1" onchange="svgUpdateStyle()" style="width:36px;height:32px;padding:1px;border:none;cursor:pointer;border-radius:4px;">
+              <span style="font-size:11px;">填充</span>
+              <input type="color" id="svg-stroke" value="#333333" onchange="svgUpdateStyle()" style="width:36px;height:32px;padding:1px;border:none;cursor:pointer;border-radius:4px;">
+              <span style="font-size:11px;">描边</span>
+              <select id="svg-stroke-width" onchange="svgUpdateStyle()" style="width:60px;font-size:12px;">
+                <option value="1">1px</option>
+                <option value="2" selected>2px</option>
+                <option value="3">3px</option>
+                <option value="4">4px</option>
+              </select>
+              <span style="font-size:11px;">粗细</span>
+            </div>
+          </div>
+        </div>
+        <div style="display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap;">
+          <button class="btn btn-primary" onclick="svgAddRect()" style="font-size:12px;padding:4px 12px;">+ 矩形</button>
+          <button class="btn btn-primary" onclick="svgAddCircle()" style="font-size:12px;padding:4px 12px;">+ 圆形</button>
+          <button class="btn btn-primary" onclick="svgAddLine()" style="font-size:12px;padding:4px 12px;">+ 线条</button>
+          <button class="btn btn-primary" onclick="svgAddText()" style="font-size:12px;padding:4px 12px;">+ 文字</button>
+          <button class="btn btn-secondary" onclick="svgDeleteSelected()" style="font-size:12px;padding:4px 12px;">🗑️ 删除选中</button>
+          <button class="btn btn-secondary" onclick="svgClear()" style="font-size:12px;padding:4px 12px;">🗑️ 清空全部</button>
+          <button class="btn btn-success" onclick="svgExport()" style="font-size:12px;padding:4px 12px;">⬇️ 导出 SVG</button>
+        </div>
+        <div style="text-align:center;">
+          <svg id="svg-canvas" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:400px;border:1px solid var(--border);border-radius:8px;background:#ffffff;cursor:crosshair;overflow:visible;"></svg>
+        </div>
+        <div style="margin-top:8px;font-size:12px;color:var(--text-light);text-align:center;">
+          💡 点击「+」按钮添加图形，或点击图形选中后按 Delete 删除。灵感来源于 Sketch、Figma 等付费设计工具（$12-15/月）。
+        </div>
+      </div>
+    `,
+    handler: () => { setTimeout(initSvgEditor, 100); }
+  },
+
+  // ==================== 图片颜色提取器 ====================
+  {
+    id: 'color-extractor',
+    cat: 'color',
+    icon: '🎨',
+    name: '图片颜色提取器',
+    desc: '从图片中提取主要颜色，生成调色板，一键复制色值，支持HEX/RGB格式',
+    html: `
+      <div class="tool-card">
+        <div class="row-2" style="margin-bottom:12px;">
+          <div class="input-group">
+            <label>📁 上传图片</label>
+            <div style="display:flex;gap:8px;align-items:center;">
+              <input type="file" id="ce-file" accept="image/*" style="display:none;" onchange="ceExtract()">
+              <button class="btn btn-secondary" onclick="document.getElementById('ce-file').click()" style="flex:1;">📁 选择图片</button>
+              <span id="ce-filename" style="font-size:12px;color:var(--text-light);"></span>
+            </div>
+          </div>
+          <div class="input-group">
+            <label>⚙️ 提取设置</label>
+            <div style="display:flex;gap:6px;align-items:center;">
+              <select id="ce-count" onchange="ceExtract()" style="width:100px;font-size:13px;">
+                <option value="5">5 种颜色</option>
+                <option value="8" selected>8 种颜色</option>
+                <option value="12">12 种颜色</option>
+                <option value="16">16 种颜色</option>
+              </select>
+              <label style="font-size:12px;display:flex;align-items:center;gap:4px;cursor:pointer;">
+                <input type="checkbox" id="ce-sort" checked onchange="ceExtract()"> 按占比排序
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="row-2" style="margin-bottom:12px;">
+          <div style="text-align:center;">
+            <canvas id="ce-preview" style="max-width:100%;max-height:200px;border-radius:8px;border:1px solid var(--border);display:none;"></canvas>
+            <div id="ce-placeholder" style="height:120px;display:flex;align-items:center;justify-content:center;border:2px dashed var(--border);border-radius:8px;color:var(--text-light);font-size:14px;background:#fafafa;">
+              📁 上传图片自动提取颜色
+            </div>
+          </div>
+          <div>
+            <div id="ce-palette" style="display:none;">
+              <div style="font-size:14px;font-weight:600;margin-bottom:8px;color:var(--primary);">🎨 提取的调色板</div>
+              <div id="ce-colors" style="display:grid;grid-template-columns:1fr 1fr;gap:6px;"></div>
+              <div style="margin-top:8px;display:flex;gap:6px;flex-wrap:wrap;">
+                <button class="btn btn-secondary" onclick="ceCopyAllHex()" style="font-size:12px;padding:4px 10px;">📋 复制全部 HEX</button>
+                <button class="btn btn-secondary" onclick="ceCopyAllRGB()" style="font-size:12px;padding:4px 10px;">📋 复制全部 RGB</button>
+                <button class="btn btn-secondary" onclick="ceExportCSS()" style="font-size:12px;padding:4px 10px;">📋 导出 CSS</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div style="margin-top:8px;font-size:12px;color:var(--text-light);text-align:center;">
+          💡 灵感来源于 Adobe Color、Coolors 等付费色彩工具（$9.99-19.99/月），免费版支持图片上传提取主色调、一键复制色值。
+        </div>
+      </div>
+    `,
+    handler: () => {}
   }
 ];
 

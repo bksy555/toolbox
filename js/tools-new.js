@@ -408,3 +408,310 @@ function spinWheel() {
   showToast('结果: ' + result);
   setTimeout(function() { document.getElementById('dw-result').className = 'dw-result'; }, 500);
 }
+
+// ==================== 5. SVG 在线编辑器 ====================
+var svgCurrentTool = 'select';
+var svgElements = [];
+var svgSelected = null;
+var svgIdCounter = 0;
+
+function initSvgEditor() {
+  svgElements = [];
+  svgSelected = null;
+  svgIdCounter = 0;
+  var canvas = document.getElementById('svg-canvas');
+  if (canvas) {
+    canvas.innerHTML = '<rect width="100%" height="100%" fill="#ffffff" onclick="svgDeselect()"/>';
+    // 添加默认示例
+    svgAddRect();
+    svgAddCircle();
+  }
+}
+
+function svgSetTool(tool) {
+  svgCurrentTool = tool;
+  var btns = document.querySelectorAll('.tool-card button');
+  btns.forEach(function(b) { b.style.outline = 'none'; });
+  showToast('工具: ' + {rect:'矩形',circle:'圆形',line:'线条',text:'文字',select:'选择'}[tool] || tool);
+}
+
+function svgGetStyle() {
+  return {
+    fill: document.getElementById('svg-fill').value,
+    stroke: document.getElementById('svg-stroke').value,
+    'stroke-width': document.getElementById('svg-stroke-width').value
+  };
+}
+
+function svgUpdateStyle() {
+  if (svgSelected) {
+    svgSelected.setAttribute('fill', document.getElementById('svg-fill').value);
+    svgSelected.setAttribute('stroke', document.getElementById('svg-stroke').value);
+    svgSelected.setAttribute('stroke-width', document.getElementById('svg-stroke-width').value);
+  }
+}
+
+function svgAddRect() {
+  var style = svgGetStyle();
+  var canvas = document.getElementById('svg-canvas');
+  var w = canvas.clientWidth || 600;
+  var x = 50 + Math.random() * (w - 200);
+  var y = 50 + Math.random() * 200;
+  var rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+  rect.setAttribute('x', x);
+  rect.setAttribute('y', y);
+  rect.setAttribute('width', 80 + Math.random() * 60);
+  rect.setAttribute('height', 50 + Math.random() * 40);
+  rect.setAttribute('fill', style.fill);
+  rect.setAttribute('stroke', style.stroke);
+  rect.setAttribute('stroke-width', style['stroke-width']);
+  rect.setAttribute('rx', '4');
+  rect.setAttribute('id', 'svg-elem-' + (svgIdCounter++));
+  rect.setAttribute('class', 'svg-element');
+  rect.style.cursor = 'pointer';
+  rect.onclick = function(e) { e.stopPropagation(); svgSelect(this); };
+  rect.ondblclick = function() { svgStartDrag(this); };
+  canvas.appendChild(rect);
+  svgElements.push(rect);
+  svgSelect(rect);
+  showToast('已添加矩形');
+}
+
+function svgAddCircle() {
+  var style = svgGetStyle();
+  var canvas = document.getElementById('svg-canvas');
+  var w = canvas.clientWidth || 600;
+  var cx = 80 + Math.random() * (w - 200);
+  var cy = 80 + Math.random() * 200;
+  var circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+  circle.setAttribute('cx', cx);
+  circle.setAttribute('cy', cy);
+  circle.setAttribute('r', 30 + Math.random() * 30);
+  circle.setAttribute('fill', style.fill);
+  circle.setAttribute('stroke', style.stroke);
+  circle.setAttribute('stroke-width', style['stroke-width']);
+  circle.setAttribute('id', 'svg-elem-' + (svgIdCounter++));
+  circle.setAttribute('class', 'svg-element');
+  circle.style.cursor = 'pointer';
+  circle.onclick = function(e) { e.stopPropagation(); svgSelect(this); };
+  canvas.appendChild(circle);
+  svgElements.push(circle);
+  svgSelect(circle);
+  showToast('已添加圆形');
+}
+
+function svgAddLine() {
+  var style = svgGetStyle();
+  var canvas = document.getElementById('svg-canvas');
+  var w = canvas.clientWidth || 600;
+  var x1 = 50 + Math.random() * (w - 150);
+  var y1 = 50 + Math.random() * 200;
+  var line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+  line.setAttribute('x1', x1);
+  line.setAttribute('y1', y1);
+  line.setAttribute('x2', x1 + 80 + Math.random() * 60);
+  line.setAttribute('y2', y1 + 40 + Math.random() * 60);
+  line.setAttribute('stroke', style.stroke);
+  line.setAttribute('stroke-width', style['stroke-width']);
+  line.setAttribute('id', 'svg-elem-' + (svgIdCounter++));
+  line.setAttribute('class', 'svg-element');
+  line.style.cursor = 'pointer';
+  line.onclick = function(e) { e.stopPropagation(); svgSelect(this); };
+  canvas.appendChild(line);
+  svgElements.push(line);
+  svgSelect(line);
+  showToast('已添加线条');
+}
+
+function svgAddText() {
+  var style = svgGetStyle();
+  var canvas = document.getElementById('svg-canvas');
+  var w = canvas.clientWidth || 600;
+  var text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+  text.setAttribute('x', 50 + Math.random() * (w - 200));
+  text.setAttribute('y', 100 + Math.random() * 150);
+  text.setAttribute('fill', style.fill);
+  text.setAttribute('font-size', '24');
+  text.setAttribute('font-family', 'sans-serif');
+  text.setAttribute('id', 'svg-elem-' + (svgIdCounter++));
+  text.setAttribute('class', 'svg-element');
+  text.textContent = '双击编辑文字';
+  text.style.cursor = 'pointer';
+  text.onclick = function(e) { e.stopPropagation(); svgSelect(this); };
+  text.ondblclick = function() {
+    var newText = prompt('编辑文字:', this.textContent);
+    if (newText) this.textContent = newText;
+  };
+  canvas.appendChild(text);
+  svgElements.push(text);
+  svgSelect(text);
+  showToast('已添加文字');
+}
+
+function svgSelect(el) {
+  svgDeselect();
+  if (!el) return;
+  svgSelected = el;
+  el.setAttribute('stroke-width', parseInt(el.getAttribute('stroke-width') || 2) + 2);
+  el.style.outline = '2px dashed #6366f1';
+  el.style.outlineOffset = '2px';
+  document.getElementById('svg-fill').value = el.getAttribute('fill') || '#6366f1';
+  document.getElementById('svg-stroke').value = el.getAttribute('stroke') || '#333333';
+  document.getElementById('svg-stroke-width').value = el.getAttribute('stroke-width') || '2';
+}
+
+function svgDeselect() {
+  if (svgSelected) {
+    var sw = parseInt(svgSelected.getAttribute('stroke-width') || 2);
+    svgSelected.setAttribute('stroke-width', Math.max(1, sw - 2));
+    svgSelected.style.outline = 'none';
+    svgSelected = null;
+  }
+}
+
+function svgDeleteSelected() {
+  if (svgSelected) {
+    svgSelected.remove();
+    svgElements = svgElements.filter(function(e) { return e !== svgSelected; });
+    svgSelected = null;
+    showToast('已删除选中元素');
+  } else {
+    showToast('请先点击选中一个元素');
+  }
+}
+
+function svgClear() {
+  if (!confirm('确定清空全部？')) return;
+  svgElements.forEach(function(e) { e.remove(); });
+  svgElements = [];
+  svgSelected = null;
+  showToast('已清空');
+}
+
+function svgExport() {
+  var canvas = document.getElementById('svg-canvas');
+  var clone = canvas.cloneNode(true);
+  // 移除点击事件
+  clone.querySelectorAll('*').forEach(function(el) { el.onclick = null; el.ondblclick = null; el.style = ''; });
+  var svgData = new XMLSerializer().serializeToString(clone);
+  var blob = new Blob([svgData], { type: 'image/svg+xml;charset=utf-8' });
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url;
+  a.download = 'my-drawing.svg';
+  a.click();
+  URL.revokeObjectURL(url);
+  showToast('SVG 已导出');
+}
+
+// ==================== 6. 图片颜色提取器 ====================
+function ceExtract() {
+  var file = document.getElementById('ce-file').files[0];
+  if (!file) return;
+  document.getElementById('ce-filename').textContent = file.name;
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    var img = new Image();
+    img.onload = function() {
+      var canvas = document.getElementById('ce-preview');
+      var ctx = canvas.getContext('2d');
+      canvas.width = Math.min(img.width, 400);
+      canvas.height = Math.min(img.height, 200);
+      var scale = Math.min(canvas.width / img.width, canvas.height / img.height);
+      var dw = img.width * scale, dh = img.height * scale;
+      canvas.width = dw; canvas.height = dh;
+      ctx.drawImage(img, 0, 0, dw, dh);
+      canvas.style.display = 'block';
+      document.getElementById('ce-placeholder').style.display = 'none';
+
+      // 提取颜色
+      var imageData = ctx.getImageData(0, 0, dw, dh);
+      var data = imageData.data;
+      var colorMap = {};
+      var step = 4; // 采样步长，提高性能
+      for (var i = 0; i < data.length; i += step * 4) {
+        var r = Math.round(data[i] / 16) * 16;
+        var g = Math.round(data[i+1] / 16) * 16;
+        var b = Math.round(data[i+2] / 16) * 16;
+        var key = r + ',' + g + ',' + b;
+        if (colorMap[key]) colorMap[key]++;
+        else colorMap[key] = 1;
+      }
+
+      // 排序
+      var sorted = Object.keys(colorMap).sort(function(a, b) {
+        return colorMap[b] - colorMap[a];
+      });
+
+      var count = parseInt(document.getElementById('ce-count').value);
+      var topColors = sorted.slice(0, count);
+
+      // 显示调色板
+      var palette = document.getElementById('ce-colors');
+      palette.innerHTML = '';
+      document.getElementById('ce-palette').style.display = 'block';
+
+      topColors.forEach(function(key) {
+        var parts = key.split(',');
+        var r = parseInt(parts[0]), g = parseInt(parts[1]), b = parseInt(parts[2]);
+        var hex = '#' + [r,g,b].map(function(v) {
+          var h = Math.round(v).toString(16);
+          return h.length === 1 ? '0' + h : h;
+        }).join('');
+        var rgb = 'rgb(' + r + ',' + g + ',' + b + ')';
+        var pct = Math.round(colorMap[key] / sorted.length * 100);
+
+        var div = document.createElement('div');
+        div.style.cssText = 'display:flex;align-items:center;gap:8px;padding:6px 8px;border-radius:6px;background:#f8f8f8;cursor:pointer;';
+        div.onclick = function() { navigator.clipboard.writeText(hex); showToast('已复制 ' + hex); };
+        div.innerHTML = '<span style="display:inline-block;width:32px;height:32px;border-radius:6px;background:' + hex + ';border:1px solid #ddd;flex-shrink:0;"></span>' +
+          '<span style="font-family:monospace;font-size:13px;font-weight:600;">' + hex + '</span>' +
+          '<span style="font-size:11px;color:#999;flex:1;">' + rgb + '</span>' +
+          '<span style="font-size:11px;color:#999;">' + pct + '%</span>';
+        palette.appendChild(div);
+      });
+
+      showToast('已提取 ' + topColors.length + ' 种颜色');
+    };
+    img.src = e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+function ceCopyAllHex() {
+  var colors = document.querySelectorAll('#ce-colors span:first-of-type');
+  var hexes = [];
+  document.querySelectorAll('#ce-colors > div').forEach(function(div) {
+    var span = div.querySelector('span:nth-child(2)');
+    if (span) hexes.push(span.textContent);
+  });
+  if (hexes.length) {
+    navigator.clipboard.writeText(hexes.join(', '));
+    showToast('已复制 ' + hexes.length + ' 个 HEX 色值');
+  }
+}
+
+function ceCopyAllRGB() {
+  var rgbs = [];
+  document.querySelectorAll('#ce-colors > div').forEach(function(div) {
+    var span = div.querySelector('span:nth-child(3)');
+    if (span) rgbs.push(span.textContent);
+  });
+  if (rgbs.length) {
+    navigator.clipboard.writeText(rgbs.join(', '));
+    showToast('已复制 ' + rgbs.length + ' 个 RGB 色值');
+  }
+}
+
+function ceExportCSS() {
+  var cssLines = [];
+  document.querySelectorAll('#ce-colors > div').forEach(function(div, i) {
+    var span = div.querySelector('span:nth-child(2)');
+    if (span) cssLines.push('  --color-' + (i+1) + ': ' + span.textContent + ';');
+  });
+  if (cssLines.length) {
+    var css = ':root {\n' + cssLines.join('\n') + '\n}';
+    navigator.clipboard.writeText(css);
+    showToast('已复制 CSS 变量');
+  }
+}
