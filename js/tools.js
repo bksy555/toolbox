@@ -2789,67 +2789,239 @@ openclaw update</code></pre>
     cat: 'document',
     icon: '📋',
     name: '在线简历生成器',
-    desc: '在线制作专业简历，输入信息即可生成精美简历，支持下载PDF',
+    desc: '在线制作专业简历，支持丰富的个性化设计选项，告别千篇一律',
     html: `      <div class="tool-card">
-        <div class="row-2">
-          <div class="input-group">
-            <label>👤 姓名</label>
-            <input type="text" id="rb-name" value="张三" oninput="renderResume()" style="font-size:18px;font-weight:700;">
-          </div>
-          <div class="input-group">
-            <label>🏷️ 求职意向 / 职位</label>
-            <input type="text" id="rb-title" value="高级前端工程师" oninput="renderResume()">
-          </div>
-        </div>
-        <div class="row-2">
-          <div class="input-group">
-            <label>📧 邮箱</label>
-            <input type="email" id="rb-email" value="zhangsan@example.com" oninput="renderResume()">
-          </div>
-          <div class="input-group">
-            <label>📞 电话</label>
-            <input type="tel" id="rb-phone" value="138-0000-0000" oninput="renderResume()">
-          </div>
-        </div>
-        <div class="input-group">
-          <label>📍 地址</label>
-          <input type="text" id="rb-address" value="北京市海淀区" oninput="renderResume()">
-        </div>
-        <div class="input-group">
-          <label>📝 个人简介</label>
-          <textarea id="rb-summary" rows="3" oninput="renderResume()" placeholder="简短介绍自己...">拥有8年前端开发经验，精通React、Vue、TypeScript等技术栈，曾在多家知名互联网公司担任技术负责人，具备良好的团队协作和项目管理能力。</textarea>
-        </div>
-        <div class="input-group">
-          <label>💼 工作经历（每行一条，格式：公司 | 职位 | 时间 | 描述）</label>
-          <textarea id="rb-experience" rows="4" oninput="renderResume()" placeholder="例如：字节跳动 | 高级前端工程师 | 2020-2024 | 负责核心业务前端架构设计...">字节跳动 | 高级前端工程师 | 2020-2024 | 负责核心业务前端架构设计与开发，带领5人团队完成多个大型项目，提升开发效率30%。
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+          <!-- 左侧：内容输入 -->
+          <div style="border-right:1px solid var(--border);padding-right:16px;">
+            <h4 style="font-size:15px;font-weight:600;margin-bottom:12px;color:var(--primary);">📝 简历内容</h4>
+            <div class="input-group" style="margin-bottom:10px;">
+              <label>👤 姓名</label>
+              <input type="text" id="rb-name" value="张三" oninput="renderResume()" style="font-size:18px;font-weight:700;">
+            </div>
+            <div class="input-group" style="margin-bottom:10px;">
+              <label>🏷️ 求职意向 / 职位</label>
+              <input type="text" id="rb-title" value="高级前端工程师" oninput="renderResume()">
+            </div>
+            <div class="row-2" style="margin-bottom:10px;">
+              <div class="input-group">
+                <label>📧 邮箱</label>
+                <input type="email" id="rb-email" value="zhangsan@example.com" oninput="renderResume()">
+              </div>
+              <div class="input-group">
+                <label>📞 电话</label>
+                <input type="tel" id="rb-phone" value="138-0000-0000" oninput="renderResume()">
+              </div>
+            </div>
+            <div class="input-group" style="margin-bottom:10px;">
+              <label>📍 地址</label>
+              <input type="text" id="rb-address" value="北京市海淀区" oninput="renderResume()">
+            </div>
+            <div class="input-group" style="margin-bottom:10px;">
+              <label>📝 个人简介</label>
+              <textarea id="rb-summary" rows="2" oninput="renderResume()" placeholder="简短介绍自己...">拥有8年前端开发经验，精通React、Vue、TypeScript等技术栈，曾在多家知名互联网公司担任技术负责人，具备良好的团队协作和项目管理能力。</textarea>
+            </div>
+            <div class="input-group" style="margin-bottom:10px;">
+              <label>💼 工作经历（每行一条，格式：公司 | 职位 | 时间 | 描述）</label>
+              <textarea id="rb-experience" rows="3" oninput="renderResume()" placeholder="例如：字节跳动 | 高级前端工程师 | 2020-2024 | 负责核心业务前端架构设计...">字节跳动 | 高级前端工程师 | 2020-2024 | 负责核心业务前端架构设计与开发，带领5人团队完成多个大型项目，提升开发效率30%。
 阿里巴巴 | 前端工程师 | 2017-2020 | 参与电商平台前端开发，主导组件库建设，服务200+业务线。</textarea>
+            </div>
+            <div class="input-group" style="margin-bottom:10px;">
+              <label>🎓 教育背景（每行一条，格式：学校 | 专业 | 时间 | 学历）</label>
+              <textarea id="rb-education" rows="2" oninput="renderResume()" placeholder="例如：北京大学 | 计算机科学与技术 | 2013-2017 | 本科">北京大学 | 计算机科学与技术 | 2013-2017 | 本科</textarea>
+            </div>
+            <div class="input-group" style="margin-bottom:10px;">
+              <label>🔧 技能标签（逗号分隔）</label>
+              <input type="text" id="rb-skills" value="JavaScript,TypeScript,React,Vue,Node.js,CSS,Webpack,Git" oninput="renderResume()">
+            </div>
+            <div class="input-group" style="margin-bottom:10px;">
+              <label>📸 头像照片（可选）</label>
+              <div class="file-input-wrapper">
+                <span class="file-btn">📁 选择头像</span>
+                <input type="file" id="rb-avatar" accept="image/*" onchange="loadResumeAvatar()">
+              </div>
+              <div id="rb-avatar-preview" style="margin-top:6px;display:none;">
+                <img id="rb-avatar-img" style="width:60px;height:60px;border-radius:50%;object-fit:cover;border:2px solid var(--border);">
+                <span style="font-size:12px;color:var(--text-light);margin-left:8px;cursor:pointer;" onclick="document.getElementById('rb-avatar').value='';document.getElementById('rb-avatar-preview').style.display='none';renderResume()">✕ 移除</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 右侧：个性化设计 -->
+          <div style="padding-left:16px;">
+            <h4 style="font-size:15px;font-weight:600;margin-bottom:12px;color:var(--primary);">🎨 个性化设计</h4>
+
+            <div class="input-group" style="margin-bottom:10px;">
+              <label>📐 整体布局</label>
+              <select id="rb-layout" onchange="renderResume()" style="width:100%;">
+                <option value="standard">上下布局（标准）</option>
+                <option value="sidebar">左右分栏（侧边栏）</option>
+                <option value="card">卡片式布局</option>
+                <option value="compact">紧凑型布局</option>
+              </select>
+            </div>
+
+            <div class="input-group" style="margin-bottom:10px;">
+              <label>🎨 Header 背景</label>
+              <select id="rb-header-bg" onchange="renderResume()" style="width:100%;">
+                <option value="gradient1">渐变紫蓝</option>
+                <option value="gradient2">渐变深蓝</option>
+                <option value="gradient3">渐变青绿</option>
+                <option value="gradient4">渐变橙红</option>
+                <option value="gradient5">渐变粉紫</option>
+                <option value="solid1">纯色深灰</option>
+                <option value="solid2">纯色深蓝</option>
+                <option value="solid3">纯色墨绿</option>
+                <option value="solid4">纯色酒红</option>
+                <option value="light1">浅色灰蓝</option>
+                <option value="light2">浅色米白</option>
+                <option value="none">无背景头</option>
+                <option value="custom">自定义颜色</option>
+              </select>
+              <div id="rb-header-custom" style="display:none;margin-top:4px;">
+                <input type="color" id="rb-header-color" value="#6366f1" onchange="renderResume()">
+                <input type="color" id="rb-header-color2" value="#4f46e5" onchange="renderResume()" style="margin-left:4px;">
+                <span style="font-size:11px;color:var(--text-light);">左色 → 右色（相同为纯色）</span>
+              </div>
+            </div>
+
+            <div class="input-group" style="margin-bottom:10px;">
+              <label>📄 Body 背景</label>
+              <select id="rb-body-bg" onchange="renderResume()" style="width:100%;">
+                <option value="white">纯白</option>
+                <option value="lightgray">浅灰</option>
+                <option value="warm">米黄暖色</option>
+                <option value="lightblue">浅蓝</option>
+                <option value="custom">自定义</option>
+              </select>
+              <div id="rb-body-custom" style="display:none;margin-top:4px;">
+                <input type="color" id="rb-body-color" value="#f8fafc" onchange="renderResume()">
+              </div>
+            </div>
+
+            <div class="row-2" style="margin-bottom:10px;">
+              <div class="input-group">
+                <label>🔤 全局字体</label>
+                <select id="rb-font" onchange="renderResume()" style="width:100%;">
+                  <option value="system">系统默认</option>
+                  <option value="songti">宋体</option>
+                  <option value="heiti">黑体</option>
+                  <option value="kaiti">楷体</option>
+                  <option value="fangsong">仿宋</option>
+                  <option value="yahei">微软雅黑</option>
+                  <option value="times">Times New Roman</option>
+                  <option value="georgia">Georgia</option>
+                  <option value="arial">Arial</option>
+                  <option value="noto">Noto Sans SC</option>
+                </select>
+              </div>
+              <div class="input-group">
+                <label>🔤 标题字体</label>
+                <select id="rb-heading-font" onchange="renderResume()" style="width:100%;">
+                  <option value="same">同全局字体</option>
+                  <option value="songti">宋体</option>
+                  <option value="heiti">黑体</option>
+                  <option value="kaiti">楷体</option>
+                  <option value="fangsong">仿宋</option>
+                  <option value="yahei">微软雅黑</option>
+                  <option value="times">Times New Roman</option>
+                  <option value="georgia">Georgia</option>
+                  <option value="arial">Arial</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="row-2" style="margin-bottom:10px;">
+              <div class="input-group">
+                <label>🎨 主题色</label>
+                <input type="color" id="rb-accent" value="#6366f1" onchange="renderResume()" style="width:100%;height:36px;padding:2px;cursor:pointer;">
+              </div>
+              <div class="input-group">
+                <label>📄 文字颜色</label>
+                <input type="color" id="rb-text-color" value="#334155" onchange="renderResume()" style="width:100%;height:36px;padding:2px;cursor:pointer;">
+              </div>
+            </div>
+
+            <div class="row-2" style="margin-bottom:10px;">
+              <div class="input-group">
+                <label>〰️ 分割线样式</label>
+                <select id="rb-divider-style" onchange="renderResume()" style="width:100%;">
+                  <option value="solid">实线</option>
+                  <option value="dashed">虚线</option>
+                  <option value="dotted">点线</option>
+                  <option value="double">双线</option>
+                  <option value="gradient">渐变线</option>
+                  <option value="none">无分割线</option>
+                </select>
+              </div>
+              <div class="input-group">
+                <label>📏 分割线粗细</label>
+                <select id="rb-divider-width" onchange="renderResume()" style="width:100%;">
+                  <option value="1">1px 细</option>
+                  <option value="2" selected>2px 标准</option>
+                  <option value="3">3px 中等</option>
+                  <option value="4">4px 粗</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="row-2" style="margin-bottom:10px;">
+              <div class="input-group">
+                <label>⬜ 卡片圆角</label>
+                <select id="rb-radius" onchange="renderResume()" style="width:100%;">
+                  <option value="0">无圆角</option>
+                  <option value="4">小圆角</option>
+                  <option value="8" selected>中圆角</option>
+                  <option value="16">大圆角</option>
+                </select>
+              </div>
+              <div class="input-group">
+                <label>↕️ 内容间距</label>
+                <select id="rb-spacing" onchange="renderResume()" style="width:100%;">
+                  <option value="compact">紧凑</option>
+                  <option value="normal" selected>标准</option>
+                  <option value="spacious">宽松</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="row-2" style="margin-bottom:10px;">
+              <div class="input-group">
+                <label>🏷️ 标签样式</label>
+                <select id="rb-badge-style" onchange="renderResume()" style="width:100%;">
+                  <option value="round">圆角填充</option>
+                  <option value="square">方形填充</option>
+                  <option value="outline">线框</option>
+                  <option value="gradient-badge">渐变填充</option>
+                  <option value="underline">下划线</option>
+                </select>
+              </div>
+              <div class="input-group">
+                <label>📸 头像显示</label>
+                <select id="rb-avatar-style" onchange="renderResume()" style="width:100%;">
+                  <option value="circle">圆形</option>
+                  <option value="square">方形</option>
+                  <option value="rounded">圆角方形</option>
+                  <option value="none">不显示</option>
+                </select>
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="input-group">
-          <label>🎓 教育背景（每行一条，格式：学校 | 专业 | 时间 | 学历）</label>
-          <textarea id="rb-education" rows="2" oninput="renderResume()" placeholder="例如：北京大学 | 计算机科学与技术 | 2013-2017 | 本科">北京大学 | 计算机科学与技术 | 2013-2017 | 本科</textarea>
-        </div>
-        <div class="input-group">
-          <label>🔧 技能标签（逗号分隔）</label>
-          <input type="text" id="rb-skills" value="JavaScript,TypeScript,React,Vue,Node.js,CSS,Webpack,Git" oninput="renderResume()">
-        </div>
-        <div class="input-group">
-          <label>🎨 简历模板</label>
-          <select id="rb-template" onchange="renderResume()" style="width:200px;">
-            <option value="modern">现代简约</option>
-            <option value="classic">经典专业</option>
-            <option value="creative">创意活泼</option>
-          </select>
-        </div>
-        <div class="btn-group">
+
+        <hr style="margin:16px 0;border-color:var(--border);">
+
+        <div class="btn-group" style="justify-content:center;">
           <button class="btn btn-primary" onclick="downloadResumePDF()">📄 下载 PDF</button>
           <button class="btn btn-secondary" onclick="downloadResumeHTML()">🌐 下载 HTML</button>
+          <button class="btn btn-secondary" onclick="randomizeResumeStyle()">🎲 随机换风格</button>
         </div>
         <div class="result-box show" style="margin-top:16px;overflow:hidden;">
           <div class="label">简历预览</div>
           <div id="rb-preview" style="background:white;border-radius:8px;min-height:300px;padding:0;overflow:hidden;"></div>
         </div>
-        <div id="rb-status" style="margin-top:8px;font-size:13px;color:var(--text-light);"></div>
-        <div style="margin-top:10px;padding:10px;background:#f0f9ff;border-radius:8px;font-size:12px;color:#075985;line-height:1.6;">💡 灵感来源于 Novoresume、Zety 等付费简历工具（$20-30/月），我们的免费版支持简历排版预览和PDF导出，所有数据保存在本地浏览器。</div>
+        <div id="rb-status" style="margin-top:8px;font-size:13px;color:var(--text-light);text-align:center;"></div>
+        <div style="margin-top:10px;padding:10px;background:#f0f9ff;border-radius:8px;font-size:12px;color:#075985;line-height:1.6;">💡 灵感来源于 Novoresume、Zety 等付费简历工具（$20-30/月），我们的免费版支持丰富的个性化选项，所有数据保存在本地浏览器。</div>
       </div>
     `,
     handler: () => { setTimeout(renderResume, 100); }

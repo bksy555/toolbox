@@ -2709,7 +2709,94 @@ function downloadScreenRecording() {
 // ============================================================
 // 在线简历生成器 处理函数
 // ============================================================
+
+// 字体映射
+var RB_FONTS = {
+  'system': '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+  'songti': '"SimSun", "宋体", serif',
+  'heiti': '"PingFang SC", "Microsoft YaHei", "SimHei", "黑体", sans-serif',
+  'kaiti': '"KaiTi", "楷体", serif',
+  'fangsong': '"FangSong", "仿宋", serif',
+  'yahei': '"Microsoft YaHei", "微软雅黑", sans-serif',
+  'times': '"Times New Roman", Times, serif',
+  'georgia': 'Georgia, "Times New Roman", serif',
+  'arial': 'Arial, Helvetica, sans-serif',
+  'noto': '"Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif'
+};
+
+// Header背景映射
+var RB_HEADER_BGS = {
+  'gradient1': 'linear-gradient(135deg, #6366f1, #4f46e5)',
+  'gradient2': 'linear-gradient(135deg, #1e40af, #1e3a8a)',
+  'gradient3': 'linear-gradient(135deg, #0d9488, #0f766e)',
+  'gradient4': 'linear-gradient(135deg, #f97316, #dc2626)',
+  'gradient5': 'linear-gradient(135deg, #d946ef, #9333ea)',
+  'solid1': '#1e293b',
+  'solid2': '#1e3a5f',
+  'solid3': '#1a3c34',
+  'solid4': '#4a1a2e',
+  'light1': '#e2e8f0',
+  'light2': '#f5f0e8',
+  'none': 'transparent',
+  'custom': '#6366f1'
+};
+
+// Body背景映射
+var RB_BODY_BGS = {
+  'white': '#ffffff',
+  'lightgray': '#f8fafc',
+  'warm': '#fefcf6',
+  'lightblue': '#f0f7ff',
+  'custom': '#f8fafc'
+};
+
+// 已加载的头像数据
+var _rbAvatarDataUrl = null;
+
+function loadResumeAvatar() {
+  var file = document.getElementById('rb-avatar').files[0];
+  if (!file) return;
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    _rbAvatarDataUrl = e.target.result;
+    document.getElementById('rb-avatar-img').src = _rbAvatarDataUrl;
+    document.getElementById('rb-avatar-preview').style.display = 'block';
+    renderResume();
+  };
+  reader.readAsDataURL(file);
+}
+
+function randomizeResumeStyle() {
+  var layouts = ['standard', 'sidebar', 'card', 'compact'];
+  var headerBgs = ['gradient1', 'gradient2', 'gradient3', 'gradient4', 'gradient5', 'solid1', 'solid2', 'solid3', 'light1', 'light2'];
+  var bodyBgs = ['white', 'lightgray', 'warm', 'lightblue'];
+  var fonts = ['system', 'songti', 'heiti', 'kaiti', 'yahei', 'times', 'georgia'];
+  var dividerStyles = ['solid', 'dashed', 'dotted', 'double', 'gradient', 'none'];
+  var badgeStyles = ['round', 'square', 'outline', 'gradient-badge', 'underline'];
+  var spacings = ['compact', 'normal', 'spacious'];
+  var radii = ['0', '4', '8', '16'];
+  var avatarStyles = ['circle', 'square', 'rounded', 'none'];
+
+  // 随机颜色
+  function randColor() { return '#' + Math.floor(Math.random()*0xffffff).toString(16).padStart(6,'0'); }
+
+  document.getElementById('rb-layout').value = layouts[Math.floor(Math.random() * layouts.length)];
+  document.getElementById('rb-header-bg').value = headerBgs[Math.floor(Math.random() * headerBgs.length)];
+  document.getElementById('rb-body-bg').value = bodyBgs[Math.floor(Math.random() * bodyBgs.length)];
+  document.getElementById('rb-font').value = fonts[Math.floor(Math.random() * fonts.length)];
+  document.getElementById('rb-accent').value = randColor();
+  document.getElementById('rb-text-color').value = randColor();
+  document.getElementById('rb-divider-style').value = dividerStyles[Math.floor(Math.random() * dividerStyles.length)];
+  document.getElementById('rb-badge-style').value = badgeStyles[Math.floor(Math.random() * badgeStyles.length)];
+  document.getElementById('rb-spacing').value = spacings[Math.floor(Math.random() * spacings.length)];
+  document.getElementById('rb-radius').value = radii[Math.floor(Math.random() * radii.length)];
+  document.getElementById('rb-avatar-style').value = avatarStyles[Math.floor(Math.random() * avatarStyles.length)];
+  renderResume();
+  showToast('🎲 已随机生成新风格！');
+}
+
 function renderResume() {
+  // 内容字段
   var name = document.getElementById('rb-name').value || '姓名';
   var title = document.getElementById('rb-title').value || '职位';
   var email = document.getElementById('rb-email').value || '';
@@ -2719,106 +2806,308 @@ function renderResume() {
   var experience = document.getElementById('rb-experience').value || '';
   var education = document.getElementById('rb-education').value || '';
   var skills = document.getElementById('rb-skills').value || '';
-  var template = document.getElementById('rb-template').value || 'modern';
+
+  // 设计选项
+  var layout = document.getElementById('rb-layout').value;
+  var headerBgOpt = document.getElementById('rb-header-bg').value;
+  var bodyBgOpt = document.getElementById('rb-body-bg').value;
+  var fontOpt = document.getElementById('rb-font').value;
+  var headingFontOpt = document.getElementById('rb-heading-font').value;
+  var accentColor = document.getElementById('rb-accent').value;
+  var textColor = document.getElementById('rb-text-color').value;
+  var dividerStyle = document.getElementById('rb-divider-style').value;
+  var dividerWidth = document.getElementById('rb-divider-width').value;
+  var radius = parseInt(document.getElementById('rb-radius').value);
+  var spacing = document.getElementById('rb-spacing').value;
+  var badgeStyle = document.getElementById('rb-badge-style').value;
+  var avatarStyle = document.getElementById('rb-avatar-style').value;
+
+  // 解析header背景
+  var headerBg = RB_HEADER_BGS[headerBgOpt] || RB_HEADER_BGS['gradient1'];
+  if (headerBgOpt === 'custom') {
+    var c1 = document.getElementById('rb-header-color').value;
+    var c2 = document.getElementById('rb-header-color2').value;
+    headerBg = c1 === c2 ? c1 : 'linear-gradient(135deg, ' + c1 + ', ' + c2 + ')';
+    document.getElementById('rb-header-custom').style.display = 'block';
+  } else {
+    document.getElementById('rb-header-custom').style.display = 'none';
+  }
+
+  // 解析body背景
+  var bodyBg = RB_BODY_BGS[bodyBgOpt] || '#ffffff';
+  if (bodyBgOpt === 'custom') {
+    bodyBg = document.getElementById('rb-body-color').value;
+    document.getElementById('rb-body-custom').style.display = 'block';
+  } else {
+    document.getElementById('rb-body-custom').style.display = 'none';
+  }
+
+  // 判断header文字颜色
+  var headerColor = 'white';
+  var headerIsLight = ['light1', 'light2', 'none'].indexOf(headerBgOpt) !== -1;
+  if (headerIsLight) headerColor = '#1e293b';
+
+  // 字体
+  var fontFamily = RB_FONTS[fontOpt] || RB_FONTS['system'];
+  var headingFont = headingFontOpt === 'same' ? fontFamily : (RB_FONTS[headingFontOpt] || fontFamily);
+
+  // 间距
+  var spacingMap = { 'compact': { p: '12px 20px', gap: '10px', h3mb: '4px', h3fs: '13px', pfs: '12px', itemMb: '6px', itemPad: '4px 10px', headerPad: '16px 20px', nameFs: '22px', titleFs: '14px', contactFs: '11px' }, 'normal': { p: '20px 30px', gap: '16px', h3mb: '6px', h3fs: '15px', pfs: '13px', itemMb: '10px', itemPad: '8px 12px', headerPad: '24px 30px', nameFs: '26px', titleFs: '16px', contactFs: '13px' }, 'spacious': { p: '28px 36px', gap: '22px', h3mb: '10px', h3fs: '17px', pfs: '14px', itemMb: '14px', itemPad: '12px 16px', headerPad: '32px 36px', nameFs: '30px', titleFs: '18px', contactFs: '14px' } };
+  var s = spacingMap[spacing] || spacingMap['normal'];
 
   var preview = document.getElementById('rb-preview');
-  var skillTags = skills.split(',').map(function(s) { return s.trim(); }).filter(function(s) { return s; });
-
+  var skillTags = skills.split(',').map(function(skill) { return skill.trim(); }).filter(function(skill) { return skill; });
   var expLines = experience.split('\n').filter(function(l) { return l.trim(); });
   var eduLines = education.split('\n').filter(function(l) { return l.trim(); });
 
-  var templateStyle = '';
-  var headerBg = '';
-  var headerColor = '';
-  var sectionColor = '';
-
-  if (template === 'modern') {
-    headerBg = 'linear-gradient(135deg, #6366f1, #4f46e5)';
-    headerColor = 'white';
-    sectionColor = '#6366f1';
-    templateStyle = 'font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;';
-  } else if (template === 'classic') {
-    headerBg = '#1e293b';
-    headerColor = 'white';
-    sectionColor = '#1e293b';
-    templateStyle = 'font-family: "Times New Roman", Times, serif;';
+  // 分割线CSS
+  var dividerBorder = '';
+  if (dividerStyle === 'none') {
+    dividerBorder = 'border-bottom: none;';
+  } else if (dividerStyle === 'gradient') {
+    dividerBorder = 'border-bottom: none;background: linear-gradient(90deg, ' + accentColor + ', transparent);height:' + dividerWidth + 'px;border-radius:2px;';
+  } else if (dividerStyle === 'double') {
+    dividerBorder = 'border-bottom: ' + dividerWidth + 'px double ' + accentColor + ';';
   } else {
-    headerBg = '#f0fdf4';
-    headerColor = '#166534';
-    sectionColor = '#16a34a';
-    templateStyle = 'font-family: "Georgia", serif;';
+    dividerBorder = 'border-bottom: ' + dividerWidth + 'px ' + dividerStyle + ' ' + accentColor + ';';
   }
 
-  var expHtml = '';
-  expLines.forEach(function(line) {
-    var parts = line.split('|').map(function(p) { return p.trim(); });
-    if (parts.length >= 3) {
-      expHtml += '<div style="margin-bottom:10px;padding:8px 12px;background:#f8fafc;border-left:3px solid ' + sectionColor + ';border-radius:0 6px 6px 0;">';
-      expHtml += '<div style="font-weight:600;font-size:14px;">' + parts[0] + '</div>';
-      expHtml += '<div style="font-size:13px;color:#64748b;">' + parts[1] + ' | ' + parts.slice(2).join(' | ') + '</div>';
-      expHtml += '</div>';
-    } else {
-      expHtml += '<div style="margin-bottom:6px;font-size:13px;color:#334155;">' + line + '</div>';
-    }
-  });
+  var dividerCss = 'padding-bottom:' + s.h3mb + ';margin-bottom:' + s.h3mb + ';' + dividerBorder;
+  if (dividerStyle === 'gradient') {
+    dividerCss = 'padding-bottom:0;margin-bottom:' + s.h3mb + ';' + dividerBorder;
+  }
 
-  var eduHtml = '';
-  eduLines.forEach(function(line) {
-    var parts = line.split('|').map(function(p) { return p.trim(); });
-    if (parts.length >= 3) {
-      eduHtml += '<div style="margin-bottom:6px;padding:8px 12px;background:#f8fafc;border-left:3px solid ' + sectionColor + ';border-radius:0 6px 6px 0;">';
-      eduHtml += '<div style="font-weight:600;font-size:14px;">' + parts[0] + '</div>';
-      eduHtml += '<div style="font-size:13px;color:#64748b;">' + parts.slice(1).join(' | ') + '</div>';
-      eduHtml += '</div>';
-    } else {
-      eduHtml += '<div style="margin-bottom:6px;padding:8px 12px;background:#f8fafc;font-size:13px;">' + line + '</div>';
+  // 技能标签样式
+  function makeBadge(tag) {
+    var badgeCss = 'display:inline-block;padding:4px 12px;margin:3px;font-size:12px;font-weight:500;';
+    switch(badgeStyle) {
+      case 'round': badgeCss += 'background:' + accentColor + ';color:white;border-radius:20px;'; break;
+      case 'square': badgeCss += 'background:' + accentColor + ';color:white;border-radius:0;'; break;
+      case 'outline': badgeCss += 'background:transparent;color:' + accentColor + ';border:1.5px solid ' + accentColor + ';border-radius:6px;'; break;
+      case 'gradient-badge': badgeCss += 'background:linear-gradient(135deg,' + accentColor + ',' + accentColor + 'cc);color:white;border-radius:8px;'; break;
+      case 'underline': badgeCss += 'background:transparent;color:' + textColor + ';border-bottom:2px solid ' + accentColor + ';border-radius:0;padding:2px 4px;'; break;
     }
-  });
+    return '<span style="' + badgeCss + '">' + tag + '</span>';
+  }
+
+  // 头像HTML
+  var avatarHtml = '';
+  if (_rbAvatarDataUrl && avatarStyle !== 'none') {
+    var avatarRadius = '50%';
+    if (avatarStyle === 'square') avatarRadius = '0';
+    else if (avatarStyle === 'rounded') avatarRadius = '12px';
+    avatarHtml = '<div style="flex-shrink:0;"><img src="' + _rbAvatarDataUrl + '" style="width:70px;height:70px;border-radius:' + avatarRadius + ';object-fit:cover;border:3px solid rgba(255,255,255,0.3);"></div>';
+  }
+
+  // 构建项目块（工作经历/教育）
+  function buildItems(lines, isExp) {
+    var html = '';
+    lines.forEach(function(line) {
+      var parts = line.split('|').map(function(p) { return p.trim(); });
+      if (parts.length >= 3) {
+        var itemBg = bodyBg === '#ffffff' ? '#f8fafc' : (bodyBg === '#f8fafc' ? '#ffffff' : '#f8fafc');
+        html += '<div style="margin-bottom:' + s.itemMb + ';padding:' + s.itemPad + ';background:' + itemBg + ';border-left:3px solid ' + accentColor + ';border-radius:0 ' + radius + 'px ' + radius + 'px 0;">';
+        html += '<div style="font-weight:600;font-size:' + s.h3fs + ';color:' + textColor + ';">' + parts[0] + '</div>';
+        html += '<div style="font-size:12px;color:#64748b;margin-top:2px;">' + parts.slice(1).join(' | ') + '</div>';
+        html += '</div>';
+      } else {
+        html += '<div style="margin-bottom:4px;font-size:' + s.pfs + ';color:' + textColor + ';padding:4px 0;">' + line + '</div>';
+      }
+    });
+    return html;
+  }
+
+  var expHtml = buildItems(expLines, true);
+  var eduHtml = buildItems(eduLines, false);
 
   var skillHtml = '';
   skillTags.forEach(function(tag) {
-    skillHtml += '<span style="display:inline-block;padding:4px 12px;margin:3px;background:' + sectionColor + ';color:white;border-radius:20px;font-size:12px;font-weight:500;">' + tag + '</span>';
+    skillHtml += makeBadge(tag);
   });
 
-  var html = '<div style="' + templateStyle + 'max-width:700px;margin:0 auto;border:1px solid #e2e8f0;border-radius:8px;overflow:hidden;">';
-  // Header
-  html += '<div style="background:' + headerBg + ';color:' + headerColor + ';padding:24px 30px;">';
-  html += '<h1 style="margin:0;font-size:26px;font-weight:700;margin-bottom:4px;">' + name + '</h1>';
-  html += '<div style="font-size:16px;opacity:0.9;margin-bottom:8px;">' + title + '</div>';
-  html += '<div style="font-size:13px;opacity:0.8;display:flex;gap:12px;flex-wrap:wrap;">';
-  if (email) html += '<span>📧 ' + email + '</span>';
-  if (phone) html += '<span>📞 ' + phone + '</span>';
-  if (address) html += '<span>📍 ' + address + '</span>';
-  html += '</div></div>';
-  // Body
-  html += '<div style="padding:20px 30px;">';
-  if (summary) {
-    html += '<div style="margin-bottom:16px;">';
-    html += '<h3 style="font-size:15px;font-weight:600;color:' + sectionColor + ';border-bottom:2px solid ' + sectionColor + ';padding-bottom:4px;margin-bottom:8px;">📝 个人简介</h3>';
-    html += '<p style="font-size:13px;color:#334155;line-height:1.6;">' + summary + '</p>';
+  // 构建section标题
+  function sectionTitle(icon, label) {
+    var html = '<div style="display:flex;align-items:center;gap:8px;' + dividerCss + '">';
+    html += '<span style="font-size:16px;">' + icon + '</span>';
+    html += '<span style="font-size:' + s.h3fs + ';font-weight:700;color:' + accentColor + ';font-family:' + headingFont + ';">' + label + '</span>';
     html += '</div>';
+    if (dividerStyle === 'gradient') {
+      html += '<div style="height:' + dividerWidth + 'px;background:linear-gradient(90deg,' + accentColor + ',transparent);border-radius:2px;margin-bottom:' + s.h3mb + ';"></div>';
+    }
+    return html;
   }
-  if (expHtml) {
-    html += '<div style="margin-bottom:16px;">';
-    html += '<h3 style="font-size:15px;font-weight:600;color:' + sectionColor + ';border-bottom:2px solid ' + sectionColor + ';padding-bottom:4px;margin-bottom:8px;">💼 工作经历</h3>';
-    html += expHtml;
-    html += '</div>';
-  }
-  if (eduHtml) {
-    html += '<div style="margin-bottom:16px;">';
-    html += '<h3 style="font-size:15px;font-weight:600;color:' + sectionColor + ';border-bottom:2px solid ' + sectionColor + ';padding-bottom:4px;margin-bottom:8px;">🎓 教育背景</h3>';
-    html += eduHtml;
-    html += '</div>';
-  }
-  if (skillHtml) {
-    html += '<div>';
-    html += '<h3 style="font-size:15px;font-weight:600;color:' + sectionColor + ';border-bottom:2px solid ' + sectionColor + ';padding-bottom:4px;margin-bottom:8px;">🔧 技能标签</h3>';
-    html += '<div>' + skillHtml + '</div>';
-    html += '</div>';
-  }
-  html += '</div></div>';
 
-  preview.innerHTML = html;
+  // ====== 开始构建HTML ======
+  var borderRadius = 'border-radius:' + radius + 'px;';
+  var bodyStyle = 'font-family:' + fontFamily + ';color:' + textColor + ';';
+
+  // 卡片圆角
+  var cardRadius = Math.min(radius + 4, 20);
+
+  if (layout === 'standard') {
+    // === 上下布局 ===
+    var html = '<div style="' + bodyStyle + 'max-width:700px;margin:0 auto;border:1px solid #e2e8f0;border-radius:' + cardRadius + 'px;overflow:hidden;background:' + bodyBg + ';">';
+    // Header
+    html += '<div style="background:' + headerBg + ';color:' + headerColor + ';padding:' + s.headerPad + ';display:flex;align-items:center;gap:16px;">';
+    if (avatarHtml) html += avatarHtml;
+    html += '<div style="flex:1;">';
+    html += '<h1 style="margin:0;font-size:' + s.nameFs + ';font-weight:700;margin-bottom:2px;font-family:' + headingFont + ';">' + name + '</h1>';
+    html += '<div style="font-size:' + s.titleFs + ';opacity:0.9;margin-bottom:6px;">' + title + '</div>';
+    html += '<div style="font-size:' + s.contactFs + ';opacity:0.8;display:flex;gap:12px;flex-wrap:wrap;">';
+    if (email) html += '<span>📧 ' + email + '</span>';
+    if (phone) html += '<span>📞 ' + phone + '</span>';
+    if (address) html += '<span>📍 ' + address + '</span>';
+    html += '</div></div></div>';
+    // Body
+    html += '<div style="padding:' + s.p + ';">';
+    if (summary) {
+      html += '<div style="margin-bottom:' + s.gap + ';">';
+      html += sectionTitle('📝', '个人简介');
+      html += '<p style="font-size:' + s.pfs + ';color:' + textColor + ';line-height:1.7;margin:' + s.h3mb + ' 0 0 0;">' + summary + '</p>';
+      html += '</div>';
+    }
+    if (expHtml) {
+      html += '<div style="margin-bottom:' + s.gap + ';">';
+      html += sectionTitle('💼', '工作经历');
+      html += '<div style="margin-top:' + s.h3mb + ';">' + expHtml + '</div>';
+      html += '</div>';
+    }
+    if (eduHtml) {
+      html += '<div style="margin-bottom:' + s.gap + ';">';
+      html += sectionTitle('🎓', '教育背景');
+      html += '<div style="margin-top:' + s.h3mb + ';">' + eduHtml + '</div>';
+      html += '</div>';
+    }
+    if (skillHtml) {
+      html += '<div>';
+      html += sectionTitle('🔧', '技能标签');
+      html += '<div style="margin-top:' + s.h3mb + ';">' + skillHtml + '</div>';
+      html += '</div>';
+    }
+    html += '</div></div>';
+    preview.innerHTML = html;
+
+  } else if (layout === 'sidebar') {
+    // === 左右分栏 ===
+    var sidebarWidth = '220px';
+    var sidebarBg = headerBg;
+    var sidebarColor = headerColor;
+    var sidebarRadius = Math.min(radius + 4, 20);
+
+    var html = '<div style="' + bodyStyle + 'max-width:750px;margin:0 auto;display:flex;border:1px solid #e2e8f0;border-radius:' + cardRadius + 'px;overflow:hidden;background:' + bodyBg + ';">';
+    // 侧边栏
+    html += '<div style="width:' + sidebarWidth + ';background:' + sidebarBg + ';color:' + sidebarColor + ';padding:24px 16px;flex-shrink:0;">';
+    if (avatarHtml) html += '<div style="text-align:center;margin-bottom:16px;">' + avatarHtml + '</div>';
+    html += '<h2 style="margin:0;font-size:20px;font-weight:700;text-align:center;font-family:' + headingFont + ';">' + name + '</h2>';
+    html += '<div style="font-size:13px;opacity:0.9;text-align:center;margin-bottom:16px;">' + title + '</div>';
+    if (email) html += '<div style="font-size:12px;opacity:0.8;margin-bottom:6px;">📧 ' + email + '</div>';
+    if (phone) html += '<div style="font-size:12px;opacity:0.8;margin-bottom:6px;">📞 ' + phone + '</div>';
+    if (address) html += '<div style="font-size:12px;opacity:0.8;margin-bottom:6px;">📍 ' + address + '</div>';
+
+    if (summary) {
+      html += '<hr style="border-color:rgba(255,255,255,0.2);margin:12px 0;">';
+      html += '<div style="font-size:12px;line-height:1.6;opacity:0.85;">' + summary + '</div>';
+    }
+    html += '</div>';
+    // 主内容区
+    html += '<div style="flex:1;padding:' + s.p + ';background:' + bodyBg + ';">';
+    if (expHtml) {
+      html += '<div style="margin-bottom:' + s.gap + ';">';
+      html += sectionTitle('💼', '工作经历');
+      html += '<div style="margin-top:' + s.h3mb + ';">' + expHtml + '</div>';
+      html += '</div>';
+    }
+    if (eduHtml) {
+      html += '<div style="margin-bottom:' + s.gap + ';">';
+      html += sectionTitle('🎓', '教育背景');
+      html += '<div style="margin-top:' + s.h3mb + ';">' + eduHtml + '</div>';
+      html += '</div>';
+    }
+    if (skillHtml) {
+      html += '<div>';
+      html += sectionTitle('🔧', '技能标签');
+      html += '<div style="margin-top:' + s.h3mb + ';">' + skillHtml + '</div>';
+      html += '</div>';
+    }
+    html += '</div></div>';
+    preview.innerHTML = html;
+
+  } else if (layout === 'card') {
+    // === 卡片式布局 ===
+    var html = '<div style="' + bodyStyle + 'max-width:700px;margin:0 auto;background:transparent;">';
+    // Header 卡片
+    html += '<div style="background:' + headerBg + ';color:' + headerColor + ';padding:' + s.headerPad + ';border-radius:' + cardRadius + 'px ' + cardRadius + 'px 0 0;display:flex;align-items:center;gap:16px;margin-bottom:12px;box-shadow:0 2px 8px rgba(0,0,0,0.08);">';
+    if (avatarHtml) html += avatarHtml;
+    html += '<div style="flex:1;">';
+    html += '<h1 style="margin:0;font-size:' + s.nameFs + ';font-weight:700;font-family:' + headingFont + ';">' + name + '</h1>';
+    html += '<div style="font-size:' + s.titleFs + ';opacity:0.9;margin:4px 0 8px;">' + title + '</div>';
+    html += '<div style="font-size:' + s.contactFs + ';opacity:0.8;display:flex;gap:12px;flex-wrap:wrap;">';
+    if (email) html += '<span>📧 ' + email + '</span>';
+    if (phone) html += '<span>📞 ' + phone + '</span>';
+    if (address) html += '<span>📍 ' + address + '</span>';
+    html += '</div></div></div>';
+    // 各卡片
+    if (summary) {
+      html += '<div style="background:' + bodyBg + ';border-radius:' + radius + 'px;padding:16px 20px;margin-bottom:12px;box-shadow:0 1px 4px rgba(0,0,0,0.06);">';
+      html += sectionTitle('📝', '个人简介');
+      html += '<p style="font-size:' + s.pfs + ';color:' + textColor + ';line-height:1.7;margin:8px 0 0 0;">' + summary + '</p>';
+      html += '</div>';
+    }
+    if (expHtml) {
+      html += '<div style="background:' + bodyBg + ';border-radius:' + radius + 'px;padding:16px 20px;margin-bottom:12px;box-shadow:0 1px 4px rgba(0,0,0,0.06);">';
+      html += sectionTitle('💼', '工作经历');
+      html += '<div style="margin-top:8px;">' + expHtml + '</div>';
+      html += '</div>';
+    }
+    if (eduHtml) {
+      html += '<div style="background:' + bodyBg + ';border-radius:' + radius + 'px;padding:16px 20px;margin-bottom:12px;box-shadow:0 1px 4px rgba(0,0,0,0.06);">';
+      html += sectionTitle('🎓', '教育背景');
+      html += '<div style="margin-top:8px;">' + eduHtml + '</div>';
+      html += '</div>';
+    }
+    if (skillHtml) {
+      html += '<div style="background:' + bodyBg + ';border-radius:' + radius + 'px;padding:16px 20px;box-shadow:0 1px 4px rgba(0,0,0,0.06);">';
+      html += sectionTitle('🔧', '技能标签');
+      html += '<div style="margin-top:8px;">' + skillHtml + '</div>';
+      html += '</div>';
+    }
+    html += '</div>';
+    preview.innerHTML = html;
+
+  } else if (layout === 'compact') {
+    // === 紧凑型布局 ===
+    var html = '<div style="' + bodyStyle + 'max-width:600px;margin:0 auto;background:' + bodyBg + ';border:1px solid #e2e8f0;border-radius:' + cardRadius + 'px;overflow:hidden;">';
+    // 极简Header
+    html += '<div style="background:' + headerBg + ';color:' + headerColor + ';padding:16px 20px;text-align:center;">';
+    if (avatarHtml) html += '<div style="margin-bottom:8px;">' + avatarHtml + '</div>';
+    html += '<h1 style="margin:0;font-size:20px;font-weight:700;font-family:' + headingFont + ';">' + name + '</h1>';
+    html += '<div style="font-size:13px;opacity:0.85;margin:2px 0 6px;">' + title + '</div>';
+    html += '<div style="font-size:11px;opacity:0.7;display:flex;gap:8px;flex-wrap:wrap;justify-content:center;">';
+    if (email) html += '<span>' + email + '</span>';
+    if (phone) html += '<span>' + phone + '</span>';
+    if (address) html += '<span>' + address + '</span>';
+    html += '</div></div>';
+    // 紧凑内容
+    html += '<div style="padding:14px 18px;">';
+    if (summary) {
+      html += '<div style="margin-bottom:10px;font-size:12px;line-height:1.6;color:' + textColor + ';">' + summary + '</div>';
+    }
+    if (expHtml) {
+      html += '<div style="margin-bottom:10px;"><strong style="font-size:13px;color:' + accentColor + ';">💼 工作经历</strong></div>';
+      html += '<div style="margin-bottom:8px;">' + expHtml + '</div>';
+    }
+    if (eduHtml) {
+      html += '<div style="margin-bottom:10px;"><strong style="font-size:13px;color:' + accentColor + ';">🎓 教育背景</strong></div>';
+      html += '<div style="margin-bottom:8px;">' + eduHtml + '</div>';
+    }
+    if (skillHtml) {
+      html += '<div style="margin-bottom:0;"><strong style="font-size:13px;color:' + accentColor + ';">🔧 技能</strong></div>';
+      html += '<div style="margin-top:4px;">' + skillHtml + '</div>';
+    }
+    html += '</div></div>';
+    preview.innerHTML = html;
+  }
+
   document.getElementById('rb-status').textContent = '✅ 预览已更新';
 }
 
