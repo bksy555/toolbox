@@ -13,7 +13,6 @@ function nineGridSplit() {
       var canvas = document.createElement('canvas');
       var ctx = canvas.getContext('2d');
       var w = img.width, h = img.height;
-      // 取正方形区域（中间裁剪）
       var size = Math.min(w, h);
       var sx = (w - size) / 2, sy = (h - size) / 2;
       var cw = size / 3, ch = size / 3;
@@ -28,498 +27,378 @@ function nineGridSplit() {
             ctx.drawImage(img, sx + c * cw, sy + r * ch, cw, ch, 0, 0, cw, ch);
             var dataUrl = canvas.toDataURL('image/png');
             var wrapper = document.createElement('div');
-            wrapper.style.cssText = 'display:inline-block;margin:6px;text-align:center;';
-            var idx = r * 3 + c + 1;
-            wrapper.innerHTML = '<div style="font-size:12px;color:var(--text-light);margin-bottom:4px;">第' + idx + '块</div>' +
-              '<img src="' + dataUrl + '" style="width:120px;height:120px;object-fit:cover;border-radius:6px;border:1px solid var(--border);cursor:pointer;" onclick="downloadNineGridImage(\'' + dataUrl + '\',\'九宫格_' + idx + '.png\')" title="点击下载">';
+            wrapper.style.cssText = 'display:inline-block;margin:2px;position:relative;';
+            var imgEl = document.createElement('img');
+            imgEl.src = dataUrl;
+            imgEl.style.cssText = 'width:100px;height:100px;object-fit:cover;border-radius:4px;border:1px solid var(--border);';
+            wrapper.appendChild(imgEl);
+            var btn = document.createElement('button');
+            btn.textContent = '下载';
+            btn.style.cssText = 'position:absolute;bottom:2px;right:2px;font-size:11px;padding:2px 6px;border:none;border-radius:4px;background:#6366f1;color:white;cursor:pointer;';
+            btn.onclick = function() { var a = document.createElement('a'); a.href = dataUrl; a.download = '九宫格_' + (r*3+c+1) + '.png'; a.click(); };
+            wrapper.appendChild(btn);
             container.appendChild(wrapper);
           })(row, col);
         }
       }
-      document.getElementById('ng-info').textContent = '✅ 已分割为9张图片，点击任意块可单独下载';
-      // 一键下载全部
-      var allBtn = document.getElementById('ng-download-all');
-      allBtn.style.display = 'inline-flex';
-      allBtn._images = [];
-      for (var r = 0; r < 3; r++) {
-        for (var c = 0; c < 3; c++) {
-          (function(rr, cc) {
-            var c2 = document.createElement('canvas');
-            c2.width = cw; c2.height = ch;
-            var c2ctx = c2.getContext('2d');
-            c2ctx.drawImage(img, sx + cc * cw, sy + rr * ch, cw, ch, 0, 0, cw, ch);
-            allBtn._images.push(c2.toDataURL('image/png'));
-          })(r, c);
-        }
-      }
+      document.getElementById('ng-download-all').style.display = 'inline-flex';
+      document.getElementById('ng-preview').style.display = 'block';
+      showToast('✅ 九宫格切图完成');
     };
     img.src = e.target.result;
   };
   reader.readAsDataURL(file);
 }
 
-function downloadNineGridImage(dataUrl, filename) {
-  var link = document.createElement('a');
-  link.download = filename;
-  link.href = dataUrl;
-  link.click();
-}
-
-function downloadNineGridAll() {
-  var btn = document.getElementById('ng-download-all');
-  var imgs = btn._images || [];
-  if (imgs.length === 0) { showToast('⚠️ 请先分割图片'); return; }
-  // 打包成ZIP（使用JSZip库）
-  if (typeof JSZip === 'undefined') {
-    showToast('⚠️ 正在加载JSZip库...');
-    var script = document.createElement('script');
-    script.src = 'https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js';
-    script.onload = function() {
-      downloadNineGridAll();
-    };
-    document.head.appendChild(script);
-    return;
-  }
+function nineGridDownloadAll() {
+  var imgs = document.querySelectorAll('#ng-result img');
+  if (imgs.length === 0) return;
   var zip = new JSZip();
-  for (var i = 0; i < imgs.length; i++) {
-    var base64 = imgs[i].split(',')[1];
-    zip.file('九宫格_' + (i+1) + '.png', base64, {base64: true});
-  }
-  zip.generateAsync({type: 'blob'}).then(function(content) {
-    var link = document.createElement('a');
-    link.download = '九宫格图片.zip';
-    link.href = URL.createObjectURL(content);
-    link.click();
-    URL.revokeObjectURL(link.href);
-    showToast('✅ 已下载全部9张图片');
+  var folder = zip.folder('九宫格');
+  var promises = [];
+  imgs.forEach(function(img, i) {
+    promises.push(fetch(img.src).then(function(r) { return r.blob(); }).then(function(blob) { folder.file('九宫格_' + (i+1) + '.png', blob); }));
+  });
+  Promise.all(promises).then(function() {
+    zip.generateAsync({ type: 'blob' }).then(function(blob) {
+      var a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = '九宫格.zip';
+      a.click();
+      showToast('✅ 已下载 ZIP 包');
+    });
   });
 }
 
-
 // ==================== 2. 文字转手写体 ====================
+var TH_FONTS = {
+  'kaiti': '"KaiTi","STKaiti","楷体","华文楷体",serif',
+  'xingshu': '"Xingkai SC","STXingkai","华文行楷","行楷",cursive',
+  'caoshu': '"STCaiyun","华文彩云","LiSu",cursive',
+  'handwrite': '"Ma Shan Zheng","ZCOOL XiaoWei","LXGW WenKai",cursive',
+  'fangsong': '"FangSong","STFangsong","仿宋",serif',
+  'lishu': '"LiSu","STLiti","隶书",cursive',
+  'qingsong': '"ZCOOL QingKe HuangYou","LXGW WenKai",cursive',
+  'child': '"ZCOOL KuaiLe","Comic Sans MS",cursive'
+};
+
+function drawPaperBg(ctx, w, h, paper, bgColor, fontSize, lineHeight) {
+  switch (paper) {
+    case 'rice':
+      ctx.fillStyle = '#faf6ed'; ctx.fillRect(0, 0, w, h);
+      ctx.strokeStyle = '#e0d5c0'; ctx.lineWidth = 0.5;
+      for (var y = 60; y < h - 60; y += lineHeight) { ctx.beginPath(); ctx.moveTo(60, y); ctx.lineTo(w - 60, y); ctx.stroke(); }
+      break;
+    case 'grid':
+      ctx.fillStyle = '#ffffff'; ctx.fillRect(0, 0, w, h);
+      ctx.strokeStyle = '#d0d0d0'; ctx.lineWidth = 0.5;
+      for (var gx = 0; gx <= w; gx += fontSize) { ctx.beginPath(); ctx.moveTo(gx, 0); ctx.lineTo(gx, h); ctx.stroke(); }
+      for (var gy = 0; gy <= h; gy += fontSize) { ctx.beginPath(); ctx.moveTo(0, gy); ctx.lineTo(w, gy); ctx.stroke(); }
+      break;
+    case 'essay':
+      ctx.fillStyle = '#fefefe'; ctx.fillRect(0, 0, w, h);
+      ctx.strokeStyle = '#c8c8c8'; ctx.lineWidth = 0.5;
+      var cellSize = fontSize + 4; var cols = Math.floor((w - 60) / cellSize); var rows = Math.floor((h - 60) / lineHeight);
+      for (var r = 0; r < rows; r++) { for (var c = 0; c < cols; c++) { ctx.strokeRect(60 + c * cellSize - 30, 60 + r * lineHeight - 10, cellSize, lineHeight); } }
+      break;
+    case 'tian':
+      ctx.fillStyle = '#ffffff'; ctx.fillRect(0, 0, w, h);
+      ctx.strokeStyle = '#e06060'; ctx.lineWidth = 1;
+      var cellSize = fontSize + 4; var cols = Math.floor((w - 60) / cellSize); var rows = Math.floor((h - 60) / lineHeight);
+      for (var r = 0; r < rows; r++) { for (var c = 0; c < cols; c++) {
+        var x = 60 + c * cellSize - 30; var y = 60 + r * lineHeight - 10;
+        ctx.strokeRect(x, y, cellSize, lineHeight);
+        ctx.setLineDash([2, 3]); ctx.strokeStyle = '#e0a0a0';
+        ctx.beginPath(); ctx.moveTo(x + cellSize/2, y); ctx.lineTo(x + cellSize/2, y + lineHeight); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(x, y + lineHeight/2); ctx.lineTo(x + cellSize, y + lineHeight/2); ctx.stroke();
+        ctx.setLineDash([]); ctx.strokeStyle = '#e06060';
+      }}
+      break;
+    case 'pinyin':
+      ctx.fillStyle = '#ffffff'; ctx.fillRect(0, 0, w, h);
+      ctx.strokeStyle = '#b0b0b0'; ctx.lineWidth = 0.5;
+      for (var py = 60; py < h - 60; py += lineHeight + 20) {
+        ctx.beginPath(); ctx.moveTo(60, py); ctx.lineTo(w - 60, py); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(60, py + (lineHeight+20)/2); ctx.lineTo(w - 60, py + (lineHeight+20)/2); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(60, py + lineHeight + 20); ctx.lineTo(w - 60, py + lineHeight + 20); ctx.stroke();
+      }
+      break;
+    case 'english':
+      ctx.fillStyle = '#ffffff'; ctx.fillRect(0, 0, w, h);
+      ctx.strokeStyle = '#c0c0c0'; ctx.lineWidth = 0.5;
+      for (var ey = 60; ey < h - 60; ey += lineHeight + 20) {
+        ctx.beginPath(); ctx.moveTo(60, ey); ctx.lineTo(w - 60, ey); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(60, ey + lineHeight/2 + 10); ctx.lineTo(w - 60, ey + lineHeight/2 + 10); ctx.stroke();
+        ctx.strokeStyle = '#e06060'; ctx.lineWidth = 1;
+        ctx.beginPath(); ctx.moveTo(60, ey + lineHeight + 20); ctx.lineTo(w - 60, ey + lineHeight + 20); ctx.stroke();
+        ctx.strokeStyle = '#c0c0c0'; ctx.lineWidth = 0.5;
+      }
+      break;
+    case 'vintage':
+      var grad = ctx.createLinearGradient(0, 0, w, h);
+      grad.addColorStop(0, '#f5e6c8'); grad.addColorStop(0.5, '#efe0c0'); grad.addColorStop(1, '#e8d5a8');
+      ctx.fillStyle = grad; ctx.fillRect(0, 0, w, h);
+      ctx.strokeStyle = '#c4a97d'; ctx.lineWidth = 1;
+      ctx.strokeRect(15, 15, w - 30, h - 30); ctx.strokeRect(20, 20, w - 40, h - 40);
+      ctx.fillStyle = 'rgba(180,150,100,0.06)';
+      for (var i = 0; i < 5; i++) { ctx.beginPath(); ctx.arc(Math.random()*(w-100)+50, Math.random()*(h-100)+50, 40, 0, Math.PI*2); ctx.fill(); }
+      ctx.strokeStyle = 'rgba(180,150,100,0.3)'; ctx.lineWidth = 0.5;
+      for (var v = 60; v < h - 60; v += lineHeight) { ctx.beginPath(); ctx.moveTo(40, v); ctx.lineTo(w - 40, v); ctx.stroke(); }
+      break;
+    default:
+      ctx.fillStyle = bgColor; ctx.fillRect(0, 0, w, h);
+      break;
+  }
+}
+
 function textToHandwriting() {
   var text = document.getElementById('th-text').value;
-  if (!text) { showToast('⚠️ 请输入文字'); return; }
+  if (!text) { showToast('请输入文字'); return; }
   var bgColor = document.getElementById('th-bg').value;
   var inkColor = document.getElementById('th-ink').value;
   var fontSize = parseInt(document.getElementById('th-size').value);
   var lineHeight = parseInt(document.getElementById('th-lineheight').value);
+  var spacing = parseFloat(document.getElementById('th-spacing').value);
   var paperStyle = document.getElementById('th-paper').value;
+  var fontStyle = document.getElementById('th-font').value;
+  var maxW = parseInt(document.getElementById('th-width').value);
+  var messLevel = parseFloat(document.getElementById('th-mess').value);
+  var bleedLevel = parseFloat(document.getElementById('th-bleed').value);
+  var title = document.getElementById('th-title').value;
+
   var canvas = document.getElementById('th-canvas');
   var ctx = canvas.getContext('2d');
-  // 计算画布尺寸
-  var maxW = 800, padding = 60;
+  var padding = 60;
   var lines = text.split('\n');
+  var fontFamily = TH_FONTS[fontStyle] || TH_FONTS['kaiti'];
+
+  ctx.font = fontSize + 'px ' + fontFamily;
   var maxLine = '';
-  for (var i = 0; i < lines.length; i++) {
-    if (lines[i].length > maxLine.length) maxLine = lines[i];
+  for (var i = 0; i < lines.length; i++) { if (lines[i].length > maxLine.length) maxLine = lines[i]; }
+  var charW = ctx.measureText('测').width * spacing;
+  var canvasW = Math.min(Math.max(maxLine.length * charW + padding * 2, 300), maxW);
+  var titleH = title ? 60 : 0;
+  var canvasH = titleH + lines.length * lineHeight + padding * 2 + 60;
+  canvas.width = canvasW; canvas.height = canvasH;
+
+  drawPaperBg(ctx, canvasW, canvasH, paperStyle, bgColor, fontSize, lineHeight);
+
+  if (title) {
+    ctx.font = 'bold 24px "KaiTi","STKaiti","楷体",serif';
+    ctx.fillStyle = inkColor; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.fillText(title, canvasW / 2, 35);
+    ctx.strokeStyle = inkColor; ctx.lineWidth = 1;
+    var tw = ctx.measureText(title).width;
+    ctx.beginPath(); ctx.moveTo(canvasW / 2 - tw / 2 - 10, 48); ctx.lineTo(canvasW / 2 + tw / 2 + 10, 48); ctx.stroke();
   }
-  ctx.font = fontSize + 'px "KaiTi","STKaiti","楷体","华文楷体",serif';
-  var textW = ctx.measureText(maxLine).width;
-  var canvasW = Math.min(Math.max(textW + padding * 2, 300), maxW);
-  var lineCount = lines.length;
-  var canvasH = Math.max(lineCount * lineHeight + padding * 2, 200);
-  canvas.width = canvasW;
-  canvas.height = canvasH;
-  ctx.clearRect(0, 0, canvasW, canvasH);
-  // 纸张背景
-  if (paperStyle === 'rice') {
-    ctx.fillStyle = '#faf6ed';
-    ctx.fillRect(0, 0, canvasW, canvasH);
-    // 横线
-    ctx.strokeStyle = '#e0d5c0';
-    ctx.lineWidth = 0.5;
-    for (var y = padding; y < canvasH - padding; y += lineHeight) {
-      ctx.beginPath();
-      ctx.moveTo(padding, y);
-      ctx.lineTo(canvasW - padding, y);
-      ctx.stroke();
-    }
-  } else if (paperStyle === 'grid') {
-    ctx.fillStyle = bgColor;
-    ctx.fillRect(0, 0, canvasW, canvasH);
-    ctx.strokeStyle = '#d0d0d0';
-    ctx.lineWidth = 0.5;
-    for (var x = padding; x < canvasW - padding; x += fontSize) {
-      ctx.beginPath();
-      ctx.moveTo(x, 0);
-      ctx.lineTo(x, canvasH);
-      ctx.stroke();
-    }
-    for (var y = padding; y < canvasH - padding; y += fontSize) {
-      ctx.beginPath();
-      ctx.moveTo(0, y);
-      ctx.lineTo(canvasW, y);
-      ctx.stroke();
-    }
-  } else {
-    ctx.fillStyle = bgColor;
-    ctx.fillRect(0, 0, canvasW, canvasH);
-  }
-  // 写字（模拟手写：轻微旋转和偏移）
-  ctx.font = fontSize + 'px "KaiTi","STKaiti","楷体","华文楷体",serif';
-  ctx.fillStyle = inkColor;
-  ctx.textAlign = 'left';
-  ctx.textBaseline = 'top';
+
+  var startY = padding + titleH;
   for (var l = 0; l < lines.length; l++) {
-    var line = lines[l];
+    var line = lines[l]; if (!line.trim()) continue;
     var x = padding;
-    var y = padding + l * lineHeight + (lineHeight - fontSize) / 2;
+    var y = startY + l * lineHeight + (lineHeight - fontSize) / 2;
+    var lineFontSize = fontSize + (Math.random() - 0.5) * 2;
+    ctx.font = lineFontSize + 'px ' + fontFamily;
+
     for (var c = 0; c < line.length; c++) {
       ctx.save();
-      // 轻微随机偏移和旋转，模拟手写
-      var rot = (Math.random() - 0.5) * 0.06;
-      var ox = (Math.random() - 0.5) * 2;
-      var oy = (Math.random() - 0.5) * 2;
-      ctx.translate(x + c * fontSize * 0.95 + ox, y + oy);
+      var rot = (Math.random() - 0.5) * messLevel * 2;
+      var ox = (Math.random() - 0.5) * 3;
+      var oy = (Math.random() - 0.5) * 3;
+      var lineShift = Math.sin(c * 0.3) * 1.5;
+      ctx.globalAlpha = bleedLevel * (0.9 + Math.random() * 0.2);
+      var charSize = lineFontSize * (0.95 + Math.random() * 0.1);
+      ctx.font = charSize + 'px ' + fontFamily;
+      ctx.translate(x + c * charW * spacing + ox, y + oy + lineShift);
       ctx.rotate(rot);
+      ctx.fillStyle = inkColor; ctx.textAlign = 'left'; ctx.textBaseline = 'top';
       ctx.fillText(line[c], 0, 0);
       ctx.restore();
     }
   }
+
   document.getElementById('th-download').style.display = 'inline-flex';
+  document.getElementById('th-download-jpg').style.display = 'inline-flex';
   document.getElementById('th-preview').style.display = 'block';
-  showToast('✅ 已生成手写体');
+  document.getElementById('th-status').textContent = '已生成手写体 ' + canvasW + 'x' + canvasH + 'px';
+  showToast('已生成手写体');
 }
 
 function downloadHandwriting() {
   var canvas = document.getElementById('th-canvas');
-  var text = document.getElementById('th-text').value.trim() || '手写体';
-  var link = document.createElement('a');
-  link.download = text.substring(0, 10) + '_手写体.png';
-  link.href = canvas.toDataURL('image/png');
-  link.click();
-  showToast('✅ 已下载');
+  var text = document.getElementById('th-text').value.trim() || 'handwriting';
+  var a = document.createElement('a');
+  a.download = text.substring(0, 10) + '_handwriting.png';
+  a.href = canvas.toDataURL('image/png');
+  a.click();
+  showToast('Downloaded PNG');
 }
 
+function downloadHandwritingJPG() {
+  var canvas = document.getElementById('th-canvas');
+  var text = document.getElementById('th-text').value.trim() || 'handwriting';
+  var a = document.createElement('a');
+  a.download = text.substring(0, 10) + '_handwriting.jpg';
+  a.href = canvas.toDataURL('image/jpeg', 0.95);
+  a.click();
+  showToast('Downloaded JPG');
+}
+
+function randomHandwritingStyle() {
+  var papers = ['plain', 'rice', 'grid', 'essay', 'tian', 'pinyin', 'english', 'vintage'];
+  var fonts = ['kaiti', 'xingshu', 'caoshu', 'handwrite', 'fangsong', 'lishu', 'qingsong', 'child'];
+  var sizes = [24, 28, 36, 48];
+  var linehts = [40, 50, 60, 80];
+  var messes = [0.02, 0.06, 0.12, 0.2];
+  var bleeds = [1, 0.85, 0.7, 0.5];
+  var bgs = ['#faf6ed', '#ffffff', '#fefefe', '#f5f0e8', '#f0f5ff'];
+  var inks = ['#1a1a2e', '#2d2d44', '#4a3728', '#1e3a5f', '#000000'];
+  document.getElementById('th-paper').value = papers[Math.floor(Math.random()*papers.length)];
+  document.getElementById('th-font').value = fonts[Math.floor(Math.random()*fonts.length)];
+  document.getElementById('th-size').value = sizes[Math.floor(Math.random()*sizes.length)];
+  document.getElementById('th-lineheight').value = linehts[Math.floor(Math.random()*linehts.length)];
+  document.getElementById('th-mess').value = messes[Math.floor(Math.random()*messes.length)];
+  document.getElementById('th-bleed').value = bleeds[Math.floor(Math.random()*bleeds.length)];
+  document.getElementById('th-bg').value = bgs[Math.floor(Math.random()*bgs.length)];
+  document.getElementById('th-ink').value = inks[Math.floor(Math.random()*inks.length)];
+  textToHandwriting();
+  showToast('Random style applied!');
+}
 
 // ==================== 3. 表情包生成器 ====================
 var MEME_TEMPLATES = [
-  { name: '🤔 黑人问号', url: '' },
-  { name: '😂 笑哭', url: '' },
-  { name: '😭 大哭', url: '' },
-  { name: '🔥 燃起来了', url: '' },
-  { name: '💪 加油', url: '' },
-  { name: '🐶 狗头', url: '' },
-  { name: '🙄 无语', url: '' },
-  { name: '😏 偷笑', url: '' },
-  { name: '🤡 小丑', url: '' },
-  { name: '👴 老人手机', url: '' },
-  { name: '🐱 猫猫', url: '' },
-  { name: '🦆 可达鸭', url: '' }
+  { name: 'Black Guy Question', url: '' },
+  { name: 'Crying Laughing', url: '' },
+  { name: 'Crying', url: '' },
+  { name: 'Roll Safe Think', url: '' },
+  { name: 'Disaster Girl', url: '' },
+  { name: 'Drake Hotline', url: '' },
+  { name: 'Change My Mind', url: '' },
+  { name: 'Two Buttons', url: '' },
+  { name: 'Distracted BF', url: '' },
+  { name: 'Is This A Pigeon', url: '' },
+  { name: 'Galaxy Brain', url: '' },
+  { name: 'UNO Draw 25', url: '' },
+  { name: 'This Is Fine', url: '' },
+  { name: 'Ight Imma Head Out', url: '' }
 ];
 
-function initMemeGenerator() {
-  var select = document.getElementById('meme-template');
-  if (!select) return;
-  select.innerHTML = '<option value="">-- 选择模板或上传自定义图片 --</option>';
-  for (var i = 0; i < MEME_TEMPLATES.length; i++) {
-    select.innerHTML += '<option value="' + i + '">' + MEME_TEMPLATES[i].name + '</option>';
-  }
-}
-
 function memeSelectTemplate() {
-  var idx = document.getElementById('meme-template').value;
-  var fileInput = document.getElementById('meme-file');
-  if (idx === '') {
-    // 用户上传自定义
-    fileInput.click();
-    return;
+  var sel = document.getElementById('meme-template');
+  var custom = document.getElementById('meme-custom');
+  var upload = document.getElementById('meme-upload-group');
+  if (sel.value === 'custom') {
+    custom.style.display = 'block';
+    upload.style.display = 'none';
+  } else {
+    custom.style.display = 'none';
+    upload.style.display = 'block';
+    document.getElementById('meme-upload-label').textContent = 'Upload Image (or use template)';
   }
-  // 使用内置模板（生成彩色文字背景）
-  var names = ['黑人问号','笑哭','大哭','燃起来了','加油','狗头','无语','偷笑','小丑','老人手机','猫猫','可达鸭'];
-  var colors = ['#4a90d9','#f5a623','#f5a623','#e74c3c','#27ae60','#8e44ad','#7f8c8d','#2ecc71','#e74c3c','#95a5a6','#e67e22','#3498db'];
-  var idxNum = parseInt(idx);
-  renderMeme(names[idxNum], colors[idxNum], '没有模板图片？' + names[idxNum], '改成你的文字');
 }
 
 function memeUploadImage() {
-  var file = document.getElementById('meme-file').files[0];
+  var file = document.getElementById('meme-upload').files[0];
   if (!file) return;
   var reader = new FileReader();
   reader.onload = function(e) {
-    document.getElementById('meme-custom-img').src = e.target.result;
-    document.getElementById('meme-custom-img').style.display = 'block';
-    renderMemeWithImage(e.target.result);
+    var img = new Image();
+    img.onload = function() {
+      var canvas = document.getElementById('meme-canvas');
+      var ctx = canvas.getContext('2d');
+      canvas.width = Math.min(img.width, 600);
+      canvas.height = Math.min(img.height, 600);
+      ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+      memeDrawText();
+      document.getElementById('meme-download').style.display = 'inline-flex';
+      document.getElementById('meme-preview').style.display = 'block';
+    };
+    img.src = e.target.result;
   };
   reader.readAsDataURL(file);
 }
 
-function renderMeme(title, bgColor, topText, bottomText) {
+function memeDrawText() {
   var canvas = document.getElementById('meme-canvas');
   var ctx = canvas.getContext('2d');
-  canvas.width = 500;
-  canvas.height = 500;
-  ctx.clearRect(0, 0, 500, 500);
-  // 背景
-  ctx.fillStyle = bgColor;
-  ctx.fillRect(0, 0, 500, 500);
-  // 标题
-  ctx.fillStyle = '#ffffff';
-  ctx.font = 'bold 40px "Microsoft YaHei","PingFang SC",sans-serif';
-  ctx.textAlign = 'center';
-  ctx.textBaseline = 'middle';
-  ctx.fillText(title, 250, 100);
-  // 表情符号（大号）
-  ctx.font = '180px sans-serif';
-  ctx.fillText(getMemeEmoji(title), 250, 280);
-  // 顶部文字
-  ctx.font = 'bold 28px "Microsoft YaHei","PingFang SC",sans-serif';
-  ctx.fillStyle = '#ffffff';
+  var topText = document.getElementById('meme-top').value.toUpperCase();
+  var bottomText = document.getElementById('meme-bottom').value.toUpperCase();
+  var fontSize = parseInt(document.getElementById('meme-fontsize').value);
+  var textColor = document.getElementById('meme-color').value;
+  var outline = document.getElementById('meme-outline').checked;
+
   ctx.textAlign = 'center';
   ctx.textBaseline = 'top';
-  ctx.fillText(topText, 250, 360);
-  // 底部文字
-  ctx.font = 'bold 24px "Microsoft YaHei","PingFang SC",sans-serif';
-  ctx.fillStyle = '#ffffff';
-  ctx.textAlign = 'center';
-  ctx.fillText(bottomText, 250, 420);
-  // 边框
-  ctx.strokeStyle = 'rgba(0,0,0,0.2)';
-  ctx.lineWidth = 3;
-  ctx.strokeRect(0, 0, 500, 500);
+
+  if (topText) {
+    var fs = Math.min(fontSize, canvas.width / topText.length * 1.2);
+    ctx.font = 'bold ' + fs + 'px Impact, Arial Black, sans-serif';
+    drawMemeText(ctx, topText, canvas.width / 2, 10, textColor, outline);
+  }
+  if (bottomText) {
+    var fs = Math.min(fontSize, canvas.width / bottomText.length * 1.2);
+    ctx.font = 'bold ' + fs + 'px Impact, Arial Black, sans-serif';
+    ctx.textBaseline = 'bottom';
+    drawMemeText(ctx, bottomText, canvas.width / 2, canvas.height - 10, textColor, outline);
+  }
   document.getElementById('meme-download').style.display = 'inline-flex';
-  showToast('✅ 表情包已生成');
+  document.getElementById('meme-preview').style.display = 'block';
 }
 
-function getMemeEmoji(name) {
-  var map = {
-    '黑人问号': '🤔', '笑哭': '😂', '大哭': '😭', '燃起来了': '🔥',
-    '加油': '💪', '狗头': '🐶', '无语': '🙄', '偷笑': '😏',
-    '小丑': '🤡', '老人手机': '👴', '猫猫': '🐱', '可达鸭': '🦆'
-  };
-  return map[name] || '😊';
+function drawMemeText(ctx, text, x, y, color, outline) {
+  if (outline) {
+    ctx.strokeStyle = '#000000';
+    ctx.lineWidth = 4;
+    ctx.lineJoin = 'round';
+    ctx.strokeText(text, x, y);
+  }
+  ctx.fillStyle = color;
+  ctx.fillText(text, x, y);
 }
 
-function renderMemeWithImage(imgSrc) {
-  var topText = document.getElementById('meme-top-text').value || '顶部文字';
-  var bottomText = document.getElementById('meme-bottom-text').value || '底部文字';
-  var img = new Image();
-  img.onload = function() {
-    var canvas = document.getElementById('meme-canvas');
-    var ctx = canvas.getContext('2d');
-    canvas.width = 500;
-    canvas.height = 500;
-    ctx.clearRect(0, 0, 500, 500);
-    // 绘制图片（居中裁剪）
-    var s = Math.min(img.width, img.height);
-    var sx = (img.width - s) / 2, sy = (img.height - s) / 2;
-    ctx.drawImage(img, sx, sy, s, s, 0, 0, 500, 500);
-    // 添加黑色半透明条
-    ctx.fillStyle = 'rgba(0,0,0,0.5)';
-    ctx.fillRect(0, 0, 500, 80);
-    ctx.fillRect(0, 420, 500, 80);
-    // 文字
-    ctx.fillStyle = '#ffffff';
-    ctx.font = 'bold 36px "Microsoft YaHei","PingFang SC",sans-serif';
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    ctx.fillText(topText, 250, 40);
-    ctx.fillText(bottomText, 250, 460);
-    document.getElementById('meme-download').style.display = 'inline-flex';
-    showToast('✅ 表情包已生成');
-  };
-  img.src = imgSrc;
-}
+function memeGenerate() {
+  var canvas = document.getElementById('meme-canvas');
+  var ctx = canvas.getContext('2d');
+  var template = document.getElementById('meme-template').value;
+  var topText = document.getElementById('meme-top').value.toUpperCase();
+  var bottomText = document.getElementById('meme-bottom').value.toUpperCase();
+  var fontSize = parseInt(document.getElementById('meme-fontsize').value);
+  var textColor = document.getElementById('meme-color').value;
+  var outline = document.getElementById('meme-outline').checked;
 
-function generateMeme() {
-  var topText = document.getElementById('meme-top-text').value || '顶部文字';
-  var bottomText = document.getElementById('meme-bottom-text').value || '底部文字';
-  var customImg = document.getElementById('meme-custom-img');
-  if (customImg.style.display !== 'none' && customImg.src) {
-    renderMemeWithImage(customImg.src);
+  if (template === 'custom') {
+    memeUploadImage();
   } else {
-    var idx = document.getElementById('meme-template').value;
-    if (idx === '') {
-      showToast('⚠️ 请选择模板或上传图片');
-      return;
-    }
-    var names = ['黑人问号','笑哭','大哭','燃起来了','加油','狗头','无语','偷笑','小丑','老人手机','猫猫','可达鸭'];
-    var colors = ['#4a90d9','#f5a623','#f5a623','#e74c3c','#27ae60','#8e44ad','#7f8c8d','#2ecc71','#e74c3c','#95a5a6','#e67e22','#3498db'];
-    var idxNum = parseInt(idx);
-    renderMeme(names[idxNum], colors[idxNum], topText, bottomText);
+    canvas.width = 500; canvas.height = 500;
+    ctx.fillStyle = '#e0e0e0';
+    ctx.fillRect(0, 0, 500, 500);
+    ctx.fillStyle = '#888888';
+    ctx.font = '16px sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('Template: ' + template, 250, 240);
+    ctx.fillText('Upload image or use text only', 250, 270);
+    memeDrawText();
   }
 }
 
-function downloadMeme() {
+function memeDownload() {
   var canvas = document.getElementById('meme-canvas');
-  var link = document.createElement('a');
-  link.download = '表情包.png';
-  link.href = canvas.toDataURL('image/png');
-  link.click();
-  showToast('✅ 表情包已下载');
+  var a = document.createElement('a');
+  a.download = 'meme.png';
+  a.href = canvas.toDataURL('image/png');
+  a.click();
+  showToast('Downloaded');
 }
-
 
 // ==================== 4. 决策转盘 ====================
-var _wheelItems = [];
-var _wheelAngle = 0;
-var _wheelSpinning = false;
-
-function wheelAddOption() {
-  var input = document.getElementById('wheel-input');
-  var text = input.value.trim();
-  if (!text) { showToast('⚠️ 请输入选项'); return; }
-  _wheelItems.push(text);
-  input.value = '';
-  wheelRenderList();
-  wheelDraw();
-}
-
-function wheelAddFromText() {
-  var textarea = document.getElementById('wheel-textarea');
-  var text = textarea.value.trim();
-  if (!text) { showToast('⚠️ 请输入选项（每行一个）'); return; }
-  var lines = text.split('\n').filter(function(s) { return s.trim() !== ''; });
-  for (var i = 0; i < lines.length; i++) {
-    _wheelItems.push(lines[i].trim());
-  }
-  textarea.value = '';
-  wheelRenderList();
-  wheelDraw();
-}
-
-function wheelRemoveItem(idx) {
-  _wheelItems.splice(idx, 1);
-  wheelRenderList();
-  wheelDraw();
-}
-
-function wheelClear() {
-  _wheelItems = [];
-  wheelRenderList();
-  wheelDraw();
-  document.getElementById('wheel-result').textContent = '';
-  document.getElementById('wheel-result').style.display = 'none';
-}
-
-function wheelRenderList() {
-  var container = document.getElementById('wheel-list');
-  if (_wheelItems.length === 0) {
-    container.innerHTML = '<div style="color:var(--text-light);padding:10px;">暂无选项，请添加</div>';
-    return;
-  }
-  var html = '';
-  for (var i = 0; i < _wheelItems.length; i++) {
-    html += '<div class="wheel-item" style="display:flex;align-items:center;justify-content:space-between;padding:6px 10px;background:var(--card-bg);border:1px solid var(--border);border-radius:6px;margin-bottom:4px;">' +
-      '<span style="font-size:14px;">' + (i+1) + '. ' + _wheelItems[i] + '</span>' +
-      '<button class="btn btn-secondary" style="padding:2px 8px;font-size:12px;" onclick="wheelRemoveItem(' + i + ')">✕</button></div>';
-  }
-  container.innerHTML = html;
-  document.getElementById('wheel-count').textContent = '共 ' + _wheelItems.length + ' 个选项';
-}
-
-function wheelDraw() {
-  var canvas = document.getElementById('wheel-canvas');
-  var ctx = canvas.getContext('2d');
-  var cx = 200, cy = 200, R = 190;
-  canvas.width = 400;
-  canvas.height = 400;
-  ctx.clearRect(0, 0, 400, 400);
-  if (_wheelItems.length === 0) {
-    ctx.fillStyle = '#f0f0f0';
-    ctx.beginPath();
-    ctx.arc(cx, cy, R, 0, Math.PI * 2);
-    ctx.fill();
-    ctx.fillStyle = '#999';
-    ctx.font = '18px sans-serif';
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    ctx.fillText('添加选项后显示转盘', cx, cy);
-    return;
-  }
-  var n = _wheelItems.length;
-  var arc = (Math.PI * 2) / n;
-  var colors = ['#FF6384','#36A2EB','#FFCE56','#4BC0C0','#9966FF','#FF9F40','#E7E9ED','#F7464A','#00BFFF','#7B68EE','#FFD700','#3CB371','#FF69B4','#00CED1','#FF6347','#ADFF2F'];
-  ctx.save();
-  ctx.translate(cx, cy);
-  ctx.rotate(_wheelAngle);
-  for (var i = 0; i < n; i++) {
-    ctx.beginPath();
-    ctx.moveTo(0, 0);
-    ctx.arc(0, 0, R, i * arc, (i + 1) * arc);
-    ctx.closePath();
-    ctx.fillStyle = colors[i % colors.length];
-    ctx.fill();
-    ctx.strokeStyle = '#fff';
-    ctx.lineWidth = 2;
-    ctx.stroke();
-    // 文字
-    ctx.save();
-    ctx.rotate(i * arc + arc / 2);
-    ctx.textAlign = 'right';
-    ctx.fillStyle = '#fff';
-    ctx.font = 'bold 14px sans-serif';
-    var txt = _wheelItems[i];
-    if (txt.length > 4) txt = txt.substring(0, 4) + '…';
-    ctx.fillText(txt, R - 15, 4);
-    ctx.restore();
-  }
-  ctx.restore();
-  // 指针
-  ctx.beginPath();
-  ctx.moveTo(cx + 15, 10);
-  ctx.lineTo(cx - 15, 10);
-  ctx.lineTo(cx, 40);
-  ctx.closePath();
-  ctx.fillStyle = '#e74c3c';
-  ctx.fill();
-  ctx.strokeStyle = '#c0392b';
-  ctx.lineWidth = 2;
-  ctx.stroke();
-  // 中心圆
-  ctx.beginPath();
-  ctx.arc(cx, cy, 18, 0, Math.PI * 2);
-  ctx.fillStyle = '#fff';
-  ctx.fill();
-  ctx.strokeStyle = '#ddd';
-  ctx.lineWidth = 2;
-  ctx.stroke();
-}
-
-function wheelSpin() {
-  if (_wheelSpinning) return;
-  if (_wheelItems.length < 2) { showToast('⚠️ 至少需要2个选项'); return; }
-  _wheelSpinning = true;
-  document.getElementById('wheel-result').style.display = 'none';
-  // 随机旋转
-  var spins = 5 + Math.random() * 5;
-  var targetAngle = _wheelAngle + spins * Math.PI * 2 + Math.random() * Math.PI * 2;
-  var duration = 3000;
-  var startTime = Date.now();
-  var startAngle = _wheelAngle;
-  function animate() {
-    var elapsed = Date.now() - startTime;
-    var progress = Math.min(elapsed / duration, 1);
-    // easeOutCubic
-    var eased = 1 - Math.pow(1 - progress, 3);
-    _wheelAngle = startAngle + (targetAngle - startAngle) * eased;
-    wheelDraw();
-    if (progress < 1) {
-      requestAnimationFrame(animate);
-    } else {
-      _wheelAngle = targetAngle % (Math.PI * 2);
-      _wheelSpinning = false;
-      // 确定结果
-      var n = _wheelItems.length;
-      var arc = (Math.PI * 2) / n;
-      // 指针在顶部（-π/2方向）
-      var pointerAngle = -Math.PI / 2;
-      var normalizedAngle = ((pointerAngle - _wheelAngle) % (Math.PI * 2) + Math.PI * 2) % (Math.PI * 2);
-      var idx = Math.floor(normalizedAngle / arc);
-      if (idx >= n) idx = n - 1;
-      var result = _wheelItems[idx];
-      document.getElementById('wheel-result').textContent = '🎉 结果：' + result;
-      document.getElementById('wheel-result').style.display = 'block';
-      showToast('🎯 抽中：' + result);
-    }
-  }
-  animate();
-}
-
-
-// ==================== 页面初始化 ====================
-function initNewTools() {
-  if (document.getElementById('meme-template')) initMemeGenerator();
-  if (document.getElementById('wheel-canvas')) wheelDraw();
+function spinWheel() {
+  var items = document.getElementById('dw-items').value;
+  if (!items.trim()) { showToast('Enter items'); return; }
+  var list = items.split('\n').filter(function(i) { return i.trim(); });
+  if (list.length < 2) { showToast('Need at least 2 items'); return; }
+  var result = list[Math.floor(Math.random() * list.length)];
+  document.getElementById('dw-result').textContent = result;
+  document.getElementById('dw-result').className = 'dw-result dw-spin';
+  showToast('Result: ' + result);
+  setTimeout(function() { document.getElementById('dw-result').className = 'dw-result'; }, 500);
 }

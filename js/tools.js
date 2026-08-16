@@ -2530,56 +2530,135 @@ openclaw update</code></pre>
     cat: 'image',
     icon: '✍️',
     name: '文字转手写体',
-    desc: '输入文字，生成手写风格图片，支持选择纸张样式、颜色、字号',
+    desc: '将文字转为逼真手写体，支持多种字体、纸张样式和个性化效果',
     html: `
       <div class="tool-card">
-        <div class="input-group">
-          <label>输入文字（支持换行）</label>
-          <textarea id="th-text" placeholder="在此输入文字，每行一个自然段..." rows="4" style="width:100%;"></textarea>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+          <div style="border-right:1px solid var(--border);padding-right:16px;">
+            <h4 style="font-size:15px;font-weight:600;margin-bottom:12px;color:var(--primary);">📝 文字输入</h4>
+            <div class="input-group" style="margin-bottom:10px;">
+              <label>输入文字（支持换行）</label>
+              <textarea id="th-text" placeholder="在此输入文字，每行一个自然段..." rows="6" style="width:100%;"></textarea>
+            </div>
+            <div class="input-group" style="margin-bottom:10px;">
+              <label>📌 标题（可选，会显示在顶部）</label>
+              <input type="text" id="th-title" placeholder="例如：读书笔记、心得体会..." style="width:100%;">
+            </div>
+          </div>
+          <div style="padding-left:16px;">
+            <h4 style="font-size:15px;font-weight:600;margin-bottom:12px;color:var(--primary);">🎨 个性化设计</h4>
+            <div class="row-2" style="margin-bottom:10px;">
+              <div class="input-group">
+                <label>📄 纸张样式</label>
+                <select id="th-paper" onchange="textToHandwriting()" style="width:100%;">
+                  <option value="plain">纯色背景</option>
+                  <option value="rice" selected>米黄信纸（横线）</option>
+                  <option value="grid">方格纸</option>
+                  <option value="essay">作文纸</option>
+                  <option value="tian">田字格</option>
+                  <option value="pinyin">拼音格</option>
+                  <option value="english">英文四线格</option>
+                  <option value="vintage">复古信纸</option>
+                </select>
+              </div>
+              <div class="input-group">
+                <label>✍️ 手写字体</label>
+                <select id="th-font" onchange="textToHandwriting()" style="width:100%;">
+                  <option value="kaiti">楷体（标准）</option>
+                  <option value="xingshu">行书</option>
+                  <option value="caoshu">草书</option>
+                  <option value="handwrite">手写体</option>
+                  <option value="fangsong">仿宋</option>
+                  <option value="lishu">隶书</option>
+                  <option value="qingsong">轻松手写</option>
+                  <option value="child">儿童体</option>
+                </select>
+              </div>
+            </div>
+            <div class="row-2" style="margin-bottom:10px;">
+              <div class="input-group">
+                <label>🎨 背景色</label>
+                <input type="color" id="th-bg" value="#faf6ed" onchange="textToHandwriting()" style="width:100%;height:36px;padding:2px;cursor:pointer;">
+              </div>
+              <div class="input-group">
+                <label>🖊️ 墨色</label>
+                <input type="color" id="th-ink" value="#1a1a2e" onchange="textToHandwriting()" style="width:100%;height:36px;padding:2px;cursor:pointer;">
+              </div>
+            </div>
+            <div class="row-2" style="margin-bottom:10px;">
+              <div class="input-group">
+                <label>📏 字号</label>
+                <select id="th-size" onchange="textToHandwriting()" style="width:100%;">
+                  <option value="24">特小</option>
+                  <option value="28">小</option>
+                  <option value="36" selected>中</option>
+                  <option value="48">大</option>
+                  <option value="56">特大</option>
+                </select>
+              </div>
+              <div class="input-group">
+                <label>↕️ 行距</label>
+                <select id="th-lineheight" onchange="textToHandwriting()" style="width:100%;">
+                  <option value="40">紧凑</option>
+                  <option value="50">偏小</option>
+                  <option value="60" selected>标准</option>
+                  <option value="80">宽松</option>
+                  <option value="100">特宽</option>
+                </select>
+              </div>
+            </div>
+            <div class="row-2" style="margin-bottom:10px;">
+              <div class="input-group">
+                <label>↔️ 字间距</label>
+                <select id="th-spacing" onchange="textToHandwriting()" style="width:100%;">
+                  <option value="0.9">紧凑</option>
+                  <option value="0.95" selected>标准</option>
+                  <option value="1.0">偏宽</option>
+                  <option value="1.1">宽松</option>
+                </select>
+              </div>
+              <div class="input-group">
+                <label>📐 纸张宽度</label>
+                <select id="th-width" onchange="textToHandwriting()" style="width:100%;">
+                  <option value="600">窄（600px）</option>
+                  <option value="800" selected>标准（800px）</option>
+                  <option value="1000">宽（1000px）</option>
+                </select>
+              </div>
+            </div>
+            <div class="row-2" style="margin-bottom:10px;">
+              <div class="input-group">
+                <label>🔀 手写凌乱度</label>
+                <select id="th-mess" onchange="textToHandwriting()" style="width:100%;">
+                  <option value="0.02">工整</option>
+                  <option value="0.06" selected>适中</option>
+                  <option value="0.12">潦草</option>
+                  <option value="0.2">非常潦草</option>
+                </select>
+              </div>
+              <div class="input-group">
+                <label>💧 墨迹浓淡</label>
+                <select id="th-bleed" onchange="textToHandwriting()" style="width:100%;">
+                  <option value="1">正常</option>
+                  <option value="0.85">淡墨</option>
+                  <option value="0.7">很淡</option>
+                  <option value="0.5">极淡（铅笔感）</option>
+                </select>
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="row-3">
-          <div class="input-group">
-            <label>纸张样式</label>
-            <select id="th-paper">
-              <option value="plain">纯色背景</option>
-              <option value="rice" selected>米黄信纸（横线）</option>
-              <option value="grid">方格纸</option>
-            </select>
-          </div>
-          <div class="input-group">
-            <label>背景色</label>
-            <input type="color" id="th-bg" value="#ffffff">
-          </div>
-          <div class="input-group">
-            <label>墨色</label>
-            <input type="color" id="th-ink" value="#000000">
-          </div>
-        </div>
-        <div class="row-3">
-          <div class="input-group">
-            <label>字号</label>
-            <select id="th-size">
-              <option value="28">小</option>
-              <option value="36" selected>中</option>
-              <option value="48">大</option>
-            </select>
-          </div>
-          <div class="input-group">
-            <label>行高</label>
-            <select id="th-lineheight">
-              <option value="48">小</option>
-              <option value="60" selected>中</option>
-              <option value="80">大</option>
-            </select>
-          </div>
-        </div>
-        <div class="btn-group">
+        <div class="btn-group" style="justify-content:center;margin-top:12px;">
           <button class="btn btn-primary" onclick="textToHandwriting()">✍️ 生成手写体</button>
-          <button class="btn btn-secondary" id="th-download" onclick="downloadHandwriting()" style="display:none;">⬇️ 下载PNG</button>
+          <button class="btn btn-secondary" id="th-download" onclick="downloadHandwriting()" style="display:none;">⬇️ 下载 PNG</button>
+          <button class="btn btn-secondary" id="th-download-jpg" onclick="downloadHandwritingJPG()" style="display:none;">⬇️ 下载 JPG</button>
+          <button class="btn btn-secondary" onclick="randomHandwritingStyle()">🎲 随机风格</button>
         </div>
         <div id="th-preview" style="margin-top:16px;text-align:center;display:none;">
+          <div class="label" style="margin-bottom:8px;">手写体预览</div>
           <canvas id="th-canvas" style="max-width:100%;border:1px solid var(--border);border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,0.1);"></canvas>
         </div>
+        <div id="th-status" style="margin-top:8px;font-size:13px;color:var(--text-light);text-align:center;"></div>
       </div>
     `,
     handler: () => {}
