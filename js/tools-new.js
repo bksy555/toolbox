@@ -266,40 +266,61 @@ function randomHandwritingStyle() {
 }
 
 // ==================== 3. 表情包生成器 ====================
-var MEME_TEMPLATES = [
-  { name: 'Black Guy Question', url: '' },
-  { name: 'Crying Laughing', url: '' },
-  { name: 'Crying', url: '' },
-  { name: 'Roll Safe Think', url: '' },
-  { name: 'Disaster Girl', url: '' },
-  { name: 'Drake Hotline', url: '' },
-  { name: 'Change My Mind', url: '' },
-  { name: 'Two Buttons', url: '' },
-  { name: 'Distracted BF', url: '' },
-  { name: 'Is This A Pigeon', url: '' },
-  { name: 'Galaxy Brain', url: '' },
-  { name: 'UNO Draw 25', url: '' },
-  { name: 'This Is Fine', url: '' },
-  { name: 'Ight Imma Head Out', url: '' }
-];
+function initMemeGenerator() {
+  var canvas = document.getElementById('meme-canvas');
+  if (canvas) {
+    var ctx = canvas.getContext('2d');
+    canvas.width = 500; canvas.height = 300;
+    ctx.fillStyle = '#f8f8f8';
+    ctx.fillRect(0, 0, 500, 300);
+    ctx.fillStyle = '#bbbbbb';
+    ctx.font = '18px sans-serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText('上传图片或输入文字，点击生成', 250, 150);
+  }
+}
 
-function memeSelectTemplate() {
-  var sel = document.getElementById('meme-template');
-  var custom = document.getElementById('meme-custom');
-  var upload = document.getElementById('meme-upload-group');
-  if (sel.value === 'custom') {
-    custom.style.display = 'block';
-    upload.style.display = 'none';
+function generateMeme() {
+  var canvas = document.getElementById('meme-canvas');
+  var ctx = canvas.getContext('2d');
+  var file = document.getElementById('meme-file').files[0];
+  var topText = document.getElementById('meme-top-text').value.toUpperCase();
+  var bottomText = document.getElementById('meme-bottom-text').value.toUpperCase();
+  var fontSize = parseInt(document.getElementById('meme-fontsize').value);
+  var textColor = document.getElementById('meme-color').value;
+  var outline = document.getElementById('meme-outline').checked;
+
+  if (!topText && !bottomText) { showToast('请输入文字'); return; }
+
+  if (file) {
+    memeUploadImage();
   } else {
-    custom.style.display = 'none';
-    upload.style.display = 'block';
-    document.getElementById('meme-upload-label').textContent = 'Upload Image (or use template)';
+    // 纯文字模式 - 生成emoji背景
+    canvas.width = 500; canvas.height = 500;
+    var grad = ctx.createLinearGradient(0, 0, 500, 500);
+    grad.addColorStop(0, '#667eea');
+    grad.addColorStop(1, '#764ba2');
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, 0, 500, 500);
+    // 装饰性圆圈
+    ctx.fillStyle = 'rgba(255,255,255,0.05)';
+    for (var i = 0; i < 8; i++) {
+      ctx.beginPath();
+      ctx.arc(50 + Math.random() * 400, 50 + Math.random() * 400, 30 + Math.random() * 60, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    drawMemeTexts(ctx, topText, bottomText, 500, 500, fontSize, textColor, outline);
+    document.getElementById('meme-download').style.display = 'inline-flex';
+    document.getElementById('meme-hint').textContent = '✅ 表情包已生成';
+    showToast('表情包已生成');
   }
 }
 
 function memeUploadImage() {
-  var file = document.getElementById('meme-upload').files[0];
+  var file = document.getElementById('meme-file').files[0];
   if (!file) return;
+  document.getElementById('meme-filename').textContent = file.name;
   var reader = new FileReader();
   reader.onload = function(e) {
     var img = new Image();
@@ -309,96 +330,81 @@ function memeUploadImage() {
       canvas.width = Math.min(img.width, 600);
       canvas.height = Math.min(img.height, 600);
       ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-      memeDrawText();
+      var topText = document.getElementById('meme-top-text').value.toUpperCase();
+      var bottomText = document.getElementById('meme-bottom-text').value.toUpperCase();
+      var fontSize = parseInt(document.getElementById('meme-fontsize').value);
+      var textColor = document.getElementById('meme-color').value;
+      var outline = document.getElementById('meme-outline').checked;
+      drawMemeTexts(ctx, topText, bottomText, canvas.width, canvas.height, fontSize, textColor, outline);
       document.getElementById('meme-download').style.display = 'inline-flex';
-      document.getElementById('meme-preview').style.display = 'block';
+      document.getElementById('meme-hint').textContent = '✅ 表情包已生成';
+      showToast('表情包已生成');
     };
     img.src = e.target.result;
   };
   reader.readAsDataURL(file);
 }
 
-function memeDrawText() {
-  var canvas = document.getElementById('meme-canvas');
-  var ctx = canvas.getContext('2d');
-  var topText = document.getElementById('meme-top').value.toUpperCase();
-  var bottomText = document.getElementById('meme-bottom').value.toUpperCase();
-  var fontSize = parseInt(document.getElementById('meme-fontsize').value);
-  var textColor = document.getElementById('meme-color').value;
-  var outline = document.getElementById('meme-outline').checked;
-
+function drawMemeTexts(ctx, topText, bottomText, w, h, fontSize, textColor, outline) {
   ctx.textAlign = 'center';
-  ctx.textBaseline = 'top';
+  ctx.shadowColor = 'rgba(0,0,0,0.5)';
+  ctx.shadowBlur = 4;
 
   if (topText) {
-    var fs = Math.min(fontSize, canvas.width / topText.length * 1.2);
+    var fs = Math.min(fontSize, w / topText.length * 1.5);
     ctx.font = 'bold ' + fs + 'px Impact, Arial Black, sans-serif';
-    drawMemeText(ctx, topText, canvas.width / 2, 10, textColor, outline);
+    ctx.textBaseline = 'top';
+    if (outline) {
+      ctx.strokeStyle = '#000000';
+      ctx.lineWidth = 5;
+      ctx.lineJoin = 'round';
+      ctx.strokeText(topText, w / 2, 10);
+    }
+    ctx.fillStyle = textColor;
+    ctx.fillText(topText, w / 2, 10);
   }
   if (bottomText) {
-    var fs = Math.min(fontSize, canvas.width / bottomText.length * 1.2);
+    var fs = Math.min(fontSize, w / bottomText.length * 1.5);
     ctx.font = 'bold ' + fs + 'px Impact, Arial Black, sans-serif';
     ctx.textBaseline = 'bottom';
-    drawMemeText(ctx, bottomText, canvas.width / 2, canvas.height - 10, textColor, outline);
+    if (outline) {
+      ctx.strokeStyle = '#000000';
+      ctx.lineWidth = 5;
+      ctx.lineJoin = 'round';
+      ctx.strokeText(bottomText, w / 2, h - 10);
+    }
+    ctx.fillStyle = textColor;
+    ctx.fillText(bottomText, w / 2, h - 10);
   }
-  document.getElementById('meme-download').style.display = 'inline-flex';
-  document.getElementById('meme-preview').style.display = 'block';
+  ctx.shadowBlur = 0;
 }
 
-function drawMemeText(ctx, text, x, y, color, outline) {
-  if (outline) {
-    ctx.strokeStyle = '#000000';
-    ctx.lineWidth = 4;
-    ctx.lineJoin = 'round';
-    ctx.strokeText(text, x, y);
-  }
-  ctx.fillStyle = color;
-  ctx.fillText(text, x, y);
-}
-
-function memeGenerate() {
+function clearMemeImage() {
+  document.getElementById('meme-file').value = '';
+  document.getElementById('meme-filename').textContent = '';
   var canvas = document.getElementById('meme-canvas');
   var ctx = canvas.getContext('2d');
-  var template = document.getElementById('meme-template').value;
-  var topText = document.getElementById('meme-top').value.toUpperCase();
-  var bottomText = document.getElementById('meme-bottom').value.toUpperCase();
-  var fontSize = parseInt(document.getElementById('meme-fontsize').value);
-  var textColor = document.getElementById('meme-color').value;
-  var outline = document.getElementById('meme-outline').checked;
-
-  if (template === 'custom') {
-    memeUploadImage();
-  } else {
-    canvas.width = 500; canvas.height = 500;
-    ctx.fillStyle = '#e0e0e0';
-    ctx.fillRect(0, 0, 500, 500);
-    ctx.fillStyle = '#888888';
-    ctx.font = '16px sans-serif';
-    ctx.textAlign = 'center';
-    ctx.fillText('Template: ' + template, 250, 240);
-    ctx.fillText('Upload image or use text only', 250, 270);
-    memeDrawText();
-  }
-}
-
-function memeDownload() {
-  var canvas = document.getElementById('meme-canvas');
-  var a = document.createElement('a');
-  a.download = 'meme.png';
-  a.href = canvas.toDataURL('image/png');
-  a.click();
-  showToast('Downloaded');
+  canvas.width = 500; canvas.height = 300;
+  ctx.fillStyle = '#f8f8f8';
+  ctx.fillRect(0, 0, 500, 300);
+  ctx.fillStyle = '#bbbbbb';
+  ctx.font = '18px sans-serif';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText('上传图片或输入文字，点击生成', 250, 150);
+  document.getElementById('meme-hint').textContent = '图片已清除';
+  showToast('已清除图片');
 }
 
 // ==================== 4. 决策转盘 ====================
 function spinWheel() {
   var items = document.getElementById('dw-items').value;
-  if (!items.trim()) { showToast('Enter items'); return; }
+  if (!items.trim()) { showToast('请输入选项'); return; }
   var list = items.split('\n').filter(function(i) { return i.trim(); });
-  if (list.length < 2) { showToast('Need at least 2 items'); return; }
+  if (list.length < 2) { showToast('至少需要2个选项'); return; }
   var result = list[Math.floor(Math.random() * list.length)];
   document.getElementById('dw-result').textContent = result;
   document.getElementById('dw-result').className = 'dw-result dw-spin';
-  showToast('Result: ' + result);
+  showToast('结果: ' + result);
   setTimeout(function() { document.getElementById('dw-result').className = 'dw-result'; }, 500);
 }

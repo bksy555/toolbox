@@ -2670,39 +2670,52 @@ openclaw update</code></pre>
     cat: 'image',
     icon: '😂',
     name: '表情包生成器',
-    desc: '选择模板或上传图片，添加文字，一键生成表情包',
+    desc: '上传图片或纯文字，添加顶部/底部文字，一键生成经典表情包，支持多种样式',
     html: `
       <div class="tool-card">
-        <div class="row-2">
+        <div class="row-2" style="margin-bottom:12px;">
           <div class="input-group">
-            <label>选择模板</label>
-            <select id="meme-template" onchange="memeSelectTemplate()">
-              <option value="">-- 选择模板或上传自定义图片 --</option>
-            </select>
+            <label>📁 上传图片（可选）</label>
+            <div style="display:flex;gap:8px;align-items:center;">
+              <input type="file" id="meme-file" accept="image/*" style="display:none;" onchange="memeUploadImage()">
+              <button class="btn btn-secondary" onclick="document.getElementById('meme-file').click()" style="flex:1;">📁 选择图片</button>
+              <span id="meme-filename" style="font-size:12px;color:var(--text-light);flex:1;"></span>
+            </div>
           </div>
           <div class="input-group">
-            <label>或上传自定义图片</label>
-            <input type="file" id="meme-file" accept="image/*" style="display:none;" onchange="memeUploadImage()">
-            <button class="btn btn-secondary" onclick="document.getElementById('meme-file').click()" style="width:100%;">📁 选择图片</button>
+            <label>🎨 文字样式</label>
+            <div style="display:flex;gap:6px;align-items:center;">
+              <select id="meme-fontsize" onchange="memeUploadImage()" style="flex:1;">
+                <option value="36">小字号</option>
+                <option value="48" selected>中字号</option>
+                <option value="60">大字号</option>
+                <option value="72">特大字号</option>
+              </select>
+              <input type="color" id="meme-color" value="#ffffff" onchange="memeUploadImage()" style="width:40px;height:36px;padding:2px;cursor:pointer;border:none;border-radius:6px;">
+              <label style="font-size:12px;display:flex;align-items:center;gap:4px;cursor:pointer;white-space:nowrap;">
+                <input type="checkbox" id="meme-outline" checked onchange="memeUploadImage()"> 描边
+              </label>
+            </div>
           </div>
         </div>
         <div class="row-2">
           <div class="input-group">
-            <label>顶部文字</label>
-            <input type="text" id="meme-top-text" placeholder="顶部文字" value="我太难了" style="width:100%;">
+            <label>⬆️ 顶部文字</label>
+            <input type="text" id="meme-top-text" placeholder="顶部文字" value="我太难了" style="width:100%;font-size:15px;font-family:Impact,'Arial Black',sans-serif;">
           </div>
           <div class="input-group">
-            <label>底部文字</label>
-            <input type="text" id="meme-bottom-text" placeholder="底部文字" value="真的太难了" style="width:100%;">
+            <label>⬇️ 底部文字</label>
+            <input type="text" id="meme-bottom-text" placeholder="底部文字" value="真的太难了" style="width:100%;font-size:15px;font-family:Impact,'Arial Black',sans-serif;">
           </div>
         </div>
-        <div class="btn-group">
+        <div class="btn-group" style="justify-content:center;margin-top:10px;">
           <button class="btn btn-primary" onclick="generateMeme()">😂 生成表情包</button>
           <button class="btn btn-secondary" id="meme-download" onclick="downloadMeme()" style="display:none;">⬇️ 下载PNG</button>
+          <button class="btn btn-secondary" onclick="clearMemeImage()">🔄 清除图片</button>
         </div>
-        <div style="display:none;"><img id="meme-custom-img" style="max-width:200px;margin-top:8px;border-radius:6px;"></div>
-        <div style="margin-top:12px;text-align:center;">
-          <canvas id="meme-canvas" style="max-width:100%;border:1px solid var(--border);border-radius:8px;background:#fff;"></canvas>
+        <div style="margin-top:12px;text-align:center;min-height:260px;display:flex;flex-direction:column;align-items:center;">
+          <canvas id="meme-canvas" style="max-width:100%;border:1px solid var(--border);border-radius:8px;background:#f8f8f8;max-height:400px;object-fit:contain;"></canvas>
+          <div id="meme-hint" style="margin-top:8px;font-size:13px;color:var(--text-light);">上传图片或直接输入文字，点击生成</div>
         </div>
       </div>
     `,
