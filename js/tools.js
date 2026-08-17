@@ -3378,8 +3378,560 @@ openclaw update</code></pre>
       </div>
     `,
     handler: () => {}
+  },
+
+  // ---- 付费工具转免费：思维导图工具 (Miro/MindMeister替代) ----
+  {
+    id: 'mind-map',
+    cat: 'dev',
+    icon: '🧠',
+    name: '思维导图工具',
+    desc: '在线绘制思维导图，支持节点编辑、拖拽布局、导出PNG，无需注册',
+    html: `
+      <div class="tool-card">
+        <div class="input-group" style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+          <button class="btn btn-primary" onclick="mmAddChild()">➕ 添加子节点</button>
+          <button class="btn btn-secondary" onclick="mmAddSibling()">➕ 添加同级节点</button>
+          <button class="btn btn-secondary" onclick="mmDeleteSelected()" style="background:#ef4444;">🗑️ 删除节点</button>
+          <button class="btn btn-secondary" onclick="mmExportPNG()">⬇️ 导出PNG</button>
+          <button class="btn btn-secondary" onclick="mmReset()">🔄 重置</button>
+        </div>
+        <div style="position:relative;width:100%;height:480px;background:#1a1a2e;border:1px solid #2a2a44;border-radius:12px;overflow:hidden;margin-top:8px;">
+          <canvas id="mm-canvas" style="width:100%;height:100%;cursor:grab;"></canvas>
+          <div id="mm-tooltip" style="display:none;position:absolute;bottom:12px;left:50%;transform:translateX(-50%);background:#2a2a44;color:#ccc;padding:6px 14px;border-radius:20px;font-size:12px;pointer-events:none;white-space:nowrap;">
+            🖱️ 点击选中节点 · 拖拽移动 · 双击编辑文字
+          </div>
+        </div>
+        <div id="mm-edit-panel" style="display:none;margin-top:12px;padding:16px;background:var(--card-bg);border:1px solid var(--border);border-radius:10px;">
+          <div class="row" style="gap:8px;align-items:center;">
+            <label style="font-size:13px;white-space:nowrap;">编辑文字：</label>
+            <input type="text" id="mm-edit-text" style="flex:1;" onkeydown="if(event.key==='Enter')mmConfirmEdit()">
+            <button class="btn btn-primary" onclick="mmConfirmEdit()" style="padding:6px 16px;">确定</button>
+          </div>
+        </div>
+        <div style="margin-top:8px;font-size:12px;color:var(--text-light);text-align:center;">
+          💡 灵感来源于 Miro（$8-16/月）、MindMeister（$5-13/月）等付费思维导图工具，免费版支持节点编辑、拖拽和导出PNG。
+        </div>
+      </div>
+    `,
+    handler: () => { setTimeout(mmInit, 100); }
+  },
+
+  // ---- 付费工具转免费：图片艺术效果 (Prisma/PicsArt替代) ----
+  {
+    id: 'art-filter',
+    cat: 'image',
+    icon: '✨',
+    name: '图片艺术效果',
+    desc: '在线给图片添加艺术滤镜，支持素描、油画、马赛克、浮雕、漫画等效果',
+    html: `
+      <div class="tool-card">
+        <div class="input-group">
+          <label>选择图片</label>
+          <input type="file" id="af-input" accept="image/*" onchange="afLoadImage(event)">
+        </div>
+        <div class="row" style="gap:8px;margin-top:8px;flex-wrap:wrap;">
+          <button class="btn btn-secondary" onclick="afApplyFilter('pencil')" style="font-size:13px;">✏️ 素描</button>
+          <button class="btn btn-secondary" onclick="afApplyFilter('oil')" style="font-size:13px;">🎨 油画</button>
+          <button class="btn btn-secondary" onclick="afApplyFilter('mosaic')" style="font-size:13px;">🧩 马赛克</button>
+          <button class="btn btn-secondary" onclick="afApplyFilter('emboss')" style="font-size:13px;">🏛️ 浮雕</button>
+          <button class="btn btn-secondary" onclick="afApplyFilter('comic')" style="font-size:13px;">🖍️ 漫画</button>
+          <button class="btn btn-secondary" onclick="afApplyFilter('vintage')" style="font-size:13px;">📻 复古</button>
+          <button class="btn btn-secondary" onclick="afApplyFilter('edge')" style="font-size:13px;">✒️ 边缘检测</button>
+          <button class="btn btn-secondary" onclick="afReset()" style="font-size:13px;">🔄 原图</button>
+        </div>
+        <div style="position:relative;width:100%;min-height:300px;background:#1a1a2e;border:1px solid #2a2a44;border-radius:12px;margin-top:8px;display:flex;align-items:center;justify-content:center;overflow:hidden;">
+          <canvas id="af-canvas" style="display:none;max-width:100%;max-height:500px;"></canvas>
+          <div id="af-placeholder" style="color:var(--text-light);padding:40px;text-align:center;">
+            <div style="font-size:48px;margin-bottom:12px;">🖼️</div>
+            <div>上传图片后选择滤镜效果</div>
+          </div>
+        </div>
+        <div class="btn-group" style="margin-top:8px;">
+          <button class="btn btn-primary" id="af-download-btn" style="display:none;" onclick="afDownload()">⬇️ 下载效果图</button>
+        </div>
+        <div style="margin-top:8px;font-size:12px;color:var(--text-light);text-align:center;">
+          💡 灵感来源于 Prisma（$7.99/月）、PicsArt Premium（$11.99/月）等付费艺术滤镜应用，免费版支持多种图片艺术效果，纯本地处理不上传。
+        </div>
+      </div>
+    `,
+    handler: () => {}
   }
 ];
+
+// ============================================================
+// 思维导图工具 处理函数
+// ============================================================
+var mmNodes = [], mmSelected = null, mmDragNode = null, mmDragOffset = {x:0,y:0}, mmNextId = 1;
+var mmCanvas, mmCtx, mmIsDragging = false, mmIsPanning = false, mmPanStart = {x:0,y:0}, mmOffset = {x:0,y:0};
+
+function mmInit() {
+  mmCanvas = document.getElementById('mm-canvas');
+  if (!mmCanvas) return;
+  mmCanvas.width = mmCanvas.clientWidth * 2;
+  mmCanvas.height = mmCanvas.clientHeight * 2;
+  mmCtx = mmCanvas.getContext('2d');
+  mmOffset = {x: mmCanvas.width/2, y: 100};
+  if (mmNodes.length === 0) {
+    mmNodes = [{id: 1, text: '中心主题', x: 0, y: 0, children: [], parent: null}];
+    mmNextId = 2;
+  }
+  mmCanvas.onmousedown = mmOnMouseDown;
+  mmCanvas.onmousemove = mmOnMouseMove;
+  mmCanvas.onmouseup = mmOnMouseUp;
+  mmCanvas.ondblclick = mmOnDblClick;
+  mmCanvas.oncontextmenu = function(e) { e.preventDefault(); };
+  mmRender();
+  document.getElementById('mm-tooltip').style.display = 'block';
+  setTimeout(function() {
+    document.getElementById('mm-tooltip').style.display = 'none';
+  }, 5000);
+}
+
+function mmGetNodePos(node) {
+  return {x: mmOffset.x + node.x, y: mmOffset.y + node.y};
+}
+
+function mmGetNodeRect(node) {
+  var pos = mmGetNodePos(node);
+  var w = node.text.length * 14 + 24;
+  var h = 36;
+  return {x: pos.x - w/2, y: pos.y - h/2, w: w, h: h};
+}
+
+function mmRender() {
+  var ctx = mmCtx, c = mmCanvas;
+  ctx.clearRect(0, 0, c.width, c.height);
+  // Draw connections
+  ctx.strokeStyle = '#6366f1';
+  ctx.lineWidth = 2;
+  ctx.setLineDash([5, 3]);
+  mmNodes.forEach(function(node) {
+    if (node.parent) {
+      var parent = mmNodes.find(function(n) { return n.id === node.parent; });
+      if (parent) {
+        var p = mmGetNodePos(parent), n = mmGetNodePos(node);
+        ctx.beginPath();
+        ctx.moveTo(p.x, p.y + 18);
+        ctx.lineTo(n.x, n.y - 18);
+        ctx.stroke();
+      }
+    }
+  });
+  ctx.setLineDash([]);
+  // Draw nodes
+  mmNodes.forEach(function(node) {
+    var r = mmGetNodeRect(node);
+    var isSel = mmSelected === node.id;
+    ctx.fillStyle = isSel ? '#4f46e5' : '#2a2a44';
+    ctx.strokeStyle = isSel ? '#818cf8' : '#6366f1';
+    ctx.lineWidth = isSel ? 3 : 1;
+    mmRoundRect(ctx, r.x, r.y, r.w, r.h, 10);
+    ctx.fill();
+    ctx.stroke();
+    // Text
+    ctx.fillStyle = '#e0e0e0';
+    ctx.font = '14px sans-serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(node.text, r.x + r.w/2, r.y + r.h/2);
+  });
+}
+
+function mmRoundRect(ctx, x, y, w, h, r) {
+  ctx.beginPath();
+  ctx.moveTo(x + r, y);
+  ctx.lineTo(x + w - r, y);
+  ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+  ctx.lineTo(x + w, y + h - r);
+  ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+  ctx.lineTo(x + r, y + h);
+  ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+  ctx.lineTo(x, y + r);
+  ctx.quadraticCurveTo(x, y, x + r, y);
+  ctx.closePath();
+}
+
+function mmNodeAt(x, y) {
+  for (var i = mmNodes.length - 1; i >= 0; i--) {
+    var r = mmGetNodeRect(mmNodes[i]);
+    if (x >= r.x && x <= r.x + r.w && y >= r.y && y <= r.y + r.h) return mmNodes[i];
+  }
+  return null;
+}
+
+function mmOnMouseDown(e) {
+  var rect = mmCanvas.getBoundingClientRect();
+  var x = (e.clientX - rect.left) * 2, y = (e.clientY - rect.top) * 2;
+  var node = mmNodeAt(x, y);
+  if (node) {
+    mmSelected = node.id;
+    mmDragNode = node;
+    mmDragOffset = {x: x - (mmOffset.x + node.x), y: y - (mmOffset.y + node.y)};
+    mmIsDragging = true;
+    mmCanvas.style.cursor = 'grabbing';
+    mmRender();
+    document.getElementById('mm-edit-panel').style.display = 'none';
+  } else {
+    mmSelected = null;
+    mmIsPanning = true;
+    mmPanStart = {x: e.clientX, y: e.clientY};
+    mmCanvas.style.cursor = 'grabbing';
+    mmRender();
+    document.getElementById('mm-edit-panel').style.display = 'none';
+  }
+}
+
+function mmOnMouseMove(e) {
+  if (mmIsDragging && mmDragNode) {
+    var rect = mmCanvas.getBoundingClientRect();
+    var x = (e.clientX - rect.left) * 2, y = (e.clientY - rect.top) * 2;
+    mmDragNode.x = x - mmOffset.x - mmDragOffset.x;
+    mmDragNode.y = y - mmOffset.y - mmDragOffset.y;
+    mmRender();
+  } else if (mmIsPanning) {
+    var dx = (e.clientX - mmPanStart.x) * 2, dy = (e.clientY - mmPanStart.y) * 2;
+    mmOffset.x += dx;
+    mmOffset.y += dy;
+    mmPanStart = {x: e.clientX, y: e.clientY};
+    mmRender();
+  }
+}
+
+function mmOnMouseUp(e) {
+  mmIsDragging = false;
+  mmIsPanning = false;
+  mmDragNode = null;
+  mmCanvas.style.cursor = 'grab';
+}
+
+function mmOnDblClick(e) {
+  var rect = mmCanvas.getBoundingClientRect();
+  var x = (e.clientX - rect.left) * 2, y = (e.clientY - rect.top) * 2;
+  var node = mmNodeAt(x, y);
+  if (node) {
+    mmSelected = node.id;
+    document.getElementById('mm-edit-text').value = node.text;
+    document.getElementById('mm-edit-panel').style.display = 'block';
+    document.getElementById('mm-edit-text').focus();
+    mmRender();
+  }
+}
+
+function mmAddChild() {
+  if (!mmSelected) { showToast('请先点击选中一个父节点'); return; }
+  var parent = mmNodes.find(function(n) { return n.id === mmSelected; });
+  if (!parent) return;
+  var node = {id: mmNextId++, text: '新节点', x: parent.x + (Math.random() - 0.5) * 200, y: parent.y + 80, children: [], parent: parent.id};
+  mmNodes.push(node);
+  parent.children.push(node.id);
+  mmRender();
+  showToast('✅ 已添加子节点');
+}
+
+function mmAddSibling() {
+  if (!mmSelected) { showToast('请先点击选中一个节点'); return; }
+  var current = mmNodes.find(function(n) { return n.id === mmSelected; });
+  if (!current || !current.parent) { showToast('根节点没有同级节点'); return; }
+  var parent = mmNodes.find(function(n) { return n.id === current.parent; });
+  if (!parent) return;
+  var node = {id: mmNextId++, text: '新节点', x: current.x + 140, y: current.y, children: [], parent: parent.id};
+  mmNodes.push(node);
+  parent.children.push(node.id);
+  mmRender();
+  showToast('✅ 已添加同级节点');
+}
+
+function mmDeleteSelected() {
+  if (!mmSelected) { showToast('请先点击选中一个节点'); return; }
+  if (mmSelected === 1) { showToast('不能删除根节点'); return; }
+  function removeNode(id) {
+    var node = mmNodes.find(function(n) { return n.id === id; });
+    if (!node) return;
+    (node.children || []).forEach(function(cid) { removeNode(cid); });
+    mmNodes = mmNodes.filter(function(n) { return n.id !== id; });
+  }
+  removeNode(mmSelected);
+  mmSelected = null;
+  mmRender();
+  showToast('✅ 已删除节点');
+}
+
+function mmConfirmEdit() {
+  var text = document.getElementById('mm-edit-text').value.trim();
+  if (!text || !mmSelected) { document.getElementById('mm-edit-panel').style.display = 'none'; return; }
+  var node = mmNodes.find(function(n) { return n.id === mmSelected; });
+  if (node) { node.text = text; }
+  document.getElementById('mm-edit-panel').style.display = 'none';
+  mmRender();
+}
+
+function mmExportPNG() {
+  // Render at high quality
+  var exportCanvas = document.createElement('canvas');
+  // Calculate bounds
+  var minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+  mmNodes.forEach(function(node) {
+    var r = mmGetNodeRect(node);
+    if (r.x < minX) minX = r.x;
+    if (r.y < minY) minY = r.y;
+    if (r.x + r.w > maxX) maxX = r.x + r.w;
+    if (r.y + r.h > maxY) maxY = r.y + r.h;
+  });
+  var pad = 40;
+  var w = (maxX - minX) + pad * 2, h = (maxY - minY) + pad * 2;
+  exportCanvas.width = w;
+  exportCanvas.height = h;
+  var ctx = exportCanvas.getContext('2d');
+  ctx.fillStyle = '#1a1a2e';
+  ctx.fillRect(0, 0, w, h);
+  // Save & restore offset
+  var savedOffset = mmOffset;
+  mmOffset = {x: pad - minX + mmOffset.x - (mmOffset.x - (mmCanvas.width/2)), y: pad - minY + mmOffset.y - (mmOffset.y - 100)};
+  // Actually simpler: re-render with adjusted offset
+  mmOffset = {x: pad - minX, y: pad - minY};
+  // Draw connections
+  ctx.strokeStyle = '#6366f1';
+  ctx.lineWidth = 2;
+  ctx.setLineDash([5, 3]);
+  mmNodes.forEach(function(node) {
+    if (node.parent) {
+      var parent = mmNodes.find(function(n) { return n.id === node.parent; });
+      if (parent) {
+        var p = {x: mmOffset.x + parent.x, y: mmOffset.y + parent.y};
+        var n = {x: mmOffset.x + node.x, y: mmOffset.y + node.y};
+        ctx.beginPath();
+        ctx.moveTo(p.x, p.y + 18);
+        ctx.lineTo(n.x, n.y - 18);
+        ctx.stroke();
+      }
+    }
+  });
+  ctx.setLineDash([]);
+  // Draw nodes
+  mmNodes.forEach(function(node) {
+    var origX = mmOffset.x + node.x, origY = mmOffset.y + node.y;
+    var rw = node.text.length * 14 + 24, rh = 36;
+    ctx.fillStyle = '#2a2a44';
+    ctx.strokeStyle = '#6366f1';
+    ctx.lineWidth = 1;
+    mmRoundRect(ctx, origX - rw/2, origY - rh/2, rw, rh, 10);
+    ctx.fill();
+    ctx.stroke();
+    ctx.fillStyle = '#e0e0e0';
+    ctx.font = '14px sans-serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(node.text, origX, origY);
+  });
+  mmOffset = savedOffset;
+  // Download
+  var link = document.createElement('a');
+  link.download = '思维导图_' + new Date().toISOString().slice(0,10) + '.png';
+  link.href = exportCanvas.toDataURL('image/png');
+  link.click();
+  showToast('✅ 已导出思维导图');
+}
+
+function mmReset() {
+  mmNodes = [{id: 1, text: '中心主题', x: 0, y: 0, children: [], parent: null}];
+  mmNextId = 2;
+  mmSelected = null;
+  mmOffset = {x: mmCanvas.width/2, y: 100};
+  document.getElementById('mm-edit-panel').style.display = 'none';
+  mmRender();
+  showToast('🔄 已重置');
+}
+
+// ============================================================
+// 图片艺术效果 处理函数
+// ============================================================
+var afOriginalImage = null, afCurrentImage = null;
+
+function afLoadImage(e) {
+  var file = e.target.files[0];
+  if (!file) return;
+  var reader = new FileReader();
+  reader.onload = function(ev) {
+    var img = new Image();
+    img.onload = function() {
+      afOriginalImage = img;
+      afCurrentImage = img;
+      var canvas = document.getElementById('af-canvas');
+      canvas.style.display = 'block';
+      document.getElementById('af-placeholder').style.display = 'none';
+      document.getElementById('af-download-btn').style.display = 'inline-flex';
+      // Scale to fit
+      var maxW = 800, maxH = 500;
+      var scale = Math.min(maxW / img.width, maxH / img.height, 1);
+      canvas.width = img.width * scale;
+      canvas.height = img.height * scale;
+      var ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+      showToast('✅ 图片已加载，点击滤镜效果');
+    };
+    img.src = ev.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+function afApplyFilter(type) {
+  if (!afOriginalImage) { showToast('请先上传图片'); return; }
+  var canvas = document.getElementById('af-canvas');
+  var ctx = canvas.getContext('2d');
+  var w = canvas.width, h = canvas.height;
+  // Draw original
+  ctx.drawImage(afOriginalImage, 0, 0, w, h);
+  var imageData = ctx.getImageData(0, 0, w, h);
+  var data = imageData.data;
+  var output = new Uint8ClampedArray(data);
+
+  switch (type) {
+    case 'pencil':
+      // Grayscale edge detection
+      for (var i = 0; i < data.length; i += 4) {
+        var gray = 0.299 * data[i] + 0.587 * data[i+1] + 0.114 * data[i+2];
+        data[i] = data[i+1] = data[i+2] = gray;
+      }
+      // Simple edge
+      for (var y = 1; y < h - 1; y++) {
+        for (var x = 1; x < w - 1; x++) {
+          var idx = (y * w + x) * 4;
+          var idxL = (y * w + (x-1)) * 4;
+          var idxR = (y * w + (x+1)) * 4;
+          var idxU = ((y-1) * w + x) * 4;
+          var idxD = ((y+1) * w + x) * 4;
+          var dx = data[idxR] - data[idxL];
+          var dy = data[idxD] - data[idxU];
+          var edge = Math.sqrt(dx*dx + dy*dy);
+          var val = 255 - Math.min(edge, 255);
+          output[idx] = output[idx+1] = output[idx+2] = val;
+        }
+      }
+      break;
+    case 'oil':
+      for (var y = 2; y < h - 2; y++) {
+        for (var x = 2; x < w - 2; x++) {
+          var buckets = new Array(16);
+          for (var b = 0; b < 16; b++) buckets[b] = {r:0,g:0,b:0,count:0};
+          for (var dy = -2; dy <= 2; dy++) {
+            for (var dx = -2; dx <= 2; dx++) {
+              var idx = ((y+dy) * w + (x+dx)) * 4;
+              var gray = Math.floor((0.299 * data[idx] + 0.587 * data[idx+1] + 0.114 * data[idx+2]) / 16);
+              buckets[gray].r += data[idx];
+              buckets[gray].g += data[idx+1];
+              buckets[gray].b += data[idx+2];
+              buckets[gray].count++;
+            }
+          }
+          var maxIdx = 0, maxCount = 0;
+          for (var b = 0; b < 16; b++) {
+            if (buckets[b].count > maxCount) { maxCount = buckets[b].count; maxIdx = b; }
+          }
+          var idx = (y * w + x) * 4;
+          output[idx] = buckets[maxIdx].r / maxCount;
+          output[idx+1] = buckets[maxIdx].g / maxCount;
+          output[idx+2] = buckets[maxIdx].b / maxCount;
+        }
+      }
+      break;
+    case 'mosaic':
+      var block = 10;
+      for (var y = 0; y < h; y += block) {
+        for (var x = 0; x < w; x += block) {
+          var idx = (y * w + x) * 4;
+          var mr = data[idx], mg = data[idx+1], mb = data[idx+2];
+          for (var dy = 0; dy < block && y + dy < h; dy++) {
+            for (var dx = 0; dx < block && x + dx < w; dx++) {
+              var i = ((y + dy) * w + (x + dx)) * 4;
+              output[i] = mr; output[i+1] = mg; output[i+2] = mb;
+            }
+          }
+        }
+      }
+      break;
+    case 'emboss':
+      for (var y = 1; y < h - 1; y++) {
+        for (var x = 1; x < w - 1; x++) {
+          var idx = (y * w + x) * 4;
+          var idxTL = ((y-1) * w + (x-1)) * 4;
+          var idxBR = ((y+1) * w + (x+1)) * 4;
+          var grayTL = 0.299 * data[idxTL] + 0.587 * data[idxTL+1] + 0.114 * data[idxTL+2];
+          var grayBR = 0.299 * data[idxBR] + 0.587 * data[idxBR+1] + 0.114 * data[idxBR+2];
+          var val = Math.min(255, Math.max(0, grayTL - grayBR + 128));
+          output[idx] = output[idx+1] = output[idx+2] = val;
+        }
+      }
+      break;
+    case 'comic':
+      // Posterize + saturate
+      for (var i = 0; i < data.length; i += 4) {
+        var r = data[i], g = data[i+1], b = data[i+2];
+        // Posterize to 4 levels
+        output[i] = Math.floor(r / 64) * 64 + 32;
+        output[i+1] = Math.floor(g / 64) * 64 + 32;
+        output[i+2] = Math.floor(b / 64) * 64 + 32;
+        // Boost saturation
+        var gray = 0.299 * output[i] + 0.587 * output[i+1] + 0.114 * output[i+2];
+        output[i] = Math.min(255, output[i] + (output[i] - gray) * 0.5);
+        output[i+1] = Math.min(255, output[i+1] + (output[i+1] - gray) * 0.5);
+        output[i+2] = Math.min(255, output[i+2] + (output[i+2] - gray) * 0.5);
+      }
+      break;
+    case 'vintage':
+      for (var i = 0; i < data.length; i += 4) {
+        var r = data[i], g = data[i+1], b = data[i+2];
+        var gray = 0.299 * r + 0.587 * g + 0.114 * b;
+        output[i] = Math.min(255, gray * 1.1 + 20);
+        output[i+1] = Math.min(255, gray * 0.95 + 10);
+        output[i+2] = Math.min(255, gray * 0.85);
+      }
+      break;
+    case 'edge':
+      // Sobel edge detection
+      for (var y = 1; y < h - 1; y++) {
+        for (var x = 1; x < w - 1; x++) {
+          var idx = (y * w + x) * 4;
+          var gx = 0, gy = 0;
+          var sobelX = [-1,0,1,-2,0,2,-1,0,1];
+          var sobelY = [-1,-2,-1,0,0,0,1,2,1];
+          for (var ky = -1; ky <= 1; ky++) {
+            for (var kx = -1; kx <= 1; kx++) {
+              var i = ((y+ky) * w + (x+kx)) * 4;
+              var gray = 0.299 * data[i] + 0.587 * data[i+1] + 0.114 * data[i+2];
+              var ki = (ky+1)*3 + (kx+1);
+              gx += gray * sobelX[ki];
+              gy += gray * sobelY[ki];
+            }
+          }
+          var edge = Math.sqrt(gx*gx + gy*gy);
+          var val = 255 - Math.min(edge, 255);
+          output[idx] = output[idx+1] = output[idx+2] = val;
+        }
+      }
+      break;
+  }
+  var outImageData = new ImageData(output, w, h);
+  ctx.putImageData(outImageData, 0, 0);
+  showToast('✅ ' + {pencil:'素描',oil:'油画',mosaic:'马赛克',emboss:'浮雕',comic:'漫画',vintage:'复古',edge:'边缘检测'}[type] + '效果已应用');
+}
+
+function afReset() {
+  if (!afOriginalImage) return;
+  var canvas = document.getElementById('af-canvas');
+  var ctx = canvas.getContext('2d');
+  ctx.drawImage(afOriginalImage, 0, 0, canvas.width, canvas.height);
+  showToast('🔄 已恢复原图');
+}
+
+function afDownload() {
+  var canvas = document.getElementById('af-canvas');
+  var link = document.createElement('a');
+  link.download = '艺术效果_' + new Date().toISOString().slice(0,10) + '.png';
+  link.href = canvas.toDataURL('image/png');
+  link.click();
+  showToast('✅ 已下载');
+}
 
 // ============================================================
 // CSS渐变生成器 处理函数
@@ -4139,8 +4691,8 @@ function dpCopyText() {
 // ============================================================
 const CATEGORIES = [
   { id: 'text', icon: '✏️', name: '文本工具', desc: '字数统计、简繁转换、摩斯密码、文本转语音、文本对比' },
-  { id: 'dev', icon: '💻', name: '开发者工具', desc: 'JSON格式化、二维码生成、正则测试、Markdown、IP查询' },
-  { id: 'image', icon: '🖼️', name: '图片处理', desc: '去背景换底色、批量压缩、加水印、长图拼接、格式转换、裁剪、OCR、印章制作、九宫格切图、文字转手写体、表情包、社交媒体图片尺寸调整' },
+  { id: 'dev', icon: '💻', name: '开发者工具', desc: 'JSON格式化、二维码生成、正则测试、Markdown、IP查询、思维导图' },
+  { id: 'image', icon: '🖼️', name: '图片处理', desc: '去背景换底色、批量压缩、加水印、长图拼接、格式转换、裁剪、OCR、印章制作、九宫格切图、文字转手写体、表情包、社交媒体图片尺寸调整、艺术效果' },
   { id: 'document', icon: '📄', name: '文档转换', desc: '图片转PDF、PDF转图片、Word解析、Excel转PDF、PDF合并、简历生成、电子签名' },
   { id: 'convert', icon: '🔄', name: '转换工具', desc: '单位换算、进制转换' },
   { id: 'security', icon: '🔒', name: '安全工具', desc: '密码生成、Hash计算、随机数' },
