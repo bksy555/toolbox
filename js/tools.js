@@ -3456,6 +3456,144 @@ openclaw update</code></pre>
       </div>
     `,
     handler: () => {}
+  },
+
+  // ---- 付费工具转免费：在线表单制作工具 (Typeform替代) ----
+  {
+    id: 'form-builder',
+    cat: 'document',
+    icon: '📋',
+    name: '在线表单制作工具',
+    desc: '创建问卷、报名表、投票表单，支持单选/多选/填空/评分，一键生成分享链接',
+    html: `
+      <div class="tool-card">
+        <div class="input-group">
+          <label>📋 在线表单制作工具</label>
+          <p style="font-size:13px;color:var(--text-light);margin-top:4px;">免费创建问卷、报名表、投票表单，生成链接分享给朋友填写</p>
+        </div>
+        <!-- 编辑模式 -->
+        <div id="fb-editor">
+          <div id="fb-questions"></div>
+          <div class="btn-group" style="flex-wrap:wrap;">
+            <button class="btn btn-secondary" onclick="fbAddQuestion('radio')" style="font-size:13px;">➕ 单选题</button>
+            <button class="btn btn-secondary" onclick="fbAddQuestion('checkbox')" style="font-size:13px;">➕ 多选题</button>
+            <button class="btn btn-secondary" onclick="fbAddQuestion('text')" style="font-size:13px;">➕ 填空题</button>
+            <button class="btn btn-secondary" onclick="fbAddQuestion('rating')" style="font-size:13px;">➕ 评分题</button>
+          </div>
+          <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap;">
+            <button class="btn btn-primary" onclick="fbPreview()">👀 预览</button>
+            <button class="btn btn-primary" onclick="fbShare()" style="background:#16a34a;">🔗 生成分享链接</button>
+          </div>
+          <div style="margin-top:8px;font-size:12px;color:var(--text-light);">
+            💡 Tip：问题之间用"添加"按钮顺序排列，最多建议10个问题，链接会自动携带全部表单内容。
+          </div>
+        </div>
+        <!-- 分享链接面板 -->
+        <div id="fb-share-panel" style="display:none;margin-top:12px;padding:16px;background:#f0fdf4;border:1px solid #86efac;border-radius:10px;">
+          <label style="font-weight:600;font-size:14px;">🔗 表单链接已生成</label>
+          <p style="font-size:12px;color:var(--text-light);margin:6px 0;">把下面的链接发给别人，对方打开即可填写（链接包含全部题目，建议先测试一遍）。</p>
+          <textarea id="fb-share-url" readonly style="min-height:60px;font-size:12px;word-break:break-all;"></textarea>
+          <div class="btn-group" style="margin-top:8px;">
+            <button class="btn btn-primary" onclick="fbCopyUrl()" style="font-size:13px;">📋 复制链接</button>
+            <button class="btn btn-secondary" onclick="fbOpenForm()" style="font-size:13px;">🌐 预览填写页</button>
+            <button class="btn btn-secondary" onclick="fbBackEditor()" style="font-size:13px;">⬅️ 返回编辑</button>
+          </div>
+        </div>
+        <!-- 预览模式 -->
+        <div id="fb-preview" style="display:none;margin-top:12px;">
+          <div class="input-group"><label>👀 预览模式</label></div>
+          <div id="fb-preview-questions"></div>
+          <div class="btn-group" style="margin-top:12px;">
+            <button class="btn btn-secondary" onclick="fbBackEditor()">⬅️ 返回编辑</button>
+          </div>
+        </div>
+        <!-- 填写模式 -->
+        <div id="fb-form" style="display:none;margin-top:12px;">
+          <div class="input-group">
+            <label id="fb-form-title">📋 表单</label>
+          </div>
+          <div id="fb-form-questions"></div>
+          <div class="btn-group" style="margin-top:12px;">
+            <button class="btn btn-primary" onclick="fbSubmit()">✅ 提交</button>
+            <button class="btn btn-secondary" onclick="fbResetForm()">🔄 重填</button>
+          </div>
+        </div>
+        <!-- 结果模式 -->
+        <div id="fb-result" style="display:none;margin-top:12px;">
+          <div class="input-group"><label>✅ 提交成功，您的回答：</label></div>
+          <div id="fb-result-content" style="background:var(--card-bg);border:1px solid var(--border);border-radius:10px;padding:16px;"></div>
+          <div class="btn-group" style="margin-top:12px;">
+            <button class="btn btn-primary" onclick="fbCopyResult()">📋 复制我的答案</button>
+            <button class="btn btn-secondary" onclick="fbResetForm()">🔄 重新填写</button>
+          </div>
+        </div>
+        <div style="margin-top:8px;font-size:12px;color:var(--text-light);text-align:center;">
+          💡 灵感来源于 Typeform（$25/月）等付费表单工具，免费版支持4种题型、链接分享、结果导出，数据只存在链接里，不上传服务器。
+        </div>
+      </div>
+    `,
+    handler: () => { setTimeout(fbInit, 100); }
+  },
+
+  // ---- 付费工具转免费：词云生成器 (WordArt.com替代) ----
+  {
+    id: 'word-cloud',
+    cat: 'fun',
+    icon: '☁️',
+    name: '词云生成器',
+    desc: '在线生成词云图，支持中文分词、自定义颜色布局，一键下载PNG',
+    html: `
+      <div class="tool-card">
+        <div class="input-group">
+          <label>输入文字</label>
+          <textarea id="wc-input" style="min-height:140px;" placeholder="输入或粘贴文字，支持中英文。例：&#10;梦想 未来 奋斗 梦想 科技 未来 创新 梦想 学习 进步 科技 未来 奋斗 坚持 梦想"></textarea>
+        </div>
+        <div class="row" style="gap:12px;align-items:center;flex-wrap:wrap;">
+          <div class="input-group" style="flex:1;min-width:140px;">
+            <label>布局形状</label>
+            <select id="wc-shape" style="width:100%;">
+              <option value="circle">⚪ 圆形</option>
+              <option value="heart">❤️ 心形</option>
+              <option value="cloud">☁️ 云朵</option>
+              <option value="diamond">💎 菱形</option>
+            </select>
+          </div>
+          <div class="input-group" style="flex:1;min-width:140px;">
+            <label>配色风格</label>
+            <select id="wc-palette" style="width:100%;">
+              <option value="rainbow">🌈 彩虹</option>
+              <option value="blue">🔵 深海蓝</option>
+              <option value="warm">🔥 暖橙红</option>
+              <option value="fresh">🌿 清新绿</option>
+              <option value="dark">🌑 暗夜紫</option>
+            </select>
+          </div>
+          <div class="input-group" style="flex:1;min-width:140px;">
+            <label>最大词数</label>
+            <select id="wc-max" style="width:100%;">
+              <option value="30">30 个</option>
+              <option value="50" selected>50 个</option>
+              <option value="80">80 个</option>
+            </select>
+          </div>
+        </div>
+        <div class="btn-group" style="margin-top:10px;">
+          <button class="btn btn-primary" onclick="wcGenerate()">☁️ 生成词云</button>
+          <button class="btn btn-secondary" id="wc-download-btn" style="display:none;" onclick="wcDownload()">⬇️ 下载PNG</button>
+        </div>
+        <div style="position:relative;width:100%;height:460px;background:var(--card-bg);border:1px solid var(--border);border-radius:12px;margin-top:8px;overflow:hidden;">
+          <canvas id="wc-canvas" style="width:100%;height:100%;"></canvas>
+          <div id="wc-placeholder" style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--text-light);">
+            <div style="font-size:48px;margin-bottom:12px;">☁️</div>
+            <div>输入文字后点击"生成词云"</div>
+          </div>
+        </div>
+        <div style="margin-top:8px;font-size:12px;color:var(--text-light);text-align:center;">
+          💡 灵感来源于 WordArt.com（$39/年）、WordClouds 等付费词云工具，免费版支持中文分词、4种形状、5种配色，纯本地生成不上传。
+        </div>
+      </div>
+    `,
+    handler: () => {}
   }
 ];
 
@@ -3931,6 +4069,412 @@ function afDownload() {
   link.href = canvas.toDataURL('image/png');
   link.click();
   showToast('✅ 已下载');
+}
+
+// ============================================================
+// 在线表单制作工具 处理函数
+// ============================================================
+var fbQuestions = [];
+var fbNextId = 1;
+
+function fbInit() {
+  var hash = location.hash || '';
+  if (hash.indexOf('#fb=') === 0) {
+    try {
+      var dec = decodeURIComponent(hash.substring(4));
+      fbQuestions = JSON.parse(dec);
+      fbShowForm();
+      return;
+    } catch(e) {
+      fbQuestions = [];
+    }
+  }
+  if (fbQuestions.length === 0) {
+    fbQuestions = [
+      { id: fbNextId++, type: 'text', question: '您的称呼是？', options: [], required: true },
+      { id: fbNextId++, type: 'radio', question: '您觉得这个工具好用吗？', options: ['非常好用', '还不错', '一般般', '有待改进'], required: true }
+    ];
+  }
+  fbRenderEditor();
+}
+
+function fbTypeName(t) {
+  return {radio:'单选题', checkbox:'多选题', text:'填空题', rating:'评分题'}[t] || t;
+}
+
+function fbRenderEditor() {
+  var box = document.getElementById('fb-questions');
+  if (!box) return;
+  if (fbQuestions.length === 0) {
+    box.innerHTML = '<div style="padding:20px;text-align:center;color:var(--text-light);border:1px dashed var(--border);border-radius:10px;">点击下方按钮添加第一道题目</div>';
+    return;
+  }
+  var html = '';
+  fbQuestions.forEach(function(q, qi) {
+    html += '<div style="padding:14px;background:var(--card-bg);border:1px solid var(--border);border-radius:10px;margin-bottom:10px;">';
+    html += '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">';
+    html += '<span style="font-size:12px;padding:2px 8px;background:#6366f1;color:#fff;border-radius:12px;">' + fbTypeName(q.type) + ' ' + (qi+1) + '</span>';
+    html += '<button class="btn btn-secondary" onclick="fbDeleteQuestion(' + q.id + ')" style="font-size:12px;padding:2px 10px;background:#ef4444;">🗑️</button>';
+    html += '</div>';
+    html += '<input type="text" value="' + (q.question || '').replace(/"/g,'&quot;') + '" placeholder="输入问题…" oninput="fbUpdateQuestion(' + q.id + ', this.value)" style="width:100%;">';
+    if (q.type === 'radio' || q.type === 'checkbox') {
+      html += '<div style="margin-top:8px;" id="fb-opts-' + q.id + '">';
+      q.options.forEach(function(op, oi) {
+        html += '<div style="display:flex;gap:6px;margin-top:6px;align-items:center;">';
+        html += '<span style="min-width:20px;font-size:13px;">' + (q.type==='radio'?'◯':'☐') + '</span>';
+        html += '<input type="text" value="' + op.replace(/"/g,'&quot;') + '" placeholder="选项 ' + (oi+1) + '" oninput="fbUpdateOption(' + q.id + ',' + oi + ', this.value)" style="flex:1;">';
+        html += '<button class="btn btn-secondary" onclick="fbDeleteOption(' + q.id + ',' + oi + ')" style="font-size:12px;padding:2px 8px;">✖</button>';
+        html += '</div>';
+      });
+      html += '<button class="btn btn-secondary" onclick="fbAddOption(' + q.id + ')" style="font-size:12px;padding:3px 12px;margin-top:6px;">➕ 添加选项</button>';
+      html += '</div>';
+    }
+    if (q.type === 'rating') {
+      html += '<div style="margin-top:8px;font-size:13px;color:var(--text-light);">⭐ 1-5 星评分（填写者点击星星选择）</div>';
+    }
+    html += '<label style="display:flex;align-items:center;gap:6px;margin-top:8px;font-size:12px;color:var(--text-light);"><input type="checkbox" ' + (q.required ? 'checked' : '') + ' onchange="fbToggleRequired(' + q.id + ', this.checked)"> 必填</label>';
+    html += '</div>';
+  });
+  box.innerHTML = html;
+}
+
+function fbAddQuestion(type) {
+  var q = { id: fbNextId++, type: type, question: '', options: type === 'radio' || type === 'checkbox' ? ['选项1', '选项2'] : [], required: false };
+  fbQuestions.push(q);
+  fbRenderEditor();
+}
+
+function fbDeleteQuestion(id) {
+  fbQuestions = fbQuestions.filter(function(q) { return q.id !== id; });
+  fbRenderEditor();
+}
+
+function fbUpdateQuestion(id, val) {
+  var q = fbQuestions.find(function(x) { return x.id === id; });
+  if (q) q.question = val;
+}
+
+function fbUpdateOption(qid, oi, val) {
+  var q = fbQuestions.find(function(x) { return x.id === qid; });
+  if (q && q.options[oi] !== undefined) q.options[oi] = val;
+}
+
+function fbAddOption(qid) {
+  var q = fbQuestions.find(function(x) { return x.id === qid; });
+  if (q) { q.options.push('选项' + (q.options.length + 1)); fbRenderEditor(); }
+}
+
+function fbDeleteOption(qid, oi) {
+  var q = fbQuestions.find(function(x) { return x.id === qid; });
+  if (q) { q.options.splice(oi, 1); fbRenderEditor(); }
+}
+
+function fbToggleRequired(qid, checked) {
+  var q = fbQuestions.find(function(x) { return x.id === qid; });
+  if (q) q.required = checked;
+}
+
+function fbValidateEditor() {
+  for (var i = 0; i < fbQuestions.length; i++) {
+    var q = fbQuestions[i];
+    if (!q.question || !q.question.trim()) {
+      showToast('⚠️ 第' + (i+1) + '题还没有输入问题文字');
+      return false;
+    }
+    if ((q.type === 'radio' || q.type === 'checkbox') && q.options.filter(function(o){return o.trim();}).length < 2) {
+      showToast('⚠️ 第' + (i+1) + '题至少需要2个选项');
+      return false;
+    }
+  }
+  return true;
+}
+
+function fbPreview() {
+  if (!fbValidateEditor()) return;
+  document.getElementById('fb-editor').style.display = 'none';
+  document.getElementById('fb-share-panel').style.display = 'none';
+  document.getElementById('fb-form').style.display = 'none';
+  document.getElementById('fb-result').style.display = 'none';
+  var pv = document.getElementById('fb-preview');
+  pv.style.display = 'block';
+  var html = '';
+  fbQuestions.forEach(function(q, qi) {
+    html += '<div style="padding:12px;background:var(--card-bg);border:1px solid var(--border);border-radius:10px;margin-bottom:8px;">';
+    html += '<div style="font-weight:600;font-size:14px;margin-bottom:8px;">' + (qi+1) + '. ' + q.question + (q.required ? ' <span style="color:#ef4444;">*</span>' : '') + '</div>';
+    if (q.type === 'text') {
+      html += '<div style="border-bottom:1px dashed var(--border);height:32px;"></div>';
+    } else if (q.type === 'rating') {
+      html += '<div style="font-size:20px;letter-spacing:4px;">☆☆☆☆☆</div>';
+    } else {
+      q.options.forEach(function(op) {
+        html += '<div style="margin:4px 0;font-size:14px;">' + (q.type==='radio'?'◯':'☐') + ' ' + op + '</div>';
+      });
+    }
+    html += '</div>';
+  });
+  document.getElementById('fb-preview-questions').innerHTML = html;
+}
+
+function fbBackEditor() {
+  document.getElementById('fb-preview').style.display = 'none';
+  document.getElementById('fb-share-panel').style.display = 'none';
+  document.getElementById('fb-form').style.display = 'none';
+  document.getElementById('fb-result').style.display = 'none';
+  document.getElementById('fb-editor').style.display = 'block';
+  fbRenderEditor();
+}
+
+function fbShare() {
+  if (!fbValidateEditor()) return;
+  var enc = encodeURIComponent(JSON.stringify(fbQuestions));
+  var url = location.origin + location.pathname + '#fb=' + enc;
+  document.getElementById('fb-share-url').value = url;
+  document.getElementById('fb-editor').style.display = 'none';
+  document.getElementById('fb-preview').style.display = 'none';
+  document.getElementById('fb-form').style.display = 'none';
+  document.getElementById('fb-result').style.display = 'none';
+  document.getElementById('fb-share-panel').style.display = 'block';
+}
+
+function fbCopyUrl() {
+  var ta = document.getElementById('fb-share-url');
+  ta.select();
+  ta.setSelectionRange(0, 99999);
+  document.execCommand('copy');
+  navigator.clipboard && navigator.clipboard.writeText(ta.value).catch(function(){});
+  showToast('✅ 链接已复制，发给朋友即可填写');
+}
+
+function fbOpenForm() {
+  var url = document.getElementById('fb-share-url').value;
+  window.open(url, '_blank');
+}
+
+function fbShowForm() {
+  document.getElementById('fb-editor').style.display = 'none';
+  document.getElementById('fb-share-panel').style.display = 'none';
+  document.getElementById('fb-preview').style.display = 'none';
+  document.getElementById('fb-result').style.display = 'none';
+  var f = document.getElementById('fb-form');
+  f.style.display = 'block';
+  document.getElementById('fb-form-title').textContent = '📋 请填写以下表单';
+  var html = '';
+  fbQuestions.forEach(function(q, qi) {
+    html += '<div style="padding:14px;background:var(--card-bg);border:1px solid var(--border);border-radius:10px;margin-bottom:10px;">';
+    html += '<div style="font-weight:600;font-size:14px;margin-bottom:8px;">' + (qi+1) + '. ' + q.question + (q.required ? ' <span style="color:#ef4444;">*</span>' : '') + '</div>';
+    if (q.type === 'text') {
+      html += '<input type="text" id="fb-ans-' + q.id + '" placeholder="请输入…" style="width:100%;">';
+    } else if (q.type === 'rating') {
+      html += '<div style="font-size:30px;letter-spacing:8px;cursor:pointer;" id="fb-rating-' + q.id + '">☆☆☆☆☆</div>';
+      html += '<input type="hidden" id="fb-ans-' + q.id + '" value="0">';
+    } else {
+      q.options.forEach(function(op, oi) {
+        var inputId = 'fb-ans-' + q.id + '-' + oi;
+        html += '<label style="display:flex;align-items:center;gap:8px;margin:6px 0;font-size:14px;cursor:pointer;">';
+        html += '<input type="' + (q.type==='radio'?'radio':'checkbox') + '" name="fb-ans-' + q.id + '" value="' + op.replace(/"/g,'&quot;') + '" id="' + inputId + '" style="width:auto;"> ' + op;
+        html += '</label>';
+      });
+    }
+    html += '</div>';
+  });
+  document.getElementById('fb-form-questions').innerHTML = html;
+  // 绑定评分星级点击
+  fbQuestions.forEach(function(q) {
+    if (q.type === 'rating') {
+      (function(qid) {
+        var el = document.getElementById('fb-rating-' + qid);
+        if (el) {
+          el.onclick = function(ev) {
+            var stars = el.textContent;
+            var idx = Math.floor((ev.offsetX / el.offsetWidth) * 5) + 1;
+            idx = Math.min(5, Math.max(1, idx));
+            el.textContent = '★'.repeat(idx) + '☆'.repeat(5 - idx);
+            document.getElementById('fb-ans-' + qid).value = idx;
+          };
+        }
+      })(q.id);
+    }
+  });
+}
+
+function fbSubmit() {
+  var answers = [];
+  var ok = true;
+  fbQuestions.forEach(function(q) {
+    var ans = '';
+    if (q.type === 'text') {
+      ans = (document.getElementById('fb-ans-' + q.id) || {}).value || '';
+    } else if (q.type === 'rating') {
+      var v = parseInt((document.getElementById('fb-ans-' + q.id) || {}).value || '0', 10);
+      ans = '⭐'.repeat(Math.max(0, Math.min(5, v))) || '未评分';
+    } else {
+      var checked = document.querySelectorAll('input[name="fb-ans-' + q.id + '"]:checked');
+      ans = Array.prototype.map.call(checked, function(c) { return c.value; }).join('、');
+    }
+    if (q.required && !ans) {
+      ok = false;
+      showToast('⚠️ 请回答必答题：' + q.question);
+      return;
+    }
+    answers.push({ q: q.question, a: ans || '（未填写）' });
+  });
+  if (!ok) return;
+  var html = '';
+  answers.forEach(function(x, i) {
+    html += '<div style="padding:10px 0;border-bottom:1px dashed var(--border);"><div style="font-size:13px;color:var(--text-light);">' + (i+1) + '. ' + x.q + '</div><div style="font-weight:600;font-size:14px;margin-top:4px;">' + x.a + '</div></div>';
+  });
+  document.getElementById('fb-result-content').innerHTML = html;
+  document.getElementById('fb-form').style.display = 'none';
+  document.getElementById('fb-result').style.display = 'block';
+  window._fbAnswers = answers;
+}
+
+function fbCopyResult() {
+  if (!window._fbAnswers) return;
+  var text = window._fbAnswers.map(function(x, i) { return (i+1) + '. ' + x.q + '\n   答：' + x.a; }).join('\n\n');
+  navigator.clipboard.writeText(text).then(function() {
+    showToast('✅ 回答已复制');
+  }).catch(function() {
+    var ta = document.createElement('textarea');
+    ta.value = text; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); ta.remove();
+    showToast('✅ 回答已复制');
+  });
+}
+
+function fbResetForm() {
+  document.getElementById('fb-result').style.display = 'none';
+  fbShowForm();
+}
+
+// ============================================================
+// 词云生成器 处理函数
+// ============================================================
+var wcPalettes = {
+  rainbow: ['#ef4444', '#f97316', '#facc15', '#22c55e', '#06b6d4', '#6366f1', '#a855f7', '#ec4899'],
+  blue: ['#0284c7', '#0ea5e9', '#38bdf8', '#7dd3fc', '#0369a1', '#bae6fd', '#1d4ed8'],
+  warm: ['#ea580c', '#f97316', '#fb923c', '#fde047', '#dc2626', '#f59e0b', '#fdba74'],
+  fresh: ['#16a34a', '#22c55e', '#4ade80', '#86efac', '#15803d', '#a3e635', '#65a30d'],
+  dark: ['#8b5cf6', '#a78bfa', '#c4b5fd', '#7c3aed', '#6d28d9', '#9333ea', '#b45309']
+};
+
+function wcSplit(text) {
+  // 中英文分词：按标点/空格切分，中文连续汉字按2字窗口滑动补词
+  var words = [];
+  var en = text.split(/[\s,，。．.、；;\n\t！!？?：:""''（）()【】\[\]《》<>"'`~@#$%^&*_+=\-\/\\|]+/).filter(function(w){ return w && w.trim(); });
+  en.forEach(function(w) {
+    if (/[\u4e00-\u9fa5]/.test(w)) {
+      // 中文：拆成单字和双字词
+      var chars = w.replace(/[^\u4e00-\u9fa5]/g, '');
+      for (var i = 0; i < chars.length; i++) words.push(chars[i]);
+      for (var i2 = 0; i2 < chars.length - 1; i2++) words.push(chars.substr(i2, 2));
+    } else {
+      words.push(w);
+    }
+  });
+  return words;
+}
+
+function wcGenerate() {
+  var text = document.getElementById('wc-input').value.trim();
+  if (!text) { showToast('⚠️ 请先输入文字'); return; }
+  var words = wcSplit(text);
+  if (words.length === 0) { showToast('⚠️ 未识别到有效词语'); return; }
+  // 统计词频
+  var freq = {};
+  words.forEach(function(w) { freq[w] = (freq[w] || 0) + 1; });
+  var items = Object.keys(freq).map(function(k) { return { word: k, count: freq[k] }; });
+  // 过滤只出现1次的单字（避免全是单字）
+  var singles = items.filter(function(x) { return x.count === 1 && x.word.length === 1; });
+  var multi = items.filter(function(x) { return x.count > 1 || x.word.length > 1; });
+  items = multi.concat(singles);
+  items.sort(function(a, b) { return b.count - a.count; });
+  var maxCount = items[0].count;
+  var maxWords = parseInt(document.getElementById('wc-max').value, 10) || 50;
+  items = items.slice(0, maxWords);
+  // 画布
+  var canvas = document.getElementById('wc-canvas');
+  canvas.width = 900;
+  canvas.height = 500;
+  var ctx = canvas.getContext('2d');
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.fillStyle = '#ffffff';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  document.getElementById('wc-placeholder').style.display = 'none';
+  document.getElementById('wc-download-btn').style.display = 'inline-flex';
+  // 布局 & 碰撞检测
+  var placed = [];
+  var shape = document.getElementById('wc-shape').value;
+  var palette = wcPalettes[document.getElementById('wc-palette').value] || wcPalettes.rainbow;
+  var cx = canvas.width / 2, cy = canvas.height / 2;
+  function inShape(x, y) {
+    var dx = (x - cx) / (canvas.width / 2), dy = (y - cy) / (canvas.height / 2);
+    var r = Math.sqrt(dx * dx + dy * dy);
+    if (shape === 'circle') return r <= 1;
+    if (shape === 'diamond') return Math.abs(dx) + Math.abs(dy) <= 1;
+    if (shape === 'heart') {
+      var nx = (x - cx) / 34, ny = (y - cy) / 34;
+      if (nx < -3.5 || nx > 3.5 || ny < -2.5 || ny > 2.8) return false;
+      var val = Math.pow(nx * nx + ny * ny - 1, 3) - nx * nx * ny * ny * ny;
+      return val <= 0;
+    }
+    // cloud: 椭圆 + 顶部凸起
+    if (shape === 'cloud') {
+      if (r <= 0.55) return true;
+      var local = Math.sqrt(Math.pow((x - cx) / (canvas.width / 2 * 0.7), 2) + Math.pow((y - cy + 20) / (canvas.height / 2 * 0.9), 2));
+      return local <= 1 && y > cy * 0.55 && y < canvas.height * 0.9;
+    }
+    return r <= 1;
+  }
+  function overlaps(rect) {
+    for (var i = 0; i < placed.length; i++) {
+      var p = placed[i];
+      if (rect.x < p.x + p.w && rect.x + rect.w > p.x && rect.y < p.y + p.h && rect.y + rect.h > p.y) return true;
+    }
+    return false;
+  }
+  items.forEach(function(item, idx) {
+    var fontSize = Math.max(14, Math.round(18 + (item.count / maxCount) * 52));
+    ctx.font = 'bold ' + fontSize + 'px "PingFang SC", "Microsoft YaHei", sans-serif';
+    var w = ctx.measureText(item.word).width;
+    var h = fontSize * 1.2;
+    var angle = idx % 5 === 0 ? Math.PI / 2 * ((idx / 5) % 2 === 0 ? 1 : -1) : 0;
+    // 螺旋搜索位置
+    var found = false, place = null;
+    for (var t = 0; t < 700 && !found; t += 0.12) {
+      var rr = 0.6 * t;
+      var ang = t;
+      var x = cx + rr * Math.cos(ang);
+      var y = cy + rr * Math.sin(ang) * 0.8;
+      // 尝试两个角度
+      [angle, 0].forEach(function(a2) {
+        if (found) return;
+        var dxr = Math.cos(-a2), dyr = Math.sin(-a2);
+        var test = { x: x - (w * Math.abs(dxr) + h * Math.abs(dyr)) / 2, y: y - (w * Math.abs(dyr) + h * Math.abs(dxr)) / 2, w: w * Math.abs(dxr) + h * Math.abs(dyr), h: w * Math.abs(dyr) + h * Math.abs(dxr) };
+        if (!overlaps(test) && inShape(x, y)) { found = true; place = { x: test.x, y: test.y, w: test.w, h: test.h, word: item.word, fontSize: fontSize, angle: a2 }; }
+      });
+    }
+    if (!place) return;
+    placed.push(place);
+    ctx.save();
+    ctx.translate(place.x + place.w / 2, place.y + place.h / 2);
+    ctx.rotate(place.angle);
+    ctx.fillStyle = palette[Math.floor(Math.random() * palette.length)];
+    ctx.font = 'bold ' + place.fontSize + 'px "PingFang SC", "Microsoft YaHei", sans-serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(place.word, 0, 0);
+    ctx.restore();
+  });
+  if (placed.length === 0) { showToast('⚠️ 没有足够空间绘制，请减少词数'); }
+}
+
+function wcDownload() {
+  var canvas = document.getElementById('wc-canvas');
+  var link = document.createElement('a');
+  link.download = '词云_' + new Date().toISOString().slice(0, 10) + '.png';
+  link.href = canvas.toDataURL('image/png');
+  link.click();
+  showToast('✅ 已下载词云PNG');
 }
 
 // ============================================================
@@ -4693,7 +5237,7 @@ const CATEGORIES = [
   { id: 'text', icon: '✏️', name: '文本工具', desc: '字数统计、简繁转换、摩斯密码、文本转语音、文本对比' },
   { id: 'dev', icon: '💻', name: '开发者工具', desc: 'JSON格式化、二维码生成、正则测试、Markdown、IP查询、思维导图' },
   { id: 'image', icon: '🖼️', name: '图片处理', desc: '去背景换底色、批量压缩、加水印、长图拼接、格式转换、裁剪、OCR、印章制作、九宫格切图、文字转手写体、表情包、社交媒体图片尺寸调整、艺术效果' },
-  { id: 'document', icon: '📄', name: '文档转换', desc: '图片转PDF、PDF转图片、Word解析、Excel转PDF、PDF合并、简历生成、电子签名' },
+  { id: 'document', icon: '📄', name: '文档转换', desc: '图片转PDF、PDF转图片、Word解析、Excel转PDF、PDF合并、简历生成、电子签名、表单制作' },
   { id: 'convert', icon: '🔄', name: '转换工具', desc: '单位换算、进制转换' },
   { id: 'security', icon: '🔒', name: '安全工具', desc: '密码生成、Hash计算、随机数' },
   { id: 'time', icon: '⏱️', name: '时间工具', desc: '时间戳转换、日期计算' },
@@ -4701,6 +5245,6 @@ const CATEGORIES = [
   { id: 'media', icon: '🎬', name: '媒体工具', desc: '抖音/TikTok去水印下载、视频转GIF' },
   { id: 'ai', icon: '🤖', name: 'AI工具', desc: 'AI聊天、AI Agent安装、免费AI工具推荐' },
   { id: 'voice', icon: '🗣️', name: '群众心声', desc: '提交工具建议、投票排行榜、前3名自动实现' },
-  { id: 'fun', icon: '🎪', name: '趣味工具', desc: '表情包生成、决策转盘、抽奖抽签、娱乐好玩' },
+  { id: 'fun', icon: '🎪', name: '趣味工具', desc: '表情包生成、决策转盘、抽奖抽签、词云生成、娱乐好玩' },
   { id: 'edu', icon: '📚', name: '教育资源', desc: '电子教材在线阅读、学习资源导航' }
 ];
