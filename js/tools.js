@@ -3594,6 +3594,133 @@ openclaw update</code></pre>
       </div>
     `,
     handler: () => {}
+  },
+  {
+    id: 'pixel-art',
+    cat: 'image',
+    icon: '👾',
+    name: '像素画生成器',
+    desc: '图片一键转像素画（复古像素风），可调像素块大小与色阶，支持网格线，导出PNG',
+    html: `
+      <div class="tool-card">
+        <div class="row" style="gap:12px;align-items:flex-end;flex-wrap:wrap;">
+          <div class="input-group" style="flex:1;min-width:200px;">
+            <label>上传图片</label>
+            <input type="file" id="pa-file" accept="image/*" style="width:100%;">
+          </div>
+          <div class="input-group" style="flex:1;min-width:120px;">
+            <label>像素块大小</label>
+            <select id="pa-pixel" style="width:100%;">
+              <option value="4">4px（细腻）</option>
+              <option value="8" selected>8px（经典）</option>
+              <option value="12">12px（粗犷）</option>
+              <option value="16">16px（马赛克）</option>
+              <option value="24">24px（超大块）</option>
+            </select>
+          </div>
+          <div class="input-group" style="flex:1;min-width:120px;">
+            <label>色彩细腻度</label>
+            <select id="pa-colors" style="width:100%;">
+              <option value="4">极简 4级色</option>
+              <option value="8" selected>复古 8级色</option>
+              <option value="16">丰富 16级色</option>
+              <option value="64">细腻 64级色</option>
+              <option value="256">全彩 256级</option>
+            </select>
+          </div>
+          <div class="input-group" style="min-width:120px;">
+            <label><input type="checkbox" id="pa-grid" onchange="paGenerate()"> 显示网格线</label>
+          </div>
+        </div>
+        <div class="btn-group" style="margin-top:10px;">
+          <button class="btn btn-primary" onclick="paGenerate()">👾 生成像素画</button>
+          <button class="btn btn-secondary" id="pa-download-btn" style="display:none;" onclick="paDownload()">⬇️ 下载PNG</button>
+          <button class="btn btn-secondary" onclick="paReset()">🔄 重新选择</button>
+        </div>
+        <div style="position:relative;width:100%;height:420px;background:var(--card-bg);border:1px solid var(--border);border-radius:12px;margin-top:8px;overflow:auto;display:flex;align-items:center;justify-content:center;">
+          <canvas id="pa-canvas" style="display:none;image-rendering:pixelated;image-rendering:crisp-edges;max-width:100%;height:auto;"></canvas>
+          <div id="pa-placeholder" style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--text-light);">
+            <div style="font-size:48px;margin-bottom:12px;">👾</div>
+            <div>上传图片后点击"生成像素画"</div>
+          </div>
+        </div>
+        <div style="margin-top:8px;font-size:12px;color:var(--text-light);text-align:center;">
+          💡 灵感来源于 PixelMe（$10）、PixelIt 等付费像素画工具，本工具纯前端本地转换，图片不上传服务器，支持导出无损PNG。
+        </div>
+      </div>
+    `,
+    handler: () => {}
+  },
+  {
+    id: 'email-signature',
+    cat: 'document',
+    icon: '✉️',
+    name: '邮件签名生成器',
+    desc: '免费制作专业邮件签名，输入信息即生成HTML代码，支持Gmail/Outlook/QQ邮箱一键粘贴',
+    html: `
+      <div class="tool-card">
+        <div class="row-2">
+          <div>
+            <div class="input-group">
+              <label>姓名 *</label>
+              <input type="text" id="es-name" placeholder="张三" oninput="esPreview()">
+            </div>
+            <div class="input-group">
+              <label>职位</label>
+              <input type="text" id="es-title" placeholder="产品经理" oninput="esPreview()">
+            </div>
+            <div class="input-group">
+              <label>公司</label>
+              <input type="text" id="es-company" placeholder="某某科技有限公司" oninput="esPreview()">
+            </div>
+            <div class="row" style="gap:12px;">
+              <div class="input-group" style="flex:1;">
+                <label>手机</label>
+                <input type="text" id="es-phone" placeholder="13800138000" oninput="esPreview()">
+              </div>
+              <div class="input-group" style="flex:1;">
+                <label>邮箱</label>
+                <input type="text" id="es-email" placeholder="name@example.com" oninput="esPreview()">
+              </div>
+            </div>
+            <div class="input-group">
+              <label>个人网站 / 微信</label>
+              <input type="text" id="es-web" placeholder="www.example.com" oninput="esPreview()">
+            </div>
+            <div class="row" style="gap:12px;align-items:center;flex-wrap:wrap;">
+              <div class="input-group" style="width:180px;">
+                <label>主题色</label>
+                <input type="color" id="es-color" value="#4f46e5" oninput="esPreview()" style="width:100%;height:38px;padding:2px;cursor:pointer;">
+              </div>
+              <div class="input-group" style="flex:1;min-width:180px;">
+                <label>布局风格</label>
+                <select id="es-layout" onchange="esPreview()" style="width:100%;">
+                  <option value="classic">经典 · 分隔线</option>
+                  <option value="modern">现代 · 色块</option>
+                  <option value="simple">简约 · 无边框</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div>
+            <label>实时预览</label>
+            <div id="es-preview" style="background:#ffffff;border:1px solid var(--border);border-radius:12px;padding:20px;min-height:220px;overflow:auto;"></div>
+            <div class="btn-group" style="margin-top:10px;">
+              <button class="btn btn-primary" onclick="esCopyHtml()">📋 复制HTML代码</button>
+              <button class="btn btn-secondary" onclick="esCopyText()">📝 复制纯文本</button>
+            </div>
+          </div>
+        </div>
+        <div class="input-group" style="margin-top:14px;">
+          <label>生成的HTML代码（粘贴到邮箱设置→签名）</label>
+          <textarea id="es-code" style="min-height:130px;font-family:monospace;font-size:12px;" readonly></textarea>
+        </div>
+        <div style="margin-top:8px;font-size:12px;color:var(--text-light);text-align:center;">
+          💡 灵感来源于 WiseStamp（$3-6/月）、Newoldstamp 等付费邮件签名工具，本工具免费生成兼容Gmail/Outlook/QQ邮箱的响应式签名。
+        </div>
+      </div>
+    `,
+    handler: () => {}
   }
 ];
 
@@ -5236,8 +5363,8 @@ function dpCopyText() {
 const CATEGORIES = [
   { id: 'text', icon: '✏️', name: '文本工具', desc: '字数统计、简繁转换、摩斯密码、文本转语音、文本对比' },
   { id: 'dev', icon: '💻', name: '开发者工具', desc: 'JSON格式化、二维码生成、正则测试、Markdown、IP查询、思维导图' },
-  { id: 'image', icon: '🖼️', name: '图片处理', desc: '去背景换底色、批量压缩、加水印、长图拼接、格式转换、裁剪、OCR、印章制作、九宫格切图、文字转手写体、表情包、社交媒体图片尺寸调整、艺术效果' },
-  { id: 'document', icon: '📄', name: '文档转换', desc: '图片转PDF、PDF转图片、Word解析、Excel转PDF、PDF合并、简历生成、电子签名、表单制作' },
+  { id: 'image', icon: '🖼️', name: '图片处理', desc: '去背景换底色、批量压缩、加水印、长图拼接、格式转换、裁剪、OCR、印章制作、九宫格切图、文字转手写体、表情包、社交媒体图片尺寸调整、艺术效果、像素画' },
+  { id: 'document', icon: '📄', name: '文档转换', desc: '图片转PDF、PDF转图片、Word解析、Excel转PDF、PDF合并、简历生成、电子签名、表单制作、邮件签名' },
   { id: 'convert', icon: '🔄', name: '转换工具', desc: '单位换算、进制转换' },
   { id: 'security', icon: '🔒', name: '安全工具', desc: '密码生成、Hash计算、随机数' },
   { id: 'time', icon: '⏱️', name: '时间工具', desc: '时间戳转换、日期计算' },
@@ -5248,3 +5375,212 @@ const CATEGORIES = [
   { id: 'fun', icon: '🎪', name: '趣味工具', desc: '表情包生成、决策转盘、抽奖抽签、词云生成、娱乐好玩' },
   { id: 'edu', icon: '📚', name: '教育资源', desc: '电子教材在线阅读、学习资源导航' }
 ];
+
+// ============================================================
+// 像素画生成器 处理函数
+// ============================================================
+let paImage = null;
+let paGenerated = false;
+
+function paReset() {
+  paImage = null;
+  paGenerated = false;
+  document.getElementById('pa-file').value = '';
+  document.getElementById('pa-canvas').style.display = 'none';
+  document.getElementById('pa-placeholder').style.display = 'flex';
+  document.getElementById('pa-download-btn').style.display = 'none';
+}
+
+function paGenerate() {
+  const fileInput = document.getElementById('pa-file');
+  if (!fileInput.files || !fileInput.files[0]) {
+    showToast('⚠️ 请先上传一张图片');
+    return;
+  }
+  if (!paImage) {
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      const img = new Image();
+      img.onload = function() {
+        paImage = img;
+        paRender();
+      };
+      img.src = e.target.result;
+    };
+    reader.readAsDataURL(fileInput.files[0]);
+    return;
+  }
+  paRender();
+}
+
+function paRender() {
+  if (!paImage) return;
+  const pixel = parseInt(document.getElementById('pa-pixel').value, 10);
+  const level = parseInt(document.getElementById('pa-colors').value, 10);
+  const grid = document.getElementById('pa-grid').checked;
+
+  const img = paImage;
+  const smallW = Math.max(8, Math.round(img.width / pixel));
+  const smallH = Math.max(8, Math.round(img.height / pixel));
+
+  // 1) 缩小到像素网格
+  const tmp = document.createElement('canvas');
+  tmp.width = smallW;
+  tmp.height = smallH;
+  const tctx = tmp.getContext('2d');
+  tctx.imageSmoothingEnabled = true; // 缩小取平均更均匀
+  tctx.drawImage(img, 0, 0, smallW, smallH);
+  let data = tctx.getImageData(0, 0, smallW, smallH).data;
+
+  // 2) 色阶量化（posterize）：level 为每通道级数
+  const steps = Math.max(2, Math.round(Math.pow(level, 1/3)));
+  const px = tctx.createImageData(smallW, smallH);
+  if (level >= 256) {
+    px.data.set(data);
+  } else {
+    for (let i = 0; i < data.length; i += 4) {
+      px.data[i] = Math.round(data[i] / 255 * (steps - 1)) * Math.floor(255 / (steps - 1));
+      px.data[i+1] = Math.round(data[i+1] / 255 * (steps - 1)) * Math.floor(255 / (steps - 1));
+      px.data[i+2] = Math.round(data[i+2] / 255 * (steps - 1)) * Math.floor(255 / (steps - 1));
+      px.data[i+3] = 255;
+    }
+  }
+
+  // 3) 放大回显示尺寸（最近邻，保持硬边）
+  const scale = Math.max(1, Math.floor(600 / Math.max(smallW, smallH)));
+  const canvas = document.getElementById('pa-canvas');
+  canvas.width = smallW * scale;
+  canvas.height = smallH * scale;
+  const ctx = canvas.getContext('2d');
+  ctx.imageSmoothingEnabled = false;
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  // 先画缩小后的临画布，再放大
+  const big = document.createElement('canvas');
+  big.width = smallW * scale;
+  big.height = smallH * scale;
+  const bctx = big.getContext('2d');
+  bctx.imageSmoothingEnabled = false;
+  bctx.putImageData(px, 0, 0);
+  bctx.drawImage(big, 0, 0, smallW, smallH, 0, 0, smallW * scale, smallH * scale);
+  ctx.drawImage(big, 0, 0);
+
+  // 网格线
+  if (grid) {
+    ctx.strokeStyle = 'rgba(0,0,0,0.15)';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    for (let x = 0; x <= smallW; x++) {
+      ctx.moveTo(x * scale, 0);
+      ctx.lineTo(x * scale, canvas.height);
+    }
+    for (let y = 0; y <= smallH; y++) {
+      ctx.moveTo(0, y * scale);
+      ctx.lineTo(canvas.width, y * scale);
+    }
+    ctx.stroke();
+  }
+
+  canvas.style.display = 'block';
+  document.getElementById('pa-placeholder').style.display = 'none';
+  document.getElementById('pa-download-btn').style.display = 'inline-block';
+  paGenerated = true;
+  showToast('✅ 像素画生成完成');
+}
+
+function paDownload() {
+  const canvas = document.getElementById('pa-canvas');
+  if (!paGenerated) return;
+  const a = document.createElement('a');
+  a.download = 'pixel-art-' + Date.now() + '.png';
+  a.href = canvas.toDataURL('image/png');
+  a.click();
+  showToast('✅ PNG已下载');
+}
+
+// ============================================================
+// 邮件签名生成器 处理函数
+// ============================================================
+function esEsc(s) {
+  return String(s == null ? '' : s)
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+}
+
+function esBuildHtml(escapeIt) {
+  const name = document.getElementById('es-name').value.trim();
+  const title = document.getElementById('es-title').value.trim();
+  const company = document.getElementById('es-company').value.trim();
+  const phone = document.getElementById('es-phone').value.trim();
+  const email = document.getElementById('es-email').value.trim();
+  const web = document.getElementById('es-web').value.trim();
+  const color = document.getElementById('es-color').value;
+  const layout = document.getElementById('es-layout').value;
+  const esc = escapeIt ? esEsc : function(x){ return x; };
+
+  const info = [
+    name ? '<div style="font-size:16px;font-weight:bold;color:' + color + ';">' + esc(name) + '</div>' : '',
+    (title || company) ? '<div style="font-size:13px;color:#666;margin-top:2px;">' + esc([title, company].filter(Boolean).join(' | ')) + '</div>' : '',
+    phone ? '<div style="font-size:13px;color:#888;margin-top:2px;">📱 ' + esc(phone) + '</div>' : '',
+    email ? '<div style="font-size:13px;color:#888;">✉️ <a href="mailto:' + esc(email) + '" style="color:#888;text-decoration:none;">' + esc(email) + '</a></div>' : '',
+    web ? '<div style="font-size:13px;color:#888;">🌐 <a href="https://' + esc(web) + '" style="color:#888;text-decoration:none;">' + esc(web) + '</a></div>' : ''
+  ].filter(Boolean).join('');
+
+  let html = '';
+  if (layout === 'classic') {
+    html = '<table cellpadding="0" cellspacing="0" border="0" style="font-family:Arial,Helvetica,sans-serif;">' +
+      '<tr><td style="padding:16px 18px 16px 0;border-right:3px solid ' + color + ';">' + info + '</td></tr></table>';
+  } else if (layout === 'modern') {
+    html = '<table cellpadding="0" cellspacing="0" border="0" style="font-family:Arial,Helvetica,sans-serif;">' +
+      '<tr><td style="padding:16px;border:2px solid ' + color + ';border-left-width:6px;border-radius:8px;">' + info + '</td></tr></table>';
+  } else {
+    html = '<table cellpadding="0" cellspacing="0" border="0" style="font-family:Arial,Helvetica,sans-serif;">' +
+      '<tr><td style="padding:12px 0;">' + info + '</td></tr></table>';
+  }
+  return html;
+}
+
+function esPreview() {
+  const preview = document.getElementById('es-preview');
+  const code = esBuildHtml(false);
+  preview.innerHTML = code || '<div style="color:#999;text-align:center;padding-top:40px;">输入左侧信息即可预览</div>';
+  document.getElementById('es-code').value = esBuildHtml(true) || '<!-- 请填写姓名 -->';
+}
+
+function esCopyHtml() {
+  const code = document.getElementById('es-code').value;
+  if (!code || code.indexOf('姓名') !== -1 && code.indexOf('请填写') !== -1) {
+    showToast('⚠️ 请先填写姓名');
+    return;
+  }
+  navigator.clipboard.writeText(code).then(function() {
+    showToast('✅ HTML签名代码已复制');
+  }).catch(function() {
+    document.getElementById('es-code').select();
+    document.execCommand('copy');
+    showToast('✅ 已复制');
+  });
+}
+
+function esCopyText() {
+  const name = document.getElementById('es-name').value.trim();
+  const title = document.getElementById('es-title').value.trim();
+  const company = document.getElementById('es-company').value.trim();
+  const phone = document.getElementById('es-phone').value.trim();
+  const email = document.getElementById('es-email').value.trim();
+  const web = document.getElementById('es-web').value.trim();
+  if (!name) { showToast('⚠️ 请先填写姓名'); return; }
+  const lines = [name, [title, company].filter(Boolean).join(' | '), phone, email, web].filter(Boolean);
+  const text = lines.join('\n');
+  navigator.clipboard.writeText(text).then(function() {
+    showToast('📝 纯文本签名已复制');
+  }).catch(function() {
+    showToast('❌ 复制失败，请手动选择');
+  });
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', esPreview);
+} else {
+  setTimeout(esPreview, 300);
+}
