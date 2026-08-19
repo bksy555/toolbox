@@ -3721,6 +3721,132 @@ openclaw update</code></pre>
       </div>
     `,
     handler: () => {}
+  },
+  {
+    id: 'chart-maker',
+    cat: 'dev',
+    icon: '📊',
+    name: '在线图表生成器',
+    desc: '免费在线制作柱状图、折线图、饼图、雷达图，输入数据一键生成，支持导出PNG',
+    html: `
+      <div class="tool-card">
+        <div class="row" style="gap:12px;flex-wrap:wrap;">
+          <div class="input-group" style="flex:1;min-width:200px;">
+            <label>图表类型</label>
+            <select id="cm-type" onchange="cmPreview()" style="width:100%;">
+              <option value="bar">📊 柱状图</option>
+              <option value="line">📈 折线图</option>
+              <option value="pie">🥧 饼图</option>
+              <option value="barh">📊 条形图（横向）</option>
+              <option value="radar">🕸️ 雷达图</option>
+            </select>
+          </div>
+          <div class="input-group" style="width:160px;">
+            <label>主题色</label>
+            <input type="color" id="cm-color" value="#4f46e5" oninput="cmPreview()" style="width:100%;height:38px;padding:2px;cursor:pointer;">
+          </div>
+          <div class="input-group" style="width:160px;">
+            <label>背景色</label>
+            <input type="color" id="cm-bg" value="#ffffff" oninput="cmPreview()" style="width:100%;height:38px;padding:2px;cursor:pointer;">
+          </div>
+          <div class="input-group" style="flex:1;min-width:120px;">
+            <label>图表标题</label>
+            <input type="text" id="cm-title" placeholder="输入标题" oninput="cmPreview()" style="width:100%;">
+          </div>
+        </div>
+        <div class="row" style="gap:12px;margin-top:6px;">
+          <div class="input-group" style="flex:1;">
+            <label>数据（每行一个：标签,数值）</label>
+            <textarea id="cm-data" style="min-height:140px;font-family:monospace;font-size:13px;" oninput="cmPreview()">一月,85
+二月,120
+三月,95
+四月,150
+五月,110
+六月,135</textarea>
+          </div>
+          <div class="input-group" style="flex:1;">
+            <label>数据系列2（可选，每行数值）</label>
+            <textarea id="cm-data2" style="min-height:140px;font-family:monospace;font-size:13px;" oninput="cmPreview()" placeholder="65
+98
+78
+120
+90
+110"></textarea>
+          </div>
+        </div>
+        <div class="btn-group" style="margin-top:10px;">
+          <button class="btn btn-primary" onclick="cmGenerate()">📊 生成图表</button>
+          <button class="btn btn-secondary" id="cm-download-btn" style="display:none;" onclick="cmDownload()">⬇️ 下载PNG</button>
+          <button class="btn btn-secondary" onclick="cmResetData()">🔄 重置数据</button>
+        </div>
+        <div style="position:relative;width:100%;height:480px;background:var(--card-bg);border:1px solid var(--border);border-radius:12px;margin-top:8px;overflow:hidden;">
+          <canvas id="cm-canvas" style="width:100%;height:100%;"></canvas>
+          <div id="cm-placeholder" style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--text-light);">
+            <div style="font-size:48px;margin-bottom:12px;">📊</div>
+            <div>编辑数据后点击"生成图表"</div>
+          </div>
+        </div>
+        <div style="margin-top:8px;font-size:12px;color:var(--text-light);text-align:center;">
+          💡 灵感来源于 Visme（$25/月）、Piktochart 等付费数据可视化工具，本工具免费生成5种图表+双系列对比，纯本地绘制不上传数据。
+        </div>
+      </div>
+    `,
+    handler: () => {}
+  },
+  {
+    id: 'mockup-maker',
+    cat: 'image',
+    icon: '📱',
+    name: '截图美化/设备样机',
+    desc: '上传截图套上手机/笔记本/浏览器设备壳，自定义背景，一键生成精美展示图',
+    html: `
+      <div class="tool-card">
+        <div class="row" style="gap:12px;align-items:flex-end;flex-wrap:wrap;">
+          <div class="input-group" style="flex:1;min-width:200px;">
+            <label>上传截图</label>
+            <input type="file" id="mm-file" accept="image/*" style="width:100%;">
+          </div>
+          <div class="input-group" style="flex:1;min-width:140px;">
+            <label>设备样式</label>
+            <select id="mm-device" style="width:100%;">
+              <option value="iphone">📱 iPhone 手机</option>
+              <option value="android">📱 安卓手机</option>
+              <option value="browser">🌐 浏览器窗口</option>
+              <option value="laptop">💻 笔记本电脑</option>
+              <option value="ipad">📟 iPad 平板</option>
+            </select>
+          </div>
+          <div class="input-group" style="min-width:140px;">
+            <label>背景色</label>
+            <input type="color" id="mm-bg" value="#667eea" style="width:100%;height:38px;padding:2px;cursor:pointer;">
+          </div>
+          <div class="input-group" style="min-width:120px;">
+            <label>内阴影</label>
+            <select id="mm-shadow" style="width:100%;">
+              <option value="none">无</option>
+              <option value="soft" selected>柔和阴影</option>
+              <option value="hard">硬阴影</option>
+            </select>
+          </div>
+        </div>
+        <div class="btn-group" style="margin-top:10px;">
+          <button class="btn btn-primary" onclick="mmGenerate()">📱 生成样机</button>
+          <button class="btn btn-secondary" id="mm-download-btn" style="display:none;" onclick="mmDownload()">⬇️ 下载PNG</button>
+          <button class="btn btn-secondary" onclick="mmReset()">🔄 重新选择</button>
+        </div>
+        <div style="position:relative;width:100%;min-height:380px;background:var(--card-bg);border:1px solid var(--border);border-radius:12px;margin-top:8px;overflow:hidden;display:flex;align-items:center;justify-content:center;">
+          <canvas id="mm-canvas" style="display:none;max-width:100%;max-height:500px;"></canvas>
+          <div id="mm-placeholder" style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--text-light);">
+            <div style="font-size:48px;margin-bottom:12px;">📱</div>
+            <div>上传截图后点击"生成样机"</div>
+          </div>
+        </div>
+        <div style="margin-top:8px;font-size:12px;color:var(--text-light);text-align:center;">
+          💡 灵感来源于 Screenshot Guru（$9-19/月）、Screely 等付费样机工具，本工具免费生成5种设备样机，纯本地处理不上传图片。
+        </div>
+      </div>
+    `,
+    handler: () => {}
   }
 ];
 
@@ -5362,8 +5488,8 @@ function dpCopyText() {
 // ============================================================
 const CATEGORIES = [
   { id: 'text', icon: '✏️', name: '文本工具', desc: '字数统计、简繁转换、摩斯密码、文本转语音、文本对比' },
-  { id: 'dev', icon: '💻', name: '开发者工具', desc: 'JSON格式化、二维码生成、正则测试、Markdown、IP查询、思维导图' },
-  { id: 'image', icon: '🖼️', name: '图片处理', desc: '去背景换底色、批量压缩、加水印、长图拼接、格式转换、裁剪、OCR、印章制作、九宫格切图、文字转手写体、表情包、社交媒体图片尺寸调整、艺术效果、像素画' },
+  { id: 'dev', icon: '💻', name: '开发者工具', desc: 'JSON格式化、二维码生成、正则测试、Markdown、IP查询、思维导图、图表生成' },
+  { id: 'image', icon: '🖼️', name: '图片处理', desc: '去背景换底色、批量压缩、加水印、长图拼接、格式转换、裁剪、OCR、印章制作、九宫格切图、文字转手写体、表情包、社交媒体图片尺寸调整、艺术效果、像素画、设备样机' },
   { id: 'document', icon: '📄', name: '文档转换', desc: '图片转PDF、PDF转图片、Word解析、Excel转PDF、PDF合并、简历生成、电子签名、表单制作、邮件签名' },
   { id: 'convert', icon: '🔄', name: '转换工具', desc: '单位换算、进制转换' },
   { id: 'security', icon: '🔒', name: '安全工具', desc: '密码生成、Hash计算、随机数' },
@@ -5583,4 +5709,590 @@ if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', esPreview);
 } else {
   setTimeout(esPreview, 300);
+}
+
+// ============================================================
+// 在线图表生成器 处理函数
+// ============================================================
+function cmResetData() {
+  document.getElementById('cm-data').value = '一月,85\n二月,120\n三月,95\n四月,150\n五月,110\n六月,135';
+  document.getElementById('cm-data2').value = '';
+  document.getElementById('cm-title').value = '';
+  document.getElementById('cm-canvas').style.display = 'none';
+  document.getElementById('cm-placeholder').style.display = 'flex';
+  document.getElementById('cm-download-btn').style.display = 'none';
+  showToast('🔄 数据已重置');
+}
+
+function cmPreview() {
+  // Live preview on type/color change
+}
+
+function cmGenerate() {
+  const canvas = document.getElementById('cm-canvas');
+  const ctx = canvas.getContext('2d');
+  const type = document.getElementById('cm-type').value;
+  const color = document.getElementById('cm-color').value;
+  const bg = document.getElementById('cm-bg').value;
+  const title = document.getElementById('cm-title').value.trim();
+  const raw1 = document.getElementById('cm-data').value.trim();
+  const raw2 = document.getElementById('cm-data2').value.trim();
+
+  if (!raw1) { showToast('⚠️ 请输入数据'); return; }
+
+  const lines1 = raw1.split('\n').filter(Boolean);
+  const labels = [], values1 = [];
+  for (const line of lines1) {
+    const parts = line.split(',');
+    if (parts.length >= 2) {
+      labels.push(parts[0].trim());
+      values1.push(parseFloat(parts[1]) || 0);
+    }
+  }
+  if (labels.length === 0) { showToast('⚠️ 数据格式错误，请使用 标签,数值 格式'); return; }
+
+  const values2 = [];
+  if (raw2) {
+    const lines2 = raw2.split('\n').filter(Boolean);
+    for (let i = 0; i < labels.length && i < lines2.length; i++) {
+      values2.push(parseFloat(lines2[i]) || 0);
+    }
+  }
+
+  const has2 = values2.length > 0;
+  const color2 = has2 ? '#ef4444' : null;
+
+  // Set canvas size
+  const rect = canvas.parentElement.getBoundingClientRect();
+  const w = canvas.parentElement.clientWidth || 700;
+  const h = canvas.parentElement.clientHeight || 440;
+  canvas.width = w * 2;
+  canvas.height = h * 2;
+  canvas.style.width = w + 'px';
+  canvas.style.height = h + 'px';
+  ctx.scale(2, 2);
+
+  const pad = { top: 50, bottom: 50, left: 60, right: 40 };
+  const chartW = w - pad.left - pad.right;
+  const chartH = h - pad.top - pad.bottom;
+
+  // Background
+  ctx.fillStyle = bg;
+  ctx.fillRect(0, 0, w, h);
+
+  // Title
+  if (title) {
+    ctx.fillStyle = '#333';
+    ctx.font = 'bold 18px Arial, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText(title, w / 2, 30);
+  }
+
+  // Find max value
+  const allVals = [...values1, ...(has2 ? values2 : [])];
+  const maxVal = Math.max(...allVals, 1) * 1.15;
+
+  ctx.font = '12px Arial, sans-serif';
+  ctx.textAlign = 'right';
+
+  if (type === 'pie') {
+    const cx = w / 2, cy = h / 2;
+    const radius = Math.min(chartW, chartH) / 2 - 10;
+    const total = values1.reduce((a, b) => a + b, 0);
+    if (total === 0) { showToast('⚠️ 数据之和不能为0'); return; }
+
+    let startAngle = -Math.PI / 2;
+    const pieColors = ['#4f46e5', '#ef4444', '#f59e0b', '#10b981', '#8b5cf6', '#ec4899', '#06b6d4', '#f97316'];
+
+    for (let i = 0; i < values1.length; i++) {
+      const sliceAngle = (values1[i] / total) * Math.PI * 2;
+      ctx.beginPath();
+      ctx.moveTo(cx, cy);
+      ctx.arc(cx, cy, radius, startAngle, startAngle + sliceAngle);
+      ctx.closePath();
+      ctx.fillStyle = pieColors[i % pieColors.length];
+      ctx.fill();
+      ctx.strokeStyle = '#fff';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+      startAngle += sliceAngle;
+    }
+
+    // Legend
+    let ly = pad.top + 10;
+    ctx.textAlign = 'left';
+    ctx.font = '11px Arial, sans-serif';
+    for (let i = 0; i < labels.length; i++) {
+      if (ly > h - 20) break;
+      ctx.fillStyle = pieColors[i % pieColors.length];
+      ctx.fillRect(w - 140, ly, 10, 10);
+      ctx.fillStyle = '#555';
+      const pct = ((values1[i] / total) * 100).toFixed(1);
+      ctx.fillText(labels[i] + ' ' + pct + '%', w - 124, ly + 9);
+      ly += 20;
+    }
+  } else if (type === 'radar') {
+    const cx = w / 2, cy = (pad.top + h - pad.bottom) / 2;
+    const r = Math.min(chartW, chartH) / 2 - 10;
+    const n = labels.length;
+    if (n < 3) { showToast('⚠️ 雷达图需要至少3个数据点'); return; }
+
+    // Draw grid
+    for (let ring = 1; ring <= 4; ring++) {
+      ctx.beginPath();
+      for (let i = 0; i <= n; i++) {
+        const angle = (Math.PI * 2 * i) / n - Math.PI / 2;
+        const x = cx + (r * ring / 4) * Math.cos(angle);
+        const y = cy + (r * ring / 4) * Math.sin(angle);
+        i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+      }
+      ctx.closePath();
+      ctx.strokeStyle = 'rgba(0,0,0,0.1)';
+      ctx.lineWidth = 1;
+      ctx.stroke();
+    }
+
+    // Axis lines
+    for (let i = 0; i < n; i++) {
+      const angle = (Math.PI * 2 * i) / n - Math.PI / 2;
+      ctx.beginPath();
+      ctx.moveTo(cx, cy);
+      ctx.lineTo(cx + r * Math.cos(angle), cy + r * Math.sin(angle));
+      ctx.strokeStyle = 'rgba(0,0,0,0.1)';
+      ctx.stroke();
+    }
+
+    // Data series 1
+    function drawRadar(vals, color, alpha) {
+      ctx.beginPath();
+      for (let i = 0; i <= n; i++) {
+        const idx = i % n;
+        const angle = (Math.PI * 2 * idx) / n - Math.PI / 2;
+        const val = (vals[idx] || 0) / maxVal * r;
+        const x = cx + val * Math.cos(angle);
+        const y = cy + val * Math.sin(angle);
+        i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+      }
+      ctx.closePath();
+      ctx.fillStyle = color.replace(')', ',' + alpha + ')').replace('rgb', 'rgba');
+      ctx.fill();
+      ctx.strokeStyle = color;
+      ctx.lineWidth = 2;
+      ctx.stroke();
+    }
+
+    drawRadar(values1, color, '0.25');
+    if (has2) drawRadar(values2, color2, '0.25');
+
+    // Labels
+    ctx.textAlign = 'center';
+    ctx.font = '11px Arial, sans-serif';
+    ctx.fillStyle = '#555';
+    for (let i = 0; i < n; i++) {
+      const angle = (Math.PI * 2 * i) / n - Math.PI / 2;
+      const lx = cx + (r + 22) * Math.cos(angle);
+      const ly = cy + (r + 22) * Math.sin(angle);
+      ctx.fillText(labels[i], lx, ly + 4);
+    }
+  } else {
+    // Bar, Line, BarH
+    const isBar = type === 'bar';
+    const isBarH = type === 'barh';
+    const isLine = type === 'line';
+    const n = labels.length;
+    const step = chartW / (isBar ? n : Math.max(n - 1, 1));
+    const barWidth = isBar ? Math.min(step * 0.5, 40) : 0;
+    const halfBar = isBar ? barWidth / 2 : 0;
+
+    // Y axis
+    ctx.strokeStyle = '#e5e7eb';
+    ctx.lineWidth = 1;
+    const ySteps = 5;
+    for (let i = 0; i <= ySteps; i++) {
+      const y = pad.top + (chartH * (ySteps - i)) / ySteps;
+      ctx.beginPath();
+      ctx.moveTo(pad.left, y);
+      ctx.lineTo(w - pad.right, y);
+      ctx.stroke();
+      ctx.fillStyle = '#999';
+      ctx.textAlign = 'right';
+      ctx.fillText((maxVal * i / ySteps).toFixed(maxVal < 10 ? 1 : 0), pad.left - 8, y + 4);
+    }
+
+    // X axis labels
+    ctx.textAlign = 'center';
+    ctx.fillStyle = '#666';
+    ctx.font = '11px Arial, sans-serif';
+
+    if (isBarH) {
+      // Horizontal bar chart
+      const barH = Math.min(chartH / n * 0.6, 30);
+      for (let i = 0; i < n; i++) {
+        const y = pad.top + (chartH * (i + 0.5)) / n;
+        ctx.fillStyle = '#666';
+        ctx.textAlign = 'right';
+        ctx.fillText(labels[i], pad.left - 8, y + 4);
+        const v1 = (values1[i] / maxVal) * chartW;
+        ctx.fillStyle = color;
+        ctx.fillRect(pad.left, y - barH / 2, v1, barH);
+        if (has2) {
+          const v2 = (values2[i] / maxVal) * chartW;
+          ctx.fillStyle = color2;
+          ctx.fillRect(pad.left + v1, y - barH / 2, v2 - v1, barH);
+        }
+      }
+    } else if (isLine) {
+      // Line chart
+      ctx.beginPath();
+      for (let i = 0; i < n; i++) {
+        const x = pad.left + (i * chartW) / Math.max(n - 1, 1);
+        const y = pad.top + chartH - (values1[i] / maxVal) * chartH;
+        i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+      }
+      ctx.strokeStyle = color;
+      ctx.lineWidth = 2.5;
+      ctx.stroke();
+
+      // Fill area
+      ctx.beginPath();
+      for (let i = 0; i < n; i++) {
+        const x = pad.left + (i * chartW) / Math.max(n - 1, 1);
+        const y = pad.top + chartH - (values1[i] / maxVal) * chartH;
+        i === 0 ? ctx.moveTo(x, pad.top + chartH) : '';
+        ctx.lineTo(x, y);
+      }
+      ctx.lineTo(pad.left + chartW, pad.top + chartH);
+      ctx.closePath();
+      ctx.fillStyle = color.replace(')', ',0.15)').replace('rgb', 'rgba');
+      ctx.fill();
+
+      if (has2) {
+        ctx.beginPath();
+        for (let i = 0; i < n; i++) {
+          const x = pad.left + (i * chartW) / Math.max(n - 1, 1);
+          const y = pad.top + chartH - (values2[i] / maxVal) * chartH;
+          i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+        }
+        ctx.strokeStyle = color2;
+        ctx.lineWidth = 2.5;
+        ctx.stroke();
+
+        // Fill area 2
+        ctx.beginPath();
+        for (let i = 0; i < n; i++) {
+          const x = pad.left + (i * chartW) / Math.max(n - 1, 1);
+          const y = pad.top + chartH - (values2[i] / maxVal) * chartH;
+          i === 0 ? ctx.moveTo(x, pad.top + chartH) : '';
+          ctx.lineTo(x, y);
+        }
+        ctx.lineTo(pad.left + chartW, pad.top + chartH);
+        ctx.closePath();
+        ctx.fillStyle = color2.replace(')', ',0.15)').replace('rgb', 'rgba');
+        ctx.fill();
+      }
+
+      // Points
+      for (let i = 0; i < n; i++) {
+        const x = pad.left + (i * chartW) / Math.max(n - 1, 1);
+        const y = pad.top + chartH - (values1[i] / maxVal) * chartH;
+        ctx.beginPath();
+        ctx.arc(x, y, 3, 0, Math.PI * 2);
+        ctx.fillStyle = '#fff';
+        ctx.fill();
+        ctx.strokeStyle = color;
+        ctx.lineWidth = 2;
+        ctx.stroke();
+      }
+
+      // X labels
+      for (let i = 0; i < n; i++) {
+        const x = pad.left + (i * chartW) / Math.max(n - 1, 1);
+        ctx.fillText(labels[i], x, h - pad.bottom + 18);
+      }
+    } else {
+      // Bar chart (vertical)
+      for (let i = 0; i < n; i++) {
+        const x = pad.left + step * i + (step - barWidth) / 2;
+        const barH_val = (values1[i] / maxVal) * chartH;
+        ctx.fillStyle = color;
+        ctx.fillRect(x, pad.top + chartH - barH_val, barWidth, barH_val);
+        if (has2) {
+          const barH2 = (values2[i] / maxVal) * chartH;
+          ctx.fillStyle = color2;
+          ctx.fillRect(x + barWidth + 2, pad.top + chartH - barH2, barWidth, barH2);
+        }
+        ctx.fillText(labels[i], x + barWidth / 2, h - pad.bottom + 18);
+      }
+    }
+  }
+
+  // Legend for multi-series
+  if (has2 && type !== 'pie' && type !== 'radar') {
+    const lx = w - 160, ly = 10;
+    ctx.fillStyle = color;
+    ctx.fillRect(lx, ly, 14, 14);
+    ctx.fillStyle = '#333';
+    ctx.textAlign = 'left';
+    ctx.font = '11px Arial, sans-serif';
+    ctx.fillText('系列1', lx + 18, ly + 11);
+    ctx.fillStyle = color2;
+    ctx.fillRect(lx + 70, ly, 14, 14);
+    ctx.fillStyle = '#333';
+    ctx.fillText('系列2', lx + 88, ly + 11);
+  }
+
+  canvas.style.display = 'block';
+  document.getElementById('cm-placeholder').style.display = 'none';
+  document.getElementById('cm-download-btn').style.display = 'inline-block';
+  showToast('✅ 图表生成完成');
+}
+
+function cmDownload() {
+  const canvas = document.getElementById('cm-canvas');
+  const a = document.createElement('a');
+  a.download = 'chart-' + Date.now() + '.png';
+  a.href = canvas.toDataURL('image/png');
+  a.click();
+  showToast('✅ PNG已下载');
+}
+
+// ============================================================
+// 截图美化/设备样机 处理函数
+// ============================================================
+var mmImage = null;
+
+function mmReset() {
+  mmImage = null;
+  document.getElementById('mm-file').value = '';
+  document.getElementById('mm-canvas').style.display = 'none';
+  document.getElementById('mm-placeholder').style.display = 'flex';
+  document.getElementById('mm-download-btn').style.display = 'none';
+}
+
+function mmGenerate() {
+  const fileInput = document.getElementById('mm-file');
+  if (!fileInput.files || !fileInput.files[0]) {
+    showToast('⚠️ 请先上传一张截图');
+    return;
+  }
+  if (!mmImage) {
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      const img = new Image();
+      img.onload = function() {
+        mmImage = img;
+        mmRender();
+      };
+      img.src = e.target.result;
+    };
+    reader.readAsDataURL(fileInput.files[0]);
+    return;
+  }
+  mmRender();
+}
+
+function mmRender() {
+  if (!mmImage) return;
+  const device = document.getElementById('mm-device').value;
+  const bgColor = document.getElementById('mm-bg').value;
+  const shadow = document.getElementById('mm-shadow').value;
+
+  const img = mmImage;
+  const canvas = document.getElementById('mm-canvas');
+  const ctx = canvas.getContext('2d');
+
+  // Target image display size
+  const maxContentW = 600, maxContentH = 420;
+  let contentW = img.width, contentH = img.height;
+  const scale = Math.min(maxContentW / contentW, maxContentH / contentH, 1);
+  contentW = Math.round(contentW * scale);
+  contentH = Math.round(contentH * scale);
+
+  // Device frame margins
+  let frameW, frameH, bezelSize, topBar, bottomBar, borderRadius;
+  if (device === 'iphone') {
+    bezelSize = 16; topBar = 44; bottomBar = 36;
+    borderRadius = 28;
+    frameW = contentW + bezelSize * 2;
+    frameH = contentH + topBar + bottomBar + bezelSize * 2;
+  } else if (device === 'android') {
+    bezelSize = 14; topBar = 40; bottomBar = 32;
+    borderRadius = 20;
+    frameW = contentW + bezelSize * 2;
+    frameH = contentH + topBar + bottomBar + bezelSize * 2;
+  } else if (device === 'ipad') {
+    bezelSize = 20; topBar = 0; bottomBar = 0;
+    borderRadius = 16;
+    frameW = contentW + bezelSize * 2;
+    frameH = contentH + bezelSize * 2;
+  } else if (device === 'browser') {
+    topBar = 40; bottomBar = 0;
+    borderRadius = 8;
+    frameW = contentW + 2;
+    frameH = contentH + topBar + 2;
+    bezelSize = 0;
+  } else { // laptop
+    topBar = 0; bottomBar = 0;
+    borderRadius = 0;
+    frameW = contentW + 20;
+    frameH = contentH + 20;
+    bezelSize = 10;
+  }
+
+  // Canvas size with padding
+  const pad = 40;
+  const totalW = frameW + pad * 2;
+  const totalH = frameH + pad * 2;
+
+  canvas.width = totalW * 2;
+  canvas.height = totalH * 2;
+  canvas.style.width = totalW + 'px';
+  canvas.style.height = totalH + 'px';
+  ctx.scale(2, 2);
+
+  // Background
+  ctx.fillStyle = bgColor;
+  ctx.fillRect(0, 0, totalW, totalH);
+
+  // Shadow
+  if (shadow !== 'none') {
+    ctx.shadowColor = 'rgba(0,0,0,' + (shadow === 'hard' ? '0.3' : '0.15') + ')';
+    ctx.shadowBlur = shadow === 'hard' ? 30 : 20;
+    ctx.shadowOffsetX = 0;
+    ctx.shadowOffsetY = shadow === 'hard' ? 8 : 4;
+  }
+
+  // Frame
+  const fx = pad, fy = pad;
+  ctx.fillStyle = '#1a1a1a';
+  mmRoundRect(ctx, fx, fy, frameW, frameH, borderRadius);
+  ctx.fill();
+
+  // Reset shadow for content
+  ctx.shadowColor = 'transparent';
+  ctx.shadowBlur = 0;
+
+  if (device === 'iphone' || device === 'android') {
+    // Top bar (notch area)
+    ctx.fillStyle = '#1a1a1a';
+    const notchW = 80, notchH = 24;
+    const notchX = fx + (frameW - notchW) / 2;
+    const notchY = fy + 12;
+    ctx.beginPath();
+    mmRoundRect(ctx, notchX, notchY, notchW, notchH, 12);
+    ctx.fillStyle = '#0a0a0a';
+    ctx.fill();
+
+    // Camera dot
+    ctx.beginPath();
+    ctx.arc(notchX + notchW / 2, notchY + notchH / 2, 4, 0, Math.PI * 2);
+    ctx.fillStyle = '#1a1a2e';
+    ctx.fill();
+    ctx.beginPath();
+    ctx.arc(notchX + notchW / 2, notchY + notchH / 2, 2, 0, Math.PI * 2);
+    ctx.fillStyle = '#2a2a4e';
+    ctx.fill();
+
+    // Status bar
+    ctx.fillStyle = '#fff';
+    ctx.font = '10px Arial, sans-serif';
+    ctx.textAlign = 'left';
+    ctx.fillText('9:41', fx + 20, fy + 10);
+    ctx.textAlign = 'right';
+    ctx.fillText('📶 🔋', fx + frameW - 20, fy + 10);
+  } else if (device === 'browser') {
+    // Browser top bar
+    ctx.fillStyle = '#e8e8e8';
+    ctx.fillRect(fx, fy, frameW, topBar);
+    // Traffic light dots
+    const dotR = 5;
+    ctx.beginPath(); ctx.arc(fx + 16, fy + 20, dotR, 0, Math.PI * 2); ctx.fillStyle = '#ff5f57'; ctx.fill();
+    ctx.beginPath(); ctx.arc(fx + 34, fy + 20, dotR, 0, Math.PI * 2); ctx.fillStyle = '#febc2e'; ctx.fill();
+    ctx.beginPath(); ctx.arc(fx + 52, fy + 20, dotR, 0, Math.PI * 2); ctx.fillStyle = '#28c840'; ctx.fill();
+    // URL bar
+    ctx.fillStyle = '#fff';
+    mmRoundRect(ctx, fx + 66, fy + 12, frameW - 82, 18, 4);
+    ctx.fill();
+    ctx.fillStyle = '#bbb';
+    ctx.font = '9px Arial, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('https://toolai.ccwu.cc', fx + frameW / 2 + 8, fy + 24);
+  } else if (device === 'laptop') {
+    // Laptop base
+    ctx.fillStyle = '#2a2a2a';
+    const baseY = fy + frameH;
+    ctx.beginPath();
+    ctx.moveTo(fx + 30, baseY);
+    ctx.lineTo(fx + frameW - 30, baseY);
+    ctx.lineTo(fx + frameW - 10, baseY + 12);
+    ctx.lineTo(fx + 10, baseY + 12);
+    ctx.closePath();
+    ctx.fill();
+    // Keyboard hint
+    ctx.fillStyle = '#3a3a3a';
+    ctx.fillRect(fx + frameW / 2 - 30, baseY + 2, 60, 4);
+  }
+
+  // Content area
+  let cx, cy, cw, ch;
+  if (device === 'iphone' || device === 'android') {
+    cx = fx + bezelSize;
+    cy = fy + bezelSize + topBar;
+    cw = contentW;
+    ch = contentH;
+  } else if (device === 'ipad') {
+    cx = fx + bezelSize;
+    cy = fy + bezelSize;
+    cw = contentW;
+    ch = contentH;
+  } else if (device === 'browser') {
+    cx = fx + 1;
+    cy = fy + topBar + 1;
+    cw = contentW;
+    ch = contentH;
+  } else { // laptop
+    cx = fx + 10;
+    cy = fy + 10;
+    cw = contentW;
+    ch = contentH;
+  }
+
+  // Clip content to frame
+  ctx.save();
+  ctx.beginPath();
+  ctx.rect(cx, cy, cw, ch);
+  ctx.clip();
+
+  // Draw the screenshot
+  ctx.drawImage(img, cx, cy, cw, ch);
+  ctx.restore();
+
+  canvas.style.display = 'block';
+  document.getElementById('mm-placeholder').style.display = 'none';
+  document.getElementById('mm-download-btn').style.display = 'inline-block';
+  showToast('✅ 样机生成完成');
+}
+
+function mmRoundRect(ctx, x, y, w, h, r) {
+  r = Math.min(r, w / 2, h / 2);
+  ctx.beginPath();
+  ctx.moveTo(x + r, y);
+  ctx.lineTo(x + w - r, y);
+  ctx.arcTo(x + w, y, x + w, y + r, r);
+  ctx.lineTo(x + w, y + h - r);
+  ctx.arcTo(x + w, y + h, x + w - r, y + h, r);
+  ctx.lineTo(x + r, y + h);
+  ctx.arcTo(x, y + h, x, y + h - r, r);
+  ctx.lineTo(x, y + r);
+  ctx.arcTo(x, y, x + r, y, r);
+  ctx.closePath();
+}
+
+function mmDownload() {
+  const canvas = document.getElementById('mm-canvas');
+  const a = document.createElement('a');
+  a.download = 'mockup-' + Date.now() + '.png';
+  a.href = canvas.toDataURL('image/png');
+  a.click();
+  showToast('✅ PNG已下载');
 }
