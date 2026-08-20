@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>像素画生成器：3步把照片变成复古像素风（马赛克拼贴） - ToolBox 工具箱指南</title>
+  <meta name="description" content="图文详解在线像素画生成器的完整步骤，上传图片一键转像素风，支持4级到256级色阶、4px到24px像素块、网格线显示，免费在线使用，无需注册、图片不上传服务器。">
+  <meta name="keywords" content="像素画生成,像素画在线制作,马赛克图片,复古像素风,像素艺术,图片转像素画,PixelMe免费替代">
+  <meta name="author" content="ToolBox">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://toolai.ccwu.cc/guides/pixel-art-guide.html">
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    :root {
+      --bg: #0f0f1a;
+      --bg-card: #1a1a2e;
+      --text: #e0e0e0;
+      --text-light: #8888aa;
+      --border: #2a2a44;
+      --accent: #6366f1;
+      --accent-hover: #4f46e5;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Noto Sans SC', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      margin: 0;
+      line-height: 1.8;
+    }
+    .guide-header {
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+      border-bottom: 1px solid var(--border);
+      padding: 20px 0;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(10px);
+    }
+    .guide-header-inner {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 0 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .guide-header a {
+      color: var(--accent);
+      text-decoration: none;
+      font-size: 14px;
+    }
+    .guide-header a:hover { color: var(--accent-hover); }
+    .guide-container {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 40px 20px 80px;
+    }
+    .guide-breadcrumb {
+      font-size: 13px;
+      color: var(--text-light);
+      margin-bottom: 20px;
+    }
+    .guide-breadcrumb a { color: var(--accent); text-decoration: none; }
+    .guide-breadcrumb a:hover { text-decoration: underline; }
+    h1 {
+      font-size: 32px;
+      font-weight: 700;
+      margin: 0 0 10px;
+      line-height: 1.3;
+      background: linear-gradient(135deg, #e0e0e0, #a78bfa);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .guide-meta {
+      font-size: 13px;
+      color: var(--text-light);
+      margin-bottom: 30px;
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .guide-meta span { display: flex; align-items: center; gap: 4px; }
+    h2 {
+      font-size: 22px;
+      font-weight: 600;
+      margin: 40px 0 16px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border);
+      color: #e0e0e0;
+    }
+    h3 {
+      font-size: 18px;
+      font-weight: 600;
+      margin: 28px 0 12px;
+      color: #ccc;
+    }
+    p { margin: 0 0 16px; color: #ccc; }
+    .guide-step {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px;
+      margin: 24px 0;
+      position: relative;
+    }
+    .guide-step-number {
+      position: absolute;
+      top: -12px;
+      left: 20px;
+      background: var(--accent);
+      color: #fff;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: 700;
+    }
+    .guide-step h3 { margin-top: 0; }
+    .guide-img {
+      max-width: 100%;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      margin: 16px 0;
+      display: block;
+    }
+    .guide-img-caption {
+      text-align: center;
+      font-size: 13px;
+      color: var(--text-light);
+      margin: 4px 0 16px;
+    }
+    .guide-tip {
+      background: rgba(99,102,241,0.1);
+      border-left: 4px solid var(--accent);
+      padding: 12px 16px;
+      border-radius: 0 8px 8px 0;
+      margin: 16px 0;
+      font-size: 14px;
+      color: #ccc;
+    }
+    .guide-tip strong { color: #a78bfa; }
+    .guide-gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 16px;
+      margin: 16px 0;
+    }
+    .guide-gallery-item {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+      text-align: center;
+    }
+    .guide-gallery-item img { width: 100%; display: block; }
+    .guide-gallery-item .label {
+      padding: 8px;
+      font-size: 13px;
+      color: var(--text-light);
+    }
+    .guide-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16px 0;
+      font-size: 14px;
+    }
+    .guide-table th, .guide-table td {
+      border: 1px solid var(--border);
+      padding: 10px 14px;
+      text-align: left;
+    }
+    .guide-table th { background: var(--bg-card); color: #e0e0e0; font-weight: 600; }
+    .guide-table td { color: #ccc; }
+    .guide-cta {
+      text-align: center;
+      background: linear-gradient(135deg, #1a1a2e, #16213e);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 32px;
+      margin: 40px 0;
+    }
+    .guide-cta p { font-size: 16px; margin-bottom: 20px; }
+    .guide-cta .btn {
+      display: inline-block;
+      background: linear-gradient(135deg, #6366f1, #8b5cf6);
+      color: #fff;
+      padding: 12px 32px;
+      border-radius: 30px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 16px;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .guide-cta .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(99,102,241,0.3); }
+    .footer-nav {
+      margin-top: 40px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      font-size: 14px;
+    }
+    .footer-nav a { color: var(--accent); text-decoration: none; }
+    .footer-nav a:hover { text-decoration: underline; }
+    @media (max-width: 600px) {
+      h1 { font-size: 24px; }
+      .guide-container { padding: 20px 16px 60px; }
+      .guide-step { padding: 20px 16px; }
+      .guide-gallery { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <header class="guide-header">
+    <div class="guide-header-inner">
+      <a href="https://toolai.ccwu.cc/">🧰 ToolBox 首页</a>
+      <a href="../index.html#guides">📖 工具箱指南</a>
+    </div>
+  </header>
+
+  <div class="guide-container">
+    <!-- 面包屑 -->
+    <div class="guide-breadcrumb">
+      <a href="https://toolai.ccwu.cc/">首页</a> / <a href="../index.html#guides">工具箱指南</a> / 像素画生成器
+    </div>
+
+    <h1>像素画生成器：3步把照片变成复古像素风</h1>
+
+    <div class="guide-meta">
+      <span>📅 2026-08-20</span>
+      <span>✏️ ToolBox 编辑部</span>
+      <span>📖 阅读约 5 分钟</span>
+    </div>
+
+    <p>还在花 10 美元订阅 PixelMe、PixelIt 这类像素画工具？其实把一张普通照片变成复古像素风、马赛克拼贴画，3 步就能免费搞定——而且全程在浏览器本地完成，图片根本不会上传到任何服务器。</p>
+
+    <p><strong>像素画生成器</strong> 是 ToolBox 内置的免费像素风转换工具。上传任意图片，选择像素块大小和色彩细腻度，点击生成，一张带着浓郁 8-bit 复古气息的像素画就出现了。可以下载无损 PNG，用于头像、壁纸、游戏素材、纪念品打印……玩法超多。</p>
+
+    <div class="guide-tip">
+      <strong>💡 灵感来源：</strong> 市面上类似功能（PixelMe、PixelIt）多为付费订阅。本工具免费、纯前端转换、无需注册，图片隐私完全掌握在自己手里。
+    </div>
+
+    <!-- ====== 第一步 ====== -->
+    <div class="guide-step">
+      <div class="guide-step-number">1</div>
+      <h3>找到「像素画生成器」</h3>
+      <p>进入 ToolBox 首页，点击顶部导航的「图片处理」分类，在工具列表中找到「👾 像素画生成器」卡片；也可以直接在首页搜索框输入「像素」快速定位。</p>
+      <img src="images/pixel-art-guide-03-category.png" alt="图片处理分类页面 - 像素画生成器入口" class="guide-img">
+      <div class="guide-img-caption">▲ 在「图片处理」分类中找到像素画生成器（同页还有印章、九宫格、手写体等热门工具）</div>
+      <p>打开后进入工具界面，从上到下依次是：<strong>上传图片</strong>、<strong>像素块大小</strong>、<strong>色彩细腻度</strong>、<strong>网格线开关</strong> 和 <strong>预览画布</strong>。右上角还有「生成像素画」「下载PNG」「重新选择」三个按钮。</p>
+      <img src="images/pixel-art-guide-04-tool-interface.png" alt="像素画生成器工具界面" class="guide-img">
+      <div class="guide-img-caption">▲ 工具界面：上传区 + 参数设置 + 预览画布，所有处理都在浏览器本地完成</div>
+    </div>
+
+    <!-- ====== 第二步 ====== -->
+    <div class="guide-step">
+      <div class="guide-step-number">2</div>
+      <h3>上传图片，调好「像素味」参数</h3>
+      <p>点击「选择文件」上传一张照片（支持 JPG/PNG 等常见格式）。上传后按照想要的效果调节两个关键参数：</p>
+
+      <h3>🎲 像素块大小 —— 决定颗粒感</h3>
+      <table class="guide-table">
+        <thead>
+          <tr><th>选项</th><th>效果</th><th>推荐场景</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>4px（细腻）</strong></td><td>颗粒最小，接近插画感</td><td>人像、细节丰富的照片</td></tr>
+          <tr><td><strong>8px（经典）</strong></td><td>标准像素风，最百搭</td><td>默认选项，绝大多数图都适合</td></tr>
+          <tr><td><strong>12px（粗犷）</strong></td><td>颗粒感明显</td><td>头像、图标、复古贴纸</td></tr>
+          <tr><td><strong>16px（马赛克）</strong></td><td>大果粒马赛克</td><td>追求夸张像素效果</td></tr>
+          <tr><td><strong>24px（超大块）</strong></td><td>超大胆像素</td><td>大幅海报、像素字背景</td></tr>
+        </tbody>
+      </table>
+
+      <h3>🎨 色彩细腻度 —— 决定色块丰富度</h3>
+      <p>从「极简 4 级色」到「全彩 256 级」，色阶越高颜色过渡越平滑、越接近原图；色阶越低越有复古游戏机的粗糙感。经典像素游戏风推荐 <strong>8 级色（复古）</strong>。</p>
+
+      <div class="guide-tip">
+        <strong>💡 小技巧：</strong> 想快速得到最顺眼的像素风？先保持默认的「8px 经典 + 8 级色」直接生成，再在两个方向上微调——<strong>调大像素块</strong>变粗犷、<strong>调高色阶</strong>变细腻，找到手感后再下载。
+      </div>
+    </div>
+
+    <!-- ====== 第三步 ====== -->
+    <div class="guide-step">
+      <div class="guide-step-number">3</div>
+      <h3>生成、对比、下载 PNG</h3>
+      <p>点一下「👾 生成像素画」，像素风效果立刻呈现在画布上。下面是同一张图在默认参数下的生成效果：</p>
+      <img src="images/pixel-art-guide-07-cat-result.png" alt="像素画生成效果 - 经典像素风猫咪" class="guide-img">
+      <div class="guide-img-caption">▲ 默认「8px 经典 + 8 级色」生成的像素风小猫咪，还原度与像素感平衡得很好</div>
+
+      <p>如果觉得颗粒太密看不清「马赛克感」，可以勾选<strong>「显示网格线」</strong>，画布上会叠加强化像素格的辅助线，特别适合需要数格子精确创作、或者想看清每个色块的场景：</p>
+      <img src="images/pixel-art-guide-08-cat-grid.png" alt="带网格线的像素画效果" class="guide-img">
+      <div class="guide-img-caption">▲ 打开「显示网格线」后的效果，每个像素块清晰可见</div>
+
+      <p>满意之后点击「⬇️ 下载PNG」，一张<strong>无损 PNG</strong> 就会保存到你的电脑（尺寸与原图同宽高）。想换一张图重新开始？点「🔄 重新选择」即可。</p>
+
+      <div class="guide-tip">
+        <strong>📌 隐私说明：</strong> 整个转换过程<strong>完全在浏览器本地完成</strong>，图片不经过任何服务器，上传证件照、私人照片也完全不用担心泄露。
+      </div>
+    </div>
+
+    <!-- ====== 使用场景 ====== -->
+    <h2>🎯 像素画的 5 个实用场景</h2>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin:20px 0;">
+      <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:16px;text-align:center;">
+        <div style="font-size:28px;margin-bottom:8px;">👤</div>
+        <div style="font-weight:600;font-size:14px;margin-bottom:4px;">个性头像</div>
+        <div style="font-size:12px;color:var(--text-light);">微信/微博/游戏头像，像素风自带记忆点</div>
+      </div>
+      <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:16px;text-align:center;">
+        <div style="font-size:28px;margin-bottom:8px;">📱</div>
+        <div style="font-weight:600;font-size:14px;margin-bottom:4px;">手机壁纸</div>
+        <div style="font-size:12px;color:var(--text-light);">照片转像素风做壁纸，复古又耐看</div>
+      </div>
+      <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:16px;text-align:center;">
+        <div style="font-size:28px;margin-bottom:8px;">🕹️</div>
+        <div style="font-weight:600;font-size:14px;margin-bottom:4px;">游戏素材</div>
+        <div style="font-size:12px;color:var(--text-light);">独立游戏 UI、场景素材快速原型</div>
+      </div>
+      <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:16px;text-align:center;">
+        <div style="font-size:28px;margin-bottom:8px;">🎁</div>
+        <div style="font-weight:600;font-size:14px;margin-bottom:4px;">创意礼物</div>
+        <div style="font-size:12px;color:var(--text-light);">把合照转像素画打印成相框/帆布袋</div>
+      </div>
+      <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:16px;text-align:center;">
+        <div style="font-size:28px;margin-bottom:8px;">🎨</div>
+        <div style="font-weight:600;font-size:14px;margin-bottom:4px;">课件海报</div>
+        <div style="font-size:12px;color:var(--text-light);">PPT 配图、活动海报的复古视觉元素</div>
+      </div>
+    </div>
+
+    <!-- ====== 常见问题 ====== -->
+    <h2>❓ 常见问题</h2>
+
+    <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:20px;margin:16px 0;">
+      <p><strong>Q：图片会传到服务器吗？隐私安全吗？</strong></p>
+      <p>完全不会。像素画生成器是纯前端工具，图片只在你自己的浏览器内存里被处理，不上传任何服务器。可以放心处理私人照片。</p>
+    </div>
+    <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:20px;margin:16px 0;">
+      <p><strong>Q：生成的图片是什么格式？能放大当海报吗？</strong></p>
+      <p>下载的是无损 PNG，尺寸与上传原图相同。像素风格本身是「方块放大」效果，输出图片放大后依然清晰锐利；想要大尺寸海报，上传大图即可。</p>
+    </div>
+    <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:20px;margin:16px 0;">
+      <p><strong>Q：为什么我生成的图颜色和原图差很多？</strong></p>
+      <p>这是像素画风格的正常效果——色阶越低，颜色越「概括」。如果你想要更接近原图的颜色，把「色彩细腻度」调到 64 级或 256 级全彩即可。</p>
+    </div>
+
+    <!-- ====== CTA ====== -->
+    <div class="guide-cta">
+      <p>👾 现在就上传一张照片，生成属于你的复古像素画吧</p>
+      <a href="https://toolai.ccwu.cc/" class="btn">🎨 去生成像素画 →</a>
+    </div>
+
+    <!-- ====== 底部导航 ====== -->
+    <div class="footer-nav">
+      <a href="../index.html#guides">← 返回工具箱指南列表</a>
+      <a href="https://toolai.ccwu.cc/">🏠 回到首页</a>
+    </div>
+  </div>
+</body>
+</html>
