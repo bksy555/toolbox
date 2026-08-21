@@ -3847,6 +3847,165 @@ openclaw update</code></pre>
       </div>
     `,
     handler: () => {}
+  },
+  {
+    id: 'id-photo',
+    cat: 'image',
+    icon: '📷',
+    name: '证件照制作',
+    desc: '在线制作一寸/二寸证件照，自动换底色（红白蓝），支持6寸排版8张，免费下载',
+    html: `
+      <div class="tool-card">
+        <div class="input-group">
+          <label>上传照片（建议纯色背景人像照）</label>
+          <input type="file" id="idp-file" accept="image/*">
+        </div>
+        <div class="row" style="gap:12px;flex-wrap:wrap;margin-top:6px;">
+          <div class="input-group" style="min-width:150px;">
+            <label>证件照类型</label>
+            <select id="idp-type" onchange="idpRender()" style="width:100%;">
+              <option value="1inch">一寸 25×35mm</option>
+              <option value="2inch">二寸 35×49mm</option>
+              <option value="small1">小一寸 22×32mm</option>
+              <option value="small2">小二寸 35×45mm</option>
+              <option value="passport">护照 33×48mm</option>
+            </select>
+          </div>
+          <div class="input-group" style="min-width:130px;">
+            <label>目标底色</label>
+            <select id="idp-bg" onchange="idpRender()" style="width:100%;">
+              <option value="#ffffff">⬜ 白色</option>
+              <option value="#d9001b">🟥 红色</option>
+              <option value="#438edb">🟦 蓝色</option>
+              <option value="#f0f0f0">浅灰</option>
+              <option value="#000000">黑色</option>
+            </select>
+          </div>
+          <div class="input-group" style="min-width:120px;">
+            <label>源背景色（自动取四角）</label>
+            <input type="color" id="idp-srcbg" value="#ffffff" oninput="idpRender()" style="width:100%;height:38px;padding:2px;cursor:pointer;">
+          </div>
+          <div class="input-group" style="min-width:180px;">
+            <label>抠图容差：<span id="idp-tol-val">60</span></label>
+            <input type="range" id="idp-tolerance" min="10" max="140" value="60" oninput="idpTol()" style="width:100%;">
+          </div>
+        </div>
+        <div style="margin-top:8px;font-size:12px;color:var(--text-light);">
+          💡 色差算法自动把接近"源背景色"的像素替换为目标底色并羽化边缘，纯本地处理不上传照片。
+        </div>
+        <div class="row" style="gap:20px;margin-top:12px;flex-wrap:wrap;">
+          <div style="flex:1;min-width:180px;text-align:center;">
+            <canvas id="idp-canvas" style="max-width:100%;border:1px solid var(--border);border-radius:12px;background:#f3f4f6;"></canvas>
+            <div class="btn-group" style="margin-top:10px;justify-content:center;">
+              <button class="btn btn-primary" onclick="idpDownload()">⬇️ 下载单张</button>
+              <button class="btn btn-secondary" onclick="idpDownloadSheet()">🖨️ 6寸排版8张</button>
+            </div>
+            <div style="font-size:12px;color:var(--text-light);margin-top:6px;">标准300DPI分辨率，可直接上传报名系统</div>
+          </div>
+          <div style="flex:1;min-width:180px;text-align:center;">
+            <canvas id="idp-sheet-canvas" style="max-width:100%;border:1px dashed var(--border);border-radius:12px;background:#fff;"></canvas>
+            <div style="font-size:12px;color:var(--text-light);margin-top:6px;">6寸相纸（102×152mm）排版预览，可下载去照相馆冲印</div>
+          </div>
+        </div>
+        <div style="margin-top:8px;font-size:12px;color:var(--text-light);text-align:center;">
+          💡 灵感来源于微信/支付宝证件照、妙鸭相机等付费证件照服务（5-15元/张），本工具免费生成标准尺寸证件照并支持冲印排版。
+        </div>
+      </div>
+    `,
+    handler: () => { setTimeout(idpInit, 100); }
+  },
+  {
+    id: 'logo-maker',
+    cat: 'image',
+    icon: '🎨',
+    name: '在线Logo制作',
+    desc: '免费生成品牌Logo：20+图标×10色系×多字体组合，导出高清PNG/SVG',
+    html: `
+      <div class="tool-card">
+        <div class="row" style="gap:12px;flex-wrap:wrap;">
+          <div class="input-group" style="flex:1;min-width:150px;">
+            <label>品牌名称</label>
+            <input type="text" id="lg-name" placeholder="例如：星火科技" oninput="lgRender()" style="width:100%;">
+          </div>
+          <div class="input-group" style="flex:1;min-width:150px;">
+            <label>副标题（可选）</label>
+            <input type="text" id="lg-slogan" placeholder="例如：SINCE 2026 / 点亮未来" oninput="lgRender()" style="width:100%;">
+          </div>
+        </div>
+        <div class="row" style="gap:12px;flex-wrap:wrap;margin-top:6px;">
+          <div class="input-group" style="min-width:140px;">
+            <label>图标</label>
+            <select id="lg-icon" onchange="lgRender()" style="width:100%;">
+              <option value="🚀">🚀 火箭</option>
+              <option value="💎">💎 钻石</option>
+              <option value="⚡">⚡ 闪电</option>
+              <option value="🔥">🔥 火焰</option>
+              <option value="🌿">🌿 绿叶</option>
+              <option value="🎯">🎯 靶心</option>
+              <option value="⭐">⭐ 星星</option>
+              <option value="🎵">🎵 音乐</option>
+              <option value="🦁">🦁 狮子</option>
+              <option value="🌙">🌙 月亮</option>
+              <option value="☕">☕ 咖啡</option>
+              <option value="🍀">🍀 四叶草</option>
+              <option value="🌈">🌈 彩虹</option>
+              <option value="🔧">🔧 扳手</option>
+              <option value="📈">📈 增长</option>
+              <option value="🛡️">🛡️ 盾牌</option>
+              <option value="🎨">🎨 调色板</option>
+              <option value="💡">💡 灯泡</option>
+              <option value="🏆">🏆 奖杯</option>
+              <option value="✈️">✈️ 飞机</option>
+            </select>
+          </div>
+          <div class="input-group" style="min-width:140px;">
+            <label>配色方案</label>
+            <select id="lg-color" onchange="lgRender()" style="width:100%;">
+              <option value="0">🔵 科技蓝</option>
+              <option value="1">🟠 活力橙</option>
+              <option value="2">🟢 翡翠绿</option>
+              <option value="3">🌸 玫瑰红</option>
+              <option value="4">🟡 土豪金</option>
+              <option value="5">🩵 海洋青</option>
+              <option value="6">🟣 紫罗兰</option>
+              <option value="7">🌲 森林绿</option>
+              <option value="8">⚫ 酷黑金</option>
+              <option value="9">🩷 珊瑚粉</option>
+            </select>
+          </div>
+          <div class="input-group" style="min-width:140px;">
+            <label>版式</label>
+            <select id="lg-layout" onchange="lgRender()" style="width:100%;">
+              <option value="horizontal">◧ 图标+文字（横排）</option>
+              <option value="vertical">◨ 图标+文字（竖排）</option>
+              <option value="badge">◉ 徽章式</option>
+            </select>
+          </div>
+          <div class="input-group" style="min-width:130px;">
+            <label>品牌字体</label>
+            <select id="lg-font" onchange="lgRender()" style="width:100%;">
+              <option value="'PingFang SC','Microsoft YaHei',sans-serif">雅黑</option>
+              <option value="Georgia,serif">Georgia衬线</option>
+              <option value="'Courier New',monospace">等宽</option>
+              <option value="'Comic Sans MS',cursive">手写风</option>
+              <option value="Impact,sans-serif">Impact粗体</option>
+            </select>
+          </div>
+        </div>
+        <div class="btn-group" style="margin-top:10px;">
+          <button class="btn btn-primary" onclick="lgDownload('png')">⬇️ 下载PNG</button>
+          <button class="btn btn-secondary" onclick="lgDownload('svg')">📄 下载SVG</button>
+          <button class="btn btn-secondary" onclick="lgCopyBg()">🎨 切换透明/白底</button>
+        </div>
+        <div style="margin-top:10px;text-align:center;">
+          <canvas id="lg-canvas" style="max-width:100%;border-radius:12px;background:repeating-conic-gradient(#f5f5f5 0% 25%, #fff 0% 50%) 50% / 20px 20px;border:1px solid var(--border);"></canvas>
+        </div>
+        <div style="margin-top:8px;font-size:12px;color:var(--text-light);text-align:center;">
+          💡 灵感来源于 Looka（$20-96/月）、Brandmark（$25/月）、Tailor Brands 等付费 AI Logo 生成器，本工具免费生成 20图标×10色系×3版式组合，导出高清 PNG/SVG。
+        </div>
+      </div>
+    `,
+    handler: () => { setTimeout(lgInit, 100); }
   }
 ];
 
@@ -6295,4 +6454,359 @@ function mmDownload() {
   a.href = canvas.toDataURL('image/png');
   a.click();
   showToast('✅ PNG已下载');
+}
+// ============================================================
+// 证件照制作工具 处理函数
+// ============================================================
+var idpImg = null;
+var IDP_TYPES = {
+  '1inch':   { name: '一寸',   w: 295, h: 413, mm: '25×35mm' },
+  '2inch':   { name: '二寸',   w: 413, h: 579, mm: '35×49mm' },
+  'small1':  { name: '小一寸', w: 260, h: 378, mm: '22×32mm' },
+  'small2':  { name: '小二寸', w: 413, h: 531, mm: '35×45mm' },
+  'passport':{ name: '护照',   w: 390, h: 567, mm: '33×48mm' }
+};
+
+function idpInit() {
+  var f = document.getElementById('idp-file');
+  if (!f) return;
+  f.addEventListener('change', idpLoad, false);
+  idpRender();
+}
+
+function idpLoad() {
+  var file = document.getElementById('idp-file').files[0];
+  if (!file) return;
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    var img = new Image();
+    img.onload = function() {
+      idpImg = img;
+      // 自动检测四角背景色
+      var c = document.createElement('canvas');
+      c.width = img.width; c.height = img.height;
+      var ctx = c.getContext('2d');
+      ctx.drawImage(img, 0, 0);
+      try {
+        var d = ctx.getImageData(0, 0, img.width, img.height).data;
+        var corners = [[5,5],[img.width-6,5],[5,img.height-6],[img.width-6,img.height-6]];
+        var r=0,g=0,b=0;
+        corners.forEach(function(p){
+          var i = (p[1]*img.width + p[0]) * 4;
+          r+=d[i]; g+=d[i+1]; b+=d[i+2];
+        });
+        var avg = [Math.round(r/4), Math.round(g/4), Math.round(b/4)];
+        var hex = '#' + avg.map(function(v){ return ('0'+v.toString(16)).slice(-2); }).join('');
+        document.getElementById('idp-srcbg').value = hex;
+      } catch(e2) {}
+      idpRender();
+      showToast('✅ 照片已加载，自动检测背景色');
+    };
+    img.src = e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+function idpHexToRgb(hex) {
+  hex = (hex || '#ffffff').replace('#','');
+  if (hex.length === 3) hex = hex.split('').map(function(c){return c+c;}).join('');
+  return [parseInt(hex.substr(0,2),16), parseInt(hex.substr(2,2),16), parseInt(hex.substr(4,2),16)];
+}
+
+function idpRemoveBg(data, w, h, src, tgt, tol) {
+  var tol2 = tol * tol;
+  var edge = tol * 1.9;
+  var edge2 = edge * edge;
+  for (var i = 0; i < data.length; i += 4) {
+    var dr = data[i]-src[0], dg = data[i+1]-src[1], db = data[i+2]-src[2];
+    var d2 = dr*dr + dg*dg + db*db;
+    if (d2 < tol2) {
+      data[i]=tgt[0]; data[i+1]=tgt[1]; data[i+2]=tgt[2];
+    } else if (d2 < edge2) {
+      var k = (Math.sqrt(d2) - tol) / (edge - tol);
+      data[i]   = Math.round(tgt[0]*(1-k) + data[i]*k);
+      data[i+1] = Math.round(tgt[1]*(1-k) + data[i+1]*k);
+      data[i+2] = Math.round(tgt[2]*(1-k) + data[i+2]*k);
+    }
+  }
+}
+
+function idpDrawCover(ctx, img, tx, ty, tw, th) {
+  var ir = img.width / img.height;
+  var tr = tw / th;
+  var sw, sh, sx, sy;
+  if (ir > tr) { sh = img.height; sw = Math.round(img.height * tr); sx = Math.round((img.width - sw)/2); sy = 0; }
+  else { sw = img.width; sh = Math.round(img.width / tr); sy = Math.round((img.height - sh)/2); sx = 0; }
+  ctx.drawImage(img, sx, sy, sw, sh, tx, ty, tw, th);
+}
+
+function idpRender() {
+  var canvas = document.getElementById('idp-canvas');
+  if (!canvas) return;
+  var ctx = canvas.getContext('2d');
+  var type = IDP_TYPES[document.getElementById('idp-type').value] || IDP_TYPES['1inch'];
+  var target = document.getElementById('idp-bg').value;
+  var tol = parseInt(document.getElementById('idp-tolerance').value, 10) || 60;
+  var srcHex = document.getElementById('idp-srcbg').value;
+  var pw = 300, ph = Math.round(pw * type.h / type.w);
+  canvas.width = pw; canvas.height = ph;
+  ctx.fillStyle = '#ffffff';
+  ctx.fillRect(0, 0, pw, ph);
+  if (!idpImg) {
+    ctx.fillStyle = '#9ca3af'; ctx.font = '14px sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.fillText('上传照片后自动生成', pw/2, ph/2);
+    return;
+  }
+  idpDrawCover(ctx, idpImg, 0, 0, pw, ph);
+  var imgData = ctx.getImageData(0, 0, pw, ph);
+  idpRemoveBg(imgData.data, pw, ph, idpHexToRgb(srcHex), idpHexToRgb(target), tol);
+  ctx.putImageData(imgData, 0, 0);
+  idpRenderSheet(type, tol, srcHex, target);
+}
+
+function idpTol() {
+  var t = document.getElementById('idp-tolerance');
+  document.getElementById('idp-tol-val').textContent = t.value;
+  idpRender();
+}
+
+function idpBuildPhoto(type, tol, srcHex, target) {
+  var c = document.createElement('canvas');
+  c.width = type.w; c.height = type.h;
+  var ctx = c.getContext('2d');
+  ctx.fillStyle = target;
+  ctx.fillRect(0, 0, type.w, type.h);
+  if (idpImg) {
+    idpDrawCover(ctx, idpImg, 0, 0, type.w, type.h);
+    var imgData = ctx.getImageData(0, 0, type.w, type.h);
+    idpRemoveBg(imgData.data, type.w, type.h, idpHexToRgb(srcHex), idpHexToRgb(target), tol);
+    ctx.putImageData(imgData, 0, 0);
+  }
+  return c;
+}
+
+function idpRenderSheet(type, tol, srcHex, target) {
+  var sheet = document.getElementById('idp-sheet-canvas');
+  if (!sheet) return;
+  var ctx = sheet.getContext('2d');
+  var W = 1800, H = 1200; // 6寸 300DPI
+  sheet.width = W; sheet.height = H;
+  ctx.fillStyle = '#ffffff';
+  ctx.fillRect(0, 0, W, H);
+  if (!idpImg) {
+    ctx.fillStyle = '#c0c0c0'; ctx.font = '24px sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.fillText('上传照片后显示排版', W/2, H/2);
+    return;
+  }
+  var photo = idpBuildPhoto(type, tol, srcHex, target);
+  var cols, rows;
+  if (type.w <= 300) { cols = 4; rows = 2; }      // 一寸/小一寸 → 8张
+  else if (type.w <= 400) { cols = 2; rows = 2; } // 小二寸 → 4张
+  else { cols = 2; rows = 2; }                     // 二寸 → 4张
+  var gapX = (W - cols * type.w) / (cols + 1);
+  var gapY = (H - rows * type.h) / (rows + 1);
+  for (var r = 0; r < rows; r++) {
+    for (var c = 0; c < cols; c++) {
+      var x = gapX + c * (type.w + gapX);
+      var y = gapY + r * (type.h + gapY);
+      ctx.drawImage(photo, x, y, type.w, type.h);
+    }
+  }
+}
+
+function idpDownload() {
+  var type = IDP_TYPES[document.getElementById('idp-type').value] || IDP_TYPES['1inch'];
+  var target = document.getElementById('idp-bg').value;
+  var tol = parseInt(document.getElementById('idp-tolerance').value, 10) || 60;
+  var srcHex = document.getElementById('idp-srcbg').value;
+  var c = idpBuildPhoto(type, tol, srcHex, target);
+  var a = document.createElement('a');
+  a.download = '证件照-' + type.name + '-' + type.mm + '.png';
+  a.href = c.toDataURL('image/png');
+  a.click();
+  showToast('✅ 证件照已下载');
+}
+
+function idpDownloadSheet() {
+  var type = IDP_TYPES[document.getElementById('idp-type').value] || IDP_TYPES['1inch'];
+  var target = document.getElementById('idp-bg').value;
+  var tol = parseInt(document.getElementById('idp-tolerance').value, 10) || 60;
+  var srcHex = document.getElementById('idp-srcbg').value;
+  var c = document.createElement('canvas');
+  c.width = 1800; c.height = 1200;
+  var ctx = c.getContext('2d');
+  ctx.fillStyle = '#ffffff';
+  ctx.fillRect(0, 0, 1800, 1200);
+  var photo = idpBuildPhoto(type, tol, srcHex, target);
+  var cols = type.w <= 300 ? 4 : 2;
+  var rows = 2;
+  var gapX = (1800 - cols * type.w) / (cols + 1);
+  var gapY = (1200 - rows * type.h) / (rows + 1);
+  for (var r = 0; r < rows; r++) {
+    for (var cc = 0; cc < cols; cc++) {
+      var x = gapX + cc * (type.w + gapX);
+      var y = gapY + r * (type.h + gapY);
+      ctx.drawImage(photo, x, y, type.w, type.h);
+    }
+  }
+  var a = document.createElement('a');
+  a.download = '证件照6寸排版-' + type.name + '.png';
+  a.href = c.toDataURL('image/png');
+  a.click();
+  showToast('✅ 6寸排版已下载，可去冲印');
+}
+
+// ============================================================
+// 在线Logo制作工具 处理函数
+// ============================================================
+var LG_COLORS = [
+  { name:'科技蓝', c1:'#4f46e5', c2:'#7c3aed', text:'#1e1b4b' },
+  { name:'活力橙', c1:'#f97316', c2:'#ef4444', text:'#7c2d12' },
+  { name:'翡翠绿', c1:'#10b981', c2:'#059669', text:'#064e3b' },
+  { name:'玫瑰红', c1:'#ec4899', c2:'#db2777', text:'#831843' },
+  { name:'土豪金', c1:'#f59e0b', c2:'#d97706', text:'#78350f' },
+  { name:'海洋青', c1:'#06b6d4', c2:'#3b82f6', text:'#172554' },
+  { name:'紫罗兰', c1:'#8b5cf6', c2:'#6366f1', text:'#312e81' },
+  { name:'森林绿', c1:'#22c55e', c2:'#16a34a', text:'#14532d' },
+  { name:'酷黑金', c1:'#111827', c2:'#374151', text:'#f59e0b' },
+  { name:'珊瑚粉', c1:'#fb7185', c2:'#f43f5e', text:'#881337' }
+];
+var lgCanvas, lgCtx, lgShowBg = false;
+
+function lgInit() {
+  lgCanvas = document.getElementById('lg-canvas');
+  if (!lgCanvas) return;
+  lgCtx = lgCanvas.getContext('2d');
+  lgRender();
+}
+
+function lgState() {
+  return {
+    name: document.getElementById('lg-name').value || '星火科技',
+    slogan: document.getElementById('lg-slogan').value || '',
+    icon: document.getElementById('lg-icon').value || '🚀',
+    color: LG_COLORS[parseInt(document.getElementById('lg-color').value,10) || 0],
+    layout: document.getElementById('lg-layout').value || 'horizontal',
+    font: document.getElementById('lg-font').value || "'PingFang SC','Microsoft YaHei',sans-serif"
+  };
+}
+
+function lgRender() {
+  if (!lgCanvas) return;
+  var s = lgState();
+  var W = 1200, H = 600;
+  lgCanvas.width = W; lgCanvas.height = H;
+  var ctx = lgCtx;
+  ctx.clearRect(0, 0, W, H);
+  if (lgShowBg) { ctx.fillStyle = '#ffffff'; ctx.fillRect(0, 0, W, H); }
+
+  var grad = ctx.createLinearGradient(100, 0, W-100, 0);
+  grad.addColorStop(0, s.color.c1);
+  grad.addColorStop(1, s.color.c2);
+
+  ctx.textBaseline = 'middle';
+
+  if (s.layout === 'vertical') {
+    // 图标上、文字下
+    ctx.font = '220px sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText(s.icon, W/2, 200);
+    ctx.fillStyle = grad;
+    ctx.font = 'bold 110px ' + s.font;
+    ctx.fillText(s.name, W/2, 420);
+    if (s.slogan) {
+      ctx.fillStyle = s.color.text;
+      ctx.font = '34px ' + s.font;
+      ctx.fillText(s.slogan, W/2, 500);
+    }
+  } else if (s.layout === 'badge') {
+    // 圆角徽章
+    var bw = 560, bh = 560, bx = (W-bw)/2, by = (H-bh)/2;
+    ctx.beginPath();
+    ctx.moveTo(bx+40, by);
+    ctx.arcTo(bx+bw, by, bx+bw, by+bh, 40);
+    ctx.arcTo(bx+bw, by+bh, bx, by+bh, 40);
+    ctx.arcTo(bx, by+bh, bx, by, 40);
+    ctx.arcTo(bx, by, bx+bw, by, 40);
+    ctx.closePath();
+    ctx.fillStyle = grad;
+    ctx.fill();
+    ctx.font = '150px sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText(s.icon, W/2, by+bh/2+30);
+    ctx.fillStyle = '#ffffff';
+    ctx.font = 'bold 44px ' + s.font;
+    ctx.fillText(s.name, W/2, by+bh/2+150);
+    if (s.slogan) {
+      ctx.font = '26px ' + s.font;
+      ctx.fillStyle = 'rgba(255,255,255,0.85)';
+      ctx.fillText(s.slogan, W/2, by+bh/2+205);
+    }
+  } else {
+    // 横排：图标左、文字右
+    ctx.font = '220px sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText(s.icon, 220, H/2 + 10);
+    ctx.fillStyle = grad;
+    ctx.font = 'bold 120px ' + s.font;
+    ctx.textAlign = 'left';
+    ctx.fillText(s.name, 460, H/2 - (s.slogan ? 40 : 0));
+    if (s.slogan) {
+      ctx.fillStyle = s.color.text;
+      ctx.font = '38px ' + s.font;
+      ctx.fillText(s.slogan, 470, H/2 + 70);
+    }
+  }
+}
+
+function lgCopyBg() {
+  lgShowBg = !lgShowBg;
+  lgRender();
+  showToast(lgShowBg ? '白底预览' : '透明网格预览');
+}
+
+function lgDownload(fmt) {
+  var s = lgState();
+  if (fmt === 'svg') {
+    var svg = lgBuildSvg(s);
+    var blob = new Blob([svg], {type: 'image/svg+xml;charset=utf-8'});
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url;
+    a.download = 'logo-' + s.name + '.svg';
+    a.click();
+    setTimeout(function(){ URL.revokeObjectURL(url); }, 1000);
+    showToast('✅ SVG已下载');
+  } else {
+    lgRender();
+    var a = document.createElement('a');
+    a.download = 'logo-' + s.name + '.png';
+    a.href = lgCanvas.toDataURL('image/png');
+    a.click();
+    showToast('✅ PNG已下载');
+  }
+}
+
+function lgBuildSvg(s) {
+  var W = 1200, H = 600;
+  var font = s.font.replace(/'/g, '').split(',')[0];
+  var parts = [];
+  parts.push('<svg xmlns="http://www.w3.org/2000/svg" width="' + W + '" height="' + H + '" viewBox="0 0 ' + W + ' ' + H + '">');
+  parts.push('<defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="' + s.color.c1 + '"/><stop offset="1" stop-color="' + s.color.c2 + '"/></linearGradient></defs>');
+  if (s.layout === 'vertical') {
+    parts.push('<text x="600" y="200" font-size="220" text-anchor="middle">' + s.icon + '</text>');
+    parts.push('<text x="600" y="420" font-size="110" font-weight="bold" fill="url(#g)" font-family="' + font + '" text-anchor="middle">' + s.name + '</text>');
+    if (s.slogan) parts.push('<text x="600" y="500" font-size="34" fill="' + s.color.text + '" font-family="' + font + '" text-anchor="middle">' + s.slogan + '</text>');
+  } else if (s.layout === 'badge') {
+    parts.push('<rect x="320" y="20" width="560" height="560" rx="40" fill="url(#g)"/>');
+    parts.push('<text x="600" y="330" font-size="150" text-anchor="middle">' + s.icon + '</text>');
+    parts.push('<text x="600" y="450" font-size="44" font-weight="bold" fill="#ffffff" font-family="' + font + '" text-anchor="middle">' + s.name + '</text>');
+    if (s.slogan) parts.push('<text x="600" y="505" font-size="26" fill="rgba(255,255,255,0.85)" font-family="' + font + '" text-anchor="middle">' + s.slogan + '</text>');
+  } else {
+    parts.push('<text x="220" y="310" font-size="220" text-anchor="middle">' + s.icon + '</text>');
+    parts.push('<text x="460" y="' + (s.slogan ? 260 : 310) + '" font-size="120" font-weight="bold" fill="url(#g)" font-family="' + font + '">' + s.name + '</text>');
+    if (s.slogan) parts.push('<text x="470" y="370" font-size="38" fill="' + s.color.text + '" font-family="' + font + '">' + s.slogan + '</text>');
+  }
+  parts.push('</svg>');
+  return parts.join('\n');
 }
