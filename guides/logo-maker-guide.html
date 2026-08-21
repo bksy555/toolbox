@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>在线Logo制作：3步生成品牌Logo（20图标×10色系） - ToolBox 工具箱指南</title>
+  <meta name="description" content="图文详解在线Logo制作的完整步骤，20个图标×10套配色×3种版式×5种字体自由组合，免费生成高清PNG/SVG品牌标识，无需注册。">
+  <meta name="keywords" content="在线Logo制作,Logo生成器,品牌Logo设计,免费Logo,Logo制作工具,商标设计,标识设计">
+  <meta name="author" content="ToolBox">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://toolai.ccwu.cc/guides/logo-maker-guide.html">
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    :root {
+      --bg: #0f0f1a;
+      --bg-card: #1a1a2e;
+      --text: #e0e0e0;
+      --text-light: #8888aa;
+      --border: #2a2a44;
+      --accent: #6366f1;
+      --accent-hover: #4f46e5;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Noto Sans SC', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      margin: 0;
+      line-height: 1.8;
+    }
+    .guide-header {
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+      border-bottom: 1px solid var(--border);
+      padding: 20px 0;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(10px);
+    }
+    .guide-header-inner {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 0 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .guide-header a {
+      color: var(--accent);
+      text-decoration: none;
+      font-size: 14px;
+    }
+    .guide-header a:hover { color: var(--accent-hover); }
+    .guide-container {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 40px 20px 80px;
+    }
+    .guide-breadcrumb {
+      font-size: 13px;
+      color: var(--text-light);
+      margin-bottom: 20px;
+    }
+    .guide-breadcrumb a { color: var(--accent); text-decoration: none; }
+    .guide-breadcrumb a:hover { text-decoration: underline; }
+    h1 {
+      font-size: 32px;
+      font-weight: 700;
+      margin: 0 0 10px;
+      line-height: 1.3;
+      background: linear-gradient(135deg, #e0e0e0, #a78bfa);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .guide-meta {
+      font-size: 13px;
+      color: var(--text-light);
+      margin-bottom: 30px;
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .guide-meta span { display: flex; align-items: center; gap: 4px; }
+    h2 {
+      font-size: 22px;
+      font-weight: 600;
+      margin: 40px 0 16px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border);
+      color: #e0e0e0;
+    }
+    h3 {
+      font-size: 18px;
+      font-weight: 600;
+      margin: 28px 0 12px;
+      color: #ccc;
+    }
+    p { margin: 0 0 16px; color: #ccc; }
+    .guide-step {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px;
+      margin: 24px 0;
+      position: relative;
+    }
+    .guide-step-number {
+      position: absolute;
+      top: -12px;
+      left: 20px;
+      background: var(--accent);
+      color: #fff;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: 700;
+    }
+    .guide-step h3 { margin-top: 0; }
+    .guide-img {
+      max-width: 100%;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      margin: 16px 0;
+      display: block;
+    }
+    .guide-img-caption {
+      text-align: center;
+      font-size: 13px;
+      color: var(--text-light);
+      margin: 4px 0 16px;
+    }
+    .guide-tip {
+      background: rgba(99,102,241,0.1);
+      border-left: 4px solid var(--accent);
+      padding: 12px 16px;
+      border-radius: 0 8px 8px 0;
+      margin: 16px 0;
+      font-size: 14px;
+      color: #ccc;
+    }
+    .guide-tip strong { color: #a78bfa; }
+    .guide-gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 16px;
+      margin: 16px 0;
+    }
+    .guide-gallery-item {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+      text-align: center;
+    }
+    .guide-gallery-item img { width: 100%; display: block; }
+    .guide-gallery-item .label {
+      padding: 8px;
+      font-size: 13px;
+      color: var(--text-light);
+    }
+    .guide-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16px 0;
+      font-size: 14px;
+    }
+    .guide-table th, .guide-table td {
+      border: 1px solid var(--border);
+      padding: 10px 14px;
+      text-align: left;
+    }
+    .guide-table th { background: var(--bg-card); color: #e0e0e0; font-weight: 600; }
+    .guide-table td { color: #ccc; }
+    .guide-cta {
+      text-align: center;
+      background: linear-gradient(135deg, #1a1a2e, #16213e);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 32px;
+      margin: 40px 0;
+    }
+    .guide-cta p { font-size: 16px; margin-bottom: 20px; }
+    .guide-cta .btn {
+      display: inline-block;
+      background: linear-gradient(135deg, #6366f1, #8b5cf6);
+      color: #fff;
+      padding: 12px 32px;
+      border-radius: 30px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 16px;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .guide-cta .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(99,102,241,0.3); }
+    .footer-nav {
+      margin-top: 40px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      font-size: 14px;
+    }
+    .footer-nav a { color: var(--accent); text-decoration: none; }
+    .footer-nav a:hover { text-decoration: underline; }
+    @media (max-width: 600px) {
+      h1 { font-size: 24px; }
+      .guide-container { padding: 20px 16px 60px; }
+      .guide-step { padding: 20px 16px; }
+      .guide-gallery { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <header class="guide-header">
+    <div class="guide-header-inner">
+      <a href="https://toolai.ccwu.cc/">🧰 ToolBox 首页</a>
+      <a href="../index.html#guides">📖 工具箱指南</a>
+    </div>
+  </header>
+
+  <div class="guide-container">
+    <!-- 面包屑 -->
+    <div class="guide-breadcrumb">
+      <a href="https://toolai.ccwu.cc/">首页</a> / <a href="../index.html#guides">工具箱指南</a> / 在线Logo制作
+    </div>
+
+    <h1>在线Logo制作：3步生成你的品牌Logo</h1>
+
+    <div class="guide-meta">
+      <span>📅 2026-08-21</span>
+      <span>✏️ ToolBox 编辑部</span>
+      <span>📖 阅读约 5 分钟</span>
+    </div>
+
+    <p>开工作室、做自媒体、摆个摊、甚至只是给班级群设计个头像——都需要一个像样的 Logo。找设计师报价几百上千，用 Looka 这类付费工具一个月也要 $20-96，真心不便宜。</p>
+
+    <p><strong>在线Logo制作</strong> 把 Logo 设计最常用的几套组合搬进了浏览器：<strong>20 个精选图标 × 10 套品牌配色 × 3 种版式 × 5 种字体</strong>，输入品牌名、选好组合，3 步生成下载即可用的高清 Logo（PNG 带透明背景 / SVG 矢量图）。全程免费、纯本地生成，不用注册也不用上传任何资料。</p>
+
+    <!-- ====== 第一步 ====== -->
+    <div class="guide-step">
+      <div class="guide-step-number">1</div>
+      <h3>打开 Logo 制作工具，输入品牌名称</h3>
+      <p>进入 ToolBox 首页，点击「图片处理」分类，找到「在线Logo制作」工具卡片。界面从上到下依次是：<strong>品牌名称</strong>、<strong>副标题</strong>、<strong>图标</strong>、<strong>配色方案</strong>、<strong>版式</strong>、<strong>品牌字体</strong>。</p>
+      <p>先在「品牌名称」里输入你的品牌名（比如"星火科技"），副标题可以填一句话或英文 slogan（如"SPARK TECH · 点亮未来"）。输入的同时，下方的 Logo 画布会<strong>实时更新</strong>——所见即所得。</p>
+      <img src="images/lg-step1-default.png" alt="在线Logo制作工具界面 - 输入品牌名" class="guide-img">
+      <div class="guide-img-caption">▲ 输入品牌名和副标题后，画布实时渲染默认的横排样式（科技蓝+火箭）</div>
+
+      <div class="guide-tip">
+        <strong>💡 小技巧：</strong> 图标下拉框里有 20 个精选图形（🚀火箭、💎钻石、⚡闪电、🔥火焰、🌿绿叶、🎯靶心、🏆奖杯……）。主业做什么就选什么图标，比如做餐饮选 ☕ 咖啡、做教育选 🎓 相关的图形，一眼就能传达品牌属性。
+      </div>
+    </div>
+
+    <!-- ====== 第二步 ====== -->
+    <div class="guide-step">
+      <div class="guide-step-number">2</div>
+      <h3>选配色、换版式、调字体</h3>
+      <p>这是最有意思的一步。三种「版式」适合不同用途：</p>
+
+      <h3>🖼️ 3 种版式怎么选？</h3>
+      <table class="guide-table">
+        <thead>
+          <tr><th>版式</th><th>效果</th><th>适用场景</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>图标+文字（横排）</td><td>图标在左、名称在右</td><td>网站页眉、名片、PPT 页角，最通用</td></tr>
+          <tr><td>图标+文字（竖排）</td><td>图标在上、名称在下</td><td>App 图标、头像、门店招牌</td></tr>
+          <tr><td><strong>徽章式</strong></td><td>圆角徽章底 + 图标 + 名称</td><td>社群头像、淘宝店标、胸章 🔥</td></tr>
+        </tbody>
+      </table>
+
+      <p>然后是配色：10 套现成品牌色系——科技蓝、活力橙、翡翠绿、玫瑰红、土豪金、海洋青、紫罗兰、森林绿、酷黑金、珊瑚粉，每套都配好了渐变主色和文字色，不会出现"红配绿"的翻车组合。</p>
+
+      <p>下面两张图展示了不同配色和版式的效果对比：</p>
+
+      <div class="guide-gallery">
+        <div class="guide-gallery-item">
+          <img src="images/lg-step2-custom.png" alt="土豪金配色+奖杯图标横排效果">
+          <div class="label">🏆 土豪金 + 奖杯图标 · 横排（适合获奖导向/庆典）</div>
+        </div>
+        <div class="guide-gallery-item">
+          <img src="images/lg-step3-vertical.png" alt="海洋青配色+绿叶图标竖排效果">
+          <div class="label">🌿 海洋青 + 绿叶图标 · 竖排（适合自然/环保类）</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ====== 第三步 ====== -->
+    <div class="guide-step">
+      <div class="guide-step-number">3</div>
+      <h3>下载 PNG / SVG，完成！</h3>
+      <p>样式满意后点击「⬇️ 下载PNG」即可保存 1200×600 的高清透明背景图片；如果后续还要改尺寸、换颜色，点击「📄 下载SVG」会拿到一份矢量文件，用任何设计软件（Figma、Illustrator、Inkscape）无限缩放都不糊。</p>
+      <p>「🎨 切换透明/白底」按钮可以切换预览底色，确认透明背景效果。</p>
+
+      <img src="images/lg-step4-badge.png" alt="徽章式Logo效果 - 玫瑰红配色+音乐图标" class="guide-img">
+      <div class="guide-img-caption">▲ 徽章式版式示例：玫瑰红配色 + 🎵 音乐图标 + "美乐工作室"，适合社群头像/店标</div>
+
+      <div class="guide-tip">
+        <strong>📌 使用建议：</strong> 横排 Logo 优先下载 PNG（透明底）放网站导航和 PPT；徽章式 Logo 适合直接当微信群/QQ 群头像；SVG 版本建议长期保存，之后做名片、包装都用得上。
+      </div>
+    </div>
+
+    <!-- ====== 使用场景 ====== -->
+    <h2>🎯 品牌 Logo 的 5 个实用场景</h2>
+
+    <p>生成的 Logo 图片能用在哪些地方？这里列举最常见的几个场景：</p>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin:20px 0;">
+      <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:16px;text-align:center;">
+        <div style="font-size:28px;margin-bottom:8px;">🌐</div>
+        <div style="font-weight:600;font-size:14px;margin-bottom:4px;">网站/店铺招牌</div>
+        <div style="font-size:12px;color:var(--text-light);">网站导航、淘宝/拼多多店标</div>
+      </div>
+      <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:16px;text-align:center;">
+        <div style="font-size:28px;margin-bottom:8px;">💬</div>
+        <div style="font-weight:600;font-size:14px;margin-bottom:4px;">社群头像</div>
+        <div style="font-size:12px;color:var(--text-light);">微信群、QQ群、知识星球头像</div>
+      </div>
+      <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:16px;text-align:center;">
+        <div style="font-size:28px;margin-bottom:8px;">📊</div>
+        <div style="font-weight:600;font-size:14px;margin-bottom:4px;">PPT/文档封面</div>
+        <div style="font-size:12px;color:var(--text-light);">汇报封面、方案书页眉</div>
+      </div>
+      <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:16px;text-align:center;">
+        <div style="font-size:28px;margin-bottom:8px;">📱</div>
+        <div style="font-weight:600;font-size:14px;margin-bottom:4px;">自媒体账号</div>
+        <div style="font-size:12px;color:var(--text-light);">抖音/小红书/B站头像角落水印</div>
+      </div>
+      <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:16px;text-align:center;">
+        <div style="font-size:28px;margin-bottom:8px;">🎁</div>
+        <div style="font-weight:600;font-size:14px;margin-bottom:4px;">周边定制</div>
+        <div style="font-size:12px;color:var(--text-light);">T恤、帆布袋、马克杯印刷前稿</div>
+      </div>
+    </div>
+
+    <!-- ====== 常见问题 ====== -->
+    <h2>❓ 常见问题</h2>
+
+    <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:20px;margin:16px 0;">
+      <p><strong>Q：下载的 Logo 是透明背景吗？</strong></p>
+      <p>PNG 默认就是透明背景，可直接叠加在任何底色上。预览区的棋盘格就是透明底的意思，也可以用「切换透明/白底」按钮确认效果。</p>
+    </div>
+    <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:20px;margin:16px 0;">
+      <p><strong>Q：PNG 和 SVG 有什么区别，我该下载哪个？</strong></p>
+      <p>PNG 是位图，发到网上、放文档里最方便；SVG 是矢量图，放大不模糊，适合后续二次编辑。建议两个都下载，SVG 永久保存当"母本"。</p>
+    </div>
+    <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:20px;margin:16px 0;">
+      <p><strong>Q：图片会传到服务器吗？会不会泄露品牌名？</strong></p>
+      <p>不会。Logo 全部在浏览器本地用 Canvas 绘制生成，不经过任何服务器，输入的品牌名不会离开你的电脑。</p>
+    </div>
+    <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:20px;margin:16px 0;">
+      <p><strong>Q：做好的 Logo 能注册商标/商用吗？</strong></p>
+      <p>可以商用。不过请注意：图标来自通用 Emoji 图形，全球很多商家可能使用类似图案，正式注册商标前建议找设计师做个性化定制或查重。</p>
+    </div>
+
+    <!-- ====== CTA ====== -->
+    <div class="guide-cta">
+      <p>📌 还没试过？现在就去生成一个属于你的品牌 Logo 吧</p>
+      <a href="https://toolai.ccwu.cc/" class="btn">🎨 去制作 Logo →</a>
+    </div>
+
+    <!-- ====== 底部导航 ====== -->
+    <div class="footer-nav">
+      <a href="../index.html#guides">← 返回工具箱指南列表</a>
+      <a href="https://toolai.ccwu.cc/">🏠 回到首页</a>
+    </div>
+  </div>
+</body>
+</html>
