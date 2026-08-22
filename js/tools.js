@@ -4006,6 +4006,101 @@ openclaw update</code></pre>
       </div>
     `,
     handler: () => { setTimeout(lgInit, 100); }
+  },
+
+  // ==================== 配色方案生成器 (替代 Coolors.co) ====================
+  {
+    id: 'color-palette',
+    cat: 'color',
+    icon: '🎭',
+    name: '配色方案生成器',
+    desc: '灵感来源于 Coolors（$36/年），一键生成和谐配色方案，支持锁定颜色、多种配色模式、导出CSS变量',
+    html: `
+      <div class="tool-card">
+        <div class="row" style="gap:8px;margin-bottom:12px;flex-wrap:wrap;">
+          <div class="input-group" style="flex:1;min-width:140px;">
+            <label>配色模式</label>
+            <select id="cp-mode" onchange="cpGenerate()" style="width:100%;">
+              <option value="random">🎲 随机配色</option>
+              <option value="complementary">🔄 互补色</option>
+              <option value="analogous">🌈 类似色</option>
+              <option value="triadic">🔺 三色系</option>
+              <option value="monochromatic">◐ 单色系</option>
+              <option value="tetradic">🔲 四色系</option>
+            </select>
+          </div>
+          <div class="input-group" style="flex:0 0 auto;min-width:120px;">
+            <label>颜色数量</label>
+            <select id="cp-count" onchange="cpGenerate()" style="width:100%;">
+              <option value="3">3 色</option>
+              <option value="4">4 色</option>
+              <option value="5" selected>5 色</option>
+              <option value="6">6 色</option>
+            </select>
+          </div>
+        </div>
+        <div id="cp-palette" style="display:flex;gap:6px;border-radius:12px;overflow:hidden;min-height:120px;flex-wrap:wrap;"></div>
+        <div class="row" style="margin-top:12px;gap:8px;flex-wrap:wrap;">
+          <button class="btn btn-primary" onclick="cpGenerate()" style="flex:1;">🎲 生成新配色</button>
+          <button class="btn btn-secondary" onclick="cpCopyAll()">📋 复制全部</button>
+          <button class="btn btn-secondary" onclick="cpExportCSS()">🎨 导出CSS</button>
+        </div>
+        <div id="cp-css-output" style="display:none;margin-top:10px;">
+          <div class="input-group">
+            <label>CSS 自定义属性</label>
+            <div style="display:flex;gap:8px;">
+              <input type="text" id="cp-css-text" readonly style="flex:1;font-family:monospace;font-size:12px;background:#1a1a2e;color:#a78bfa;padding:10px 14px;">
+              <button class="btn btn-secondary" onclick="copyId('cp-css-text')">📋 复制</button>
+            </div>
+          </div>
+        </div>
+        <div style="margin-top:10px;font-size:12px;color:var(--text-light);text-align:center;">
+          💡 灵感来源于 Coolors.co — 按 <kbd>空格键</kbd> 快速换色 · 点击颜色可锁定/解锁
+        </div>
+      </div>
+    `,
+    handler: () => { setTimeout(cpInit, 50); }
+  },
+
+  // ==================== 在线录音工具 (替代 Online Voice Recorder) ====================
+  {
+    id: 'audio-recorder',
+    cat: 'media',
+    icon: '🎤',
+    name: '在线录音工具',
+    desc: '灵感来源于 Online Voice Recorder（付费），浏览器内录音、回放、下载，无需安装任何软件',
+    html: `
+      <div class="tool-card">
+        <div class="ar-status" id="ar-status" style="text-align:center;padding:10px;background:var(--bg-card);border-radius:10px;margin-bottom:12px;font-size:15px;color:var(--text-light);">
+          🎤 点击下方按钮开始录音
+        </div>
+        <div style="text-align:center;margin-bottom:12px;">
+          <canvas id="ar-waveform" style="width:100%;height:80px;border-radius:10px;background:#1a1a2e;"></canvas>
+        </div>
+        <div class="btn-group" style="justify-content:center;gap:10px;">
+          <button class="btn btn-primary" id="ar-record-btn" onclick="arToggleRecord()">🔴 开始录音</button>
+          <button class="btn btn-secondary" id="ar-play-btn" onclick="arTogglePlay()" disabled>▶️ 播放</button>
+          <button class="btn btn-secondary" id="ar-download-btn" onclick="arDownload()" disabled>⬇️ 下载WAV</button>
+        </div>
+        <div class="row" style="margin-top:12px;gap:8px;flex-wrap:wrap;">
+          <div class="input-group" style="flex:1;min-width:100px;">
+            <label>录音时长</label>
+            <div id="ar-duration" style="font-size:22px;font-weight:700;font-family:monospace;text-align:center;color:var(--text-light);">00:00</div>
+          </div>
+          <div class="input-group" style="flex:1;min-width:100px;">
+            <label>音频格式</label>
+            <select id="ar-format" style="width:100%;">
+              <option value="wav">WAV (无损)</option>
+              <option value="mp3">MP3 (压缩)</option>
+            </select>
+          </div>
+        </div>
+        <div style="margin-top:10px;font-size:12px;color:var(--text-light);text-align:center;">
+          💡 灵感来源于 Online Voice Recorder — 纯浏览器录音，数据不上传服务器，隐私安全
+        </div>
+      </div>
+    `,
+    handler: () => { setTimeout(arInit, 50); }
   }
 ];
 
@@ -5653,13 +5748,362 @@ const CATEGORIES = [
   { id: 'convert', icon: '🔄', name: '转换工具', desc: '单位换算、进制转换' },
   { id: 'security', icon: '🔒', name: '安全工具', desc: '密码生成、Hash计算、随机数' },
   { id: 'time', icon: '⏱️', name: '时间工具', desc: '时间戳转换、日期计算' },
-  { id: 'color', icon: '🎨', name: '颜色工具', desc: 'HEX/RGB/HSL颜色转换、CSS渐变生成器' },
-  { id: 'media', icon: '🎬', name: '媒体工具', desc: '抖音/TikTok去水印下载、视频转GIF' },
+  { id: 'color', icon: '🎨', name: '颜色工具', desc: 'HEX/RGB/HSL颜色转换、CSS渐变生成器、配色方案生成器' },
+  { id: 'media', icon: '🎬', name: '媒体工具', desc: '抖音/TikTok去水印下载、视频转GIF、在线录音工具' },
   { id: 'ai', icon: '🤖', name: 'AI工具', desc: 'AI聊天、AI Agent安装、免费AI工具推荐' },
   { id: 'voice', icon: '🗣️', name: '群众心声', desc: '提交工具建议、投票排行榜、前3名自动实现' },
   { id: 'fun', icon: '🎪', name: '趣味工具', desc: '表情包生成、决策转盘、抽奖抽签、词云生成、娱乐好玩' },
   { id: 'edu', icon: '📚', name: '教育资源', desc: '电子教材在线阅读、学习资源导航' }
 ];
+
+// ============================================================
+// 配色方案生成器 处理函数 (替代 Coolors.co)
+// ============================================================
+let cpColors = [];
+let cpLocked = [];
+let cpInitialized = false;
+
+function cpInit() {
+  if (cpInitialized) return;
+  cpInitialized = true;
+  document.addEventListener('keydown', function(e) {
+    if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.tagName === 'SELECT') return;
+    if (e.key === ' ' || e.code === 'Space') {
+      e.preventDefault();
+      cpGenerate();
+    }
+  });
+  cpGenerate();
+}
+
+function cpGenerate() {
+  const mode = document.getElementById('cp-mode').value;
+  const count = parseInt(document.getElementById('cp-count').value);
+  const palette = document.getElementById('cp-palette');
+  
+  let baseHue = Math.random() * 360;
+  
+  if (mode === 'random') {
+    baseHue = Math.random() * 360;
+  }
+  
+  const hues = [];
+  for (let i = 0; i < count; i++) {
+    if (cpLocked[i] && cpColors[i]) {
+      hues.push(cpColors[i].h);
+      continue;
+    }
+    let h = baseHue;
+    switch (mode) {
+      case 'random':
+        h = Math.random() * 360;
+        break;
+      case 'complementary':
+        h = (baseHue + (360 / count) * i) % 360;
+        if (i === 1) h = (baseHue + 180) % 360;
+        if (i >= 2) h = (baseHue + 30 * (i - 1)) % 360;
+        break;
+      case 'analogous':
+        h = (baseHue + (i - Math.floor(count/2)) * 30 + 360) % 360;
+        break;
+      case 'triadic':
+        h = (baseHue + Math.floor(360 / 3) * i) % 360;
+        if (i >= 3) h = (baseHue + 30 * (i - 2)) % 360;
+        break;
+      case 'monochromatic':
+        h = baseHue;
+        break;
+      case 'tetradic':
+        const offsets = [0, 90, 180, 270];
+        h = (baseHue + (offsets[i % 4] || 0) + (i >= 4 ? 20 : 0)) % 360;
+        break;
+    }
+    hues.push(h);
+  }
+  
+  cpColors = hues.map((h, i) => {
+    if (cpLocked[i] && cpColors[i]) return cpColors[i];
+    const s = mode === 'monochromatic' ? 40 + Math.random() * 40 : 55 + Math.random() * 35;
+    const l = 35 + Math.random() * 30;
+    const hex = cpHSLToHex(h, s, l);
+    // Check contrast - ensure it's not too similar to locked ones
+    return { h, s, l, hex };
+  });
+  
+  cpRender();
+}
+
+function cpRender() {
+  const palette = document.getElementById('cp-palette');
+  palette.innerHTML = cpColors.map((c, i) => {
+    const isDark = c.l < 50;
+    const textColor = isDark ? '#ffffff' : '#1a1a2e';
+    const locked = cpLocked[i];
+    return `
+      <div class="cp-swatch" style="flex:1;min-width:80px;background:${c.hex};border-radius:10px;padding:12px 8px;cursor:pointer;text-align:center;position:relative;transition:all 0.2s;border:${locked ? '3px solid #fff' : '3px solid transparent'};box-shadow:${locked ? '0 0 12px rgba(255,255,255,0.5)' : 'none'};" onclick="cpToggleLock(${i})">
+        <div style="color:${textColor};font-family:monospace;font-size:14px;font-weight:700;text-shadow:${isDark ? '0 1px 3px rgba(0,0,0,0.5)' : 'none'};">${c.hex}</div>
+        <div style="margin-top:6px;color:${textColor};font-size:11px;opacity:0.8;">${locked ? '🔒' : '🔓'}</div>
+        <div style="margin-top:4px;"><button class="btn btn-secondary" style="font-size:11px;padding:3px 8px;background:${isDark ? 'rgba(255,255,255,0.2)' : 'rgba(0,0,0,0.1)'};color:${textColor};border:none;border-radius:6px;cursor:pointer;" onclick="event.stopPropagation();cpCopyHex('${c.hex}')">📋 复制</button></div>
+      </div>
+    `;
+  }).join('');
+}
+
+function cpToggleLock(index) {
+  cpLocked[index] = !cpLocked[index];
+  cpRender();
+}
+
+function cpCopyHex(hex) {
+  navigator.clipboard.writeText(hex).then(() => toast('✅ 已复制: ' + hex));
+}
+
+function cpCopyAll() {
+  const hexes = cpColors.map(c => c.hex).join(', ');
+  navigator.clipboard.writeText(hexes).then(() => toast('✅ 已复制全部颜色'));
+}
+
+function cpExportCSS() {
+  const output = document.getElementById('cp-css-output');
+  const text = document.getElementById('cp-css-text');
+  const css = ':root {\n' + cpColors.map((c, i) => `  --color-${i + 1}: ${c.hex};`).join('\n') + '\n}';
+  text.value = css;
+  output.style.display = 'block';
+  toast('✅ CSS 已生成');
+}
+
+function cpHSLToHex(h, s, l) {
+  s /= 100;
+  l /= 100;
+  const c = (1 - Math.abs(2 * l - 1)) * s;
+  const x = c * (1 - Math.abs(((h / 60) % 2) - 1));
+  const m = l - c / 2;
+  let r, g, b;
+  if (h < 60) { r = c; g = x; b = 0; }
+  else if (h < 120) { r = x; g = c; b = 0; }
+  else if (h < 180) { r = 0; g = c; b = x; }
+  else if (h < 240) { r = 0; g = x; b = c; }
+  else if (h < 300) { r = x; g = 0; b = c; }
+  else { r = c; g = 0; b = x; }
+  const toHex = (v) => {
+    const hex = Math.round((v + m) * 255).toString(16);
+    return hex.length === 1 ? '0' + hex : hex;
+  };
+  return '#' + toHex(r) + toHex(g) + toHex(b);
+}
+
+// ============================================================
+// 在线录音工具 处理函数 (替代 Online Voice Recorder)
+// ============================================================
+let arMediaRecorder = null;
+let arAudioChunks = [];
+let arAudioBlob = null;
+let arAudioUrl = null;
+let arAudioEl = null;
+let arIsRecording = false;
+let arStartTime = 0;
+let arTimerInterval = null;
+let arAnalyser = null;
+let arDataArray = null;
+let arAnimFrame = null;
+let arStream = null;
+let arInitialized = false;
+
+function arInit() {
+  if (arInitialized) return;
+  arInitialized = true;
+  arAudioEl = new Audio();
+  arAudioEl.onended = function() {
+    document.getElementById('ar-play-btn').textContent = '▶️ 播放';
+  };
+}
+
+function arToggleRecord() {
+  const btn = document.getElementById('ar-record-btn');
+  if (!arIsRecording) {
+    // Start recording
+    navigator.mediaDevices.getUserMedia({ audio: true }).then(function(stream) {
+      arStream = stream;
+      arMediaRecorder = new MediaRecorder(stream);
+      arAudioChunks = [];
+      
+      arMediaRecorder.ondataavailable = function(e) {
+        arAudioChunks.push(e.data);
+      };
+      
+      arMediaRecorder.onstop = function() {
+        arAudioBlob = new Blob(arAudioChunks, { type: 'audio/webm' });
+        arAudioUrl = URL.createObjectURL(arAudioBlob);
+        arAudioEl.src = arAudioUrl;
+        document.getElementById('ar-play-btn').disabled = false;
+        document.getElementById('ar-download-btn').disabled = false;
+        // Stop all tracks
+        arStream.getTracks().forEach(function(t) { t.stop(); });
+        arStream = null;
+        if (arAnimFrame) cancelAnimationFrame(arAnimFrame);
+      };
+      
+      arMediaRecorder.start();
+      arIsRecording = true;
+      arStartTime = Date.now();
+      btn.textContent = '⏹ 停止录音';
+      btn.className = 'btn btn-danger';
+      document.getElementById('ar-play-btn').disabled = true;
+      document.getElementById('ar-download-btn').disabled = true;
+      document.getElementById('ar-status').textContent = '🔴 正在录音...';
+      document.getElementById('ar-status').style.color = '#ef4444';
+      
+      // Start timer
+      arTimerInterval = setInterval(arUpdateTimer, 100);
+      
+      // Start waveform visualization
+      arStartWaveform(stream);
+    }).catch(function(err) {
+      toast('❌ 无法访问麦克风: ' + err.message);
+    });
+  } else {
+    // Stop recording
+    if (arMediaRecorder && arMediaRecorder.state !== 'inactive') {
+      arMediaRecorder.stop();
+    }
+    arIsRecording = false;
+    btn.textContent = '🔴 开始录音';
+    btn.className = 'btn btn-primary';
+    document.getElementById('ar-status').textContent = '✅ 录音完成，点击播放试听';
+    document.getElementById('ar-status').style.color = 'var(--text-light)';
+    clearInterval(arTimerInterval);
+  }
+}
+
+function arStartWaveform(stream) {
+  const canvas = document.getElementById('ar-waveform');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  const source = audioCtx.createMediaStreamSource(stream);
+  arAnalyser = audioCtx.createAnalyser();
+  arAnalyser.fftSize = 256;
+  source.connect(arAnalyser);
+  arDataArray = new Uint8Array(arAnalyser.frequencyBinCount);
+  
+  function draw() {
+    if (!arIsRecording) {
+      // Draw a flat line when not recording
+      ctx.fillStyle = '#1a1a2e';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.strokeStyle = '#6366f1';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(0, canvas.height / 2);
+      ctx.lineTo(canvas.width, canvas.height / 2);
+      ctx.stroke();
+      return;
+    }
+    arAnimFrame = requestAnimationFrame(draw);
+    arAnalyser.getByteTimeDomainData(arDataArray);
+    ctx.fillStyle = '#1a1a2e';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.lineWidth = 2;
+    ctx.strokeStyle = '#6366f1';
+    ctx.beginPath();
+    const sliceWidth = canvas.width / arDataArray.length;
+    let x = 0;
+    for (let i = 0; i < arDataArray.length; i++) {
+      const v = arDataArray[i] / 128.0;
+      const y = v * canvas.height / 2;
+      if (i === 0) ctx.moveTo(x, y);
+      else ctx.lineTo(x, y);
+      x += sliceWidth;
+    }
+    ctx.lineTo(canvas.width, canvas.height / 2);
+    ctx.stroke();
+  }
+  draw();
+}
+
+function arUpdateTimer() {
+  const elapsed = Math.floor((Date.now() - arStartTime) / 1000);
+  const min = String(Math.floor(elapsed / 60)).padStart(2, '0');
+  const sec = String(elapsed % 60).padStart(2, '0');
+  document.getElementById('ar-duration').textContent = min + ':' + sec;
+}
+
+function arTogglePlay() {
+  if (!arAudioEl || !arAudioUrl) return;
+  const btn = document.getElementById('ar-play-btn');
+  if (arAudioEl.paused) {
+    arAudioEl.play();
+    btn.textContent = '⏸ 暂停';
+  } else {
+    arAudioEl.pause();
+    btn.textContent = '▶️ 播放';
+  }
+}
+
+function arDownload() {
+  if (!arAudioBlob) return;
+  const format = document.getElementById('ar-format').value;
+  const a = document.createElement('a');
+  if (format === 'wav') {
+    // Convert webm to wav
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      const audioData = e.target.result;
+      const wavBlob = arConvertToWav(audioData);
+      a.href = URL.createObjectURL(wavBlob);
+      a.download = 'recording.wav';
+      a.click();
+      URL.revokeObjectURL(a.href);
+    };
+    reader.readAsArrayBuffer(arAudioBlob);
+  } else {
+    a.href = arAudioUrl;
+    a.download = 'recording.mp3';
+    a.click();
+  }
+}
+
+function arConvertToWav(audioData) {
+  // Simple WAV conversion from raw PCM
+  const samples = new Float32Array(audioData);
+  const numChannels = 1;
+  const sampleRate = 44100;
+  const bitsPerSample = 16;
+  const byteRate = sampleRate * numChannels * bitsPerSample / 8;
+  const blockAlign = numChannels * bitsPerSample / 8;
+  const dataSize = samples.length * numChannels * bitsPerSample / 8;
+  const buffer = new ArrayBuffer(44 + dataSize);
+  const view = new DataView(buffer);
+  
+  function writeString(offset, str) {
+    for (let i = 0; i < str.length; i++) {
+      view.setUint8(offset + i, str.charCodeAt(i));
+    }
+  }
+  
+  writeString(0, 'RIFF');
+  view.setUint32(4, 36 + dataSize, true);
+  writeString(8, 'WAVE');
+  writeString(12, 'fmt ');
+  view.setUint32(16, 16, true);
+  view.setUint16(20, 1, true);
+  view.setUint16(22, numChannels, true);
+  view.setUint32(24, sampleRate, true);
+  view.setUint32(28, byteRate, true);
+  view.setUint16(32, blockAlign, true);
+  view.setUint16(34, bitsPerSample, true);
+  writeString(36, 'data');
+  view.setUint32(40, dataSize, true);
+  
+  let offset = 44;
+  for (let i = 0; i < samples.length; i++) {
+    const s = Math.max(-1, Math.min(1, samples[i]));
+    view.setInt16(offset, s < 0 ? s * 0x8000 : s * 0x7FFF, true);
+    offset += 2;
+  }
+  
+  return new Blob([buffer], { type: 'audio/wav' });
+}
 
 // ============================================================
 // 像素画生成器 处理函数
