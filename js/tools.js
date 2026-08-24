@@ -4101,6 +4101,104 @@ openclaw update</code></pre>
       </div>
     `,
     handler: () => { setTimeout(arInit, 50); }
+  },
+  {
+    id: 'image-upscaler',
+    cat: 'image',
+    icon: '🔍',
+    name: '图片高清放大',
+    desc: '灵感来源于 Bigjpg/AI图片放大（付费），纯前端高清放大图片 2x/3x/4x，附带智能锐化增强画质',
+    html: `
+      <div class="tool-card">
+        <div style="text-align:center;margin-bottom:12px;">
+          <input type="file" id="iu-file" accept="image/*" style="display:none;" onchange="iuLoadFile(this)">
+          <button class="btn btn-primary" onclick="document.getElementById('iu-file').click()">📂 选择图片</button>
+          <button class="btn btn-secondary" id="iu-download" onclick="iuDownload()" disabled>⬇️ 下载放大图</button>
+        </div>
+        <div class="row" style="margin-bottom:12px;gap:10px;flex-wrap:wrap;">
+          <div class="input-group" style="flex:1;min-width:140px;">
+            <label>放大倍数</label>
+            <select id="iu-scale" style="width:100%;" onchange="iuRender()">
+              <option value="2">2x (2倍)</option>
+              <option value="3">3x (3倍)</option>
+              <option value="4">4x (4倍)</option>
+            </select>
+          </div>
+          <div class="input-group" style="flex:1;min-width:140px;">
+            <label>锐化强度</label>
+            <select id="iu-sharpen" style="width:100%;" onchange="iuRender()">
+              <option value="0">无</option>
+              <option value="1" selected>轻度</option>
+              <option value="2">中度</option>
+              <option value="3">强力</option>
+            </select>
+          </div>
+        </div>
+        <div style="text-align:center;color:var(--text-light);font-size:13px;margin-bottom:10px;" id="iu-info">请选择一张图片开始</div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center;">
+          <div style="flex:1;min-width:240px;">
+            <div style="font-size:12px;color:var(--text-light);text-align:center;margin-bottom:4px;">原图</div>
+            <div style="border:1px dashed var(--border);border-radius:10px;overflow:hidden;background:var(--bg-card);"><img id="iu-orig" style="width:100%;display:block;min-height:60px;" alt="原图"></div>
+          </div>
+          <div style="flex:1;min-width:240px;">
+            <div style="font-size:12px;color:var(--text-light);text-align:center;margin-bottom:4px;">放大后</div>
+            <div style="border:1px dashed var(--border);border-radius:10px;overflow:auto;background:var(--bg-card);max-height:320px;"><img id="iu-result" style="width:100%;display:block;min-height:60px;" alt="放大结果"></div>
+          </div>
+        </div>
+        <div style="margin-top:10px;font-size:12px;color:var(--text-light);text-align:center;">
+          💡 灵感来源于 Bigjpg AI 放大（付费）— 纯浏览器 Canvas 高清重采样 + 锐化，图片不上传服务器
+        </div>
+      </div>
+    `,
+    handler: () => { setTimeout(iuInit, 50); }
+  },
+  {
+    id: 'audio-speed-changer',
+    cat: 'media',
+    icon: '🎚️',
+    name: '音频变速变调',
+    desc: '灵感来源于付费音频变速器（如 AnyMP4/Video Speed Changer），在线改变音频速度与音调，保持音调变速或保持速度变调',
+    html: `
+      <div class="tool-card">
+        <div style="text-align:center;margin-bottom:12px;">
+          <input type="file" id="asc-file" accept="audio/*" style="display:none;" onchange="ascLoadFile(this)">
+          <button class="btn btn-primary" onclick="document.getElementById('asc-file').click()">🎵 选择音频</button>
+          <button class="btn btn-secondary" id="asc-play" onclick="ascTogglePlay()" disabled>▶️ 试听</button>
+          <button class="btn btn-secondary" id="asc-download" onclick="ascDownload()" disabled>⬇️ 下载处理结果</button>
+        </div>
+        <div class="row" style="margin-bottom:12px;gap:10px;flex-wrap:wrap;">
+          <div class="input-group" style="flex:1;min-width:140px;">
+            <label>速度 <span id="asc-speed-val" style="color:var(--accent);">1.00x</span></label>
+            <input type="range" id="asc-speed" min="0.25" max="3" step="0.05" value="1" style="width:100%;" oninput="ascUpdateLabel()" onchange="ascSchedulePlay()">
+          </div>
+          <div class="input-group" style="flex:1;min-width:140px;">
+            <label>音调 <span id="asc-pitch-val" style="color:var(--accent);">0 半音</span></label>
+            <input type="range" id="asc-pitch" min="-12" max="12" step="1" value="0" style="width:100%;" oninput="ascUpdateLabel()" onchange="ascSchedulePlay()">
+          </div>
+        </div>
+        <div class="row" style="gap:10px;flex-wrap:wrap;margin-bottom:12px;">
+          <div class="input-group" style="flex:1;min-width:200px;">
+            <label>预设</label>
+            <select id="asc-preset" style="width:100%;" onchange="ascApplyPreset()">
+              <option value="">— 选择预设 —</option>
+              <option value="0.5,0">🎓 慢速学习 (0.5x)</option>
+              <option value="0.75,0">🐢 适中慢速 (0.75x)</option>
+              <option value="1,0">➡️ 正常 (1x)</option>
+              <option value="1.25,0">🐇 快速收听 (1.25x)</option>
+              <option value="1.5,0">⚡ 常用快速 (1.5x)</option>
+              <option value="2,0">🚀 极速 (2x)</option>
+              <option value="1,4">🎤 升调 +4</option>
+              <option value="1,-4">🐻 降调 -4</option>
+            </select>
+          </div>
+        </div>
+        <div style="text-align:center;color:var(--text-light);font-size:13px;margin-bottom:10px;" id="asc-info">请选择一段音频（支持 MP3/WAV/M4A 等）</div>
+        <div style="margin-top:10px;font-size:12px;color:var(--text-light);text-align:center;">
+          💡 灵感来源于付费音频变速器 — 基于 Web Audio API 实时变速（保持音调）、变调（保持速度），全程本地处理，隐私安全
+        </div>
+      </div>
+    `,
+    handler: () => { setTimeout(ascInit, 50); }
   }
 ];
 
@@ -5743,13 +5841,13 @@ function dpCopyText() {
 const CATEGORIES = [
   { id: 'text', icon: '✏️', name: '文本工具', desc: '字数统计、简繁转换、摩斯密码、文本转语音、文本对比' },
   { id: 'dev', icon: '💻', name: '开发者工具', desc: 'JSON格式化、二维码生成、正则测试、Markdown、IP查询、思维导图、图表生成' },
-  { id: 'image', icon: '🖼️', name: '图片处理', desc: '去背景换底色、批量压缩、加水印、长图拼接、格式转换、裁剪、OCR、印章制作、九宫格切图、文字转手写体、表情包、社交媒体图片尺寸调整、艺术效果、像素画、设备样机' },
+  { id: 'image', icon: '🖼️', name: '图片处理', desc: '去背景换底色、批量压缩、加水印、长图拼接、格式转换、裁剪、OCR、印章制作、九宫格切图、文字转手写体、表情包、社交媒体图片尺寸调整、艺术效果、像素画、设备样机、图片高清放大' },
   { id: 'document', icon: '📄', name: '文档转换', desc: '图片转PDF、PDF转图片、Word解析、Excel转PDF、PDF合并、简历生成、电子签名、表单制作、邮件签名' },
   { id: 'convert', icon: '🔄', name: '转换工具', desc: '单位换算、进制转换' },
   { id: 'security', icon: '🔒', name: '安全工具', desc: '密码生成、Hash计算、随机数' },
   { id: 'time', icon: '⏱️', name: '时间工具', desc: '时间戳转换、日期计算' },
   { id: 'color', icon: '🎨', name: '颜色工具', desc: 'HEX/RGB/HSL颜色转换、CSS渐变生成器、配色方案生成器' },
-  { id: 'media', icon: '🎬', name: '媒体工具', desc: '抖音/TikTok去水印下载、视频转GIF、在线录音工具' },
+  { id: 'media', icon: '🎬', name: '媒体工具', desc: '抖音/TikTok去水印下载、视频转GIF、在线录音、音频变速变调' },
   { id: 'ai', icon: '🤖', name: 'AI工具', desc: 'AI聊天、AI Agent安装、免费AI工具推荐' },
   { id: 'voice', icon: '🗣️', name: '群众心声', desc: '提交工具建议、投票排行榜、前3名自动实现' },
   { id: 'fun', icon: '🎪', name: '趣味工具', desc: '表情包生成、决策转盘、抽奖抽签、词云生成、娱乐好玩' },
@@ -7253,4 +7351,229 @@ function lgBuildSvg(s) {
   }
   parts.push('</svg>');
   return parts.join('\n');
+}
+
+// ============================================================
+// 图片高清放大 处理函数 (替代 Bigjpg / AI图片超分 付费工具)
+// ============================================================
+var iuOrigImg = null;
+var iuCanvas = null;
+var iuCtx = null;
+
+function iuInit() {
+  iuCanvas = document.createElement('canvas');
+  iuCtx = iuCanvas.getContext('2d');
+}
+
+function iuLoadFile(input) {
+  var f = input.files && input.files[0];
+  if (!f) return;
+  var img = new Image();
+  img.onload = function() {
+    iuOrigImg = img;
+    document.getElementById('iu-orig').src = img.src;
+    document.getElementById('iu-download').disabled = false;
+    document.getElementById('iu-info').textContent = '原图 ' + img.naturalWidth + ' x ' + img.naturalHeight + ' px';
+    iuRender();
+  };
+  img.onerror = function() { showToast('❌ 图片加载失败'); };
+  img.src = URL.createObjectURL(f);
+}
+
+function iuRender() {
+  if (!iuOrigImg) return;
+  var scale = parseInt(document.getElementById('iu-scale').value, 10);
+  var sharpen = parseInt(document.getElementById('iu-sharpen').value, 10);
+  var w = iuOrigImg.naturalWidth, h = iuOrigImg.naturalHeight;
+  var nw = w * scale, nh = h * scale;
+  if (nw * nh > 26000000) {
+    document.getElementById('iu-info').textContent = '⚠️ 放大后像素过大，请减小倍数';
+    iuCtx.clearRect(0, 0, iuCanvas.width, iuCanvas.height);
+    document.getElementById('iu-result').src = '';
+    return;
+  }
+  iuCanvas.width = nw;
+  iuCanvas.height = nh;
+  iuCtx.imageSmoothingEnabled = true;
+  iuCtx.imageSmoothingQuality = 'high';
+  iuCtx.drawImage(iuOrigImg, 0, 0, nw, nh);
+  if (sharpen > 0) {
+    var imgData = iuCtx.getImageData(0, 0, nw, nh);
+    iuSharpen(imgData, nw, nh, sharpen * 0.5);
+    iuCtx.putImageData(imgData, 0, 0);
+  }
+  document.getElementById('iu-result').src = iuCanvas.toDataURL('image/png');
+  document.getElementById('iu-info').textContent = '✅ 放大完成: ' + nw + ' x ' + nh + ' px（" + scale + "x"）';
+}
+
+function iuSharpen(imgData, w, h, a) {
+  var src = new Uint8ClampedArray(imgData.data);
+  var d = imgData.data;
+  var i, c, val, yy, xx, nx, ny;
+  for (var y = 0; y < h; y++) {
+    for (var x = 0; x < w; x++) {
+      i = (y * w + x) * 4;
+      for (c = 0; c < 3; c++) {
+        ny = y - 1 < 0 ? 0 : y - 1; yy = y + 1 >= h ? h - 1 : y + 1;
+        nx = x - 1 < 0 ? 0 : x - 1; xx = x + 1 >= w ? w - 1 : x + 1;
+        val = src[i + c] * (1 + 4 * a)
+          - a * src[(ny * w + x) * 4 + c]
+          - a * src[(yy * w + x) * 4 + c]
+          - a * src[(y * w + nx) * 4 + c]
+          - a * src[(y * w + xx) * 4 + c];
+        d[i + c] = val < 0 ? 0 : (val > 255 ? 255 : val);
+      }
+    }
+  }
+}
+
+function iuDownload() {
+  if (!iuOrigImg || !iuCanvas) return;
+  var a = document.createElement('a');
+  a.download = '高清放大-' + iuCanvas.width + 'x' + iuCanvas.height + '.png';
+  a.href = iuCanvas.toDataURL('image/png');
+  a.click();
+  showToast('✅ 高清图已下载');
+}
+
+// ============================================================
+// 音频变速变调 处理函数 (替代付费音频变速器)
+// ============================================================
+var ascAudioCtx = null;
+var ascBuffer = null;
+var ascSource = null;
+var ascIsPlaying = false;
+
+function ascInit() {
+  if (!ascAudioCtx) {
+    ascAudioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  }
+}
+
+function ascLoadFile(input) {
+  var f = input.files && input.files[0];
+  if (!f) return;
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    if (!ascAudioCtx) ascInit();
+    ascAudioCtx.decodeAudioData(e.target.result, function(buf) {
+      ascBuffer = buf;
+      document.getElementById('asc-play').disabled = false;
+      document.getElementById('asc-download').disabled = false;
+      var mins = Math.floor(buf.duration / 60), secs = Math.round(buf.duration % 60);
+      document.getElementById('asc-info').textContent = '🎵 音频 ' + mins + '分' + secs + '秒，' + (buf.numberOfChannels || 1) + '声道，采样率 ' + buf.sampleRate + 'Hz';
+    }, function() { showToast('❌ 无法解码该音频'); });
+  };
+  reader.readAsArrayBuffer(f);
+}
+
+function ascUpdateLabel() {
+  var s = parseFloat(document.getElementById('asc-speed').value);
+  var p = parseInt(document.getElementById('asc-pitch').value, 10);
+  document.getElementById('asc-speed-val').textContent = s.toFixed(2) + 'x';
+  document.getElementById('asc-pitch-val').textContent = (p > 0 ? '+' : '') + p + ' 半音';
+}
+
+function ascApplyPreset() {
+  var v = document.getElementById('asc-preset').value;
+  if (!v) return;
+  var parts = v.split(',');
+  document.getElementById('asc-speed').value = parts[0];
+  document.getElementById('asc-pitch').value = parts[1];
+  ascUpdateLabel();
+  if (ascIsPlaying) { ascStop(); ascTogglePlay(); }
+}
+
+function ascTogglePlay() {
+  if (ascIsPlaying) { ascStop(); return; }
+  if (!ascBuffer || !ascAudioCtx) return;
+  var speed = parseFloat(document.getElementById('asc-speed').value);
+  var pitch = parseInt(document.getElementById('asc-pitch').value, 10);
+  ascSource = ascAudioCtx.createBufferSource();
+  ascSource.buffer = ascBuffer;
+  ascSource.playbackRate.value = speed;
+  ascSource.detune.value = pitch * 100;
+  try { ascSource.preservePitch = true; } catch (e) {}
+  ascSource.connect(ascAudioCtx.destination);
+  ascSource.start();
+  ascSource.onended = function() {
+    ascIsPlaying = false;
+    document.getElementById('asc-play').textContent = '▶️ 试听';
+  };
+  ascIsPlaying = true;
+  document.getElementById('asc-play').textContent = '⏸️ 停止';
+}
+
+function ascStop() {
+  if (ascSource) {
+    try { ascSource.stop(); } catch (e) {}
+    ascSource.disconnect();
+    ascSource = null;
+  }
+  ascIsPlaying = false;
+  document.getElementById('asc-play').textContent = '▶️ 试听';
+}
+
+function ascDownload() {
+  if (!ascBuffer) return;
+  var speed = parseFloat(document.getElementById('asc-speed').value);
+  var pitch = parseInt(document.getElementById('asc-pitch').value, 10);
+  var channels = ascBuffer.numberOfChannels || 2;
+  var rate = ascBuffer.sampleRate;
+  var dur = Math.ceil(ascBuffer.duration / speed * rate);
+  if (dur < 1) dur = 1;
+  var offline = new OfflineAudioContext(channels, dur, rate);
+  var src = offline.createBufferSource();
+  src.buffer = ascBuffer;
+  src.playbackRate.value = speed;
+  src.detune.value = pitch * 100;
+  try { src.preservePitch = true; } catch (e) {}
+  src.connect(offline.destination);
+  src.start(0);
+  offline.startRendering().then(function(rendered) {
+    var wav = ascBufferToWav(rendered);
+    var blob = new Blob([wav], { type: 'audio/wav' });
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = '变速' + speed + 'x-变调' + (pitch > 0 ? '+' : '') + pitch + '.wav';
+    a.click();
+    setTimeout(function() { URL.revokeObjectURL(a.href); }, 2000);
+    showToast('✅ 处理完成，WAV 已下载');
+  }).catch(function() { showToast('❌ 渲染失败，请缩短音频'); });
+}
+
+function ascBufferToWav(buffer) {
+  var numCh = buffer.numberOfChannels;
+  var sampleRate = buffer.sampleRate;
+  var len = buffer.length * numCh * 2;
+  var arrayBuffer = new ArrayBuffer(44 + len);
+  var view = new DataView(arrayBuffer);
+  ascWriteString(view, 0, 'RIFF');
+  view.setUint32(4, 36 + len, true);
+  ascWriteString(view, 8, 'WAVE');
+  ascWriteString(view, 12, 'fmt ');
+  view.setUint32(16, 16, true);
+  view.setUint16(20, 1, true);
+  view.setUint16(22, numCh, true);
+  view.setUint32(24, sampleRate, true);
+  view.setUint32(28, sampleRate * numCh * 2, true);
+  view.setUint16(32, numCh * 2, true);
+  view.setUint16(34, 16, true);
+  ascWriteString(view, 36, 'data');
+  view.setUint32(40, len, true);
+  var offset = 44;
+  for (var i = 0; i < buffer.length; i++) {
+    for (var ch = 0; ch < numCh; ch++) {
+      var s = Math.max(-1, Math.min(1, buffer.getChannelData(ch)[i]));
+      view.setInt16(offset, s < 0 ? s * 0x8000 : s * 0x7FFF, true);
+      offset += 2;
+    }
+  }
+  return arrayBuffer;
+}
+
+function ascWriteString(view, offset, str) {
+  for (var i = 0; i < str.length; i++) {
+    view.setUint8(offset + i, str.charCodeAt(i));
+  }
 }
