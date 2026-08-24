@@ -7403,7 +7403,7 @@ function iuRender() {
     iuCtx.putImageData(imgData, 0, 0);
   }
   document.getElementById('iu-result').src = iuCanvas.toDataURL('image/png');
-  document.getElementById('iu-info').textContent = '✅ 放大完成: ' + nw + ' x ' + nh + ' px（" + scale + "x"）';
+  document.getElementById('iu-info').textContent = '✅ 放大完成: ' + nw + ' x ' + nh + ' px（' + scale + 'x）';
 }
 
 function iuSharpen(imgData, w, h, a) {
