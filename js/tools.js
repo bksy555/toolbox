@@ -4199,6 +4199,119 @@ openclaw update</code></pre>
       </div>
     `,
     handler: () => { setTimeout(ascInit, 50); }
+  },
+  {
+    id: 'code-shot',
+    cat: 'dev',
+    icon: '📸',
+    name: '代码图片生成',
+    desc: '灵感来源于 Carbon（付费），代码一键转精美分享图，语法高亮+多主题+Mac窗口风格，导出高清PNG',
+    html: `
+      <div class="tool-card">
+        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px;">
+          <div class="input-group" style="flex:1;min-width:140px;">
+            <label>主题</label>
+            <select id="cs-theme" style="width:100%;" onchange="csRender()">
+              <option value="dark">🌙 暗色 One Dark</option>
+              <option value="light">☀️ 亮色 GitHub</option>
+              <option value="dracula">🧛 Dracula</option>
+              <option value="nord">❄️ Nord</option>
+            </select>
+          </div>
+          <div class="input-group" style="flex:1;min-width:140px;">
+            <label>语言</label>
+            <select id="cs-lang" style="width:100%;" onchange="csRender()">
+              <option value="js">JavaScript</option>
+              <option value="python">Python</option>
+              <option value="html">HTML</option>
+              <option value="css">CSS</option>
+              <option value="bash">Shell</option>
+              <option value="json">JSON</option>
+            </select>
+          </div>
+          <div class="input-group" style="flex:1;min-width:120px;">
+            <label>字号</label>
+            <select id="cs-size" style="width:100%;" onchange="csRender()">
+              <option value="14">14px</option>
+              <option value="16" selected>16px</option>
+              <option value="18">18px</option>
+              <option value="20">20px</option>
+            </select>
+          </div>
+        </div>
+        <div class="input-group" style="margin-bottom:10px;">
+          <label>粘贴代码</label>
+          <textarea id="cs-code" rows="8" style="width:100%;font-family:monospace;font-size:14px;background:#1a1a2e;color:#e0e0e0;border:1px solid var(--border);border-radius:8px;padding:10px;" oninput="csRender()">function greet(name) {
+  // 输出问候语
+  const msg = 'Hello, ' + name + '!';
+  console.log(msg);
+  return msg.length;
+}
+
+greet('世界');</textarea>
+        </div>
+        <div style="text-align:center;margin-bottom:10px;">
+          <button class="btn btn-secondary" onclick="csRandExample()">🎲 随机示例</button>
+          <button class="btn btn-primary" onclick="csDownload()">⬇️ 下载PNG截图</button>
+        </div>
+        <div style="text-align:center;font-size:12px;color:var(--text-light);margin-bottom:8px;">实时预览（点击图片可查看大图）</div>
+        <div style="text-align:center;border:1px dashed var(--border);border-radius:12px;padding:12px;background:var(--bg-card);overflow:auto;">
+          <canvas id="cs-canvas" style="max-width:100%;border-radius:10px;box-shadow:0 4px 20px rgba(0,0,0,0.3);"></canvas>
+        </div>
+        <div style="margin-top:10px;font-size:12px;color:var(--text-light);text-align:center;">
+          💡 灵感来源于 Carbon（付费）— 代码截图美化分享利器，纯浏览器 Canvas 绘制，代码不上传服务器
+        </div>
+      </div>
+    `,
+    handler: () => { setTimeout(csInit, 50); }
+  },
+  {
+    id: 'table-converter',
+    cat: 'dev',
+    icon: '📊',
+    name: '表格数据转换',
+    desc: '灵感来源于 TableConvert（付费），JSON / CSV / HTML表格 三格式一键互转，自动识别数据格式',
+    html: `
+      <div class="tool-card">
+        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px;">
+          <div class="input-group" style="flex:1;min-width:130px;">
+            <label>输入格式</label>
+            <select id="tc-from" style="width:100%;">
+              <option value="auto">🤖 自动识别</option>
+              <option value="json">JSON</option>
+              <option value="csv">CSV</option>
+              <option value="html">HTML表格</option>
+            </select>
+          </div>
+          <div class="input-group" style="flex:1;min-width:130px;">
+            <label>输出格式</label>
+            <select id="tc-to" style="width:100%;">
+              <option value="json">JSON</option>
+              <option value="csv" selected>CSV</option>
+              <option value="html">HTML表格</option>
+            </select>
+          </div>
+          <div style="display:flex;align-items:flex-end;gap:8px;">
+            <button class="btn btn-primary" onclick="tcConvert()">🔄 转换</button>
+          </div>
+        </div>
+        <div class="row" style="gap:10px;flex-wrap:wrap;">
+          <div class="input-group" style="flex:1;min-width:280px;">
+            <label>输入数据</label>
+            <textarea id="tc-input" rows="10" style="width:100%;font-family:monospace;font-size:13px;background:#1a1a2e;color:#e0e0e0;border:1px solid var(--border);border-radius:8px;padding:10px;">[{"name":"张三","age":28,"city":"北京"},{"name":"李四","age":32,"city":"上海"},{"name":"王五","age":25,"city":"广州"}]</textarea>
+          </div>
+          <div class="input-group" style="flex:1;min-width:280px;">
+            <label>输出结果 <button class="btn btn-secondary" style="padding:2px 10px;font-size:12px;margin-left:6px;" onclick="tcCopy()">📋 复制</button> <button class="btn btn-secondary" style="padding:2px 10px;font-size:12px;" onclick="tcDownload()">⬇️ 下载</button></label>
+            <textarea id="tc-output" rows="10" readonly style="width:100%;font-family:monospace;font-size:13px;background:#0f0f1a;color:#7ee787;border:1px solid var(--border);border-radius:8px;padding:10px;"></textarea>
+          </div>
+        </div>
+        <div style="margin-top:10px;text-align:center;"><button class="btn btn-secondary" onclick="tcExample()">🎲 换一个示例</button></div>
+        <div style="margin-top:8px;font-size:12px;color:var(--text-light);text-align:center;">
+          💡 灵感来源于 TableConvert（付费）— 在线表格数据格式转换神器，纯本地解析，无需登录
+        </div>
+      </div>
+    `,
+    handler: () => { setTimeout(tcInit, 50); }
   }
 ];
 
@@ -5840,7 +5953,7 @@ function dpCopyText() {
 // ============================================================
 const CATEGORIES = [
   { id: 'text', icon: '✏️', name: '文本工具', desc: '字数统计、简繁转换、摩斯密码、文本转语音、文本对比' },
-  { id: 'dev', icon: '💻', name: '开发者工具', desc: 'JSON格式化、二维码生成、正则测试、Markdown、IP查询、思维导图、图表生成' },
+  { id: 'dev', icon: '💻', name: '开发者工具', desc: 'JSON格式化、二维码生成、正则测试、Markdown、IP查询、思维导图、图表生成、代码图片生成、表格数据转换' },
   { id: 'image', icon: '🖼️', name: '图片处理', desc: '去背景换底色、批量压缩、加水印、长图拼接、格式转换、裁剪、OCR、印章制作、九宫格切图、文字转手写体、表情包、社交媒体图片尺寸调整、艺术效果、像素画、设备样机、图片高清放大' },
   { id: 'document', icon: '📄', name: '文档转换', desc: '图片转PDF、PDF转图片、Word解析、Excel转PDF、PDF合并、简历生成、电子签名、表单制作、邮件签名' },
   { id: 'convert', icon: '🔄', name: '转换工具', desc: '单位换算、进制转换' },
@@ -7576,4 +7689,349 @@ function ascWriteString(view, offset, str) {
   for (var i = 0; i < str.length; i++) {
     view.setUint8(offset + i, str.charCodeAt(i));
   }
+}// ============================================================
+// 代码图片生成 处理函数 (替代 Carbon)
+// ============================================================
+var csCanvas = null;
+var csCtx = null;
+
+var CS_THEMES = {
+  dark:    { bg: '#282c34', fg: '#abb2bf', bar: '#21252b', title: '#9da5b4', kw: '#c678dd', str: '#98c379', num: '#d19a66', com: '#5c6370', fn: '#61afef', var: '#e06c75' },
+  light:   { bg: '#ffffff', fg: '#24292e', bar: '#f6f8fa', title: '#6a737d', kw: '#d73a49', str: '#032f62', num: '#005cc5', com: '#6a737d', fn: '#6f42c1', var: '#e36209' },
+  dracula: { bg: '#282a36', fg: '#f8f8f2', bar: '#21222c', title: '#6272a4', kw: '#ff79c6', str: '#f1fa8c', num: '#bd93f9', com: '#6272a4', fn: '#50fa7b', var: '#8be9fd' },
+  nord:    { bg: '#2e3440', fg: '#d8dee9', bar: '#3b4252', title: '#88c0d0', kw: '#81a1c1', str: '#a3be8c', num: '#b48ead', com: '#616e88', fn: '#88c0d0', var: '#ebcb8b' }
+};
+
+var CS_EXAMPLES = [
+  ['js', 'function debounce(fn, delay = 300) {\n  let timer = null;\n  return function (...args) {\n    clearTimeout(timer);\n    timer = setTimeout(() => {\n      fn.apply(this, args);\n    }, delay);\n  };\n}'],
+  ['python', 'def fibonacci(n):\n    """返回前n个斐波那契数"""\n    a, b = 0, 1\n    result = []\n    for _ in range(n):\n        result.append(a)\n        a, b = b, a + b\n    return result\n\nprint(fibonacci(10))'],
+  ['html', '<div class="card">\n  <h2>工具箱</h2>\n  <p>免费在线实用工具集</p>\n  <button onclick="start()">开始使用</button>\n</div>'],
+  ['css', '.card {\n  border-radius: 12px;\n  box-shadow: 0 4px 20px rgba(0,0,0,.1);\n  transition: transform .2s ease;\n}\n\n.card:hover {\n  transform: translateY(-4px);\n}'],
+  ['bash', '#!/bin/bash\n# 一键部署脚本\necho "🚀 开始部署..."\ncd /var/www/toolbox\nnpm install && npm run build\npm2 restart toolbox\necho "✅ 部署完成！"'],
+  ['json', '{\n  "name": "ToolBox",\n  "version": "1.0.0",\n  "features": [\n    "tools",\n    "guides",\n    "news"\n  ],\n  "free": true\n}']
+];
+
+function csInit() {
+  csCanvas = document.getElementById('cs-canvas');
+  if (csCanvas) {
+    csCtx = csCanvas.getContext('2d');
+    csRender();
+  }
+}
+
+function csRandExample() {
+  var pick = CS_EXAMPLES[Math.floor(Math.random() * CS_EXAMPLES.length)];
+  document.getElementById('cs-lang').value = pick[0];
+  document.getElementById('cs-code').value = pick[1];
+  csRender();
+}
+
+function csTokenize(code, lang) {
+  var tokens = [];
+  var i = 0;
+  var n = code.length;
+  var lineStart = 0;
+  var buf = '';
+  function flush(type) {
+    if (buf) {
+      tokens.push({ text: buf, type: type, line: lineStart });
+      buf = '';
+    }
+  }
+  while (i < n) {
+    var ch = code[i];
+    if (ch === '\n') { flush('plain'); lineStart++; i++; continue; }
+    if (ch === '/' && code[i+1] === '/') {
+      flush('plain');
+      while (i < n && code[i] !== '\n') { buf += code[i]; i++; }
+      flush('comment');
+      continue;
+    }
+    if (ch === '#' && (lang === 'python' || lang === 'bash')) {
+      flush('plain');
+      while (i < n && code[i] !== '\n') { buf += code[i]; i++; }
+      flush('comment');
+      continue;
+    }
+    if (ch === '"' || ch === "'" || ch === '`') {
+      flush('plain');
+      var q = ch;
+      buf += ch; i++;
+      while (i < n && code[i] !== q) { if (code[i] === '\\' && i + 1 < n) { buf += code[i] + code[i+1]; i += 2; } else { buf += code[i]; i++; } }
+      if (i < n) { buf += code[i]; i++; }
+      flush('string');
+      continue;
+    }
+    if (/[0-9]/.test(ch) && (i === 0 || /[^A-Za-z_]/.test(code[i-1]))) {
+      flush('plain');
+      while (i < n && /[0-9.]/.test(code[i])) { buf += code[i]; i++; }
+      flush('number');
+      continue;
+    }
+    buf += ch; i++;
+  }
+  flush('plain');
+  return tokens;
+}
+
+function csKeywords() {
+  return /function|const|let|var|return|if|else|for|while|class|new|import|export|def|print|async|await|try|catch|throw|typeof|this|true|false|null|undefined|echo|npm|pm2|cd|&&/;
+}
+
+function csClassify(tok) {
+  if (tok.type === 'comment' || tok.type === 'string' || tok.type === 'number') return tok.type;
+  var t = tok.text.trim();
+  if (!t) return 'plain';
+  if (csKeywords().test(t)) return 'kw';
+  return 'plain';
+}
+
+function csRender() {
+  if (!csCanvas || !csCtx) return;
+  var code = document.getElementById('cs-code').value || '';
+  var themeName = document.getElementById('cs-theme').value;
+  var lang = document.getElementById('cs-lang').value;
+  var fontSize = parseInt(document.getElementById('cs-size').value, 10) || 16;
+  var theme = CS_THEMES[themeName] || CS_THEMES.dark;
+  var ctx = csCtx;
+  var padX = 24, padY = 24;
+  var barH = 42;
+  var lineH = Math.round(fontSize * 1.5);
+  var font = fontSize + 'px "SF Mono","JetBrains Mono","Consolas",monospace';
+  ctx.font = font;
+  var maxWidth = 860 - padX * 2 - 30;
+  var rawLines = code.split('\n');
+  var wrapped = [];
+  for (var li = 0; li < rawLines.length; li++) {
+    var l = rawLines[li];
+    if (ctx.measureText(l).width > maxWidth) {
+      var parts = [];
+      var cur = '';
+      for (var ci = 0; ci < l.length; ci++) {
+        cur += l[ci];
+        if (ctx.measureText(cur).width > maxWidth) {
+          parts.push(cur.slice(0, -1));
+          cur = l[ci];
+        }
+      }
+      if (cur) parts.push(cur);
+      wrapped = wrapped.concat(parts);
+    } else {
+      wrapped.push(l);
+    }
+  }
+  var contentH = wrapped.length * lineH;
+  var W = 860;
+  var H = barH + padY * 2 + contentH + 16;
+  csCanvas.width = W;
+  csCanvas.height = H;
+  ctx.fillStyle = theme.bg;
+  ctx.fillRect(0, 0, W, H);
+  ctx.fillStyle = theme.bar;
+  ctx.fillRect(0, 0, W, barH);
+  ctx.beginPath(); ctx.arc(24, barH/2, 6, 0, Math.PI*2); ctx.fillStyle = '#ff5f56'; ctx.fill();
+  ctx.beginPath(); ctx.arc(46, barH/2, 6, 0, Math.PI*2); ctx.fillStyle = '#ffbd2e'; ctx.fill();
+  ctx.beginPath(); ctx.arc(68, barH/2, 6, 0, Math.PI*2); ctx.fillStyle = '#27c93f'; ctx.fill();
+  ctx.font = '13px sans-serif';
+  ctx.fillStyle = theme.title;
+  ctx.textAlign = 'left';
+  ctx.fillText('code.' + lang, 92, barH/2 + 5);
+  ctx.font = font;
+  var x0 = padX, y0 = barH + padY + lineH - 6;
+  for (var r = 0; r < wrapped.length; r++) {
+    var tokens = csTokenize(wrapped[r], lang);
+    var x = x0;
+    var y = y0 + r * lineH;
+    for (var ti = 0; ti < tokens.length; ti++) {
+      var tok = tokens[ti];
+      if (tok.type === 'comment') ctx.fillStyle = theme.com;
+      else if (tok.type === 'string') ctx.fillStyle = theme.str;
+      else if (tok.type === 'number') ctx.fillStyle = theme.num;
+      else if (csClassify(tok) === 'kw') ctx.fillStyle = theme.kw;
+      else ctx.fillStyle = theme.fg;
+      ctx.fillText(tok.text, x, y);
+      x += ctx.measureText(tok.text).width;
+    }
+  }
+}
+
+function csDownload() {
+  if (!csCanvas) return;
+  var a = document.createElement('a');
+  a.download = 'code-screenshot.png';
+  a.href = csCanvas.toDataURL('image/png');
+  a.click();
+  showToast('✅ 代码截图已下载');
+}
+
+// ============================================================
+// 表格数据转换 处理函数 (替代 TableConvert)
+// ============================================================
+var TC_EXAMPLES = [
+  ['json', '[{"name":"张三","age":28,"city":"北京"},{"name":"李四","age":32,"city":"上海"}]'],
+  ['csv', 'name,age,city\n张三,28,北京\n李四,32,上海'],
+  ['html', '<table><tr><th>name</th><th>age</th><th>city</th></tr><tr><td>张三</td><td>28</td><td>北京</td></tr><tr><td>李四</td><td>32</td><td>上海</td></tr></table>']
+];
+
+function tcInit() {
+  tcConvert();
+}
+
+function tcExample() {
+  var pick = TC_EXAMPLES[Math.floor(Math.random() * TC_EXAMPLES.length)];
+  document.getElementById('tc-input').value = pick[1];
+  document.getElementById('tc-from').value = pick[0];
+  document.getElementById('tc-to').value = pick[0] === 'json' ? 'csv' : 'json';
+  tcConvert();
+}
+
+function tcDetect(text) {
+  var t = text.trim();
+  if (!t) return 'auto';
+  if (t[0] === '[' || t[0] === '{') return 'json';
+  if (/<table[\s>]/i.test(t)) return 'html';
+  if (t.indexOf(',') >= 0 || t.indexOf('\t') >= 0) return 'csv';
+  return 'csv';
+}
+
+function tcParseCSV(text) {
+  var lines = [];
+  var cur = '';
+  var inQ = false;
+  for (var i = 0; i < text.length; i++) {
+    var c = text[i];
+    if (c === '"') { inQ = !inQ; cur += c; }
+    else if (c === '\n' && !inQ) { lines.push(cur); cur = ''; }
+    else cur += c;
+  }
+  if (cur) lines.push(cur);
+  return lines.filter(function(x) { return x.trim() !== ''; }).map(function(line) {
+    var cells = [];
+    var cell = '';
+    var q = false;
+    for (var i = 0; i < line.length; i++) {
+      var c = line[i];
+      if (c === '"') {
+        if (q && line[i+1] === '"') { cell += '"'; i++; }
+        else q = !q;
+      } else if (c === ',' && !q) { cells.push(cell.trim()); cell = ''; }
+      else cell += c;
+    }
+    cells.push(cell.trim());
+    return cells;
+  });
+}
+
+function tcParseHtml(text) {
+  var rows = [];
+  var trs = text.match(/<tr[\s>][\s\S]*?<\/tr>/gi) || [];
+  for (var i = 0; i < trs.length; i++) {
+    var tds = trs[i].match(/<t[dh][\s>][\s\S]*?<\/t[dh]>/gi) || [];
+    var row = tds.map(function(td) {
+      var inner = td.replace(/<t[dh][\s>][\s\S]*?>/i, '').replace(/<\/t[dh]>/i, '');
+      return inner.replace(/<[^>]+>/g, '').trim();
+    });
+    rows.push(row);
+  }
+  return rows;
+}
+
+function tcEscapeCSV(cell) {
+  var s = String(cell == null ? '' : cell);
+  if (/[",\n]/.test(s)) return '"' + s.replace(/"/g, '""') + '"';
+  return s;
+}
+
+function tcToCSV(rows, headers) {
+  var out = [];
+  if (headers && headers.length) out.push(headers.map(tcEscapeCSV).join(','));
+  rows.forEach(function(row) { out.push(row.map(tcEscapeCSV).join(',')); });
+  return out.join('\n');
+}
+
+function tcToJSON(rows, headers) {
+  var objs = rows.map(function(row) {
+    var obj = {};
+    (headers || row.map(function(_, i) { return 'column' + (i+1); })).forEach(function(h, i) {
+      obj[h] = row[i];
+    });
+    return obj;
+  });
+  return JSON.stringify(objs, null, 2);
+}
+
+function tcToHTML(rows, headers) {
+  var h = '<table border="1" cellpadding="6" cellspacing="0" style="border-collapse:collapse;">\n';
+  if (headers && headers.length) h += '<tr>' + headers.map(function(x) { return '<th>' + x + '</th>'; }).join('') + '</tr>\n';
+  rows.forEach(function(row) {
+    h += '<tr>' + row.map(function(x) { return '<td>' + String(x) + '</td>'; }).join('') + '</tr>\n';
+  });
+  h += '</table>';
+  return h;
+}
+
+function tcConvert() {
+  var input = document.getElementById('tc-input').value;
+  var from = document.getElementById('tc-from').value;
+  var to = document.getElementById('tc-to').value;
+  var out = document.getElementById('tc-output');
+  try {
+    if (from === 'auto') from = tcDetect(input);
+    var rows = [];
+    var headers = [];
+    if (from === 'json') {
+      var parsed = JSON.parse(input);
+      if (!Array.isArray(parsed)) parsed = [parsed];
+      headers = parsed.length && typeof parsed[0] === 'object' && parsed[0] !== null ? Object.keys(parsed[0]) : [];
+      rows = parsed.map(function(o) {
+        if (typeof o !== 'object' || o === null) return [String(o)];
+        return headers.map(function(h) { return o[h] == null ? '' : o[h]; });
+      });
+    } else if (from === 'csv') {
+      rows = tcParseCSV(input);
+      if (rows.length) {
+        headers = rows[0];
+        rows = rows.slice(1);
+      }
+    } else if (from === 'html') {
+      rows = tcParseHtml(input);
+    } else {
+      throw new Error('无法识别的输入格式');
+    }
+    var result;
+    if (to === 'json') result = tcToJSON(rows, headers);
+    else if (to === 'csv') result = tcToCSV(rows, headers);
+    else if (to === 'html') result = tcToHTML(rows, headers);
+    else result = tcToCSV(rows, headers);
+    out.value = result;
+  } catch (e) {
+    out.value = '❌ 转换失败: ' + e.message;
+  }
+}
+
+function tcCopy() {
+  var out = document.getElementById('tc-output');
+  if (!out.value) { showToast('⚠️ 没有可复制的内容'); return; }
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(out.value).then(function(){ showToast('✅ 已复制'); });
+  } else {
+    out.select();
+    document.execCommand('copy');
+    showToast('✅ 已复制');
+  }
+}
+
+function tcDownload() {
+  var out = document.getElementById('tc-output');
+  var to = document.getElementById('tc-to').value;
+  if (!out.value) { showToast('⚠️ 没有可下载的内容'); return; }
+  var ext = to === 'json' ? 'json' : (to === 'html' ? 'html' : 'csv');
+  var mime = to === 'json' ? 'application/json' : (to === 'html' ? 'text/html' : 'text/csv');
+  var blob = new Blob([out.value], { type: mime + ';charset=utf-8' });
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'table-data.' + ext;
+  a.click();
+  setTimeout(function(){ URL.revokeObjectURL(a.href); }, 2000);
+  showToast('✅ 文件已下载');
 }
