@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>在线涂鸦画板：5步学会自由手绘，多种笔刷随意画 - ToolBox 工具箱指南</title>
+  <meta name="description" content="图文详解在线涂鸦画板的完整使用教程，支持普通画笔、橡皮擦、喷枪三种模式，多种颜色和粗细，自由手绘、导出PNG，完全免费。">
+  <meta name="keywords" content="在线涂鸦画板,在线绘画工具,手绘板,free drawing pad,canvas绘图,在线涂鸦,免费绘画,电子画板">
+  <meta name="author" content="ToolBox">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://toolai.ccwu.cc/guides/drawing-pad-guide.html">
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    :root {
+      --bg: #0f0f1a;
+      --bg-card: #1a1a2e;
+      --text: #e0e0e0;
+      --text-light: #8888aa;
+      --border: #2a2a44;
+      --accent: #6366f1;
+      --accent-hover: #4f46e5;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Noto Sans SC', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      margin: 0;
+      line-height: 1.8;
+    }
+    .guide-header {
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+      border-bottom: 1px solid var(--border);
+      padding: 20px 0;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(10px);
+    }
+    .guide-header-inner {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 0 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .guide-header a { color: var(--accent); text-decoration: none; font-size: 14px; }
+    .guide-header a:hover { color: var(--accent-hover); }
+    .guide-container { max-width: 860px; margin: 0 auto; padding: 40px 20px 80px; }
+    .guide-breadcrumb { font-size: 13px; color: var(--text-light); margin-bottom: 20px; }
+    .guide-breadcrumb a { color: var(--accent); text-decoration: none; }
+    .guide-breadcrumb a:hover { text-decoration: underline; }
+    h1 {
+      font-size: 32px; font-weight: 700; margin: 0 0 10px; line-height: 1.3;
+      background: linear-gradient(135deg, #e0e0e0, #a78bfa);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .guide-meta { font-size: 13px; color: var(--text-light); margin-bottom: 30px; display: flex; gap: 16px; flex-wrap: wrap; }
+    .guide-meta span { display: flex; align-items: center; gap: 4px; }
+    h2 { font-size: 22px; font-weight: 600; margin: 40px 0 16px; padding-bottom: 8px; border-bottom: 1px solid var(--border); color: #e0e0e0; }
+    h3 { font-size: 18px; font-weight: 600; margin: 28px 0 12px; color: #ccc; }
+    p { margin: 0 0 16px; color: #ccc; }
+    .guide-step { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 24px; margin: 24px 0; position: relative; }
+    .guide-step-number { position: absolute; top: -12px; left: 20px; background: var(--accent); color: #fff; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; }
+    .guide-step h3 { margin-top: 0; }
+    .guide-img { max-width: 100%; border-radius: 8px; border: 1px solid var(--border); margin: 16px 0; display: block; }
+    .guide-img-caption { text-align: center; font-size: 13px; color: var(--text-light); margin: 4px 0 16px; }
+    .guide-tip { background: rgba(99,102,241,0.1); border-left: 4px solid var(--accent); padding: 12px 16px; border-radius: 0 8px 8px 0; margin: 16px 0; font-size: 14px; color: #ccc; }
+    .guide-tip strong { color: #a78bfa; }
+    .guide-gallery { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; margin: 16px 0; }
+    .guide-gallery-item { background: var(--bg-card); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; text-align: center; }
+    .guide-gallery-item img { width: 100%; display: block; }
+    .guide-gallery-item .label { padding: 8px; font-size: 13px; color: var(--text-light); }
+    .guide-table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 14px; }
+    .guide-table th, .guide-table td { border: 1px solid var(--border); padding: 10px 14px; text-align: left; }
+    .guide-table th { background: var(--bg-card); color: #e0e0e0; font-weight: 600; }
+    .guide-table td { color: #ccc; }
+    .guide-cta { text-align: center; background: linear-gradient(135deg, #1a1a2e, #16213e); border: 1px solid var(--border); border-radius: 12px; padding: 32px; margin: 40px 0; }
+    .guide-cta p { font-size: 16px; margin-bottom: 20px; }
+    .guide-cta .btn { display: inline-block; background: linear-gradient(135deg, #6366f1, #8b5cf6); color: #fff; padding: 12px 32px; border-radius: 30px; text-decoration: none; font-weight: 600; font-size: 16px; transition: transform 0.2s, box-shadow 0.2s; }
+    .guide-cta .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(99,102,241,0.3); }
+    .footer-nav { margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; font-size: 14px; }
+    .footer-nav a { color: var(--accent); text-decoration: none; }
+    .footer-nav a:hover { text-decoration: underline; }
+    @media (max-width: 600px) {
+      h1 { font-size: 24px; }
+      .guide-container { padding: 20px 16px 60px; }
+      .guide-step { padding: 20px 16px; }
+      .guide-gallery { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <header class="guide-header">
+    <div class="guide-header-inner">
+      <a href="https://toolai.ccwu.cc/">🧰 ToolBox 首页</a>
+      <a href="../index.html#guides">📖 工具箱指南</a>
+    </div>
+  </header>
+
+  <div class="guide-container">
+    <div class="guide-breadcrumb">
+      <a href="https://toolai.ccwu.cc/">首页</a> / <a href="../index.html#guides">工具箱指南</a> / 在线涂鸦画板
+    </div>
+
+    <h1>在线涂鸦画板：5步学会自由手绘，多种笔刷随意画</h1>
+
+    <div class="guide-meta">
+      <span>📅 2026-08-25</span>
+      <span>✏️ ToolBox 编辑部</span>
+      <span>📖 阅读约 6 分钟</span>
+    </div>
+
+    <p>想随手画个草图，但手边没有纸笔？想给图片加个手绘标注，但不会用Photoshop？或者只是想带孩子涂涂画画，又不想买实体画板？</p>
+
+    <p><strong>在线涂鸦画板</strong> 就是帮你解决这些问题的。它就像一个永远摆在面前的电子白板，打开浏览器就能画——支持普通画笔、橡皮擦、喷枪三种模式，颜色和笔画粗细随意调，画错了可以撤销，画好了可以一键下载为PNG图片。</p>
+
+    <p>而且全程在浏览器里运行，不需要装软件，不需要注册账号，完全免费。数据不上传服务器，隐私安全。</p>
+
+    <!-- ====== 第一步 ====== -->
+    <div class="guide-step">
+      <div class="guide-step-number">1</div>
+      <h3>打开涂鸦画板工具</h3>
+      <p>进入 ToolBox 首页，点击「趣味工具」分类，找到「涂鸦画板」工具卡片。工具的界面简洁明了：</p>
+      <ul style="color:#ccc;margin:12px 0;">
+        <li>顶部：<strong>颜色选择器</strong> — 点击色块弹出调色盘，自由选色</li>
+        <li>画笔粗细下拉框 — 细/中/粗/极粗 四档可选</li>
+        <li>画笔模式下拉框 — 普通画笔 / 橡皮擦 / 喷枪</li>
+        <li>操作按钮 — 清空画板、撤销、下载PNG</li>
+        <li>中央区域 — 白色画布，鼠标或手指直接在上面画</li>
+      </ul>
+      <p>默认是粗笔+紫色，打开就能上手画。</p>
+
+      <img src="images/dp-tool-interface.png" alt="涂鸦画板工具界面 - 默认状态" class="guide-img">
+      <div class="guide-img-caption">▲ 涂鸦画板工具界面，上方是颜色/粗细/模式选择，下方是白色画布</div>
+    </div>
+
+    <!-- ====== 第二步 ====== -->
+    <div class="guide-step">
+      <div class="guide-step-number">2</div>
+      <h3>选颜色、调粗细、切换模式</h3>
+      <p>涂鸦画板提供了三种完全不同的笔触模式，可以应对各种绘画场景：</p>
+
+      <h3>✏️ 普通画笔</h3>
+      <p>最基础的绘制模式。选择颜色和粗细后，按住鼠标左键在画布上拖动即可画出流畅的线条。支持 4 种粗细：</p>
+      <table class="guide-table">
+        <thead><tr><th>粗细档位</th><th>像素值</th><th>适合场景</th></tr></thead>
+        <tbody>
+          <tr><td>细</td><td>2px</td><td>精细勾勒、写字、小图细节</td></tr>
+          <tr><td>中</td><td>4px</td><td>日常涂鸦、标注、草图</td></tr>
+          <tr><td>粗</td><td>8px</td><td>粗线条、卡通风格、大面积填充</td></tr>
+          <tr><td>极粗</td><td>16px</td><td>粗犷风格、标题大字、涂色</td></tr>
+        </tbody>
+      </table>
+
+      <h3>🧹 橡皮擦</h3>
+      <p>切换到橡皮擦模式后，在画布上涂抹即可擦除之前画的内容。橡皮擦的大小和当前选中的画笔粗细一致——选「极粗」模式擦得最快，选「细」模式可以精细擦除。</p>
+
+      <h3>💨 喷枪</h3>
+      <p>喷枪模式会以光标为中心，在周围随机散布颜料点，形成类似喷漆罐的雾状效果。笔触越粗，喷散范围越大。非常适合做渐变、阴影和特效。</p>
+
+      <div class="guide-tip">
+        <strong>💡 小技巧：</strong> 先用粗笔画出轮廓，再换细笔或喷枪做细节——就像真实绘画一样，从整体到局部。
+      </div>
+    </div>
+
+    <!-- ====== 第三步 ====== -->
+    <div class="guide-step">
+      <div class="guide-step-number">3</div>
+      <h3>开始涂鸦：从简单图形画起</h3>
+      <p>不用追求一步到位。先画几个简单的图形练练手：</p>
+      <ol style="color:#ccc;margin:12px 0;padding-left:20px;">
+        <li>选「粗」+ 红色，画一个不完美的圆（太阳）</li>
+        <li>换「细」+ 橙色，在圆周围画几条射线</li>
+        <li>换「中」+ 蓝色，画几朵云（随意曲线）</li>
+        <li>换喷枪 + 绿色，在底部喷涂草地效果</li>
+      </ol>
+      <p>画错了不用慌——点击「撤销」可以回退到上一步，最多支持 30 步撤销。</p>
+
+      <img src="images/dp-drawing-example.png" alt="涂鸦画板绘制示例 - 太阳草地卡通画" class="guide-img">
+      <div class="guide-img-caption">▲ 用三种笔刷模式组合完成的一幅简单卡通画</div>
+
+      <div class="guide-tip">
+        <strong>🎨 进阶玩法：</strong> 先画黑色线条轮廓，然后切换到喷枪模式，用不同颜色在轮廓内喷涂——可以做出类似填色书的效果！
+      </div>
+    </div>
+
+    <!-- ====== 第四步 ====== -->
+    <div class="guide-step">
+      <div class="guide-step-number">4</div>
+      <h3>撤销与清空：放心大胆试错</h3>
+      <p>涂鸦画板内置了完整的撤销系统：</p>
+      <ul style="color:#ccc;margin:12px 0;">
+        <li><strong>↩️ 撤销</strong> — 每点击一次，回退到上一步的状态。从第一次落笔开始所有的操作都可以回退，最多保存 30 步历史</li>
+        <li><strong>🗑️ 清空画板</strong> — 一键清除所有内容，恢复为空白画布。清空后也可以撤销回来</li>
+      </ul>
+      <p>这让你可以放心大胆地尝试各种画法——不满意就撤销，撤销到满意为止，或者直接清空重来。</p>
+
+      <img src="images/dp-undo-demo.png" alt="涂鸦画板撤销功能演示" class="guide-img">
+      <div class="guide-img-caption">▲ 画错了不要紧，撤销按钮可以一步步回退</div>
+    </div>
+
+    <!-- ====== 第五步 ====== -->
+    <div class="guide-step">
+      <div class="guide-step-number">5</div>
+      <h3>下载保存：导出 PNG 图片</h3>
+      <p>画好之后，点击「⬇️ 下载PNG」按钮，当前画布上的所有内容会被保存为一张 PNG 图片，自动下载到你的电脑。</p>
+      <p>下载的图片特点：</p>
+      <ul style="color:#ccc;margin:12px 0;">
+        <li><strong>格式：</strong> PNG 无损格式，画质清晰</li>
+        <li><strong>尺寸：</strong> 自适应设备分辨率，支持 Retina 高清屏</li>
+        <li><strong>背景：</strong> 白色背景，可直接用于文档或分享</li>
+      </ul>
+      <p>下载后的图片可以发朋友圈、插入文档、做PPT素材、当头像……怎么用都行。</p>
+
+      <div class="guide-tip">
+        <strong>📌 温馨提示：</strong> 涂鸦画板是纯本地工具，你的画作不会上传到任何服务器。关闭页面或刷新浏览器后，画布内容会丢失——记得画好后及时下载保存！
+      </div>
+    </div>
+
+    <!-- ====== 场景对比图 ====== -->
+    <h2>🎯 三种笔刷模式效果对比</h2>
+
+    <div class="guide-gallery">
+      <div class="guide-gallery-item">
+        <img src="images/dp-mode-pen.png" alt="普通画笔模式效果">
+        <div class="label">✏️ 普通画笔 — 流畅实线，适合勾线和书写</div>
+      </div>
+      <div class="guide-gallery-item">
+        <img src="images/dp-mode-eraser.png" alt="橡皮擦模式效果">
+        <div class="label">🧹 橡皮擦 — 擦除已有内容，精细控制</div>
+      </div>
+      <div class="guide-gallery-item">
+        <img src="images/dp-mode-spray.png" alt="喷枪模式效果">
+        <div class="label">💨 喷枪 — 雾状散射，适合渐变和阴影</div>
+      </div>
+    </div>
+
+    <!-- ====== 使用场景 ====== -->
+    <h2>🎯 涂鸦画板的 5 个实用场景</h2>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin:20px 0;">
+      <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:16px;text-align:center;">
+        <div style="font-size:28px;margin-bottom:8px;">📝</div>
+        <div style="font-weight:600;font-size:14px;margin-bottom:4px;">在线批注</div>
+        <div style="font-size:12px;color:var(--text-light);">截图后导入画板，标注重点再导出</div>
+      </div>
+      <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:16px;text-align:center;">
+        <div style="font-size:28px;margin-bottom:8px;">🎨</div>
+        <div style="font-weight:600;font-size:14px;margin-bottom:4px;">儿童涂鸦</div>
+        <div style="font-size:12px;color:var(--text-light);">给孩子一个电子画板，不费纸不费墨</div>
+      </div>
+      <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:16px;text-align:center;">
+        <div style="font-size:28px;margin-bottom:8px;">💡</div>
+        <div style="font-weight:600;font-size:14px;margin-bottom:4px;">头脑风暴</div>
+        <div style="font-size:12px;color:var(--text-light);">画思维导图、流程图草图，快速记录灵感</div>
+      </div>
+      <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:16px;text-align:center;">
+        <div style="font-size:28px;margin-bottom:8px;">📱</div>
+        <div style="font-weight:600;font-size:14px;margin-bottom:4px;">社交媒体</div>
+        <div style="font-size:12px;color:var(--text-light);">画搞笑涂鸦发朋友圈/小红书/微博</div>
+      </div>
+      <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:16px;text-align:center;">
+        <div style="font-size:28px;margin-bottom:8px;">🎮</div>
+        <div style="font-weight:600;font-size:14px;margin-bottom:4px;">游戏素材</div>
+        <div style="font-size:12px;color:var(--text-light);">画简单像素风游戏素材，导出PNG直接使用</div>
+      </div>
+    </div>
+
+    <!-- ====== 常见问题 ====== -->
+    <h2>❓ 常见问题</h2>
+
+    <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:20px;margin:16px 0;">
+      <p><strong>Q：画板支持手指触摸画吗？</strong></p>
+      <p>支持！涂鸦画板同时支持鼠标和触控，在手机/平板/触摸屏上直接用手指就能画，体验和真画板一样自然。</p>
+    </div>
+    <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:20px;margin:16px 0;">
+      <p><strong>Q：能保存图片到手机相册吗？</strong></p>
+      <p>点击「下载PNG」后，手机会自动弹出保存对话框选择保存位置，或直接下载到文件管理器。不同手机系统操作略有差异，但都支持。</p>
+    </div>
+    <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:20px;margin:16px 0;">
+      <p><strong>Q：画板的画布多大？能调整吗？</strong></p>
+      <p>画布大小自适应浏览器窗口宽度，高度固定400px。下载时按设备分辨率输出高清图，适合大多数使用场景。</p>
+    </div>
+    <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:20px;margin:16px 0;">
+      <p><strong>Q：可以和 Paper / Sketchbook 媲美吗？</strong></p>
+      <p>涂鸦画板是一个轻量级的在线工具，功能对标 Paper 和 Sketchbook 的基础绘图能力。它胜在无需安装、完全免费、隐私安全。专业绘画建议使用 iPad + Apple Pencil 配合专业软件。</p>
+    </div>
+
+    <!-- ====== CTA ====== -->
+    <div class="guide-cta">
+      <p>📌 还没试过？现在就去打开涂鸦画板，随手画点什么吧</p>
+      <a href="https://toolai.ccwu.cc/" class="btn">🎨 去涂鸦画板 →</a>
+    </div>
+
+    <div class="footer-nav">
+      <a href="../index.html#guides">← 返回工具箱指南列表</a>
+      <a href="https://toolai.ccwu.cc/">🏠 回到首页</a>
+    </div>
+  </div>
+</body>
+</html>
