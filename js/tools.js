@@ -4312,6 +4312,109 @@ greet('世界');</textarea>
       </div>
     `,
     handler: () => { setTimeout(tcInit, 50); }
+  },
+  {
+    id: 'drawing-pad',
+    cat: 'fun',
+    icon: '🎨',
+    name: '涂鸦画板',
+    desc: '灵感来源于 Paper / Sketchbook（付费），自由手绘涂鸦，多种笔刷颜色、画笔粗细，支持清空和下载PNG',
+    html: `
+      <div class="tool-card">
+        <div class="row" style="gap:10px;flex-wrap:wrap;margin-bottom:10px;">
+          <div class="input-group" style="flex:1;min-width:120px;">
+            <label>颜色</label>
+            <input type="color" id="dp-color" value="#1a1a2e" style="width:100%;height:36px;border:none;border-radius:6px;cursor:pointer;" onchange="dpUpdate()">
+          </div>
+          <div class="input-group" style="flex:1;min-width:140px;">
+            <label>画笔粗细</label>
+            <select id="dp-size" style="width:100%;" onchange="dpUpdate()">
+              <option value="2">细 (2px)</option>
+              <option value="4">中 (4px) </option>
+              <option value="8" selected>粗 (8px)</option>
+              <option value="16">极粗 (16px)</option>
+            </select>
+          </div>
+          <div class="input-group" style="flex:1;min-width:140px;">
+            <label>画笔模式</label>
+            <select id="dp-mode" style="width:100%;" onchange="dpUpdate()">
+              <option value="pen">✏️ 普通画笔</option>
+              <option value="eraser">🧹 橡皮擦</option>
+              <option value="spray">💨 喷枪</option>
+            </select>
+          </div>
+        </div>
+        <div style="text-align:center;margin-bottom:10px;display:flex;gap:8px;flex-wrap:wrap;justify-content:center;">
+          <button class="btn btn-primary" onclick="dpClear()">🗑️ 清空画板</button>
+          <button class="btn btn-secondary" onclick="dpUndo()">↩️ 撤销</button>
+          <button class="btn btn-secondary" onclick="dpDownload()">⬇️ 下载PNG</button>
+        </div>
+        <div style="border:2px dashed var(--border);border-radius:10px;overflow:hidden;background:#fff;touch-action:none;">
+          <canvas id="dp-canvas" style="display:block;width:100%;height:400px;cursor:crosshair;background:#fff;"></canvas>
+        </div>
+        <div style="margin-top:10px;font-size:12px;color:var(--text-light);text-align:center;">
+          💡 灵感来源于 Paper / Sketchbook（付费）— 纯浏览器 Canvas 绘图，数据不上传服务器，隐私安全
+        </div>
+      </div>
+    `,
+    handler: () => { setTimeout(dpInit, 50); }
+  },
+  {
+    id: 'image-to-lineart',
+    cat: 'image',
+    icon: '✏️',
+    name: '图片转线稿',
+    desc: '灵感来源于 Vector Magic（付费），一键将照片转为黑白线稿/轮廓图，边缘检测+Sobel算子，支持下载PNG',
+    html: `
+      <div class="tool-card">
+        <div style="text-align:center;margin-bottom:12px;">
+          <input type="file" id="il-file" accept="image/*" style="display:none;" onchange="ilLoadFile(this)">
+          <button class="btn btn-primary" onclick="document.getElementById('il-file').click()">📂 选择图片</button>
+          <button class="btn btn-secondary" id="il-download" onclick="ilDownload()" disabled>⬇️ 下载线稿</button>
+        </div>
+        <div class="row" style="margin-bottom:12px;gap:10px;flex-wrap:wrap;">
+          <div class="input-group" style="flex:1;min-width:140px;">
+            <label>边缘增强</label>
+            <select id="il-strength" style="width:100%;" onchange="ilRender()">
+              <option value="1">轻度</option>
+              <option value="2" selected>适中</option>
+              <option value="3">强力</option>
+            </select>
+          </div>
+          <div class="input-group" style="flex:1;min-width:140px;">
+            <label>线条颜色</label>
+            <select id="il-color" style="width:100%;" onchange="ilRender()">
+              <option value="black">黑色线条</option>
+              <option value="white">白色线条</option>
+              <option value="blue">蓝色线条</option>
+            </select>
+          </div>
+          <div class="input-group" style="flex:1;min-width:140px;">
+            <label>背景</label>
+            <select id="il-bg" style="width:100%;" onchange="ilRender()">
+              <option value="white">白色背景</option>
+              <option value="black">黑色背景</option>
+              <option value="transparent">透明背景</option>
+            </select>
+          </div>
+        </div>
+        <div style="text-align:center;color:var(--text-light);font-size:13px;margin-bottom:10px;" id="il-info">请选择一张图片转为线稿</div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center;">
+          <div style="flex:1;min-width:240px;">
+            <div style="font-size:12px;color:var(--text-light);text-align:center;margin-bottom:4px;">原图</div>
+            <div style="border:1px dashed var(--border);border-radius:10px;overflow:hidden;background:var(--bg-card);"><img id="il-orig" style="width:100%;display:block;min-height:60px;" alt="原图"></div>
+          </div>
+          <div style="flex:1;min-width:240px;">
+            <div style="font-size:12px;color:var(--text-light);text-align:center;margin-bottom:4px;">线稿</div>
+            <div style="border:1px dashed var(--border);border-radius:10px;overflow:hidden;background:var(--bg-card);"><img id="il-result" style="width:100%;display:block;min-height:60px;" alt="线稿结果"></div>
+          </div>
+        </div>
+        <div style="margin-top:10px;font-size:12px;color:var(--text-light);text-align:center;">
+          💡 灵感来源于 Vector Magic（付费）— 纯浏览器 Canvas Sobel 边缘检测，图片不上传服务器
+        </div>
+      </div>
+    `,
+    handler: () => { setTimeout(ilInit, 50); }
   }
 ];
 
@@ -5954,7 +6057,7 @@ function dpCopyText() {
 const CATEGORIES = [
   { id: 'text', icon: '✏️', name: '文本工具', desc: '字数统计、简繁转换、摩斯密码、文本转语音、文本对比' },
   { id: 'dev', icon: '💻', name: '开发者工具', desc: 'JSON格式化、二维码生成、正则测试、Markdown、IP查询、思维导图、图表生成、代码图片生成、表格数据转换' },
-  { id: 'image', icon: '🖼️', name: '图片处理', desc: '去背景换底色、批量压缩、加水印、长图拼接、格式转换、裁剪、OCR、印章制作、九宫格切图、文字转手写体、表情包、社交媒体图片尺寸调整、艺术效果、像素画、设备样机、图片高清放大' },
+  { id: 'image', icon: '🖼️', name: '图片处理', desc: '去背景换底色、批量压缩、加水印、长图拼接、格式转换、裁剪、OCR、印章制作、九宫格切图、文字转手写体、表情包、社交媒体图片尺寸调整、艺术效果、像素画、设备样机、图片高清放大、图片转线稿' },
   { id: 'document', icon: '📄', name: '文档转换', desc: '图片转PDF、PDF转图片、Word解析、Excel转PDF、PDF合并、简历生成、电子签名、表单制作、邮件签名' },
   { id: 'convert', icon: '🔄', name: '转换工具', desc: '单位换算、进制转换' },
   { id: 'security', icon: '🔒', name: '安全工具', desc: '密码生成、Hash计算、随机数' },
@@ -5963,7 +6066,7 @@ const CATEGORIES = [
   { id: 'media', icon: '🎬', name: '媒体工具', desc: '抖音/TikTok去水印下载、视频转GIF、在线录音、音频变速变调' },
   { id: 'ai', icon: '🤖', name: 'AI工具', desc: 'AI聊天、AI Agent安装、免费AI工具推荐' },
   { id: 'voice', icon: '🗣️', name: '群众心声', desc: '提交工具建议、投票排行榜、前3名自动实现' },
-  { id: 'fun', icon: '🎪', name: '趣味工具', desc: '表情包生成、决策转盘、抽奖抽签、词云生成、娱乐好玩' },
+  { id: 'fun', icon: '🎪', name: '趣味工具', desc: '表情包生成、决策转盘、抽奖抽签、词云生成、涂鸦画板、娱乐好玩' },
   { id: 'edu', icon: '📚', name: '教育资源', desc: '电子教材在线阅读、学习资源导航' }
 ];
 
@@ -8034,4 +8137,246 @@ function tcDownload() {
   a.click();
   setTimeout(function(){ URL.revokeObjectURL(a.href); }, 2000);
   showToast('✅ 文件已下载');
+}
+
+// ============================================================
+// 涂鸦画板 处理函数 (替代 Paper / Sketchbook)
+// ============================================================
+var dpCanvas, dpCtx, dpDrawing = false, dpHistory = [], dpHistoryIdx = -1;
+
+function dpInit() {
+  dpCanvas = document.getElementById('dp-canvas');
+  if (!dpCanvas) return;
+  dpCtx = dpCanvas.getContext('2d');
+  dpResize();
+  window.addEventListener('resize', dpResize);
+  dpCanvas.addEventListener('mousedown', dpStart);
+  dpCanvas.addEventListener('mousemove', dpDraw);
+  dpCanvas.addEventListener('mouseup', dpEnd);
+  dpCanvas.addEventListener('mouseleave', dpEnd);
+  dpCanvas.addEventListener('touchstart', function(e) { e.preventDefault(); dpStart(e.touches[0]); }, {passive:false});
+  dpCanvas.addEventListener('touchmove', function(e) { e.preventDefault(); dpDraw(e.touches[0]); }, {passive:false});
+  dpCanvas.addEventListener('touchend', function(e) { e.preventDefault(); dpEnd(); }, {passive:false});
+  dpSaveState();
+}
+
+function dpResize() {
+  if (!dpCanvas) return;
+  var rect = dpCanvas.getBoundingClientRect();
+  dpCanvas.width = Math.round(rect.width * (window.devicePixelRatio || 1));
+  dpCanvas.height = Math.round(rect.height * (window.devicePixelRatio || 1));
+  dpCtx.scale(window.devicePixelRatio || 1, window.devicePixelRatio || 1);
+  dpCtx.lineCap = 'round';
+  dpCtx.lineJoin = 'round';
+  dpRestoreState();
+}
+
+function dpGetPos(e) {
+  var rect = dpCanvas.getBoundingClientRect();
+  return { x: (e.clientX || e.pageX) - rect.left, y: (e.clientY || e.pageY) - rect.top };
+}
+
+function dpStart(e) {
+  dpDrawing = true;
+  var pos = dpGetPos(e);
+  dpCtx.beginPath();
+  dpCtx.moveTo(pos.x, pos.y);
+}
+
+function dpDraw(e) {
+  if (!dpDrawing) return;
+  var pos = dpGetPos(e);
+  var mode = document.getElementById('dp-mode').value;
+  var color = document.getElementById('dp-color').value;
+  var size = parseInt(document.getElementById('dp-size').value, 10);
+  if (mode === 'eraser') {
+    dpCtx.globalCompositeOperation = 'destination-out';
+    dpCtx.strokeStyle = 'rgba(0,0,0,1)';
+  } else if (mode === 'spray') {
+    dpCtx.globalCompositeOperation = 'source-over';
+    dpCtx.strokeStyle = color;
+    var r = size * 2;
+    for (var i = 0; i < 12; i++) {
+      var ox = (Math.random() - 0.5) * r;
+      var oy = (Math.random() - 0.5) * r;
+      dpCtx.fillStyle = color;
+      dpCtx.beginPath();
+      dpCtx.arc(pos.x + ox, pos.y + oy, size * 0.5, 0, Math.PI * 2);
+      dpCtx.fill();
+    }
+    return;
+  } else {
+    dpCtx.globalCompositeOperation = 'source-over';
+    dpCtx.strokeStyle = color;
+  }
+  dpCtx.lineWidth = size;
+  dpCtx.lineTo(pos.x, pos.y);
+  dpCtx.stroke();
+  dpCtx.beginPath();
+  dpCtx.moveTo(pos.x, pos.y);
+}
+
+function dpEnd() {
+  if (!dpDrawing) return;
+  dpDrawing = false;
+  dpCtx.beginPath();
+  dpCtx.globalCompositeOperation = 'source-over';
+  dpSaveState();
+}
+
+function dpSaveState() {
+  if (!dpCanvas) return;
+  if (dpHistoryIdx < dpHistory.length - 1) {
+    dpHistory = dpHistory.slice(0, dpHistoryIdx + 1);
+  }
+  dpHistory.push(dpCanvas.toDataURL());
+  dpHistoryIdx = dpHistory.length - 1;
+  if (dpHistory.length > 30) { dpHistory.shift(); dpHistoryIdx--; }
+}
+
+function dpRestoreState() {
+  if (dpHistoryIdx >= 0 && dpHistoryIdx < dpHistory.length) {
+    var img = new Image();
+    img.onload = function() {
+      dpCtx.drawImage(img, 0, 0, dpCanvas.width, dpCanvas.height);
+    };
+    img.src = dpHistory[dpHistoryIdx];
+  }
+}
+
+function dpClear() {
+  if (!dpCtx || !dpCanvas) return;
+  dpCtx.clearRect(0, 0, dpCanvas.width, dpCanvas.height);
+  dpCtx.fillStyle = '#ffffff';
+  dpCtx.fillRect(0, 0, dpCanvas.width, dpCanvas.height);
+  dpHistory = []; dpHistoryIdx = -1;
+  dpSaveState();
+  showToast('🗑️ 画板已清空');
+}
+
+function dpUndo() {
+  if (dpHistoryIdx <= 0) { showToast('⚠️ 没有更多步骤可撤销'); return; }
+  dpHistoryIdx--;
+  dpCtx.clearRect(0, 0, dpCanvas.width, dpCanvas.height);
+  dpRestoreState();
+  showToast('↩️ 已撤销');
+}
+
+function dpDownload() {
+  if (!dpCanvas) return;
+  var a = document.createElement('a');
+  a.download = 'drawing.png';
+  a.href = dpCanvas.toDataURL('image/png');
+  a.click();
+  showToast('✅ 涂鸦已下载');
+}
+
+function dpUpdate() {
+  // 切换颜色/大小/模式时自动更新（无需额外操作）
+}
+
+// ============================================================
+// 图片转线稿 处理函数 (替代 Vector Magic)
+// ============================================================
+var ilImage = null;
+
+function ilInit() {
+  // 初始化完成
+}
+
+function ilLoadFile(input) {
+  if (!input.files || !input.files[0]) return;
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    ilImage = new Image();
+    ilImage.onload = function() {
+      document.getElementById('il-orig').src = ilImage.src;
+      ilRender();
+    };
+    ilImage.src = e.target.result;
+  };
+  reader.readAsDataURL(input.files[0]);
+}
+
+function ilRender() {
+  if (!ilImage) return;
+  var strength = parseFloat(document.getElementById('il-strength').value);
+  var lineColor = document.getElementById('il-color').value;
+  var bgColor = document.getElementById('il-bg').value;
+  var canvas = document.createElement('canvas');
+  var maxW = 800, maxH = 600;
+  var w = ilImage.naturalWidth, h = ilImage.naturalHeight;
+  if (w > maxW) { h = h * maxW / w; w = maxW; }
+  if (h > maxH) { w = w * maxH / h; h = maxH; }
+  canvas.width = Math.round(w);
+  canvas.height = Math.round(h);
+  var ctx = canvas.getContext('2d');
+  ctx.drawImage(ilImage, 0, 0, canvas.width, canvas.height);
+  var imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+  var data = imageData.data;
+  var gray = new Float32Array(canvas.width * canvas.height);
+  for (var i = 0; i < canvas.width * canvas.height; i++) {
+    var idx = i * 4;
+    gray[i] = data[idx] * 0.299 + data[idx+1] * 0.587 + data[idx+2] * 0.114;
+  }
+  var sobel = new Float32Array(canvas.width * canvas.height);
+  var maxG = 0;
+  for (var y = 1; y < canvas.height - 1; y++) {
+    for (var x = 1; x < canvas.width - 1; x++) {
+      var p = y * canvas.width + x;
+      var gx = gray[p - canvas.width - 1] * -1 + gray[p - canvas.width + 1] * 1
+             + gray[p - 1] * -2 + gray[p + 1] * 2
+             + gray[p + canvas.width - 1] * -1 + gray[p + canvas.width + 1] * 1;
+      var gy = gray[p - canvas.width - 1] * -1 + gray[p - canvas.width] * -2 + gray[p - canvas.width + 1] * -1
+             + gray[p + canvas.width - 1] * 1 + gray[p + canvas.width] * 2 + gray[p + canvas.width + 1] * 1;
+      var g = Math.sqrt(gx * gx + gy * gy);
+      sobel[p] = g;
+      if (g > maxG) maxG = g;
+    }
+  }
+  var threshold = maxG * (0.08 / strength);
+  var outCanvas = document.createElement('canvas');
+  outCanvas.width = canvas.width;
+  outCanvas.height = canvas.height;
+  var outCtx = outCanvas.getContext('2d');
+  var outData = outCtx.createImageData(canvas.width, canvas.height);
+  var outPixels = outData.data;
+  var lineRGB = lineColor === 'white' ? [255,255,255] : (lineColor === 'blue' ? [66,133,244] : [0,0,0]);
+  var bgRGB = bgColor === 'black' ? [0,0,0] : (bgColor === 'transparent' ? [255,255,255,0] : [255,255,255]);
+  for (var i = 0; i < canvas.width * canvas.height; i++) {
+    var idx = i * 4;
+    var val = sobel[i] > threshold ? 1 : 0;
+    if (val) {
+      outPixels[idx] = lineRGB[0];
+      outPixels[idx+1] = lineRGB[1];
+      outPixels[idx+2] = lineRGB[2];
+      outPixels[idx+3] = 255;
+    } else {
+      if (bgColor === 'transparent') {
+        outPixels[idx] = 0;
+        outPixels[idx+1] = 0;
+        outPixels[idx+2] = 0;
+        outPixels[idx+3] = 0;
+      } else {
+        outPixels[idx] = bgRGB[0];
+        outPixels[idx+1] = bgRGB[1];
+        outPixels[idx+2] = bgRGB[2];
+        outPixels[idx+3] = 255;
+      }
+    }
+  }
+  outCtx.putImageData(outData, 0, 0);
+  document.getElementById('il-result').src = outCanvas.toDataURL('image/png');
+  document.getElementById('il-info').textContent = '✅ 线稿已生成（' + canvas.width + '×' + canvas.height + '）';
+  document.getElementById('il-download').disabled = false;
+}
+
+function ilDownload() {
+  var img = document.getElementById('il-result');
+  if (!img.src || img.src === window.location.href) { showToast('⚠️ 请先选择图片'); return; }
+  var a = document.createElement('a');
+  a.download = 'lineart.png';
+  a.href = img.src;
+  a.click();
+  showToast('✅ 线稿已下载');
 }
