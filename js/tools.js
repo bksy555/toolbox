@@ -4415,6 +4415,114 @@ greet('世界');</textarea>
       </div>
     `,
     handler: () => { setTimeout(ilInit, 50); }
+  },
+  {
+    id: 'gradient-bg',
+    cat: 'image',
+    icon: '🌈',
+    name: '渐变背景生成器',
+    desc: '灵感来源于 CoolBackgrounds / Gradienta（付费），一键生成平滑渐变背景，多款配色预设、自由选色，支持导出高清PNG/JPG',
+    html: `
+      <div class="tool-card">
+        <div class="row" style="gap:10px;flex-wrap:wrap;margin-bottom:10px;">
+          <div class="input-group" style="flex:1;min-width:120px;">
+            <label>起始颜色</label>
+            <input type="color" id="gb-color1" value="#6366f1" style="width:100%;height:36px;border:none;border-radius:6px;cursor:pointer;" onchange="gbRender()">
+          </div>
+          <div class="input-group" style="flex:1;min-width:120px;">
+            <label>结束颜色</label>
+            <input type="color" id="gb-color2" value="#ec4899" style="width:100%;height:36px;border:none;border-radius:6px;cursor:pointer;" onchange="gbRender()">
+          </div>
+          <div class="input-group" style="flex:1;min-width:140px;">
+            <label>方向</label>
+            <select id="gb-angle" style="width:100%;" onchange="gbRender()">
+              <option value="0">→ 左到右</option>
+              <option value="90" selected>↓ 上到下</option>
+              <option value="45">↘ 对角线</option>
+              <option value="135">↙ 反向对角</option>
+              <option value="180">← 右到左</option>
+              <option value="360">◎ 径向</option>
+            </select>
+          </div>
+          <div class="input-group" style="flex:1;min-width:140px;">
+            <label>尺寸</label>
+            <select id="gb-size" style="width:100%;" onchange="gbRender()">
+              <option value="1920x1080">1920×1080</option>
+              <option value="1280x720">1280×720</option>
+              <option value="1080x1920">1080×1920</option>
+              <option value="800x600">800×600</option>
+              <option value="400x300">400×300</option>
+            </select>
+          </div>
+        </div>
+        <div style="text-align:center;margin-bottom:10px;display:flex;gap:8px;flex-wrap:wrap;justify-content:center;">
+          <button class="btn btn-primary" onclick="gbPreset()">🎲 随机配色</button>
+          <button class="btn btn-secondary" onclick="gbDownload('png')">⬇️ 下载PNG</button>
+          <button class="btn btn-secondary" onclick="gbDownload('jpg')">⬇️ 下载JPG</button>
+        </div>
+        <div style="border:2px solid var(--border);border-radius:10px;overflow:hidden;">
+          <canvas id="gb-canvas" style="display:block;width:100%;max-height:420px;"></canvas>
+        </div>
+        <div style="margin-top:10px;font-size:12px;color:var(--text-light);text-align:center;">
+          💡 灵感来源于 CoolBackgrounds / Gradienta（付费）— 纯浏览器 Canvas 渐变渲染，色彩任意搭配，导出即用
+        </div>
+      </div>
+    `,
+    handler: () => { setTimeout(gbInit, 50); }
+  },
+  {
+    id: 'text-effect',
+    cat: 'image',
+    icon: '🪄',
+    name: '文字特效生成器',
+    desc: '灵感来源于 CoolText / MockoFony（付费），为文字添加霓虹、3D、描边、阴影等特效，一键生成艺术字图片并下载PNG',
+    html: `
+      <div class="tool-card">
+        <div class="input-group" style="margin-bottom:10px;">
+          <label>输入文字</label>
+          <input type="text" id="te-text" value="酷炫特效" style="width:100%;padding:10px;background:#1a1a2e;color:#e0e0e0;border:1px solid var(--border);border-radius:8px;font-size:16px;" oninput="teRender()">
+        </div>
+        <div class="row" style="gap:10px;flex-wrap:wrap;margin-bottom:10px;">
+          <div class="input-group" style="flex:1;min-width:120px;">
+            <label>文字颜色</label>
+            <input type="color" id="te-color" value="#ffffff" style="width:100%;height:36px;border:none;border-radius:6px;cursor:pointer;" onchange="teRender()">
+          </div>
+          <div class="input-group" style="flex:1;min-width:120px;">
+            <label>背景色</label>
+            <input type="color" id="te-bg" value="#1a1a2e" style="width:100%;height:36px;border:none;border-radius:6px;cursor:pointer;" onchange="teRender()">
+          </div>
+          <div class="input-group" style="flex:1;min-width:140px;">
+            <label>特效样式</label>
+            <select id="te-style" style="width:100%;" onchange="teRender()">
+              <option value="neon" selected>🟢 霓虹发光</option>
+              <option value="3d">🧊 3D立体</option>
+              <option value="outline">⭕ 描边</option>
+              <option value="shadow">🌑 投影</option>
+              <option value="gradient">🌈 渐变填充</option>
+            </select>
+          </div>
+          <div class="input-group" style="flex:1;min-width:140px;">
+            <label>字号</label>
+            <select id="te-size" style="width:100%;" onchange="teRender()">
+              <option value="48">48px</option>
+              <option value="64" selected>64px</option>
+              <option value="96">96px</option>
+              <option value="128">128px</option>
+            </select>
+          </div>
+        </div>
+        <div style="text-align:center;margin-bottom:10px;">
+          <button class="btn btn-primary" onclick="teDownload()">⬇️ 下载特效文字PNG</button>
+        </div>
+        <div style="border:2px solid var(--border);border-radius:10px;overflow:hidden;">
+          <canvas id="te-canvas" style="display:block;width:100%;max-height:360px;"></canvas>
+        </div>
+        <div style="margin-top:10px;font-size:12px;color:var(--text-light);text-align:center;">
+          💡 灵感来源于 CoolText / MockoFony（付费）— 纯浏览器 Canvas 渲染，文字特效即时预览，导出高清PNG
+        </div>
+      </div>
+    `,
+    handler: () => { setTimeout(teInit, 50); }
   }
 ];
 
@@ -6057,7 +6165,7 @@ function dpCopyText() {
 const CATEGORIES = [
   { id: 'text', icon: '✏️', name: '文本工具', desc: '字数统计、简繁转换、摩斯密码、文本转语音、文本对比' },
   { id: 'dev', icon: '💻', name: '开发者工具', desc: 'JSON格式化、二维码生成、正则测试、Markdown、IP查询、思维导图、图表生成、代码图片生成、表格数据转换' },
-  { id: 'image', icon: '🖼️', name: '图片处理', desc: '去背景换底色、批量压缩、加水印、长图拼接、格式转换、裁剪、OCR、印章制作、九宫格切图、文字转手写体、表情包、社交媒体图片尺寸调整、艺术效果、像素画、设备样机、图片高清放大、图片转线稿' },
+  { id: 'image', icon: '🖼️', name: '图片处理', desc: '去背景换底色、批量压缩、加水印、长图拼接、格式转换、裁剪、OCR、印章制作、九宫格切图、文字转手写体、表情包、社交媒体图片尺寸调整、艺术效果、像素画、设备样机、图片高清放大、图片转线稿、渐变背景、文字特效' },
   { id: 'document', icon: '📄', name: '文档转换', desc: '图片转PDF、PDF转图片、Word解析、Excel转PDF、PDF合并、简历生成、电子签名、表单制作、邮件签名' },
   { id: 'convert', icon: '🔄', name: '转换工具', desc: '单位换算、进制转换' },
   { id: 'security', icon: '🔒', name: '安全工具', desc: '密码生成、Hash计算、随机数' },
@@ -8379,4 +8487,161 @@ function ilDownload() {
   a.href = img.src;
   a.click();
   showToast('✅ 线稿已下载');
+}
+
+// ============================================================
+// 渐变背景生成器 处理函数 (替代 CoolBackgrounds / Gradienta)
+// ============================================================
+var gbCanvas, gbCtx;
+
+function gbInit() {
+  gbCanvas = document.getElementById('gb-canvas');
+  if (!gbCanvas) return;
+  gbCtx = gbCanvas.getContext('2d');
+  gbRender();
+}
+
+function gbPreset() {
+  var presets = [
+    ['#667eea', '#764ba2'],
+    ['#f093fb', '#f5576c'],
+    ['#4facfe', '#00f2fe'],
+    ['#43e97b', '#38f9d7'],
+    ['#fa709a', '#fee140'],
+    ['#30cfd0', '#330867'],
+    ['#a8edea', '#fed6e3'],
+    ['#ff9a9e', '#fecfef'],
+    ['#5ee7df', '#b490ca'],
+    ['#c471f5', '#fa71cd']
+  ];
+  var pick = presets[Math.floor(Math.random() * presets.length)];
+  document.getElementById('gb-color1').value = pick[0];
+  document.getElementById('gb-color2').value = pick[1];
+  gbRender();
+  showToast('🎲 已应用随机配色');
+}
+
+function gbRender() {
+  if (!gbCanvas || !gbCtx) return;
+  var c1 = document.getElementById('gb-color1').value;
+  var c2 = document.getElementById('gb-color2').value;
+  var angle = parseInt(document.getElementById('gb-angle').value, 10);
+  var size = document.getElementById('gb-size').value.split('x');
+  var w = parseInt(size[0], 10);
+  var h = parseInt(size[1], 10);
+  gbCanvas.width = w;
+  gbCanvas.height = h;
+  var ctx = gbCtx;
+  if (angle === 360) {
+    // Radial gradient
+    var rg = ctx.createRadialGradient(w/2, h/2, 0, w/2, h/2, Math.max(w, h)/2);
+    rg.addColorStop(0, c1);
+    rg.addColorStop(1, c2);
+    ctx.fillStyle = rg;
+    ctx.fillRect(0, 0, w, h);
+  } else {
+    var rad = angle * Math.PI / 180;
+    var cx = Math.cos(rad) * 0.5;
+    var cy = Math.sin(rad) * 0.5;
+    var x0 = w * (0.5 - cx);
+    var y0 = h * (0.5 - cy);
+    var x1 = w * (0.5 + cx);
+    var y1 = h * (0.5 + cy);
+    var lg = ctx.createLinearGradient(x0, y0, x1, y1);
+    lg.addColorStop(0, c1);
+    lg.addColorStop(1, c2);
+    ctx.fillStyle = lg;
+    ctx.fillRect(0, 0, w, h);
+  }
+}
+
+function gbDownload(fmt) {
+  if (!gbCanvas) return;
+  var a = document.createElement('a');
+  a.download = 'gradient-background.' + fmt;
+  a.href = gbCanvas.toDataURL('image/' + fmt);
+  a.click();
+  showToast('✅ 渐变背景已下载 (' + fmt.toUpperCase() + ')');
+}
+
+// ============================================================
+// 文字特效生成器 处理函数 (替代 CoolText / MockoFony)
+// ============================================================
+var teCanvas, teCtx;
+
+function teInit() {
+  teCanvas = document.getElementById('te-canvas');
+  if (!teCanvas) return;
+  teCtx = teCanvas.getContext('2d');
+  teRender();
+}
+
+function teRender() {
+  if (!teCanvas || !teCtx) return;
+  var text = document.getElementById('te-text').value || '文字';
+  var color = document.getElementById('te-color').value;
+  var bg = document.getElementById('te-bg').value;
+  var style = document.getElementById('te-style').value;
+  var fontSize = parseInt(document.getElementById('te-size').value, 10);
+  var ctx = teCtx;
+  var W = 860;
+  var H = Math.max(300, fontSize * 2 + 100);
+  teCanvas.width = W;
+  teCanvas.height = H;
+  ctx.fillStyle = bg;
+  ctx.fillRect(0, 0, W, H);
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.font = 'bold ' + fontSize + 'px "Microsoft YaHei","PingFang SC","Noto Sans SC",sans-serif';
+  var cx = W / 2;
+  var cy = H / 2;
+
+  if (style === 'neon') {
+    ctx.shadowColor = color;
+    for (var i = 0; i < 3; i++) {
+      ctx.shadowBlur = 60 + i * 30;
+      ctx.fillStyle = color;
+      ctx.fillText(text, cx, cy);
+    }
+    ctx.shadowBlur = 0;
+    ctx.fillStyle = color;
+    ctx.fillText(text, cx, cy);
+  } else if (style === '3d') {
+    for (var d = 8; d >= 1; d--) {
+      ctx.fillStyle = '#334155';
+      ctx.fillText(text, cx + d, cy + d);
+    }
+    ctx.fillStyle = color;
+    ctx.fillText(text, cx, cy);
+  } else if (style === 'outline') {
+    ctx.strokeStyle = color;
+    ctx.lineWidth = fontSize * 0.15;
+    ctx.lineJoin = 'round';
+    ctx.strokeText(text, cx, cy);
+    ctx.fillStyle = bg;
+    ctx.fillText(text, cx, cy);
+  } else if (style === 'shadow') {
+    ctx.shadowColor = 'rgba(0,0,0,0.6)';
+    ctx.shadowBlur = 20;
+    ctx.shadowOffsetY = fontSize * 0.12;
+    ctx.fillStyle = color;
+    ctx.fillText(text, cx, cy);
+    ctx.shadowBlur = 0;
+    ctx.shadowOffsetY = 0;
+  } else if (style === 'gradient') {
+    var g = ctx.createLinearGradient(0, cy - fontSize, 0, cy + fontSize);
+    g.addColorStop(0, color);
+    g.addColorStop(1, bg);
+    ctx.fillStyle = g;
+    ctx.fillText(text, cx, cy);
+  }
+}
+
+function teDownload() {
+  if (!teCanvas) return;
+  var a = document.createElement('a');
+  a.download = 'text-effect.png';
+  a.href = teCanvas.toDataURL('image/png');
+  a.click();
+  showToast('✅ 特效文字已下载');
 }
