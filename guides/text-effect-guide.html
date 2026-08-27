@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>在线文字特效生成器：5步做出霓虹/3D/渐变艺术字，下载PNG - ToolBox 工具箱指南</title>
+  <meta name="description" content="图文详解在线文字特效生成器的使用教程，支持霓虹发光、3D立体、描边、投影、渐变填充五种特效样式，颜色字号随意调，一键导出高清PNG，完全免费。">
+  <meta name="keywords" content="在线文字特效,艺术字生成,霓虹字,3D立体字,文字特效生成器,免费艺术字,在线字体特效,text effect maker">
+  <meta name="author" content="ToolBox">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://toolai.ccwu.cc/guides/text-effect-guide.html">
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    :root {
+      --bg: #0f0f1a;
+      --bg-card: #1a1a2e;
+      --text: #e0e0e0;
+      --text-light: #8888aa;
+      --border: #2a2a44;
+      --accent: #6366f1;
+      --accent-hover: #4f46e5;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Noto Sans SC', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      margin: 0;
+      line-height: 1.8;
+    }
+    .guide-header {
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+      border-bottom: 1px solid var(--border);
+      padding: 20px 0;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(10px);
+    }
+    .guide-header-inner {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 0 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .guide-header a { color: var(--accent); text-decoration: none; font-size: 14px; }
+    .guide-header a:hover { color: var(--accent-hover); }
+    .guide-container { max-width: 860px; margin: 0 auto; padding: 40px 20px 80px; }
+    .guide-breadcrumb { font-size: 13px; color: var(--text-light); margin-bottom: 20px; }
+    .guide-breadcrumb a { color: var(--accent); text-decoration: none; }
+    .guide-breadcrumb a:hover { text-decoration: underline; }
+    h1 {
+      font-size: 32px; font-weight: 700; margin: 0 0 10px; line-height: 1.3;
+      background: linear-gradient(135deg, #e0e0e0, #a78bfa);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .guide-meta { font-size: 13px; color: var(--text-light); margin-bottom: 30px; display: flex; gap: 16px; flex-wrap: wrap; }
+    h2 { font-size: 22px; font-weight: 600; margin: 40px 0 16px; padding-bottom: 8px; border-bottom: 1px solid var(--border); color: #e0e0e0; }
+    h3 { font-size: 18px; font-weight: 600; margin: 28px 0 12px; color: #ccc; }
+    p { margin: 0 0 16px; color: #ccc; }
+    ul, ol { color: #ccc; margin: 12px 0; padding-left: 20px; }
+    .guide-step { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 24px; margin: 24px 0; position: relative; }
+    .guide-step-number { position: absolute; top: -12px; left: 20px; background: var(--accent); color: #fff; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; }
+    .guide-step h3 { margin-top: 0; }
+    .guide-img { max-width: 100%; border-radius: 8px; border: 1px solid var(--border); margin: 16px 0; display: block; }
+    .guide-img-caption { text-align: center; font-size: 13px; color: var(--text-light); margin: 4px 0 16px; }
+    .guide-tip { background: rgba(99,102,241,0.1); border-left: 4px solid var(--accent); padding: 12px 16px; border-radius: 0 8px 8px 0; margin: 16px 0; font-size: 14px; color: #ccc; }
+    .guide-table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 14px; }
+    .guide-table th, .guide-table td { border: 1px solid var(--border); padding: 10px 14px; text-align: left; }
+    .guide-table th { background: var(--bg-card); color: #e0e0e0; font-weight: 600; }
+    .guide-table td { color: #ccc; }
+    .guide-cta { text-align: center; background: linear-gradient(135deg, #1a1a2e, #16213e); border: 1px solid var(--border); border-radius: 12px; padding: 32px; margin: 40px 0; }
+    .guide-cta p { font-size: 16px; margin-bottom: 20px; }
+    .guide-cta .btn { display: inline-block; background: linear-gradient(135deg, #6366f1, #8b5cf6); color: #fff; padding: 12px 32px; border-radius: 30px; text-decoration: none; font-weight: 600; font-size: 16px; transition: transform 0.2s, box-shadow 0.2s; }
+    .guide-cta .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(99,102,241,0.3); }
+    .footer-nav { margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; font-size: 14px; }
+    .footer-nav a { color: var(--accent); text-decoration: none; }
+    .footer-nav a:hover { text-decoration: underline; }
+    @media (max-width: 600px) {
+      h1 { font-size: 24px; }
+      .guide-container { padding: 20px 16px 60px; }
+      .guide-step { padding: 20px 16px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="guide-header">
+    <div class="guide-header-inner">
+      <a href="https://toolai.ccwu.cc/">🧰 ToolBox 首页</a>
+      <a href="../index.html#guides">📖 工具箱指南</a>
+    </div>
+  </header>
+
+  <div class="guide-container">
+    <div class="guide-breadcrumb">
+      <a href="https://toolai.ccwu.cc/">首页</a> / <a href="../index.html#guides">工具箱指南</a> / 在线文字特效生成器
+    </div>
+
+    <h1>在线文字特效生成器：5步做出霓虹/3D/渐变艺术字，下载PNG</h1>
+
+    <div class="guide-meta">
+      <span>📅 2026-08-27</span>
+      <span>✏️ ToolBox 编辑部</span>
+      <span>📖 阅读约 6 分钟</span>
+    </div>
+
+    <p>做海报、做视频封面、发朋友圈的时候，想让文字更有冲击力——但不会用Photoshop，也不懂设计软件？</p>
+
+    <p><strong>在线文字特效生成器</strong> 就是为你准备的。输入文字，选一种特效样式，字就会自动变成霓虹发光、3D立体、描边、投影或渐变填充的效果。颜色、字号随便调，即时预览，满意后一键下载为高清PNG图片，直接用在海报、封面、短视频和社交媒体上。</p>
+
+    <p>全程在浏览器里运行，不装软件、不注册、完全免费，做好的图片不经过任何服务器，隐私安全。</p>
+
+    <img src="images/te-interface.png" alt="文字特效生成器 - 五种特效样式界面" class="guide-img">
+    <div class="guide-img-caption">▲ 文字特效生成器内置五种特效样式，颜色字号可自由调整</div>
+
+    <!-- ====== 第一步 ====== -->
+    <div class="guide-step">
+      <div class="guide-step-number">1</div>
+      <h3>打开工具，输入你的文字</h3>
+      <p>进入 ToolBox 首页，点击「图片处理」分类，找到「文字特效生成器」。界面非常简单：</p>
+      <ul>
+        <li><strong>文字输入框</strong> — 输入你想加特效的文字（默认"酷炫特效"）</li>
+        <li><strong>文字颜色 / 背景色</strong> — 点击色块弹出调色盘</li>
+        <li><strong>特效样式</strong> — 5种样式：霓虹发光、3D立体、描边、投影、渐变填充</li>
+        <li><strong>字号</strong> — 48 / 64 / 96 / 128px 四档</li>
+        <li><strong>下载按钮</strong> — 一键导出高清PNG</li>
+      </ul>
+      <p>先输入文字，比如"生日快乐""加油""新品上市"，或者你自己的名字/品牌名。输入框下面的预览区域会实时显示效果。</p>
+
+      <div class="guide-tip">
+        <strong>💡 小技巧：</strong> 文字越短、越有冲击力（2-6个字效果最佳）。长句子建议拆成多张图，或者选小字号。
+      </div>
+    </div>
+
+    <!-- ====== 第二步 ====== -->
+    <div class="guide-step">
+      <div class="guide-step-number">2</div>
+      <h3>选择特效样式：5种风格随心切换</h3>
+      <p>这是工具的核心。5种特效各有特点，适合不同场景：</p>
+
+      <table class="guide-table">
+        <thead><tr><th>特效</th><th>效果描述</th><th>最适合</th></tr></thead>
+        <tbody>
+          <tr><td>🟢 霓虹发光</td><td>文字周围有一圈柔和的辉光，像霓虹灯牌</td><td>夜晚风格、酒吧、赛博朋克、酷炫封面</td></tr>
+          <tr><td>🧊 3D立体</td><td>文字有立体厚度，像浮雕凸起</td><td>标题、Logo、海报主视觉</td></tr>
+          <tr><td>⭕ 描边</td><td>文字带描边轮廓，内部为背景色</td><td>贴纸、卡通、标签</td></tr>
+          <tr><td>🌑 投影</td><td>文字下方有柔和阴影，立体悬浮感</td><td>简洁大气的商务封面</td></tr>
+          <tr><td>🌈 渐变填充</td><td>文字颜色从上到下渐变过渡</td><td>时尚、年轻化、社交媒体</td></tr>
+        </tbody>
+      </table>
+
+      <img src="images/te-example-neon.png" alt="霓虹发光特效示例" class="guide-img">
+      <div class="guide-img-caption">▲ 霓虹发光特效 — 适合夜晚风、酷炫风格</div>
+
+      <div class="guide-tip">
+        <strong>🎨 调色建议：</strong> 霓虹效果建议搭配深色背景（默认深蓝就很好），浅色背景会让辉光不明显。
+      </div>
+    </div>
+
+    <!-- ====== 第三步 ====== -->
+    <div class="guide-step">
+      <div class="guide-step-number">3</div>
+      <h3>调整颜色和字号，找到最佳效果</h3>
+      <p>选定样式后，微调几个参数：</p>
+      <ol>
+        <li><strong>文字颜色</strong> — 点色块选主色。霓虹模式选亮色（绿、粉、蓝），3D模式选白色或亮色效果最好</li>
+        <li><strong>背景色</strong> — 深色背景衬托浅色文字，浅色背景衬托深色文字，对比度越高越清晰</li>
+        <li><strong>字号</strong> — 4档可选，做封面选大号，做水印/标签选小号</li>
+      </ol>
+      <p>每调一下，预览区会立刻刷新，所见即所得。多试试不同的颜色组合，找到最有冲击力的搭配。</p>
+
+      <div class="guide-tip">
+        <strong>📌 配色公式：</strong> 想要高级感，用"深色背景 + 单一亮色文字"；想要活力，用"互补色"（如蓝底橙字、紫底黄字）。
+      </div>
+    </div>
+
+    <!-- ====== 第四步 ====== -->
+    <div class="guide-step">
+      <div class="guide-step-number">4</div>
+      <h3>预览确认效果</h3>
+      <p>预览区域会实时显示你选择的文字、样式、颜色和字号组合。确认效果满意后，就可以进入下一步下载了。</p>
+
+      <img src="images/te-example-3d.png" alt="3D立体特效示例" class="guide-img">
+      <div class="guide-img-caption">▲ 3D立体特效 — 适合标题和海报主视觉</div>
+
+      <div class="guide-tip">
+        <strong>🔄 反复尝试：</strong> 不用担心选错，所有参数都是即时生效的，可以任意切换样式、颜色、字号，直到满意为止。
+      </div>
+    </div>
+
+    <!-- ====== 第五步 ====== -->
+    <div class="guide-step">
+      <div class="guide-step-number">5</div>
+      <h3>下载 PNG 图片，即取即用</h3>
+      <p>点击「⬇️ 下载特效文字PNG」，当前预览的文字特效会保存为一张高清PNG图片，自动下载到你的电脑或手机。</p>
+      <p>下载的图片特点：</p>
+      <ul>
+        <li><strong>格式：</strong> PNG 无损格式，透明/纯色背景都清晰</li>
+        <li><strong>尺寸：</strong> 860px 宽的高清图，适合大多数社交媒体和海报使用</li>
+        <li><strong>背景：</strong> 使用你设置的背景色，可与你的设计整体融合</li>
+      </ul>
+      <p>下载后就能直接用了：贴到海报里、加在视频封面、发朋友圈、做头像、当Logo……</p>
+
+      <div class="guide-tip">
+        <strong>📌 温馨提示：</strong> 工具是纯本地渲染，图片不会上传服务器。刷新或关闭页面后设置会重置，记得先下载保存。
+      </div>
+    </div>
+
+    <!-- ====== 使用场景 ====== -->
+    <h2>🎯 文字特效生成器的 5 个实用场景</h2>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin:20px 0;">
+      <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:16px;text-align:center;">
+        <div style="font-size:28px;margin-bottom:8px;">🎬</div>
+        <div style="font-weight:600;font-size:14px;margin-bottom:4px;">视频封面</div>
+        <div style="font-size:12px;color:var(--text-light);">3D/霓虹大字做抖音、B站、油管封面标题</div>
+      </div>
+      <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:16px;text-align:center;">
+        <div style="font-size:28px;margin-bottom:8px;">🖼️</div>
+        <div style="font-weight:600;font-size:14px;margin-bottom:4px;">海报标题</div>
+        <div style="font-size:12px;color:var(--text-light);">活动海报、促销海报的主标题艺术字</div>
+      </div>
+      <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:16px;text-align:center;">
+        <div style="font-size:28px;margin-bottom:8px;">📱</div>
+        <div style="font-weight:600;font-size:14px;margin-bottom:4px;">社交媒体</div>
+        <div style="font-size:12px;color:var(--text-light);">朋友圈配图、小红书笔记、微博头图文字</div>
+      </div>
+      <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:16px;text-align:center;">
+        <div style="font-size:28px;margin-bottom:8px;">🏷️</div>
+        <div style="font-weight:600;font-size:14px;margin-bottom:4px;">Logo/标签</div>
+        <div style="font-size:12px;color:var(--text-light);">个人品牌、店铺招牌、贴纸文字</div>
+      </div>
+      <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:16px;text-align:center;">
+        <div style="font-size:28px;margin-bottom:8px;">🎁</div>
+        <div style="font-weight:600;font-size:14px;margin-bottom:4px;">贺卡祝福</div>
+        <div style="font-size:12px;color:var(--text-light);">生日、节日、祝福语做成漂亮贺卡图</div>
+      </div>
+    </div>
+
+    <!-- ====== 常见问题 ====== -->
+    <h2>❓ 常见问题</h2>
+    <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:20px;margin:16px 0;">
+      <p><strong>Q：支持中文文字吗？</strong></p>
+      <p>完全支持！文字特效生成器原生支持中文（含宋体、黑体等系统字体），也支持英文、数字和符号，输入什么就渲染什么。</p>
+    </div>
+    <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:20px;margin:16px 0;">
+      <p><strong>Q：图片能保存为透明背景吗？</strong></p>
+      <p>目前下载的背景色就是你选择的背景色。如果想让背景透明，可以把背景色和你的最终使用场景底色设为一致。描边样式下文字内部是背景色，适合做透明感贴纸。</p>
+    </div>
+    <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:20px;margin:16px 0;">
+      <p><strong>Q：和 CoolText / MockoFony 这些付费工具有区别吗？</strong></p>
+      <p>我们的文字特效生成器覆盖了最常用的5种基础特效（霓虹、3D、描边、投影、渐变），胜在完全免费、无需注册、即时可用。付费工具通常有更多花哨模板，但日常做封面和海报，这些基础特效已经足够。</p>
+    </div>
+
+    <!-- ====== CTA ====== -->
+    <div class="guide-cta">
+      <p>📌 想让文字更有冲击力？现在就去做一张自己的艺术字</p>
+      <a href="https://toolai.ccwu.cc/" class="btn">🪄 去文字特效生成器 →</a>
+    </div>
+
+    <div class="footer-nav">
+      <a href="../index.html#guides">← 返回工具箱指南列表</a>
+      <a href="https://toolai.ccwu.cc/">🏠 回到首页</a>
+    </div>
+  </div>
+</body>
+</html>
