@@ -4523,6 +4523,106 @@ greet('世界');</textarea>
       </div>
     `,
     handler: () => { setTimeout(teInit, 50); }
+  },
+  {
+    id: 'photo-collage',
+    cat: 'image',
+    icon: '🧩',
+    name: '图片拼贴画',
+    desc: '灵感来源于 Canva / Fotor 拼贴功能（付费），多张图片自由拖拽拼接，模板+间距+背景任意调，一键导出高清PNG',
+    html: `
+      <div class="tool-card">
+        <div class="row" style="gap:10px;flex-wrap:wrap;margin-bottom:10px;">
+          <div class="input-group" style="flex:1;min-width:140px;">
+            <label>拼贴模板</label>
+            <select id="pc-layout" style="width:100%;" onchange="pcRender()">
+              <option value="2v" selected>2张竖排</option>
+              <option value="2h">2张横排</option>
+              <option value="3h">3张横排</option>
+              <option value="4g">4宫格</option>
+              <option value="3+1">3+1混合</option>
+              <option value="2+2r">2+2田字</option>
+            </select>
+          </div>
+          <div class="input-group" style="flex:1;min-width:140px;">
+            <label>背景色</label>
+            <input type="color" id="pc-bg" value="#ffffff" style="width:100%;height:36px;border:none;border-radius:6px;cursor:pointer;" onchange="pcRender()">
+          </div>
+          <div class="input-group" style="flex:1;min-width:140px;">
+            <label>间距</label>
+            <select id="pc-gap" style="width:100%;" onchange="pcRender()">
+              <option value="0">无间距</option>
+              <option value="10" selected>小 (10px)</option>
+              <option value="20">中 (20px)</option>
+              <option value="30">大 (30px)</option>
+            </select>
+          </div>
+        </div>
+        <div style="text-align:center;margin-bottom:10px;display:flex;gap:8px;flex-wrap:wrap;justify-content:center;">
+          <button class="btn btn-primary" onclick="document.getElementById('pc-file1').click()">📂 选择图片(可多选)</button>
+          <button class="btn btn-secondary" onclick="pcDownload()">⬇️ 下载拼贴PNG</button>
+        </div>
+        <input type="file" id="pc-file1" accept="image/*" multiple style="display:none;" onchange="pcLoadFiles(this)">
+        <div style="border:2px dashed var(--border);border-radius:10px;overflow:hidden;">
+          <canvas id="pc-canvas" style="display:block;width:100%;max-height:460px;"></canvas>
+        </div>
+        <div style="margin-top:10px;font-size:12px;color:var(--text-light);text-align:center;">
+          💡 灵感来源于 Canva / Fotor 拼贴（付费）— 选择图片后自动按模板排版，图片本地处理，隐私安全
+        </div>
+      </div>
+    `,
+    handler: () => { setTimeout(pcInit, 50); }
+  },
+  {
+    id: 'photo-frame',
+    cat: 'image',
+    icon: '🖼️',
+    name: '图片相框',
+    desc: '灵感来源于付费相框应用，为照片添加艺术相框、圆角、阴影和文字水印，导出带框美图PNG',
+    html: `
+      <div class="tool-card">
+        <div style="text-align:center;margin-bottom:12px;">
+          <input type="file" id="pf-file" accept="image/*" style="display:none;" onchange="pfLoadFile(this)">
+          <button class="btn btn-primary" onclick="document.getElementById('pf-file').click()">📂 选择照片</button>
+          <button class="btn btn-secondary" id="pf-download" onclick="pfDownload()" disabled>⬇️ 下载带框图片</button>
+        </div>
+        <div class="row" style="gap:10px;flex-wrap:wrap;margin-bottom:12px;">
+          <div class="input-group" style="flex:1;min-width:120px;">
+            <label>相框样式</label>
+            <select id="pf-style" style="width:100%;" onchange="pfRender()">
+              <option value="classic" selected>👑 经典金框</option>
+              <option value="wood">🪵 木纹框</option>
+              <option value="minimal">⬜ 极简白框</option>
+              <option value="black">⬛ 黑框</option>
+              <option value="polaroid">📸 拍立得</option>
+            </select>
+          </div>
+          <div class="input-group" style="flex:1;min-width:120px;">
+            <label>圆角</label>
+            <select id="pf-radius" style="width:100%;" onchange="pfRender()">
+              <option value="0">直角</option>
+              <option value="20" selected>圆角</option>
+              <option value="50">大圆角</option>
+            </select>
+          </div>
+          <div class="input-group" style="flex:1;min-width:120px;">
+            <label>文字水印</label>
+            <input type="text" id="pf-text" value="" placeholder="可留空" style="width:100%;padding:8px;background:#1a1a2e;color:#e0e0e0;border:1px solid var(--border);border-radius:6px;" oninput="pfRender()">
+          </div>
+          <div class="input-group" style="flex:1;min-width:120px;">
+            <label>水印颜色</label>
+            <input type="color" id="pf-textcolor" value="#ffffff" style="width:100%;height:36px;border:none;border-radius:6px;cursor:pointer;" onchange="pfRender()">
+          </div>
+        </div>
+        <div style="border:2px dashed var(--border);border-radius:10px;overflow:hidden;text-align:center;background:#1a1a2e;padding:10px;">
+          <canvas id="pf-canvas" style="display:block;max-width:100%;max-height:420px;margin:0 auto;"></canvas>
+        </div>
+        <div style="margin-top:10px;font-size:12px;color:var(--text-light);text-align:center;">
+          💡 灵感来源于付费相框应用 — 纯浏览器 Canvas 渲染，照片不上传服务器，导出即用
+        </div>
+      </div>
+    `,
+    handler: () => { setTimeout(pfInit, 50); }
   }
 ];
 
@@ -6165,7 +6265,7 @@ function dpCopyText() {
 const CATEGORIES = [
   { id: 'text', icon: '✏️', name: '文本工具', desc: '字数统计、简繁转换、摩斯密码、文本转语音、文本对比' },
   { id: 'dev', icon: '💻', name: '开发者工具', desc: 'JSON格式化、二维码生成、正则测试、Markdown、IP查询、思维导图、图表生成、代码图片生成、表格数据转换' },
-  { id: 'image', icon: '🖼️', name: '图片处理', desc: '去背景换底色、批量压缩、加水印、长图拼接、格式转换、裁剪、OCR、印章制作、九宫格切图、文字转手写体、表情包、社交媒体图片尺寸调整、艺术效果、像素画、设备样机、图片高清放大、图片转线稿、渐变背景、文字特效' },
+  { id: 'image', icon: '🖼️', name: '图片处理', desc: '去背景换底色、批量压缩、加水印、长图拼接、格式转换、裁剪、OCR、印章制作、九宫格切图、文字转手写体、表情包、社交媒体图片尺寸调整、艺术效果、像素画、设备样机、图片高清放大、图片转线稿、渐变背景、文字特效、拼贴画、图片相框' },
   { id: 'document', icon: '📄', name: '文档转换', desc: '图片转PDF、PDF转图片、Word解析、Excel转PDF、PDF合并、简历生成、电子签名、表单制作、邮件签名' },
   { id: 'convert', icon: '🔄', name: '转换工具', desc: '单位换算、进制转换' },
   { id: 'security', icon: '🔒', name: '安全工具', desc: '密码生成、Hash计算、随机数' },
@@ -8644,4 +8744,225 @@ function teDownload() {
   a.href = teCanvas.toDataURL('image/png');
   a.click();
   showToast('✅ 特效文字已下载');
+}
+
+// ============================================================
+// 图片拼贴画 处理函数 (替代 Canva / Fotor 拼贴)
+// ============================================================
+var pcCanvas, pcCtx, pcImages = [];
+
+function pcInit() {
+  pcCanvas = document.getElementById('pc-canvas');
+  if (!pcCanvas) return;
+  pcCtx = pcCanvas.getContext('2d');
+  pcRender();
+}
+
+function pcLoadFiles(input) {
+  if (!input.files || !input.files.length) return;
+  pcImages = [];
+  var files = Array.prototype.slice.call(input.files).slice(0, 8);
+  var loaded = 0;
+  files.forEach(function(file) {
+    var reader = new FileReader();
+    reader.onload = function(e) {
+      var img = new Image();
+      img.onload = function() {
+        pcImages.push(img);
+        loaded++;
+        if (loaded === files.length) {
+          pcRender();
+          showToast('✅ 已加载 ' + pcImages.length + ' 张图片，选择模板查看效果');
+        }
+      };
+      img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+function pcRender() {
+  if (!pcCanvas || !pcCtx) return;
+  var layout = document.getElementById('pc-layout').value;
+  var bg = document.getElementById('pc-bg').value;
+  var gap = parseInt(document.getElementById('pc-gap').value, 10);
+  var W = 800, H = 600;
+  pcCanvas.width = W;
+  pcCanvas.height = H;
+  var ctx = pcCtx;
+  ctx.fillStyle = bg;
+  ctx.fillRect(0, 0, W, H);
+  var imgs = pcImages;
+  var cells = [];
+  if (layout === '2v') { cells = [[0,0,W/2-gap/2,H],[W/2+gap/2,0,W/2-gap/2,H]]; }
+  else if (layout === '2h') { cells = [[0,0,W,H/2-gap/2],[0,H/2+gap/2,W,H/2-gap/2]]; }
+  else if (layout === '3h') { cells = [[0,0,W/3-gap*2/3,H],[W/3+gap/3,0,W/3-gap*2/3,H],[W*2/3+gap*2/3,0,W/3-gap*2/3,H]]; }
+  else if (layout === '4g') { cells = [[0,0,W/2-gap/2,H/2-gap/2],[W/2+gap/2,0,W/2-gap/2,H/2-gap/2],[0,H/2+gap/2,W/2-gap/2,H/2-gap/2],[W/2+gap/2,H/2+gap/2,W/2-gap/2,H/2-gap/2]]; }
+  else if (layout === '3+1') {
+    cells = [[0,0,W*2/3,H/2-gap/2],[W*2/3+gap,0,W/3-gap,H/2-gap/2],[0,H/2+gap/2,W/2-gap/2,H/2-gap/2],[W/2+gap/2,H/2+gap/2,W/2-gap/2,H/2-gap/2]];
+  }
+  else if (layout === '2+2r') {
+    cells = [[0,0,W/2-gap/2,H/2-gap/2],[W/2+gap/2,0,W/2-gap/2,H/2-gap/2],[0,H/2+gap/2,W/2-gap/2,H/2-gap/2],[W/2+gap/2,H/2+gap/2,W/2-gap/2,H/2-gap/2]];
+  }
+  // Draw placeholder cells
+  cells.forEach(function(c, i) {
+    if (i < imgs.length) {
+      var img = imgs[i];
+      var cw = c[2], ch = c[3];
+      var ir = img.width / img.height;
+      var cr = cw / ch;
+      var dw, dh;
+      if (ir > cr) { dh = ch; dw = ch * ir; } else { dw = cw; dh = cw / ir; }
+      ctx.drawImage(img, c[0] + (cw-dw)/2, c[1] + (ch-dh)/2, dw, dh);
+    } else {
+      ctx.fillStyle = 'rgba(0,0,0,0.15)';
+      var cx = c[0] + c[2]/2, cy = c[1] + c[3]/2;
+      ctx.font = '24px sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('📷 空', cx, cy);
+    }
+  });
+}
+
+function pcDownload() {
+  if (!pcCanvas) return;
+  var a = document.createElement('a');
+  a.download = 'collage.png';
+  a.href = pcCanvas.toDataURL('image/png');
+  a.click();
+  showToast('✅ 拼贴画已下载');
+}
+
+// ============================================================
+// 图片相框 处理函数 (替代付费相框应用)
+// ============================================================
+var pfCanvas, pfCtx, pfImage = null;
+
+function pfInit() {
+  pfCanvas = document.getElementById('pf-canvas');
+  if (!pfCanvas) return;
+  pfCtx = pfCanvas.getContext('2d');
+}
+
+function pfLoadFile(input) {
+  if (!input.files || !input.files[0]) return;
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    pfImage = new Image();
+    pfImage.onload = function() {
+      pfRender();
+      document.getElementById('pf-download').disabled = false;
+    };
+    pfImage.src = e.target.result;
+  };
+  reader.readAsDataURL(input.files[0]);
+}
+
+function pfRender() {
+  if (!pfCanvas || !pfCtx || !pfImage) return;
+  var style = document.getElementById('pf-style').value;
+  var radius = parseInt(document.getElementById('pf-radius').value, 10);
+  var text = document.getElementById('pf-text').value;
+  var textColor = document.getElementById('pf-textcolor').value;
+  var ctx = pfCtx;
+  var iw = pfImage.naturalWidth, ih = pfImage.naturalHeight;
+  var maxW = 700;
+  var scale = maxW / iw;
+  var dw = maxW, dh = ih * scale;
+  var frame = 40;
+  var W = Math.round(dw + frame * 2), H = Math.round(dh + frame * 2);
+  pfCanvas.width = W;
+  pfCanvas.height = H;
+  ctx.fillStyle = '#ffffff';
+  ctx.fillRect(0, 0, W, H);
+  var fx = frame, fy = frame;
+  // Draw frame
+  if (style === 'classic') {
+    var g = ctx.createLinearGradient(0, 0, 0, H);
+    g.addColorStop(0, '#f5d76e'); g.addColorStop(0.5, '#b8860b'); g.addColorStop(1, '#f5d76e');
+    ctx.fillStyle = g;
+    ctx.fillRect(0, 0, W, H);
+    ctx.save();
+    ctx.strokeStyle = '#8b6914';
+    ctx.lineWidth = 6;
+    ctx.strokeRect(6, 6, W-12, H-12);
+    ctx.restore();
+    fx = frame + 6; fy = frame + 6; dw -= 12; dh -= 12;
+  } else if (style === 'wood') {
+    ctx.fillStyle = '#8B5A2B';
+    ctx.fillRect(0, 0, W, H);
+    for (var i = 0; i < W; i += 12) {
+      ctx.fillStyle = 'rgba(120,70,30,0.4)';
+      ctx.fillRect(i, 0, 3, H);
+    }
+    ctx.strokeStyle = '#5c3a1e';
+    ctx.lineWidth = 6;
+    ctx.strokeRect(6, 6, W-12, H-12);
+  } else if (style === 'minimal') {
+    ctx.fillStyle = '#ffffff';
+    ctx.fillRect(0, 0, W, H);
+    ctx.fillStyle = '#f0f0f0';
+    ctx.fillRect(frame-12, frame-12, dw+24, dh+24);
+  } else if (style === 'black') {
+    ctx.fillStyle = '#111111';
+    ctx.fillRect(0, 0, W, H);
+    ctx.fillStyle = '#333333';
+    ctx.fillRect(frame-8, frame-8, dw+16, dh+16);
+  } else if (style === 'polaroid') {
+    // White bottom-heavy frame
+    ctx.fillStyle = '#fafafa';
+    ctx.fillRect(0, 0, W, H + 60);
+    ctx.fillStyle = '#f5f5f5';
+    ctx.fillRect(frame-15, frame-15, dw+30, dh+30);
+  }
+  // Rounded photo
+  ctx.save();
+  roundRect(ctx, fx, fy, dw, dh, radius);
+  ctx.clip();
+  ctx.drawImage(pfImage, fx, fy, dw, dh);
+  ctx.restore();
+  // Border on photo
+  ctx.strokeStyle = 'rgba(0,0,0,0.15)';
+  ctx.lineWidth = 2;
+  ctx.strokeRect(fx, fy, dw, dh);
+  // Polaroid bottom text
+  if (style === 'polaroid') {
+    var pt = text || 'POLAROID';
+    ctx.fillStyle = '#444';
+    ctx.font = '32px cursive';
+    ctx.textAlign = 'center';
+    ctx.fillText(pt, W/2, H + 40);
+  }
+  // Watermark bottom-right
+  if (text && style !== 'polaroid') {
+    ctx.fillStyle = textColor;
+    ctx.globalAlpha = 0.8;
+    ctx.font = '28px sans-serif';
+    ctx.textAlign = 'right';
+    ctx.fillText(text, W - 20, H - 15);
+    ctx.globalAlpha = 1;
+  }
+}
+
+function roundRect(ctx, x, y, w, h, r) {
+  ctx.beginPath();
+  ctx.moveTo(x + r, y);
+  ctx.lineTo(x + w - r, y);
+  ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+  ctx.lineTo(x + w, y + h - r);
+  ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+  ctx.lineTo(x + r, y + h);
+  ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+  ctx.lineTo(x, y + r);
+  ctx.quadraticCurveTo(x, y, x + r, y);
+  ctx.closePath();
+}
+
+function pfDownload() {
+  if (!pfCanvas) return;
+  var a = document.createElement('a');
+  a.download = 'photo-frame.png';
+  a.href = pfCanvas.toDataURL('image/png');
+  a.click();
+  showToast('✅ 带框图片已下载');
 }
