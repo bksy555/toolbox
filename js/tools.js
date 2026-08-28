@@ -4623,6 +4623,89 @@ greet('世界');</textarea>
       </div>
     `,
     handler: () => { setTimeout(pfInit, 50); }
+  },
+  {
+    id: 'function-plotter',
+    cat: 'convert',
+    icon: '📊',
+    name: '函数绘图器',
+    desc: '灵感来源于 Desmos / GeoGebra（付费版），输入数学函数表达式即时绘制曲线，可多函数叠加、缩放平移坐标轴，导出PNG',
+    html: `
+      <div class="tool-card">
+        <div class="row" style="gap:10px;flex-wrap:wrap;margin-bottom:10px;">
+          <div class="input-group" style="flex:2;min-width:200px;">
+            <label>函数表达式</label>
+            <input type="text" id="fp-expr" value="sin(x),cos(x)" style="width:100%;padding:10px;background:#1a1a2e;color:#e0e0e0;border:1px solid var(--border);border-radius:8px;font-family:monospace;" oninput="fpRender()">
+          </div>
+          <div class="input-group" style="flex:1;min-width:120px;">
+            <label>X范围</label>
+            <input type="text" id="fp-range" value="-10,10" style="width:100%;padding:10px;background:#1a1a2e;color:#e0e0e0;border:1px solid var(--border);border-radius:8px;font-family:monospace;" oninput="fpRender()">
+          </div>
+          <div class="input-group" style="flex:1;min-width:120px;">
+            <label>网格密度</label>
+            <select id="fp-grid" style="width:100%;" onchange="fpRender()">
+              <option value="1" selected>标准</option>
+              <option value="2">细密</option>
+              <option value="0.5">稀疏</option>
+            </select>
+          </div>
+        </div>
+        <div style="text-align:center;margin-bottom:10px;display:flex;gap:8px;flex-wrap:wrap;justify-content:center;">
+          <button class="btn btn-primary" onclick="fpZoom(-1)">➕ 放大</button>
+          <button class="btn btn-secondary" onclick="fpZoom(1)">➖ 缩小</button>
+          <button class="btn btn-secondary" onclick="fpReset()">🔄 重置</button>
+          <button class="btn btn-secondary" onclick="fpDownload()">⬇️ 下载PNG</button>
+        </div>
+        <div style="border:2px solid var(--border);border-radius:10px;overflow:hidden;">
+          <canvas id="fp-canvas" style="display:block;width:100%;max-height:480px;"></canvas>
+        </div>
+        <div style="margin-top:10px;font-size:12px;color:var(--text-light);text-align:center;">
+          💡 灵感来源于 Desmos / GeoGebra（付费）— 支持 sin/cos/tan/log/exp/sqrt/abs/pow，多个函数用英文逗号分隔，颜色自动分配
+        </div>
+      </div>
+    `,
+    handler: () => { setTimeout(fpInit, 50); }
+  },
+  {
+    id: 'color-blind-sim',
+    cat: 'image',
+    icon: '👁️',
+    name: '颜色盲区模拟',
+    desc: '灵感来源于 Stark / Coblis（付费无障碍工具），模拟红绿色盲/蓝黄色盲/全色盲看到的图像效果，帮助设计师检查配色可读性',
+    html: `
+      <div class="tool-card">
+        <div style="text-align:center;margin-bottom:12px;">
+          <input type="file" id="cb-file" accept="image/*" style="display:none;" onchange="cbLoadFile(this)">
+          <button class="btn btn-primary" onclick="document.getElementById('cb-file').click()">📂 选择图片</button>
+        </div>
+        <div class="row" style="gap:10px;flex-wrap:wrap;margin-bottom:12px;">
+          <div class="input-group" style="flex:1;min-width:140px;">
+            <label>模拟类型</label>
+            <select id="cb-type" style="width:100%;" onchange="cbRender()">
+              <option value="protanopia" selected>🔴 红色盲</option>
+              <option value="deuteranopia">🟢 绿色盲</option>
+              <option value="tritanopia">🔵 蓝黄色盲</option>
+              <option value="achromatopsia">⚫ 全色盲</option>
+            </select>
+          </div>
+        </div>
+        <div style="text-align:center;color:var(--text-light);font-size:13px;margin-bottom:10px;" id="cb-info">请选择一张图片查看色盲模拟效果</div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center;">
+          <div style="flex:1;min-width:240px;">
+            <div style="font-size:12px;color:var(--text-light);text-align:center;margin-bottom:4px;">正常视角</div>
+            <div style="border:1px dashed var(--border);border-radius:10px;overflow:hidden;background:var(--bg-card);"><img id="cb-orig" style="width:100%;display:block;min-height:60px;" alt="原图"></div>
+          </div>
+          <div style="flex:1;min-width:240px;">
+            <div style="font-size:12px;color:var(--text-light);text-align:center;margin-bottom:4px;">色盲模拟</div>
+            <div style="border:1px dashed var(--border);border-radius:10px;overflow:hidden;background:var(--bg-card);"><img id="cb-result" style="width:100%;display:block;min-height:60px;" alt="模拟结果"></div>
+          </div>
+        </div>
+        <div style="margin-top:10px;font-size:12px;color:var(--text-light);text-align:center;">
+          💡 灵感来源于 Stark / Coblis（付费）— 无障碍设计必备，检查你的配色在色盲群体眼中的可读性，图片不上传服务器
+        </div>
+      </div>
+    `,
+    handler: () => { setTimeout(cbInit, 50); }
   }
 ];
 
@@ -6265,9 +6348,9 @@ function dpCopyText() {
 const CATEGORIES = [
   { id: 'text', icon: '✏️', name: '文本工具', desc: '字数统计、简繁转换、摩斯密码、文本转语音、文本对比' },
   { id: 'dev', icon: '💻', name: '开发者工具', desc: 'JSON格式化、二维码生成、正则测试、Markdown、IP查询、思维导图、图表生成、代码图片生成、表格数据转换' },
-  { id: 'image', icon: '🖼️', name: '图片处理', desc: '去背景换底色、批量压缩、加水印、长图拼接、格式转换、裁剪、OCR、印章制作、九宫格切图、文字转手写体、表情包、社交媒体图片尺寸调整、艺术效果、像素画、设备样机、图片高清放大、图片转线稿、渐变背景、文字特效、拼贴画、图片相框' },
+  { id: 'image', icon: '🖼️', name: '图片处理', desc: '去背景换底色、批量压缩、加水印、长图拼接、格式转换、裁剪、OCR、印章制作、九宫格切图、文字转手写体、表情包、社交媒体图片尺寸调整、艺术效果、像素画、设备样机、图片高清放大、图片转线稿、渐变背景、文字特效、拼贴画、图片相框、颜色盲区模拟' },
   { id: 'document', icon: '📄', name: '文档转换', desc: '图片转PDF、PDF转图片、Word解析、Excel转PDF、PDF合并、简历生成、电子签名、表单制作、邮件签名' },
-  { id: 'convert', icon: '🔄', name: '转换工具', desc: '单位换算、进制转换' },
+  { id: 'convert', icon: '🔄', name: '转换工具', desc: '单位换算、进制转换、函数绘图' },
   { id: 'security', icon: '🔒', name: '安全工具', desc: '密码生成、Hash计算、随机数' },
   { id: 'time', icon: '⏱️', name: '时间工具', desc: '时间戳转换、日期计算' },
   { id: 'color', icon: '🎨', name: '颜色工具', desc: 'HEX/RGB/HSL颜色转换、CSS渐变生成器、配色方案生成器' },
@@ -8965,4 +9048,221 @@ function pfDownload() {
   a.href = pfCanvas.toDataURL('image/png');
   a.click();
   showToast('✅ 带框图片已下载');
+}
+
+// ============================================================
+// 函数绘图器 处理函数 (替代 Desmos / GeoGebra)
+// ============================================================
+var fpCanvas, fpCtx, fpScale = 60, fpOffsetX = 0, fpOffsetY = 0;
+
+function fpInit() {
+  fpCanvas = document.getElementById('fp-canvas');
+  if (!fpCanvas) return;
+  fpCtx = fpCanvas.getContext('2d');
+  fpRender();
+}
+
+function fpParseExpr(expr) {
+  // Replace ^ with ** and support functions
+  var e = expr.trim().replace(/\^/g, '**');
+  e = e.replace(/(\d)([a-zA-Z(])/g, '$1*$2');
+  e = e.replace(/\)([a-zA-Z(])/g, ')*$1');
+  e = e.replace(/sin\(/g, 'Math.sin(');
+  e = e.replace(/cos\(/g, 'Math.cos(');
+  e = e.replace(/tan\(/g, 'Math.tan(');
+  e = e.replace(/log\(/g, 'Math.log10(');
+  e = e.replace(/ln\(/g, 'Math.log(');
+  e = e.replace(/exp\(/g, 'Math.exp(');
+  e = e.replace(/sqrt\(/g, 'Math.sqrt(');
+  e = e.replace(/abs\(/g, 'Math.abs(');
+  e = e.replace(/pow\(/g, 'Math.pow(');
+  e = e.replace(/pi/g, 'Math.PI');
+  e = e.replace(/PI/g, 'Math.PI');
+  e = e.replace(/e/g, 'Math.E');
+  return e;
+}
+
+function fpEval(expr, x) {
+  try {
+    var e = fpParseExpr(expr);
+    // x already substituted in loop
+    var body = e.replace(/x/g, '(' + x + ')');
+    return eval(body);
+  } catch (err) {
+    return null;
+  }
+}
+
+function fpRender() {
+  if (!fpCanvas || !fpCtx) return;
+  var exprText = document.getElementById('fp-expr').value || 'sin(x)';
+  var rangeText = document.getElementById('fp-range').value || '-10,10';
+  var gridDensity = parseFloat(document.getElementById('fp-grid').value) || 1;
+  var exprs = exprText.split(',').map(function(s){ return s.trim(); }).filter(Boolean);
+  var range = rangeText.split(',').map(function(s){ return parseFloat(s.trim()); });
+  var xMin = isNaN(range[0]) ? -10 : range[0];
+  var xMax = isNaN(range[1]) ? 10 : range[1];
+  var palette = ['#6366f1', '#ec4899', '#10b981', '#f59e0b', '#ef4444', '#06b6d4', '#8b5cf6', '#84cc16'];
+  var W = 800, H = 500;
+  fpCanvas.width = W;
+  fpCanvas.height = H;
+  var ctx = fpCtx;
+  // background
+  ctx.fillStyle = '#101018';
+  ctx.fillRect(0, 0, W, H);
+  // grid
+  var cx = W / 2 + fpOffsetX;
+  var cy = H / 2 + fpOffsetY;
+  var step = fpScale * gridDensity;
+  ctx.strokeStyle = 'rgba(255,255,255,0.12)';
+  ctx.lineWidth = 1;
+  for (var gx = cx % step; gx < W; gx += step) {
+    ctx.beginPath(); ctx.moveTo(gx, 0); ctx.lineTo(gx, H); ctx.stroke();
+  }
+  for (var gy = cy % step; gy < H; gy += step) {
+    ctx.beginPath(); ctx.moveTo(0, gy); ctx.lineTo(W, gy); ctx.stroke();
+  }
+  // axes
+  ctx.strokeStyle = 'rgba(255,255,255,0.5)';
+  ctx.lineWidth = 2;
+  ctx.beginPath(); ctx.moveTo(cx, 0); ctx.lineTo(cx, H); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(0, cy); ctx.lineTo(W, cy); ctx.stroke();
+  // arrow heads
+  ctx.fillStyle = 'rgba(255,255,255,0.5)';
+  ctx.beginPath(); ctx.moveTo(cx, 5); ctx.lineTo(cx-6, 20); ctx.lineTo(cx+6, 20); ctx.fill();
+  ctx.beginPath(); ctx.moveTo(W-5, cy); ctx.lineTo(W-20, cy-6); ctx.lineTo(W-20, cy+6); ctx.fill();
+  // tick labels
+  ctx.fillStyle = '#888';
+  ctx.font = '11px monospace';
+  ctx.textAlign = 'center';
+  for (var v = -100; v <= 100; v++) {
+    var px = cx + v * fpScale;
+    if (px > 20 && px < W-20) {
+      ctx.fillText(v, px, cy + 16);
+    }
+    var py = cy - v * fpScale;
+    if (py > 15 && py < H-10) {
+      ctx.fillText(v, cx + 8, py + 3);
+    }
+  }
+  // functions
+  exprs.forEach(function(expr, idx) {
+    var color = palette[idx % palette.length];
+    ctx.strokeStyle = color;
+    ctx.lineWidth = 3;
+    ctx.beginPath();
+    var started = false;
+    var prevValid = false;
+    var pxPrev, pyPrev;
+    for (var i = 0; i <= W; i += 2) {
+      var wx = (i - cx) / fpScale;
+      if (wx < xMin || wx > xMax) { prevValid = false; continue; }
+      var val = fpEval(expr, wx);
+      if (val === null || !isFinite(val)) { prevValid = false; continue; }
+      var py = cy - val * fpScale;
+      if (Math.abs(val) > 10000) { prevValid = false; continue; }
+      if (!started) { ctx.moveTo(i, py); started = true; }
+      else {
+        // skip big jumps
+        if (prevValid && Math.abs(py - pyPrev) < fpScale * 8) {
+          ctx.lineTo(i, py);
+        } else {
+          ctx.moveTo(i, py);
+        }
+      }
+      pxPrev = i; pyPrev = py; prevValid = true;
+    }
+    ctx.stroke();
+    // legend
+    ctx.fillStyle = color;
+    ctx.textAlign = 'left';
+    ctx.fillText('y=' + expr, 10, 20 + idx * 20);
+  });
+}
+
+function fpZoom(dir) {
+  fpScale *= dir < 0 ? 1.4 : 0.7;
+  fpScale = Math.min(300, Math.max(5, fpScale));
+  fpRender();
+}
+
+function fpReset() {
+  fpScale = 60; fpOffsetX = 0; fpOffsetY = 0;
+  document.getElementById('fp-expr').value = 'sin(x),cos(x)';
+  document.getElementById('fp-range').value = '-10,10';
+  fpRender();
+}
+
+function fpDownload() {
+  if (!fpCanvas) return;
+  var a = document.createElement('a');
+  a.download = 'function-graph.png';
+  a.href = fpCanvas.toDataURL('image/png');
+  a.click();
+  showToast('✅ 函数图像已下载');
+}
+
+// ============================================================
+// 颜色盲区模拟 处理函数 (替代 Stark / Coblis)
+// ============================================================
+var cbImage = null;
+
+function cbInit() {
+  // ready
+}
+
+function cbLoadFile(input) {
+  if (!input.files || !input.files[0]) return;
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    cbImage = new Image();
+    cbImage.onload = function() {
+      document.getElementById('cb-orig').src = cbImage.src;
+      cbRender();
+    };
+    cbImage.src = e.target.result;
+  };
+  reader.readAsDataURL(input.files[0]);
+}
+
+function cbRender() {
+  if (!cbImage) return;
+  var type = document.getElementById('cb-type').value;
+  var canvas = document.createElement('canvas');
+  var maxW = 800, maxH = 560;
+  var w = cbImage.naturalWidth, h = cbImage.naturalHeight;
+  if (w > maxW) { h = h * maxW / w; w = maxW; }
+  if (h > maxH) { w = w * maxH / h; h = maxH; }
+  canvas.width = Math.round(w);
+  canvas.height = Math.round(h);
+  var ctx = canvas.getContext('2d');
+  ctx.drawImage(cbImage, 0, 0, canvas.width, canvas.height);
+  var imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+  var data = imageData.data;
+  for (var i = 0; i < data.length; i += 4) {
+    var r = data[i], g = data[i+1], b = data[i+2];
+    var nr, ng, nb;
+    if (type === 'protanopia') {
+      nr = 0.567 * r + 0.433 * g;
+      ng = 0.558 * r + 0.442 * g;
+      nb = b;
+    } else if (type === 'deuteranopia') {
+      nr = 0.625 * r + 0.375 * g;
+      ng = 0.7 * r + 0.3 * g;
+      nb = b;
+    } else if (type === 'tritanopia') {
+      nr = r;
+      ng = 0.3 * g + 0.7 * b;
+      nb = 0.3 * g + 0.7 * b;
+    } else {
+      var gray = 0.299 * r + 0.587 * g + 0.114 * b;
+      nr = gray; ng = gray; nb = gray;
+    }
+    data[i] = Math.min(255, Math.max(0, nr));
+    data[i+1] = Math.min(255, Math.max(0, ng));
+    data[i+2] = Math.min(255, Math.max(0, nb));
+  }
+  ctx.putImageData(imageData, 0, 0);
+  document.getElementById('cb-result').src = canvas.toDataURL('image/png');
+  document.getElementById('cb-info').textContent = '✅ 已生成模拟效果（' + canvas.width + '×' + canvas.height + '）';
 }
