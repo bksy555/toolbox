@@ -4764,7 +4764,7 @@ greet('世界');</textarea>
         </div>
         <input type="file" id="qb-logo" accept="image/*" style="display:none;" onchange="qbLoadLogo(this)">
         <div style="border:2px dashed var(--border);border-radius:10px;overflow:hidden;text-align:center;padding:10px;">
-          <canvas id="qb-canvas" style="display:block;max-width:300px;margin:0 auto;"></canvas>
+          <div id="qb-container" style="display:inline-block;"></div>
         </div>
         <div style="margin-top:10px;font-size:12px;color:var(--text-light);text-align:center;">
           💡 灵感来源于付费QR美化工具 — 自定义颜色+中心Logo，让二维码更有个性，生成过程完全在本地
@@ -6413,7 +6413,7 @@ function dpCopyText() {
 // ============================================================
 const CATEGORIES = [
   { id: 'text', icon: '✏️', name: '文本工具', desc: '字数统计、简繁转换、摩斯密码、文本转语音、文本对比' },
-  { id: 'dev', icon: '💻', name: '开发者工具', desc: 'JSON格式化、二维码生成、正则测试、Markdown、IP查询、思维导图、图表生成、代码图片生成、表格数据转换' },
+  { id: 'dev', icon: '💻', name: '开发者工具', desc: 'JSON格式化、二维码生成、二维码美化、正则测试、Markdown、IP查询、思维导图、图表生成、代码图片生成、表格数据转换' },
   { id: 'image', icon: '🖼️', name: '图片处理', desc: '去背景换底色、批量压缩、加水印、长图拼接、格式转换、裁剪、OCR、印章制作、九宫格切图、文字转手写体、表情包、社交媒体图片尺寸调整、艺术效果、像素画、设备样机、图片高清放大、图片转线稿、渐变背景、文字特效、拼贴画、图片相框、颜色盲区模拟' },
   { id: 'document', icon: '📄', name: '文档转换', desc: '图片转PDF、PDF转图片、Word解析、Excel转PDF、PDF合并、简历生成、电子签名、表单制作、邮件签名' },
   { id: 'convert', icon: '🔄', name: '转换工具', desc: '单位换算、进制转换、函数绘图' },
@@ -6424,7 +6424,7 @@ const CATEGORIES = [
   { id: 'ai', icon: '🤖', name: 'AI工具', desc: 'AI聊天、AI Agent安装、免费AI工具推荐' },
   { id: 'voice', icon: '🗣️', name: '群众心声', desc: '提交工具建议、投票排行榜、前3名自动实现' },
   { id: 'fun', icon: '🎪', name: '趣味工具', desc: '表情包生成、决策转盘、抽奖抽签、词云生成、涂鸦画板、娱乐好玩' },
-  { id: 'edu', icon: '📚', name: '教育资源', desc: '电子教材在线阅读、学习资源导航' }
+  { id: 'edu', icon: '📚', name: '教育资源', desc: '电子教材在线阅读、学习资源导航、元素周期表' }
 ];
 
 // ============================================================
@@ -9511,47 +9511,56 @@ function ptShowDetail(el) {
 // ============================================================
 // 二维码美化器 处理函数 (替代付费QR美化工具)
 // ============================================================
-var qbCanvas, qbCtx, qbLogoImg = null;
+var qbLogoImg = null;
 
 function qbInit() {
-  qbCanvas = document.getElementById('qb-canvas');
-  if (!qbCanvas) return;
-  qbCtx = qbCanvas.getContext('2d');
   qbRender();
 }
 
+function qbEnsureLib(cb) {
+  if (typeof QRCode !== 'undefined') { cb(); return; }
+  var s = document.createElement('script');
+  s.src = 'https://unpkg.com/qrcodejs@1.0.0/qrcode.min.js';
+  s.onload = cb;
+  s.onerror = function() { showToast('⚠️ 二维码库加载失败，请检查网络'); };
+  document.head.appendChild(s);
+}
+
 function qbRender() {
-  if (!qbCanvas || !qbCtx) return;
   var text = document.getElementById('qb-text').value || 'https://toolai.ccwu.cc';
   var fg = document.getElementById('qb-fg').value;
   var bg = document.getElementById('qb-bg').value;
   var size = parseInt(document.getElementById('qb-size').value, 10);
-  var data = qr(text, { typeNumber: 8, errorCorrectionLevel: 'H' });
-  var moduleCount = data.moduleCount;
-  var cell = Math.floor(size / (moduleCount + 8));
-  var offset = Math.floor((size - cell * moduleCount) / 2);
-  qbCanvas.width = size;
-  qbCanvas.height = size;
-  var ctx = qbCtx;
-  ctx.fillStyle = bg;
-  ctx.fillRect(0, 0, size, size);
-  ctx.fillStyle = fg;
-  for (var row = 0; row < moduleCount; row++) {
-    for (var col = 0; col < moduleCount; col++) {
-      if (data.isDark(row, col)) {
-        ctx.fillRect(offset + col * cell, offset + row * cell, cell, cell);
-      }
+  qbEnsureLib(function() {
+    var container = document.getElementById('qb-container');
+    container.innerHTML = '';
+    var qr = new QRCode(container, {
+      text: text,
+      width: size,
+      height: size,
+      colorDark: fg,
+      colorLight: bg,
+      correctLevel: QRCode.CorrectLevel.H
+    });
+    var qrCanvas = container.querySelector('canvas') || container.querySelector('img');
+    if (!qrCanvas) return;
+    // Draw logo overlay on top of QR
+    if (qbLogoImg) {
+      var overlay = document.createElement('canvas');
+      overlay.width = size;
+      overlay.height = size;
+      var ctx = overlay.getContext('2d');
+      ctx.drawImage(qrCanvas, 0, 0, size, size);
+      var logoSize = size * 0.22;
+      var lx = (size - logoSize) / 2;
+      var ly = (size - logoSize) / 2;
+      ctx.fillStyle = bg;
+      ctx.fillRect(lx - 6, ly - 6, logoSize + 12, logoSize + 12);
+      ctx.drawImage(qbLogoImg, lx, ly, logoSize, logoSize);
+      container.innerHTML = '';
+      container.appendChild(overlay);
     }
-  }
-  // Logo
-  if (qbLogoImg) {
-    var logoSize = size * 0.22;
-    var lx = (size - logoSize) / 2;
-    var ly = (size - logoSize) / 2;
-    ctx.fillStyle = bg;
-    ctx.fillRect(lx - 6, ly - 6, logoSize + 12, logoSize + 12);
-    ctx.drawImage(qbLogoImg, lx, ly, logoSize, logoSize);
-  }
+  });
 }
 
 function qbLoadLogo(input) {
@@ -9573,10 +9582,16 @@ function qbRemoveLogo() {
 }
 
 function qbDownload() {
-  if (!qbCanvas) return;
+  var container = document.getElementById('qb-container');
+  var el = container.querySelector('canvas') || container.querySelector('img');
+  if (!el) return;
   var a = document.createElement('a');
   a.download = 'qr-code.png';
-  a.href = qbCanvas.toDataURL('image/png');
+  if (el.tagName === 'CANVAS') {
+    a.href = el.toDataURL('image/png');
+  } else {
+    a.href = el.src;
+  }
   a.click();
   showToast('✅ 美化二维码已下载');
 }
