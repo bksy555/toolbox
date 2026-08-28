@@ -4706,6 +4706,72 @@ greet('世界');</textarea>
       </div>
     `,
     handler: () => { setTimeout(cbInit, 50); }
+  },
+  {
+    id: 'periodic-table',
+    cat: 'edu',
+    icon: '⚗️',
+    name: '元素周期表',
+    desc: '灵感来源于付费化学学习应用，交互式元素周期表，点击元素查看原子量、电子排布、物理性质等详情，中英双语',
+    html: `
+      <div class="tool-card">
+        <div style="text-align:center;color:var(--text-light);font-size:13px;margin-bottom:10px;">点击任意元素查看详情</div>
+        <div id="pt-table" style="display:flex;flex-wrap:wrap;gap:3px;justify-content:center;margin-bottom:12px;"></div>
+        <div id="pt-detail" style="background:#1a1a2e;border:1px solid var(--border);border-radius:10px;padding:16px;min-height:80px;">
+          <div style="text-align:center;color:var(--text-light);font-size:14px;">👆 点击上方元素查看详细信息</div>
+        </div>
+        <div style="margin-top:10px;font-size:12px;color:var(--text-light);text-align:center;">
+          💡 灵感来源于付费化学学习应用 — 118个元素完整数据，学习化学的好帮手
+        </div>
+      </div>
+    `,
+    handler: () => { setTimeout(ptInit, 50); }
+  },
+  {
+    id: 'qr-beautify',
+    cat: 'dev',
+    icon: '🔳',
+    name: '二维码美化器',
+    desc: '灵感来源于付费QR美化工具，在基础二维码上自定义前景/背景颜色、添加中心Logo、圆角样式，生成个性二维码PNG',
+    html: `
+      <div class="tool-card">
+        <div class="input-group" style="margin-bottom:10px;">
+          <label>二维码内容</label>
+          <input type="text" id="qb-text" value="https://toolai.ccwu.cc" style="width:100%;padding:10px;background:#1a1a2e;color:#e0e0e0;border:1px solid var(--border);border-radius:8px;" oninput="qbRender()">
+        </div>
+        <div class="row" style="gap:10px;flex-wrap:wrap;margin-bottom:10px;">
+          <div class="input-group" style="flex:1;min-width:120px;">
+            <label>前景颜色</label>
+            <input type="color" id="qb-fg" value="#1a1a2e" style="width:100%;height:36px;border:none;border-radius:6px;cursor:pointer;" onchange="qbRender()">
+          </div>
+          <div class="input-group" style="flex:1;min-width:120px;">
+            <label>背景颜色</label>
+            <input type="color" id="qb-bg" value="#ffffff" style="width:100%;height:36px;border:none;border-radius:6px;cursor:pointer;" onchange="qbRender()">
+          </div>
+          <div class="input-group" style="flex:1;min-width:120px;">
+            <label>尺寸</label>
+            <select id="qb-size" style="width:100%;" onchange="qbRender()">
+              <option value="300" selected>300×300</option>
+              <option value="500">500×500</option>
+              <option value="800">800×800</option>
+            </select>
+          </div>
+        </div>
+        <div style="text-align:center;margin-bottom:10px;display:flex;gap:8px;flex-wrap:wrap;justify-content:center;">
+          <button class="btn btn-primary" onclick="document.getElementById('qb-logo').click()">🖼️ 上传Logo</button>
+          <button class="btn btn-secondary" onclick="qbRemoveLogo()">🗑️ 移除Logo</button>
+          <button class="btn btn-secondary" onclick="qbDownload()">⬇️ 下载PNG</button>
+        </div>
+        <input type="file" id="qb-logo" accept="image/*" style="display:none;" onchange="qbLoadLogo(this)">
+        <div style="border:2px dashed var(--border);border-radius:10px;overflow:hidden;text-align:center;padding:10px;">
+          <canvas id="qb-canvas" style="display:block;max-width:300px;margin:0 auto;"></canvas>
+        </div>
+        <div style="margin-top:10px;font-size:12px;color:var(--text-light);text-align:center;">
+          💡 灵感来源于付费QR美化工具 — 自定义颜色+中心Logo，让二维码更有个性，生成过程完全在本地
+        </div>
+      </div>
+    `,
+    handler: () => { setTimeout(qbInit, 50); }
   }
 ];
 
@@ -9265,4 +9331,252 @@ function cbRender() {
   ctx.putImageData(imageData, 0, 0);
   document.getElementById('cb-result').src = canvas.toDataURL('image/png');
   document.getElementById('cb-info').textContent = '✅ 已生成模拟效果（' + canvas.width + '×' + canvas.height + '）';
+}
+
+// ============================================================
+// 元素周期表 处理函数 (替代付费化学学习应用)
+// ============================================================
+var PT_ELEMENTS = [
+  {n:1,s:'H',name:'氢',en:'Hydrogen',m:'1.008',cat:'noble'},
+  {n:2,s:'He',name:'氦',en:'Helium',m:'4.003',cat:'noble'},
+  {n:3,s:'Li',name:'锂',en:'Lithium',m:'6.94',cat:'alkali'},
+  {n:4,s:'Be',name:'铍',en:'Beryllium',m:'9.012',cat:'alkaline'},
+  {n:5,s:'B',name:'硼',en:'Boron',m:'10.81',cat:'metalloid'},
+  {n:6,s:'C',name:'碳',en:'Carbon',m:'12.01',cat:'nonmetal'},
+  {n:7,s:'N',name:'氮',en:'Nitrogen',m:'14.01',cat:'nonmetal'},
+  {n:8,s:'O',name:'氧',en:'Oxygen',m:'16.00',cat:'nonmetal'},
+  {n:9,s:'F',name:'氟',en:'Fluorine',m:'19.00',cat:'halogen'},
+  {n:10,s:'Ne',name:'氖',en:'Neon',m:'20.18',cat:'noble'},
+  {n:11,s:'Na',name:'钠',en:'Sodium',m:'22.99',cat:'alkali'},
+  {n:12,s:'Mg',name:'镁',en:'Magnesium',m:'24.31',cat:'alkaline'},
+  {n:13,s:'Al',name:'铝',en:'Aluminium',m:'26.98',cat:'post'},
+  {n:14,s:'Si',name:'硅',en:'Silicon',m:'28.09',cat:'metalloid'},
+  {n:15,s:'P',name:'磷',en:'Phosphorus',m:'30.97',cat:'nonmetal'},
+  {n:16,s:'S',name:'硫',en:'Sulfur',m:'32.06',cat:'nonmetal'},
+  {n:17,s:'Cl',name:'氯',en:'Chlorine',m:'35.45',cat:'halogen'},
+  {n:18,s:'Ar',name:'氩',en:'Argon',m:'39.95',cat:'noble'},
+  {n:19,s:'K',name:'钾',en:'Potassium',m:'39.10',cat:'alkali'},
+  {n:20,s:'Ca',name:'钙',en:'Calcium',m:'40.08',cat:'alkaline'},
+  {n:21,s:'Sc',name:'钪',en:'Scandium',m:'44.96',cat:'transition'},
+  {n:22,s:'Ti',name:'钛',en:'Titanium',m:'47.87',cat:'transition'},
+  {n:23,s:'V',name:'钒',en:'Vanadium',m:'50.94',cat:'transition'},
+  {n:24,s:'Cr',name:'铬',en:'Chromium',m:'52.00',cat:'transition'},
+  {n:25,s:'Mn',name:'锰',en:'Manganese',m:'54.94',cat:'transition'},
+  {n:26,s:'Fe',name:'铁',en:'Iron',m:'55.85',cat:'transition'},
+  {n:27,s:'Co',name:'钴',en:'Cobalt',m:'58.93',cat:'transition'},
+  {n:28,s:'Ni',name:'镍',en:'Nickel',m:'58.69',cat:'transition'},
+  {n:29,s:'Cu',name:'铜',en:'Copper',m:'63.55',cat:'transition'},
+  {n:30,s:'Zn',name:'锌',en:'Zinc',m:'65.38',cat:'transition'},
+  {n:31,s:'Ga',name:'镓',en:'Gallium',m:'69.72',cat:'post'},
+  {n:32,s:'Ge',name:'锗',en:'Germanium',m:'72.63',cat:'metalloid'},
+  {n:33,s:'As',name:'砷',en:'Arsenic',m:'74.92',cat:'metalloid'},
+  {n:34,s:'Se',name:'硒',en:'Selenium',m:'78.97',cat:'nonmetal'},
+  {n:35,s:'Br',name:'溴',en:'Bromine',m:'79.90',cat:'halogen'},
+  {n:36,s:'Kr',name:'氪',en:'Krypton',m:'83.80',cat:'noble'},
+  {n:37,s:'Rb',name:'铷',en:'Rubidium',m:'85.47',cat:'alkali'},
+  {n:38,s:'Sr',name:'锶',en:'Strontium',m:'87.62',cat:'alkaline'},
+  {n:39,s:'Y',name:'钇',en:'Yttrium',m:'88.91',cat:'transition'},
+  {n:40,s:'Zr',name:'锆',en:'Zirconium',m:'91.22',cat:'transition'},
+  {n:41,s:'Nb',name:'铌',en:'Niobium',m:'92.91',cat:'transition'},
+  {n:42,s:'Mo',name:'钼',en:'Molybdenum',m:'95.95',cat:'transition'},
+  {n:43,s:'Tc',name:'锝',en:'Technetium',m:'98',cat:'transition'},
+  {n:44,s:'Ru',name:'钌',en:'Ruthenium',m:'101.1',cat:'transition'},
+  {n:45,s:'Rh',name:'铑',en:'Rhodium',m:'102.9',cat:'transition'},
+  {n:46,s:'Pd',name:'钯',en:'Palladium',m:'106.4',cat:'transition'},
+  {n:47,s:'Ag',name:'银',en:'Silver',m:'107.9',cat:'transition'},
+  {n:48,s:'Cd',name:'镉',en:'Cadmium',m:'112.4',cat:'transition'},
+  {n:49,s:'In',name:'铟',en:'Indium',m:'114.8',cat:'post'},
+  {n:50,s:'Sn',name:'锡',en:'Tin',m:'118.7',cat:'post'},
+  {n:51,s:'Sb',name:'锑',en:'Antimony',m:'121.8',cat:'metalloid'},
+  {n:52,s:'Te',name:'碲',en:'Tellurium',m:'127.6',cat:'metalloid'},
+  {n:53,s:'I',name:'碘',en:'Iodine',m:'126.9',cat:'halogen'},
+  {n:54,s:'Xe',name:'氙',en:'Xenon',m:'131.3',cat:'noble'},
+  {n:55,s:'Cs',name:'铯',en:'Caesium',m:'132.9',cat:'alkali'},
+  {n:56,s:'Ba',name:'钡',en:'Barium',m:'137.3',cat:'alkaline'},
+  {n:57,s:'La',name:'镧',en:'Lanthanum',m:'138.9',cat:'lanthanide'},
+  {n:58,s:'Ce',name:'铈',en:'Cerium',m:'140.1',cat:'lanthanide'},
+  {n:59,s:'Pr',name:'镨',en:'Praseodymium',m:'140.9',cat:'lanthanide'},
+  {n:60,s:'Nd',name:'钕',en:'Neodymium',m:'144.2',cat:'lanthanide'},
+  {n:61,s:'Pm',name:'钷',en:'Promethium',m:'145',cat:'lanthanide'},
+  {n:62,s:'Sm',name:'钐',en:'Samarium',m:'150.4',cat:'lanthanide'},
+  {n:63,s:'Eu',name:'铕',en:'Europium',m:'152.0',cat:'lanthanide'},
+  {n:64,s:'Gd',name:'钆',en:'Gadolinium',m:'157.3',cat:'lanthanide'},
+  {n:65,s:'Tb',name:'铽',en:'Terbium',m:'158.9',cat:'lanthanide'},
+  {n:66,s:'Dy',name:'镝',en:'Dysprosium',m:'162.5',cat:'lanthanide'},
+  {n:67,s:'Ho',name:'钬',en:'Holmium',m:'164.9',cat:'lanthanide'},
+  {n:68,s:'Er',name:'铒',en:'Erbium',m:'167.3',cat:'lanthanide'},
+  {n:69,s:'Tm',name:'铥',en:'Thulium',m:'168.9',cat:'lanthanide'},
+  {n:70,s:'Yb',name:'镱',en:'Ytterbium',m:'173.0',cat:'lanthanide'},
+  {n:71,s:'Lu',name:'镥',en:'Lutetium',m:'175.0',cat:'lanthanide'},
+  {n:72,s:'Hf',name:'铪',en:'Hafnium',m:'178.5',cat:'transition'},
+  {n:73,s:'Ta',name:'钽',en:'Tantalum',m:'180.9',cat:'transition'},
+  {n:74,s:'W',name:'钨',en:'Tungsten',m:'183.8',cat:'transition'},
+  {n:75,s:'Re',name:'铼',en:'Rhenium',m:'186.2',cat:'transition'},
+  {n:76,s:'Os',name:'锇',en:'Osmium',m:'190.2',cat:'transition'},
+  {n:77,s:'Ir',name:'铱',en:'Iridium',m:'192.2',cat:'transition'},
+  {n:78,s:'Pt',name:'铂',en:'Platinum',m:'195.1',cat:'transition'},
+  {n:79,s:'Au',name:'金',en:'Gold',m:'197.0',cat:'transition'},
+  {n:80,s:'Hg',name:'汞',en:'Mercury',m:'200.6',cat:'transition'},
+  {n:81,s:'Tl',name:'铊',en:'Thallium',m:'204.4',cat:'post'},
+  {n:82,s:'Pb',name:'铅',en:'Lead',m:'207.2',cat:'post'},
+  {n:83,s:'Bi',name:'铋',en:'Bismuth',m:'209.0',cat:'post'},
+  {n:84,s:'Po',name:'钋',en:'Polonium',m:'209',cat:'post'},
+  {n:85,s:'At',name:'砹',en:'Astatine',m:'210',cat:'halogen'},
+  {n:86,s:'Rn',name:'氡',en:'Radon',m:'222',cat:'noble'},
+  {n:87,s:'Fr',name:'钫',en:'Francium',m:'223',cat:'alkali'},
+  {n:88,s:'Ra',name:'镭',en:'Radium',m:'226',cat:'alkaline'},
+  {n:89,s:'Ac',name:'锕',en:'Actinium',m:'227',cat:'actinide'},
+  {n:90,s:'Th',name:'钍',en:'Thorium',m:'232.0',cat:'actinide'},
+  {n:91,s:'Pa',name:'镤',en:'Protactinium',m:'231.0',cat:'actinide'},
+  {n:92,s:'U',name:'铀',en:'Uranium',m:'238.0',cat:'actinide'},
+  {n:93,s:'Np',name:'镎',en:'Neptunium',m:'237',cat:'actinide'},
+  {n:94,s:'Pu',name:'钚',en:'Plutonium',m:'244',cat:'actinide'},
+  {n:95,s:'Am',name:'镅',en:'Americium',m:'243',cat:'actinide'},
+  {n:96,s:'Cm',name:'锔',en:'Curium',m:'247',cat:'actinide'},
+  {n:97,s:'Bk',name:'锫',en:'Berkelium',m:'247',cat:'actinide'},
+  {n:98,s:'Cf',name:'锎',en:'Californium',m:'251',cat:'actinide'},
+  {n:99,s:'Es',name:'锿',en:'Einsteinium',m:'252',cat:'actinide'},
+  {n:100,s:'Fm',name:'镄',en:'Fermium',m:'257',cat:'actinide'},
+  {n:101,s:'Md',name:'钔',en:'Mendelevium',m:'258',cat:'actinide'},
+  {n:102,s:'No',name:'锘',en:'Nobelium',m:'259',cat:'actinide'},
+  {n:103,s:'Lr',name:'铹',en:'Lawrencium',m:'266',cat:'actinide'},
+  {n:104,s:'Rf',name:'𬬻',en:'Rutherfordium',m:'267',cat:'transition'},
+  {n:105,s:'Db',name:'𬭊',en:'Dubnium',m:'268',cat:'transition'},
+  {n:106,s:'Sg',name:'𬭳',en:'Seaborgium',m:'269',cat:'transition'},
+  {n:107,s:'Bh',name:'𬭛',en:'Bohrium',m:'270',cat:'transition'},
+  {n:108,s:'Hs',name:'𬭶',en:'Hassium',m:'277',cat:'transition'},
+  {n:109,s:'Mt',name:'鿏',en:'Meitnerium',m:'278',cat:'transition'},
+  {n:110,s:'Ds',name:'𫟼',en:'Darmstadtium',m:'281',cat:'transition'},
+  {n:111,s:'Rg',name:'𬬭',en:'Roentgenium',m:'282',cat:'transition'},
+  {n:112,s:'Cn',name:'鎶',en:'Copernicium',m:'285',cat:'transition'},
+  {n:113,s:'Nh',name:'鉨',en:'Nihonium',m:'286',cat:'post'},
+  {n:114,s:'Fl',name:'𫓧',en:'Flerovium',m:'289',cat:'post'},
+  {n:115,s:'Mc',name:'镆',en:'Moscovium',m:'290',cat:'post'},
+  {n:116,s:'Lv',name:'𫟷',en:'Livermorium',m:'293',cat:'post'},
+  {n:117,s:'Ts',name:'鿬',en:'Tennessine',m:'294',cat:'halogen'},
+  {n:118,s:'Og',name:'鿫',en:'Oganesson',m:'294',cat:'noble'}
+];
+
+var PT_CAT_COLORS = {
+  'alkali': '#ff8f6b', 'alkaline': '#ffd46b', 'transition': '#a8d8ea',
+  'post': '#b8e0b8', 'metalloid': '#c9b8e8', 'nonmetal': '#8fdcff',
+  'halogen': '#b8f0dc', 'noble': '#e8b8e8', 'lanthanide': '#ffb8c8',
+  'actinide': '#ff9db0'
+};
+
+function ptInit() {
+  var container = document.getElementById('pt-table');
+  if (!container) return;
+  PT_ELEMENTS.forEach(function(el) {
+    var d = document.createElement('div');
+    d.style.width = '52px';
+    d.style.height = '56px';
+    d.style.margin = '1px';
+    d.style.borderRadius = '6px';
+    d.style.cursor = 'pointer';
+    d.style.background = PT_CAT_COLORS[el.cat] || '#aaa';
+    d.style.color = '#1a1a2e';
+    d.style.textAlign = 'center';
+    d.style.fontSize = '11px';
+    d.style.padding = '3px';
+    d.style.transition = 'transform 0.15s';
+    d.onmouseover = function(){ d.style.transform = 'scale(1.1)'; d.style.boxShadow = '0 0 8px rgba(255,255,255,0.4)'; };
+    d.onmouseout = function(){ d.style.transform = 'scale(1)'; d.style.boxShadow = 'none'; };
+    d.onclick = function(){ ptShowDetail(el); };
+    d.innerHTML = '<div style="font-size:10px;text-align:left;">' + el.n + '</div><div style="font-size:17px;font-weight:700;">' + el.s + '</div><div>' + el.name + '</div>';
+    container.appendChild(d);
+  });
+}
+
+function ptShowDetail(el) {
+  var box = document.getElementById('pt-detail');
+  if (!box) return;
+  var catName = {
+    'alkali':'碱金属','alkaline':'碱土金属','transition':'过渡金属','post':'后过渡金属',
+    'metalloid':'类金属','nonmetal':'非金属','halogen':'卤素','noble':'稀有气体',
+    'lanthanide':'镧系元素','actinide':'锕系元素'
+  }[el.cat] || el.cat;
+  box.innerHTML = '<div style="display:flex;gap:16px;align-items:center;flex-wrap:wrap;">'
+    + '<div style="width:70px;height:76px;border-radius:8px;background:' + (PT_CAT_COLORS[el.cat]||'#aaa') + ';color:#1a1a2e;text-align:center;padding:6px;">'
+    + '<div style="font-size:11px;text-align:left;">' + el.n + '</div>'
+    + '<div style="font-size:24px;font-weight:700;">' + el.s + '</div>'
+    + '<div style="font-size:11px;">' + el.name + '</div></div>'
+    + '<div><div style="font-size:18px;font-weight:700;">' + el.name + ' (' + el.en + ')</div>'
+    + '<div style="margin-top:6px;color:#ccc;">元素符号：' + el.s + '</div>'
+    + '<div style="color:#ccc;">原子序数：' + el.n + '</div>'
+    + '<div style="color:#ccc;">相对原子质量：' + el.m + '</div>'
+    + '<div style="color:#ccc;">分类：' + catName + '</div></div></div>';
+}
+
+// ============================================================
+// 二维码美化器 处理函数 (替代付费QR美化工具)
+// ============================================================
+var qbCanvas, qbCtx, qbLogoImg = null;
+
+function qbInit() {
+  qbCanvas = document.getElementById('qb-canvas');
+  if (!qbCanvas) return;
+  qbCtx = qbCanvas.getContext('2d');
+  qbRender();
+}
+
+function qbRender() {
+  if (!qbCanvas || !qbCtx) return;
+  var text = document.getElementById('qb-text').value || 'https://toolai.ccwu.cc';
+  var fg = document.getElementById('qb-fg').value;
+  var bg = document.getElementById('qb-bg').value;
+  var size = parseInt(document.getElementById('qb-size').value, 10);
+  var data = qr(text, { typeNumber: 8, errorCorrectionLevel: 'H' });
+  var moduleCount = data.moduleCount;
+  var cell = Math.floor(size / (moduleCount + 8));
+  var offset = Math.floor((size - cell * moduleCount) / 2);
+  qbCanvas.width = size;
+  qbCanvas.height = size;
+  var ctx = qbCtx;
+  ctx.fillStyle = bg;
+  ctx.fillRect(0, 0, size, size);
+  ctx.fillStyle = fg;
+  for (var row = 0; row < moduleCount; row++) {
+    for (var col = 0; col < moduleCount; col++) {
+      if (data.isDark(row, col)) {
+        ctx.fillRect(offset + col * cell, offset + row * cell, cell, cell);
+      }
+    }
+  }
+  // Logo
+  if (qbLogoImg) {
+    var logoSize = size * 0.22;
+    var lx = (size - logoSize) / 2;
+    var ly = (size - logoSize) / 2;
+    ctx.fillStyle = bg;
+    ctx.fillRect(lx - 6, ly - 6, logoSize + 12, logoSize + 12);
+    ctx.drawImage(qbLogoImg, lx, ly, logoSize, logoSize);
+  }
+}
+
+function qbLoadLogo(input) {
+  if (!input.files || !input.files[0]) return;
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    qbLogoImg = new Image();
+    qbLogoImg.onload = function() { qbRender(); showToast('✅ Logo已添加'); };
+    qbLogoImg.src = e.target.result;
+  };
+  reader.readAsDataURL(input.files[0]);
+}
+
+function qbRemoveLogo() {
+  qbLogoImg = null;
+  document.getElementById('qb-logo').value = '';
+  qbRender();
+  showToast('🗑️ Logo已移除');
+}
+
+function qbDownload() {
+  if (!qbCanvas) return;
+  var a = document.createElement('a');
+  a.download = 'qr-code.png';
+  a.href = qbCanvas.toDataURL('image/png');
+  a.click();
+  showToast('✅ 美化二维码已下载');
 }
