@@ -4833,6 +4833,108 @@ greet('世界');</textarea>
       </div>
     `,
     handler: () => { setTimeout(snInit, 50); }
+  },
+  {
+    id: 'shape-crop',
+    cat: 'image',
+    icon: '✂️',
+    name: '图片异形裁剪',
+    desc: '灵感来源于 Canva Pro / 美图秀秀会员（付费），将图片裁剪为圆形、心形、星形、菱形等异形，一键透明背景导出PNG，社交头像利器',
+    html: `
+      <div class="tool-card">
+        <div style="text-align:center;margin-bottom:12px;">
+          <input type="file" id="sc-file" accept="image/*" style="display:none;" onchange="scLoadFile(this)">
+          <button class="btn btn-primary" onclick="document.getElementById('sc-file').click()">📂 选择图片</button>
+          <button class="btn btn-secondary" onclick="scSave()" id="sc-save-btn" disabled>⬇️ 下载PNG</button>
+        </div>
+        <div class="row" style="margin-bottom:12px;gap:10px;flex-wrap:wrap;align-items:flex-end;">
+          <div class="input-group" style="flex:1;min-width:120px;">
+            <label>异形形状</label>
+            <select id="sc-shape" style="width:100%;" onchange="scRender()">
+              <option value="circle">⭕ 圆形</option>
+              <option value="heart">❤️ 心形</option>
+              <option value="star">⭐ 五角星</option>
+              <option value="diamond">💎 菱形</option>
+              <option value="hexagon">⬡ 六边形</option>
+              <option value="leaf">🍂 胶囊/橄榄</option>
+            </select>
+          </div>
+          <div class="input-group" style="flex:1;min-width:120px;">
+            <label>尺寸</label>
+            <select id="sc-size" style="width:100%;" onchange="scRender()">
+              <option value="200">200×200</option>
+              <option value="400" selected>400×400</option>
+              <option value="800">800×800</option>
+            </select>
+          </div>
+          <div class="input-group" style="flex:1;min-width:120px;">
+            <label>背景</label>
+            <select id="sc-bg" style="width:100%;" onchange="scRender()">
+              <option value="transparent" selected>透明</option>
+              <option value="white">白色</option>
+              <option value="black">黑色</option>
+              <option value="gradient">渐变</option>
+            </select>
+          </div>
+        </div>
+        <div style="text-align:center;">
+          <canvas id="sc-canvas" style="max-width:100%;border-radius:10px;background:repeating-conic-gradient(#e8e8e8 0% 25%, #fff 0% 50%) 50% / 16px 16px;"></canvas>
+        </div>
+        <div id="sc-tip" style="text-align:center;color:var(--text-light);font-size:13px;margin-top:8px;">请选择一张图片开始异形裁剪</div>
+        <div style="margin-top:10px;font-size:12px;color:var(--text-light);text-align:center;">
+          💡 灵感来源于 Canva Pro（付费）— 异形头像/贴纸制作利器，裁剪结果透明背景，图片完全在本地处理
+        </div>
+      </div>
+    `,
+    handler: () => { setTimeout(scInit, 50); }
+  },
+  {
+    id: 'audio-waveform',
+    cat: 'media',
+    icon: '📊',
+    name: '音频波形可视化',
+    desc: '灵感来源于 Adobe Audition / 波形分析工具（付费），上传本地音频即时生成高清波形图，自定义颜色主题，可导出PNG用于封面/音乐可视化',
+    html: `
+      <div class="tool-card">
+        <div style="text-align:center;margin-bottom:12px;">
+          <input type="file" id="aw-file" accept="audio/*" style="display:none;" onchange="awLoadFile(this)">
+          <button class="btn btn-primary" onclick="document.getElementById('aw-file').click()">🎵 选择音频</button>
+          <button class="btn btn-secondary" onclick="awSave()" id="aw-save-btn" disabled>⬇️ 导出PNG</button>
+          <button class="btn btn-secondary" onclick="awPlayToggle()" id="aw-play-btn" disabled>▶️ 播放</button>
+        </div>
+        <div class="row" style="margin-bottom:12px;gap:10px;flex-wrap:wrap;">
+          <div class="input-group" style="flex:1;min-width:130px;">
+            <label>波形颜色</label>
+            <input type="color" id="aw-color" value="#6366f1" style="width:100%;height:36px;border:none;border-radius:6px;cursor:pointer;" onchange="awRender()">
+          </div>
+          <div class="input-group" style="flex:1;min-width:130px;">
+            <label>背景风格</label>
+            <select id="aw-style" style="width:100%;" onchange="awRender()">
+              <option value="dark">🌙 深色</option>
+              <option value="light">☀️ 浅色</option>
+              <option value="gradient">🌈 渐变</option>
+              <option value="transparent">透明</option>
+            </select>
+          </div>
+          <div class="input-group" style="flex:1;min-width:130px;">
+            <label>线条样式</label>
+            <select id="aw-line" style="width:100%;" onchange="awRender()">
+              <option value="bars">▮ 条形</option>
+              <option value="line">〜 连线</option>
+              <option value="mirror">♒ 镜像</option>
+            </select>
+          </div>
+        </div>
+        <div style="text-align:center;">
+          <canvas id="aw-canvas" style="width:100%;max-width:640px;border-radius:10px;"></canvas>
+        </div>
+        <div id="aw-info" style="text-align:center;color:var(--text-light);font-size:13px;margin-top:8px;">请选择一段音频开始分析（支持 MP3/WAV/OGG）</div>
+        <div style="margin-top:10px;font-size:12px;color:var(--text-light);text-align:center;">
+          💡 灵感来源于 Adobe Audition（付费）— 音乐可视化/播客封面必备，波形图可用于专辑封面、短视频背景，全程本地处理
+        </div>
+      </div>
+    `,
+    handler: () => { setTimeout(awInit, 50); }
   }
 ];
 
@@ -6475,13 +6577,13 @@ function dpCopyText() {
 const CATEGORIES = [
   { id: 'text', icon: '✏️', name: '文本工具', desc: '字数统计、简繁转换、摩斯密码、文本转语音、文本对比' },
   { id: 'dev', icon: '💻', name: '开发者工具', desc: 'JSON格式化、二维码生成、二维码美化、正则测试、Markdown、IP查询、思维导图、图表生成、代码图片生成、表格数据转换' },
-  { id: 'image', icon: '🖼️', name: '图片处理', desc: '去背景换底色、批量压缩、加水印、长图拼接、格式转换、裁剪、OCR、印章制作、九宫格切图、文字转手写体、表情包、社交媒体图片尺寸调整、艺术效果、像素画、设备样机、图片高清放大、图片转线稿、渐变背景、文字特效、拼贴画、图片相框、颜色盲区模拟' },
+  { id: 'image', icon: '🖼️', name: '图片处理', desc: '去背景换底色、批量压缩、加水印、长图拼接、格式转换、裁剪、异形裁剪、OCR、印章制作、九宫格切图、文字转手写体、表情包、社交媒体图片尺寸调整、艺术效果、像素画、设备样机、图片高清放大、图片转线稿、渐变背景、文字特效、拼贴画、图片相框、颜色盲区模拟' },
   { id: 'document', icon: '📄', name: '文档转换', desc: '图片转PDF、PDF转图片、Word解析、Excel转PDF、PDF合并、简历生成、电子签名、表单制作、邮件签名' },
   { id: 'convert', icon: '🔄', name: '转换工具', desc: '单位换算、进制转换、函数绘图' },
   { id: 'security', icon: '🔒', name: '安全工具', desc: '密码生成、Hash计算、随机数' },
   { id: 'time', icon: '⏱️', name: '时间工具', desc: '时间戳转换、日期计算' },
   { id: 'color', icon: '🎨', name: '颜色工具', desc: 'HEX/RGB/HSL颜色转换、CSS渐变生成器、配色方案生成器' },
-  { id: 'media', icon: '🎬', name: '媒体工具', desc: '抖音/TikTok去水印下载、视频转GIF、在线录音、录音转文字、音频变速变调、在线便签' },
+  { id: 'media', icon: '🎬', name: '媒体工具', desc: '抖音/TikTok去水印下载、视频转GIF、在线录音、录音转文字、音频波形可视化、音频变速变调、在线便签' },
   { id: 'ai', icon: '🤖', name: 'AI工具', desc: 'AI聊天、AI Agent安装、免费AI工具推荐' },
   { id: 'voice', icon: '🗣️', name: '群众心声', desc: '提交工具建议、投票排行榜、前3名自动实现' },
   { id: 'fun', icon: '🎪', name: '趣味工具', desc: '表情包生成、决策转盘、抽奖抽签、词云生成、涂鸦画板、娱乐好玩' },
@@ -9894,4 +9996,259 @@ function snExport() {
   a.click();
   URL.revokeObjectURL(a.href);
   showToast('✅ 已导出备份');
+}
+// ============================================================
+// 图片异形裁剪 处理函数 (替代付费 Canva Pro 异形裁剪)
+// ============================================================
+var scImg = null;
+
+function scInit() {
+  // 无额外初始化，等待用户选择图片
+}
+
+function scLoadFile(input) {
+  if (!input.files || !input.files[0]) return;
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    scImg = new Image();
+    scImg.onload = function() {
+      document.getElementById('sc-save-btn').disabled = false;
+      document.getElementById('sc-tip').textContent = '原图 ' + scImg.width + '×' + scImg.height + 'px — 裁剪为异形';
+      scRender();
+      showToast('✅ 图片已加载');
+    };
+    scImg.src = e.target.result;
+  };
+  reader.readAsDataURL(input.files[0]);
+}
+
+function scRender() {
+  var canvas = document.getElementById('sc-canvas');
+  if (!canvas || !scImg) return;
+  var size = parseInt(document.getElementById('sc-size').value, 10);
+  var shape = document.getElementById('sc-shape').value;
+  var bg = document.getElementById('sc-bg').value;
+  canvas.width = size;
+  canvas.height = size;
+  var ctx = canvas.getContext('2d');
+  ctx.clearRect(0, 0, size, size);
+
+  // 背景
+  if (bg === 'white') { ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, size, size); }
+  else if (bg === 'black') { ctx.fillStyle = '#000'; ctx.fillRect(0, 0, size, size); }
+  else if (bg === 'gradient') {
+    var g = ctx.createLinearGradient(0, 0, size, size);
+    g.addColorStop(0, '#6366f1');
+    g.addColorStop(1, '#ec4899');
+    ctx.fillStyle = g;
+    ctx.fillRect(0, 0, size, size);
+  }
+
+  // 裁剪路径
+  ctx.save();
+  ctx.beginPath();
+  var cx = size / 2, cy = size / 2;
+  if (shape === 'circle') {
+    ctx.arc(cx, cy, size / 2 - 2, 0, Math.PI * 2);
+  } else if (shape === 'heart') {
+    ctx.moveTo(cx, cy + size * 0.34);
+    ctx.bezierCurveTo(cx - size * 0.5, cy - size * 0.08, cx - size * 0.21, cy - size * 0.42, cx, cy - size * 0.12);
+    ctx.bezierCurveTo(cx + size * 0.21, cy - size * 0.42, cx + size * 0.5, cy - size * 0.08, cx, cy + size * 0.34);
+  } else if (shape === 'star') {
+    var spikes = 5, outer = size * 0.46, inner = size * 0.19;
+    for (var i = 0; i < spikes * 2; i++) {
+      var r = (i % 2 === 0) ? outer : inner;
+      var a = (Math.PI / spikes) * i - Math.PI / 2;
+      var px = cx + r * Math.cos(a), py = cy + r * Math.sin(a);
+      if (i === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+    }
+    ctx.closePath();
+  } else if (shape === 'diamond') {
+    ctx.moveTo(cx, 2); ctx.lineTo(size - 2, cy); ctx.lineTo(cx, size - 2); ctx.lineTo(2, cy);
+    ctx.closePath();
+  } else if (shape === 'hexagon') {
+    for (var hi = 0; hi < 6; hi++) {
+      var ang = Math.PI / 3 * hi + Math.PI / 6;
+      var hx = cx + size * 0.46 * Math.cos(ang), hy = cy + size * 0.46 * Math.sin(ang);
+      if (hi === 0) ctx.moveTo(hx, hy); else ctx.lineTo(hx, hy);
+    }
+    ctx.closePath();
+  } else if (shape === 'leaf') {
+    ctx.moveTo(cx, 2);
+    ctx.bezierCurveTo(cx + size * 0.48, cy - size * 0.12, cx + size * 0.48, cy + size * 0.12, cx, size - 2);
+    ctx.bezierCurveTo(cx - size * 0.48, cy + size * 0.12, cx - size * 0.48, cy - size * 0.12, cx, 2);
+  }
+  ctx.closePath();
+  ctx.clip();
+
+  // 绘制图片（cover模式）
+  var imgRatio = scImg.width / scImg.height;
+  var canvasRatio = size / size; // 1
+  var drawW, drawH, dx, dy;
+  if (imgRatio > canvasRatio) {
+    drawH = size; drawW = size * imgRatio; dx = (size - drawW) / 2; dy = 0;
+  } else {
+    drawW = size; drawH = size / imgRatio; dx = 0; dy = (size - drawH) / 2;
+  }
+  ctx.drawImage(scImg, dx, dy, drawW, drawH);
+  ctx.restore();
+
+  // 边框
+  ctx.strokeStyle = 'rgba(255,255,255,0.6)';
+  ctx.lineWidth = 4;
+  ctx.stroke();
+}
+
+function scSave() {
+  var canvas = document.getElementById('sc-canvas');
+  if (!canvas) return;
+  var link = document.createElement('a');
+  link.download = '异形裁剪_' + document.getElementById('sc-shape').value + '_' + Date.now() + '.png';
+  link.href = canvas.toDataURL('image/png');
+  link.click();
+  showToast('✅ 已下载透明背景PNG');
+}
+
+// ============================================================
+// 音频波形可视化 处理函数 (替代付费 Adobe Audition)
+// ============================================================
+var awAudioBuffer = null;
+var awAudioCtx = null;
+var awAudioSrc = null;
+var awAudioUrl = null;
+var awPlaying = false;
+
+function awInit() {
+  window.AudioContext = window.AudioContext || window.webkitAudioContext;
+}
+
+function awLoadFile(input) {
+  if (!input.files || !input.files[0]) return;
+  var file = input.files[0];
+  awAudioUrl = URL.createObjectURL(file);
+  if (!awAudioCtx) awAudioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    awAudioCtx.decodeAudioData(e.target.result, function(buffer) {
+      awAudioBuffer = buffer;
+      document.getElementById('aw-save-btn').disabled = false;
+      document.getElementById('aw-play-btn').disabled = false;
+      document.getElementById('aw-info').textContent = '音频时长 ' + buffer.duration.toFixed(1) + ' 秒 — 已生成波形图';
+      awRender();
+      showToast('✅ 音频分析完成');
+    }, function(err) {
+      showToast('⚠️ 音频解码失败，请换一个文件');
+    });
+  };
+  reader.readAsArrayBuffer(file);
+}
+
+function awRender() {
+  var canvas = document.getElementById('aw-canvas');
+  if (!canvas || !awAudioBuffer) return;
+  canvas.width = 640;
+  canvas.height = 200;
+  var ctx = canvas.getContext('2d');
+  var color = document.getElementById('aw-color').value;
+  var style = document.getElementById('aw-style').value;
+  var line = document.getElementById('aw-line').value;
+
+  if (style === 'dark') { ctx.fillStyle = '#0f172a'; ctx.fillRect(0, 0, 640, 200); }
+  else if (style === 'light') { ctx.fillStyle = '#f8fafc'; ctx.fillRect(0, 0, 640, 200); }
+  else if (style === 'gradient') {
+    var g = ctx.createLinearGradient(0, 0, 640, 0);
+    g.addColorStop(0, '#6366f1'); g.addColorStop(0.5, '#a855f7'); g.addColorStop(1, '#ec4899');
+    ctx.fillStyle = g; ctx.fillRect(0, 0, 640, 200);
+  }
+
+  var data = awAudioBuffer.getChannelData(0);
+  var step = Math.ceil(data.length / 640);
+  var amp = 80;
+
+  if (line === 'bars') {
+    for (var x = 0; x < 640; x++) {
+      var min = 1, max = -1;
+      for (var i = x * step; i < Math.min((x + 1) * step, data.length); i++) {
+        var v = data[i];
+        if (v < min) min = v;
+        if (v > max) max = v;
+      }
+      var barH = Math.max(2, (max - min) * amp * 1.8);
+      ctx.fillStyle = color;
+      ctx.fillRect(x, 100 - barH / 2, 2, barH);
+    }
+  } else if (line === 'line') {
+    ctx.beginPath();
+    ctx.strokeStyle = color;
+    ctx.lineWidth = 2;
+    for (var lx = 0; lx < 640; lx++) {
+      var avg = 0, count = 0;
+      for (var li = lx * step; li < Math.min((lx + 1) * step, data.length); li++) {
+        avg += Math.abs(data[li]); count++;
+      }
+      if (count > 0) avg /= count;
+      var ly = 100 - avg * amp * 1.5;
+      if (lx === 0) ctx.moveTo(lx, ly); else ctx.lineTo(lx, ly);
+    }
+    ctx.stroke();
+  } else { // mirror 镜像
+    ctx.beginPath();
+    ctx.strokeStyle = color;
+    ctx.lineWidth = 2;
+    for (var mx = 0; mx < 640; mx++) {
+      var mavg = 0, mcount = 0;
+      for (var mi = mx * step; mi < Math.min((mx + 1) * step, data.length); mi++) {
+        mavg += data[mi]; mcount++;
+      }
+      if (mcount > 0) mavg /= mcount;
+      var my = 100 - mavg * amp;
+      if (mx === 0) ctx.moveTo(mx, my); else ctx.lineTo(mx, my);
+    }
+    ctx.stroke();
+    ctx.beginPath();
+    for (var mx2 = 0; mx2 < 640; mx2++) {
+      var mavg2 = 0, mcount2 = 0;
+      for (var mi2 = mx2 * step; mi2 < Math.min((mx2 + 1) * step, data.length); mi2++) {
+        mavg2 += data[mi2]; mcount2++;
+      }
+      if (mcount2 > 0) mavg2 /= mcount2;
+      var my2 = 100 - mavg2 * amp * -1;
+      if (mx2 === 0) ctx.moveTo(mx2, my2); else ctx.lineTo(mx2, my2);
+    }
+    ctx.stroke();
+  }
+}
+
+function awPlayToggle() {
+  if (!awAudioBuffer) return;
+  var btn = document.getElementById('aw-play-btn');
+  if (awPlaying) {
+    awAudioSrc.stop();
+    awPlaying = false;
+    btn.innerHTML = '▶️ 播放';
+    return;
+  }
+  if (!awAudioCtx) awAudioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  awAudioSrc = awAudioCtx.createBufferSource();
+  awAudioSrc.buffer = awAudioBuffer;
+  awAudioSrc.connect(awAudioCtx.destination);
+  awAudioSrc.onended = function() {
+    awPlaying = false;
+    btn.innerHTML = '▶️ 播放';
+  };
+  awAudioSrc.start();
+  awPlaying = true;
+  btn.innerHTML = '⏸️ 暂停';
+}
+
+function awSave() {
+  var canvas = document.getElementById('aw-canvas');
+  if (!canvas) return;
+  // 保存前先确保有内容
+  awRender();
+  var link = document.createElement('a');
+  link.download = '音频波形_' + Date.now() + '.png';
+  link.href = canvas.toDataURL('image/png');
+  link.click();
+  showToast('✅ 波形图已导出PNG');
 }
