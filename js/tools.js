@@ -4772,6 +4772,67 @@ greet('世界');</textarea>
       </div>
     `,
     handler: () => { setTimeout(qbInit, 50); }
+  },
+  {
+    id: 'speech-to-text',
+    cat: 'media',
+    icon: '🎙️',
+    name: '录音转文字',
+    desc: '灵感来源于 Otter / 讯飞听见（付费），浏览器实时语音识别转文字，支持中文/英文，可导出TXT，纯本地运行保护隐私',
+    html: `
+      <div class="tool-card">
+        <div id="stt-status" style="text-align:center;padding:10px;background:var(--bg-card);border-radius:10px;margin-bottom:12px;font-size:15px;color:var(--text-light);">
+          🎙️ 点击下方"开始识别"并允许麦克风权限，开始说话即可实时转文字
+        </div>
+        <div class="btn-group" style="justify-content:center;gap:10px;margin-bottom:12px;">
+          <button class="btn btn-primary" id="stt-start" onclick="sttToggle()">🔴 开始识别</button>
+          <button class="btn btn-secondary" id="stt-clear" onclick="sttClear()">🗑️ 清空</button>
+          <button class="btn btn-secondary" onclick="sttDownload()">⬇️ 导出TXT</button>
+        </div>
+        <div class="row" style="margin-bottom:12px;gap:10px;flex-wrap:wrap;">
+          <div class="input-group" style="flex:1;min-width:130px;">
+            <label>识别语言</label>
+            <select id="stt-lang" style="width:100%;">
+              <option value="zh-CN">中文（普通话）</option>
+              <option value="zh-TW">中文（台湾）</option>
+              <option value="en-US">English (US)</option>
+              <option value="ja-JP">日本語</option>
+              <option value="ko-KR">한국어</option>
+            </select>
+          </div>
+          <div class="input-group" style="flex:1;min-width:130px;">
+            <label>状态</label>
+            <div id="stt-state" style="font-size:16px;color:var(--text-light);">未开始</div>
+          </div>
+        </div>
+        <textarea id="stt-result" style="width:100%;min-height:220px;padding:12px;background:#1a1a2e;color:#e0e0e0;border:1px solid var(--border);border-radius:8px;font-size:15px;line-height:1.6;" placeholder="识别结果将实时显示在这里…" readonly></textarea>
+        <div style="margin-top:10px;font-size:12px;color:var(--text-light);text-align:center;">
+          💡 灵感来源于 Otter.ai / 讯飞听见（付费）— 使用浏览器内置语音识别，录音与识别全部在本地完成，数据不上传服务器，隐私安全
+        </div>
+      </div>
+    `,
+    handler: () => { setTimeout(sttInit, 50); }
+  },
+  {
+    id: 'sticky-notes',
+    cat: 'media',
+    icon: '📝',
+    name: '在线便签',
+    desc: '灵感来源于 Notezilla / 便签助手（付费），可拖拽的彩色便签墙，支持增删改、颜色、自动保存到本地，永不丢失',
+    html: `
+      <div class="tool-card">
+        <div style="text-align:center;margin-bottom:12px;">
+          <button class="btn btn-primary" onclick="snAddNote()">➕ 新建便签</button>
+          <button class="btn btn-secondary" onclick="snClearAll()">🗑️ 清空全部</button>
+          <button class="btn btn-secondary" onclick="snExport()">📦 导出JSON</button>
+        </div>
+        <div id="sn-board" style="display:flex;flex-wrap:wrap;gap:12px;align-items:flex-start;min-height:200px;padding:10px;background:var(--bg-card);border:1px dashed var(--border);border-radius:10px;"></div>
+        <div style="margin-top:10px;font-size:12px;color:var(--text-light);text-align:center;">
+          💡 灵感来源于 Notezilla（付费）— 便签自动保存在浏览器本地，刷新不丢失；支持5种颜色、拖拽移动、双击编辑、一键置顶
+        </div>
+      </div>
+    `,
+    handler: () => { setTimeout(snInit, 50); }
   }
 ];
 
@@ -6420,7 +6481,7 @@ const CATEGORIES = [
   { id: 'security', icon: '🔒', name: '安全工具', desc: '密码生成、Hash计算、随机数' },
   { id: 'time', icon: '⏱️', name: '时间工具', desc: '时间戳转换、日期计算' },
   { id: 'color', icon: '🎨', name: '颜色工具', desc: 'HEX/RGB/HSL颜色转换、CSS渐变生成器、配色方案生成器' },
-  { id: 'media', icon: '🎬', name: '媒体工具', desc: '抖音/TikTok去水印下载、视频转GIF、在线录音、音频变速变调' },
+  { id: 'media', icon: '🎬', name: '媒体工具', desc: '抖音/TikTok去水印下载、视频转GIF、在线录音、录音转文字、音频变速变调、在线便签' },
   { id: 'ai', icon: '🤖', name: 'AI工具', desc: 'AI聊天、AI Agent安装、免费AI工具推荐' },
   { id: 'voice', icon: '🗣️', name: '群众心声', desc: '提交工具建议、投票排行榜、前3名自动实现' },
   { id: 'fun', icon: '🎪', name: '趣味工具', desc: '表情包生成、决策转盘、抽奖抽签、词云生成、涂鸦画板、娱乐好玩' },
@@ -9594,4 +9655,243 @@ function qbDownload() {
   }
   a.click();
   showToast('✅ 美化二维码已下载');
+}
+
+// ============================================================
+// 录音转文字 处理函数 (替代付费 Otter/讯飞听见)
+// ============================================================
+var sttRecognition = null;
+var sttRecording = false;
+var sttFinalText = '';
+
+function sttInit() {
+  var lang = document.getElementById('stt-lang');
+  if (lang) {
+    lang.addEventListener('change', function() {
+      if (sttRecording) { sttStop(); }
+      sttInitRecognition();
+    });
+  }
+  sttInitRecognition();
+  // 页面关闭前停止
+  window.addEventListener('beforeunload', function() { if (sttRecording) sttStop(); });
+}
+
+function sttInitRecognition() {
+  var wsr = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!wsr) {
+    var s = document.getElementById('stt-status');
+    if (s) s.innerHTML = '❌ 当前浏览器不支持语音识别，请使用 Chrome / Edge 浏览器';
+    return;
+  }
+  sttRecognition = new wsr();
+  sttRecognition.continuous = true;
+  sttRecognition.interimResults = true;
+  var langSel = document.getElementById('stt-lang');
+  sttRecognition.lang = langSel ? langSel.value : 'zh-CN';
+  sttRecognition.onresult = function(e) {
+    var interim = '';
+    for (var i = e.resultIndex; i < e.results.length; i++) {
+      var res = e.results[i];
+      if (res.isFinal) {
+        sttFinalText += res[0].transcript;
+      } else {
+        interim += res[0].transcript;
+      }
+    }
+    var ta = document.getElementById('stt-result');
+    if (ta) ta.value = sttFinalText + (interim ? (' [正在听…] ' + interim) : '');
+    ta.scrollTop = ta.scrollHeight;
+  };
+  sttRecognition.onerror = function(e) {
+    if (e.error === 'not-allowed') {
+      sttSetStatus('🚫 麦克风权限被拒绝，请在浏览器地址栏允许麦克风访问');
+    } else if (e.error === 'no-speech') {
+      sttSetStatus('🤫 未检测到语音，请靠近麦克风说话');
+    } else {
+      sttSetStatus('⚠️ 识别出错: ' + e.error);
+    }
+  };
+  sttRecognition.onend = function() {
+    sttRecording = false;
+    var btn = document.getElementById('stt-start');
+    if (btn) { btn.innerHTML = '🔴 开始识别'; btn.classList.remove('btn-secondary'); btn.classList.add('btn-primary'); }
+    var st = document.getElementById('stt-state');
+    if (st) st.innerHTML = '已停止';
+  };
+}
+
+function sttToggle() {
+  if (sttRecording) { sttStop(); return; }
+  if (!sttRecognition) { sttInitRecognition(); }
+  if (!sttRecognition) return;
+  try {
+    sttRecognition.start();
+    sttRecording = true;
+    sttSetStatus('🎙️ 正在聆听… 请开始说话');
+    var btn = document.getElementById('stt-start');
+    if (btn) { btn.innerHTML = '⏹️ 停止识别'; btn.classList.remove('btn-primary'); btn.classList.add('btn-secondary'); }
+    var st = document.getElementById('stt-state');
+    if (st) st.innerHTML = '🔴 识别中';
+  } catch (err) {
+    // 可能已经启动
+  }
+}
+
+function sttStop() {
+  if (sttRecognition) {
+    try { sttRecognition.stop(); } catch (e) {}
+  }
+  sttRecording = false;
+  sttSetStatus('⏹️ 已停止，识别结果保留在下方文本框');
+  var st = document.getElementById('stt-state');
+  if (st) st.innerHTML = '已停止';
+}
+
+function sttSetStatus(msg) {
+  var s = document.getElementById('stt-status');
+  if (s) s.innerHTML = msg;
+}
+
+function sttClear() {
+  sttFinalText = '';
+  var ta = document.getElementById('stt-result');
+  if (ta) ta.value = '';
+  showToast('🗑️ 已清空');
+}
+
+function sttDownload() {
+  var ta = document.getElementById('stt-result');
+  var text = ta ? ta.value : '';
+  if (!text) { showToast('⚠️ 没有可导出的内容'); return; }
+  var blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = '语音转文字_' + new Date().toISOString().slice(0, 10) + '.txt';
+  a.click();
+  URL.revokeObjectURL(a.href);
+  showToast('✅ 已导出TXT文件');
+}
+
+// ============================================================
+// 在线便签 处理函数 (替代付费 Notezilla)
+// ============================================================
+var snNotes = [];
+var snColors = ['#ffe08a', '#ffb3ba', '#baffc9', '#a0e7e5', '#b5b8ff', '#fff'];
+var snDragId = null;
+
+function snInit() {
+  try {
+    var saved = localStorage.getItem('sticky_notes_data');
+    if (saved) snNotes = JSON.parse(saved);
+  } catch (e) { snNotes = []; }
+  snRender();
+}
+
+function snSave() {
+  try { localStorage.setItem('sticky_notes_data', JSON.stringify(snNotes)); } catch (e) {}
+}
+
+function snAddNote() {
+  var id = 'sn-' + Date.now();
+  snNotes.push({ id: id, text: '', color: '#ffe08a', pinned: false, x: 0, y: 0 });
+  snSave();
+  snRender();
+  // 自动聚焦新便签
+  setTimeout(function() {
+    var t = document.getElementById(id + '-text');
+    if (t) t.focus();
+  }, 100);
+}
+
+function snRender() {
+  var board = document.getElementById('sn-board');
+  if (!board) return;
+  board.innerHTML = '';
+  var ordered = snNotes.slice().sort(function(a, b) { return (b.pinned ? 1 : 0) - (a.pinned ? 1 : 0); });
+  ordered.forEach(function(note) {
+    var el = document.createElement('div');
+    el.id = note.id;
+    el.style.cssText = 'width:190px;min-height:150px;background:' + note.color + ';border-radius:4px;box-shadow:0 3px 8px rgba(0,0,0,0.2);padding:10px;display:flex;flex-direction:column;position:relative;';
+    el.draggable = true;
+    el.innerHTML = '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;cursor:move;user-select:none;">' +
+      '<div style="display:flex;gap:3px;">' +
+        '<span style="width:11px;height:11px;border-radius:50%;background:#ff5f57;display:inline-block;"></span>' +
+        '<span style="width:11px;height:11px;border-radius:50%;background:#febc2e;display:inline-block;"></span>' +
+        '<span style="width:11px;height:11px;border-radius:50%;background:#28c840;display:inline-block;"></span>' +
+      '</div>' +
+      '<div>' +
+        (note.pinned ? '<button class="btn btn-sm" style="padding:1px 6px;font-size:11px;margin-right:3px;" onclick="snTogglePin(\'' + note.id + '\')" title="取消置顶">📌</button>' : '<button class="btn btn-sm" style="padding:1px 6px;font-size:11px;margin-right:3px;" onclick="snTogglePin(\'' + note.id + '\')" title="置顶">📍</button>') +
+        '<button class="btn btn-sm" style="padding:1px 6px;font-size:11px;" onclick="snDelNote(\'' + note.id + '\')" title="删除">✖</button>' +
+      '</div>' +
+    '</div>' +
+    '<div style="display:flex;gap:2px;flex-wrap:wrap;margin-bottom:6px;">' +
+      snColors.map(function(c) { return '<span onclick="snSetColor(\'' + note.id + '\',\'' + c + '\')" style="width:14px;height:14px;border-radius:3px;background:' + c + ';cursor:pointer;border:1px solid rgba(0,0,0,0.15);display:inline-block;"></span>'; }).join('') +
+    '</div>' +
+    '<textarea id="' + note.id + '-text" oninput="snEdit(\'' + note.id + '\',this.value)" style="flex:1;background:transparent;border:none;outline:none;resize:none;color:#333;font-size:14px;font-family:inherit;min-height:90px;" placeholder="双击编辑…">' + (note.text || '') + '</textarea>';
+    el.addEventListener('dragstart', function(e) {
+      snDragId = note.id;
+      e.dataTransfer.setData('text/plain', note.id);
+      setTimeout(function() { el.style.opacity = '0.4'; }, 0);
+    });
+    el.addEventListener('dragend', function(e) {
+      el.style.opacity = '1';
+    });
+    el.addEventListener('dragover', function(e) { e.preventDefault(); });
+    el.addEventListener('drop', function(e) {
+      e.preventDefault();
+      if (snDragId && snDragId !== note.id) {
+        var from = snNotes.findIndex(function(n) { return n.id === snDragId; });
+        var to = snNotes.findIndex(function(n) { return n.id === note.id; });
+        if (from > -1 && to > -1) {
+          var moved = snNotes.splice(from, 1)[0];
+          snNotes.splice(to, 0, moved);
+          snSave();
+          snRender();
+        }
+      }
+    });
+    board.appendChild(el);
+  });
+}
+
+function snEdit(id, val) {
+  var n = snNotes.find(function(x) { return x.id === id; });
+  if (n) { n.text = val; snSave(); }
+}
+
+function snSetColor(id, color) {
+  var n = snNotes.find(function(x) { return x.id === id; });
+  if (n) { n.color = color; snSave(); snRender(); }
+}
+
+function snTogglePin(id) {
+  var n = snNotes.find(function(x) { return x.id === id; });
+  if (n) { n.pinned = !n.pinned; snSave(); snRender(); }
+}
+
+function snDelNote(id) {
+  snNotes = snNotes.filter(function(x) { return x.id !== id; });
+  snSave();
+  snRender();
+}
+
+function snClearAll() {
+  if (snNotes.length === 0) { showToast('⚠️ 没有便签可清空'); return; }
+  if (confirm('确定要清空所有便签吗？')) {
+    snNotes = [];
+    snSave();
+    snRender();
+    showToast('🗑️ 已清空全部便签');
+  }
+}
+
+function snExport() {
+  var blob = new Blob([JSON.stringify(snNotes, null, 2)], { type: 'application/json' });
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = '便签备份_' + new Date().toISOString().slice(0, 10) + '.json';
+  a.click();
+  URL.revokeObjectURL(a.href);
+  showToast('✅ 已导出备份');
 }

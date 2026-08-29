@@ -28,9 +28,9 @@ RESULT=$(curl -s "$API_URL" --max-time 600 2>/dev/null)
 echo "  API 响应: $RESULT" | head -5
 
 # 检查是否成功
-if echo "$RESULT" | grep -q '"success": true'; then
-  NEW_SONGS=$(echo "$RESULT" | grep -o '"newSongs": [0-9]*' | grep -o '[0-9]*')
-  TOTAL_SONGS=$(echo "$RESULT" | grep -o '"totalSongs": [0-9]*' | grep -o '[0-9]*')
+if echo "$RESULT" | grep -qE '"success"\s*:\s*true'; then
+  NEW_SONGS=$(echo "$RESULT" | grep -oE '"newSongs"[[:space:]]*:[[:space:]]*[0-9]*' | grep -o '[0-9]*' || true)
+  TOTAL_SONGS=$(echo "$RESULT" | grep -oE '"totalSongs"[[:space:]]*:[[:space:]]*[0-9]*' | grep -o '[0-9]*' || true)
   echo "  ✅ 成功: 新增 $NEW_SONGS 首, 共 $TOTAL_SONGS 首"
   
   # 3. 保存 API 返回的歌曲数据到本地文件（带播放链接的完整数据）
