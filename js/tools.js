@@ -5018,6 +5018,100 @@ greet('世界');</textarea>
       </div>
     `,
     handler: () => { setTimeout(mbInit, 50); }
+  },
+  {
+    id: 'duotone',
+    cat: 'image',
+    icon: '🎨',
+    name: '双色调滤镜',
+    desc: '灵感来源于 VSCO / Prisma（付费滤镜），一键将照片转为双色海报风格，自定义主色+辅色渐变映射，社交封面、专辑封面神器',
+    html: `
+      <div class="tool-card">
+        <div style="text-align:center;margin-bottom:12px;">
+          <input type="file" id="dt-file" accept="image/*" style="display:none;" onchange="dtLoadFile(this)">
+          <button class="btn btn-primary" onclick="document.getElementById('dt-file').click()">📂 选择图片</button>
+          <button class="btn btn-secondary" onclick="dtExport()">⬇️ 下载PNG</button>
+        </div>
+        <div class="row" style="margin-bottom:12px;gap:10px;flex-wrap:wrap;">
+          <div class="input-group" style="flex:1;min-width:130px;">
+            <label>主色（高光）</label>
+            <input type="color" id="dt-c1" value="#f97316" style="width:100%;height:36px;border:none;border-radius:6px;cursor:pointer;" onchange="dtRender()">
+          </div>
+          <div class="input-group" style="flex:1;min-width:130px;">
+            <label>辅色（阴影）</label>
+            <input type="color" id="dt-c2" value="#0ea5e9" style="width:100%;height:36px;border:none;border-radius:6px;cursor:pointer;" onchange="dtRender()">
+          </div>
+          <div class="input-group" style="flex:1;min-width:130px;">
+            <label>预设</label>
+            <select id="dt-preset" style="width:100%;" onchange="dtPreset()">
+              <option value="">自定义</option>
+              <option value="sunset">🌅 日落（橙→紫）</option>
+              <option value="ocean">🌊 海洋（蓝→青）</option>
+              <option value="neon">💜 霓虹（紫→粉）</option>
+              <option value="mint">🌿 薄荷（绿→青）</option>
+              <option value="mono">⚫ 单色（黑→白）</option>
+            </select>
+          </div>
+        </div>
+        <div style="text-align:center;">
+          <canvas id="dt-canvas" style="max-width:100%;border-radius:10px;display:none;background:#1a1a2e;"></canvas>
+        </div>
+        <div id="dt-tip" style="text-align:center;color:var(--text-light);font-size:13px;margin-top:8px;">请选择一张图片，生成专属双色海报</div>
+        <div style="margin-top:10px;font-size:12px;color:var(--text-light);text-align:center;">
+          💡 灵感来源于 VSCO / Prisma（付费滤镜）— 亮度映射双色渐变，图片完全本地处理，导出高清PNG
+        </div>
+      </div>
+    `,
+    handler: () => { setTimeout(dtInit, 50); }
+  },
+  {
+    id: 'ascii-art',
+    cat: 'image',
+    icon: '🔤',
+    name: '图片转字符画',
+    desc: '灵感来源于付费 ASCII 生成器，将照片转成复古字符画，支持黑白/彩色模式、密度调节、多种字符集，文艺封面与极客风头像必备',
+    html: `
+      <div class="tool-card">
+        <div style="text-align:center;margin-bottom:12px;">
+          <input type="file" id="aa-file" accept="image/*" style="display:none;" onchange="aaLoadFile(this)">
+          <button class="btn btn-primary" onclick="document.getElementById('aa-file').click()">📂 选择图片</button>
+          <button class="btn btn-secondary" onclick="aaCopy()">📋 复制文本</button>
+          <button class="btn btn-secondary" onclick="aaExport()">⬇️ 导出PNG</button>
+        </div>
+        <div class="row" style="margin-bottom:12px;gap:10px;flex-wrap:wrap;">
+          <div class="input-group" style="flex:1;min-width:130px;">
+            <label>字符密度</label>
+            <select id="aa-density" style="width:100%;" onchange="aaRender()">
+              <option value="low">细（字符多）</option>
+              <option value="mid" selected>中</option>
+              <option value="high">粗（字符少）</option>
+            </select>
+          </div>
+          <div class="input-group" style="flex:1;min-width:130px;">
+            <label>颜色模式</label>
+            <select id="aa-color" style="width:100%;" onchange="aaRender()">
+              <option value="bw" selected>⚫ 黑白</option>
+              <option value="color">🌈 彩色</option>
+            </select>
+          </div>
+          <div class="input-group" style="flex:1;min-width:130px;">
+            <label>字符集</label>
+            <select id="aa-charset" style="width:100%;" onchange="aaRender()">
+              <option value="standard">@%#*+=-:. 标准</option>
+              <option value="block">██▓▒░ 方块</option>
+              <option value="complex">$@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/|()1{}[]?-_+~i!lI;:,^'. 完整</option>
+            </select>
+          </div>
+        </div>
+        <div style="max-height:420px;overflow:auto;background:#0f0f1a;border:1px solid var(--border);border-radius:10px;padding:10px;">
+          <pre id="aa-output" style="font-family:monospace;font-size:5px;line-height:5px;letter-spacing:0;margin:0;white-space:pre;color:#e0e0e0;">选择一张图片生成字符画</pre>
+        </div>
+        <div style="margin-top:10px;font-size:12px;color:var(--text-light);text-align:center;">
+          💡 灵感来源于付费 ASCII 生成器 — 亮度映射字符密度，可复制为纯文本或导出PNG，极客风十足
+        </div>
+      </div>
+    `,
+    handler: () => { setTimeout(aaInit, 50); }
   }
 ];
 
@@ -6660,7 +6754,7 @@ function dpCopyText() {
 const CATEGORIES = [
   { id: 'text', icon: '✏️', name: '文本工具', desc: '字数统计、简繁转换、摩斯密码、文本转语音、文本对比' },
   { id: 'dev', icon: '💻', name: '开发者工具', desc: 'JSON格式化、二维码生成、二维码美化、正则测试、Markdown、IP查询、思维导图、图表生成、代码图片生成、表格数据转换' },
-  { id: 'image', icon: '🖼️', name: '图片处理', desc: '去背景换底色、批量压缩、加水印、长图拼接、格式转换、裁剪、异形裁剪、马赛克打码、OCR、印章制作、九宫格切图、文字转手写体、表情包、社交媒体图片尺寸调整、艺术效果、像素画、设备样机、图片高清放大、图片转线稿、渐变背景、文字特效、拼贴画、图片相框、颜色盲区模拟' },
+  { id: 'image', icon: '🖼️', name: '图片处理', desc: '去背景换底色、批量压缩、加水印、长图拼接、格式转换、裁剪、异形裁剪、马赛克打码、双色调滤镜、图片转字符画、OCR、印章制作、九宫格切图、文字转手写体、表情包、社交媒体图片尺寸调整、艺术效果、像素画、设备样机、图片高清放大、图片转线稿、渐变背景、文字特效、拼贴画、图片相框、颜色盲区模拟' },
   { id: 'document', icon: '📄', name: '文档转换', desc: '图片转PDF、PDF转图片、Word解析、Excel转PDF、PDF合并、简历生成、电子签名、表单制作、邮件签名' },
   { id: 'convert', icon: '🔄', name: '转换工具', desc: '单位换算、进制转换、函数绘图' },
   { id: 'security', icon: '🔒', name: '安全工具', desc: '密码生成、Hash计算、随机数' },
@@ -10688,4 +10782,223 @@ function mbBindEvents() {
   c.addEventListener('touchstart', function(e) { e.preventDefault(); var t = e.touches[0]; mbStart({clientX: t.clientX, clientY: t.clientY, preventDefault: function(){}}); });
   c.addEventListener('touchmove', function(e) { e.preventDefault(); var t = e.touches[0]; mbMove({clientX: t.clientX, clientY: t.clientY, preventDefault: function(){}}); });
   c.addEventListener('touchend', mbEnd);
+}
+
+// ============================================================
+// 双色调滤镜 处理函数 (替代付费 VSCO/Prisma 双色滤镜)
+// ============================================================
+var dtImg = null;
+var dtCanvas = null;
+var dtCtx = null;
+
+function dtInit() {
+  var c = document.getElementById('dt-canvas');
+  if (c) { dtCanvas = c; dtCtx = c.getContext('2d'); }
+}
+
+function dtLoadFile(input) {
+  if (!input.files || !input.files[0]) return;
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    dtImg = new Image();
+    dtImg.onload = function() {
+      var maxW = 900;
+      var scale = Math.min(1, maxW / dtImg.width);
+      dtCanvas.width = dtImg.width * scale;
+      dtCanvas.height = dtImg.height * scale;
+      dtCanvas.style.display = 'block';
+      dtCtx.drawImage(dtImg, 0, 0, dtCanvas.width, dtCanvas.height);
+      document.getElementById('dt-tip').textContent = '✅ 图片已加载，调节颜色或选择预设生成双色海报';
+      dtRender();
+      showToast('✅ 图片已加载');
+    };
+    dtImg.src = e.target.result;
+  };
+  reader.readAsDataURL(input.files[0]);
+}
+
+function dtPreset() {
+  var p = document.getElementById('dt-preset').value;
+  var presets = {
+    sunset: ['#f97316', '#8b5cf6'],
+    ocean: ['#0ea5e9', '#14b8a6'],
+    neon: ['#a855f7', '#ec4899'],
+    mint: ['#22c55e', '#06b6d4'],
+    mono: ['#ffffff', '#000000']
+  };
+  if (presets[p]) {
+    document.getElementById('dt-c1').value = presets[p][0];
+    document.getElementById('dt-c2').value = presets[p][1];
+    dtRender();
+  }
+}
+
+function dtRender() {
+  if (!dtImg || !dtCtx) return;
+  var c1 = document.getElementById('dt-c1').value;
+  var c2 = document.getElementById('dt-c2').value;
+  // 解析颜色
+  function hex2rgb(h) {
+    var r = parseInt(h.slice(1,3), 16), g = parseInt(h.slice(3,5), 16), b = parseInt(h.slice(5,7), 16);
+    return [r, g, b];
+  }
+  var hi = hex2rgb(c1); // 高光色
+  var lo = hex2rgb(c2); // 阴影色
+  var imgData = dtCtx.getImageData(0, 0, dtCanvas.width, dtCanvas.height);
+  var data = imgData.data;
+  for (var i = 0; i < data.length; i += 4) {
+    var lum = 0.299 * data[i] + 0.587 * data[i+1] + 0.114 * data[i+2];
+    var t = lum / 255;
+    data[i]     = Math.round(lo[0] + (hi[0] - lo[0]) * t);
+    data[i + 1] = Math.round(lo[1] + (hi[1] - lo[1]) * t);
+    data[i + 2] = Math.round(lo[2] + (hi[2] - lo[2]) * t);
+  }
+  dtCtx.putImageData(imgData, 0, 0);
+}
+
+function dtExport() {
+  if (!dtCanvas) return;
+  dtRender();
+  var link = document.createElement('a');
+  link.download = '双色调_' + Date.now() + '.png';
+  link.href = dtCanvas.toDataURL('image/png');
+  link.click();
+  showToast('✅ 双色调海报已导出');
+}
+
+// ============================================================
+// 图片转字符画 处理函数 (替代付费 ASCII 生成器)
+// ============================================================
+var aaImg = null;
+var aaCanvas = null;
+var aaPlainText = '';
+var aaColorMode = 'bw';
+var aaColorGrid = [];  // 二维: aaColorGrid[y][x] = 'rgb(...)' 或 null
+
+function aaInit() {
+  aaCanvas = document.createElement('canvas');
+}
+
+function aaLoadFile(input) {
+  if (!input.files || !input.files[0]) return;
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    aaImg = new Image();
+    aaImg.onload = function() {
+      aaRender();
+      showToast('✅ 字符画已生成');
+    };
+    aaImg.src = e.target.result;
+  };
+  reader.readAsDataURL(input.files[0]);
+}
+
+function aaRender() {
+  if (!aaImg) return;
+  var density = document.getElementById('aa-density').value;
+  var colorMode = document.getElementById('aa-color').value;
+  var charset = document.getElementById('aa-charset').value;
+  aaColorMode = colorMode;
+  var chars;
+  if (charset === 'block') chars = ' ░▒▓█';
+  else if (charset === 'standard') chars = ' .,:;irsXA253hMHGS#9B&@';
+  else chars = " $@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/\\|()1{}[]?-_+~i!lI;:,^`'.";
+  chars = chars.split('').reverse().join('');
+
+  // 计算字符画网格尺寸
+  var cols, rows;
+  if (density === 'low') cols = 200;
+  else if (density === 'mid') cols = 120;
+  else cols = 70;
+  var aspect = aaImg.height / aaImg.width;
+  rows = Math.round(cols * aspect * 0.5);
+
+  aaCanvas.width = cols;
+  aaCanvas.height = rows;
+  var ctx = aaCanvas.getContext('2d');
+  ctx.drawImage(aaImg, 0, 0, cols, rows);
+  var imgData = ctx.getImageData(0, 0, cols, rows);
+  var data = imgData.data;
+
+  var out = '';
+  aaPlainText = '';
+  aaColorGrid = [];
+  for (var y = 0; y < rows; y++) {
+    var lineText = '';
+    var lineColors = [];
+    for (var x = 0; x < cols; x++) {
+      var idx = (y * cols + x) * 4;
+      var r = data[idx], g = data[idx+1], b = data[idx+2];
+      var lum = 0.299 * r + 0.587 * g + 0.114 * b;
+      var ci = Math.min(chars.length - 1, Math.floor(lum / 255 * (chars.length - 1)));
+      var ch = chars[ci];
+      if (colorMode === 'color') {
+        out += '<span style="color:rgb(' + r + ',' + g + ',' + b + ')">' + ch + '</span>';
+        lineColors.push('rgb(' + r + ',' + g + ',' + b + ')');
+      } else {
+        out += ch;
+        lineColors.push(null);
+      }
+      lineText += ch;
+    }
+    out += '\n';
+    aaPlainText += lineText + '\n';
+    aaColorGrid.push(lineColors);
+  }
+  var pre = document.getElementById('aa-output');
+  if (colorMode === 'color') {
+    pre.innerHTML = out;
+    pre.style.color = '#e0e0e0';
+  } else {
+    pre.textContent = out;
+  }
+}
+
+function aaCopy() {
+  if (!aaPlainText || aaPlainText.trim().length === 0) { showToast('⚠️ 请先选择图片'); return; }
+  var clean = aaPlainText.split('\n').filter(function(l) { return l.trim().length > 0; }).join('\n');
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(clean).then(function() {
+      showToast('📋 字符画已复制');
+    });
+  } else {
+    var ta = document.createElement('textarea');
+    ta.value = clean;
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    showToast('📋 字符画已复制');
+  }
+}
+
+function aaExport() {
+  if (!aaPlainText || aaPlainText.trim().length === 0) { showToast('⚠️ 请先选择图片'); return; }
+  var lines = aaPlainText.split('\n').filter(function(l) { return l.trim().length > 0; });
+  var maxLen = 0;
+  lines.forEach(function(l) { if (l.length > maxLen) maxLen = l.length; });
+  var charW = 10, charH = 14;
+  var canvas = document.createElement('canvas');
+  canvas.width = maxLen * charW;
+  canvas.height = lines.length * charH;
+  var ctx = canvas.getContext('2d');
+  ctx.fillStyle = '#0f0f1a';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  ctx.font = '12px monospace';
+  ctx.textBaseline = 'top';
+  var isColor = (aaColorMode === 'color');
+  lines.forEach(function(l, i) {
+    var colors = aaColorGrid[i] || [];
+    for (var x = 0; x < l.length; x++) {
+      var col = colors[x];
+      if (isColor && col) ctx.fillStyle = col;
+      else ctx.fillStyle = '#e0e0e0';
+      ctx.fillText(l[x], x * charW, i * charH);
+    }
+  });
+  var link = document.createElement('a');
+  link.download = '字符画_' + Date.now() + '.png';
+  link.href = canvas.toDataURL('image/png');
+  link.click();
+  showToast('✅ 字符画已导出PNG');
 }
