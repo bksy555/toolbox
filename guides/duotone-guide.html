@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>双色调滤镜：3步把照片变成高级双色海报（5种预设配色） - ToolBox 工具箱指南</title>
+  <meta name="description" content="图文详解在线双色调滤镜的使用方法：上传照片、选配色、导出PNG，3步做出海报级双色图片。支持主色+辅色自定义、日落/海洋/霓虹/薄荷/单色5种预设，免费在线使用。">
+  <meta name="keywords" content="双色调滤镜,双色图片,duotone,双色海报,照片调色,渐变映射,滤镜在线,图片配色,封面制作">
+  <meta name="author" content="ToolBox">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://toolai.ccwu.cc/guides/duotone-guide.html">
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    :root {
+      --bg: #0f0f1a;
+      --bg-card: #1a1a2e;
+      --text: #e0e0e0;
+      --text-light: #8888aa;
+      --border: #2a2a44;
+      --accent: #6366f1;
+      --accent-hover: #4f46e5;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Noto Sans SC', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      margin: 0;
+      line-height: 1.8;
+    }
+    .guide-header {
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+      border-bottom: 1px solid var(--border);
+      padding: 20px 0;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(10px);
+    }
+    .guide-header-inner {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 0 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .guide-header a {
+      color: var(--accent);
+      text-decoration: none;
+      font-size: 14px;
+    }
+    .guide-header a:hover { color: var(--accent-hover); }
+    .guide-container {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 40px 20px 80px;
+    }
+    .guide-breadcrumb {
+      font-size: 13px;
+      color: var(--text-light);
+      margin-bottom: 20px;
+    }
+    .guide-breadcrumb a { color: var(--accent); text-decoration: none; }
+    .guide-breadcrumb a:hover { text-decoration: underline; }
+    h1 {
+      font-size: 32px;
+      font-weight: 700;
+      margin: 0 0 10px;
+      line-height: 1.3;
+      background: linear-gradient(135deg, #e0e0e0, #a78bfa);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .guide-meta {
+      font-size: 13px;
+      color: var(--text-light);
+      margin-bottom: 30px;
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .guide-meta span { display: flex; align-items: center; gap: 4px; }
+    h2 {
+      font-size: 22px;
+      font-weight: 600;
+      margin: 40px 0 16px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border);
+      color: #e0e0e0;
+    }
+    h3 {
+      font-size: 18px;
+      font-weight: 600;
+      margin: 28px 0 12px;
+      color: #ccc;
+    }
+    p { margin: 0 0 16px; color: #ccc; }
+    .guide-step {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px;
+      margin: 24px 0;
+      position: relative;
+    }
+    .guide-step-number {
+      position: absolute;
+      top: -12px;
+      left: 20px;
+      background: var(--accent);
+      color: #fff;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: 700;
+    }
+    .guide-step h3 { margin-top: 0; }
+    .guide-img {
+      max-width: 100%;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      margin: 16px 0;
+      display: block;
+    }
+    .guide-img-caption {
+      text-align: center;
+      font-size: 13px;
+      color: var(--text-light);
+      margin: 4px 0 16px;
+    }
+    .guide-tip {
+      background: rgba(99,102,241,0.1);
+      border-left: 4px solid var(--accent);
+      padding: 12px 16px;
+      border-radius: 0 8px 8px 0;
+      margin: 16px 0;
+      font-size: 14px;
+      color: #ccc;
+    }
+    .guide-tip strong { color: #a78bfa; }
+    .guide-gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 16px;
+      margin: 16px 0;
+    }
+    .guide-gallery-item {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+      text-align: center;
+    }
+    .guide-gallery-item img { width: 100%; display: block; }
+    .guide-gallery-item .label {
+      padding: 8px;
+      font-size: 13px;
+      color: var(--text-light);
+    }
+    .guide-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16px 0;
+      font-size: 14px;
+    }
+    .guide-table th, .guide-table td {
+      border: 1px solid var(--border);
+      padding: 10px 14px;
+      text-align: left;
+    }
+    .guide-table th { background: var(--bg-card); color: #e0e0e0; font-weight: 600; }
+    .guide-table td { color: #ccc; }
+    .guide-cta {
+      text-align: center;
+      background: linear-gradient(135deg, #1a1a2e, #16213e);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 32px;
+      margin: 40px 0;
+    }
+    .guide-cta p { font-size: 16px; margin-bottom: 20px; }
+    .guide-cta .btn {
+      display: inline-block;
+      background: linear-gradient(135deg, #6366f1, #8b5cf6);
+      color: #fff;
+      padding: 12px 32px;
+      border-radius: 30px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 16px;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .guide-cta .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(99,102,241,0.3); }
+    .footer-nav {
+      margin-top: 40px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      font-size: 14px;
+    }
+    .footer-nav a { color: var(--accent); text-decoration: none; }
+    .footer-nav a:hover { text-decoration: underline; }
+    @media (max-width: 600px) {
+      h1 { font-size: 24px; }
+      .guide-container { padding: 20px 16px 60px; }
+      .guide-step { padding: 20px 16px; }
+      .guide-gallery { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <header class="guide-header">
+    <div class="guide-header-inner">
+      <a href="https://toolai.ccwu.cc/">🧰 ToolBox 首页</a>
+      <a href="../index.html#guides">📖 工具箱指南</a>
+    </div>
+  </header>
+
+  <div class="guide-container">
+    <!-- 面包屑 -->
+    <div class="guide-breadcrumb">
+      <a href="https://toolai.ccwu.cc/">首页</a> / <a href="../index.html#guides">工具箱指南</a> / 双色调滤镜
+    </div>
+
+    <h1>双色调滤镜：3步把照片变成高级双色海报</h1>
+
+    <div class="guide-meta">
+      <span>📅 2026-08-30</span>
+      <span>✏️ ToolBox 编辑部</span>
+      <span>📖 阅读约 5 分钟</span>
+    </div>
+
+    <p>刷社交平台时，你一定见过那种只用两种颜色、却特别"高级"的图片——演唱会海报、专辑封面、街头艺术、品牌主视觉……那种风格就叫 <strong>双色调（Duotone）</strong>。它把整张照片的明暗层次映射成"主色 + 辅色"两种颜色，极简又充满设计感。</p>
+
+    <p>以前要做出这种效果，得在 Photoshop 里折腾"渐变映射"，还得懂配色。现在用 ToolBox 的 <strong>在线双色调滤镜</strong>，上传一张照片，3 步就能搞定：选颜色、选预设、下载。5 种现成配色方案 + 主色辅色自由自定义，纯浏览器处理、隐私安全，完全免费。</p>
+
+    <!-- ====== 第一步 ====== -->
+    <div class="guide-step">
+      <div class="guide-step-number">1</div>
+      <h3>打开工具并上传照片</h3>
+      <p>进入 ToolBox 首页，点击「图片处理」分类，找到「🎨 双色调滤镜」工具卡片；或者直接点击下方按钮快速进入。</p>
+      <div style="text-align:center;margin:16px 0;">
+        <a href="https://toolai.ccwu.cc/" class="guide-cta-btn" style="display:inline-block;background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff;padding:10px 24px;border-radius:30px;text-decoration:none;font-weight:600;font-size:15px;" onclick="alert('请先回到首页，点击「图片处理」分类找到「双色调滤镜」工具')">🚀 打开双色调滤镜</a>
+      </div>
+      <p>点击「📂 选择图片」按钮，从电脑里选一张照片。建议选<strong>明暗层次丰富</strong>的照片（有清晰的亮部与暗部），这样双色效果最明显。</p>
+      <img src="images/dt-step1-upload.png" alt="双色调滤镜上传照片后的默认效果" class="guide-img">
+      <div class="guide-img-caption">▲ 上传照片后，工具立即用默认配色（橙 + 蓝）渲染出双色效果</div>
+    </div>
+
+    <!-- ====== 第二步 ====== -->
+    <div class="guide-step">
+      <div class="guide-step-number">2</div>
+      <h3>选择配色方案（预设或自定义）</h3>
+      <p>这是最有意思的一步，工具默认使用 <strong>橙色（高光）+ 蓝色（阴影）</strong> 的对比配色。想换风格，有两个办法：</p>
+
+      <h3>🎨 5 种一键预设配色</h3>
+      <table class="guide-table">
+        <thead>
+          <tr><th>预设</th><th>配色</th><th>气质 / 适用场景</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>🌅 日落</td><td>橙 → 紫</td><td>温暖、浪漫，适合夕阳、人像</td></tr>
+          <tr><td>🌊 海洋</td><td>蓝 → 青</td><td>清爽、冷静，适合海景、科技感内容</td></tr>
+          <tr><td>💜 霓虹</td><td>紫 → 粉</td><td>潮流、赛博，适合音乐节、夜店海报</td></tr>
+          <tr><td>🌿 薄荷</td><td>绿 → 青</td><td>清新、治愈，适合植物、生活方式内容</td></tr>
+          <tr><td>⚫ 单色</td><td>黑 → 白</td><td>黑白经典，杂志感、纪实风</td></tr>
+        </tbody>
+      </table>
+
+      <p>选中某个预设后，效果立刻刷新在画布上。下面就是用「🌅 日落」预设渲染同一张照片的效果：</p>
+      <img src="images/dt-step2-preset.png" alt="日落预设双色调效果" class="guide-img">
+      <div class="guide-img-caption">▲ 一键切换到「日落」预设，图片瞬间变成橙→紫的暖色调</div>
+
+      <div class="guide-tip">
+        <strong>💡 进阶玩法：</strong> 想让图片完全属于你的品牌色？不用选预设，直接在「主色（高光）」和「辅色（阴影）」两个取色器里点选任意颜色，实时预览，自由到飞起。
+      </div>
+    </div>
+
+    <!-- ====== 第三步 ====== -->
+    <div class="guide-step">
+      <div class="guide-step-number">3</div>
+      <h3>自定义颜色并下载 PNG</h3>
+      <p>想彻底掌控配色？点击「主色（高光）」或「辅色（阴影）」的颜色块，在取色器里选择你的专属颜色。下图把主色换成了亮红、辅色换成了深紫，一张高级感十足的双色图立刻成型：</p>
+      <img src="images/dt-step3-custom.png" alt="自定义主色辅色后的双色调效果" class="guide-img">
+      <div class="guide-img-caption">▲ 自定义主色（红）+ 辅色（紫），海报级效果即刻呈现</div>
+      <p>满意之后，点击「⬇️ 下载PNG」按钮，<strong>高清 PNG 图片</strong>会自动保存到你的电脑，可直接用于封面、海报、头像等任何场景。</p>
+
+      <div class="guide-tip">
+        <strong>📌 使用建议：</strong> 双色调图片最适合做<strong>社交封面、专辑封面、海报背景和品牌宣传图</strong>——两种颜色传达的情绪极度统一，辨识度超高。纯本地处理，照片不会上传到任何服务器。
+      </div>
+    </div>
+
+    <!-- ====== 使用场景 ====== -->
+    <h2>🎯 双色调滤镜的 5 个实用场景</h2>
+
+    <p>双色风格为什么流行？因为它用最少的颜色传递最强的情绪。这些场景直接用得上：</p>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin:20px 0;">
+      <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:16px;text-align:center;">
+        <div style="font-size:28px;margin-bottom:8px;">🖼️</div>
+        <div style="font-weight:600;font-size:14px;margin-bottom:4px;">社交封面</div>
+        <div style="font-size:12px;color:var(--text-light);">公众号头图、朋友圈封面统一风格</div>
+      </div>
+      <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:16px;text-align:center;">
+        <div style="font-size:28px;margin-bottom:8px;">💿</div>
+        <div style="font-weight:600;font-size:14px;margin-bottom:4px;">专辑/歌单封面</div>
+        <div style="font-size:12px;color:var(--text-light);">音乐人最爱，双色极具专辑感</div>
+      </div>
+      <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:16px;text-align:center;">
+        <div style="font-size:28px;margin-bottom:8px;">🎬</div>
+        <div style="font-weight:600;font-size:14px;margin-bottom:4px;">海报背景</div>
+        <div style="font-size:12px;color:var(--text-light);">活动海报、促销图的质感底图</div>
+      </div>
+      <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:16px;text-align:center;">
+        <div style="font-size:28px;margin-bottom:8px;">🏢</div>
+        <div style="font-weight:600;font-size:14px;margin-bottom:4px;">品牌宣传</div>
+        <div style="font-size:12px;color:var(--text-light);">用品牌色统一视觉，强化记忆</div>
+      </div>
+      <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:16px;text-align:center;">
+        <div style="font-size:28px;margin-bottom:8px;">📸</div>
+        <div style="font-weight:600;font-size:14px;margin-bottom:4px;">人像写真</div>
+        <div style="font-size:12px;color:var(--text-light);">人像一键变高级艺术感大片</div>
+      </div>
+    </div>
+
+    <!-- ====== 常见问题 ====== -->
+    <h2>❓ 常见问题</h2>
+
+    <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:20px;margin:16px 0;">
+      <p><strong>Q：照片会上传到服务器吗？会不会泄露隐私？</strong></p>
+      <p>不会。整个处理过程全部在你的浏览器本地完成（Canvas 像素处理），照片不会上传到任何服务器，可以放心使用。</p>
+    </div>
+    <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:20px;margin:16px 0;">
+      <p><strong>Q：哪种照片做双色调效果最好？</strong></p>
+      <p>明暗层次分明、对比度高的照片效果最好——比如有天空和人像轮廓的街景、有光斑的人像。整体过暗或过亮的照片，双色层次会不那么明显，可以先在其它工具里提亮对比度再处理。</p>
+    </div>
+    <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:20px;margin:16px 0;">
+      <p><strong>Q：只能选预设颜色吗？能精确到某一种品牌色吗？</strong></p>
+      <p>完全可以。在「主色（高光）」和「辅色（阴影）」的取色器里，你可以精确挑选任意颜色，甚至输入十六进制色值（如 #EF4444），实现品牌色统一。</p>
+    </div>
+
+    <!-- ====== CTA ====== -->
+    <div class="guide-cta">
+      <p>📌 还没试过？上传一张照片，3 步做出你的双色海报</p>
+      <a href="https://toolai.ccwu.cc/" class="btn">🎨 去制作双色海报 →</a>
+    </div>
+
+    <!-- ====== 底部导航 ====== -->
+    <div class="footer-nav">
+      <a href="../index.html#guides">← 返回工具箱指南列表</a>
+      <a href="https://toolai.ccwu.cc/">🏠 回到首页</a>
+    </div>
+  </div>
+</body>
+</html>
