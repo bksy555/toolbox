@@ -4935,6 +4935,89 @@ greet('世界');</textarea>
       </div>
     `,
     handler: () => { setTimeout(awInit, 50); }
+  },
+  {
+    id: 'white-noise',
+    cat: 'media',
+    icon: '🎧',
+    name: '白噪音发生器',
+    desc: '灵感来源于 Noisli / Rainy Mood（付费），在线生成雨声、白噪音、粉噪音、海浪声等助眠环境音，自定义音量与混合，纯本地运行无需下载App',
+    html: `
+      <div class="tool-card">
+        <div style="text-align:center;margin-bottom:12px;">
+          <button class="btn btn-primary" id="wn-toggle" onclick="wnToggle()">▶️ 播放噪音</button>
+          <button class="btn btn-secondary" onclick="wnStopAll()">⏹️ 停止</button>
+        </div>
+        <div class="row" style="margin-bottom:8px;gap:12px;flex-wrap:wrap;">
+          <div class="input-group" style="flex:1;min-width:130px;">
+            <label>主音量：<span id="wn-vol-val">50%</span></label>
+            <input type="range" id="wn-volume" min="0" max="100" value="50" style="width:100%;" oninput="wnVolume()">
+          </div>
+          <div class="input-group" style="flex:1;min-width:130px;">
+            <label>雨声强度（雨林模式）</label>
+            <input type="range" id="wn-rain" min="0" max="100" value="0" style="width:100%;" oninput="wnMix()">
+          </div>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:8px;" id="wn-mixer"></div>
+        <p style="margin:10px 0;color:var(--text-light);font-size:13px;">
+          ☔ 雨声：布朗噪声低频过滤，模拟雨点打在地面的沙沙声<br>
+          🎚️ 白噪音：均匀覆盖全频段，帮助屏蔽环境杂音，是专注学习办公的理想背景音<br>
+          🌊 粉噪音：低频更强、听感更柔和，被称为"最接近自然"的噪音<br>
+          🎵 粉暴：粉噪音+雨声叠加，营造安静的雨天氛围<br>
+          🌙 全部混合：雨声+粉噪+白噪，适合深度睡眠
+        </p>
+        <div style="margin-top:10px;font-size:12px;color:var(--text-light);text-align:center;">
+          💡 灵感来源于 Noisli / Rainy Mood（付费）— 用 Web Audio API 实时合成音频，无需任何音频文件，完全在本地生成，可伴随你入睡、专注、冥想
+        </div>
+      </div>
+    `,
+    handler: () => { setTimeout(wnInit, 50); }
+  },
+  {
+    id: 'mosaic-blur',
+    cat: 'image',
+    icon: '🧩',
+    name: '图片马赛克打码',
+    desc: '灵感来源于打码工具 / 美图隐私保护（付费），对图片人脸、车牌、隐私信息涂抹马赛克或模糊，可涂抹可擦除，导出PNG，社交发图必备',
+    html: `
+      <div class="tool-card">
+        <div style="text-align:center;margin-bottom:12px;">
+          <input type="file" id="mb-file" accept="image/*" style="display:none;" onchange="mbLoadFile(this)">
+          <button class="btn btn-primary" onclick="document.getElementById('mb-file').click()">📂 选择图片</button>
+          <button class="btn btn-secondary" onclick="mbExport()">⬇️ 导出PNG</button>
+        </div>
+        <div class="row" style="margin-bottom:8px;gap:10px;flex-wrap:wrap;">
+          <div class="input-group" style="flex:1;min-width:140px;">
+            <label>打码方式</label>
+            <select id="mb-mode" style="width:100%;">
+              <option value="mosaic">🧩 马赛克</option>
+              <option value="blur">🌫️ 高斯模糊</option>
+              <option value="solid">⬛ 纯色涂块</option>
+            </select>
+          </div>
+          <div class="input-group" style="flex:1;min-width:140px;">
+            <label>画笔大小</label>
+            <input type="range" id="mb-size" min="10" max="80" value="32" style="width:100%;" oninput="document.getElementById('mb-size-val').textContent=this.value">
+            <span id="mb-size-val">32</span>
+          </div>
+        </div>
+        <p style="margin:7px 0;color:var(--text-light);font-size:13px;">🖱️ 在图片上按住鼠标拖动涂抹即可打码；选择「擦除」可恢复原有区域</p>
+        <div style="display:flex;gap:6px;justify-content:center;margin-bottom:8px;">
+          <button class="btn btn-secondary" onclick="mbSetBrush('code')">🎨 涂抹</button>
+          <button class="btn btn-secondary" onclick="mbSetBrush('erase')">🧽 擦除</button>
+          <button class="btn btn-secondary" onclick="mbUndo()">↩️ 撤销一步</button>
+          <button class="btn btn-secondary" onclick="mbReset()">🔄 重置</button>
+        </div>
+        <div style="text-align:center;">
+          <canvas id="mb-canvas" style="max-width:100%;border-radius:10px;cursor:crosshair;display:none;background:#1a1a2e;"></canvas>
+        </div>
+        <div id="mb-tip" style="text-align:center;color:var(--text-light);font-size:13px;margin-top:8px;">请选择一张图片开始打码（人脸、车牌、地址等信息打码后发布更安全）</div>
+        <div style="margin-top:10px;font-size:12px;color:var(--text-light);text-align:center;">
+          💡 灵感来源于付费打码应用 — 马赛克/模糊/纯色三种模式自由切换，图片完全在本地处理，绝不泄露原图
+        </div>
+      </div>
+    `,
+    handler: () => { setTimeout(mbInit, 50); }
   }
 ];
 
@@ -10251,4 +10334,358 @@ function awSave() {
   link.href = canvas.toDataURL('image/png');
   link.click();
   showToast('✅ 波形图已导出PNG');
+}
+
+// ============================================================
+// 白噪音发生器 处理函数 (替代付费 Noisli/Rainy Mood)
+// ============================================================
+var wnCtx = null;
+var wnMaster = null;
+var wnNodes = {};
+var wnPlaying = false;
+var wnType = 'white';
+
+function wnInit() {
+  wnBuildMixer();
+}
+
+function wnBuildMixer() {
+  var mixer = document.getElementById('wn-mixer');
+  if (!mixer) return;
+  var types = [
+    { id: 'white', label: '🎚️ 白噪音' },
+    { id: 'pink', label: '🌊 粉噪音' },
+    { id: 'rain', label: '☔ 雨声' },
+    { id: 'pinkrain', label: '🎵 粉暴' },
+    { id: 'all', label: '🌙 全部混合' }
+  ];
+  mixer.innerHTML = '';
+  types.forEach(function(t) {
+    var btn = document.createElement('button');
+    btn.className = 'btn btn-secondary';
+    btn.style.margin = '0';
+    btn.id = 'wn-type-' + t.id;
+    btn.textContent = t.label;
+    btn.onclick = function() { wnSetType(t.id); };
+    mixer.appendChild(btn);
+  });
+  wnSetType('white');
+}
+
+function wnEnsureCtx() {
+  if (!wnCtx) {
+    wnCtx = new (window.AudioContext || window.webkitAudioContext)();
+    wnMaster = wnCtx.createGain();
+    wnMaster.gain.value = 0.5;
+    wnMaster.connect(wnCtx.destination);
+  }
+  if (wnCtx.state === 'suspended') wnCtx.resume();
+  return wnCtx;
+}
+
+function wnSetType(type) {
+  wnType = type;
+  ['white','pink','rain','pinkrain','all'].forEach(function(t) {
+    var b = document.getElementById('wn-type-' + t);
+    if (b) {
+      if (t === type) { b.classList.remove('btn-secondary'); b.classList.add('btn-primary'); }
+      else { b.classList.remove('btn-primary'); b.classList.add('btn-secondary'); }
+    }
+  });
+  if (wnPlaying) wnBuild();
+}
+
+function wnToggle() {
+  var btn = document.getElementById('wn-toggle');
+  if (wnPlaying) {
+    wnStop();
+    btn.innerHTML = '▶️ 播放噪音';
+    btn.classList.remove('btn-secondary'); btn.classList.add('btn-primary');
+  } else {
+    wnEnsureCtx();
+    wnBuild();
+    wnPlaying = true;
+    btn.innerHTML = '⏸️ 暂停';
+    btn.classList.remove('btn-primary'); btn.classList.add('btn-secondary');
+  }
+}
+
+function wnBuild() {
+  // 停止旧节点
+  Object.keys(wnNodes).forEach(function(k) {
+    try { wnNodes[k].stop(); } catch(e) {}
+  });
+  wnNodes = {};
+
+  var ctx = wnEnsureCtx();
+  var bufferSize = 2 * ctx.sampleRate;
+  var rainGain = ctx.createGain();
+  rainGain.gain.value = parseFloat(document.getElementById('wn-rain') ? document.getElementById('wn-rain').value : 0) / 100;
+  rainGain.connect(wnMaster);
+
+  function makeNoiseBuffer() {
+    var buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+    var data = buffer.getChannelData(0);
+    var lastOut = 0;
+    for (var i = 0; i < bufferSize; i++) {
+      var white = Math.random() * 2 - 1;
+      if (wnType === 'white') {
+        data[i] = white;
+      } else if (wnType === 'pink' || wnType === 'pinkrain' || wnType === 'all') {
+        // Paul Kellet 粉噪音近似
+        lastOut = (lastOut + (0.02 * white)) / 1.02;
+        data[i] = white * 0.8 + lastOut * 60;
+      } else if (wnType === 'rain' || wnType === 'all') {
+        // 雨声：低通白噪
+        data[i] = white * 0.15;
+      }
+    }
+    return buffer;
+  }
+
+  function playNoise(name, gainVal) {
+    var src = ctx.createBufferSource();
+    src.buffer = makeNoiseBuffer();
+    src.loop = true;
+    var g = ctx.createGain();
+    g.gain.value = gainVal;
+    // 雨声加低通滤波
+    if (name === 'rain' || wnType === 'rain' || wnType === 'pinkrain' || (wnType === 'all' && name === 'rain')) {
+      var filter = ctx.createBiquadFilter();
+      filter.type = 'lowpass';
+      filter.frequency.value = 1200;
+      src.connect(filter);
+      filter.connect(g);
+    } else {
+      src.connect(g);
+    }
+    if (name === 'rain' && (wnType === 'pinkrain' || wnType === 'all')) {
+      g.connect(rainGain);
+      // 雨声不受 rain slider 影响时保持固定
+    } else {
+      g.connect(wnMaster);
+    }
+    src.start();
+    wnNodes[name] = src;
+  }
+
+  if (wnType === 'white') playNoise('white', 0.45);
+  else if (wnType === 'pink') playNoise('pink', 0.4);
+  else if (wnType === 'rain') playNoise('rain', 0.9);
+  else if (wnType === 'pinkrain') { playNoise('pink', 0.3); playNoise('rain', 0.9); }
+  else if (wnType === 'all') { playNoise('white', 0.2); playNoise('pink', 0.25); playNoise('rain', 0.9); }
+}
+
+function wnVolume() {
+  var v = document.getElementById('wn-volume').value / 100;
+  var val = document.getElementById('wn-vol-val');
+  if (val) val.textContent = Math.round(v * 100) + '%';
+  if (wnMaster) wnMaster.gain.value = v;
+}
+
+function wnMix() {
+  // 雨声强度调节（all 模式）
+  if (wnPlaying && wnNodes['rain'] && wnType === 'all') {
+    var g = wnNodes['rain'].gain || null;
+  }
+  wnBuild();
+}
+
+function wnStop() {
+  Object.keys(wnNodes).forEach(function(k) {
+    try { wnNodes[k].stop(); } catch(e) {}
+  });
+  wnNodes = {};
+  wnPlaying = false;
+}
+
+function wnStopAll() {
+  wnStop();
+  var btn = document.getElementById('wn-toggle');
+  if (btn) {
+    btn.innerHTML = '▶️ 播放噪音';
+    btn.classList.remove('btn-secondary'); btn.classList.add('btn-primary');
+  }
+}
+
+// ============================================================
+// 图片马赛克打码 处理函数 (替代付费打码工具)
+// ============================================================
+var mbImg = null;
+var mbCanvas = null;
+var mbCtx = null;
+var mbDrawing = false;
+var mbLastX = 0, mbLastY = 0;
+var mbBrush = 'code';
+var mbUndoStack = [];
+
+function mbInit() {
+  var c = document.getElementById('mb-canvas');
+  if (!c) return;
+  mbCanvas = c;
+  mbCtx = c.getContext('2d');
+  mbBindEvents();
+  var modeSel = document.getElementById('mb-mode');
+  if (modeSel) modeSel.onchange = function() { mbSetBrush(mbBrush === 'erase' ? 'erase' : 'code'); };
+}
+
+function mbLoadFile(input) {
+  if (!input.files || !input.files[0]) return;
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    mbImg = new Image();
+    mbImg.onload = function() {
+      var maxW = 800;
+      var scale = Math.min(1, maxW / mbImg.width);
+      mbCanvas.width = mbImg.width * scale;
+      mbCanvas.height = mbImg.height * scale;
+      mbCanvas.style.display = 'block';
+      mbCtx.drawImage(mbImg, 0, 0, mbCanvas.width, mbCanvas.height);
+      mbUndoStack = [];
+      document.getElementById('mb-tip').textContent = '🖱️ 按住鼠标涂抹需要打码的区域';
+      showToast('✅ 图片已加载，开始涂抹打码');
+    };
+    mbImg.src = e.target.result;
+  };
+  reader.readAsDataURL(input.files[0]);
+}
+
+function mbSetBrush(b) {
+  mbBrush = b;
+  var btns = document.querySelectorAll('#mb-canvas');
+  // 简单切换按钮状态
+  var codeBtn = document.querySelectorAll('button');
+  showToast(b === 'erase' ? '🧽 擦除模式：涂抹恢复原图' : '🎨 涂抹模式：开始打码');
+}
+
+function mbPos(e) {
+  var rect = mbCanvas.getBoundingClientRect();
+  return {
+    x: (e.clientX - rect.left) * (mbCanvas.width / rect.width),
+    y: (e.clientY - rect.top) * (mbCanvas.height / rect.height)
+  };
+}
+
+function mbStart(e) {
+  if (!mbImg) return;
+  e.preventDefault();
+  mbDrawing = true;
+  var p = mbPos(e);
+  mbLastX = p.x; mbLastY = p.y;
+  // 保存快照用于撤销
+  mbUndoStack.push(mbCtx.getImageData(0, 0, mbCanvas.width, mbCanvas.height));
+  if (mbUndoStack.length > 8) mbUndoStack.shift();
+}
+
+function mbMove(e) {
+  if (!mbDrawing || !mbImg) return;
+  e.preventDefault();
+  var p = mbPos(e);
+  var size = parseInt(document.getElementById('mb-size').value, 10);
+  var mode = document.getElementById('mb-mode').value;
+
+  if (mbBrush === 'erase' && mbImg) {
+    // 擦除：将画笔圆形区域恢复为原图
+    mbCtx.save();
+    mbCtx.beginPath();
+    mbCtx.arc(p.x, p.y, size / 2, 0, Math.PI * 2);
+    mbCtx.lineTo(p.x + size, p.y);
+    mbCtx.closePath();
+    mbCtx.clip();
+    mbCtx.drawImage(mbImg, 0, 0, mbCanvas.width, mbCanvas.height);
+    mbCtx.restore();
+    // 沿路径做连续擦除
+    mbCtx.save();
+    mbCtx.beginPath();
+    mbCtx.moveTo(mbLastX, mbLastY);
+    mbCtx.lineTo(p.x, p.y);
+    mbCtx.lineWidth = size;
+    mbCtx.lineCap = 'round';
+    mbCtx.strokeStyle = 'white';
+    mbCtx.globalCompositeOperation = 'source-in';
+    mbCtx.clip();
+    mbCtx.drawImage(mbImg, 0, 0, mbCanvas.width, mbCanvas.height);
+    mbCtx.restore();
+  } else if (mode === 'solid') {
+    mbCtx.fillStyle = '#000000';
+    mbCtx.beginPath();
+    mbCtx.arc(p.x, p.y, size / 2, 0, Math.PI * 2);
+    mbCtx.fill();
+    mbCtx.beginPath();
+    mbCtx.moveTo(mbLastX, mbLastY);
+    mbCtx.lineTo(p.x, p.y);
+    mbCtx.lineWidth = size;
+    mbCtx.lineCap = 'round';
+    mbCtx.stroke();
+  } else if (mode === 'blur') {
+    // 高斯模糊简化：较重的半透明堆叠
+    mbCtx.filter = 'blur(14px)';
+    mbCtx.drawImage(mbCanvas, 0, 0);
+    mbCtx.filter = 'none';
+    mbCtx.beginPath();
+    mbCtx.arc(p.x, p.y, size / 2, 0, Math.PI * 2);
+    mbCtx.fillStyle = 'rgba(0,0,0,0.15)';
+    mbCtx.fill();
+  } else {
+    // mosaic 马赛克：像素块
+    var block = size / 2;
+    var bx = Math.floor(p.x / block) * block;
+    var by = Math.floor(p.y / block) * block;
+    for (var dx = -2; dx <= 2; dx++) {
+      for (var dy = -2; dy <= 2; dy++) {
+        var cx = bx + dx * block;
+        var cy = by + dy * block;
+        if (cx < 0 || cy < 0 || cx + block > mbCanvas.width || cy + block > mbCanvas.height) continue;
+        var imgData = mbCtx.getImageData(cx, cy, block, block);
+        var r = 0, g = 0, b = 0, count = 0;
+        for (var i = 0; i < imgData.data.length; i += 4) {
+          r += imgData.data[i]; g += imgData.data[i+1]; b += imgData.data[i+2]; count++;
+        }
+        r = Math.round(r / count); g = Math.round(g / count); b = Math.round(b / count);
+        mbCtx.fillStyle = 'rgb(' + r + ',' + g + ',' + b + ')';
+        mbCtx.fillRect(cx, cy, block, block);
+      }
+    }
+  }
+  mbLastX = p.x; mbLastY = p.y;
+}
+
+function mbEnd(e) {
+  mbDrawing = false;
+}
+
+function mbUndo() {
+  if (mbUndoStack.length === 0) { showToast('⚠️ 没有可撤销的操作'); return; }
+  var imgData = mbUndoStack.pop();
+  mbCtx.putImageData(imgData, 0, 0);
+  showToast('↩️ 已撤销');
+}
+
+function mbReset() {
+  if (!mbImg) return;
+  mbUndoStack = [];
+  mbCtx.drawImage(mbImg, 0, 0, mbCanvas.width, mbCanvas.height);
+  showToast('🔄 已重置');
+}
+
+function mbExport() {
+  if (!mbCanvas) return;
+  var link = document.createElement('a');
+  link.download = '打码图片_' + Date.now() + '.png';
+  link.href = mbCanvas.toDataURL('image/png');
+  link.click();
+  showToast('✅ 已导出打码PNG');
+}
+
+// 绑定画布事件（在工具打开时调用）
+function mbBindEvents() {
+  var c = document.getElementById('mb-canvas');
+  if (!c) return;
+  c.addEventListener('mousedown', mbStart);
+  c.addEventListener('mousemove', mbMove);
+  c.addEventListener('mouseup', mbEnd);
+  c.addEventListener('mouseleave', mbEnd);
+  c.addEventListener('touchstart', function(e) { e.preventDefault(); var t = e.touches[0]; mbStart({clientX: t.clientX, clientY: t.clientY, preventDefault: function(){}}); });
+  c.addEventListener('touchmove', function(e) { e.preventDefault(); var t = e.touches[0]; mbMove({clientX: t.clientX, clientY: t.clientY, preventDefault: function(){}}); });
+  c.addEventListener('touchend', mbEnd);
 }
