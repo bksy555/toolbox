@@ -25,6 +25,12 @@
     <priority>0.3</priority>
   </url>
   <url>
+    <loc>https://tools-website-rust.vercel.app/lottery.html</loc>
+    <lastmod>2026-08-31</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://tools-website-rust.vercel.app/study.html</loc>
     <lastmod>2026-07-30</lastmod>
     <changefreq>weekly</changefreq>
@@ -34,6 +40,12 @@
     <loc>https://tools-website-rust.vercel.app/voice.html</loc>
     <lastmod>2026-07-30</lastmod>
     <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://tools-website-rust.vercel.app/piancai.html</loc>
+    <lastmod>2026-08-31</lastmod>
+    <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
