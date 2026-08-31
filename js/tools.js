@@ -5330,6 +5330,122 @@ greet('世界');</textarea>
       </div>
     `,
     handler: () => { setTimeout(favInit, 50); }
+  },
+
+  // ==================== 新工具：流程图绘制 ====================
+  {
+    id: 'flowchart-maker',
+    cat: 'dev',
+    icon: '🔀',
+    name: '流程图绘制',
+    desc: '灵感来源于 ProcessOn / draw.io（付费会员），在线绘制流程图、组织结构图、泳道图，节点拖拽连线、8种节点类型，一键导出高清PNG，产品经理/程序员/学生必备',
+    html: `
+      <div class="tool-card">
+        <div style="margin-bottom:10px;display:flex;flex-wrap:wrap;gap:6px;align-items:center;">
+          <button class="btn btn-primary" style="font-size:13px;padding:6px 14px;" onclick="fcAddNode('rect')">▭ 矩形</button>
+          <button class="btn btn-secondary" style="font-size:13px;padding:6px 14px;" onclick="fcAddNode('round')">◻ 圆角</button>
+          <button class="btn btn-secondary" style="font-size:13px;padding:6px 14px;" onclick="fcAddNode('diamond')">◇ 菱形</button>
+          <button class="btn btn-secondary" style="font-size:13px;padding:6px 14px;" onclick="fcAddNode('ellipse')">◯ 椭圆</button>
+          <button class="btn btn-secondary" style="font-size:13px;padding:6px 14px;" onclick="fcAddNode('text')">🅣 文本</button>
+          <button class="btn btn-secondary" style="font-size:13px;padding:6px 14px;" onclick="fcLinkMode()" id="fc-link-btn">🔗 连线</button>
+          <button class="btn btn-danger" style="font-size:13px;padding:6px 14px;background:#ef4444;color:#fff;" onclick="fcDeleteSelected()">🗑️ 删除</button>
+          <span style="margin-left:auto;display:flex;gap:6px;">
+            <button class="btn btn-secondary" style="font-size:13px;padding:6px 14px;" onclick="fcClear()">🔄 清空</button>
+            <button class="btn btn-primary" style="font-size:13px;padding:6px 14px;" onclick="fcExportPNG()">⬇️ 导出PNG</button>
+          </span>
+        </div>
+        <div style="position:relative;border:1px solid var(--border);border-radius:8px;overflow:hidden;background:
+          repeating-conic-gradient(#1c1c33 0% 25%, #1a1a2e 0% 50%) 0 0/20px 20px;" id="fc-canvas-wrap">
+          <svg id="fc-svg" width="100%" height="460" style="display:block;cursor:crosshair;touch-action:none;">
+            <defs>
+              <marker id="fc-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                <path d="M0,0 L10,5 L0,10 z" fill="#8b8bb8"></path>
+              </marker>
+            </defs>
+            <g id="fc-links"></g>
+            <g id="fc-nodes"></g>
+          </svg>
+        </div>
+        <div style="margin-top:8px;display:flex;flex-wrap:wrap;gap:12px;align-items:center;font-size:13px;color:var(--text-light);">
+          <span>✏️ 双击节点编辑文字</span>
+          <span>🖱️ 拖拽节点移动</span>
+          <span>🔗 点「连线」后点两个节点</span>
+          <span>🎨 选中节点后可换色：
+            <input type="color" id="fc-fill" value="#2d2d5e" style="width:36px;height:26px;border:none;border-radius:4px;vertical-align:middle;" onchange="fcApplyStyle()">
+          </span>
+        </div>
+        <div style="margin-top:6px;font-size:12px;color:var(--text-light);text-align:center;">💡 纯本地绘制，不保存不上传；适合流程图、组织结构、泳道草稿，画完直接导出高清图</div>
+      </div>
+    `,
+    handler: () => { setTimeout(fcInit, 50); }
+  },
+
+  // ==================== 新工具：房贷计算器 ====================
+  {
+    id: 'loan-calculator',
+    cat: 'convert',
+    icon: '🏠',
+    name: '房贷计算器',
+    desc: '灵感来源于房贷计算类App（付费会员），等额本息/等额本金双模式，月供、总利息、利率趋势图、逐月还款明细表一次算清，买房贷款必用',
+    html: `
+      <div class="tool-card">
+        <div class="row" style="margin-bottom:12px;gap:12px;flex-wrap:wrap;">
+          <div class="input-group" style="flex:1;min-width:140px;">
+            <label>贷款金额（万元）</label>
+            <input type="number" id="lc-amount" value="100" min="1" step="1" style="width:100%;">
+          </div>
+          <div class="input-group" style="flex:1;min-width:140px;">
+            <label>年利率（%）</label>
+            <input type="number" id="lc-rate" value="3.85" min="0.1" max="20" step="0.01" style="width:100%;">
+          </div>
+          <div class="input-group" style="flex:1;min-width:140px;">
+            <label>贷款年限（年）</label>
+            <input type="number" id="lc-years" value="30" min="1" max="40" step="1" style="width:100%;">
+          </div>
+          <div class="input-group" style="flex:1;min-width:140px;">
+            <label>还款方式</label>
+            <select id="lc-type" style="width:100%;">
+              <option value="equal">等额本息</option>
+              <option value="principal">等额本金</option>
+            </select>
+          </div>
+        </div>
+        <div style="text-align:center;margin-bottom:14px;">
+          <button class="btn btn-primary" onclick="lcCalc()">🧮 开始计算</button>
+        </div>
+        <div id="lc-result" style="display:none;">
+          <div class="row" style="gap:12px;flex-wrap:wrap;margin-bottom:12px;">
+            <div style="flex:1;min-width:140px;background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:14px;text-align:center;">
+              <div style="font-size:12px;color:var(--text-light);">每月月供</div>
+              <div id="lc-monthly" style="font-size:24px;font-weight:700;color:#34d399;margin-top:4px;">--</div>
+            </div>
+            <div style="flex:1;min-width:140px;background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:14px;text-align:center;">
+              <div style="font-size:12px;color:var(--text-light);">利息总额</div>
+              <div id="lc-interest" style="font-size:24px;font-weight:700;color:#f59e0b;margin-top:4px;">--</div>
+            </div>
+            <div style="flex:1;min-width:140px;background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:14px;text-align:center;">
+              <div style="font-size:12px;color:var(--text-light);">还款总额</div>
+              <div id="lc-total" style="font-size:24px;font-weight:700;color:#a78bfa;margin-top:4px;">--</div>
+            </div>
+          </div>
+          <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:12px;margin-bottom:12px;">
+            <div style="font-size:13px;color:var(--text-light);margin-bottom:6px;">📈 剩余本金与月供走势（前36期）</div>
+            <canvas id="lc-chart" width="820" height="220" style="width:100%;height:auto;display:block;"></canvas>
+          </div>
+          <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:12px;">
+            <div style="font-size:13px;color:var(--text-light);margin-bottom:8px;">📋 逐月还款明细（前24期）</div>
+            <div style="max-height:280px;overflow-y:auto;">
+              <table style="width:100%;border-collapse:collapse;font-size:12px;">
+                <thead><tr style="color:var(--text-light);"><th style="text-align:left;padding:6px;">期数</th><th style="text-align:right;padding:6px;">月供</th><th style="text-align:right;padding:6px;">本金</th><th style="text-align:right;padding:6px;">利息</th><th style="text-align:right;padding:6px;">剩余本金</th></tr></thead>
+                <tbody id="lc-table"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div style="margin-top:8px;font-size:12px;color:var(--text-light);text-align:center;">💡 计算结果仅供参考，实际以银行审批为准；数据全部在本地计算，不上传</div>
+      </div>
+    `,
+    handler: () => { setTimeout(lcInit, 50); }
   }
 ];
 
@@ -11743,4 +11859,376 @@ function favDownloadAll() {
     }, delay * i);
   });
   showToast('✅ 开始下载全部 PNG 尺寸');
+}
+
+// ============================================================
+// 流程图绘制器 处理函数
+// ============================================================
+let fcNodes = [];
+let fcLinks = [];
+let fcSelected = null;
+let fcDragging = null;
+let fcLinkModeOn = false;
+let fcLinkFrom = null;
+let fcId = 0;
+
+function fcInit() {
+  const wrap = document.getElementById('fc-svg');
+  if (!wrap) return;
+  // 默认画一个示例流程
+  fcClear();
+  const start = fcAddNodeData('round', 60, 60, '开始');
+  const step = fcAddNodeData('rect', 200, 60, '输入参数');
+  const judge = fcAddNodeData('diamond', 320, 140, '验证通过?');
+  const ok = fcAddNodeData('rect', 200, 230, '执行成功');
+  const no = fcAddNodeData('rect', 440, 210, '返回修改');
+  fcAddLinkData(start, step);
+  fcAddLinkData(step, judge);
+  fcAddLinkData(judge, ok);
+  fcAddLinkData(judge, no);
+  fcRender();
+}
+
+function fcAddNode(type) {
+  const n = fcAddNodeData(type, 80 + Math.random() * 260, 60 + Math.random() * 220, type === 'text' ? '文本' : '节点');
+  fcRender();
+  fcSelectNode(n.id);
+}
+
+function fcAddNodeData(type, x, y, label) {
+  const n = { id: 'fc' + (++fcId), type: type, x: x, y: y, w: 120, h: 46, label: label, fill: '#2d2d5e', color: '#e6e6f0' };
+  if (type === 'diamond') { n.w = 130; n.h = 72; }
+  if (type === 'ellipse') { n.w = 130; n.h = 50; }
+  if (type === 'text') { n.w = 140; n.h = 40; }
+  fcNodes.push(n);
+  return n;
+}
+
+function fcAddLinkData(from, to) {
+  fcLinks.push({ from: from.id, to: to.id });
+}
+
+function fcLinkMode() {
+  fcLinkModeOn = !fcLinkModeOn;
+  fcLinkFrom = null;
+  const btn = document.getElementById('fc-link-btn');
+  if (btn) {
+    btn.style.background = fcLinkModeOn ? '#f59e0b' : '';
+    btn.textContent = fcLinkModeOn ? '🔗 连线中(点起止节点)' : '🔗 连线';
+  }
+}
+
+function fcRender() {
+  const g = document.getElementById('fc-nodes');
+  const lg = document.getElementById('fc-links');
+  if (!g || !lg) return;
+  let linksHtml = '';
+  fcLinks.forEach(function(link) {
+    const a = fcNodes.find(function(n) { return n.id === link.from; });
+    const b = fcNodes.find(function(n) { return n.id === link.to; });
+    if (!a || !b) return;
+    const p1 = fcPort(a, b), p2 = fcPort(b, a);
+    const mx = (p1.x + p2.x) / 2;
+    const my = (p1.y + p2.y) / 2;
+    linksHtml += '<path d="M' + p1.x + ',' + p1.y + ' C' + mx + ',' + p1.y + ' ' + mx + ',' + p2.y + ' ' + p2.x + ',' + p2.y + '" fill="none" stroke="#8b8bb8" stroke-width="1.6" marker-end="url(#fc-arrow)" opacity="0.9"></path>';
+  });
+  lg.innerHTML = linksHtml;
+
+  let nodesHtml = '';
+  fcNodes.forEach(function(n) {
+    const sel = fcSelected === n.id ? ' stroke="#a78bfa" stroke-width="2" ' : '';
+    if (n.type === 'diamond') {
+      const cx = n.x + n.w / 2, cy = n.y + n.h / 2;
+      nodesHtml += '<g data-id="' + n.id + '" cursor="move">'
+        + '<polygon points="' + cx + ',' + (n.y) + ' ' + (n.x + n.w) + ',' + cy + ' ' + cx + ',' + (n.y + n.h) + ' ' + (n.x) + ',' + cy + '" fill="' + n.fill + '" stroke="#6366f1"' + sel + ' stroke-width="1.5"></polygon>'
+        + '<text x="' + cx + '" y="' + cy + '" text-anchor="middle" dominant-baseline="middle" fill="' + n.color + '" font-size="13">' + fcEsc(n.label) + '</text></g>';
+    } else if (n.type === 'ellipse') {
+      const cx = n.x + n.w / 2, cy = n.y + n.h / 2;
+      nodesHtml += '<g data-id="' + n.id + '" cursor="move">'
+        + '<ellipse cx="' + cx + '" cy="' + cy + '" rx="' + n.w / 2 + '" ry="' + n.h / 2 + '" fill="' + n.fill + '" stroke="#6366f1"' + sel + ' stroke-width="1.5"></ellipse>'
+        + '<text x="' + cx + '" y="' + cy + '" text-anchor="middle" dominant-baseline="middle" fill="' + n.color + '" font-size="13">' + fcEsc(n.label) + '</text></g>';
+    } else {
+      const rx = n.type === 'round' ? 12 : 3;
+      nodesHtml += '<g data-id="' + n.id + '" cursor="move">'
+        + '<rect x="' + n.x + '" y="' + n.y + '" width="' + n.w + '" height="' + n.h + '" rx="' + rx + '" fill="' + n.fill + '" stroke="#6366f1"' + sel + ' stroke-width="1.5"></rect>'
+        + '<text x="' + (n.x + n.w / 2) + '" y="' + (n.y + n.h / 2) + '" text-anchor="middle" dominant-baseline="middle" fill="' + n.color + '" font-size="13">' + fcEsc(n.label) + '</text></g>';
+    }
+  });
+  g.innerHTML = nodesHtml;
+
+  // 绑定事件（点击选中/连线、双击编辑、拖拽）
+  Array.prototype.forEach.call(g.querySelectorAll('g'), function(el) {
+    el.addEventListener('mousedown', function(e) { fcOnNodeDown(e, el); });
+    el.addEventListener('dblclick', function(e) { fcOnDblClick(e, el); });
+  });
+}
+
+function fcPort(n, target) {
+  // 计算节点朝向目标节点的连接点
+  const cx = n.x + n.w / 2, cy = n.y + n.h / 2;
+  const tx = target.x + target.w / 2, ty = target.y + target.h / 2;
+  const dx = tx - cx, dy = ty - cy;
+  if (Math.abs(dx) > Math.abs(dy)) {
+    return { x: dx > 0 ? n.x + n.w : n.x, y: cy };
+  }
+  return { x: cx, y: dy > 0 ? n.y + n.h : n.y };
+}
+
+function fcOnNodeDown(e, el) {
+  if (fcLinkModeOn) {
+    const id = el.getAttribute('data-id');
+    if (!fcLinkFrom) {
+      fcLinkFrom = id;
+      el.style.opacity = '0.6';
+    } else if (fcLinkFrom !== id) {
+      fcLinks.push({ from: fcLinkFrom, to: id });
+      fcLinkFrom = null;
+      fcLinkModeOn = false;
+      const btn = document.getElementById('fc-link-btn');
+      if (btn) { btn.style.background = ''; btn.textContent = '🔗 连线'; }
+      fcRender();
+    } else {
+      fcLinkFrom = null;
+    }
+    return;
+  }
+  const id = el.getAttribute('data-id');
+  fcSelectNode(id);
+  const svg = document.getElementById('fc-svg');
+  const rect = svg.getBoundingClientRect();
+  const scaleX = svg.clientWidth ? svg.clientWidth.getBoundingClientRect ? 1 : 1 : 1;
+  const startX = e.clientX, startY = e.clientY;
+  const n = fcNodes.find(function(x) { return x.id === id; });
+  const origX = n.x, origY = n.y;
+  fcDragging = { id: id, startX: startX, startY: startY, origX: origX, origY: origY };
+  e.preventDefault();
+}
+
+function fcOnDblClick(e, el) {
+  if (fcLinkModeOn) return;
+  const id = el.getAttribute('data-id');
+  const n = fcNodes.find(function(x) { return x.id === id; });
+  if (!n) return;
+  const label = prompt('编辑节点文字：', n.label);
+  if (label !== null) {
+    n.label = label || '节点';
+    fcRender();
+  }
+}
+
+function fcSelectNode(id) {
+  fcSelected = id;
+  fcRender();
+}
+
+function fcApplyStyle() {
+  const c = document.getElementById('fc-fill');
+  if (c && fcSelected) {
+    const n = fcNodes.find(function(x) { return x.id === fcSelected; });
+    if (n) { n.fill = c.value; fcRender(); }
+  }
+}
+
+function fcDeleteSelected() {
+  if (!fcSelected) { showToast('⚠️ 请先选中一个节点'); return; }
+  const id = fcSelected;
+  fcNodes = fcNodes.filter(function(n) { return n.id !== id; });
+  fcLinks = fcLinks.filter(function(l) { return l.from !== id && l.to !== id; });
+  fcSelected = null;
+  fcRender();
+}
+
+function fcClear() {
+  fcNodes = [];
+  fcLinks = [];
+  fcSelected = null;
+  fcRender();
+}
+
+function fcEsc(s) {
+  return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
+// 画布级事件：全局拖拽
+document.addEventListener('mousemove', function(e) {
+  if (!fcDragging) return;
+  const id = fcDragging.id;
+  const n = fcNodes.find(function(x) { return x.id === id; });
+  if (!n) return;
+  const svg = document.getElementById('fc-svg');
+  const rect = svg.getBoundingClientRect();
+  const scale = rect.width / (svg.viewBox ? (svg.viewBox.baseVal ? svg.viewBox.baseVal.width : 820) : 820);
+  n.x = fcDragging.origX + (e.clientX - fcDragging.startX) / (scale || 1);
+  n.y = fcDragging.origY + (e.clientY - fcDragging.startY) / (scale || 1);
+  fcRender();
+});
+document.addEventListener('mouseup', function() {
+  fcDragging = null;
+});
+
+function fcExportPNG() {
+  const svg = document.getElementById('fc-svg');
+  if (!svg) { showToast('⚠️ 流程图不存在'); return; }
+  const rect = svg.getBoundingClientRect();
+  const W = 1200, H = Math.max(600, Math.round(rect.height * (1200 / rect.width)));
+  const clone = svg.cloneNode(true);
+  clone.setAttribute('width', W);
+  clone.setAttribute('height', H);
+  clone.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
+  const style = document.createElement('style');
+  style.textContent = 'text{font-family:sans-serif;}';
+  clone.insertBefore(style, clone.firstChild);
+  const data = new XMLSerializer().serializeToString(clone);
+  const blob = new Blob([data], { type: 'image/svg+xml;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const img = new Image();
+  img.onload = function() {
+    const canvas = document.createElement('canvas');
+    canvas.width = W; canvas.height = H;
+    const ctx = canvas.getContext('2d');
+    ctx.fillStyle = '#14142a';
+    ctx.fillRect(0, 0, W, H);
+    ctx.drawImage(img, 0, 0, W, H);
+    const a = document.createElement('a');
+    a.download = 'flowchart.png';
+    a.href = canvas.toDataURL('image/png');
+    a.click();
+    URL.revokeObjectURL(url);
+    showToast('✅ 流程图片已导出');
+  };
+  img.onerror = function() { showToast('⚠️ 导出失败，请重试'); URL.revokeObjectURL(url); };
+  img.src = url;
+}
+
+// ============================================================
+// 房贷计算器 处理函数
+// ============================================================
+function lcInit() {
+  lcCalc();
+}
+
+function lcCalc() {
+  const el = function(id) { return document.getElementById(id); };
+  const amountWan = parseFloat(el('lc-amount').value);
+  const ratePct = parseFloat(el('lc-rate').value);
+  const years = parseInt(el('lc-years').value, 10);
+  const type = el('lc-type').value;
+  if (!amountWan || amountWan <= 0 || !ratePct || ratePct <= 0 || !years || years <= 0) {
+    showToast('⚠️ 请填写正确的贷款金额/利率/年限');
+    return;
+  }
+  const P = amountWan * 10000;
+  const n = years * 12;
+  const r = ratePct / 100 / 12;
+
+  const rows = [];
+  let monthly = 0, totalInterest = 0;
+  if (type === 'equal') {
+    monthly = P * r * Math.pow(1 + r, n) / (Math.pow(1 + r, n) - 1);
+    let remain = P;
+    for (let i = 1; i <= n; i++) {
+      const interest = remain * r;
+      const principal = monthly - interest;
+      remain -= principal;
+      rows.push({ no: i, pay: monthly, principal: principal, interest: interest, remain: Math.max(remain, 0) });
+    }
+    totalInterest = monthly * n - P;
+  } else {
+    const basePrincipal = P / n;
+    let remain = P;
+    for (let i = 1; i <= n; i++) {
+      const interest = remain * r;
+      const principal = basePrincipal;
+      const pay = principal + interest;
+      remain -= principal;
+      rows.push({ no: i, pay: pay, principal: principal, interest: interest, remain: Math.max(remain, 0) });
+      totalInterest += interest;
+    }
+    monthly = rows[0].pay;
+  }
+
+  const fmt = function(v) { return '¥' + v.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ','); };
+  el('lc-monthly').textContent = fmt(monthly);
+  el('lc-interest').textContent = fmt(totalInterest);
+  el('lc-total').textContent = fmt(P + totalInterest);
+
+  // 明细表（前24期）
+  let tableHtml = '';
+  rows.slice(0, 24).forEach(function(row) {
+    tableHtml += '<tr><td style="padding:6px;text-align:left;">' + row.no + '</td>'
+      + '<td style="padding:6px;text-align:right;">' + fmt(row.pay) + '</td>'
+      + '<td style="padding:6px;text-align:right;">' + fmt(row.principal) + '</td>'
+      + '<td style="padding:6px;text-align:right;">' + fmt(row.interest) + '</td>'
+      + '<td style="padding:6px;text-align:right;">' + fmt(row.remain) + '</td></tr>';
+  });
+  el('lc-table').innerHTML = tableHtml;
+  el('lc-result').style.display = 'block';
+
+  // 画折线图：剩余本金 + 月供（36期或全部）
+  lcDrawChart(rows, P);
+}
+
+function lcDrawChart(rows, P) {
+  const canvas = document.getElementById('lc-chart');
+  if (!canvas) return;
+  const W = canvas.width, H = canvas.height;
+  const ctx = canvas.getContext('2d');
+  ctx.clearRect(0, 0, W, H);
+  const count = Math.min(rows.length, 360);
+  const slice = rows.slice(0, count);
+
+  const padL = 56, padR = 20, padT = 16, padB = 30;
+  const cw = W - padL - padR, ch = H - padT - padB;
+  ctx.font = '11px sans-serif';
+
+  // 网格与 Y 轴（剩余本金 0~P）
+  const yMax = P;
+  ctx.strokeStyle = 'rgba(255,255,255,0.08)';
+  ctx.fillStyle = '#8888aa';
+  for (let i = 0; i <= 4; i++) {
+    const y = padT + ch * (1 - i / 4);
+    ctx.beginPath(); ctx.moveTo(padL, y); ctx.lineTo(W - padR, y); ctx.stroke();
+    ctx.fillText('¥' + Math.round(yMax * i / 4 / 10000) + '万', 4, y + 4);
+  }
+  // X 轴刻度
+  for (let i = 0; i <= 6; i++) {
+    const x = padL + cw * i / 6;
+    ctx.beginPath(); ctx.moveTo(x, padT); ctx.lineTo(x, H - padB); ctx.stroke();
+    ctx.fillText(i === 6 ? rows.length + '期' : (Math.round(count * i / 6)) + '期', x - 16, H - 12);
+  }
+
+  // 剩余本金曲线（蓝）
+  ctx.strokeStyle = '#6366f1';
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  slice.forEach(function(row, idx) {
+    const x = padL + cw * (idx / (count - 1 || 1));
+    const y = padT + ch * (1 - row.remain / yMax);
+    if (idx === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+  });
+  ctx.stroke();
+
+  // 月供曲线（绿）
+  ctx.strokeStyle = '#34d399';
+  ctx.setLineDash([5, 4]);
+  ctx.beginPath();
+  slice.forEach(function(row, idx) {
+    const x = padL + cw * (idx / (count - 1 || 1));
+    const y = padT + ch * (1 - row.pay / yMax);
+    if (idx === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+  });
+  ctx.setLineDash([]);
+  ctx.stroke();
+
+  // 图例
+  ctx.fillStyle = '#a78bfa';
+  ctx.fillRect(padL, 6, 16, 4);
+  ctx.fillStyle = '#ccc';
+  ctx.fillText('剩余本金', padL + 22, 12);
+  ctx.strokeStyle = '#34d399';
+  ctx.setLineDash([5, 4]);
+  ctx.beginPath(); ctx.moveTo(padL + 100, 10); ctx.lineTo(padL + 130, 10); ctx.stroke();
+  ctx.setLineDash([]);
+  ctx.fillStyle = '#ccc';
+  ctx.fillText('月供', padL + 136, 12);
 }
