@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>白噪音发生器：5种助眠环境音，专注学习办公神器（纯本地运行） - ToolBox 工具箱指南</title>
+  <meta name="description" content="图文详解在线白噪音发生器：雨声、白噪音、粉噪音、海浪声等5种助眠环境音，自由混合调节音量，帮助入睡、专注学习办公。纯浏览器本地生成，无需下载App，免费无限使用。">
+  <meta name="keywords" content="白噪音,白噪音发生器,助眠声音,雨声,粉噪音,海浪声,专注背景音,助眠神器,环境音,学习背景音">
+  <meta name="author" content="ToolBox">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://toolai.ccwu.cc/guides/white-noise-guide.html">
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    :root {
+      --bg: #0f0f1a;
+      --bg-card: #1a1a2e;
+      --text: #e0e0e0;
+      --text-light: #8888aa;
+      --border: #2a2a44;
+      --accent: #6366f1;
+      --accent-hover: #4f46e5;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Noto Sans SC', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      margin: 0;
+      line-height: 1.8;
+    }
+    .guide-header {
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+      border-bottom: 1px solid var(--border);
+      padding: 20px 0;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(10px);
+    }
+    .guide-header-inner {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 0 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .guide-header a {
+      color: var(--accent);
+      text-decoration: none;
+      font-size: 14px;
+    }
+    .guide-header a:hover { color: var(--accent-hover); }
+    .guide-container {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 40px 20px 80px;
+    }
+    .guide-breadcrumb {
+      font-size: 13px;
+      color: var(--text-light);
+      margin-bottom: 20px;
+    }
+    .guide-breadcrumb a { color: var(--accent); text-decoration: none; }
+    .guide-breadcrumb a:hover { text-decoration: underline; }
+    h1 {
+      font-size: 32px;
+      font-weight: 700;
+      margin: 0 0 10px;
+      line-height: 1.3;
+      background: linear-gradient(135deg, #e0e0e0, #a78bfa);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .guide-meta {
+      font-size: 13px;
+      color: var(--text-light);
+      margin-bottom: 30px;
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .guide-meta span { display: flex; align-items: center; gap: 4px; }
+    h2 {
+      font-size: 22px;
+      font-weight: 600;
+      margin: 40px 0 16px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border);
+      color: #e0e0e0;
+    }
+    h3 {
+      font-size: 18px;
+      font-weight: 600;
+      margin: 28px 0 12px;
+      color: #ccc;
+    }
+    p { margin: 0 0 16px; color: #ccc; }
+    .guide-step {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px;
+      margin: 24px 0;
+      position: relative;
+    }
+    .guide-step-number {
+      position: absolute;
+      top: -12px;
+      left: 20px;
+      background: var(--accent);
+      color: #fff;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: 700;
+    }
+    .guide-step h3 { margin-top: 0; }
+    .guide-img {
+      max-width: 100%;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      margin: 16px 0;
+      display: block;
+    }
+    .guide-img-caption {
+      text-align: center;
+      font-size: 13px;
+      color: var(--text-light);
+      margin: 4px 0 16px;
+    }
+    .guide-tip {
+      background: rgba(99,102,241,0.1);
+      border-left: 4px solid var(--accent);
+      padding: 12px 16px;
+      border-radius: 0 8px 8px 0;
+      margin: 16px 0;
+      font-size: 14px;
+      color: #ccc;
+    }
+    .guide-tip strong { color: #a78bfa; }
+    .guide-gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 16px;
+      margin: 16px 0;
+    }
+    .guide-gallery-item {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+      text-align: center;
+    }
+    .guide-gallery-item img { width: 100%; display: block; }
+    .guide-gallery-item .label {
+      padding: 8px;
+      font-size: 13px;
+      color: var(--text-light);
+    }
+    .guide-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16px 0;
+      font-size: 14px;
+    }
+    .guide-table th, .guide-table td {
+      border: 1px solid var(--border);
+      padding: 10px 14px;
+      text-align: left;
+    }
+    .guide-table th { background: var(--bg-card); color: #e0e0e0; font-weight: 600; }
+    .guide-table td { color: #ccc; }
+    .guide-cta {
+      text-align: center;
+      background: linear-gradient(135deg, #1a1a2e, #16213e);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 32px;
+      margin: 40px 0;
+    }
+    .guide-cta p { font-size: 16px; margin-bottom: 20px; }
+    .guide-cta .btn {
+      display: inline-block;
+      background: linear-gradient(135deg, #6366f1, #8b5cf6);
+      color: #fff;
+      padding: 12px 32px;
+      border-radius: 30px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 16px;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .guide-cta .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(99,102,241,0.3); }
+    .footer-nav {
+      margin-top: 40px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      font-size: 14px;
+    }
+    .footer-nav a { color: var(--accent); text-decoration: none; }
+    .footer-nav a:hover { text-decoration: underline; }
+    @media (max-width: 600px) {
+      h1 { font-size: 24px; }
+      .guide-container { padding: 20px 16px 60px; }
+      .guide-step { padding: 20px 16px; }
+      .guide-gallery { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <header class="guide-header">
+    <div class="guide-header-inner">
+      <a href="https://toolai.ccwu.cc/">🧰 ToolBox 首页</a>
+      <a href="../index.html#guides">📖 工具箱指南</a>
+    </div>
+  </header>
+
+  <div class="guide-container">
+    <div class="guide-breadcrumb">
+      <a href="https://toolai.ccwu.cc/">首页</a> / <a href="../index.html#guides">工具箱指南</a> / 白噪音发生器
+    </div>
+
+    <h1>白噪音发生器：5种助眠环境音，专注学习办公神器</h1>
+
+    <div class="guide-meta">
+      <span>📅 2026-08-31</span>
+      <span>✏️ ToolBox 编辑部</span>
+      <span>📖 阅读约 4 分钟</span>
+    </div>
+
+    <p>深夜睡不着、办公室太吵、图书馆里隔壁桌键盘敲得心烦……你需要一场"不会停的雨"。<strong>白噪音（White Noise）</strong>能均匀覆盖环境杂音，让人更快入睡、更集中注意力，是无数人验证过的专注与助眠神器。</p>
+
+    <p>以前要用这类工具，得下载 Noisli、Rainy Mood 之类的付费 App。现在用 ToolBox 的 <strong>在线白噪音发生器</strong>，打开网页就能听：<strong>雨声、白噪音、粉噪音、海浪声</strong>等多种声音自由混合，音量随意调，纯本地生成、不消耗流量、不限时长，完全免费。</p>
+
+    <!-- ====== 第1步 ====== -->
+    <div class="guide-step">
+      <div class="guide-step-number">1</div>
+      <h3>打开工具并点击播放</h3>
+<p>进入 ToolBox 首页，点击「🎬 媒体工具」分类，找到「🎧 白噪音发生器」工具卡片进入（也可在首页搜索「白噪音」快速定位）。</p>
+      <p>点击绿色「▶️ 播放噪音」按钮，立刻就能听到默认的白噪音。整个页面会显示当前混音状态，按钮变为「⏸ 暂停」随时切换。</p>
+      <img src="images/wn-step1-play.png" alt="白噪音发生器播放界面" class="guide-img">
+      <div class="guide-img-caption">▲ 开启后立即产生纯净白噪音，界面简洁直观</div>
+      <div class="guide-tip">
+        <strong>💡 初次使用：</strong> 建议戴上耳机试听，找到最舒服的音量后再开始工作或入睡。
+      </div>
+    </div>
+
+    <!-- ====== 第2步 ====== -->
+    <div class="guide-step">
+      <div class="guide-step-number">2</div>
+      <h3>调节音量与混合不同的声音</h3>
+<p>工具提供独立滑块，让你像调音台一样自由组合声音：</p>
+      <ul style="color:#ccc;margin:0 0 12px;padding-left:20px;">
+        <li><strong>🎚️ 主音量</strong>：控制整体音量大小，建议 40%-60% 最舒服。</li>
+        <li><strong>☔ 雨声</strong>：布朗噪声低频过滤，模拟雨点打在的沙沙声，超级助眠。</li>
+        <li><strong>🌊 海浪声 / 🌙 粉噪音 / 🔊 白噪音</strong>：不同频段特征的环境音，可同时开启混合出"雨夜 + 海浪"的层次感。</li>
+      </ul>
+      <p>比如把雨声强度调高、白噪音调低，就能得到"安静雨夜"的效果——比单一声音更自然、更耐听。</p>
+      <div class="guide-tip">
+        <strong>💡 组合推荐：</strong> 雨声 60% + 粉噪音 40%，是许多用户验证过的"秒睡组合"；学习办公则建议白噪音 70% + 雨声 30%，提神又不吵。
+      </div>
+    </div>
+
+    <!-- ====== 第3步 ====== -->
+    <div class="guide-step">
+      <div class="guide-step-number">3</div>
+      <h3>停止播放，随时继续</h3>
+<p>想停下来时，点击「⏹️ 停止」按钮即可全部静音；下次打开浏览器重新进入页面，点一下播放又能继续。没有任何时长限制，也不产生任何网络流量（声音在本地实时合成）。</p>
+      <div class="guide-tip">
+        <strong>📌 使用建议：</strong> 适合<strong>睡前助眠、午休小憩、办公室专注、自习室学习、新生儿安抚</strong>等场景。声音由浏览器本地生成，无需网络，隐私安全。
+      </div>
+    </div>
+
+    <!-- ====== 使用场景 ====== -->
+    <h2>🎯 白噪音的 5 个实用场景</h2>
+
+    <p>白噪音被大量研究证明能帮助放松与专注。这些场景直接用得上：</p>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin:20px 0;">
+      <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:16px;text-align:center;">
+        <div style="font-size:28px;margin-bottom:8px;">😴</div>
+        <div style="font-weight:600;font-size:14px;margin-bottom:4px;">睡前助眠</div>
+        <div style="font-size:12px;color:var(--text-light);">失眠星人的救星，屏蔽窗外噪音入睡更快</div>
+      </div>
+      <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:16px;text-align:center;">
+        <div style="font-size:28px;margin-bottom:8px;">📚</div>
+        <div style="font-weight:600;font-size:14px;margin-bottom:4px;">专注学习</div>
+        <div style="font-size:12px;color:var(--text-light);">图书馆、自习室太吵，白噪音帮你进入心流</div>
+      </div>
+      <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:16px;text-align:center;">
+        <div style="font-size:28px;margin-bottom:8px;">💼</div>
+        <div style="font-weight:600;font-size:14px;margin-bottom:4px;">办公提效</div>
+        <div style="font-size:12px;color:var(--text-light);">开放式办公室的杂音克星，代码/写稿更专注</div>
+      </div>
+      <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:16px;text-align:center;">
+        <div style="font-size:28px;margin-bottom:8px;">👶</div>
+        <div style="font-weight:600;font-size:14px;margin-bottom:4px;">安抚入眠</div>
+        <div style="font-size:12px;color:var(--text-light);">模拟子宫环境声，帮助宝宝安静入睡</div>
+      </div>
+      <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:16px;text-align:center;">
+        <div style="font-size:28px;margin-bottom:8px;">🧘</div>
+        <div style="font-weight:600;font-size:14px;margin-bottom:4px;">冥想放松</div>
+        <div style="font-size:12px;color:var(--text-light);">雨声+海浪的混合，冥想瑜伽的最佳背景</div>
+      </div>
+    </div>
+
+    <!-- ====== 常见问题 ====== -->
+    <h2>❓ 常见问题</h2>
+
+    <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:20px;margin:16px 0;">
+      <p><strong>Q：声音会上传到服务器吗？</strong></p>
+      <p>不会。白噪音是浏览器本地实时合成的音频，不需要联网、不产生流量，也不会上传任何数据。</p>
+    </div>
+    <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:20px;margin:16px 0;">
+      <p><strong>Q：可以同时混合多种声音吗？</strong></p>
+      <p>可以。工具内置独立的混合通道，雨声、白噪音、粉噪音、海浪声等可以任意组合叠加，自由调节各自的音量比例。</p>
+    </div>
+    <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:20px;margin:16px 0;">
+      <p><strong>Q：需要下载 App 吗？完全免费吗？</strong></p>
+      <p>不需要。直接在浏览器打开就能用，完全免费、无限时长，手机、电脑都支持（建议 Chrome/Edge 效果最佳）。</p>
+    </div>
+
+    <!-- ====== CTA ====== -->
+    <div class="guide-cta">
+      <p>📌 现在有点吵？打开白噪音发生器，3 秒进入专注状态</p>
+      <a href="https://toolai.ccwu.cc/" class="btn">🎧 去听白噪音 →</a>
+    </div>
+
+    <!-- ====== 底部导航 ====== -->
+    <div class="footer-nav">
+      <a href="../index.html#guides">← 返回工具箱指南列表</a>
+      <a href="https://toolai.ccwu.cc/">🏠 回到首页</a>
+    </div>
+  </div>
+</body>
+</html>
