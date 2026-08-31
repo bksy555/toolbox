@@ -5206,6 +5206,105 @@ greet('世界');</textarea>
       </div>
     `,
     handler: () => { setTimeout(pcInit, 50); }
+  },
+  {
+    id: 'barcode-generator',
+    cat: 'dev',
+    icon: '🏷️',
+    name: '条形码生成器',
+    desc: '灵感来源于付费条码生成器（Barcode Generator / TEC-IT），支持 EAN-13 与 CODE39 编码，自动计算校验位，纯前端绘制高清条形码，电商价签、ISBN、库存标签必备',
+    html: `
+      <div class="tool-card">
+        <div class="row" style="margin-bottom:12px;gap:12px;flex-wrap:wrap;">
+          <div class="input-group" style="flex:1;min-width:140px;">
+            <label>条码类型</label>
+            <select id="bc-type" style="width:100%;" onchange="bcRender()">
+              <option value="ean13">EAN-13（13位数字）</option>
+              <option value="code39">CODE39（字母数字）</option>
+            </select>
+          </div>
+          <div class="input-group" style="flex:2;min-width:220px;">
+            <label>条码内容</label>
+            <input type="text" id="bc-input" value="692345065771" style="width:100%;" placeholder="输入数字或字母" oninput="bcRender()">
+          </div>
+          <div class="input-group" style="flex:1;min-width:100px;">
+            <label>条码高度</label>
+            <select id="bc-height" style="width:100%;" onchange="bcRender()">
+              <option value="90">标准</option>
+              <option value="130">高</option>
+              <option value="60">低</option>
+            </select>
+          </div>
+        </div>
+        <div style="text-align:center;">
+          <canvas id="bc-canvas" style="max-width:100%;background:#fff;border-radius:8px;"></canvas>
+        </div>
+        <div id="bc-tip" style="text-align:center;color:var(--text-light);font-size:13px;margin-top:8px;">输入内容后自动生成，可下载高清PNG</div>
+        <div style="text-align:center;margin-top:10px;">
+          <button class="btn btn-secondary" onclick="bcDownload()">⬇️ 下载PNG</button>
+        </div>
+        <div style="margin-top:8px;font-size:12px;color:var(--text-light);text-align:center;">
+          💡 EAN-13 自动补齐校验位；CODE39 支持 0-9 / A-Z / 常用符号 — 纹理由浏览器本地绘制
+        </div>
+      </div>
+    `,
+    handler: () => { setTimeout(bcInit, 50); }
+  },
+  {
+    id: 'favicon-maker',
+    cat: 'dev',
+    icon: '🖥️',
+    name: 'Favicon图标生成器',
+    desc: '灵感来源于 Favicon.io / RealFaviconGenerator（付费/高级工具），上传图片或输入文字一键生成 16-512px 全套网站图标，支持打包下载 ICO 与各尺寸 PNG，站长必备',
+    html: `
+      <div class="tool-card">
+        <div style="margin-bottom:12px;">
+          <button class="btn btn-primary" style="font-size:14px;padding:8px 18px;" onclick="favMode('image')">🖼️ 图片生成</button>
+          <button class="btn btn-secondary" style="font-size:14px;padding:8px 18px;" onclick="favMode('text')">🔤 文字生成</button>
+        </div>
+        <div id="fav-image-section">
+          <div style="text-align:center;margin-bottom:10px;">
+            <input type="file" id="fav-file" accept="image/*" style="display:none;" onchange="favLoad(this)">
+            <button class="btn btn-secondary" onclick="document.getElementById('fav-file').click()">📂 选择图片</button>
+            <span style="font-size:12px;color:var(--text-light);margin-left:6px;">建议正方形图片，自动居中裁剪</span>
+          </div>
+        </div>
+        <div id="fav-text-section" style="display:none;">
+          <div class="row" style="margin-bottom:12px;gap:12px;flex-wrap:wrap;">
+            <div class="input-group" style="flex:2;min-width:160px;">
+              <label>图标文字（1-3字符）</label>
+              <input type="text" id="fav-text" value="TB" maxlength="3" style="width:100%;" oninput="favTextChange()">
+            </div>
+            <div class="input-group" style="flex:1;min-width:100px;">
+              <label>背景色</label>
+              <input type="color" id="fav-bg" value="#6366f1" style="width:100%;height:38px;padding:2px;" oninput="favTextChange()">
+            </div>
+            <div class="input-group" style="flex:1;min-width:100px;">
+              <label>文字颜色</label>
+              <input type="color" id="fav-fg" value="#ffffff" style="width:100%;height:38px;padding:2px;" oninput="favTextChange()">
+            </div>
+          </div>
+        </div>
+        <div id="fav-preview" style="display:none;margin-bottom:12px;">
+          <div style="display:flex;align-items:flex-end;gap:14px;flex-wrap:wrap;justify-content:center;background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:14px;">
+            <div style="text-align:center;"><canvas id="fav-p16" width="16" height="16"></canvas><div style="font-size:11px;color:var(--text-light);margin-top:4px;">16px</div></div>
+            <div style="text-align:center;"><canvas id="fav-p32" width="32" height="32"></canvas><div style="font-size:11px;color:var(--text-light);margin-top:4px;">32px</div></div>
+            <div style="text-align:center;"><canvas id="fav-p48" width="48" height="48"></canvas><div style="font-size:11px;color:var(--text-light);margin-top:4px;">48px</div></div>
+            <div style="text-align:center;"><canvas id="fav-p180" width="180" height="180"></canvas><div style="font-size:11px;color:var(--text-light);margin-top:4px;">180px</div></div>
+            <div style="text-align:center;"><canvas id="fav-p512" width="512" height="512"></canvas><div style="font-size:11px;color:var(--text-light);margin-top:4px;">512px</div></div>
+          </div>
+        </div>
+        <div id="fav-actions" style="display:none;text-align:center;gap:10px;margin-top:6px;">
+          <button class="btn btn-primary" onclick="favDownloadICO()">⬇️ 下载 ICO</button>
+          <button class="btn btn-secondary" onclick="favDownloadAll()">⬇️ 下载全部 PNG</button>
+        </div>
+        <div id="fav-tip" style="text-align:center;color:var(--text-light);font-size:13px;margin-top:10px;">选择图片或输入文字，一键生成全套网站图标（ICO / PNG 各尺寸）</div>
+        <div style="margin-top:8px;font-size:12px;color:var(--text-light);text-align:center;">
+          💡 全部在浏览器本地完成，不会上传你的图片；生成的 ICO 兼容主流浏览器与系统
+        </div>
+      </div>
+    `,
+    handler: () => { setTimeout(favInit, 50); }
   }
 ];
 
@@ -6847,7 +6946,7 @@ function dpCopyText() {
 // ============================================================
 const CATEGORIES = [
   { id: 'text', icon: '✏️', name: '文本工具', desc: '字数统计、简繁转换、摩斯密码、文本转语音、文本对比' },
-  { id: 'dev', icon: '💻', name: '开发者工具', desc: 'JSON格式化、二维码生成、二维码美化、正则测试、Markdown、IP查询、思维导图、图表生成、代码图片生成、表格数据转换' },
+  { id: 'dev', icon: '💻', name: '开发者工具', desc: 'JSON格式化、二维码生成、二维码美化、条形码生成、Favicon图标生成、正则测试、Markdown、IP查询、思维导图、图表生成、代码图片生成、表格数据转换' },
   { id: 'image', icon: '🖼️', name: '图片处理', desc: '去背景换底色、批量压缩、加水印、长图拼接、格式转换、裁剪、异形裁剪、马赛克打码、双色调滤镜、图片转字符画、照片卡通化、OCR、印章制作、九宫格切图、文字转手写体、表情包、社交媒体图片尺寸调整、艺术效果、像素画、设备样机、图片高清放大、图片转线稿、渐变背景、文字特效、拼贴画、图片相框、颜色盲区模拟' },
   { id: 'document', icon: '📄', name: '文档转换', desc: '图片转PDF、PDF转图片、Word解析、Excel转PDF、PDF合并、简历生成、电子签名、表单制作、邮件签名' },
   { id: 'convert', icon: '🔄', name: '转换工具', desc: '单位换算、进制转换、函数绘图' },
@@ -11346,4 +11445,276 @@ function pcExport() {
   a.href = pcCanvas.toDataURL('image/png');
   a.click();
   showToast('✅ 卡通化图片已导出PNG');
+}
+
+// ============================================================
+// 条形码生成器 处理函数 (灵感来源: Barcode Generator / TEC-IT)
+// ============================================================
+var BC_EAN_L = {0:'0001101',1:'0011001',2:'0010011',3:'0111101',4:'0100011',5:'0110001',6:'0101111',7:'0111011',8:'0110111',9:'0001011'};
+var BC_EAN_G = {0:'0100111',1:'0110011',2:'0011011',3:'0100001',4:'0011101',5:'0111001',6:'0000101',7:'0010001',8:'0001001',9:'0010111'};
+var BC_EAN_R = {0:'1110010',1:'1100110',2:'1101100',3:'1000010',4:'1011100',5:'1001110',6:'1010000',7:'1000100',8:'1001000',9:'1110100'};
+var BC_EAN_P = {'0':'LLLLLL','1':'LLGLGG','2':'LLGGLG','3':'LLGGGL','4':'LGLLGG','5':'LGGLLG','6':'LGGGLL','7':'LGLGLG','8':'LGLGGL','9':'LGGLGL'};
+var BC_39 = {
+ '0':'000110100','1':'100100001','2':'001100001','3':'101100000','4':'000110001','5':'100110000','6':'001110000','7':'000100101','8':'100100100','9':'001100100',
+ 'A':'100001001','B':'001001001','C':'101001000','D':'000011001','E':'100011000','F':'001011000','G':'000001101','H':'100001100','I':'001001100','J':'000011100',
+ 'K':'100000011','L':'001000011','M':'101000010','N':'000010011','O':'100010010','P':'001010010','Q':'000000111','R':'100000110','S':'001000110','T':'000010110',
+ 'U':'110000001','V':'011000001','W':'111000000','X':'010010001','Y':'110010000','Z':'011010000',
+ '-':'010000101','.':'110000100',' ':'011000100','$':'010101000','/':'010100010','+':'010001010','%':'000101010','*':'010010100'
+};
+
+function bcInit() {
+  bcRender();
+}
+
+function bcEAN13(value) {
+  var digits = String(value).replace(/[^0-9]/g, '').slice(0, 13);
+  while (digits.length < 12) digits += '0';
+  var raw = digits.slice(0, 12);
+  // 计算校验位
+  var sum = 0;
+  for (var i = 0; i < 12; i++) {
+    var d = parseInt(raw[i]);
+    sum += (i % 2 === 0) ? d : d * 3;
+  }
+  var check = (10 - (sum % 10)) % 10;
+  digits = raw + String(check);
+  // 生成位模式
+  var pattern = '101';
+  var lead = parseInt(digits[0]);
+  var par = BC_EAN_P[lead];
+  for (var j = 0; j < 6; j++) {
+    var t = parseInt(digits[1 + j]);
+    var table = par[j] === 'L' ? BC_EAN_L : BC_EAN_G;
+    pattern += table[t];
+  }
+  pattern += '01010';
+  for (var k = 7; k < 13; k++) {
+    pattern += BC_EAN_R[parseInt(digits[k])];
+  }
+  pattern += '101';
+  return { pattern: pattern, text: digits };
+}
+
+function bcCode39(value) {
+  var s = String(value).toUpperCase().replace(/[^0-9A-Z\-. $\/+%]/g, '');
+  if (s === '') s = '1234';
+  var out = '*';
+  var pattern = '';
+  for (var i = 0; i < s.length; i++) {
+    var c = s[i];
+    var code = BC_39[c];
+    if (i > 0) pattern += '0'; // 字符间隔(窄空)
+    pattern += code;
+    out += c;
+  }
+  pattern += '0' + BC_39['*'];
+  out += '*';
+  return { pattern: pattern, text: out };
+}
+
+function bcRender() {
+  var canvas = document.getElementById('bc-canvas');
+  if (!canvas) return;
+  var type = document.getElementById('bc-type').value;
+  var input = document.getElementById('bc-input').value;
+  var hSel = parseInt(document.getElementById('bc-height').value) || 90;
+  var res;
+  if (type === 'ean13') res = bcEAN13(input);
+  else res = bcCode39(input);
+  var ctx = canvas.getContext('2d');
+  var unit = 2; // 每模块宽度
+  var pat = res.pattern;
+  var wPx = pat.length * unit;
+  var textH = 26;
+  var padding = 10;
+  canvas.width = wPx + padding * 2;
+  canvas.height = hSel + textH + padding * 2;
+  ctx.fillStyle = '#ffffff';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  ctx.fillStyle = '#000000';
+  var x = padding;
+  for (var b = 0; b < pat.length; b++) {
+    if (pat[b] === '1') {
+      ctx.fillRect(x, padding, unit, hSel);
+    }
+    x += unit;
+  }
+  // 文字
+  ctx.fillStyle = '#000000';
+  ctx.font = '14px monospace';
+  ctx.textAlign = 'center';
+  var textY = padding + hSel + 18;
+  if (type === 'ean13') {
+    ctx.font = '13px monospace';
+    ctx.fillText(res.text[0], padding + 12, textY);
+    ctx.fillText(res.text.slice(1, 7), padding + 7 * 7 * unit * 0.5 + 8, textY);
+    ctx.fillText(res.text.slice(7), padding + 7 * 7 * unit * 1.5 + 8, textY);
+  } else {
+    ctx.fillText(res.text, canvas.width / 2, textY);
+  }
+  var tip = document.getElementById('bc-tip');
+  if (tip) tip.textContent = '✅ 已生成（' + res.text.length + ' 字符）— 点击下载PNG';
+}
+
+function bcDownload() {
+  var canvas = document.getElementById('bc-canvas');
+  if (!canvas || canvas.width === 0) { showToast('⚠️ 请先输入条码内容'); return; }
+  var a = document.createElement('a');
+  a.download = '条形码_' + Date.now() + '.png';
+  a.href = canvas.toDataURL('image/png');
+  a.click();
+  showToast('✅ 条形码已导出PNG');
+}
+
+// ============================================================
+// Favicon图标生成器 处理函数 (灵感来源: Favicon.io / RealFaviconGenerator)
+// ============================================================
+var favBaseImg = null; // HTMLImageElement
+var favBaseCanvas = document.createElement('canvas');
+
+function favInit() {
+  favBaseCanvas.width = 512;
+  favBaseCanvas.height = 512;
+}
+
+function favMode(mode) {
+  var imgSec = document.getElementById('fav-image-section');
+  var txtSec = document.getElementById('fav-text-section');
+  var tip = document.getElementById('fav-tip');
+  if (mode === 'image') {
+    imgSec.style.display = 'block';
+    txtSec.style.display = 'none';
+    if (tip) tip.textContent = '选择图片后自动生成全套图标（ICO / PNG）';
+  } else {
+    imgSec.style.display = 'none';
+    txtSec.style.display = 'block';
+    if (tip) tip.textContent = '输入文字与配色后自动生成全套图标（ICO / PNG）';
+    favTextChange();
+  }
+}
+
+function favLoad(input) {
+  var f = input.files && input.files[0];
+  if (!f) return;
+  var img = new Image();
+  img.onload = function() {
+    favBaseImg = img;
+    var ctx = favBaseCanvas.getContext('2d');
+    ctx.fillStyle = '#ffffff';
+    ctx.fillRect(0, 0, 512, 512);
+    // 居中裁剪正方形
+    var s = Math.min(img.width, img.height);
+    var sx = (img.width - s) / 2, sy = (img.height - s) / 2;
+    ctx.drawImage(img, sx, sy, s, s, 0, 0, 512, 512);
+    favRenderAll();
+    if (document.getElementById('fav-tip')) document.getElementById('fav-tip').textContent = '✅ 图标已生成！点击下方按钮下载';
+  };
+  img.onerror = function() { showToast('⚠️ 图片加载失败'); };
+  img.src = URL.createObjectURL(f);
+}
+
+function favTextChange() {
+  var txt = document.getElementById('fav-text').value || 'TB';
+  var bg = document.getElementById('fav-bg').value || '#6366f1';
+  var fg = document.getElementById('fav-fg').value || '#ffffff';
+  var ctx = favBaseCanvas.getContext('2d');
+  ctx.fillStyle = bg;
+  ctx.fillRect(0, 0, 512, 512);
+  ctx.fillStyle = fg;
+  ctx.font = 'bold 300px -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  // 圆角背景（不画圆角避免复杂，直接画）
+  ctx.fillText(txt, 256, 275);
+  favRenderAll();
+}
+
+function favRenderAll() {
+  var sizes = [16, 32, 48, 180, 512];
+  var ids = ['fav-p16', 'fav-p32', 'fav-p48', 'fav-p180', 'fav-p512'];
+  for (var i = 0; i < sizes.length; i++) {
+    var cv = document.getElementById(ids[i]);
+    if (!cv) continue;
+    var ctx = cv.getContext('2d');
+    ctx.clearRect(0, 0, sizes[i], sizes[i]);
+    ctx.drawImage(favBaseCanvas, 0, 0, sizes[i], sizes[i]);
+  }
+  document.getElementById('fav-preview').style.display = 'block';
+  document.getElementById('fav-actions').style.display = 'flex';
+}
+
+function favCanvasBlob(canvas) {
+  return new Promise(function(resolve) {
+    canvas.toBlob(function(b) { resolve(b); }, 'image/png');
+  });
+}
+
+async function favBuildICO() {
+  var sizes = [16, 32, 48, 64, 128, 256];
+  var blobs = [];
+  for (var i = 0; i < sizes.length; i++) {
+    var c = document.createElement('canvas');
+    c.width = sizes[i]; c.height = sizes[i];
+    var ctx = c.getContext('2d');
+    ctx.drawImage(favBaseCanvas, 0, 0, sizes[i], sizes[i]);
+    var b = await favCanvasBlob(c);
+    if (b) blobs.push({ size: sizes[i], data: await b.arrayBuffer() });
+  }
+  var count = blobs.length;
+  var headerSize = 6 + 16 * count;
+  var totalSize = headerSize + blobs.reduce(function(s, x) { return s + x.data.byteLength; }, 0);
+  var buf = new ArrayBuffer(totalSize);
+  var dv = new DataView(buf);
+  var off = 0;
+  // ICONDIR
+  dv.setUint16(0, 0, true); dv.setUint16(2, 1, true); dv.setUint16(4, count, true);
+  off = 6;
+  var imgOff = headerSize;
+  for (var k = 0; k < count; k++) {
+    var s = blobs[k].size;
+    dv.setUint8(off, s >= 256 ? 0 : s); // width
+    dv.setUint8(off + 1, s >= 256 ? 0 : s); // height
+    dv.setUint8(off + 2, 0); // palette
+    dv.setUint8(off + 3, 0); // reserved
+    dv.setUint16(off + 4, 1, true); // planes
+    dv.setUint16(off + 6, 32, true); // bpp
+    dv.setUint32(off + 8, blobs[k].data.byteLength, true);
+    dv.setUint32(off + 12, imgOff, true);
+    imgOff += blobs[k].data.byteLength;
+    off += 16;
+  }
+  for (var m = 0; m < count; m++) {
+    new Uint8Array(buf).set(new Uint8Array(blobs[m].data), off);
+    off += blobs[m].data.byteLength;
+  }
+  return new Blob([buf], { type: 'image/x-icon' });
+}
+
+function favDownloadICO() {
+  favBuildICO().then(function(blob) {
+    var a = document.createElement('a');
+    a.download = 'favicon.ico';
+    a.href = URL.createObjectURL(blob);
+    a.click();
+    setTimeout(function() { URL.revokeObjectURL(a.href); }, 3000);
+    showToast('✅ favicon.ico（16-256px 多尺寸）已下载');
+  });
+}
+
+function favDownloadAll() {
+  var sizes = [16, 32, 48, 64, 180, 192, 512];
+  var delay = 200;
+  sizes.forEach(function(s, i) {
+    setTimeout(function() {
+      var c = document.createElement('canvas');
+      c.width = s; c.height = s;
+      var ctx = c.getContext('2d');
+      ctx.drawImage(favBaseCanvas, 0, 0, s, s);
+      var a = document.createElement('a');
+      a.download = 'favicon-' + s + 'x' + s + '.png';
+      a.href = c.toDataURL('image/png');
+      a.click();
+    }, delay * i);
+  });
+  showToast('✅ 开始下载全部 PNG 尺寸');
 }
