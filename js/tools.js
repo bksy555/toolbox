@@ -5112,6 +5112,100 @@ greet('世界');</textarea>
       </div>
     `,
     handler: () => { setTimeout(aaInit, 50); }
+  },
+  {
+    id: 'pomodoro-timer',
+    cat: 'time',
+    icon: '🍅',
+    name: '番茄钟专注计时器',
+    desc: '灵感来源于 Forest / 番茄Todo（付费专注App），25分钟专注+5分钟休息循环，可自定义时长、环形倒计时、完成提示音、今日番茄统计，学习工作提效神器',
+    html: `
+      <div class="tool-card">
+        <div style="text-align:center;">
+          <div style="position:relative;width:210px;height:210px;margin:0 auto 14px;">
+            <svg viewBox="0 0 210 210" width="210" height="210">
+              <circle cx="105" cy="105" r="92" fill="none" stroke="#2a2a44" stroke-width="12"/>
+              <circle id="pt-progress" cx="105" cy="105" r="92" fill="none" stroke="#f97316" stroke-width="12" stroke-linecap="round" stroke-dasharray="578" stroke-dashoffset="0" transform="rotate(-90 105 105)" style="transition:stroke-dashoffset 1s linear;"/>
+            </svg>
+            <div id="pt-time" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-60%);font-size:52px;font-weight:700;font-family:monospace;color:#e0e0e0;">25:00</div>
+            <div id="pt-mode-tag" style="position:absolute;top:70%;left:50%;transform:translateX(-50%);font-size:14px;color:var(--text-light);white-space:nowrap;">🍅 专注中</div>
+          </div>
+          <div style="margin-bottom:14px;">
+            <button class="btn btn-primary" id="pt-start" onclick="ptToggle()">▶️ 开始</button>
+            <button class="btn btn-secondary" onclick="ptReset()">🔄 重置</button>
+          </div>
+          <div class="row" style="margin-bottom:12px;gap:10px;justify-content:center;flex-wrap:wrap;">
+            <div class="input-group" style="min-width:100px;">
+              <label>专注分钟</label>
+              <input type="number" id="pt-focus" value="25" min="1" max="120" style="width:100%;" onchange="ptApply()">
+            </div>
+            <div class="input-group" style="min-width:100px;">
+              <label>休息分钟</label>
+              <input type="number" id="pt-break" value="5" min="1" max="60" style="width:100%;" onchange="ptApply()">
+            </div>
+            <div class="input-group" style="min-width:110px;">
+              <label>长休间隔</label>
+              <select id="pt-long" style="width:100%;" onchange="ptApply()">
+                <option value="4">每4个番茄</option>
+                <option value="3">每3个番茄</option>
+                <option value="2">每2个番茄</option>
+              </select>
+            </div>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:10px 16px;margin-bottom:8px;">
+            <span style="font-size:13px;color:var(--text-light);">今日已完成番茄</span>
+            <span id="pt-count" style="font-size:20px;font-weight:700;color:#f97316;">0 🍅</span>
+          </div>
+          <div id="pt-tip" style="text-align:center;color:var(--text-light);font-size:13px;">🎯 专注一次，收获一颗番茄 —— 专注统计自动保存在本机浏览器</div>
+        </div>
+      </div>
+    `,
+    handler: () => { setTimeout(ptInit, 50); }
+  },
+  {
+    id: 'photo-cartoon',
+    cat: 'image',
+    icon: '🎭',
+    name: '照片卡通化',
+    desc: '灵感来源于 ToonMe / 美图动漫化（付费会员功能），一键把照片变成扁平插画/漫画风格，色阶、描边、饱和度可调，多款预设，纯本地处理导出PNG',
+    html: `
+      <div class="tool-card">
+        <div style="text-align:center;margin-bottom:12px;">
+          <input type="file" id="pc-file" accept="image/*" style="display:none;" onchange="pcLoad(this)">
+          <button class="btn btn-primary" onclick="document.getElementById('pc-file').click()">📂 选择图片</button>
+          <button class="btn btn-secondary" onclick="pcExport()">⬇️ 下载PNG</button>
+        </div>
+        <div style="margin-bottom:12px;text-align:center;">
+          <span style="font-size:13px;color:var(--text-light);margin-right:6px;">🎨 预设：</span>
+          <button class="btn btn-secondary" style="padding:6px 14px;font-size:13px;" onclick="pcPreset('flat')">扁平插画</button>
+          <button class="btn btn-secondary" style="padding:6px 14px;font-size:13px;" onclick="pcPreset('manga')">漫画风</button>
+          <button class="btn btn-secondary" style="padding:6px 14px;font-size:13px;" onclick="pcPreset('retro')">复古低饱和</button>
+          <button class="btn btn-secondary" style="padding:6px 14px;font-size:13px;" onclick="pcPreset('bold')">高对比描边</button>
+        </div>
+        <div class="row" style="margin-bottom:12px;gap:14px;flex-wrap:wrap;">
+          <div class="input-group" style="flex:1;min-width:130px;">
+            <label>色阶 <span id="pc-levels-val">8</span></label>
+            <input type="range" id="pc-levels" min="2" max="16" value="8" style="width:100%;" oninput="document.getElementById('pc-levels-val').textContent=this.value;pcRender();">
+          </div>
+          <div class="input-group" style="flex:1;min-width:130px;">
+            <label>描边 <span id="pc-edge-val">40</span></label>
+            <input type="range" id="pc-edge" min="0" max="100" value="40" style="width:100%;" oninput="document.getElementById('pc-edge-val').textContent=this.value;pcRender();">
+          </div>
+          <div class="input-group" style="flex:1;min-width:130px;">
+            <label>饱和度 <span id="pc-sat-val">110%</span></label>
+            <input type="range" id="pc-sat" min="40" max="200" value="110" style="width:100%;" oninput="document.getElementById('pc-sat-val').textContent=this.value+'%';pcRender();">
+          </div>
+        </div>
+        <div style="text-align:center;">
+          <canvas id="pc-canvas" style="max-width:100%;border-radius:10px;display:none;background:#1a1a2e;"></canvas>
+        </div>
+        <div id="pc-tip" style="text-align:center;color:var(--text-light);font-size:13px;margin-top:8px;">请选择一张人像或风景照片，一键生成卡通插画风格</div>
+        <div style="margin-top:10px;font-size:12px;color:var(--text-light);text-align:center;">
+          💡 灵感来源于 ToonMe / 美图动漫化（付费功能）— 颜色量化 + 边缘检测，图片完全本地处理，导出高清PNG
+        </div>
+      </div>
+    `,
+    handler: () => { setTimeout(pcInit, 50); }
   }
 ];
 
@@ -6754,11 +6848,11 @@ function dpCopyText() {
 const CATEGORIES = [
   { id: 'text', icon: '✏️', name: '文本工具', desc: '字数统计、简繁转换、摩斯密码、文本转语音、文本对比' },
   { id: 'dev', icon: '💻', name: '开发者工具', desc: 'JSON格式化、二维码生成、二维码美化、正则测试、Markdown、IP查询、思维导图、图表生成、代码图片生成、表格数据转换' },
-  { id: 'image', icon: '🖼️', name: '图片处理', desc: '去背景换底色、批量压缩、加水印、长图拼接、格式转换、裁剪、异形裁剪、马赛克打码、双色调滤镜、图片转字符画、OCR、印章制作、九宫格切图、文字转手写体、表情包、社交媒体图片尺寸调整、艺术效果、像素画、设备样机、图片高清放大、图片转线稿、渐变背景、文字特效、拼贴画、图片相框、颜色盲区模拟' },
+  { id: 'image', icon: '🖼️', name: '图片处理', desc: '去背景换底色、批量压缩、加水印、长图拼接、格式转换、裁剪、异形裁剪、马赛克打码、双色调滤镜、图片转字符画、照片卡通化、OCR、印章制作、九宫格切图、文字转手写体、表情包、社交媒体图片尺寸调整、艺术效果、像素画、设备样机、图片高清放大、图片转线稿、渐变背景、文字特效、拼贴画、图片相框、颜色盲区模拟' },
   { id: 'document', icon: '📄', name: '文档转换', desc: '图片转PDF、PDF转图片、Word解析、Excel转PDF、PDF合并、简历生成、电子签名、表单制作、邮件签名' },
   { id: 'convert', icon: '🔄', name: '转换工具', desc: '单位换算、进制转换、函数绘图' },
   { id: 'security', icon: '🔒', name: '安全工具', desc: '密码生成、Hash计算、随机数' },
-  { id: 'time', icon: '⏱️', name: '时间工具', desc: '时间戳转换、日期计算' },
+  { id: 'time', icon: '⏱️', name: '时间工具', desc: '时间戳转换、日期计算、番茄钟专注计时' },
   { id: 'color', icon: '🎨', name: '颜色工具', desc: 'HEX/RGB/HSL颜色转换、CSS渐变生成器、配色方案生成器' },
   { id: 'media', icon: '🎬', name: '媒体工具', desc: '抖音/TikTok去水印下载、视频转GIF、在线录音、录音转文字、音频波形可视化、白噪音发生器、音频变速变调、在线便签' },
   { id: 'ai', icon: '🤖', name: 'AI工具', desc: 'AI聊天、AI Agent安装、免费AI工具推荐' },
@@ -11001,4 +11095,255 @@ function aaExport() {
   link.href = canvas.toDataURL('image/png');
   link.click();
   showToast('✅ 字符画已导出PNG');
+}
+
+// ============================================================
+// 番茄钟专注计时器 处理函数 (灵感来源: Forest / 番茄Todo)
+// ============================================================
+var ptTimer = null, ptRemaining = 0, ptTotal = 0, ptMode = 'focus', ptPhaseCount = 0, ptRunning = false;
+var PT_RING = 578; // 2*PI*92
+
+function ptInit() {
+  ptLoadCount();
+  var focus = parseInt(localStorage.getItem('pt_focus') || '25');
+  var brk = parseInt(localStorage.getItem('pt_break') || '5');
+  var elF = document.getElementById('pt-focus'), elB = document.getElementById('pt-break');
+  if (elF) elF.value = focus;
+  if (elB) elB.value = brk;
+  ptMode = 'focus';
+  ptTotal = focus * 60;
+  ptRemaining = ptTotal;
+  ptUpdateUI(false);
+}
+
+function ptLoadCount() {
+  var n = parseInt(localStorage.getItem('pt_count') || '0');
+  var day = localStorage.getItem('pt_day');
+  var today = new Date().toDateString();
+  if (day !== today) { n = 0; localStorage.setItem('pt_day', today); localStorage.setItem('pt_count', '0'); }
+  var el = document.getElementById('pt-count');
+  if (el) el.textContent = n + ' 🍅';
+}
+
+function ptToggle() {
+  if (ptRunning) {
+    clearInterval(ptTimer);
+    ptRunning = false;
+    document.getElementById('pt-start').textContent = '▶️ 继续';
+  } else {
+    if (ptRemaining <= 0) { ptReset(); }
+    ptTimer = setInterval(ptTick, 1000);
+    ptRunning = true;
+    document.getElementById('pt-start').textContent = '⏸️ 暂停';
+  }
+}
+
+function ptTick() {
+  ptRemaining--;
+  if (ptRemaining <= 0) {
+    ptRemaining = 0;
+    ptFinish();
+  }
+  ptUpdateUI(true);
+}
+
+function ptFinish() {
+  clearInterval(ptTimer);
+  ptRunning = false;
+  document.getElementById('pt-start').textContent = '▶️ 开始';
+  ptBeep();
+  if (ptMode === 'focus') {
+    var n = parseInt(localStorage.getItem('pt_count') || '0') + 1;
+    localStorage.setItem('pt_count', String(n));
+    localStorage.setItem('pt_day', new Date().toDateString());
+    ptLoadCount();
+    ptPhaseCount++;
+    var longEvery = parseInt(document.getElementById('pt-long') ? document.getElementById('pt-long').value : '4');
+    if (ptPhaseCount >= longEvery) {
+      ptPhaseCount = 0;
+      ptMode = 'long';
+      ptTotal = (parseInt(document.getElementById('pt-break') ? document.getElementById('pt-break').value : '5') * 3);
+      showToast('✅ 专注完成！进入长休息 ' + Math.round(ptTotal/60) + ' 分钟');
+    } else {
+      ptMode = 'break';
+      ptTotal = (parseInt(document.getElementById('pt-break') ? document.getElementById('pt-break').value : '5') * 60);
+      showToast('✅ 专注完成！休息 ' + Math.round(ptTotal/60) + ' 分钟');
+    }
+    localStorage.setItem('pt_break', String(Math.round(ptTotal/60)));
+  } else {
+    ptMode = 'focus';
+    ptTotal = (parseInt(document.getElementById('pt-focus') ? document.getElementById('pt-focus').value : '25') * 60);
+    showToast('✅ 休息结束，开始新一轮专注！');
+  }
+  ptRemaining = ptTotal;
+  ptUpdateUI(false);
+}
+
+function ptReset() {
+  clearInterval(ptTimer);
+  ptRunning = false;
+  document.getElementById('pt-start').textContent = '▶️ 开始';
+  ptTotal = ptMode === 'focus'
+    ? (parseInt(document.getElementById('pt-focus') ? document.getElementById('pt-focus').value : '25') * 60)
+    : (parseInt(document.getElementById('pt-break') ? document.getElementById('pt-break').value : '5') * 60);
+  ptRemaining = ptTotal;
+  ptUpdateUI(false);
+}
+
+function ptApply() {
+  if (ptMode === 'focus') {
+    ptTotal = (parseInt(document.getElementById('pt-focus').value || '25') * 60);
+    localStorage.setItem('pt_focus', document.getElementById('pt-focus').value);
+  } else {
+    ptTotal = (parseInt(document.getElementById('pt-break').value || '5') * 60);
+    localStorage.setItem('pt_break', document.getElementById('pt-break').value);
+  }
+  if (!ptRunning) {
+    ptRemaining = ptTotal;
+    ptUpdateUI(false);
+  }
+}
+
+function ptUpdateUI(animate) {
+  var mm = Math.floor(ptRemaining / 60);
+  var ss = ptRemaining % 60;
+  var elT = document.getElementById('pt-time');
+  var elP = document.getElementById('pt-progress');
+  var elM = document.getElementById('pt-mode-tag');
+  if (elT) elT.textContent = (mm < 10 ? '0' : '') + mm + ':' + (ss < 10 ? '0' : '') + ss;
+  if (elP) {
+    var frac = ptTotal > 0 ? (ptRemaining / ptTotal) : 0;
+    elP.style.strokeDashoffset = String(PT_RING * (1 - frac));
+  }
+  if (elM) {
+    if (ptMode === 'focus') { elM.textContent = '🍅 专注中'; elP && (elP.style.stroke = '#f97316'); }
+    else if (ptMode === 'long') { elM.textContent = '🌿 长休息'; elP && (elP.style.stroke = '#10b981'); }
+    else { elM.textContent = '☕ 休息中'; elP && (elP.style.stroke = '#0ea5e9'); }
+  }
+  if (ptRemaining <= 0 && elM) { elM.textContent = ptMode === 'focus' ? '🍅 准备开始' : '☕ 准备休息'; }
+}
+
+function ptBeep() {
+  try {
+    var Ctx = window.AudioContext || window.webkitAudioContext;
+    if (!Ctx) return;
+    var ctx = new Ctx();
+    [880, 660, 880, 1100].forEach(function(f, i) {
+      var o = ctx.createOscillator(), g = ctx.createGain();
+      o.type = 'sine'; o.frequency.value = f;
+      g.gain.setValueAtTime(0.001, ctx.currentTime + i * 0.25);
+      g.gain.exponentialRampToValueAtTime(0.4, ctx.currentTime + i * 0.25 + 0.02);
+      g.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + i * 0.25 + 0.22);
+      o.connect(g); g.connect(ctx.destination);
+      o.start(ctx.currentTime + i * 0.25); o.stop(ctx.currentTime + i * 0.25 + 0.25);
+    });
+  } catch (e) {}
+}
+
+// ============================================================
+// 照片卡通化 处理函数 (灵感来源: ToonMe / 美图动漫化)
+// ============================================================
+var pcCanvas = null, pcCtx = null, pcSrcImg = null, pcSrcData = null;
+
+function pcInit() {
+  pcCanvas = document.getElementById('pc-canvas');
+  if (!pcCanvas) return;
+  pcCtx = pcCanvas.getContext('2d');
+}
+
+function pcLoad(input) {
+  var f = input.files && input.files[0];
+  if (!f) return;
+  var img = new Image();
+  img.onload = function() {
+    pcSrcImg = img;
+    pcSrcData = null;
+    var w = img.width, h = img.height;
+    var maxW = 1000;
+    if (w > maxW) { h = Math.round(h * maxW / w); w = maxW; }
+    pcCanvas.width = w;
+    pcCanvas.height = h;
+    pcCtx.drawImage(img, 0, 0, w, h);
+    pcSrcData = pcCtx.getImageData(0, 0, w, h);
+    pcCanvas.style.display = 'block';
+    document.getElementById('pc-tip').textContent = '✅ 图片已加载，拖动滑块或点击预设调整卡通效果';
+    pcRender();
+  };
+  img.onerror = function() { showToast('⚠️ 图片加载失败，请换一张试试'); };
+  img.src = URL.createObjectURL(f);
+}
+
+function pcPreset(name) {
+  var p = { flat: [8, 40, 110], manga: [5, 75, 135], retro: [4, 25, 70], bold: [3, 95, 100] }[name];
+  if (!p) return;
+  document.getElementById('pc-levels').value = p[0];
+  document.getElementById('pc-edge').value = p[1];
+  document.getElementById('pc-sat').value = p[2];
+  document.getElementById('pc-levels-val').textContent = p[0];
+  document.getElementById('pc-edge-val').textContent = p[1];
+  document.getElementById('pc-sat-val').textContent = p[2] + '%';
+  pcRender();
+}
+
+function pcRender() {
+  if (!pcSrcData) return;
+  var levels = parseInt(document.getElementById('pc-levels').value) || 8;
+  var edge = parseInt(document.getElementById('pc-edge').value) || 40;
+  var sat = (parseInt(document.getElementById('pc-sat').value) || 110) / 100;
+  var src = pcSrcData.data;
+  var w = pcSrcData.width, h = pcSrcData.height;
+  var out = pcCtx.createImageData(w, h);
+  var od = out.data;
+  var step = 255 / (levels - 1);
+  var gray = new Uint8Array(w * h);
+  // 第一步：灰度图（用于边缘检测）
+  for (var i = 0; i < w * h; i++) {
+    var r = src[i*4], g = src[i*4+1], b = src[i*4+2];
+    gray[i] = Math.round(0.299 * r + 0.587 * g + 0.114 * b);
+  }
+  // 第二步：颜色量化 + 饱和度 + Sobel 边缘
+  for (var y = 0; y < h; y++) {
+    for (var x = 0; x < w; x++) {
+      var idx = (y * w + x) * 4;
+      var r = src[idx], g = src[idx+1], b = src[idx+2];
+      // 饱和度调整
+      var gr = Math.round(0.299*r + 0.587*g + 0.114*b);
+      r = Math.max(0, Math.min(255, Math.round(gr + (r - gr) * sat)));
+      g = Math.max(0, Math.min(255, Math.round(gr + (g - gr) * sat)));
+      b = Math.max(0, Math.min(255, Math.round(gr + (b - gr) * sat)));
+      // 颜色量化
+      r = Math.round(Math.round(r / step) * step);
+      g = Math.round(Math.round(g / step) * step);
+      b = Math.round(Math.round(b / step) * step);
+      od[idx] = r; od[idx+1] = g; od[idx+2] = b; od[idx+3] = 255;
+    }
+  }
+  // 第三步：Sobel 边缘叠加
+  if (edge > 0) {
+    var thresh = 255 - edge * 2.0;
+    for (var y2 = 1; y2 < h - 1; y2++) {
+      for (var x2 = 1; x2 < w - 1; x2++) {
+        var tl = gray[(y2-1)*w + x2-1], t = gray[(y2-1)*w + x2], tr = gray[(y2-1)*w + x2+1];
+        var ml = gray[y2*w + x2-1], mr = gray[y2*w + x2+1];
+        var bl = gray[(y2+1)*w + x2-1], bm = gray[(y2+1)*w + x2], br = gray[(y2+1)*w + x2+1];
+        var gx = (tr + 2*mr + br) - (tl + 2*ml + bl);
+        var gy = (bl + 2*bm + br) - (tl + 2*t + tr);
+        var mag = Math.sqrt(gx*gx + gy*gy);
+        if (mag > thresh) {
+          var i2 = (y2 * w + x2) * 4;
+          od[i2] = 20; od[i2+1] = 20; od[i2+2] = 20;
+        }
+      }
+    }
+  }
+  pcCtx.putImageData(out, 0, 0);
+}
+
+function pcExport() {
+  if (!pcCanvas || pcCanvas.style.display === 'none') { showToast('⚠️ 请先选择一张图片'); return; }
+  var a = document.createElement('a');
+  a.download = '卡通照片_' + Date.now() + '.png';
+  a.href = pcCanvas.toDataURL('image/png');
+  a.click();
+  showToast('✅ 卡通化图片已导出PNG');
 }
