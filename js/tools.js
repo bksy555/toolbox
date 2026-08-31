@@ -5196,41 +5196,41 @@ greet('世界');</textarea>
     html: `
       <div class="tool-card">
         <div style="text-align:center;margin-bottom:12px;">
-          <input type="file" id="pc-file" accept="image/*" style="display:none;" onchange="pcLoad(this)">
+          <input type="file" id="pcc-file" accept="image/*" style="display:none;" onchange="pccLoad(this)">
           <button class="btn btn-primary" onclick="document.getElementById('pc-file').click()">📂 选择图片</button>
-          <button class="btn btn-secondary" onclick="pcExport()">⬇️ 下载PNG</button>
+          <button class="btn btn-secondary" onclick="pccExport()">⬇️ 下载PNG</button>
         </div>
         <div style="margin-bottom:12px;text-align:center;">
           <span style="font-size:13px;color:var(--text-light);margin-right:6px;">🎨 预设：</span>
-          <button class="btn btn-secondary" style="padding:6px 14px;font-size:13px;" onclick="pcPreset('flat')">扁平插画</button>
-          <button class="btn btn-secondary" style="padding:6px 14px;font-size:13px;" onclick="pcPreset('manga')">漫画风</button>
-          <button class="btn btn-secondary" style="padding:6px 14px;font-size:13px;" onclick="pcPreset('retro')">复古低饱和</button>
-          <button class="btn btn-secondary" style="padding:6px 14px;font-size:13px;" onclick="pcPreset('bold')">高对比描边</button>
+          <button class="btn btn-secondary" style="padding:6px 14px;font-size:13px;" onclick="pccPreset('flat')">扁平插画</button>
+          <button class="btn btn-secondary" style="padding:6px 14px;font-size:13px;" onclick="pccPreset('manga')">漫画风</button>
+          <button class="btn btn-secondary" style="padding:6px 14px;font-size:13px;" onclick="pccPreset('retro')">复古低饱和</button>
+          <button class="btn btn-secondary" style="padding:6px 14px;font-size:13px;" onclick="pccPreset('bold')">高对比描边</button>
         </div>
         <div class="row" style="margin-bottom:12px;gap:14px;flex-wrap:wrap;">
           <div class="input-group" style="flex:1;min-width:130px;">
-            <label>色阶 <span id="pc-levels-val">8</span></label>
-            <input type="range" id="pc-levels" min="2" max="16" value="8" style="width:100%;" oninput="document.getElementById('pc-levels-val').textContent=this.value;pcRender();">
+            <label>色阶 <span id="pcc-levels-val">8</span></label>
+            <input type="range" id="pcc-levels" min="2" max="16" value="8" style="width:100%;" oninput="document.getElementById('pcc-levels-val').textContent=this.value;pccRender();">
           </div>
           <div class="input-group" style="flex:1;min-width:130px;">
-            <label>描边 <span id="pc-edge-val">40</span></label>
-            <input type="range" id="pc-edge" min="0" max="100" value="40" style="width:100%;" oninput="document.getElementById('pc-edge-val').textContent=this.value;pcRender();">
+            <label>描边 <span id="pcc-edge-val">40</span></label>
+            <input type="range" id="pcc-edge" min="0" max="100" value="40" style="width:100%;" oninput="document.getElementById('pcc-edge-val').textContent=this.value;pccRender();">
           </div>
           <div class="input-group" style="flex:1;min-width:130px;">
-            <label>饱和度 <span id="pc-sat-val">110%</span></label>
-            <input type="range" id="pc-sat" min="40" max="200" value="110" style="width:100%;" oninput="document.getElementById('pc-sat-val').textContent=this.value+'%';pcRender();">
+            <label>饱和度 <span id="pcc-sat-val">110%</span></label>
+            <input type="range" id="pcc-sat" min="40" max="200" value="110" style="width:100%;" oninput="document.getElementById('pcc-sat-val').textContent=this.value+'%';pccRender();">
           </div>
         </div>
         <div style="text-align:center;">
-          <canvas id="pc-canvas" style="max-width:100%;border-radius:10px;display:none;background:#1a1a2e;"></canvas>
+          <canvas id="pcc-canvas" style="max-width:100%;border-radius:10px;display:none;background:#1a1a2e;"></canvas>
         </div>
-        <div id="pc-tip" style="text-align:center;color:var(--text-light);font-size:13px;margin-top:8px;">请选择一张人像或风景照片，一键生成卡通插画风格</div>
+        <div id="pcc-tip" style="text-align:center;color:var(--text-light);font-size:13px;margin-top:8px;">请选择一张人像或风景照片，一键生成卡通插画风格</div>
         <div style="margin-top:10px;font-size:12px;color:var(--text-light);text-align:center;">
           💡 灵感来源于 ToonMe / 美图动漫化（付费功能）— 颜色量化 + 边缘检测，图片完全本地处理，导出高清PNG
         </div>
       </div>
     `,
-    handler: () => { setTimeout(pcInit, 50); }
+    handler: () => { setTimeout(pccInit, 50); }
   },
   {
     id: 'barcode-generator',
@@ -11484,56 +11484,56 @@ function ptBeep() {
 // ============================================================
 // 照片卡通化 处理函数 (灵感来源: ToonMe / 美图动漫化)
 // ============================================================
-var pcCanvas = null, pcCtx = null, pcSrcImg = null, pcSrcData = null;
+var pccCanvas = null, pccCtx = null, pccSrcImg = null, pccSrcData = null;
 
-function pcInit() {
-  pcCanvas = document.getElementById('pc-canvas');
-  if (!pcCanvas) return;
-  pcCtx = pcCanvas.getContext('2d');
+function pccInit() {
+  pccCanvas = document.getElementById('pcc-canvas');
+  if (!pccCanvas) return;
+  pccCtx = pccCanvas.getContext('2d');
 }
 
-function pcLoad(input) {
+function pccLoad(input) {
   var f = input.files && input.files[0];
   if (!f) return;
   var img = new Image();
   img.onload = function() {
-    pcSrcImg = img;
-    pcSrcData = null;
+    pccSrcImg = img;
+    pccSrcData = null;
     var w = img.width, h = img.height;
     var maxW = 1000;
     if (w > maxW) { h = Math.round(h * maxW / w); w = maxW; }
-    pcCanvas.width = w;
-    pcCanvas.height = h;
-    pcCtx.drawImage(img, 0, 0, w, h);
-    pcSrcData = pcCtx.getImageData(0, 0, w, h);
-    pcCanvas.style.display = 'block';
-    document.getElementById('pc-tip').textContent = '✅ 图片已加载，拖动滑块或点击预设调整卡通效果';
-    pcRender();
+    pccCanvas.width = w;
+    pccCanvas.height = h;
+    pccCtx.drawImage(img, 0, 0, w, h);
+    pccSrcData = pccCtx.getImageData(0, 0, w, h);
+    pccCanvas.style.display = 'block';
+    document.getElementById('pcc-tip').textContent = '✅ 图片已加载，拖动滑块或点击预设调整卡通效果';
+    pccRender();
   };
   img.onerror = function() { showToast('⚠️ 图片加载失败，请换一张试试'); };
   img.src = URL.createObjectURL(f);
 }
 
-function pcPreset(name) {
+function pccPreset(name) {
   var p = { flat: [8, 40, 110], manga: [5, 75, 135], retro: [4, 25, 70], bold: [3, 95, 100] }[name];
   if (!p) return;
-  document.getElementById('pc-levels').value = p[0];
-  document.getElementById('pc-edge').value = p[1];
-  document.getElementById('pc-sat').value = p[2];
-  document.getElementById('pc-levels-val').textContent = p[0];
-  document.getElementById('pc-edge-val').textContent = p[1];
-  document.getElementById('pc-sat-val').textContent = p[2] + '%';
-  pcRender();
+  document.getElementById('pcc-levels').value = p[0];
+  document.getElementById('pcc-edge').value = p[1];
+  document.getElementById('pcc-sat').value = p[2];
+  document.getElementById('pcc-levels-val').textContent = p[0];
+  document.getElementById('pcc-edge-val').textContent = p[1];
+  document.getElementById('pcc-sat-val').textContent = p[2] + '%';
+  pccRender();
 }
 
-function pcRender() {
-  if (!pcSrcData) return;
-  var levels = parseInt(document.getElementById('pc-levels').value) || 8;
-  var edge = parseInt(document.getElementById('pc-edge').value) || 40;
-  var sat = (parseInt(document.getElementById('pc-sat').value) || 110) / 100;
-  var src = pcSrcData.data;
-  var w = pcSrcData.width, h = pcSrcData.height;
-  var out = pcCtx.createImageData(w, h);
+function pccRender() {
+  if (!pccSrcData) return;
+  var levels = parseInt(document.getElementById('pcc-levels').value) || 8;
+  var edge = parseInt(document.getElementById('pcc-edge').value) || 40;
+  var sat = (parseInt(document.getElementById('pcc-sat').value) || 110) / 100;
+  var src = pccSrcData.data;
+  var w = pccSrcData.width, h = pccSrcData.height;
+  var out = pccCtx.createImageData(w, h);
   var od = out.data;
   var step = 255 / (levels - 1);
   var gray = new Uint8Array(w * h);
@@ -11577,14 +11577,14 @@ function pcRender() {
       }
     }
   }
-  pcCtx.putImageData(out, 0, 0);
+  pccCtx.putImageData(out, 0, 0);
 }
 
-function pcExport() {
-  if (!pcCanvas || pcCanvas.style.display === 'none') { showToast('⚠️ 请先选择一张图片'); return; }
+function pccExport() {
+  if (!pccCanvas || pccCanvas.style.display === 'none') { showToast('⚠️ 请先选择一张图片'); return; }
   var a = document.createElement('a');
   a.download = '卡通照片_' + Date.now() + '.png';
-  a.href = pcCanvas.toDataURL('image/png');
+  a.href = pccCanvas.toDataURL('image/png');
   a.click();
   showToast('✅ 卡通化图片已导出PNG');
 }
