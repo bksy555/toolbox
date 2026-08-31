@@ -379,22 +379,6 @@ body {
   font-size: 18px;
 }
 
-/* ---- Ad Placeholder ---- */
-.ad-slot {
-  background: #f1f5f9;
-  border: 2px dashed var(--border);
-  border-radius: var(--radius-sm);
-  padding: 24px;
-  text-align: center;
-  color: var(--text-light);
-  font-size: 13px;
-  margin: 24px 0;
-  min-height: 90px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
 /* ---- Wikileaks Home Section ---- */
 .wl-home-section {
   max-width: 960px;
