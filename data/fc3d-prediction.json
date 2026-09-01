@@ -5715,7 +5715,7 @@
     "drawNum": "970",
     "result": "✅",
     "coldResult": "✅",
-    "updatedAt": "2026-08-31T14:01:35.498Z"
+    "updatedAt": "2026-09-01T11:25:37.685Z"
   },
   "2026234": {
     "period": "2026234",
@@ -5733,6 +5733,28 @@
       0,
       1,
       4
+    ],
+    "drawNum": null,
+    "result": null,
+    "coldResult": null,
+    "updatedAt": null
+  },
+  "2026235": {
+    "period": "2026235",
+    "year": 2026,
+    "month": 9,
+    "day": 2,
+    "weekday": 3,
+    "haiGan": "乙",
+    "dans": [
+      3,
+      4,
+      8
+    ],
+    "coldDans": [
+      1,
+      4,
+      0
     ],
     "drawNum": null,
     "result": null,
