@@ -15,6 +15,7 @@ function renderFilterTool() {
   const lt = LOTTERY_TYPES[currentLottery];
   if (lt.isDigit) return render3DFilterTool();
   if (currentLottery === 'qxc') return renderQxcFilterTool();
+  if (currentLottery === 'kl8') return renderKl8FilterTool();
 
   const isSSQ = currentLottery === 'ssq';
   const isDLT = currentLottery === 'dlt';
@@ -315,6 +316,10 @@ function initFilterTool() {
     initQxcFilterTool();
     return;
   }
+  if (currentLottery === 'kl8') {
+    initKl8FilterTool();
+    return;
+  }
 
   // 渲染红球
   renderNumGrid('filterRedGrid', lt.redRange, filterState.red, (n) => {
@@ -406,6 +411,7 @@ function runFilter() {
   const lt = LOTTERY_TYPES[currentLottery];
   if (lt.isDigit) { run3DFilter(); return; }
   if (currentLottery === 'qxc') { runQxcFilter(); return; }
+  if (currentLottery === 'kl8') { runKl8Filter(); return; }
 
   const reds = [...filterState.red].sort((a, b) => a - b);
   const blues = [...filterState.blue].sort((a, b) => a - b);

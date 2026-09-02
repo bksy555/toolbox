@@ -79,6 +79,14 @@ const LOTTERY_TYPES = {
     redRange: 22, redCount: 5, blueRange: 0, blueCount: 0,
     redName: '号码', blueName: '',
     tools: ['filter', 'random', 'dantuo', 'compound', 'money-calc']
+  },
+  kl8: {
+    name: '快乐8',
+    icon: '🎱',
+    desc: '20个号码(1-80)，尾数0-9出号缩水',
+    redRange: 80, redCount: 20, blueRange: 0, blueCount: 0,
+    redName: '号码', blueName: '',
+    tools: ['filter', 'random', 'money-calc']
   }
 };
 

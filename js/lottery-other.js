@@ -667,7 +667,24 @@ function calcCompound() {
 
 function calcDigitCompound() {
   // 3D/排列五等
-  // ============================================================
+  const lt = LOTTERY_TYPES[currentLottery];
+  const digitCount = lt.digitCount || 3;
+
+  let total = 1;
+  for (let i = 0; i < digitCount; i++) {
+    const id = `cp${['Bai','Shi','Ge','Qian','Wan'][i] || 'Wei'+i}`;
+    const grid = document.getElementById(id + 'Grid');
+    if (!grid) { total = 0; break; }
+    const selected = grid.querySelectorAll('.num-btn.selected').length;
+    if (selected === 0) { total = 0; break; }
+    total *= selected;
+  }
+
+  document.getElementById('cpCount').textContent = `共 ${total.toLocaleString()} 注`;
+  document.getElementById('cpCost').textContent = `共计 ${(total * 2).toLocaleString()} 元`;
+}
+
+// ============================================================
 // 金额计算器
 // ============================================================
 function renderMoneyCalcTool() {
