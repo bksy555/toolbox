@@ -162,7 +162,26 @@ async function handleUrl(req, res) {
 }
 
 async function getNeteaseUrl(id) {
-  // 尝试多个音质级别
+  // 1. 优先使用网易云官方 API（netease-cloud-music-api-xi-pied.vercel.app，已验证可用）
+  try {
+    const resp = await fetch(`${NETEASE_API}/song/url?id=${id}`, {
+      headers: { 'User-Agent': 'Mozilla/5.0', 'Referer': 'https://music.163.com/' }
+    });
+    const data = await resp.json();
+    const item = data?.data?.[0];
+    if (data.code === 200 && item?.url) {
+      return {
+        url: item.url,
+        source: 'netease',
+        br: item.br || 128000
+      };
+    }
+    console.log(`⚠️ 网易云API未返回url (id=${id}, code=${data.code})，尝试ChKSz兜底`);
+  } catch (e) {
+    console.log('网易云API请求失败，尝试ChKSz兜底:', e.message);
+  }
+
+  // 2. ChKSz API 兜底（原逻辑）
   const levels = ['jymaster', 'sky', 'hires', 'flac', '320k', '192k', '128k'];
   
   for (const level of levels) {
