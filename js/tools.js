@@ -5446,6 +5446,110 @@ greet('世界');</textarea>
       </div>
     `,
     handler: () => { setTimeout(lcInit, 50); }
+  },
+
+  // ==================== 第19轮：PDF拆分 ====================
+  {
+    id: 'pdf-split',
+    cat: 'document',
+    icon: '✂️',
+    name: 'PDF拆分工具',
+    desc: '在线免费拆分PDF，按页拆分或提取指定页码范围，纯本地处理不上传',
+    html: `
+      <div class="tool-card">
+        <div class="input-group">
+          <label>选择 PDF 文件</label>
+          <input type="file" id="pds-file" accept=".pdf" onchange="pdsLoad()">
+        </div>
+        <div id="pds-panel" style="display:none;margin-top:14px;">
+          <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:12px;margin-bottom:12px;">
+            <div style="font-size:13px;color:var(--text-light);margin-bottom:8px;">📄 <span id="pds-info"></span></div>
+            <div style="margin-bottom:10px;">
+              <label style="display:block;font-size:13px;margin-bottom:4px;">拆分模式</label>
+              <select id="pds-mode" onchange="pdsModeChange()" style="width:100%;">
+                <option value="every">每页拆分成一个文件</option>
+                <option value="range">按页码范围提取（如 1-3, 5, 7-9）</option>
+                <option value="custom">每 N 页拆分为一份</option>
+              </select>
+            </div>
+            <div id="pds-range-wrap" style="display:none;margin-bottom:10px;">
+              <label style="display:block;font-size:13px;margin-bottom:4px;">页码范围（逗号分隔，支持 - 区间）</label>
+              <input type="text" id="pds-range" placeholder="例：1-3, 5, 7-9" style="width:100%;">
+            </div>
+            <div id="pds-n-wrap" style="display:none;margin-bottom:10px;">
+              <label style="display:block;font-size:13px;margin-bottom:4px;">每组页数</label>
+              <input type="number" id="pds-n" value="5" min="1" style="width:100%;">
+            </div>
+            <div style="text-align:center;">
+              <button class="btn btn-primary" onclick="pdsSplit()">✂️ 开始拆分</button>
+            </div>
+          </div>
+          <div id="pds-loading" style="display:none;text-align:center;padding:30px;color:var(--text-light);">
+            <div style="font-size:42px;margin-bottom:10px;">⏳</div>
+            <div>正在拆分 PDF...</div>
+          </div>
+          <div id="pds-result" style="display:none;">
+            <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:12px;">
+              <div style="font-size:13px;color:var(--text-light);margin-bottom:8px;">📦 拆分结果（点击下载）：</div>
+              <div id="pds-list"></div>
+            </div>
+          </div>
+        </div>
+        <div style="margin-top:8px;font-size:12px;color:var(--text-light);text-align:center;">💡 灵感来源于 Adobe Acrobat / iLovePDF 付费功能；文件全部在浏览器本地处理，不会上传到服务器</div>
+      </div>
+    `,
+    handler: () => { setTimeout(pdsInit, 50); }
+  },
+
+  // ==================== 第19轮：音频剪辑拼接 ====================
+  {
+    id: 'audio-cutter',
+    cat: 'media',
+    icon: '🎚️',
+    name: '音频剪辑拼接',
+    desc: '在线免费剪辑拼接音频，裁剪片段、多段拼接、调整音量，导出 WAV，纯本地处理',
+    html: `
+      <div class="tool-card">
+        <div class="input-group">
+          <label>选择音频文件（MP3/WAV/M4A/OGG）</label>
+          <input type="file" id="auc-file" accept="audio/*" onchange="aucLoad()">
+        </div>
+        <div id="auc-panel" style="display:none;margin-top:14px;">
+          <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:12px;margin-bottom:12px;">
+            <div style="font-size:13px;color:var(--text-light);margin-bottom:8px;">🎵 <span id="auc-info"></span></div>
+            <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:10px;">
+              <div style="flex:1;min-width:130px;">
+                <label style="display:block;font-size:13px;margin-bottom:4px;">开始（秒）</label>
+                <input type="number" id="auc-start" value="0" min="0" step="0.1" style="width:100%;">
+              </div>
+              <div style="flex:1;min-width:130px;">
+                <label style="display:block;font-size:13px;margin-bottom:4px;">结束（秒）</label>
+                <input type="number" id="auc-end" step="0.1" style="width:100%;">
+              </div>
+              <div style="flex:1;min-width:130px;">
+                <label style="display:block;font-size:13px;margin-bottom:4px;">音量（%）</label>
+                <input type="number" id="auc-volume" value="100" min="0" max="200" step="5" style="width:100%;">
+              </div>
+            </div>
+            <div style="text-align:center;margin-bottom:10px;">
+              <button class="btn btn-primary" onclick="aucAddClip()">➕ 添加片段</button>
+              <button class="btn btn-secondary" onclick="aucPlayClip()">▶️ 试听当前片段</button>
+              <button class="btn btn-secondary" onclick="aucStopPlay()">⏹ 停止</button>
+            </div>
+          </div>
+          <div id="auc-clips-wrap" style="display:none;background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:12px;margin-bottom:12px;">
+            <div style="font-size:13px;color:var(--text-light);margin-bottom:8px;">🎬 已添加片段：</div>
+            <div id="auc-clips"></div>
+            <div style="text-align:center;margin-top:10px;">
+              <button class="btn btn-primary" onclick="aucExport()">⬇️ 拼接导出 WAV</button>
+              <button class="btn btn-secondary" onclick="aucClear()">🗑️ 清空全部</button>
+            </div>
+          </div>
+        </div>
+        <div style="margin-top:8px;font-size:12px;color:var(--text-light);text-align:center;">💡 灵感来源于 Kapwing / 剪映付费功能；音频全部在浏览器本地处理，不会上传到服务器</div>
+      </div>
+    `,
+    handler: () => { setTimeout(aucInit, 50); }
   }
 ];
 
@@ -7089,12 +7193,12 @@ const CATEGORIES = [
   { id: 'text', icon: '✏️', name: '文本工具', desc: '字数统计、简繁转换、摩斯密码、文本转语音、文本对比' },
   { id: 'dev', icon: '💻', name: '开发者工具', desc: 'JSON格式化、二维码生成、二维码美化、条形码生成、Favicon图标生成、正则测试、Markdown、IP查询、思维导图、图表生成、代码图片生成、表格数据转换' },
   { id: 'image', icon: '🖼️', name: '图片处理', desc: '去背景换底色、批量压缩、加水印、长图拼接、格式转换、裁剪、异形裁剪、马赛克打码、双色调滤镜、图片转字符画、照片卡通化、OCR、印章制作、九宫格切图、文字转手写体、表情包、社交媒体图片尺寸调整、艺术效果、像素画、设备样机、图片高清放大、图片转线稿、渐变背景、文字特效、拼贴画、图片相框、颜色盲区模拟' },
-  { id: 'document', icon: '📄', name: '文档转换', desc: '图片转PDF、PDF转图片、Word解析、Excel转PDF、PDF合并、简历生成、电子签名、表单制作、邮件签名' },
+  { id: 'document', icon: '📄', name: '文档转换', desc: '图片转PDF、PDF转图片、Word解析、Excel转PDF、PDF合并、PDF拆分、简历生成、电子签名、表单制作、邮件签名' },
   { id: 'convert', icon: '🔄', name: '转换工具', desc: '单位换算、进制转换、函数绘图' },
   { id: 'security', icon: '🔒', name: '安全工具', desc: '密码生成、Hash计算、随机数' },
   { id: 'time', icon: '⏱️', name: '时间工具', desc: '时间戳转换、日期计算、番茄钟专注计时' },
   { id: 'color', icon: '🎨', name: '颜色工具', desc: 'HEX/RGB/HSL颜色转换、CSS渐变生成器、配色方案生成器' },
-  { id: 'media', icon: '🎬', name: '媒体工具', desc: '抖音/TikTok去水印下载、视频转GIF、在线录音、录音转文字、音频波形可视化、白噪音发生器、音频变速变调、在线便签' },
+  { id: 'media', icon: '🎬', name: '媒体工具', desc: '抖音/TikTok去水印下载、视频转GIF、在线录音、录音转文字、音频波形可视化、白噪音发生器、音频变速变调、音频剪辑拼接、在线便签' },
   { id: 'ai', icon: '🤖', name: 'AI工具', desc: 'AI聊天、AI Agent安装、免费AI工具推荐' },
   { id: 'voice', icon: '🗣️', name: '群众心声', desc: '提交工具建议、投票排行榜、前3名自动实现' },
   { id: 'lottery', icon: '🎰', name: '彩票工具', desc: '双色球、大乐透、福彩3D、排列三…在线过滤缩水、选号、计算器' },
@@ -12231,4 +12335,293 @@ function lcDrawChart(rows, P) {
   ctx.setLineDash([]);
   ctx.fillStyle = '#ccc';
   ctx.fillText('月供', padL + 136, 12);
+}
+
+// ============================================================
+// PDF拆分工具 处理函数（第19轮）
+// ============================================================
+var pdsPDFBytes = null;
+var pdsPageCount = 0;
+
+function pdsInit() {
+  document.getElementById('pds-file').addEventListener('change', pdsLoad);
+}
+
+function pdsLoad() {
+  var file = document.getElementById('pds-file').files[0];
+  if (!file) return;
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    pdsPDFBytes = e.target.result;
+    ensurePDFLib().then(function() {
+      return PDFLib.PDFDocument.load(pdsPDFBytes);
+    }).then(function(doc) {
+      pdsPageCount = doc.getPageCount();
+      document.getElementById('pds-info').textContent = file.name + ' · 共 ' + pdsPageCount + ' 页';
+      document.getElementById('pds-panel').style.display = 'block';
+      document.getElementById('pds-end').value = pdsPageCount;
+      document.getElementById('pds-result').style.display = 'none';
+    }).catch(function() { showToast('❌ 无法解析 PDF 文件'); });
+  };
+  reader.readAsArrayBuffer(file);
+}
+
+function ensurePDFLib() {
+  return new Promise(function(resolve, reject) {
+    if (typeof PDFLib !== 'undefined') { resolve(); return; }
+    var script = document.createElement('script');
+    script.src = 'https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js';
+    script.onload = resolve;
+    script.onerror = function() { reject(new Error('加载 pdf-lib 失败')); };
+    document.head.appendChild(script);
+  });
+}
+
+function pdsModeChange() {
+  var mode = document.getElementById('pds-mode').value;
+  document.getElementById('pds-range-wrap').style.display = mode === 'range' ? 'block' : 'none';
+  document.getElementById('pds-n-wrap').style.display = mode === 'custom' ? 'block' : 'none';
+}
+
+function pdsParseRanges(str, total) {
+  var pages = [];
+  var parts = String(str).split(/[,，;；]/);
+  parts.forEach(function(part) {
+    part = part.trim();
+    if (!part) return;
+    var m = part.match(/^(\d+)\s*-\s*(\d+)$/);
+    if (m) {
+      var a = parseInt(m[1], 10), b = parseInt(m[2], 10);
+      if (a > b) { var t = a; a = b; b = t; }
+      for (var i = a; i <= b; i++) pages.push(i);
+    } else if (/^\d+$/.test(part)) {
+      pages.push(parseInt(part, 10));
+    }
+  });
+  return pages.filter(function(p) { return p >= 1 && p <= total; });
+}
+
+function pdsSplit() {
+  if (!pdsPDFBytes) { showToast('⚠️ 请先选择 PDF 文件'); return; }
+  var mode = document.getElementById('pds-mode').value;
+  var groups = [];
+  if (mode === 'every') {
+    for (var i = 1; i <= pdsPageCount; i++) groups.push([i, i]);
+  } else if (mode === 'range') {
+    var pages = pdsParseRanges(document.getElementById('pds-range').value, pdsPageCount);
+    if (!pages.length) { showToast('⚠️ 页码范围无效'); return; }
+    // 将连续页合并为区间
+    var start = pages[0], prev = pages[0];
+    for (var j = 1; j <= pages.length; j++) {
+      if (pages[j] === prev + 1) { prev = pages[j]; continue; }
+      groups.push([start, prev]);
+      start = pages[j]; prev = pages[j];
+    }
+  } else {
+    var n = parseInt(document.getElementById('pds-n').value, 10) || 5;
+    for (var k = 1; k <= pdsPageCount; k += n) {
+      groups.push([k, Math.min(k + n - 1, pdsPageCount)]);
+    }
+  }
+  document.getElementById('pds-loading').style.display = 'block';
+  document.getElementById('pds-result').style.display = 'none';
+  var parts = [];
+  var baseName = '拆分文件';
+  ensurePDFLib().then(function() {
+    var chain = Promise.resolve();
+    groups.forEach(function(g) {
+      chain = chain.then(function() {
+        return PDFLib.PDFDocument.load(pdsPDFBytes).then(function(srcDoc) {
+          return PDFLib.PDFDocument.create().then(function(newDoc) {
+            var idxs = [];
+            for (var p = g[0]; p <= g[1]; p++) idxs.push(p - 1);
+            return newDoc.copyPages(srcDoc, idxs).then(function(copied) {
+              copied.forEach(function(pg) { newDoc.addPage(pg); });
+              return newDoc.save();
+            }).then(function(bytes) {
+              parts.push({ name: baseName + '_' + g[0] + '-' + g[1] + '.pdf', bytes: bytes });
+            });
+          });
+        });
+      });
+    });
+    return chain;
+  }).then(function() {
+    document.getElementById('pds-loading').style.display = 'none';
+    var list = document.getElementById('pds-list');
+    list.innerHTML = '';
+    parts.forEach(function(part, idx) {
+      var blob = new Blob([part.bytes], { type: 'application/pdf' });
+      var url = URL.createObjectURL(blob);
+      var div = document.createElement('div');
+      div.style.cssText = 'display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--border);font-size:13px;';
+      div.innerHTML = '<span>' + (idx + 1) + '. ' + part.name + '</span>';
+      var a = document.createElement('a');
+      a.href = url;
+      a.download = part.name;
+      a.textContent = '⬇️ 下载';
+      a.style.color = 'var(--primary)';
+      div.appendChild(a);
+      list.appendChild(div);
+    });
+    document.getElementById('pds-result').style.display = 'block';
+    showToast('✅ 拆分完成，共 ' + parts.length + ' 个文件');
+  }).catch(function() {
+    document.getElementById('pds-loading').style.display = 'none';
+    showToast('❌ 拆分失败，请重试');
+  });
+}
+
+// ============================================================
+// 音频剪辑拼接工具 处理函数（第19轮）
+// ============================================================
+var aucBuffer = null;
+var aucClips = [];
+var aucPlaySrc = null;
+
+function aucInit() {
+  document.getElementById('auc-file').addEventListener('change', aucLoad);
+}
+
+function aucLoad() {
+  var file = document.getElementById('auc-file').files[0];
+  if (!file) return;
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    var ctx = new (window.AudioContext || window.webkitAudioContext)();
+    ctx.decodeAudioData(e.target.result).then(function(buf) {
+      aucBuffer = buf;
+      var secs = Math.floor(buf.duration);
+      var mins = Math.floor(secs / 60);
+      secs = secs % 60;
+      document.getElementById('auc-info').textContent = file.name + ' · 时长 ' + mins + '分' + secs + '秒，' + (buf.numberOfChannels || 1) + '声道，采样率 ' + buf.sampleRate + 'Hz';
+      document.getElementById('auc-end').value = buf.duration.toFixed(1);
+      document.getElementById('auc-end').max = buf.duration.toFixed(1);
+      document.getElementById('auc-panel').style.display = 'block';
+      aucClips = [];
+      aucRenderClips();
+    }).catch(function() { showToast('❌ 无法解码该音频文件'); });
+  };
+  reader.readAsArrayBuffer(file);
+}
+
+function aucAddClip() {
+  if (!aucBuffer) { showToast('⚠️ 请先选择音频文件'); return; }
+  var start = parseFloat(document.getElementById('auc-start').value) || 0;
+  var end = parseFloat(document.getElementById('auc-end').value) || aucBuffer.duration;
+  var volume = parseInt(document.getElementById('auc-volume').value, 10) || 100;
+  if (start < 0) start = 0;
+  if (end > aucBuffer.duration) end = aucBuffer.duration;
+  if (end <= start) { showToast('⚠️ 结束时间必须大于开始时间'); return; }
+  aucClips.push({ start: start, end: end, volume: volume / 100 });
+  aucRenderClips();
+  showToast('✅ 已添加片段');
+}
+
+function aucRenderClips() {
+  var wrap = document.getElementById('auc-clips-wrap');
+  var list = document.getElementById('auc-clips');
+  if (!aucClips.length) { wrap.style.display = 'none'; return; }
+  wrap.style.display = 'block';
+  list.innerHTML = '';
+  aucClips.forEach(function(c, idx) {
+    var div = document.createElement('div');
+    div.style.cssText = 'display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid var(--border);font-size:13px;';
+    div.innerHTML = '<span>#' + (idx + 1) + ' · ' + c.start.toFixed(1) + 's ~ ' + c.end.toFixed(1) + 's（' + (c.end - c.start).toFixed(1) + 's，音量 ' + Math.round(c.volume * 100) + '%）</span>';
+    var btn = document.createElement('button');
+    btn.textContent = '✖';
+    btn.className = 'btn btn-secondary';
+    btn.style.cssText = 'font-size:12px;padding:2px 10px;';
+    btn.onclick = (function(i) { return function() { aucClips.splice(i, 1); aucRenderClips(); }; })(idx);
+    div.appendChild(btn);
+    list.appendChild(div);
+  });
+}
+
+function aucPlayClip() {
+  if (!aucBuffer) return;
+  aucStopPlay();
+  var start = parseFloat(document.getElementById('auc-start').value) || 0;
+  var end = parseFloat(document.getElementById('auc-end').value) || aucBuffer.duration;
+  if (end <= start) return;
+  var ctx = new (window.AudioContext || window.webkitAudioContext)();
+  aucPlaySrc = ctx.createBufferSource();
+  aucPlaySrc.buffer = aucBuffer;
+  aucPlaySrc.connect(ctx.destination);
+  aucPlaySrc.start(0, start, end - start);
+}
+
+function aucStopPlay() {
+  if (aucPlaySrc) { try { aucPlaySrc.stop(); } catch (e) {} aucPlaySrc = null; }
+}
+
+function aucClear() {
+  aucStopPlay();
+  aucClips = [];
+  aucRenderClips();
+}
+
+function aucExport() {
+  if (!aucClips.length) { showToast('⚠️ 请先添加至少一个片段'); return; }
+  var totalDur = 0;
+  aucClips.forEach(function(c) { totalDur += (c.end - c.start); });
+  var ctx = new (window.AudioContext || window.webkitAudioContext)();
+  var offline = new OfflineAudioContext(aucBuffer.numberOfChannels || 1, Math.ceil(totalDur * aucBuffer.sampleRate), aucBuffer.sampleRate);
+  var offset = 0;
+  aucClips.forEach(function(c) {
+    var src = offline.createBufferSource();
+    src.buffer = aucBuffer;
+    var gain = offline.createGain();
+    gain.gain.value = c.volume;
+    src.connect(gain);
+    gain.connect(offline.destination);
+    src.start(offset, c.start, c.end - c.start);
+    offset += (c.end - c.start);
+  });
+  offline.startRendering().then(function(rendered) {
+    var wav = aucBufferToWav(rendered);
+    var blob = new Blob([wav], { type: 'audio/wav' });
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = '音频拼接_' + Date.now() + '.wav';
+    a.click();
+    setTimeout(function() { URL.revokeObjectURL(a.href); }, 2000);
+    showToast('✅ 拼接完成，WAV 已下载');
+  }).catch(function() { showToast('❌ 渲染失败，请缩短片段或减少数量'); });
+}
+
+function aucBufferToWav(buffer) {
+  var numCh = buffer.numberOfChannels;
+  var sampleRate = buffer.sampleRate;
+  var len = buffer.length * numCh * 2;
+  var arrayBuffer = new ArrayBuffer(44 + len);
+  var view = new DataView(arrayBuffer);
+  aucWriteString(view, 0, 'RIFF');
+  view.setUint32(4, 36 + len, true);
+  aucWriteString(view, 8, 'WAVE');
+  aucWriteString(view, 12, 'fmt ');
+  view.setUint32(16, 16, true);
+  view.setUint16(20, 1, true);
+  view.setUint16(22, numCh, true);
+  view.setUint32(24, sampleRate, true);
+  view.setUint32(28, sampleRate * numCh * 2, true);
+  view.setUint16(32, numCh * 2, true);
+  view.setUint16(34, 16, true);
+  aucWriteString(view, 36, 'data');
+  view.setUint32(40, len, true);
+  var offset = 44;
+  for (var i = 0; i < buffer.length; i++) {
+    for (var ch = 0; ch < numCh; ch++) {
+      var s = Math.max(-1, Math.min(1, buffer.getChannelData(ch)[i]));
+      view.setInt16(offset, s < 0 ? s * 0x8000 : s * 0x7FFF, true);
+      offset += 2;
+    }
+  }
+  return arrayBuffer;
+}
+
+function aucWriteString(view, offset, str) {
+  for (var i = 0; i < str.length; i++) {
+    view.setUint8(offset + i, str.charCodeAt(i));
+  }
 }
