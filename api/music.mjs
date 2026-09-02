@@ -163,8 +163,11 @@ async function handleUrl(req, res) {
 
 async function getNeteaseUrl(id) {
   // 1. 优先使用网易云官方 API（netease-cloud-music-api-xi-pied.vercel.app，已验证可用）
+  //    realIP 模拟国内访问，绕过 Vercel 海外 IP 的地区版权限制
+  const CN_IPS = ['116.25.146.177', '223.104.22.0', '59.110.22.22'];
+  const realIP = CN_IPS[Math.floor(Math.random() * CN_IPS.length)];
   try {
-    const resp = await fetch(`${NETEASE_API}/song/url?id=${id}`, {
+    const resp = await fetch(`${NETEASE_API}/song/url?id=${id}&realIP=${realIP}`, {
       headers: { 'User-Agent': 'Mozilla/5.0', 'Referer': 'https://music.163.com/' }
     });
     const data = await resp.json();
@@ -175,6 +178,22 @@ async function getNeteaseUrl(id) {
         source: 'netease',
         br: item.br || 128000
       };
+    }
+    // 单个 IP 可能失败，轮流尝试其他 IP
+    for (const ip of CN_IPS) {
+      if (ip === realIP) continue;
+      const resp2 = await fetch(`${NETEASE_API}/song/url?id=${id}&realIP=${ip}`, {
+        headers: { 'User-Agent': 'Mozilla/5.0', 'Referer': 'https://music.163.com/' }
+      });
+      const data2 = await resp2.json();
+      const item2 = data2?.data?.[0];
+      if (data2.code === 200 && item2?.url) {
+        return {
+          url: item2.url,
+          source: 'netease',
+          br: item2.br || 128000
+        };
+      }
     }
     console.log(`⚠️ 网易云API未返回url (id=${id}, code=${data.code})，尝试ChKSz兜底`);
   } catch (e) {
