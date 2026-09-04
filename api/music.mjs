@@ -118,7 +118,23 @@ async function handleUrl(req, res) {
     return res.status(400).json({ error: 'no song id' });
   }
   
-  // 1. 先检查缓存
+  // 0. 优先返回本地缓存文件（真·本地缓存，永不失效）
+  const fs = require('fs');
+  const localFile = `./data/music/${id}.mp3`;
+  try {
+    if (fs.existsSync(localFile)) {
+      console.log(`💿 命中本地缓存文件: ${id}.mp3`);
+      return res.json({
+        url: `/data/music/${id}.mp3`,
+        source: 'local',
+        br: 128000,
+        cached: true,
+        local: true
+      });
+    }
+  } catch (e) { /* 本地文件检查失败则继续走在线逻辑 */ }
+  
+  // 1. 检查缓存
   const cache = getCache();
   let cachedResult = null;
   
@@ -141,7 +157,7 @@ async function handleUrl(req, res) {
     });
   }
   
-  // 2. 缓存未命中，通过 ChKSz API 获取
+  // 2. 缓存未命中，通过网易云 API 获取
   try {
     const result = await getNeteaseUrl(id);
     if (result) {
@@ -155,7 +171,7 @@ async function handleUrl(req, res) {
       return res.json({ url: result.url, source: 'netease', br: result.br || 128000, cached: false });
     }
   } catch (e) {
-    console.error('ChKSz API 错误:', e.message);
+    console.error('网易云 API 错误:', e.message);
   }
   
   res.json({ url: null, source: 'none' });
@@ -174,7 +190,8 @@ async function getNeteaseUrl(id) {
     const item = data?.data?.[0];
     if (data.code === 200 && item?.url) {
       return {
-        url: item.url,
+        // ⚠️ 必须转 https：网易云返回 http://，HTTPS 页面浏览器 Mixed Content 会阻止播放
+        url: item.url.replace(/^http:\/\//, 'https://'),
         source: 'netease',
         br: item.br || 128000
       };
@@ -189,7 +206,7 @@ async function getNeteaseUrl(id) {
       const item2 = data2?.data?.[0];
       if (data2.code === 200 && item2?.url) {
         return {
-          url: item2.url,
+          url: item2.url.replace(/^http:\/\//, 'https://'),
           source: 'netease',
           br: item2.br || 128000
         };
@@ -213,7 +230,7 @@ async function getNeteaseUrl(id) {
       
       if (data.code === 200 && data.data?.url) {
         return {
-          url: data.data.url,
+          url: data.data.url.replace(/^http:\/\//, 'https://'),
           source: 'netease',
           br: data.data.br || 128000
         };
