@@ -1,7 +1,10 @@
 // /api/music.mjs - 音乐播放器 API（基于 LX Music 生态 + 网易云音乐）
 // 搜索：网易云 API
-// 播放：ChKSz API（https://api.chksz.top/）- 来自 LX Music 生态
-// 热歌缓存：网易云热歌榜 → ChKSz 解析播放链接
+// 播放：网易云 API（https://netease-cloud-music-api-xi-pied.vercel.app）+ ChKSz 兜底
+// 本地缓存：data/music/{id}.mp3 静态文件（真·本地缓存，永不失效）
+// 热歌缓存：网易云热歌榜 → 解析播放链接
+
+import fs from 'fs';
 
 const NETEASE_API = 'https://netease-cloud-music-api-xi-pied.vercel.app';
 const CHKSZ_API = 'https://api.chksz.top/api/163_music';
@@ -12,7 +15,6 @@ let musicCache = null;
 function getCache() {
   if (musicCache) return musicCache;
   try {
-    const fs = require('fs');
     if (fs.existsSync(CACHE_FILE)) {
       const raw = fs.readFileSync(CACHE_FILE, 'utf8');
       musicCache = JSON.parse(raw);
@@ -28,7 +30,6 @@ function getCache() {
 // 写入缓存
 function saveCache(cache) {
   try {
-    const fs = require('fs');
     cache.updatedAt = new Date().toISOString();
     fs.writeFileSync(CACHE_FILE, JSON.stringify(cache, null, 2), 'utf8');
     console.log(`💾 缓存已保存: ${cache.songs.length} 首`);
@@ -119,7 +120,6 @@ async function handleUrl(req, res) {
   }
   
   // 0. 优先返回本地缓存文件（真·本地缓存，永不失效）
-  const fs = require('fs');
   const localFile = `./data/music/${id}.mp3`;
   try {
     if (fs.existsSync(localFile)) {
