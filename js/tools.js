@@ -5550,6 +5550,162 @@ greet('世界');</textarea>
       </div>
     `,
     handler: () => { setTimeout(aucInit, 50); }
+  },
+  {
+    id: 'invoice-generator',
+    cat: 'document',
+    icon: '🧾',
+    name: '发票/收据生成器',
+    desc: '灵感来源于 Zoho Invoice / Invoice Simple（付费订阅），在线制作发票、收据、报价单，添加商品明细自动算价，支持含税/不含税、多行项目、备注，一键打印或导出 PDF，商务必备纯本地生成',
+    html: `
+      <div class="tool-card">
+        <div class="row" style="margin-bottom:12px;gap:12px;flex-wrap:wrap;">
+          <div class="input-group" style="flex:1;min-width:150px;">
+            <label>单据类型</label>
+            <select id="inv-type">
+              <option value="发票">🧾 发票</option>
+              <option value="收据">📋 收据</option>
+              <option value="报价单">📑 报价单</option>
+            </select>
+          </div>
+          <div class="input-group" style="flex:1;min-width:150px;">
+            <label>发票编号</label>
+            <input type="text" id="inv-no" placeholder="INV-20260903-001">
+          </div>
+          <div class="input-group" style="flex:1;min-width:150px;">
+            <label>开票日期</label>
+            <input type="date" id="inv-date">
+          </div>
+        </div>
+        <div class="row" style="margin-bottom:12px;gap:12px;flex-wrap:wrap;">
+          <div class="input-group" style="flex:1;min-width:200px;">
+            <label>销售方（公司/个人）</label>
+            <input type="text" id="inv-seller" placeholder="你的公司名称或个人名称">
+          </div>
+          <div class="input-group" style="flex:1;min-width:200px;">
+            <label>购买方（客户）</label>
+            <input type="text" id="inv-buyer" placeholder="客户名称">
+          </div>
+        </div>
+        <div style="font-size:13px;color:var(--text-light);margin-bottom:8px;">📦 商品明细</div>
+        <div id="inv-items" style="margin-bottom:8px;"></div>
+        <div style="text-align:center;margin-bottom:12px;">
+          <button class="btn btn-secondary" onclick="invAddItem()">➕ 添加商品行</button>
+        </div>
+        <div class="row" style="margin-bottom:12px;gap:12px;flex-wrap:wrap;">
+          <div class="input-group" style="flex:1;min-width:140px;">
+            <label>税率（%）</label>
+            <input type="number" id="inv-tax" value="0" min="0" max="100" step="0.01">
+          </div>
+          <div class="input-group" style="flex:1;min-width:140px;">
+            <label>折扣（%）</label>
+            <input type="number" id="inv-discount" value="0" min="0" max="100" step="0.01">
+          </div>
+          <div class="input-group" style="flex:1;min-width:200px;">
+            <label>币种</label>
+            <select id="inv-currency">
+              <option value="¥">¥ 人民币</option>
+              <option value="$">$ 美元</option>
+              <option value="€">€ 欧元</option>
+              <option value="£">£ 英镑</option>
+            </select>
+          </div>
+        </div>
+        <div class="input-group" style="margin-bottom:12px;">
+          <label>备注</label>
+          <textarea id="inv-note" rows="2" placeholder="付款方式、发票说明等"></textarea>
+        </div>
+        <div style="text-align:center;margin-bottom:12px;">
+          <button class="btn btn-primary" onclick="invRender()">🔄 生成预览</button>
+          <button class="btn btn-secondary" onclick="invPrint()">🖨️ 打印 / 导出 PDF</button>
+        </div>
+        <div id="inv-preview" style="margin-top:14px;background:#fff;color:#222;border-radius:10px;padding:18px;max-width:720px;margin-left:auto;margin-right:auto;box-shadow:0 2px 12px rgba(0,0,0,.08);"></div>
+        <div style="margin-top:8px;font-size:12px;color:var(--text-light);text-align:center;">💡 灵感来源于 Zoho Invoice / Invoice Simple 付费订阅；数据仅存在本地浏览器，不会上传服务器</div>
+      </div>
+    `,
+    handler: () => { setTimeout(invInit, 50); }
+  },
+  {
+    id: 'thumbnail-maker',
+    cat: 'media',
+    icon: '🖥️',
+    name: '视频缩略图制作器',
+    desc: '灵感来源于 Canva Pro / Placeit（付费），为 YouTube、B站、抖音视频制作 16:9 缩略图，自定义背景、大标题文字、颜色字体任意调，一键导出高清 PNG，提升点击率',
+    html: `
+      <div class="tool-card">
+        <div class="row" style="margin-bottom:12px;gap:12px;flex-wrap:wrap;">
+          <div class="input-group" style="flex:1;min-width:200px;">
+            <label>背景方式</label>
+            <select id="thm-bgmode" onchange="thmBgMode()">
+              <option value="solid">🎨 纯色背景</option>
+              <option value="gradient">🌈 渐变背景</option>
+              <option value="image">🖼️ 上传图片背景</option>
+            </select>
+          </div>
+          <div class="input-group" style="flex:1;min-width:150px;" id="thm-color-wrap">
+            <label>背景颜色</label>
+            <input type="color" id="thm-bgcolor" value="#1a1a2e" onchange="thmRender()">
+          </div>
+          <div class="input-group" style="flex:1;min-width:150px;display:none;" id="thm-color2-wrap">
+            <label>渐变第二色</label>
+            <input type="color" id="thm-bgcolor2" value="#e94560" onchange="thmRender()">
+          </div>
+          <div class="input-group" style="flex:1;min-width:150px;display:none;" id="thm-image-wrap">
+            <label>上传背景图</label>
+            <input type="file" id="thm-bgfile" accept="image/*" onchange="thmBgFile()">
+          </div>
+        </div>
+        <div class="row" style="margin-bottom:12px;gap:12px;flex-wrap:wrap;">
+          <div class="input-group" style="flex:1;min-width:220px;">
+            <label>主标题文字</label>
+            <input type="text" id="thm-title" value="点进来！不看后悔" placeholder="主标题（支持换行 \\n）" oninput="thmRender()">
+          </div>
+          <div class="input-group" style="flex:1;min-width:120px;">
+            <label>标题颜色</label>
+            <input type="color" id="thm-titlecolor" value="#ffffff" onchange="thmRender()">
+          </div>
+        </div>
+        <div class="row" style="margin-bottom:12px;gap:12px;flex-wrap:wrap;">
+          <div class="input-group" style="flex:1;min-width:220px;">
+            <label>副标题/角标文字</label>
+            <input type="text" id="thm-sub" value="最新出炉 🔥" placeholder="副标题或角标" oninput="thmRender()">
+          </div>
+          <div class="input-group" style="flex:1;min-width:120px;">
+            <label>副标题颜色</label>
+            <input type="color" id="thm-subcolor" value="#ffd700" onchange="thmRender()">
+          </div>
+        </div>
+        <div class="row" style="margin-bottom:12px;gap:12px;flex-wrap:wrap;">
+          <div class="input-group" style="flex:1;min-width:120px;">
+            <label>标题大小</label>
+            <input type="range" id="thm-titlesize" min="28" max="110" value="64" oninput="thmRender()">
+            <span id="thm-titlesize-val" style="font-size:12px;color:var(--text-light);">64</span>
+          </div>
+          <div class="input-group" style="flex:1;min-width:120px;">
+            <label>副标题大小</label>
+            <input type="range" id="thm-subsie" min="14" max="56" value="28" oninput="thmRender()">
+            <span id="thm-subsie-val" style="font-size:12px;color:var(--text-light);">28</span>
+          </div>
+          <div class="input-group" style="flex:1;min-width:120px;">
+            <label>样式</label>
+            <select id="thm-style" onchange="thmRender()">
+              <option value="bold">🔥 粗体描边</option>
+              <option value="shadow">🌑 阴影</option>
+              <option value="outline">⭕ 描边+渐变字</option>
+              <option value="badge">🏷️ 标签风格</option>
+            </select>
+          </div>
+        </div>
+        <div style="text-align:center;margin-bottom:12px;">
+          <button class="btn btn-primary" onclick="thmExport()">⬇️ 导出 PNG (1280×720)</button>
+        </div>
+        <div style="text-align:center;">
+          <canvas id="thm-canvas" width="1280" height="720" style="max-width:100%;border-radius:10px;border:1px solid var(--border);box-shadow:0 2px 12px rgba(0,0,0,.2);"></canvas>
+        </div>
+        <div style="margin-top:8px;font-size:12px;color:var(--text-light);text-align:center;">💡 灵感来源于 Canva Pro / Placeit 付费功能；全部在浏览器本地生成，不会上传素材</div>
+      </div>
+    `,
+    handler: () => { setTimeout(thmInit, 50); }
   }
 ];
 
@@ -12624,4 +12780,298 @@ function aucWriteString(view, offset, str) {
   for (var i = 0; i < str.length; i++) {
     view.setUint8(offset + i, str.charCodeAt(i));
   }
+}
+
+// ============================================================
+// 发票/收据生成器 处理函数 (替代 Zoho Invoice / Invoice Simple)
+// ============================================================
+var invItems = 1;
+
+function invInit() {
+  var d = new Date();
+  var ymd = d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
+  var el = document.getElementById('inv-date');
+  if (el) el.value = ymd;
+  var no = document.getElementById('inv-no');
+  if (no) no.value = 'INV-' + ymd.replace(/-/g,'');
+  invAddItem();
+  invRender();
+}
+
+function invAddItem() {
+  var wrap = document.getElementById('inv-items');
+  if (!wrap) return;
+  invItems++;
+  var div = document.createElement('div');
+  div.className = 'inv-item-row';
+  div.style.cssText = 'display:flex;gap:8px;margin-bottom:6px;align-items:center;';
+  div.innerHTML = '<input type="text" placeholder="项目名称" style="flex:2;min-width:100px;padding:6px 8px;border:1px solid var(--border);border-radius:6px;background:var(--bg-card);color:var(--text);">' +
+    '<input type="number" placeholder="数量" value="1" min="1" style="flex:1;min-width:60px;padding:6px 8px;border:1px solid var(--border);border-radius:6px;background:var(--bg-card);color:var(--text);">' +
+    '<input type="number" placeholder="单价" value="0" min="0" step="0.01" style="flex:1;min-width:80px;padding:6px 8px;border:1px solid var(--border);border-radius:6px;background:var(--bg-card);color:var(--text);">' +
+    '<button class="btn btn-secondary" style="padding:4px 10px;font-size:12px;" onclick="invRemoveItem(this)">✖</button>';
+  wrap.appendChild(div);
+  invRender();
+}
+
+function invRemoveItem(btn) {
+  var wrap = document.getElementById('inv-items');
+  if (wrap && wrap.children.length > 1) {
+    btn.parentNode.remove();
+    invRender();
+  } else {
+    toast('至少保留一行商品');
+  }
+}
+
+function invRender() {
+  var pv = document.getElementById('inv-preview');
+  if (!pv) return;
+  var type = document.getElementById('inv-type').value;
+  var no = document.getElementById('inv-no').value || '-';
+  var date = document.getElementById('inv-date').value || '';
+  var seller = document.getElementById('inv-seller').value || '（销售方）';
+  var buyer = document.getElementById('inv-buyer').value || '（购买方）';
+  var taxRate = parseFloat(document.getElementById('inv-tax').value) || 0;
+  var discRate = parseFloat(document.getElementById('inv-discount').value) || 0;
+  var cur = document.getElementById('inv-currency').value;
+  var note = document.getElementById('inv-note').value || '';
+
+  var rows = [];
+  var items = document.querySelectorAll('#inv-items .inv-item-row');
+  var subtotal = 0;
+  items.forEach(function(row) {
+    var name = row.children[0].value.trim();
+    var qty = parseFloat(row.children[1].value) || 0;
+    var price = parseFloat(row.children[2].value) || 0;
+    var amt = qty * price;
+    subtotal += amt;
+    rows.push({ name: name || '未命名项目', qty: qty, price: price, amt: amt });
+  });
+
+  var discount = subtotal * discRate / 100;
+  var taxable = subtotal - discount;
+  var tax = taxable * taxRate / 100;
+  var total = taxable + tax;
+
+  function fmt(n) { return cur + n.toFixed(2); }
+
+  var html = '<div style="border-bottom:2px solid #1a1a2e;padding-bottom:10px;margin-bottom:12px;display:flex;justify-content:space-between;align-items:flex-end;">' +
+    '<div><div style="font-size:24px;font-weight:bold;color:#1a1a2e;">' + type + '</div>' +
+    '<div style="font-size:12px;color:#666;">编号：' + no + '　日期：' + date + '</div></div>' +
+    '<div style="text-align:right;font-size:12px;color:#666;">' + seller + '</div></div>' +
+    '<div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:14px;">' +
+    '<div><div style="color:#888;font-size:11px;">开给</div><b>' + buyer + '</b></div>' +
+    '<div style="color:#888;font-size:11px;">' + type + '编号 ' + no + '</div></div>';
+
+  html += '<table style="width:100%;border-collapse:collapse;font-size:13px;margin-bottom:14px;"><tr style="background:#f4f4f8;color:#1a1a2e;">' +
+    '<th style="padding:8px;text-align:left;">项目</th><th style="padding:8px;text-align:center;width:70px;">数量</th>' +
+    '<th style="padding:8px;text-align:right;width:110px;">单价</th><th style="padding:8px;text-align:right;width:130px;">金额</th></tr>';
+  rows.forEach(function(r) {
+    html += '<tr style="border-bottom:1px solid #eee;"><td style="padding:7px;">' + r.name + '</td>' +
+      '<td style="padding:7px;text-align:center;">' + r.qty + '</td>' +
+      '<td style="padding:7px;text-align:right;">' + fmt(r.price) + '</td>' +
+      '<td style="padding:7px;text-align:right;">' + fmt(r.amt) + '</td></tr>';
+  });
+  html += '</table>';
+
+  html += '<div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:8px;"><div></div><div style="min-width:260px;">' +
+    '<div style="display:flex;justify-content:space-between;margin-bottom:4px;"><span style="color:#666;">小计</span><b>' + fmt(subtotal) + '</b></div>';
+  if (discRate > 0) {
+    html += '<div style="display:flex;justify-content:space-between;margin-bottom:4px;"><span style="color:#666;">折扣 ' + discRate + '%</span><b style="color:#e94560;">-' + fmt(discount) + '</b></div>';
+  }
+  if (taxRate > 0) {
+    html += '<div style="display:flex;justify-content:space-between;margin-bottom:4px;"><span style="color:#666;">税 ' + taxRate + '%</span><b>' + fmt(tax) + '</b></div>';
+  }
+  html += '<div style="display:flex;justify-content:space-between;padding-top:8px;border-top:2px solid #1a1a2e;font-size:16px;font-weight:bold;color:#1a1a2e;"><span>合计</span><span>' + fmt(total) + '</span></div></div></div>';
+
+  if (note) {
+    html += '<div style="font-size:12px;color:#666;border-top:1px dashed #ccc;padding-top:8px;">📝 ' + note + '</div>';
+  }
+  html += '<div style="margin-top:14px;text-align:center;font-size:11px;color:#aaa;">—— 由 ToolAI 工具箱生成 ——</div>';
+
+  pv.innerHTML = html;
+}
+
+function invPrint() {
+  invRender();
+  var pv = document.getElementById('inv-preview');
+  if (!pv) return;
+  var content = pv.innerHTML;
+  var w = window.open('', '_blank', 'width=800,height=900');
+  w.document.write('<html><head><title>打印发票</title><style>body{font-family:system-ui,sans-serif;padding:30px;max-width:720px;margin:0 auto;color:#222;}@media print{body{padding:0;}}</style></head><body>' + content + '<script>window.onload=function(){window.print();}<\/script></body></html>');
+  w.document.close();
+}
+
+// ============================================================
+// 视频缩略图制作器 处理函数 (替代 Canva Pro / Placeit)
+// ============================================================
+var thmBgImage = null;
+
+function thmInit() {
+  thmRender();
+}
+
+function thmBgMode() {
+  var mode = document.getElementById('thm-bgmode').value;
+  document.getElementById('thm-color-wrap').style.display = (mode === 'solid') ? '' : 'none';
+  document.getElementById('thm-color2-wrap').style.display = (mode === 'gradient') ? '' : 'none';
+  document.getElementById('thm-image-wrap').style.display = (mode === 'image') ? '' : 'none';
+  if (mode === 'gradient') thmRender();
+}
+
+function thmBgFile() {
+  var f = document.getElementById('thm-bgfile').files[0];
+  if (!f) return;
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    var img = new Image();
+    img.onload = function() {
+      thmBgImage = img;
+      thmRender();
+    };
+    img.src = e.target.result;
+  };
+  reader.readAsDataURL(f);
+}
+
+function thmWrapText(ctx, text, maxWidth) {
+  var words = text.split('\n');
+  var lines = [];
+  words.forEach(function(w) {
+    var str = w;
+    var line = '';
+    for (var i = 0; i < str.length; i++) {
+      var test = line + str[i];
+      if (ctx.measureText(test).width > maxWidth && line) {
+        lines.push(line);
+        line = str[i];
+      } else {
+        line = test;
+      }
+    }
+    if (line) lines.push(line);
+  });
+  return lines;
+}
+
+function thmRender() {
+  var cv = document.getElementById('thm-canvas');
+  if (!cv) return;
+  var ctx = cv.getContext('2d');
+  var W = cv.width, H = cv.height;
+
+  // 背景
+  var mode = document.getElementById('thm-bgmode').value;
+  if (mode === 'image' && thmBgImage) {
+    var ir = thmBgImage.width / thmBgImage.height;
+    var cr = W / H;
+    var sw, sh, sx = 0, sy = 0;
+    if (ir > cr) { sh = thmBgImage.height; sw = sh * cr; sx = (thmBgImage.width - sw) / 2; }
+    else { sw = thmBgImage.width; sh = sw / cr; sy = (thmBgImage.height - sh) / 2; }
+    ctx.drawImage(thmBgImage, sx, sy, sw, sh, 0, 0, W, H);
+    // 压暗提高文字可读性
+    ctx.fillStyle = 'rgba(0,0,0,0.25)';
+    ctx.fillRect(0, 0, W, H);
+  } else if (mode === 'gradient') {
+    var c1 = document.getElementById('thm-bgcolor').value;
+    var c2 = document.getElementById('thm-bgcolor2').value;
+    var g = ctx.createLinearGradient(0, 0, W, H);
+    g.addColorStop(0, c1);
+    g.addColorStop(1, c2);
+    ctx.fillStyle = g;
+    ctx.fillRect(0, 0, W, H);
+  } else {
+    ctx.fillStyle = document.getElementById('thm-bgcolor').value;
+    ctx.fillRect(0, 0, W, H);
+  }
+
+  // 装饰圆点
+  ctx.globalAlpha = 0.08;
+  ctx.fillStyle = '#ffffff';
+  ctx.beginPath(); ctx.arc(W*0.85, H*0.15, 120, 0, Math.PI*2); ctx.fill();
+  ctx.beginPath(); ctx.arc(W*0.1, H*0.85, 80, 0, Math.PI*2); ctx.fill();
+  ctx.globalAlpha = 1;
+
+  var title = document.getElementById('thm-title').value || '标题';
+  var sub = document.getElementById('thm-sub').value || '';
+  var tSize = parseInt(document.getElementById('thm-titlesize').value) || 64;
+  var sSize = parseInt(document.getElementById('thm-subsie').value) || 28;
+  var tColor = document.getElementById('thm-titlecolor').value;
+  var sColor = document.getElementById('thm-subcolor').value;
+  var style = document.getElementById('thm-style').value;
+
+  document.getElementById('thm-titlesize-val').textContent = tSize;
+  document.getElementById('thm-subsie-val').textContent = sSize;
+
+  // 主标题
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.font = 'bold ' + tSize + 'px "Arial Black", "PingFang SC", "Microsoft YaHei", sans-serif';
+  var lines = thmWrapText(ctx, title, W * 0.82);
+
+  var blockH = lines.length * tSize * 1.2 + (sub ? sSize * 1.6 : 0);
+  var startY = H / 2 - blockH / 2 + tSize / 2;
+
+  lines.forEach(function(line, i) {
+    var y = startY + i * tSize * 1.2;
+    if (style === 'bold' || style === 'outline') {
+      ctx.lineWidth = Math.max(6, tSize * 0.09);
+      ctx.strokeStyle = 'rgba(0,0,0,0.85)';
+      ctx.strokeText(line, W / 2, y);
+      if (style === 'outline') {
+        var g2 = ctx.createLinearGradient(W/2 - ctx.measureText(line).width/2, y - tSize/2, W/2 + ctx.measureText(line).width/2, y);
+        g2.addColorStop(0, tColor);
+        g2.addColorStop(1, '#ffd700');
+        ctx.fillStyle = g2;
+      } else {
+        ctx.fillStyle = tColor;
+      }
+    } else if (style === 'shadow') {
+      ctx.shadowColor = 'rgba(0,0,0,0.7)';
+      ctx.shadowBlur = 12;
+      ctx.shadowOffsetY = 6;
+      ctx.fillStyle = tColor;
+    } else { // badge
+      ctx.fillStyle = 'rgba(233,69,96,0.9)';
+      var tw = ctx.measureText(line).width;
+      var pad = tSize * 0.4;
+      ctx.beginPath();
+      var bw = tw + pad * 2, bh = tSize * 1.5, bx = W/2 - bw/2, by = y - bh/2;
+      ctx.moveTo(bx + 16, by); ctx.lineTo(bx + bw - 16, by); ctx.quadraticCurveTo(bx + bw, by, bx + bw, by + 16);
+      ctx.lineTo(bx + bw, by + bh - 16); ctx.quadraticCurveTo(bx + bw, by + bh, bx + bw - 16, by + bh);
+      ctx.lineTo(bx + 16, by + bh); ctx.quadraticCurveTo(bx, by + bh, bx, by + bh - 16);
+      ctx.lineTo(bx, by + 16); ctx.quadraticCurveTo(bx, by, bx + 16, by);
+      ctx.fill();
+      ctx.fillStyle = tColor;
+    }
+    ctx.fillText(line, W / 2, y);
+    ctx.shadowBlur = 0;
+    ctx.shadowOffsetY = 0;
+  });
+
+  // 副标题
+  if (sub) {
+    ctx.font = 'bold ' + sSize + 'px "PingFang SC", "Microsoft YaHei", sans-serif';
+    ctx.lineWidth = Math.max(3, sSize * 0.08);
+    ctx.strokeStyle = 'rgba(0,0,0,0.8)';
+    ctx.strokeText(sub, W / 2, startY + lines.length * tSize * 1.2 + sSize * 0.8);
+    ctx.fillStyle = sColor;
+    ctx.fillText(sub, W / 2, startY + lines.length * tSize * 1.2 + sSize * 0.8);
+  }
+
+  // 底部小标签
+  ctx.font = '16px sans-serif';
+  ctx.fillStyle = 'rgba(255,255,255,0.5)';
+  ctx.fillText('▶ 1280 × 720', 30, H - 30);
+}
+
+function thmExport() {
+  thmRender();
+  var cv = document.getElementById('thm-canvas');
+  if (!cv) return;
+  var a = document.createElement('a');
+  a.download = 'thumbnail-1280x720.png';
+  a.href = cv.toDataURL('image/png');
+  a.click();
+  toast('✅ 已导出缩略图 PNG');
 }
