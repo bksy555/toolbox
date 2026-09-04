@@ -1,6 +1,21 @@
 {
   "songs": [
     {
+      "id": "1973665667",
+      "name": "海屿你",
+      "artists": [
+        "马也_Crabbit"
+      ],
+      "album": "海屿你",
+      "albumPic": "https://p2.music.126.net/RfguLkQJ8aMVkiIaxdy70Q==/109951170483263672.jpg",
+      "duration": 295940,
+      "url": "/data/music/1973665667.mp3",
+      "br": 128000,
+      "source": "netease",
+      "local": true,
+      "addedAt": "2026-09-04T14:00:50Z"
+    },
+    {
       "id": "3399839173",
       "name": "甲乙丙丁 (你我怎么两清)",
       "artists": [
@@ -10,23 +25,139 @@
       "albumPic": "https://p2.music.126.net/H9iDvukTit_jx-fmhhvXUQ==/109951173482378749.jpg",
       "duration": 210461,
       "url": null,
+      "br": 128000,
       "source": "netease",
-      "br": null,
-      "addedAt": "2026-09-03T22:01:08.720Z"
+      "addedAt": "2026-09-04T14:00:55Z"
     },
     {
-      "id": "1973665667",
-      "name": "海屿你",
+      "id": "2163210456",
+      "name": "两 难",
       "artists": [
-        "马也_Crabbit"
+        "加木"
       ],
-      "album": "海屿你",
-      "albumPic": "https://p2.music.126.net/RfguLkQJ8aMVkiIaxdy70Q==/109951170483263672.jpg",
-      "duration": 295940,
-      "url": null,
+      "album": "两 难",
+      "albumPic": "https://p2.music.126.net/Qvenb5t_hL37b7hRfscjaw==/109951169686160429.jpg",
+      "duration": 170000,
+      "url": "/data/music/2163210456.mp3",
+      "br": 128000,
       "source": "netease",
-      "br": null,
-      "addedAt": "2026-09-03T22:01:08.720Z"
+      "local": true,
+      "addedAt": "2026-09-04T14:00:58Z"
+    },
+    {
+      "id": "287398",
+      "name": "我不难过",
+      "artists": [
+        "孙燕姿"
+      ],
+      "album": "未完成",
+      "albumPic": "https://p2.music.126.net/Pzxy6py26NgNmhJjYMf2RQ==/109951169724216323.jpg",
+      "duration": 320400,
+      "url": null,
+      "br": 128000,
+      "source": "netease",
+      "addedAt": "2026-09-04T14:01:02Z"
+    },
+    {
+      "id": "2097443876",
+      "name": "碎碎念",
+      "artists": [
+        "队长"
+      ],
+      "album": "碎碎念",
+      "albumPic": "https://p2.music.126.net/RYIrCEYzgeAD85DJ0rgOQA==/109951169256300966.jpg",
+      "duration": 132748,
+      "url": null,
+      "br": 128000,
+      "source": "netease",
+      "addedAt": "2026-09-04T14:01:26Z"
+    },
+    {
+      "id": "2018733994",
+      "name": "遐想",
+      "artists": [
+        "郑润泽"
+      ],
+      "album": "梦游",
+      "albumPic": "https://p2.music.126.net/Ws93IUrJGR_lK-QEsdKTWw==/109951168408373477.jpg",
+      "duration": 189719,
+      "url": "/data/music/2018733994.mp3",
+      "br": 128000,
+      "source": "netease",
+      "local": true,
+      "addedAt": "2026-09-04T14:01:34Z"
+    },
+    {
+      "id": "2600493765",
+      "name": "恋人",
+      "artists": [
+        "李荣浩"
+      ],
+      "album": "黑马",
+      "albumPic": "https://p2.music.126.net/0bk3Iqe2OZGBH2Iuyx7RzA==/109951170045577565.jpg",
+      "duration": 275912,
+      "url": null,
+      "br": 128000,
+      "source": "netease",
+      "addedAt": "2026-09-04T14:01:43Z"
+    },
+    {
+      "id": "3382908505",
+      "name": "玻璃",
+      "artists": [
+        "Gareth.T"
+      ],
+      "album": "玻璃",
+      "albumPic": "https://p2.music.126.net/MSKoQP60up7v3y1P1d3JIQ==/109951173234747322.jpg",
+      "duration": 185040,
+      "url": null,
+      "br": 128000,
+      "source": "netease",
+      "addedAt": "2026-09-04T14:01:50Z"
+    },
+    {
+      "id": "2652647276",
+      "name": "我好想你 (苏打绿版)",
+      "artists": [
+        "苏打绿"
+      ],
+      "album": "秋：故事 (苏打绿版)",
+      "albumPic": "https://p2.music.126.net/uNLLdw0Pxd2NT4Q_aP2tUQ==/109951170216075185.jpg",
+      "duration": 329206,
+      "url": null,
+      "br": 128000,
+      "source": "netease",
+      "addedAt": "2026-09-04T14:02:07Z"
+    },
+    {
+      "id": "3404238777",
+      "name": "周旋",
+      "artists": [
+        "王以太",
+        "艾热 AIR"
+      ],
+      "album": "太热爱",
+      "albumPic": "https://p2.music.126.net/rDv1qod6MDsYcEHKtxCdAA==/109951173532089932.jpg",
+      "duration": 290731,
+      "url": "/data/music/3404238777.mp3",
+      "br": 128000,
+      "source": "netease",
+      "local": true,
+      "addedAt": "2026-09-04T14:02:16Z"
+    },
+    {
+      "id": "273114",
+      "name": "失眠",
+      "artists": [
+        "Suki刘舒妤"
+      ],
+      "album": "Ladies Night",
+      "albumPic": "https://p2.music.126.net/-ruDNWFD1mMTGMNmNPzUIg==/109951173355316164.jpg",
+      "duration": 211301,
+      "url": null,
+      "br": 128000,
+      "source": "netease",
+      "addedAt": "2026-09-04T14:04:21Z"
     },
     {
       "id": "1303464858",
@@ -43,34 +174,6 @@
       "addedAt": "2026-09-03T22:01:08.720Z"
     },
     {
-      "id": "2097443876",
-      "name": "碎碎念",
-      "artists": [
-        "队长"
-      ],
-      "album": "碎碎念",
-      "albumPic": "https://p2.music.126.net/RYIrCEYzgeAD85DJ0rgOQA==/109951169256300966.jpg",
-      "duration": 132748,
-      "url": null,
-      "source": "netease",
-      "br": null,
-      "addedAt": "2026-09-03T22:01:08.720Z"
-    },
-    {
-      "id": "287398",
-      "name": "我不难过",
-      "artists": [
-        "孙燕姿"
-      ],
-      "album": "未完成",
-      "albumPic": "https://p2.music.126.net/Pzxy6py26NgNmhJjYMf2RQ==/109951169724216323.jpg",
-      "duration": 320400,
-      "url": null,
-      "source": "netease",
-      "br": null,
-      "addedAt": "2026-09-03T22:01:08.720Z"
-    },
-    {
       "id": "1827600686",
       "name": "还是会想你",
       "artists": [
@@ -80,77 +183,6 @@
       "album": "还是会想你",
       "albumPic": "https://p2.music.126.net/9FhSEQtMhP-JP3_U84YfWQ==/109951165798773745.jpg",
       "duration": 190063,
-      "url": null,
-      "source": "netease",
-      "br": null,
-      "addedAt": "2026-09-03T22:01:08.720Z"
-    },
-    {
-      "id": "2652647276",
-      "name": "我好想你 (苏打绿版)",
-      "artists": [
-        "苏打绿"
-      ],
-      "album": "秋：故事 (苏打绿版)",
-      "albumPic": "https://p2.music.126.net/uNLLdw0Pxd2NT4Q_aP2tUQ==/109951170216075185.jpg",
-      "duration": 329206,
-      "url": null,
-      "source": "netease",
-      "br": null,
-      "addedAt": "2026-09-03T22:01:08.720Z"
-    },
-    {
-      "id": "2600493765",
-      "name": "恋人",
-      "artists": [
-        "李荣浩"
-      ],
-      "album": "黑马",
-      "albumPic": "https://p2.music.126.net/0bk3Iqe2OZGBH2Iuyx7RzA==/109951170045577565.jpg",
-      "duration": 275912,
-      "url": null,
-      "source": "netease",
-      "br": null,
-      "addedAt": "2026-09-03T22:01:08.720Z"
-    },
-    {
-      "id": "3382908505",
-      "name": "玻璃",
-      "artists": [
-        "Gareth.T"
-      ],
-      "album": "玻璃",
-      "albumPic": "https://p2.music.126.net/MSKoQP60up7v3y1P1d3JIQ==/109951173234747322.jpg",
-      "duration": 185040,
-      "url": null,
-      "source": "netease",
-      "br": null,
-      "addedAt": "2026-09-03T22:01:08.720Z"
-    },
-    {
-      "id": "3404238777",
-      "name": "周旋",
-      "artists": [
-        "王以太",
-        "艾热 AIR"
-      ],
-      "album": "太热爱",
-      "albumPic": "https://p2.music.126.net/rDv1qod6MDsYcEHKtxCdAA==/109951173532089932.jpg",
-      "duration": 290731,
-      "url": null,
-      "source": "netease",
-      "br": null,
-      "addedAt": "2026-09-03T22:01:08.720Z"
-    },
-    {
-      "id": "273114",
-      "name": "失眠",
-      "artists": [
-        "Suki刘舒妤"
-      ],
-      "album": "Ladies Night",
-      "albumPic": "https://p2.music.126.net/-ruDNWFD1mMTGMNmNPzUIg==/109951173355316164.jpg",
-      "duration": 211301,
       "url": null,
       "source": "netease",
       "br": null,
@@ -314,20 +346,6 @@
       "addedAt": "2026-09-03T22:01:08.720Z"
     },
     {
-      "id": "2163210456",
-      "name": "两 难",
-      "artists": [
-        "加木"
-      ],
-      "album": "两 难",
-      "albumPic": "https://p2.music.126.net/Qvenb5t_hL37b7hRfscjaw==/109951169686160429.jpg",
-      "duration": 170000,
-      "url": null,
-      "source": "netease",
-      "br": null,
-      "addedAt": "2026-09-03T22:01:08.720Z"
-    },
-    {
       "id": "2083785152",
       "name": "唯一",
       "artists": [
@@ -379,20 +397,6 @@
       "album": "危险世界",
       "albumPic": "https://p2.music.126.net/3Y0A55OzEnqKNiH5ODA54A==/109951172683046522.jpg",
       "duration": 259064,
-      "url": null,
-      "source": "netease",
-      "br": null,
-      "addedAt": "2026-09-03T22:01:08.720Z"
-    },
-    {
-      "id": "2018733994",
-      "name": "遐想",
-      "artists": [
-        "郑润泽"
-      ],
-      "album": "梦游",
-      "albumPic": "https://p2.music.126.net/Ws93IUrJGR_lK-QEsdKTWw==/109951168408373477.jpg",
-      "duration": 189719,
       "url": null,
       "source": "netease",
       "br": null,
@@ -4016,5 +4020,6 @@
     }
   ],
   "total": 280,
-  "updatedAt": ""
+  "updatedAt": "2026-09-04T13:40:00Z",
+  "localCount": 4
 }
