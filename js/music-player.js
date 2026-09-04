@@ -108,14 +108,13 @@
       mNowPlaceholder.style.display = 'flex';
     }
     updateFavBtn();
-    // 获取播放链接
+    // 获取播放链接（优先本地静态缓存，失败再走 API）
     try {
-      const resp = await fetch('/api/music?action=url&id=' + song.id + '&source=' + (song.source || 'auto'));
-      const data = await resp.json();
       const srcName = document.getElementById('musicNowSource');
-      if (data.url) {
-        srcName.textContent = '来源: ' + (data.source === 'qq' ? 'QQ音乐' : '网易云音乐');
-        mAudio.src = data.url;
+      const localUrl = '/data/music/' + song.id + '.mp3';
+      const playLocal = async () => {
+        srcName.textContent = '来源: 本地缓存';
+        mAudio.src = localUrl;
         mAudio.play().then(() => {
           musicState.isPlaying = true;
           mPlayBtn.textContent = '⏸';
@@ -124,11 +123,31 @@
           mPlayBtn.textContent = '▶';
           musicToast('⚠️ 播放失败');
         });
+      };
+      // 探测本地缓存文件是否存在
+      const probe = await fetch(localUrl, { method: 'HEAD' });
+      if (probe.ok) {
+        await playLocal();
       } else {
-        srcName.textContent = '⚠️ 该歌曲暂不可播放';
-        musicToast('⚠️ 该歌曲暂不可播放（版权限制）');
-        musicState.isPlaying = false;
-        mPlayBtn.textContent = '▶';
+        const resp = await fetch('/api/music?action=url&id=' + song.id + '&source=' + (song.source || 'auto'));
+        const data = await resp.json();
+        if (data.url) {
+          srcName.textContent = '来源: ' + (data.source === 'qq' ? 'QQ音乐' : '网易云音乐');
+          mAudio.src = data.url;
+          mAudio.play().then(() => {
+            musicState.isPlaying = true;
+            mPlayBtn.textContent = '⏸';
+          }).catch(() => {
+            musicState.isPlaying = false;
+            mPlayBtn.textContent = '▶';
+            musicToast('⚠️ 播放失败');
+          });
+        } else {
+          srcName.textContent = '⚠️ 该歌曲暂不可播放';
+          musicToast('⚠️ 该歌曲暂不可播放（版权限制）');
+          musicState.isPlaying = false;
+          mPlayBtn.textContent = '▶';
+        }
       }
     } catch(e) {
       document.getElementById('musicNowSource').textContent = '⚠️ 获取链接失败';

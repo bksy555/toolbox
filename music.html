@@ -496,6 +496,18 @@ async function loadAllCachedSongs() {
     }
     
     smoothCount.textContent = `共 ${_allCachedSongs.length} 首 · 网易云热歌榜`;
+    // 异步探测本地缓存标记（有本地文件的歌曲可离线直听）
+    _allCachedSongs.forEach((song, i) => {
+      fetch('/data/music/' + song.id + '.mp3', { method: 'HEAD' }).then(r => {
+        if (r.ok) {
+          song.localCached = true;
+          const el = smoothList.querySelector(`[data-index="${i}"] .s-local`);
+          if (el) el.textContent = '💿 本地';
+          const playIcon = smoothList.querySelector(`[data-index="${i}"] .s-play-icon`);
+          if (playIcon) playIcon.textContent = '▶';
+        }
+      }).catch(() => {});
+    });
     renderSmoothList();
   } catch (e) {
     smoothList.innerHTML = '<div class="search-status" style="padding:20px"><div class="text">加载失败</div></div>';
@@ -512,7 +524,7 @@ function renderSmoothList() {
       <div class="smooth-item" onclick="playSmooth(${idx})" data-index="${idx}">
         <div class="s-index">${idx + 1}</div>
         <div class="s-info">
-          <div class="s-name">${song.name}</div>
+          <div class="s-name">${song.name} <span class="s-local" style="color:#10b981;font-size:11px;margin-left:6px;font-weight:600"></span></div>
           <div class="s-artist">${artists}</div>
         </div>
         <div class="s-fav ${isFaved ? 'faved' : ''}" onclick="event.stopPropagation(); toggleFav('${song.id}')">${isFaved ? '⭐' : '☆'}</div>
@@ -654,9 +666,16 @@ async function playSong(index) {
   playerBar.classList.add('active');
   playBtn.textContent = '⏳';
   
-  // 通过 ChKSz API 获取播放链接
+  // 播放链接：优先本地静态缓存（永不失效），其次走后端 API 实时解析
   try {
-    const url = await getNeteaseUrl(song.id);
+    const localUrl = '/data/music/' + song.id + '.mp3';
+    const probe = await fetch(localUrl, { method: 'HEAD' });
+    let url = null;
+    if (probe.ok) {
+      url = localUrl; // 💿 本地缓存命中
+    } else {
+      url = await getNeteaseUrl(song.id);
+    }
     if (url) {
       audio.src = url;
       // 加载歌词
