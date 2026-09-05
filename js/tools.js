@@ -5706,6 +5706,128 @@ greet('世界');</textarea>
       </div>
     `,
     handler: () => { setTimeout(thmInit, 50); }
+  },
+  {
+    id: 'certificate-maker',
+    cat: 'document',
+    icon: '🏅',
+    name: '证书生成器',
+    desc: '灵感来源于 Certifier / Canva Pro 付费模板，在线制作荣誉证书、奖状、培训结业证书，选择模板颜色、填写姓名正文、一键导出高清 PNG，机构/日期/编号一应俱全，本地生成不上传',
+    html: `
+      <div class="tool-card">
+        <div class="row" style="margin-bottom:12px;gap:12px;flex-wrap:wrap;">
+          <div class="input-group" style="flex:1;min-width:160px;">
+            <label>证书模板</label>
+            <select id="cert-style" onchange="certRender()">
+              <option value="classic">🎖️ 经典红金</option>
+              <option value="blue">💠 简约蓝金</option>
+              <option value="green">🌿 清新绿金</option>
+              <option value="tech">🚀 科技渐变</option>
+            </select>
+          </div>
+          <div class="input-group" style="flex:1;min-width:160px;">
+            <label>证书标题</label>
+            <input type="text" id="cert-title" value="荣 誉 证 书" oninput="certRender()">
+          </div>
+          <div class="input-group" style="flex:1;min-width:160px;">
+            <label>获证者姓名</label>
+            <input type="text" id="cert-recipient" value="张三" placeholder="姓名" oninput="certRender()">
+          </div>
+        </div>
+        <div class="row" style="margin-bottom:12px;gap:12px;flex-wrap:wrap;">
+          <div class="input-group" style="flex:2;min-width:260px;">
+            <label>证书正文</label>
+            <textarea id="cert-body" rows="2" oninput="certRender()">鉴于该同志在 2026 年度工作中表现突出、成绩优异，特发此证，以资鼓励。</textarea>
+          </div>
+        </div>
+        <div class="row" style="margin-bottom:12px;gap:12px;flex-wrap:wrap;">
+          <div class="input-group" style="flex:1;min-width:160px;">
+            <label>颁发机构</label>
+            <input type="text" id="cert-org" value="某某科技有限公司" oninput="certRender()">
+          </div>
+          <div class="input-group" style="flex:1;min-width:130px;">
+            <label>日期</label>
+            <input type="date" id="cert-date" onchange="certRender()">
+          </div>
+          <div class="input-group" style="flex:1;min-width:160px;">
+            <label>证书编号</label>
+            <input type="text" id="cert-no" placeholder="如 CERT-2026-001" oninput="certRender()">
+          </div>
+        </div>
+        <div style="text-align:center;margin-bottom:12px;">
+          <button class="btn btn-primary" onclick="certExport()">⬇️ 导出 PNG</button>
+          <button class="btn btn-secondary" onclick="certPrint()">🖨️ 打印</button>
+        </div>
+        <div style="text-align:center;">
+          <canvas id="cert-canvas" width="1200" height="848" style="max-width:100%;border-radius:10px;border:1px solid var(--border);box-shadow:0 2px 12px rgba(0,0,0,.2);"></canvas>
+        </div>
+        <div style="margin-top:8px;font-size:12px;color:var(--text-light);text-align:center;">💡 灵感来源于 Certifier / Canva Pro 付费模板；证书在浏览器本地生成，不会上传任何内容</div>
+      </div>
+    `,
+    handler: () => { setTimeout(certInit, 50); }
+  },
+  {
+    id: 'ledger-book',
+    cat: 'finance',
+    icon: '💰',
+    name: '家庭记账本',
+    desc: '灵感来源于 Money Manager / 鲨鱼记账 等付费订阅，日常收支记账、分类统计、月度汇总，数据保存在本地浏览器，一键导出 CSV，家庭理财必备',
+    html: `
+      <div class="tool-card">
+        <div class="row" style="margin-bottom:12px;gap:12px;flex-wrap:wrap;">
+          <div class="input-group" style="flex:1;min-width:120px;">
+            <label>收支类型</label>
+            <select id="led-type">
+              <option value="expense">💸 支出</option>
+              <option value="income">💰 收入</option>
+            </select>
+          </div>
+          <div class="input-group" style="flex:1;min-width:140px;">
+            <label>金额（元）</label>
+            <input type="number" id="led-amount" placeholder="0.00" min="0" step="0.01">
+          </div>
+          <div class="input-group" style="flex:1;min-width:140px;">
+            <label>分类</label>
+            <select id="led-cat"></select>
+          </div>
+          <div class="input-group" style="flex:1;min-width:150px;">
+            <label>日期</label>
+            <input type="date" id="led-date">
+          </div>
+        </div>
+        <div class="input-group" style="margin-bottom:12px;">
+          <label>备注</label>
+          <input type="text" id="led-note" placeholder="买什么 / 收入来源 等">
+        </div>
+        <div style="text-align:center;margin-bottom:16px;">
+          <button class="btn btn-primary" onclick="ledAdd()">➕ 记一笔</button>
+          <button class="btn btn-secondary" onclick="ledExportCsv()">📥 导出 CSV</button>
+          <button class="btn btn-secondary" onclick="ledClearAll()">🗑️ 清空记录</button>
+        </div>
+        <div class="row" style="margin-bottom:12px;gap:12px;flex-wrap:wrap;">
+          <div class="led-stat" style="flex:1;min-width:130px;background:linear-gradient(135deg,#ef4444,#f97316);border-radius:10px;padding:10px 14px;color:#fff;">
+            <div style="font-size:12px;opacity:.9;">本月支出</div>
+            <div id="led-total-expense" style="font-size:20px;font-weight:700;">¥0.00</div>
+          </div>
+          <div class="led-stat" style="flex:1;min-width:130px;background:linear-gradient(135deg,#10b981,#059669);border-radius:10px;padding:10px 14px;color:#fff;">
+            <div style="font-size:12px;opacity:.9;">本月收入</div>
+            <div id="led-total-income" style="font-size:20px;font-weight:700;">¥0.00</div>
+          </div>
+          <div class="led-stat" style="flex:1;min-width:130px;background:linear-gradient(135deg,#3b82f6,#6366f1);border-radius:10px;padding:10px 14px;color:#fff;">
+            <div style="font-size:12px;opacity:.9;">本月结余</div>
+            <div id="led-balance" style="font-size:20px;font-weight:700;">¥0.00</div>
+          </div>
+          <div class="led-stat" style="flex:1;min-width:130px;background:linear-gradient(135deg,#8b5cf6,#a855f7);border-radius:10px;padding:10px 14px;color:#fff;">
+            <div style="font-size:12px;opacity:.9;">累计笔数</div>
+            <div id="led-count" style="font-size:20px;font-weight:700;">0</div>
+          </div>
+        </div>
+        <div id="led-chart" style="margin-bottom:12px;"></div>
+        <div id="led-list" style="max-height:380px;overflow-y:auto;border:1px solid var(--border);border-radius:10px;padding:8px;"></div>
+        <div style="margin-top:8px;font-size:12px;color:var(--text-light);text-align:center;">💡 灵感来源于 Money Manager / 鲨鱼记账 付费订阅；全部数据保存在本地浏览器 localStorage，不上传服务器</div>
+      </div>
+    `,
+    handler: () => { setTimeout(ledInit, 50); }
   }
 ];
 
@@ -7349,7 +7471,7 @@ const CATEGORIES = [
   { id: 'text', icon: '✏️', name: '文本工具', desc: '字数统计、简繁转换、摩斯密码、文本转语音、文本对比' },
   { id: 'dev', icon: '💻', name: '开发者工具', desc: 'JSON格式化、二维码生成、二维码美化、条形码生成、Favicon图标生成、正则测试、Markdown、IP查询、思维导图、图表生成、代码图片生成、表格数据转换' },
   { id: 'image', icon: '🖼️', name: '图片处理', desc: '去背景换底色、批量压缩、加水印、长图拼接、格式转换、裁剪、异形裁剪、马赛克打码、双色调滤镜、图片转字符画、照片卡通化、OCR、印章制作、九宫格切图、文字转手写体、表情包、社交媒体图片尺寸调整、艺术效果、像素画、设备样机、图片高清放大、图片转线稿、渐变背景、文字特效、拼贴画、图片相框、颜色盲区模拟' },
-  { id: 'document', icon: '📄', name: '文档转换', desc: '图片转PDF、PDF转图片、Word解析、Excel转PDF、PDF合并、PDF拆分、简历生成、电子签名、表单制作、邮件签名、发票/收据生成器' },
+  { id: 'document', icon: '📄', name: '文档转换', desc: '图片转PDF、PDF转图片、Word解析、Excel转PDF、PDF合并、PDF拆分、简历生成、电子签名、表单制作、邮件签名、发票/收据生成器、证书生成器' },
   { id: 'convert', icon: '🔄', name: '转换工具', desc: '单位换算、进制转换、函数绘图' },
   { id: 'security', icon: '🔒', name: '安全工具', desc: '密码生成、Hash计算、随机数' },
   { id: 'time', icon: '⏱️', name: '时间工具', desc: '时间戳转换、日期计算、番茄钟专注计时' },
@@ -7359,6 +7481,7 @@ const CATEGORIES = [
   { id: 'voice', icon: '🗣️', name: '群众心声', desc: '提交工具建议、投票排行榜、前3名自动实现' },
   { id: 'lottery', icon: '🎰', name: '彩票工具', desc: '双色球、大乐透、福彩3D、快乐8、排列三…在线过滤缩水、选号、计算器' },
   { id: 'fun', icon: '🎪', name: '趣味工具', desc: '表情包生成、决策转盘、抽奖抽签、词云生成、涂鸦画板、娱乐好玩' },
+  { id: 'finance', icon: '💰', name: '财务工具', desc: '家庭记账本、收支统计、月度汇总' },
   { id: 'edu', icon: '📚', name: '教育资源', desc: '电子教材在线阅读、学习资源导航、元素周期表' }
 ];
 
@@ -13074,4 +13197,340 @@ function thmExport() {
   a.href = cv.toDataURL('image/png');
   a.click();
   toast('✅ 已导出缩略图 PNG');
+}
+
+// ============================================================
+// 证书生成器 处理函数 (替代 Certifier / Canva Pro 证书模板)
+// ============================================================
+function certInit() {
+  var d = new Date();
+  var ymd = d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
+  var no = document.getElementById('cert-no');
+  if (no && !no.value) no.value = 'CERT-' + d.getFullYear() + '-' + String(d.getDate()).padStart(2,'0') + '-' + String(Date.now() % 100000).padStart(5,'0');
+  var dt = document.getElementById('cert-date');
+  if (dt && !dt.value) dt.value = ymd;
+  certRender();
+}
+
+function certTheme() {
+  var s = document.getElementById('cert-style').value;
+  var themes = {
+    classic: { bg1: '#fff8f0', border: '#c9a227', chip: '#8b0000', title: '#8b0000', text: '#3d2c00', accent: '#c9a227' },
+    blue: { bg1: '#f4f8ff', border: '#2f6fb3', chip: '#1e3a8a', title: '#1e3a8a', text: '#1f2937', accent: '#2f6fb3' },
+    green: { bg1: '#f2fbf5', border: '#2e8b57', chip: '#14532d', title: '#14532d', text: '#1f2937', accent: '#2e8b57' },
+    tech: { bg1: '#0f172a', border: '#22d3ee', chip: '#a855f7', title: '#f8fafc', text: '#e2e8f0', accent: '#38bdf8' }
+  };
+  return themes[s] || themes.classic;
+}
+
+function certWrap(ctx, text, maxWidth) {
+  var words = String(text).split('\n');
+  var lines = [];
+  words.forEach(function(w) {
+    var line = '';
+    for (var i = 0; i < String(w).length; i++) {
+      var test = line + w[i];
+      if (ctx.measureText(test).width > maxWidth && line) {
+        lines.push(line);
+        line = w[i];
+      } else {
+        line = test;
+      }
+    }
+    if (line) lines.push(line);
+  });
+  return lines;
+}
+
+function certRender() {
+  var cv = document.getElementById('cert-canvas');
+  if (!cv) return;
+  var ctx = cv.getContext('2d');
+  var W = cv.width, H = cv.height;
+  var t = certTheme();
+
+  // 背景
+  ctx.fillStyle = t.bg1;
+  ctx.fillRect(0, 0, W, H);
+  // 双层边框
+  ctx.strokeStyle = t.border;
+  ctx.lineWidth = 6;
+  ctx.strokeRect(24, 24, W - 48, H - 48);
+  ctx.lineWidth = 1.5;
+  ctx.strokeRect(42, 42, W - 84, H - 84);
+
+  // 四角装饰
+  ctx.fillStyle = t.accent;
+  [[60,60],[W-60,60],[60,H-60],[W-60,H-60]].forEach(function(p) {
+    ctx.beginPath();
+    ctx.arc(p[0], p[1], 26, 0, Math.PI*2);
+    ctx.fill();
+    ctx.fillStyle = t.bg1;
+    ctx.beginPath();
+    ctx.arc(p[0], p[1], 14, 0, Math.PI*2);
+    ctx.fill();
+    ctx.fillStyle = t.accent;
+  });
+
+  // 顶部徽章
+  ctx.fillStyle = t.accent;
+  ctx.beginPath();
+  ctx.arc(W/2, 120, 44, 0, Math.PI*2);
+  ctx.fill();
+  ctx.fillStyle = '#ffffff';
+  ctx.font = '30px sans-serif';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText('🏅', W/2, 120);
+
+  // 标题
+  var title = document.getElementById('cert-title').value || '荣 誉 证 书';
+  ctx.fillStyle = t.title;
+  ctx.font = 'bold 58px "STZhongsong", "SimSun", serif';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText(title, W/2, 230);
+
+  // 分隔线
+  ctx.strokeStyle = t.accent;
+  ctx.lineWidth = 2;
+  var lw = 320;
+  ctx.beginPath();
+  ctx.moveTo(W/2 - lw/2, 268);
+  ctx.lineTo(W/2 + lw/2, 268);
+  ctx.stroke();
+
+  // 正文
+  var recipient = document.getElementById('cert-recipient').value || '某某';
+  var body = document.getElementById('cert-body').value || '';
+  ctx.fillStyle = t.text;
+  ctx.font = '26px "PingFang SC", "Microsoft YaHei", sans-serif';
+  ctx.textAlign = 'center';
+  var y = 330;
+  ctx.fillText(recipient, W/2, y);
+  y += 56;
+  var bodyLines = certWrap(ctx, body, W * 0.72);
+  ctx.font = '22px "PingFang SC", "Microsoft YaHei", sans-serif';
+  bodyLines.forEach(function(line, i) {
+    ctx.fillText(line, W/2, y + i * 36);
+  });
+  y += bodyLines.length * 36 + 20;
+
+  // 落款：机构 + 日期
+  ctx.font = '22px "PingFang SC", "Microsoft YaHei", sans-serif';
+  ctx.textAlign = 'right';
+  var org = document.getElementById('cert-org').value || '';
+  var date = document.getElementById('cert-date').value || '';
+  ctx.fillText(org, W - 130, H - 140);
+  ctx.fillText(date, W - 130, H - 96);
+
+  // 左下角编号
+  var no = document.getElementById('cert-no').value || '';
+  ctx.font = '15px monospace';
+  ctx.textAlign = 'left';
+  ctx.fillStyle = 'rgba(0,0,0,.4)';
+  ctx.fillText('NO. ' + no, 70, H - 76);
+
+  // 底部小标
+  ctx.font = '14px sans-serif';
+  ctx.fillStyle = 'rgba(0,0,0,.25)';
+  ctx.textAlign = 'center';
+  ctx.fillText('ToolBox 证书生成器 · 在线生成', W/2, H - 40);
+}
+
+function certExport() {
+  certRender();
+  var cv = document.getElementById('cert-canvas');
+  if (!cv) return;
+  var a = document.createElement('a');
+  a.download = 'certificate.png';
+  a.href = cv.toDataURL('image/png');
+  a.click();
+  toast('✅ 已导出证书 PNG');
+}
+
+function certPrint() {
+  certRender();
+  var cv = document.getElementById('cert-canvas');
+  if (!cv) return;
+  var win = window.open('', '_blank', 'width=900,height=700');
+  if (!win) { toast('⚠️ 请允许弹出窗口'); return; }
+  win.document.write('<html><head><title>打印证书</title><style>body{margin:0;display:flex;justify-content:center;align-items:center;height:100vh;background:#eee;}img{max-width:100%;max-height:100%;}</style></head><body><img src="' + cv.toDataURL('image/png') + '"><script>window.onload=function(){setTimeout(function(){window.print();},300);};<\/script></body></html>');
+  win.document.close();
+}
+
+// ============================================================
+// 家庭记账本 处理函数 (替代 Money Manager / 鲨鱼记账)
+// ============================================================
+var ledRecords = [];
+var LEDGER_KEY = 'toolbox_ledger_v1';
+var LEDGER_CATS = {
+  expense: ['🍚 餐饮', '🛒 购物', '🚇 交通', '🏠 居住', '📱 通讯', '🎬 娱乐', '👔 服饰', '💊 医疗', '🎓 教育', '🐱 宠物', '✈️ 旅行', '🎁 人情', '📦 其他'],
+  income: ['💼 工资', '🧧 奖金', '📈 理财', '💵 兼职', '🎁 红包', '💰 其他']
+};
+
+function ledInit() {
+  var sel = document.getElementById('led-cat');
+  if (!sel) return;
+  renderLedCat();
+  var d = new Date();
+  var ymd = d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
+  var dt = document.getElementById('led-date');
+  if (dt) dt.value = ymd;
+  ledLoad();
+  ledRender();
+
+  var typeEl = document.getElementById('led-type');
+  if (typeEl) typeEl.addEventListener('change', renderLedCat);
+}
+
+function renderLedCat() {
+  var typeEl = document.getElementById('led-type');
+  var sel = document.getElementById('led-cat');
+  if (!typeEl || !sel) return;
+  var cats = LEDGER_CATS[typeEl.value] || LEDGER_CATS.expense;
+  sel.innerHTML = '';
+  cats.forEach(function(c) {
+    var o = document.createElement('option');
+    o.value = c;
+    o.textContent = c;
+    sel.appendChild(o);
+  });
+}
+
+function ledLoad() {
+  try {
+    var raw = localStorage.getItem(LEDGER_KEY);
+    ledRecords = raw ? JSON.parse(raw) : [];
+  } catch (e) { ledRecords = []; }
+}
+
+function ledSave() {
+  try { localStorage.setItem(LEDGER_KEY, JSON.stringify(ledRecords)); } catch (e) {}
+}
+
+function ledAdd() {
+  var amtEl = document.getElementById('led-amount');
+  var amt = parseFloat(amtEl && amtEl.value);
+  if (!amt || amt <= 0) { toast('⚠️ 请输入正确的金额'); return; }
+  var type = document.getElementById('led-type').value;
+  var cat = document.getElementById('led-cat').value;
+  var date = document.getElementById('led-date').value || new Date().toISOString().slice(0,10);
+  var note = (document.getElementById('led-note').value || '').trim();
+  ledRecords.unshift({ id: Date.now() + '-' + Math.random().toString(36).slice(2,6), type: type, cat: cat, amount: amt, date: date, note: note });
+  ledSave();
+  ledRender();
+  if (amtEl) amtEl.value = '';
+  document.getElementById('led-note').value = '';
+  toast('✅ 已记录' + (type === 'income' ? '收入' : '支出') + ' ¥' + amt.toFixed(2));
+}
+
+function ledDel(id) {
+  ledRecords = ledRecords.filter(function(r) { return r.id !== id; });
+  ledSave();
+  ledRender();
+}
+
+function ledClearAll() {
+  if (!confirm('确定清空全部记账记录吗？此操作不可撤销！')) return;
+  ledRecords = [];
+  ledSave();
+  ledRender();
+  toast('🗑️ 已清空全部记录');
+}
+
+function ledExportCsv() {
+  if (ledRecords.length === 0) { toast('⚠️ 暂无记录可导出'); return; }
+  var lines = ['类型,分类,金额,日期,备注'];
+  ledRecords.forEach(function(r) {
+    lines.push([r.type === 'income' ? '收入' : '支出', r.cat, r.amount.toFixed(2), r.date, '"' + (r.note || '').replace(/"/g, '""') + '"'].join(','));
+  });
+  var blob = new Blob(['\ufeff' + lines.join('\n')], { type: 'text/csv;charset=utf-8' });
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url;
+  a.download = '家庭记账_' + new Date().toISOString().slice(0,10) + '.csv';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  setTimeout(function() { URL.revokeObjectURL(url); }, 5000);
+  toast('📥 已导出 CSV');
+}
+
+function ledMonth() {
+  var d = new Date();
+  return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0');
+}
+
+function ledRender() {
+  var listEl = document.getElementById('led-list');
+  var chEl = document.getElementById('led-chart');
+  if (!listEl) return;
+  var month = ledMonth();
+  var monthRecords = ledRecords.filter(function(r) { return r.date.startsWith(month); });
+  var expSum = 0, incSum = 0;
+  monthRecords.forEach(function(r) {
+    if (r.type === 'income') incSum += r.amount; else expSum += r.amount;
+  });
+  var bal = incSum - expSum;
+  var totalCnt = ledRecords.length;
+
+  var exEl = document.getElementById('led-total-expense');
+  var inEl = document.getElementById('led-total-income');
+  var baEl = document.getElementById('led-balance');
+  var cnEl = document.getElementById('led-count');
+  if (exEl) exEl.textContent = '¥' + expSum.toFixed(2);
+  if (inEl) inEl.textContent = '¥' + incSum.toFixed(2);
+  if (baEl) { baEl.textContent = '¥' + bal.toFixed(2); baEl.style.color = bal >= 0 ? '' : '#fca5a5'; }
+  if (cnEl) cnEl.textContent = totalCnt;
+
+  // 分类占比条形图（支出）
+  if (chEl) {
+    var byCat = {};
+    monthRecords.forEach(function(r) {
+      if (r.type === 'expense') byCat[r.cat] = (byCat[r.cat] || 0) + r.amount;
+    });
+    var cats = Object.keys(byCat);
+    var html = '<div style="font-size:13px;color:var(--text-light);margin-bottom:8px;">📊 ' + month + ' 支出分类占比</div>';
+    if (cats.length === 0) {
+      html += '<div style="font-size:12px;color:var(--text-light);">本月暂无支出记录</div>';
+    } else {
+      var max = Math.max.apply(null, cats.map(function(c) { return byCat[c]; }));
+      cats.sort(function(a, b) { return byCat[b] - byCat[a]; });
+      html += '<div style="display:flex;flex-direction:column;gap:6px;">';
+      cats.forEach(function(c) {
+        var pct = max > 0 ? Math.round(byCat[c] / max * 100) : 0;
+        html += '<div style="display:flex;align-items:center;gap:8px;font-size:12px;">';
+        html += '<span style="width:90px;text-align:right;flex-shrink:0;">' + c + '</span>';
+        html += '<div style="flex:1;height:14px;background:var(--bg);border-radius:7px;overflow:hidden;"><div style="height:100%;width:' + pct + '%;background:linear-gradient(90deg,#ef4444,#f97316);border-radius:7px;"></div></div>';
+        html += '<span style="width:70px;flex-shrink:0;color:var(--text-light);">¥' + byCat[c].toFixed(0) + '</span>';
+        html += '</div>';
+      });
+      html += '</div>';
+    }
+    chEl.innerHTML = html;
+  }
+
+  // 记录列表
+  if (ledRecords.length === 0) {
+    listEl.innerHTML = '<div style="text-align:center;color:var(--text-light);padding:20px;">📭 暂无记账记录，先记一笔吧！</div>';
+    return;
+  }
+  var cards = '';
+  ledRecords.slice(0, 60).forEach(function(r) {
+    var sign = r.type === 'income' ? '+' : '-';
+    var color = r.type === 'income' ? '#10b981' : '#ef4444';
+    var icon = r.type === 'income' ? '🟢' : '🔴';
+    cards += '<div style="display:flex;align-items:center;gap:10px;padding:8px 10px;border-bottom:1px solid var(--border);font-size:13px;">';
+    cards += '<span style="flex-shrink:0;">' + icon + '</span>';
+    cards += '<div style="flex:1;min-width:0;">';
+    cards += '<span style="font-weight:600;">' + r.cat + '</span>';
+    if (r.note) cards += '<span style="color:var(--text-light);margin-left:8px;">' + r.note + '</span>';
+    cards += '<div style="font-size:11px;color:var(--text-light);">' + r.date + '</div>';
+    cards += '</div>';
+    cards += '<span style="font-weight:700;color:' + color + ';flex-shrink:0;">' + sign + '¥' + r.amount.toFixed(2) + '</span>';
+    cards += '<button onclick="ledDel(\'' + r.id + '\')" style="flex-shrink:0;background:none;border:none;cursor:pointer;font-size:14px;color:var(--text-light);" title="删除">🗑️</button>';
+    cards += '</div>';
+  });
+  listEl.innerHTML = cards + (ledRecords.length > 60 ? '<div style="text-align:center;font-size:12px;color:var(--text-light);padding:8px;">⋯ 仅显示最近 60 条，共 ' + ledRecords.length + ' 条</div>' : '');
 }
