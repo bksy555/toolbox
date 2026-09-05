@@ -5828,6 +5828,125 @@ greet('世界');</textarea>
       </div>
     `,
     handler: () => { setTimeout(ledInit, 50); }
+  },
+  {
+    id: 'poster-maker',
+    cat: 'image',
+    icon: '🖼️',
+    name: '海报设计器',
+    desc: '灵感来源于 Canva / Piktochart / Venngage 付费模板，在线制作公众号封面、小红书笔记图、朋友圈海报、活动宣传图，选尺寸改背景加文字标题，一键导出高清 PNG，无需设计基础',
+    html: `
+      <div class="tool-card">
+        <div class="row" style="margin-bottom:12px;gap:12px;flex-wrap:wrap;">
+          <div class="input-group" style="flex:1;min-width:150px;">
+            <label>画布尺寸</label>
+            <select id="pm-size" onchange="pmSetSize()">
+              <option value="900x383">📱 公众号封面 900×383</option>
+              <option value="1080x1440">📕 小红书笔记 1080×1440</option>
+              <option value="1080x1080">🟦 朋友圈方形 1080×1080</option>
+              <option value="1200x630">🔗 链接分享卡 1200×630</option>
+              <option value="750x1334">📲 海报竖版 750×1334</option>
+            </select>
+          </div>
+          <div class="input-group" style="flex:1;min-width:120px;">
+            <label>背景类型</label>
+            <select id="pm-bgtype" onchange="pmRender()">
+              <option value="solid">纯色</option>
+              <option value="gradient">渐变</option>
+            </select>
+          </div>
+          <div class="input-group" style="flex:1;min-width:110px;">
+            <label>背景颜色</label>
+            <input type="color" id="pm-bg1" value="#6366f1" onchange="pmRender()">
+          </div>
+          <div class="input-group" id="pm-bg2-wrap" style="flex:1;min-width:110px;display:none;">
+            <label>渐变终点</label>
+            <input type="color" id="pm-bg2" value="#ec4899" onchange="pmRender()">
+          </div>
+        </div>
+        <div class="row" style="margin-bottom:12px;gap:12px;flex-wrap:wrap;">
+          <div class="input-group" style="flex:2;min-width:220px;">
+            <label>主标题</label>
+            <input type="text" id="pm-title" value="夏日狂欢节" oninput="pmRender()">
+          </div>
+          <div class="input-group" style="flex:1;min-width:140px;">
+            <label>标题颜色</label>
+            <input type="color" id="pm-title-color" value="#ffffff" onchange="pmRender()">
+          </div>
+        </div>
+        <div class="row" style="margin-bottom:12px;gap:12px;flex-wrap:wrap;">
+          <div class="input-group" style="flex:2;min-width:220px;">
+            <label>副标题</label>
+            <input type="text" id="pm-sub" value="7月20日 · 不见不散" oninput="pmRender()">
+          </div>
+          <div class="input-group" style="flex:1;min-width:140px;">
+            <label>装饰圆点</label>
+            <select id="pm-dots" onchange="pmRender()">
+              <option value="1">显示圆点装饰</option>
+              <option value="0">隐藏</option>
+            </select>
+          </div>
+        </div>
+        <div class="row" style="margin-bottom:12px;gap:12px;flex-wrap:wrap;">
+          <div class="input-group" style="flex:2;min-width:220px;">
+            <label>底部文案</label>
+            <input type="text" id="pm-footer" value="主办方：某某工作室" oninput="pmRender()">
+          </div>
+          <div class="input-group" style="flex:1;min-width:140px;">
+            <label>Emoji 图标</label>
+            <input type="text" id="pm-emoji" value="🎉" oninput="pmRender()">
+          </div>
+        </div>
+        <div style="text-align:center;margin-bottom:12px;">
+          <button class="btn btn-primary" onclick="pmExport()">⬇️ 导出 PNG</button>
+        </div>
+        <div style="text-align:center;">
+          <canvas id="pm-canvas" width="900" height="383" style="max-width:100%;border-radius:10px;border:1px solid var(--border);box-shadow:0 2px 12px rgba(0,0,0,.2);"></canvas>
+        </div>
+        <div style="margin-top:8px;font-size:12px;color:var(--text-light);text-align:center;">💡 灵感来源于 Canva / Piktochart / Venngage 付费模板；海报在浏览器本地生成，不会上传任何内容</div>
+      </div>
+    `,
+    handler: () => { setTimeout(pmInit, 50); }
+  },
+  {
+    id: 'habit-tracker',
+    cat: 'edu',
+    icon: '✅',
+    name: '习惯打卡',
+    desc: '灵感来源于 Streaks / Habitica 付费订阅，每日习惯打卡、连续坚持天数统计、月度打卡日历，数据保存在本地浏览器，养成好习惯必备',
+    html: `
+      <div class="tool-card">
+        <div class="row" style="margin-bottom:12px;gap:12px;flex-wrap:wrap;">
+          <div class="input-group" style="flex:2;min-width:200px;">
+            <label>新习惯名称</label>
+            <input type="text" id="ht-name" placeholder="如：每天阅读 30 分钟" onkeydown="if(event.key==='Enter')htAdd()">
+          </div>
+          <div class="input-group" style="flex:1;min-width:120px;">
+            <label>习惯图标</label>
+            <select id="ht-icon">
+              <option value="📖">📖 阅读</option>
+              <option value="🏃">🏃 运动</option>
+              <option value="💧">💧 喝水</option>
+              <option value="😴">😴 早睡</option>
+              <option value="🧘">🧘 冥想</option>
+              <option value="✍️">✍️ 写作</option>
+              <option value="🎯">🎯 目标</option>
+              <option value="⭐">⭐ 其他</option>
+            </select>
+          </div>
+          <div class="input-group" style="flex:1;min-width:110px;">
+            <label>标记颜色</label>
+            <input type="color" id="ht-color" value="#10b981">
+          </div>
+        </div>
+        <div style="text-align:center;margin-bottom:16px;">
+          <button class="btn btn-primary" onclick="htAdd()">➕ 添加习惯</button>
+        </div>
+        <div id="ht-list" style="display:flex;flex-direction:column;gap:12px;"></div>
+        <div style="margin-top:8px;font-size:12px;color:var(--text-light);text-align:center;">💡 灵感来源于 Streaks / Habitica 付费订阅；全部数据保存在本地浏览器 localStorage，不上传服务器</div>
+      </div>
+    `,
+    handler: () => { setTimeout(htInit, 50); }
   }
 ];
 
@@ -7470,7 +7589,7 @@ function dpCopyText() {
 const CATEGORIES = [
   { id: 'text', icon: '✏️', name: '文本工具', desc: '字数统计、简繁转换、摩斯密码、文本转语音、文本对比' },
   { id: 'dev', icon: '💻', name: '开发者工具', desc: 'JSON格式化、二维码生成、二维码美化、条形码生成、Favicon图标生成、正则测试、Markdown、IP查询、思维导图、图表生成、代码图片生成、表格数据转换' },
-  { id: 'image', icon: '🖼️', name: '图片处理', desc: '去背景换底色、批量压缩、加水印、长图拼接、格式转换、裁剪、异形裁剪、马赛克打码、双色调滤镜、图片转字符画、照片卡通化、OCR、印章制作、九宫格切图、文字转手写体、表情包、社交媒体图片尺寸调整、艺术效果、像素画、设备样机、图片高清放大、图片转线稿、渐变背景、文字特效、拼贴画、图片相框、颜色盲区模拟' },
+  { id: 'image', icon: '🖼️', name: '图片处理', desc: '去背景换底色、批量压缩、加水印、长图拼接、格式转换、裁剪、异形裁剪、马赛克打码、双色调滤镜、图片转字符画、照片卡通化、OCR、印章制作、九宫格切图、文字转手写体、表情包、社交媒体图片尺寸调整、艺术效果、像素画、设备样机、图片高清放大、图片转线稿、渐变背景、文字特效、拼贴画、图片相框、颜色盲区模拟、海报设计器' },
   { id: 'document', icon: '📄', name: '文档转换', desc: '图片转PDF、PDF转图片、Word解析、Excel转PDF、PDF合并、PDF拆分、简历生成、电子签名、表单制作、邮件签名、发票/收据生成器、证书生成器' },
   { id: 'convert', icon: '🔄', name: '转换工具', desc: '单位换算、进制转换、函数绘图' },
   { id: 'security', icon: '🔒', name: '安全工具', desc: '密码生成、Hash计算、随机数' },
@@ -7482,7 +7601,7 @@ const CATEGORIES = [
   { id: 'lottery', icon: '🎰', name: '彩票工具', desc: '双色球、大乐透、福彩3D、快乐8、排列三…在线过滤缩水、选号、计算器' },
   { id: 'fun', icon: '🎪', name: '趣味工具', desc: '表情包生成、决策转盘、抽奖抽签、词云生成、涂鸦画板、娱乐好玩' },
   { id: 'finance', icon: '💰', name: '财务工具', desc: '家庭记账本、收支统计、月度汇总' },
-  { id: 'edu', icon: '📚', name: '教育资源', desc: '电子教材在线阅读、学习资源导航、元素周期表' }
+  { id: 'edu', icon: '📚', name: '教育资源', desc: '电子教材在线阅读、学习资源导航、元素周期表、习惯打卡' }
 ];
 
 // ============================================================
@@ -13533,4 +13652,227 @@ function ledRender() {
     cards += '</div>';
   });
   listEl.innerHTML = cards + (ledRecords.length > 60 ? '<div style="text-align:center;font-size:12px;color:var(--text-light);padding:8px;">⋯ 仅显示最近 60 条，共 ' + ledRecords.length + ' 条</div>' : '');
+}
+
+// ============================================================
+// 海报设计器 处理函数 (替代 Canva / Piktochart / Venngage 付费模板)
+// ============================================================
+function pmInit() {
+  pmSetSize();
+}
+
+function pmSize() {
+  var v = document.getElementById('pm-size').value;
+  var parts = v.split('x');
+  return { w: parseInt(parts[0]), h: parseInt(parts[1]) };
+}
+
+function pmSetSize() {
+  var s = pmSize();
+  var cv = document.getElementById('pm-canvas');
+  if (cv) { cv.width = s.w; cv.height = s.h; }
+  pmRender();
+}
+
+function pmRender() {
+  var cv = document.getElementById('pm-canvas');
+  if (!cv) return;
+  var ctx = cv.getContext('2d');
+  var W = cv.width, H = cv.height;
+  var bg1 = document.getElementById('pm-bg1').value || '#6366f1';
+  var bg2 = document.getElementById('pm-bg2').value || '#ec4899';
+  var bgtype = document.getElementById('pm-bgtype').value || 'solid';
+
+  // 背景
+  if (bgtype === 'gradient') {
+    var g = ctx.createLinearGradient(0, 0, W, H);
+    g.addColorStop(0, bg1);
+    g.addColorStop(1, bg2);
+    ctx.fillStyle = g;
+    ctx.fillRect(0, 0, W, H);
+  } else {
+    ctx.fillStyle = bg1;
+    ctx.fillRect(0, 0, W, H);
+  }
+
+  // 装饰圆点（半透明圆圈错落排布）
+  if (document.getElementById('pm-dots').value === '1') {
+    ctx.fillStyle = 'rgba(255,255,255,.14)';
+    var cx = W * 0.85, cy = H * 0.18, r = Math.min(W, H) * 0.16;
+    ctx.beginPath(); ctx.arc(cx, cy, r, 0, Math.PI * 2); ctx.fill();
+    ctx.beginPath(); ctx.arc(W * 0.12, H * 0.85, r * 0.55, 0, Math.PI * 2); ctx.fill();
+    ctx.beginPath(); ctx.arc(W * 0.95, H * 0.8, r * 0.32, 0, Math.PI * 2); ctx.fill();
+    ctx.beginPath(); ctx.arc(W * 0.06, H * 0.12, r * 0.22, 0, Math.PI * 2); ctx.fill();
+  }
+
+  // Emoji 图标
+  var emoji = document.getElementById('pm-emoji').value || '🎉';
+  ctx.font = Math.round(H * 0.16) + 'px sans-serif';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText(emoji, W / 2, H * 0.3);
+
+  // 主标题
+  var title = document.getElementById('pm-title').value || '';
+  var tColor = document.getElementById('pm-title-color').value || '#ffffff';
+  var tSize = Math.round(H * 0.14);
+  ctx.fillStyle = tColor;
+  ctx.font = 'bold ' + tSize + 'px "PingFang SC", "Microsoft YaHei", sans-serif';
+  // 简单换行按长度
+  var maxChars = Math.max(5, Math.floor(W / (tSize * 0.85)));
+  var titleLines = [];
+  for (var i = 0; i < title.length; i += maxChars) titleLines.push(title.slice(i, i + maxChars));
+  var ty = H * 0.5;
+  titleLines.forEach(function(line, idx) {
+    var y = ty + (idx - (titleLines.length - 1) / 2) * (tSize * 1.35);
+    ctx.fillText(line, W / 2, y);
+  });
+
+  // 副标题
+  var sub = document.getElementById('pm-sub').value || '';
+  ctx.fillStyle = 'rgba(255,255,255,.92)';
+  ctx.font = Math.round(H * 0.05) + 'px "PingFang SC", "Microsoft YaHei", sans-serif';
+  ctx.fillText(sub, W / 2, H * 0.72);
+
+  // 底部文案
+  var footer = document.getElementById('pm-footer').value || '';
+  ctx.fillStyle = 'rgba(255,255,255,.75)';
+  ctx.font = Math.round(H * 0.04) + 'px "PingFang SC", "Microsoft YaHei", sans-serif';
+  ctx.fillText(footer, W / 2, H * 0.9);
+
+  // 底部小标
+  ctx.font = '12px sans-serif';
+  ctx.fillStyle = 'rgba(255,255,255,.35)';
+  ctx.fillText('ToolBox 海报设计器 · 在线生成', W / 2, H - 16);
+}
+
+function pmExport() {
+  pmRender();
+  var cv = document.getElementById('pm-canvas');
+  if (!cv) return;
+  var a = document.createElement('a');
+  a.download = 'poster.png';
+  a.href = cv.toDataURL('image/png');
+  a.click();
+  toast('✅ 已导出海报 PNG');
+}
+
+// ============================================================
+// 习惯打卡 处理函数 (替代 Streaks / Habitica 付费订阅)
+// ============================================================
+var htHabits = [];
+var HT_KEY = 'toolbox_habits_v1';
+
+function htInit() {
+  htLoad();
+  htRender();
+}
+
+function htLoad() {
+  try {
+    var raw = localStorage.getItem(HT_KEY);
+    htHabits = raw ? JSON.parse(raw) : [];
+  } catch (e) { htHabits = []; }
+}
+
+function htSave() {
+  try { localStorage.setItem(HT_KEY, JSON.stringify(htHabits)); } catch (e) {}
+}
+
+function htTodayKey() {
+  var d = new Date();
+  return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
+}
+
+function htAdd() {
+  var nameEl = document.getElementById('ht-name');
+  var name = (nameEl && nameEl.value || '').trim();
+  if (!name) { toast('⚠️ 请输入习惯名称'); return; }
+  var icon = document.getElementById('ht-icon').value || '⭐';
+  var color = document.getElementById('ht-color').value || '#10b981';
+  if (htHabits.some(function(h) { return h.name === name; })) { toast('⚠️ 该习惯已存在'); return; }
+  htHabits.unshift({ id: 'ht' + Date.now(), name: name, icon: icon, color: color, days: {} });
+  htSave();
+  htRender();
+  if (nameEl) nameEl.value = '';
+  toast('✅ 已添加习惯：' + name);
+}
+
+function htDelete(id) {
+  if (!confirm('确定删除该习惯及全部打卡记录吗？')) return;
+  htHabits = htHabits.filter(function(h) { return h.id !== id; });
+  htSave();
+  htRender();
+}
+
+function htToggle(id) {
+  var h = htHabits.find(function(x) { return x.id === id; });
+  if (!h) return;
+  var k = htTodayKey();
+  if (h.days[k]) delete h.days[k];
+  else h.days[k] = true;
+  htSave();
+  htRender();
+}
+
+function htStreak(h) {
+  // 连续打卡（从今天或昨天开始向前数）
+  var d = new Date();
+  var streak = 0;
+  // 今天：若未打卡则从昨天开始算
+  var k = htTodayKey();
+  if (!h.days[k]) d.setDate(d.getDate() - 1);
+  while (true) {
+    var key = d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
+    if (h.days[key]) { streak++; d.setDate(d.getDate() - 1); }
+    else break;
+  }
+  return streak;
+}
+
+function htRender() {
+  var listEl = document.getElementById('ht-list');
+  if (!listEl) return;
+  if (htHabits.length === 0) {
+    listEl.innerHTML = '<div style="text-align:center;color:var(--text-light);padding:24px;">📭 还没有习惯，先添加一个吧！<br><span style="font-size:12px;">如：每天喝水、阅读、运动、早睡…</span></div>';
+    return;
+  }
+  // 最近 14 天格子
+  var days = [];
+  for (var i = 13; i >= 0; i--) {
+    var d = new Date();
+    d.setDate(d.getDate() - i);
+    days.push({ key: d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0'), label: String((d.getMonth()+1)).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0') });
+  }
+  // 列头
+  var html = '<div style="display:flex;gap:6px;align-items:center;padding:4px 4px 8px;overflow-x:auto;">';
+  html += '<span style="width:150px;flex-shrink:0;font-size:12px;color:var(--text-light);">习惯名称</span>';
+  days.forEach(function(dd) {
+    html += '<span style="flex:1;min-width:24px;text-align:center;font-size:10px;color:var(--text-light);">' + dd.label + '</span>';
+  });
+  html += '<span style="width:52px;flex-shrink:0;text-align:center;font-size:11px;color:var(--text-light);">连续</span>';
+  html += '</div>';
+
+  htHabits.forEach(function(h) {
+    var todayKey = htTodayKey();
+    html += '<div style="display:flex;gap:6px;align-items:center;padding:8px 4px;border:1px solid var(--border);border-radius:10px;">';
+    html += '<div style="width:150px;flex-shrink:0;display:flex;align-items:center;gap:6px;">';
+    html += '<span style="font-size:18px;">' + h.icon + '</span>';
+    html += '<span style="font-size:13px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">' + h.name + '</span>';
+    html += '</div>';
+    days.forEach(function(dd) {
+      var on = !!h.days[dd.key];
+      var isToday = dd.key === todayKey;
+      var bg = on ? h.color : 'var(--bg)';
+      var border = isToday ? '2px solid ' + h.color : '1px solid var(--border)';
+      var op = isToday && !on ? 'opacity:.55;' : '';
+      html += '<div style="flex:1;min-width:24px;height:24px;border-radius:6px;background:' + bg + ';border:' + border + ';' + op + 'cursor:pointer;" title="' + dd.label + (on ? ' ✓' : '') + '" onclick="htToggle(\'' + h.id + '\')"></div>';
+    });
+    var streak = htStreak(h);
+    html += '<div style="width:52px;flex-shrink:0;text-align:center;font-size:13px;font-weight:700;color:' + h.color + ';">' + streak + ' 天</div>';
+    html += '<button onclick="htDelete(\'' + h.id + '\')" style="flex-shrink:0;background:none;border:none;cursor:pointer;font-size:14px;color:var(--text-light);" title="删除习惯">🗑️</button>';
+    html += '</div>';
+  });
+  html += '<div style="font-size:12px;color:var(--text-light);text-align:center;padding-top:8px;">点击日期小方块打卡 ✓ （今天有描边标记）</div>';
+  listEl.innerHTML = html;
 }
