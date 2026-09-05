@@ -40,7 +40,7 @@ function renderKl8FilterTool() {
         <div class="section-desc"><strong>2. 玩法（每注号码数）</strong></div>
         <div class="lottery-input-row">
           <label>每注号码数：</label>
-          <select id="kl8PerBet" style="width:110px;">
+          <select id="kl8PerBet" style="width:110px;" onchange="kl8PerBetChanged()">
             <option value="1">1（选一）</option>
             <option value="2">2（选二）</option>
             <option value="3">3（选三）</option>
@@ -82,16 +82,14 @@ function renderKl8FilterTool() {
         <div class="section-desc"><strong>4. 附加过滤</strong>（可选）</div>
         <div class="lottery-input-row">
           <label>奇偶比：</label>
-          <div class="filter-options" id="kl8OE">
-            <span class="filter-chip" data-v="any" onclick="toggleFilterChip(this,'kl8OE')">不限</span>
-            ${Array.from({length:21},(_,i)=>`<span class="filter-chip" data-v="${i}:${20-i}" onclick="toggleFilterChip(this,'kl8OE')">${i}:${20-i}</span>`).join('')}
+          <div class="filter-options" id="kl8OE" data-ratio="oe">
+            ${kl8RatioChipsHtml('kl8OE')}
           </div>
         </div>
         <div class="lottery-input-row">
           <label>大小比：</label>
-          <div class="filter-options" id="kl8BS">
-            <span class="filter-chip" data-v="any" onclick="toggleFilterChip(this,'kl8BS')">不限</span>
-            ${Array.from({length:21},(_,i)=>`<span class="filter-chip" data-v="${i}:${20-i}" onclick="toggleFilterChip(this,'kl8BS')">${i}:${20-i}</span>`).join('')}
+          <div class="filter-options" id="kl8BS" data-ratio="bs">
+            ${kl8RatioChipsHtml('kl8BS')}
           </div>
           <span style="font-size:12px;color:var(--text-light);">(41以上为大)</span>
         </div>
@@ -343,6 +341,28 @@ function downloadKl8Result() {
   a.href = url; a.download = '快乐8缩水结果.txt';
   document.body.appendChild(a); a.click(); document.body.removeChild(a);
   setTimeout(() => URL.revokeObjectURL(url), 5000);
+}
+
+// 生成奇偶比/大小比 chips（根据当前每注号码数动态生成，如每注8个 → 0:8 ~ 8:0）
+function kl8RatioChipsHtml(groupId) {
+  const perBet = parseInt(document.getElementById('kl8PerBet')?.value) || 8;
+  let html = `<span class="filter-chip" data-v="any" onclick="toggleFilterChip(this,'${groupId}')">不限</span>`;
+  for (let i = 0; i <= perBet; i++) {
+    html += `<span class="filter-chip" data-v="${i}:${perBet - i}" onclick="toggleFilterChip(this,'${groupId}')">${i}:${perBet - i}</span>`;
+  }
+  return html;
+}
+
+// 切换每注号码数时：更新奇偶/大小比 chips，并清空结果
+function kl8PerBetChanged() {
+  ['kl8OE', 'kl8BS'].forEach(gid => {
+    const el = document.getElementById(gid);
+    if (el) el.innerHTML = kl8RatioChipsHtml(gid);
+  });
+  const countEl = document.getElementById('kl8ResultCount');
+  if (countEl) countEl.textContent = '共 0 注';
+  const detail = document.getElementById('kl8Detail');
+  if (detail) detail.innerHTML = '';
 }
 
 function resetKl8Filter() {
