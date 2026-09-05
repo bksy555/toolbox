@@ -37,7 +37,7 @@ function renderKl8FilterTool() {
       <div class="section-divider"></div>
 
       <div style="margin-bottom:16px;">
-        <div class="section-desc"><strong>2. 每注号码数与生成注数</strong></div>
+        <div class="section-desc"><strong>2. 每注号码数</strong></div>
         <div class="lottery-input-row">
           <label>每注号码数：</label>
           <select id="kl8PerBet" style="width:100px;">
@@ -53,9 +53,8 @@ function renderKl8FilterTool() {
           </select>
           <span style="font-size:12px;color:var(--text-light);margin-left:8px;">快乐8开奖20个号码，选20为单式，小于20为复式玩法</span>
         </div>
-        <div class="lottery-input-row">
-          <label>生成注数：</label>
-          <input type="number" id="kl8BetCount" value="5" min="1" max="50" style="width:80px;">
+        <div style="font-size:12px;color:var(--text-light);margin-top:6px;">
+          💡 大底不超过 <strong style="color:var(--text);">24 个号码</strong> 时，系统穷举输出<strong style="color:var(--text);">全部</strong>满足条件的组合（24选20 = 10,626 注）；超过 24 个请缩小大底或使用「🎲 在线机选」。
         </div>
       </div>
 
@@ -178,9 +177,14 @@ function kl8PickByTail() {
 function runKl8Filter() {
   const lt = LOTTERY_TYPES[currentLottery];
   const perBet = parseInt(document.getElementById('kl8PerBet')?.value) || 20;
-  const betCount = parseInt(document.getElementById('kl8BetCount')?.value) || 5;
   const oe = getFilterChipValues('kl8OE');
   const bs = getFilterChipValues('kl8BS');
+
+  // 每次生成前先清空上次结果
+  const _countEl = document.getElementById('kl8ResultCount');
+  if (_countEl) _countEl.textContent = '共 0 注';
+  const _detailEl = document.getElementById('kl8Detail');
+  if (_detailEl) _detailEl.innerHTML = '';
 
   // 读取尾数条件
   const tails = [];
@@ -208,53 +212,48 @@ function runKl8Filter() {
     return;
   }
 
-  // 按尾数分组大底
-  const tailPool = Array.from({length: 10}, () => []);
+  // 按尾数分组大底（用于可行性校验）
+  const tailPool = Array.from({ length: 10 }, () => []);
   kl8State.red.forEach(n => tailPool[n % 10].push(n));
 
-  const results = [];
-  const seen = new Set();
-  let attempts = 0;
-  const maxAttempts = betCount * 200 + 500;
-
-  while (results.length < betCount && attempts < maxAttempts) {
-    attempts++;
-    // 1. 优先按尾数条件抽取
-    const picked = [];
-    for (let t = 0; t < 10; t++) {
-      if (tails[t] !== undefined && tails[t] > 0) {
-        const pool = tailPool[t];
-        if (pool.length < tails[t]) { /* 大底该尾数不够，跳过整注 */ picked.length = -1; break; }
-        const chosen = shuffleArr([...pool]).slice(0, tails[t]);
-        picked.push(...chosen);
-      }
+  // 尾数可行性：指定出几个的尾数，大底里必须够数
+  for (let t = 0; t < 10; t++) {
+    if (tails[t] !== undefined && tails[t] > 0 && tailPool[t].length < tails[t]) {
+      ltToast(`⚠️ 大底中 ${t} 尾仅有 ${tailPool[t].length} 个号码，不够出 ${tails[t]} 个`);
+      return;
     }
-    if (picked.length === -1) continue;
-    // 2. 补足到 perBet
-    const used = new Set(picked);
-    const rest = kl8State.red.filter(n => !used.has(n));
-    const need = perBet - picked.length;
-    if (rest.length < need) continue;
-    const extra = shuffleArr([...rest]).slice(0, need);
-    const combo = [...picked, ...extra].sort((a, b) => a - b);
+  }
 
-    // 3. 奇偶/大小过滤
+  // 穷举前先校验：大底数量不能超过 24（组合爆炸，无法穷举）
+  if (kl8State.red.length > 24) {
+    ltToast(`⚠️ 大底 ${kl8State.red.length} 个号码超出穷举上限（24 个），请缩小大底，或使用「🎲 在线机选」随机配号。`);
+    return;
+  }
+  const totalCombos = combination(kl8State.red.length, perBet);
+  const MAX_COMBOS = 134596; // 24选18=134,596 作安全上限（覆盖 24选20/19/18 复式场景）
+  if (totalCombos > MAX_COMBOS) {
+    ltToast(`⚠️ 大底 ${kl8State.red.length} 个 × 每注 ${perBet} 个 = ${totalCombos.toLocaleString()} 注，组合数过大无法穷举。请减少大底号码或增大每注号码数（选 20 最优），或使用「🎲 在线机选」随机配号。`);
+    return;
+  }
+
+  // 穷举所有组合并过滤
+  const reds = [...kl8State.red].sort((a, b) => a - b);
+  const results = [];
+  for (const combo of combinations(reds, perBet)) {
+    // 尾数条件
+    if (anyTailSet) {
+      let tailOk = true;
+      for (let t = 0; t < 10; t++) {
+        if (tails[t] !== undefined) {
+          const cnt = combo.filter(n => n % 10 === t).length;
+          if (cnt !== tails[t]) { tailOk = false; break; }
+        }
+      }
+      if (!tailOk) continue;
+    }
+    // 奇偶/大小过滤
     if (oe.length > 0 && !oe.includes(oddEvenRatio(combo))) continue;
     if (bs.length > 0 && !bs.includes(bigSmallRatio(combo, 41))) continue;
-
-    // 4. 尾数条件二次校验（确保精确满足）
-    let tailOk = true;
-    for (let t = 0; t < 10; t++) {
-      if (tails[t] !== undefined) {
-        const cnt = combo.filter(n => n % 10 === t).length;
-        if (cnt !== tails[t]) { tailOk = false; break; }
-      }
-    }
-    if (!tailOk) continue;
-
-    const key = combo.join(',');
-    if (seen.has(key)) continue;
-    seen.add(key);
     results.push(combo);
   }
 
@@ -269,7 +268,7 @@ function runKl8Filter() {
     return;
   }
 
-  // 构建复制文本
+  // 构建复制文本（全部注数）
   const textLines = [];
   let lineNums = [];
   results.forEach(combo => {
@@ -280,13 +279,15 @@ function runKl8Filter() {
   const copyText = textLines.join('\n');
 
   let html = '<div style="margin-bottom:8px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;">';
-  html += `<span style="font-size:12px;color:var(--text-light);">共 ${results.length} 注 · 每注 ${perBet} 个号码</span>`;
-  html += '<button onclick="copyKl8Result()" style="padding:4px 12px;font-size:12px;cursor:pointer;border:1px solid var(--border);border-radius:4px;background:var(--bg);color:var(--text);">📋 一键复制</button>';
+  html += `<span style="font-size:12px;color:var(--text-light);">共 ${results.length.toLocaleString()} 注 · 每注 ${perBet} 个号码${results.length > 100 ? ' · 下方仅预览前100注，复制可得全部' : ''}</span>`;
+  html += '<button onclick="copyKl8Result()" style="padding:4px 12px;font-size:12px;cursor:pointer;border:1px solid var(--border);border-radius:4px;background:var(--bg);color:var(--text);">📋 一键复制全部</button>';
   html += '</div>';
   html += '<div id="kl8ResultText" style="display:none;">' + copyText.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</div>';
   html += '<div style="font-size:12px;font-family:monospace;line-height:2;">';
 
-  results.forEach((combo, i) => {
+  const previewCount = Math.min(results.length, 100);
+  for (let i = 0; i < previewCount; i++) {
+    const combo = results[i];
     const balls = combo.map(n => `<span class="selected-ball red" style="width:24px;height:24px;font-size:11px;display:inline-flex;">${n < 10 ? '0' + n : n}</span>`).join('');
     // 尾数分布摘要
     const dist = [];
@@ -295,7 +296,10 @@ function runKl8Filter() {
       dist.push(cnt);
     }
     html += `<div style="margin:4px 0;">${i + 1}. ${balls} <span style="color:var(--text-light);font-size:11px;">尾数分布 [${dist.join(' ')}]</span></div>`;
-  });
+  }
+  if (results.length > 100) {
+    html += `<div style="margin:8px 0;color:var(--text-light);font-size:12px;">…… 共 ${results.length.toLocaleString()} 注，点击「一键复制全部」获取完整列表</div>`;
+  }
   html += '</div>';
   detail.innerHTML = html;
 }
