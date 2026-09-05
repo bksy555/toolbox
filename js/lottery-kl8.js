@@ -280,7 +280,7 @@ function runKl8Filter() {
   window._kl8CopyText = copyText;
 
   let html = '<div style="margin-bottom:8px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;">';
-  html += `<span style="font-size:12px;color:var(--text-light);">共 ${results.length.toLocaleString()} 注 · 每注 ${perBet} 个号码${results.length > 100 ? ' · 下方仅预览前100注' : ''}</span>`;
+  html += `<span style="font-size:12px;color:var(--text-light);">共 ${results.length.toLocaleString()} 注 · 每注 ${perBet} 个号码${results.length > 1500 ? ' · 下方仅显示前1500注' : ''}</span>`;
   if (tooLarge) {
     html += '<button onclick="downloadKl8Result()" style="padding:4px 12px;font-size:12px;cursor:pointer;border:1px solid var(--border);border-radius:4px;background:var(--bg);color:var(--text);">📥 下载全部 (.txt)</button>';
     html += '<span style="font-size:12px;color:#f59e0b;">⚠️ 注数过多，浏览器复制会卡死，请下载 txt 文件</span>';
@@ -293,7 +293,7 @@ function runKl8Filter() {
   }
   detail.innerHTML = html + '<div style="font-size:12px;font-family:monospace;line-height:2;">';
 
-  const previewCount = Math.min(results.length, 100);
+  const previewCount = Math.min(results.length, 1500);
   for (let i = 0; i < previewCount; i++) {
     const combo = results[i];
     const balls = combo.map(n => `<span class="selected-ball red" style="width:24px;height:24px;font-size:11px;display:inline-flex;">${n < 10 ? '0' + n : n}</span>`).join('');
@@ -305,8 +305,8 @@ function runKl8Filter() {
     }
     html += `<div style="margin:4px 0;">${i + 1}. ${balls} <span style="color:var(--text-light);font-size:11px;">尾数分布 [${dist.join(' ')}]</span></div>`;
   }
-  if (results.length > 100) {
-    html += `<div style="margin:8px 0;color:var(--text-light);font-size:12px;">…… 共 ${results.length.toLocaleString()} 注，点击「一键复制全部」获取完整列表</div>`;
+  if (results.length > 1500) {
+    html += `<div style="margin:8px 0;color:var(--text-light);font-size:12px;">⋯ 共 ${results.length.toLocaleString()} 注，已省略 ${(results.length - 1500).toLocaleString()} 注（完整列表可复制/下载）</div>`;
   }
   html += '</div>';
   detail.innerHTML = html;
