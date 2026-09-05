@@ -13,7 +13,7 @@
       "source": "netease",
       "br": null,
       "addedAt": "2026-09-04T22:01:20.297Z",
-      "local": true
+      "local": false
     },
     {
       "id": "3399839173",
@@ -42,7 +42,7 @@
       "source": "netease",
       "br": null,
       "addedAt": "2026-09-04T22:01:20.297Z",
-      "local": true
+      "local": false
     },
     {
       "id": "287398",
@@ -85,7 +85,7 @@
       "source": "netease",
       "br": null,
       "addedAt": "2026-09-04T22:01:20.297Z",
-      "local": true
+      "local": false
     },
     {
       "id": "2600493765",
@@ -143,7 +143,7 @@
       "source": "netease",
       "br": null,
       "addedAt": "2026-09-04T22:01:20.297Z",
-      "local": true
+      "local": false
     },
     {
       "id": "273114",
@@ -186,7 +186,7 @@
       "source": "netease",
       "br": null,
       "addedAt": "2026-09-04T22:01:20.297Z",
-      "local": true
+      "local": false
     },
     {
       "id": "1303464858",
@@ -201,7 +201,7 @@
       "source": "netease",
       "br": null,
       "addedAt": "2026-09-04T22:01:20.297Z",
-      "local": true
+      "local": false
     },
     {
       "id": "1918576268",
@@ -216,7 +216,7 @@
       "source": "netease",
       "br": null,
       "addedAt": "2026-09-04T22:01:20.297Z",
-      "local": true
+      "local": false
     },
     {
       "id": "1456890009",
@@ -232,7 +232,7 @@
       "source": "netease",
       "br": null,
       "addedAt": "2026-09-04T22:01:20.297Z",
-      "local": true
+      "local": false
     },
     {
       "id": "3387477661",
@@ -262,7 +262,7 @@
       "source": "netease",
       "br": null,
       "addedAt": "2026-09-04T22:01:20.297Z",
-      "local": true
+      "local": false
     },
     {
       "id": "1827600686",
@@ -278,7 +278,7 @@
       "source": "netease",
       "br": null,
       "addedAt": "2026-09-04T22:01:20.297Z",
-      "local": true
+      "local": false
     },
     {
       "id": "287063",
@@ -307,7 +307,7 @@
       "source": "netease",
       "br": null,
       "addedAt": "2026-09-04T22:01:20.297Z",
-      "local": true
+      "local": false
     },
     {
       "id": "2755710644",
@@ -337,7 +337,7 @@
       "source": "netease",
       "br": null,
       "addedAt": "2026-09-04T22:01:20.297Z",
-      "local": true
+      "local": false
     },
     {
       "id": "307594",
@@ -1101,10 +1101,11 @@
       "album": "绅士",
       "albumPic": "https://p2.music.126.net/vu7SHbVlMuszmSuKR2SKAQ==/109951168707343730.jpg",
       "duration": 261249,
-      "url": null,
+      "url": "/data/music/32507038.mp3",
       "source": "netease",
-      "br": null,
-      "addedAt": "2026-09-04T22:01:20.298Z"
+      "br": 128000,
+      "addedAt": "2026-09-04T22:01:20.298Z",
+      "local": true
     },
     {
       "id": "1974443814",
@@ -3931,9 +3932,204 @@
       "source": "netease",
       "br": null,
       "addedAt": "2026-09-04T22:01:25.749Z"
+    },
+    {
+      "id": "186016",
+      "name": "晴天",
+      "artists": [
+        "周杰伦"
+      ],
+      "album": "叶惠美",
+      "albumPic": "",
+      "duration": 269000,
+      "url": "/data/music/186016.mp3",
+      "source": "netease",
+      "br": 128000,
+      "local": true,
+      "addedAt": "2026-09-05T03:52:03.000Z"
+    },
+    {
+      "id": "186001",
+      "name": "七里香",
+      "artists": [
+        "周杰伦"
+      ],
+      "album": "七里香",
+      "albumPic": "",
+      "duration": 299000,
+      "url": "/data/music/186001.mp3",
+      "source": "netease",
+      "br": 128000,
+      "local": true,
+      "addedAt": "2026-09-05T03:52:03.000Z"
+    },
+    {
+      "id": "185709",
+      "name": "稻香",
+      "artists": [
+        "周杰伦"
+      ],
+      "album": "魔杰座",
+      "albumPic": "",
+      "duration": 223000,
+      "url": "/data/music/185709.mp3",
+      "source": "netease",
+      "br": 128000,
+      "local": true,
+      "addedAt": "2026-09-05T03:52:03.000Z"
+    },
+    {
+      "id": "418603077",
+      "name": "告白气球",
+      "artists": [
+        "周杰伦"
+      ],
+      "album": "周杰伦的床边故事",
+      "albumPic": "",
+      "duration": 215000,
+      "url": "/data/music/418603077.mp3",
+      "source": "netease",
+      "br": 128000,
+      "local": true,
+      "addedAt": "2026-09-05T03:52:03.000Z"
+    },
+    {
+      "id": "185904",
+      "name": "夜曲",
+      "artists": [
+        "周杰伦"
+      ],
+      "album": "十一月的萧邦",
+      "albumPic": "",
+      "duration": 226000,
+      "url": "/data/music/185904.mp3",
+      "source": "netease",
+      "br": 128000,
+      "local": true,
+      "addedAt": "2026-09-05T03:52:03.000Z"
+    },
+    {
+      "id": "185811",
+      "name": "青花瓷",
+      "artists": [
+        "周杰伦"
+      ],
+      "album": "我很忙",
+      "albumPic": "",
+      "duration": 239000,
+      "url": "/data/music/185811.mp3",
+      "source": "netease",
+      "br": 128000,
+      "local": true,
+      "addedAt": "2026-09-05T03:52:03.000Z"
+    },
+    {
+      "id": "85621",
+      "name": "第一次",
+      "artists": [
+        "光良"
+      ],
+      "album": "第一次个人创作专辑",
+      "albumPic": "",
+      "duration": 263000,
+      "url": "/data/music/85621.mp3",
+      "source": "netease",
+      "br": 128000,
+      "local": true,
+      "addedAt": "2026-09-05T03:52:03.000Z"
+    },
+    {
+      "id": "85580",
+      "name": "童话",
+      "artists": [
+        "光良"
+      ],
+      "album": "童话",
+      "albumPic": "",
+      "duration": 244000,
+      "url": "/data/music/85580.mp3",
+      "source": "netease",
+      "br": 128000,
+      "local": true,
+      "addedAt": "2026-09-05T03:52:03.000Z"
+    },
+    {
+      "id": "190449",
+      "name": "吻别",
+      "artists": [
+        "张学友"
+      ],
+      "album": "吻别",
+      "albumPic": "",
+      "duration": 302000,
+      "url": "/data/music/190449.mp3",
+      "source": "netease",
+      "br": 128000,
+      "local": true,
+      "addedAt": "2026-09-05T03:52:03.000Z"
+    },
+    {
+      "id": "191232",
+      "name": "遥远的她",
+      "artists": [
+        "张学友"
+      ],
+      "album": "遥远的她AMOUR",
+      "albumPic": "",
+      "duration": 257000,
+      "url": "/data/music/191232.mp3",
+      "source": "netease",
+      "br": 128000,
+      "local": true,
+      "addedAt": "2026-09-05T03:52:03.000Z"
+    },
+    {
+      "id": "190233",
+      "name": "偷心",
+      "artists": [
+        "张学友"
+      ],
+      "album": "偷心",
+      "albumPic": "",
+      "duration": 261000,
+      "url": "/data/music/190233.mp3",
+      "source": "netease",
+      "br": 128000,
+      "local": true,
+      "addedAt": "2026-09-05T03:52:03.000Z"
+    },
+    {
+      "id": "189841",
+      "name": "离开以后",
+      "artists": [
+        "张学友"
+      ],
+      "album": "拥友",
+      "albumPic": "",
+      "duration": 244000,
+      "url": "/data/music/189841.mp3",
+      "source": "netease",
+      "br": 128000,
+      "local": true,
+      "addedAt": "2026-09-05T03:52:03.000Z"
+    },
+    {
+      "id": "190360",
+      "name": "等你等到我心痛",
+      "artists": [
+        "张学友"
+      ],
+      "album": "等你等到我心痛 精选集",
+      "albumPic": "",
+      "duration": 257000,
+      "url": "/data/music/190360.mp3",
+      "source": "netease",
+      "br": 128000,
+      "local": true,
+      "addedAt": "2026-09-05T03:52:03.000Z"
     }
   ],
-  "total": 273,
-  "updatedAt": "2026-09-04T22:01:25.749Z",
-  "localCount": 12
+  "total": 286,
+  "updatedAt": "2026-09-05T03:52:03.000Z",
+  "localCount": 14
 }

@@ -178,6 +178,43 @@
       box-shadow: 0 4px 16px rgba(16, 185, 129, 0.3);
     }
     .smooth-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 24px rgba(16, 185, 129, 0.4); }
+    .favorite-btn-wrap { text-align: center; margin: 12px 0 8px; display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; }
+    .fav-btn {
+      display: inline-flex; align-items: center; gap: 8px; padding: 12px 32px; border: none;
+      border-radius: 16px; background: linear-gradient(135deg, #f59e0b, #f97316); color: #fff;
+      font-size: 16px; font-weight: 600; cursor: pointer; transition: all 0.2s;
+      box-shadow: 0 4px 16px rgba(245, 158, 11, 0.3);
+    }
+    .fav-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 24px rgba(245, 158, 11, 0.4); }
+    .fav-section-custom { margin-bottom: 20px; }
+    .fav-section-custom .favheader {
+      font-size: 16px; font-weight: 600; padding: 10px 0 12px; display: flex; align-items: center; gap: 8px;
+    }
+    .fav-section-custom .favheader .count { font-size: 12px; color: var(--music-text-light); font-weight: 400; }
+    .fav-section-custom .favheader .back-btn { margin-left: auto; font-size: 12px; color: #f59e0b; cursor: pointer; background: none; border: none; padding: 4px 10px; border-radius: 8px; }
+    .fav-section-custom .favheader .back-btn:hover { background: rgba(245, 158, 11, 0.1); }
+    .fav-list-custom { display: flex; flex-direction: column; gap: 4px; }
+    .fav-song {
+      display: flex; align-items: center; padding: 10px 14px; border-radius: 10px;
+      background: var(--music-card); cursor: pointer; transition: background 0.15s; gap: 12px;
+      border: 1px solid transparent;
+    }
+    .fav-song:hover { background: var(--music-card-hover); border-color: rgba(245, 158, 11, 0.2); }
+    .fav-song.playing { background: rgba(245, 158, 11, 0.12); border: 1px solid rgba(245, 158, 11, 0.25); }
+    .fav-song .f-index { width: 28px; font-size: 12px; color: var(--music-text-light); text-align: center; flex-shrink: 0; }
+    .fav-song .f-info { flex: 1; min-width: 0; }
+    .fav-song .f-info .f-name { font-size: 14px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .fav-song .f-info .f-artist { font-size: 12px; color: var(--music-text-light); margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .fav-song .f-local { font-size: 11px; color: #f59e0b; flex-shrink: 0; font-weight: 600; }
+    .fav-song .f-play-icon { font-size: 14px; color: #f59e0b; flex-shrink: 0; width: 24px; text-align: center; }
+    .fav-actions { display: flex; gap: 8px; margin: 6px 0 14px; }
+    .fav-action-btn {
+      padding: 8px 16px; border: none; border-radius: 10px; cursor: pointer;
+      font-size: 13px; font-weight: 600; transition: opacity 0.2s;
+    }
+    .fav-action-btn:hover { opacity: 0.85; }
+    .fav-action-play-all { background: linear-gradient(135deg, #f59e0b, #f97316); color: #fff; }
+    .fav-action-shuffle { background: var(--music-card); color: var(--music-text); border: 1px solid var(--music-border); }
     .smooth-section { margin-bottom: 20px; }
     .smooth-header { font-size: 16px; font-weight: 600; padding: 10px 0 12px; display: flex; align-items: center; gap: 8px; }
     .smooth-header .count { font-size: 12px; color: var(--music-text-light); font-weight: 400; }
@@ -223,7 +260,8 @@
     <p>基于 LX Music 生态 · 网易云音乐源 · 在线免费听</p>
   </div>
 
-  <div class="smooth-btn-wrap">
+  <div class="favorite-btn-wrap">
+    <button class="fav-btn" onclick="showFavoriteCollection()">🌟 站长收藏 · 一键播放</button>
     <button class="smooth-btn" onclick="showSmoothPlay()">✨ 顺畅播放 · 必能听</button>
   </div>
 
@@ -236,6 +274,19 @@
   <div class="fav-section" id="favSection" style="display:none">
     <div class="fav-header">⭐ 我的收藏 <span class="fav-count" id="favCount">(0)</span></div>
     <div class="fav-list" id="favList"></div>
+  </div>
+
+  <div class="fav-section-custom" id="favCollectionSection" style="display:none">
+    <div class="favheader">
+      🌟 站长收藏
+      <span class="count" id="favCollectionCount"></span>
+      <button class="back-btn" onclick="backToHome()">← 返回首页</button>
+    </div>
+    <div class="fav-actions">
+      <button class="fav-action-btn fav-action-play-all" onclick="playFavoriteAll()">▶ 全部播放</button>
+      <button class="fav-action-btn fav-action-shuffle" onclick="playFavoriteShuffle()">🔀 随机播放</button>
+    </div>
+    <div class="fav-list-custom" id="favCollectionList"></div>
   </div>
 
   <div class="smooth-section" id="smoothSection" style="display:none">
@@ -457,8 +508,74 @@ function backToHome() {
   searchInput.value = '';
   searchResults.style.display = 'none';
   smoothSection.style.display = 'none';
+  favCollectionSection.style.display = 'none';
   hotSection.style.display = 'block';
   loadHotSongs();
+}
+
+// ---- 站长收藏（14首本地完整版，一键播放） ----
+const FAVORITE_COLLECTION = [
+  { id: '186016', name: '晴天', artists: ['周杰伦'], album: '叶惠美', duration: 269000 },
+  { id: '186001', name: '七里香', artists: ['周杰伦'], album: '七里香', duration: 299000 },
+  { id: '185709', name: '稻香', artists: ['周杰伦'], album: '魔杰座', duration: 223000 },
+  { id: '418603077', name: '告白气球', artists: ['周杰伦'], album: '周杰伦的床边故事', duration: 215000 },
+  { id: '185904', name: '夜曲', artists: ['周杰伦'], album: '十一月的萧邦', duration: 226000 },
+  { id: '185811', name: '青花瓷', artists: ['周杰伦'], album: '我很忙', duration: 239000 },
+  { id: '32507038', name: '演员', artists: ['薛之谦'], album: '绅士', duration: 261000 },
+  { id: '85621', name: '第一次', artists: ['光良'], album: '第一次个人创作专辑', duration: 263000 },
+  { id: '85580', name: '童话', artists: ['光良'], album: '童话', duration: 244000 },
+  { id: '190449', name: '吻别', artists: ['张学友'], album: '吻别', duration: 302000 },
+  { id: '191232', name: '遥远的她', artists: ['张学友'], album: '遥远的她AMOUR', duration: 257000 },
+  { id: '190233', name: '偷心', artists: ['张学友'], album: '偷心', duration: 261000 },
+  { id: '189841', name: '离开以后', artists: ['张学友'], album: '拥友', duration: 244000 },
+  { id: '190360', name: '等你等到我心痛', artists: ['张学友'], album: '等你等到我心痛 精选集', duration: 257000 },
+].map(s => ({ ...s, source: 'netease', albumPic: '' }));
+
+const favCollectionSection = document.getElementById('favCollectionSection');
+const favCollectionList = document.getElementById('favCollectionList');
+const favCollectionCount = document.getElementById('favCollectionCount');
+
+function showFavoriteCollection() {
+  hotSection.style.display = 'none';
+  searchResults.style.display = 'none';
+  smoothSection.style.display = 'none';
+  favCollectionSection.style.display = 'block';
+  renderFavoriteCollection();
+}
+
+function renderFavoriteCollection() {
+  favCollectionCount.textContent = `共 ${FAVORITE_COLLECTION.length} 首 · 💿 本地完整版`;
+  let html = '';
+  FAVORITE_COLLECTION.forEach((song, idx) => {
+    const artists = song.artists.join(' / ');
+    html += `
+      <div class="fav-song ${idx === currentIndex && currentSongList === FAVORITE_COLLECTION ? 'playing' : ''}" onclick="playFavoriteSong(${idx})" data-fav-index="${idx}">
+        <div class="f-index">${idx + 1}</div>
+        <div class="f-info">
+          <div class="f-name">${song.name}</div>
+          <div class="f-artist">${artists}</div>
+        </div>
+        <div class="f-local">💿 本地</div>
+        <div class="f-play-icon">▶</div>
+      </div>
+    `;
+  });
+  favCollectionList.innerHTML = html;
+}
+
+function playFavoriteSong(index) {
+  currentSongList = FAVORITE_COLLECTION;
+  playSong(index);
+}
+
+function playFavoriteAll() {
+  currentSongList = FAVORITE_COLLECTION;
+  playSong(0);
+}
+
+function playFavoriteShuffle() {
+  currentSongList = FAVORITE_COLLECTION;
+  playSong(Math.floor(Math.random() * FAVORITE_COLLECTION.length));
 }
 
 // ---- 顺畅播放（基于本地缓存） ----
@@ -694,8 +811,12 @@ async function playSong(index) {
   }
   
   // 更新高亮
-  document.querySelectorAll('.song-item, .smooth-item, .hot-item').forEach(el => el.classList.remove('playing'));
-  document.querySelectorAll(`[data-index="${index}"]`).forEach(el => el.classList.add('playing'));
+  document.querySelectorAll('.song-item, .smooth-item, .hot-item, .fav-song').forEach(el => el.classList.remove('playing'));
+  if (currentSongList === FAVORITE_COLLECTION) {
+    document.querySelectorAll(`[data-fav-index="${index}"]`).forEach(el => el.classList.add('playing'));
+  } else {
+    document.querySelectorAll(`[data-index="${index}"]`).forEach(el => el.classList.add('playing'));
+  }
 }
 
 // 获取网易云歌曲播放链接（走后端 API：优先本地缓存文件，其次网易云实时解析）
