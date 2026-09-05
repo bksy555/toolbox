@@ -37,24 +37,25 @@ function renderKl8FilterTool() {
       <div class="section-divider"></div>
 
       <div style="margin-bottom:16px;">
-        <div class="section-desc"><strong>2. 每注号码数</strong></div>
+        <div class="section-desc"><strong>2. 玩法（每注号码数）</strong></div>
         <div class="lottery-input-row">
           <label>每注号码数：</label>
-          <select id="kl8PerBet" style="width:100px;">
-            <option value="20" selected>20（单式）</option>
-            <option value="10">10</option>
-            <option value="11">11</option>
-            <option value="12">12</option>
-            <option value="15">15</option>
-            <option value="16">16</option>
-            <option value="17">17</option>
-            <option value="18">18</option>
-            <option value="19">19</option>
+          <select id="kl8PerBet" style="width:110px;">
+            <option value="1">1（选一）</option>
+            <option value="2">2（选二）</option>
+            <option value="3">3（选三）</option>
+            <option value="4">4（选四）</option>
+            <option value="5">5（选五）</option>
+            <option value="6">6（选六）</option>
+            <option value="7">7（选七）</option>
+            <option value="8" selected>8（选八）</option>
+            <option value="9">9（选九）</option>
+            <option value="10">10（选十）</option>
           </select>
-          <span style="font-size:12px;color:var(--text-light);margin-left:8px;">快乐8开奖20个号码，选20为单式，小于20为复式玩法</span>
+          <span style="font-size:12px;color:var(--text-light);margin-left:8px;">官方玩法：从 80 个号码中任选 1~10 个组成一注</span>
         </div>
         <div style="font-size:12px;color:var(--text-light);margin-top:6px;">
-          💡 大底不超过 <strong style="color:var(--text);">24 个号码</strong> 时，系统穷举输出<strong style="color:var(--text);">全部</strong>满足条件的组合（24选20 = 10,626 注）；超过 24 个请缩小大底或使用「🎲 在线机选」。
+          💡 每期开奖摇出 <strong style="color:var(--text);">20 个号码</strong>，你选的号码命中其中多少个，按玩法中奖（选十中十最高 500 万）。大底不超过 <strong style="color:var(--text);">24 个号码</strong> 时穷举输出全部满足条件的组合。
         </div>
       </div>
 
@@ -176,7 +177,7 @@ function kl8PickByTail() {
 // ============================================================
 function runKl8Filter() {
   const lt = LOTTERY_TYPES[currentLottery];
-  const perBet = parseInt(document.getElementById('kl8PerBet')?.value) || 20;
+  const perBet = parseInt(document.getElementById('kl8PerBet')?.value) || 8;
   const oe = getFilterChipValues('kl8OE');
   const bs = getFilterChipValues('kl8BS');
 
@@ -230,9 +231,9 @@ function runKl8Filter() {
     return;
   }
   const totalCombos = combination(kl8State.red.length, perBet);
-  const MAX_COMBOS = 134596; // 24选18=134,596 作安全上限（覆盖 24选20/19/18 复式场景）
+  const MAX_COMBOS = 1961256; // 24选10=1,961,256 是该玩法组合数上限（大底24、每注10）
   if (totalCombos > MAX_COMBOS) {
-    ltToast(`⚠️ 大底 ${kl8State.red.length} 个 × 每注 ${perBet} 个 = ${totalCombos.toLocaleString()} 注，组合数过大无法穷举。请减少大底号码或增大每注号码数（选 20 最优），或使用「🎲 在线机选」随机配号。`);
+    ltToast(`⚠️ 大底 ${kl8State.red.length} 个 × 每注 ${perBet} 个 = ${totalCombos.toLocaleString()} 注，组合数过大无法穷举。请减少大底号码或改用「🎲 在线机选」随机配号。`);
     return;
   }
 
@@ -277,13 +278,22 @@ function runKl8Filter() {
   });
   if (lineNums.length > 0) textLines.push(lineNums.join('  '));
   const copyText = textLines.join('\n');
+  const tooLarge = results.length > 50000;
+  window._kl8CopyText = copyText;
 
   let html = '<div style="margin-bottom:8px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;">';
-  html += `<span style="font-size:12px;color:var(--text-light);">共 ${results.length.toLocaleString()} 注 · 每注 ${perBet} 个号码${results.length > 100 ? ' · 下方仅预览前100注，复制可得全部' : ''}</span>`;
-  html += '<button onclick="copyKl8Result()" style="padding:4px 12px;font-size:12px;cursor:pointer;border:1px solid var(--border);border-radius:4px;background:var(--bg);color:var(--text);">📋 一键复制全部</button>';
+  html += `<span style="font-size:12px;color:var(--text-light);">共 ${results.length.toLocaleString()} 注 · 每注 ${perBet} 个号码${results.length > 100 ? ' · 下方仅预览前100注' : ''}</span>`;
+  if (tooLarge) {
+    html += '<button onclick="downloadKl8Result()" style="padding:4px 12px;font-size:12px;cursor:pointer;border:1px solid var(--border);border-radius:4px;background:var(--bg);color:var(--text);">📥 下载全部 (.txt)</button>';
+    html += '<span style="font-size:12px;color:#f59e0b;">⚠️ 注数过多，浏览器复制会卡死，请下载 txt 文件</span>';
+  } else {
+    html += '<button onclick="copyKl8Result()" style="padding:4px 12px;font-size:12px;cursor:pointer;border:1px solid var(--border);border-radius:4px;background:var(--bg);color:var(--text);">📋 一键复制全部</button>';
+  }
   html += '</div>';
-  html += '<div id="kl8ResultText" style="display:none;">' + copyText.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</div>';
-  html += '<div style="font-size:12px;font-family:monospace;line-height:2;">';
+  if (!tooLarge) {
+    html += '<div id="kl8ResultText" style="display:none;">' + copyText.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</div>';
+  }
+  detail.innerHTML = html + '<div style="font-size:12px;font-family:monospace;line-height:2;">';
 
   const previewCount = Math.min(results.length, 100);
   for (let i = 0; i < previewCount; i++) {
@@ -304,15 +314,15 @@ function runKl8Filter() {
   detail.innerHTML = html;
 }
 
-// ---- 复制结果 ----
+// ---- 复制/下载结果 ----
 function copyKl8Result() {
   const el = document.getElementById('kl8ResultText');
-  if (!el) return;
-  const text = el.textContent || el.innerText;
+  const text = window._kl8CopyText || (el ? (el.textContent || el.innerText) : '');
+  if (!text) return;
   if (navigator.clipboard && navigator.clipboard.writeText) {
     navigator.clipboard.writeText(text).then(() => {
       const btn = document.querySelector('[onclick="copyKl8Result()"]');
-      if (btn) { btn.textContent = '✅ 已复制'; setTimeout(() => { btn.textContent = '📋 一键复制'; }, 2000); }
+      if (btn) { btn.textContent = '✅ 已复制'; setTimeout(() => { btn.textContent = '📋 一键复制全部'; }, 2000); }
     }).catch(() => { fallbackKl8Copy(text); });
   } else { fallbackKl8Copy(text); }
 }
@@ -322,7 +332,17 @@ function fallbackKl8Copy(text) {
   document.body.appendChild(ta); ta.select();
   document.execCommand('copy'); document.body.removeChild(ta);
   const btn = document.querySelector('[onclick="copyKl8Result()"]');
-  if (btn) { btn.textContent = '✅ 已复制'; setTimeout(() => { btn.textContent = '📋 一键复制'; }, 2000); }
+  if (btn) { btn.textContent = '✅ 已复制'; setTimeout(() => { btn.textContent = '📋 一键复制全部'; }, 2000); }
+}
+function downloadKl8Result() {
+  const text = window._kl8CopyText || '';
+  if (!text) return;
+  const blob = new Blob(['\ufeff' + text], { type: 'text/plain;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = '快乐8缩水结果.txt';
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  setTimeout(() => URL.revokeObjectURL(url), 5000);
 }
 
 function resetKl8Filter() {
