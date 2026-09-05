@@ -9,10 +9,11 @@
       "album": "海屿你",
       "albumPic": "https://p1.music.126.net/RfguLkQJ8aMVkiIaxdy70Q==/109951170483263672.jpg",
       "duration": 295940,
-      "url": null,
+      "url": "/data/music/1973665667.mp3",
       "source": "netease",
       "br": null,
-      "addedAt": "2026-09-04T22:01:20.297Z"
+      "addedAt": "2026-09-04T22:01:20.297Z",
+      "local": true
     },
     {
       "id": "3399839173",
@@ -37,10 +38,11 @@
       "album": "两 难",
       "albumPic": "https://p1.music.126.net/Qvenb5t_hL37b7hRfscjaw==/109951169686160429.jpg",
       "duration": 170000,
-      "url": null,
+      "url": "/data/music/2163210456.mp3",
       "source": "netease",
       "br": null,
-      "addedAt": "2026-09-04T22:01:20.297Z"
+      "addedAt": "2026-09-04T22:01:20.297Z",
+      "local": true
     },
     {
       "id": "287398",
@@ -79,10 +81,11 @@
       "album": "梦游",
       "albumPic": "https://p2.music.126.net/Ws93IUrJGR_lK-QEsdKTWw==/109951168408373477.jpg",
       "duration": 189719,
-      "url": null,
+      "url": "/data/music/2018733994.mp3",
       "source": "netease",
       "br": null,
-      "addedAt": "2026-09-04T22:01:20.297Z"
+      "addedAt": "2026-09-04T22:01:20.297Z",
+      "local": true
     },
     {
       "id": "2600493765",
@@ -136,10 +139,11 @@
       "album": "太热爱",
       "albumPic": "https://p2.music.126.net/rDv1qod6MDsYcEHKtxCdAA==/109951173532089932.jpg",
       "duration": 290731,
-      "url": null,
+      "url": "/data/music/3404238777.mp3",
       "source": "netease",
       "br": null,
-      "addedAt": "2026-09-04T22:01:20.297Z"
+      "addedAt": "2026-09-04T22:01:20.297Z",
+      "local": true
     },
     {
       "id": "273114",
@@ -178,10 +182,11 @@
       "album": "如果呢",
       "albumPic": "https://p2.music.126.net/-xMsNLpquZTmMZlIztTgHg==/109951165953469081.jpg",
       "duration": 257532,
-      "url": null,
+      "url": "/data/music/1842728629.mp3",
       "source": "netease",
       "br": null,
-      "addedAt": "2026-09-04T22:01:20.297Z"
+      "addedAt": "2026-09-04T22:01:20.297Z",
+      "local": true
     },
     {
       "id": "1303464858",
@@ -192,10 +197,11 @@
       "album": "于是",
       "albumPic": "https://p2.music.126.net/PEGvmO3OqgGOkx4m9qxAJA==/109951163478499713.jpg",
       "duration": 232835,
-      "url": null,
+      "url": "/data/music/1303464858.mp3",
       "source": "netease",
       "br": null,
-      "addedAt": "2026-09-04T22:01:20.297Z"
+      "addedAt": "2026-09-04T22:01:20.297Z",
+      "local": true
     },
     {
       "id": "1918576268",
@@ -206,10 +212,11 @@
       "album": "When the world is came，take it！",
       "albumPic": "https://p2.music.126.net/G-inyKjA-jO5MuOuV3g7Pg==/109951167027986653.jpg",
       "duration": 161585,
-      "url": null,
+      "url": "/data/music/1918576268.mp3",
       "source": "netease",
       "br": null,
-      "addedAt": "2026-09-04T22:01:20.297Z"
+      "addedAt": "2026-09-04T22:01:20.297Z",
+      "local": true
     },
     {
       "id": "1456890009",
@@ -221,10 +228,11 @@
       "album": "罗生门（Follow）",
       "albumPic": "https://p2.music.126.net/yN1ke1xYMJ718FiHaDWtYQ==/109951165076380471.jpg",
       "duration": 243754,
-      "url": null,
+      "url": "/data/music/1456890009.mp3",
       "source": "netease",
       "br": null,
-      "addedAt": "2026-09-04T22:01:20.297Z"
+      "addedAt": "2026-09-04T22:01:20.297Z",
+      "local": true
     },
     {
       "id": "3387477661",
@@ -250,10 +258,11 @@
       "album": "一半一半",
       "albumPic": "https://p2.music.126.net/EgbPD3CwVQojZ4OWse4YrA==/109951172511748152.jpg",
       "duration": 235285,
-      "url": null,
+      "url": "/data/music/3333988321.mp3",
       "source": "netease",
       "br": null,
-      "addedAt": "2026-09-04T22:01:20.297Z"
+      "addedAt": "2026-09-04T22:01:20.297Z",
+      "local": true
     },
     {
       "id": "1827600686",
@@ -265,10 +274,11 @@
       "album": "还是会想你",
       "albumPic": "https://p2.music.126.net/9FhSEQtMhP-JP3_U84YfWQ==/109951165798773745.jpg",
       "duration": 190063,
-      "url": null,
+      "url": "/data/music/1827600686.mp3",
       "source": "netease",
       "br": null,
-      "addedAt": "2026-09-04T22:01:20.297Z"
+      "addedAt": "2026-09-04T22:01:20.297Z",
+      "local": true
     },
     {
       "id": "287063",
@@ -293,10 +303,11 @@
       "album": "忘不掉的你",
       "albumPic": "https://p2.music.126.net/4BCskpY6Rmm-QReHnY8W6Q==/109951166071009318.jpg",
       "duration": 172173,
-      "url": null,
+      "url": "/data/music/1851652156.mp3",
       "source": "netease",
       "br": null,
-      "addedAt": "2026-09-04T22:01:20.297Z"
+      "addedAt": "2026-09-04T22:01:20.297Z",
+      "local": true
     },
     {
       "id": "2755710644",
@@ -322,10 +333,11 @@
       "album": "嗜好",
       "albumPic": "https://p2.music.126.net/J6HaJjtgv-yVVjyUm-h-AA==/109951164373633387.jpg",
       "duration": 284113,
-      "url": null,
+      "url": "/data/music/1391891631.mp3",
       "source": "netease",
       "br": null,
-      "addedAt": "2026-09-04T22:01:20.297Z"
+      "addedAt": "2026-09-04T22:01:20.297Z",
+      "local": true
     },
     {
       "id": "307594",
@@ -3922,5 +3934,6 @@
     }
   ],
   "total": 273,
-  "updatedAt": "2026-09-04T22:01:25.749Z"
+  "updatedAt": "2026-09-04T22:01:25.749Z",
+  "localCount": 12
 }

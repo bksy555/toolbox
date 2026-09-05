@@ -37,13 +37,28 @@ if echo "$RESULT" | grep -qE '"success"\s*:\s*true'; then
   echo ""
   echo "💾 保存带播放链接的完整缓存..."
   echo "$RESULT" | python3 -c "
-import sys, json
+import sys, json, os
 data = json.load(sys.stdin)
 if 'songs' in data and len(data['songs']) > 0:
-    cache = {'songs': data['songs'], 'total': len(data['songs']), 'updatedAt': data.get('updatedAt', '')}
+    new_songs = data['songs']
+    # 合并旧缓存的 local 标记（本地完整版 mp3 信息不能被覆盖丢失）
+    old_local = {}
+    if os.path.exists('$CACHE_FILE'):
+        try:
+            old = json.load(open('$CACHE_FILE', encoding='utf-8'))
+            old_local = {s['id']: s for s in old.get('songs', []) if s.get('local')}
+        except Exception:
+            pass
+    for s in new_songs:
+        if s['id'] in old_local:
+            o = old_local[s['id']]
+            s['local'] = True
+            s['url'] = o.get('url') or s.get('url')
+            s['br'] = o.get('br') or s.get('br')
+    cache = {'songs': new_songs, 'total': len(new_songs), 'localCount': sum(1 for s in new_songs if s.get('local')), 'updatedAt': data.get('updatedAt', '')}
     with open('$CACHE_FILE', 'w', encoding='utf-8') as f:
         json.dump(cache, f, ensure_ascii=False, indent=2)
-    print(f'  ✅ 已保存 {len(data[\"songs\"])} 首歌曲到缓存文件')
+    print(f'  ✅ 已保存 {len(new_songs)} 首歌曲到缓存文件（保留 {cache[\"localCount\"]} 首本地标记）')
 else:
     print('  ⚠️ API 未返回歌曲数据')
 " 2>&1
