@@ -79,7 +79,7 @@ function renderKl8FilterTool() {
       <div class="section-divider"></div>
 
       <div style="margin-bottom:16px;">
-        <div class="section-desc"><strong>4. 附加过滤</strong>（可选）</div>
+        <div class="section-desc"><strong>4. 附加过滤</strong>（可选，均可留空不限）</div>
         <div class="lottery-input-row">
           <label>奇偶比：</label>
           <div class="filter-options" id="kl8OE" data-ratio="oe">
@@ -92,6 +92,55 @@ function renderKl8FilterTool() {
             ${kl8RatioChipsHtml('kl8BS')}
           </div>
           <span style="font-size:12px;color:var(--text-light);">(41以上为大)</span>
+        </div>
+        <div class="lottery-input-row">
+          <label>质合比：</label>
+          <div class="filter-options" id="kl8PZ" data-ratio="pz">
+            ${kl8RatioChipsHtml('kl8PZ')}
+          </div>
+          <span style="font-size:12px;color:var(--text-light);">(质数:合数)</span>
+        </div>
+        <div class="lottery-input-row">
+          <label>和值范围：</label>
+          <input type="number" id="kl8SumMin" min="0" placeholder="最小" style="width:80px;background:var(--bg);color:var(--text);border:1px solid var(--border);border-radius:6px;padding:4px;">
+          <span style="margin:0 4px;">~</span>
+          <input type="number" id="kl8SumMax" min="0" placeholder="最大" style="width:80px;background:var(--bg);color:var(--text);border:1px solid var(--border);border-radius:6px;padding:4px;">
+          <span style="font-size:12px;color:var(--text-light);margin-left:8px;">(所选号码总和)</span>
+        </div>
+        <div class="lottery-input-row">
+          <label>跨度范围：</label>
+          <input type="number" id="kl8SpanMin" min="0" placeholder="最小" style="width:80px;background:var(--bg);color:var(--text);border:1px solid var(--border);border-radius:6px;padding:4px;">
+          <span style="margin:0 4px;">~</span>
+          <input type="number" id="kl8SpanMax" min="0" placeholder="最大" style="width:80px;background:var(--bg);color:var(--text);border:1px solid var(--border);border-radius:6px;padding:4px;">
+          <span style="font-size:12px;color:var(--text-light);margin-left:8px;">(最大号-最小号)</span>
+        </div>
+        <div class="lottery-input-row">
+          <label>连号组数：</label>
+          <input type="number" id="kl8LinkMin" min="0" placeholder="最少" style="width:80px;background:var(--bg);color:var(--text);border:1px solid var(--border);border-radius:6px;padding:4px;">
+          <span style="margin:0 4px;">~</span>
+          <input type="number" id="kl8LinkMax" min="0" placeholder="最多" style="width:80px;background:var(--bg);color:var(--text);border:1px solid var(--border);border-radius:6px;padding:4px;">
+          <span style="font-size:12px;color:var(--text-light);margin-left:8px;">(如 11,12,13 算1组连号)</span>
+        </div>
+        <div style="margin-top:8px;">
+          <div style="font-size:12px;color:var(--text-light);margin-bottom:6px;">区间分布（1-20 / 21-40 / 41-60 / 61-80 各出几个，留空不限）：</div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;">
+            <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:8px;text-align:center;">
+              <div style="font-size:12px;color:var(--text-light);margin-bottom:4px;">1区 1-20</div>
+              <input type="number" id="kl8Zone0" min="0" placeholder="不限" style="width:52px;text-align:center;background:var(--bg);color:var(--text);border:1px solid var(--border);border-radius:6px;padding:4px;">
+            </div>
+            <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:8px;text-align:center;">
+              <div style="font-size:12px;color:var(--text-light);margin-bottom:4px;">2区 21-40</div>
+              <input type="number" id="kl8Zone1" min="0" placeholder="不限" style="width:52px;text-align:center;background:var(--bg);color:var(--text);border:1px solid var(--border);border-radius:6px;padding:4px;">
+            </div>
+            <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:8px;text-align:center;">
+              <div style="font-size:12px;color:var(--text-light);margin-bottom:4px;">3区 41-60</div>
+              <input type="number" id="kl8Zone2" min="0" placeholder="不限" style="width:52px;text-align:center;background:var(--bg);color:var(--text);border:1px solid var(--border);border-radius:6px;padding:4px;">
+            </div>
+            <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:8px;text-align:center;">
+              <div style="font-size:12px;color:var(--text-light);margin-bottom:4px;">4区 61-80</div>
+              <input type="number" id="kl8Zone3" min="0" placeholder="不限" style="width:52px;text-align:center;background:var(--bg);color:var(--text);border:1px solid var(--border);border-radius:6px;padding:4px;">
+            </div>
+          </div>
         </div>
       </div>
 
@@ -178,6 +227,7 @@ function runKl8Filter() {
   const perBet = parseInt(document.getElementById('kl8PerBet')?.value) || 8;
   const oe = getFilterChipValues('kl8OE');
   const bs = getFilterChipValues('kl8BS');
+  const pz = getFilterChipValues('kl8PZ');
 
   // 每次生成前先清空上次结果
   const _countEl = document.getElementById('kl8ResultCount');
@@ -223,6 +273,32 @@ function runKl8Filter() {
     }
   }
 
+  // 读取数值范围过滤：和值 / 跨度 / 连号组数 / 区间分布
+  const sumMin = parseInt(document.getElementById('kl8SumMin')?.value);
+  const sumMax = parseInt(document.getElementById('kl8SumMax')?.value);
+  const spanMin = parseInt(document.getElementById('kl8SpanMin')?.value);
+  const spanMax = parseInt(document.getElementById('kl8SpanMax')?.value);
+  const linkMin = parseInt(document.getElementById('kl8LinkMin')?.value);
+  const linkMax = parseInt(document.getElementById('kl8LinkMax')?.value);
+  const zone = [];
+  let anyZoneSet = false;
+  for (let z = 0; z < 4; z++) {
+    const v = document.getElementById('kl8Zone' + z)?.value;
+    if (v !== undefined && v !== '') {
+      const n = parseInt(v);
+      if (isNaN(n) || n < 0) { ltToast(`⚠️ 区间${z + 1}请输入不小于 0 的数字`); return; }
+      zone[z] = n;
+      anyZoneSet = true;
+    }
+  }
+  if (anyZoneSet) {
+    const zSum = zone.reduce((a, b) => a + (b || 0), 0);
+    if (zSum !== perBet) {
+      ltToast(`⚠️ 四个区间出号总数(${zSum})必须等于每注号码数(${perBet})`);
+      return;
+    }
+  }
+
   // 穷举前先校验：大底数量不能超过 24（组合爆炸，无法穷举）
   if (kl8State.red.length > 24) {
     ltToast(`⚠️ 大底 ${kl8State.red.length} 个号码超出穷举上限（24 个），请缩小大底，或使用「🎲 在线机选」随机配号。`);
@@ -250,9 +326,35 @@ function runKl8Filter() {
       }
       if (!tailOk) continue;
     }
-    // 奇偶/大小过滤
+    // 奇偶/大小/质合过滤
     if (oe.length > 0 && !oe.includes(oddEvenRatio(combo))) continue;
     if (bs.length > 0 && !bs.includes(bigSmallRatio(combo, 41))) continue;
+    if (pz.length > 0 && !pz.includes(primeCompositeRatio(combo))) continue;
+    // 和值范围
+    if (!isNaN(sumMin) && combo.reduce((a, b) => a + b, 0) < sumMin) continue;
+    if (!isNaN(sumMax) && combo.reduce((a, b) => a + b, 0) > sumMax) continue;
+    // 跨度范围
+    const span = combo[combo.length - 1] - combo[0];
+    if (!isNaN(spanMin) && span < spanMin) continue;
+    if (!isNaN(spanMax) && span > spanMax) continue;
+    // 连号组数（如 11,12,13 算1组连号；countConsecutiveGroups 返回连号组数）
+    if (!isNaN(linkMin) || !isNaN(linkMax)) {
+      const linkCnt = countConsecutiveGroups(combo);
+      if (!isNaN(linkMin) && linkCnt < linkMin) continue;
+      if (!isNaN(linkMax) && linkCnt > linkMax) continue;
+    }
+    // 区间分布（1-20 / 21-40 / 41-60 / 61-80）
+    if (anyZoneSet) {
+      let zoneOk = true;
+      for (let z = 0; z < 4; z++) {
+        if (zone[z] !== undefined) {
+          const lo = z * 20 + 1, hi = lo + 19;
+          const cnt = combo.filter(n => n >= lo && n <= hi).length;
+          if (cnt !== zone[z]) { zoneOk = false; break; }
+        }
+      }
+      if (!zoneOk) continue;
+    }
     results.push(combo);
   }
 
@@ -353,9 +455,9 @@ function kl8RatioChipsHtml(groupId) {
   return html;
 }
 
-// 切换每注号码数时：更新奇偶/大小比 chips，并清空结果
+// 切换每注号码数时：更新奇偶/大小/质合比 chips，并清空结果
 function kl8PerBetChanged() {
-  ['kl8OE', 'kl8BS'].forEach(gid => {
+  ['kl8OE', 'kl8BS', 'kl8PZ'].forEach(gid => {
     const el = document.getElementById(gid);
     if (el) el.innerHTML = kl8RatioChipsHtml(gid);
   });
@@ -377,10 +479,18 @@ function resetKl8Filter() {
     const el = document.getElementById('kl8Tail' + t);
     if (el) el.value = '';
   }
-  document.querySelectorAll('#kl8OE .filter-chip, #kl8BS .filter-chip').forEach(c => {
+  document.querySelectorAll('#kl8OE .filter-chip, #kl8BS .filter-chip, #kl8PZ .filter-chip').forEach(c => {
     if (c.dataset.v === 'any') c.classList.add('selected');
     else c.classList.remove('selected');
   });
+  ['kl8SumMin', 'kl8SumMax', 'kl8SpanMin', 'kl8SpanMax', 'kl8LinkMin', 'kl8LinkMax'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.value = '';
+  });
+  for (let z = 0; z < 4; z++) {
+    const el = document.getElementById('kl8Zone' + z);
+    if (el) el.value = '';
+  }
 }
 
 // ---- 工具函数：洗牌 ----
