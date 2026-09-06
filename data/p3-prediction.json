@@ -11,9 +11,9 @@
       4,
       9
     ],
-    "drawNum": null,
-    "result": null,
-    "updatedAt": null
+    "drawNum": "201",
+    "result": "✅",
+    "updatedAt": "2026-09-06T04:07:34.805252Z"
   },
   "2026227": {
     "period": "2026227",
@@ -27,9 +27,9 @@
       4,
       9
     ],
-    "drawNum": null,
-    "result": null,
-    "updatedAt": null
+    "drawNum": "431",
+    "result": "✅",
+    "updatedAt": "2026-09-06T04:07:34.805249Z"
   },
   "2026228": {
     "period": "2026228",
@@ -43,9 +43,9 @@
       6,
       7
     ],
-    "drawNum": null,
-    "result": null,
-    "updatedAt": null
+    "drawNum": "560",
+    "result": "✅",
+    "updatedAt": "2026-09-06T04:07:34.805245Z"
   },
   "2026229": {
     "period": "2026229",
@@ -59,9 +59,9 @@
       6,
       8
     ],
-    "drawNum": null,
-    "result": null,
-    "updatedAt": null
+    "drawNum": "280",
+    "result": "✅",
+    "updatedAt": "2026-09-06T04:07:34.805242Z"
   },
   "2026230": {
     "period": "2026230",
@@ -75,9 +75,9 @@
       4,
       8
     ],
-    "drawNum": null,
-    "result": null,
-    "updatedAt": null
+    "drawNum": "946",
+    "result": "✅",
+    "updatedAt": "2026-09-06T04:07:34.805237Z"
   },
   "2026231": {
     "period": "2026231",
@@ -91,9 +91,9 @@
       4,
       9
     ],
-    "drawNum": null,
-    "result": null,
-    "updatedAt": null
+    "drawNum": "187",
+    "result": "❌",
+    "updatedAt": "2026-09-06T04:07:34.805230Z"
   },
   "2026232": {
     "period": "2026232",
@@ -107,9 +107,9 @@
       4,
       9
     ],
-    "drawNum": null,
-    "result": null,
-    "updatedAt": null
+    "drawNum": "802",
+    "result": "✅",
+    "updatedAt": "2026-09-06T04:07:34.805223Z"
   },
   "2026233": {
     "period": "2026233",
@@ -123,9 +123,9 @@
       6,
       7
     ],
-    "drawNum": null,
-    "result": null,
-    "updatedAt": null
+    "drawNum": "163",
+    "result": "✅",
+    "updatedAt": "2026-09-06T04:07:34.805219Z"
   },
   "2026234": {
     "period": "2026234",
@@ -139,9 +139,9 @@
       6,
       8
     ],
-    "drawNum": null,
-    "result": null,
-    "updatedAt": null
+    "drawNum": "301",
+    "result": "✅",
+    "updatedAt": "2026-09-06T04:07:34.805216Z"
   },
   "2026235": {
     "period": "2026235",
@@ -155,9 +155,9 @@
       4,
       8
     ],
-    "drawNum": null,
-    "result": null,
-    "updatedAt": null
+    "drawNum": "779",
+    "result": "❌",
+    "updatedAt": "2026-09-06T04:07:34.805211Z"
   },
   "2026236": {
     "period": "2026236",
@@ -171,9 +171,9 @@
       4,
       9
     ],
-    "drawNum": null,
-    "result": null,
-    "updatedAt": null
+    "drawNum": "173",
+    "result": "❌",
+    "updatedAt": "2026-09-06T04:07:34.805206Z"
   },
   "2026237": {
     "period": "2026237",
@@ -187,9 +187,9 @@
       4,
       9
     ],
-    "drawNum": null,
-    "result": null,
-    "updatedAt": null
+    "drawNum": "950",
+    "result": "✅",
+    "updatedAt": "2026-09-06T04:07:34.805200Z"
   },
   "2026238": {
     "period": "2026238",
@@ -205,7 +205,7 @@
     ],
     "drawNum": "361",
     "result": "✅",
-    "updatedAt": "2026-09-06T03:52:48.554Z"
+    "updatedAt": "2026-09-06T04:07:34.805179Z"
   },
   "2026239": {
     "period": "2026239",
@@ -238,5 +238,90 @@
     "drawNum": null,
     "result": null,
     "updatedAt": null
+  },
+  "2026225": {
+    "period": "2026225",
+    "drawNum": "116",
+    "updatedAt": "2026-09-06T04:07:34.805255Z"
+  },
+  "2026224": {
+    "period": "2026224",
+    "drawNum": "912",
+    "updatedAt": "2026-09-06T04:07:34.805257Z"
+  },
+  "2026223": {
+    "period": "2026223",
+    "drawNum": "223",
+    "updatedAt": "2026-09-06T04:07:34.805259Z"
+  },
+  "2026222": {
+    "period": "2026222",
+    "drawNum": "877",
+    "updatedAt": "2026-09-06T04:07:34.805261Z"
+  },
+  "2026221": {
+    "period": "2026221",
+    "drawNum": "969",
+    "updatedAt": "2026-09-06T04:07:34.805263Z"
+  },
+  "2026220": {
+    "period": "2026220",
+    "drawNum": "482",
+    "updatedAt": "2026-09-06T04:07:34.805265Z"
+  },
+  "2026219": {
+    "period": "2026219",
+    "drawNum": "662",
+    "updatedAt": "2026-09-06T04:07:34.805267Z"
+  },
+  "2026218": {
+    "period": "2026218",
+    "drawNum": "079",
+    "updatedAt": "2026-09-06T04:07:34.805270Z"
+  },
+  "2026217": {
+    "period": "2026217",
+    "drawNum": "019",
+    "updatedAt": "2026-09-06T04:07:34.805271Z"
+  },
+  "2026216": {
+    "period": "2026216",
+    "drawNum": "953",
+    "updatedAt": "2026-09-06T04:07:34.805273Z"
+  },
+  "2026215": {
+    "period": "2026215",
+    "drawNum": "927",
+    "updatedAt": "2026-09-06T04:07:34.805275Z"
+  },
+  "2026214": {
+    "period": "2026214",
+    "drawNum": "014",
+    "updatedAt": "2026-09-06T04:07:34.805277Z"
+  },
+  "2026213": {
+    "period": "2026213",
+    "drawNum": "740",
+    "updatedAt": "2026-09-06T04:07:34.805278Z"
+  },
+  "2026212": {
+    "period": "2026212",
+    "drawNum": "839",
+    "updatedAt": "2026-09-06T04:07:34.805280Z"
+  },
+  "2026211": {
+    "period": "2026211",
+    "drawNum": "515",
+    "updatedAt": "2026-09-06T04:07:34.805282Z"
+  },
+  "2026210": {
+    "period": "2026210",
+    "drawNum": "094",
+    "updatedAt": "2026-09-06T04:07:34.805283Z"
+  },
+  "2026209": {
+    "period": "2026209",
+    "drawNum": "982",
+    "updatedAt": "2026-09-06T04:07:34.805285Z"
   }
 }

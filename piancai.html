@@ -535,6 +535,64 @@
     </div>
   </div>
 
+  <!-- ====== 排列三预测 - 3胆中1 ====== -->
+  <div class="piancai-page" style="margin-top:40px;border-top:2px dashed var(--border);padding-top:40px;">
+    <h1>🎯 排列三预测 - 3胆中1</h1>
+    <div class="subtitle">
+      与福彩3D使用<strong>同一天干算法</strong>，当日预测3码完全相同；中奖号码按<strong style="color:var(--primary);">排列三</strong>单独统计（每日约21:30开奖，与3D预测同步更新）。
+    </div>
+
+    <div class="piancai-form">
+      <div class="form-row" style="justify-content:space-between;flex-wrap:wrap;">
+        <div>
+          <span style="font-size:15px;font-weight:600;">📊 近15期排列三预测记录</span>
+          <span style="font-size:12px;color:var(--text-light);margin-left:8px;" id="p3UpdateTime"></span>
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <button class="btn-submit" style="padding:6px 16px;font-size:13px;background:linear-gradient(135deg,#6366f1,#8b5cf6);" onclick="refreshP3Prediction()">🔄 刷新预测</button>
+        </div>
+      </div>
+
+      <!-- 统计信息 -->
+      <div id="p3Stats" style="display:none;margin-bottom:16px;padding:12px 16px;background:rgba(99,102,241,0.06);border-radius:10px;font-size:14px;"></div>
+
+      <!-- 预测表格 -->
+      <div style="overflow-x:auto;">
+        <table class="d3-pred-table" id="p3PredTable">
+          <thead>
+            <tr>
+              <th style="width:80px;">期数</th>
+              <th style="width:105px;">日期</th>
+              <th style="width:70px;">星期</th>
+              <th style="width:160px;">预测3胆</th>
+              <th style="width:180px;">排列三中奖号码</th>
+              <th style="width:80px;">结果</th>
+            </tr>
+          </thead>
+          <tbody id="p3PredBody">
+            <tr><td colspan="6" style="text-align:center;padding:40px;color:var(--text-light);">
+              <div class="piancai-loading"><div class="spinner"></div><div style="margin-top:12px;">⏳ 正在生成预测...</div></div>
+            </td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="form-row" style="margin-top:12px;justify-content:space-between;">
+        <span style="font-size:13px;color:var(--text-light);" id="p3Accuracy"></span>
+        <span style="font-size:12px;color:var(--text-light);"></span>
+      </div>
+    </div>
+
+    <div class="disclaimer">
+      <strong>⚠️ 温馨提示</strong><br>
+      · 同日排列三与福彩3D使用相同的时干天干3胆算法，预测3码一致<br>
+      · 排列三（体彩）每日开奖（约21:30），22:00后可更新中奖号码<br>
+      · 中奖号码由服务器脚本从 500彩票网独立抓取，与福彩3D号码互不影响<br>
+      · 3胆中1即预测的3个号码中包含1个及以上排列三中奖号码即为正确 ✅<br>
+      · 本工具不保证中奖，<strong>彩票有风险，投注需谨慎</strong> 🍀
+    </div>
+  </div>
+
   <!-- ====== Toast ====== -->
   <div class="toast" id="lotteryToast"></div>
 
@@ -1246,7 +1304,157 @@
       });
     }
 
-    // ---- 初始化（含冷号） ----
+    // ============================================================
+    // 排列三预测 - 3胆中1（与福彩3D同算法，中奖号码独立）
+    // ============================================================
+
+    // 排列三中奖号码（从 data/p3-prediction.json 加载，服务器脚本每日更新）
+    let KNOWN_P3_DRAW_NUMS = {};
+    const P3_DRAW_CACHE_KEY = 'p3_known_draw_nums';
+
+    // 从 p3-prediction.json 动态加载排列三中奖号码（带时间戳破缓存）
+    function loadP3DrawNums() {
+      return new Promise(function(resolve) {
+        let cachedNums = {};
+        try { cachedNums = JSON.parse(localStorage.getItem(P3_DRAW_CACHE_KEY)) || {}; } catch(e) { cachedNums = {}; }
+        if (Object.keys(cachedNums).length > 0) {
+          KNOWN_P3_DRAW_NUMS = cachedNums;
+        }
+
+        fetch('data/p3-prediction.json?t=' + Date.now(), { cache: 'no-store' })
+          .then(function(res) { if (!res.ok) throw new Error(res.status); return res.json(); })
+          .then(function(data) {
+            const nums = {};
+            for (const k in data) {
+              const v = data[k];
+              if (v && v.drawNum) nums[k] = String(v.drawNum);
+            }
+            if (Object.keys(nums).length > 0) {
+              KNOWN_P3_DRAW_NUMS = nums;
+              try { localStorage.setItem(P3_DRAW_CACHE_KEY, JSON.stringify(nums)); } catch(e) {}
+            }
+            resolve();
+          })
+          .catch(function() {
+            resolve();
+          });
+      });
+    }
+
+    // ---- 渲染排列三预测表格 ----
+    // 预测3胆与福彩3D共用 generateD3Predictions()（同算法、同期号），
+    // 中奖号码从 KNOWN_P3_DRAW_NUMS 独立读取。
+    function renderP3Table() {
+      const tbody = document.getElementById('p3PredBody');
+      if (!tbody) return;
+
+      const predictions = generateD3Predictions();
+      let html = '';
+      let correctCount = 0;
+      let totalResolved = 0;
+
+      for (let i = predictions.length - 1; i >= 0; i--) {
+        const p = predictions[i];
+        const dateStr = formatDateStr(p.year, p.month, p.day);
+        const weekdayStr = '星期' + WEEKDAY_NAMES[p.weekday];
+
+        // 预测3胆（与3D相同）
+        let dansStr = '';
+        if (p.isPast) {
+          dansStr = p.dans.map(n => `<span class="d3-ball">${n}</span>`).join(' ');
+        } else if (p.isToday) {
+          const bj = getBeijingDate();
+          if (bj.hour > 19 || (bj.hour === 19 && bj.minute >= 25)) {
+            dansStr = p.dans.map(n => `<span class="d3-ball">${n}</span>`).join(' ');
+          } else {
+            dansStr = '<span style="color:var(--text-light);font-size:12px;">待19:25更新</span>';
+          }
+        }
+
+        // 排列三中奖号码（独立数据源）
+        let drawStr = '';
+        let resultStr = '';
+        let record = null;
+        if (KNOWN_P3_DRAW_NUMS[p.period] && (p.isPast || p.isToday)) {
+          const drawNum = String(KNOWN_P3_DRAW_NUMS[p.period]);
+          if (drawNum.length === 3) {
+            const res = calcResult(p.dans, drawNum);
+            record = { drawNum: drawNum, result: res, matchCount: p.dans.filter(d => drawNum.split('').map(Number).includes(d)).length };
+          }
+        }
+
+        if (record && record.drawNum) {
+          const drawArr = record.drawNum.split('');
+          drawStr = drawArr.map(n => `<span class="d3-ball d3-ball-draw ${record.result === '✅' ? 'd3-ball-hit' : ''}">${n}</span>`).join(' ');
+          resultStr = record.result || '';
+          if (record.result === '✅') correctCount++;
+          totalResolved++;
+        } else if (p.isPast || p.isToday) {
+          drawStr = '<span style="color:var(--text-light);font-size:12px;">待更新</span>';
+          resultStr = '⏳';
+        } else {
+          drawStr = '<span style="color:var(--text-light);font-size:12px;">—</span>';
+          resultStr = '🔮';
+        }
+
+        const rowClass = p.isToday ? 'd3-row-today' : (p.isFuture ? 'd3-row-future' : 'd3-row-past');
+
+        html += `
+          <tr class="${rowClass}">
+            <td style="font-weight:600;">${p.period}</td>
+            <td>${dateStr}</td>
+            <td>${weekdayStr}</td>
+            <td>${dansStr}</td>
+            <td>${drawStr}</td>
+            <td style="font-size:18px;font-weight:700;">${resultStr}</td>
+          </tr>
+        `;
+      }
+
+      tbody.innerHTML = html;
+
+      // 统计
+      const accuracy = totalResolved > 0 ? Math.round(correctCount / totalResolved * 100) : 0;
+      const statsEl = document.getElementById('p3Stats');
+      if (statsEl) {
+        if (totalResolved > 0) {
+          statsEl.style.display = 'block';
+          statsEl.innerHTML = `
+            📈 已开奖 ${totalResolved} 期 · 正确 <strong style="color:#22c55e;">${correctCount}</strong> 期 ·
+            错误 <strong style="color:#ef4444;">${totalResolved - correctCount}</strong> 期 ·
+            准确率 <strong style="color:var(--primary);">${accuracy}%</strong>
+          `;
+        } else {
+          statsEl.style.display = 'none';
+        }
+      }
+
+      const accEl = document.getElementById('p3Accuracy');
+      if (accEl) {
+        if (totalResolved > 0) {
+          accEl.textContent = `📊 已开奖 ${totalResolved} 期，正确 ${correctCount} 期（${accuracy}%）`;
+        } else {
+          accEl.textContent = '📊 暂无已开奖记录';
+        }
+      }
+
+      // 更新时间
+      const updateEl = document.getElementById('p3UpdateTime');
+      if (updateEl) {
+        const bj = getBeijingDate();
+        updateEl.textContent = `🕐 更新于 ${bj.year}-${String(bj.month).padStart(2,'0')}-${String(bj.day).padStart(2,'0')} ${String(bj.hour).padStart(2,'0')}:${String(bj.minute).padStart(2,'0')} 北京时间`;
+      }
+    }
+
+    // ---- 刷新排列三预测 ----
+    function refreshP3Prediction() {
+      loadP3DrawNums().then(function() {
+        renderP3Table();
+        showToast('🔄 排列三预测已刷新（数据已重新拉取）');
+      });
+    }
+
+    // ---- 初始化（含冷号及排列三） ----
     document.addEventListener('DOMContentLoaded', function() {
       // 等待 lottery-piancai.js 加载完成
       setTimeout(function() {
@@ -1254,6 +1462,9 @@
         loadKnownDrawNums().then(function() {
           renderD3Table();
           renderColdTable();
+        });
+        loadP3DrawNums().then(function() {
+          renderP3Table();
         });
       }, 200);
     });
