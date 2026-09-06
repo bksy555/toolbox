@@ -67,8 +67,43 @@ def fetch():
     return None
 
 
+def fetch_backup():
+    """备源: datachart.500.com 历史数据（最近30期），取最新一期"""
+    req = urllib.request.Request(
+        "https://datachart.500.com/pls/history/inc/history.php",
+        headers={
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+            "Referer": "https://datachart.500.com/pls/history/history.shtml",
+            "Accept-Language": "zh-CN,zh;q=0.9",
+        },
+    )
+    try:
+        with urllib.request.urlopen(req, timeout=20) as resp:
+            raw = resp.read()
+    except Exception:
+        return None
+    html = raw.decode("gbk", errors="ignore")
+    row = re.search(r'<tr class="t_tr1">(.*?)</tr>', html, re.S)
+    if not row:
+        return None
+    row_html = re.sub(r"<!--.*?-->", "", row.group(1), flags=re.S)
+    cells = re.findall(r"<td[^>]*>(.*?)</td>", row_html, re.S)
+    if len(cells) < 2:
+        return None
+    period5 = re.sub(r"<[^>]+>", "", cells[0]).strip()
+    nums = re.findall(r"\d", cells[1])
+    if not period5 or len(nums) < 3:
+        return None
+    date = ""
+    if len(cells) >= 12:
+        date = re.sub(r"<[^>]+>", "", cells[11]).strip()
+    return {"period": "20" + period5, "num": nums[0] + nums[1] + nums[2], "date": date}
+
+
 if __name__ == "__main__":
     res = fetch()
+    if not res:
+        res = fetch_backup()
     if res:
         print("%s|%s|%s" % (res["period"], res["num"], res["date"]))
     else:
