@@ -42,6 +42,7 @@ data = json.load(sys.stdin)
 if 'songs' in data and len(data['songs']) > 0:
     new_songs = data['songs']
     # 合并旧缓存的 local 标记（本地完整版 mp3 信息不能被覆盖丢失）
+    # 旧缓存中所有 local 歌曲都必须保留：在榜的更新标记，不在榜的追加到末尾
     old_local = {}
     if os.path.exists('$CACHE_FILE'):
         try:
@@ -49,12 +50,20 @@ if 'songs' in data and len(data['songs']) > 0:
             old_local = {s['id']: s for s in old.get('songs', []) if s.get('local')}
         except Exception:
             pass
+    new_ids = set()
     for s in new_songs:
+        new_ids.add(s['id'])
         if s['id'] in old_local:
             o = old_local[s['id']]
             s['local'] = True
             s['url'] = o.get('url') or s.get('url')
             s['br'] = o.get('br') or s.get('br')
+    # 不在新榜中的旧本地歌曲：追加保留（避免刷新后本地标记丢失）
+    for sid, o in old_local.items():
+        if sid not in new_ids:
+            keep = dict(o)
+            keep['local'] = True
+            new_songs.append(keep)
     cache = {'songs': new_songs, 'total': len(new_songs), 'localCount': sum(1 for s in new_songs if s.get('local')), 'updatedAt': data.get('updatedAt', '')}
     with open('$CACHE_FILE', 'w', encoding='utf-8') as f:
         json.dump(cache, f, ensure_ascii=False, indent=2)
