@@ -484,6 +484,7 @@
         </div>
         <div style="display:flex;gap:8px;flex-wrap:wrap;">
           <button class="btn-submit" style="padding:6px 16px;font-size:13px;background:linear-gradient(135deg,#6366f1,#8b5cf6);" onclick="refreshColdPrediction()">🔄 刷新预测</button>
+          <button class="btn-submit" style="padding:6px 16px;font-size:13px;background:linear-gradient(135deg,#22c55e,#16a34a);" onclick="showColdHistory()">📜 历史记录</button>
         </div>
       </div>
 
@@ -550,6 +551,7 @@
         </div>
         <div style="display:flex;gap:8px;flex-wrap:wrap;">
           <button class="btn-submit" style="padding:6px 16px;font-size:13px;background:linear-gradient(135deg,#6366f1,#8b5cf6);" onclick="refreshP3Prediction()">🔄 刷新预测</button>
+          <button class="btn-submit" style="padding:6px 16px;font-size:13px;background:linear-gradient(135deg,#22c55e,#16a34a);" onclick="showP3History()">📜 历史记录</button>
         </div>
       </div>
 
@@ -1302,6 +1304,178 @@
         renderD3Table();
         showToast('🔄 冷号预测已刷新（数据已重新拉取）');
       });
+    }
+
+    // ---- 从期号反推日期（期号 = 日历年天数 - 10） ----
+    function getDateFromPeriod(period) {
+      const year = parseInt(String(period).slice(0, 4));
+      const seq = parseInt(String(period).slice(4));
+      const target = new Date(year, 0, seq + 10);
+      return {
+        year: target.getFullYear(),
+        month: target.getMonth() + 1,
+        day: target.getDate(),
+        weekday: target.getDay()
+      };
+    }
+
+    // ---- 查看冷号历史记录（所有已开奖期） ----
+    function showColdHistory() {
+      const periods = Object.keys(KNOWN_DRAW_NUMS).sort();
+      if (periods.length === 0) {
+        showToast('📜 暂无历史记录');
+        return;
+      }
+
+      // 组装记录（按时间正序，最后 reverse 为最新在前）
+      const records = [];
+      for (const period of periods) {
+        const drawNum = KNOWN_DRAW_NUMS[period];
+        if (!drawNum) continue;
+        // 冷号3胆：优先服务器端数据，回退客户端计算
+        let dans = null;
+        if (KNOWN_COLD_DATA[period] && KNOWN_COLD_DATA[period].coldDans) {
+          dans = KNOWN_COLD_DATA[period].coldDans;
+        } else {
+          const cold = calcColdDans(period);
+          dans = cold.dans;
+        }
+        if (!dans) continue; // 早期数据不足20期，跳过
+        const d = getDateFromPeriod(period);
+        const res = (KNOWN_COLD_DATA[period] && KNOWN_COLD_DATA[period].coldResult)
+          ? KNOWN_COLD_DATA[period].coldResult
+          : calcResult(dans, drawNum);
+        records.push({
+          period: period,
+          year: d.year, month: d.month, day: d.day, weekday: d.weekday,
+          dans: dans,
+          drawNum: drawNum,
+          result: res
+        });
+      }
+
+      if (records.length === 0) {
+        showToast('📜 暂无历史记录');
+        return;
+      }
+      records.reverse(); // 最新在前
+
+      renderHistoryOverlay('cold', '🧊 冷号预测全部历史记录', {
+        records: records,
+        dansCol: '冷号3胆',
+        drawCol: '中奖号码'
+      });
+    }
+
+    // ---- 查看排列三历史记录（所有已开奖期） ----
+    function showP3History() {
+      const periods = Object.keys(KNOWN_P3_DRAW_NUMS).sort();
+      if (periods.length === 0) {
+        showToast('📜 暂无历史记录');
+        return;
+      }
+
+      const records = [];
+      for (const period of periods) {
+        const drawNum = KNOWN_P3_DRAW_NUMS[period];
+        if (!drawNum) continue;
+        const d = getDateFromPeriod(period);
+        const gan = getHaiHourGan(d.year, d.month, d.day);
+        const dans = getDanFromGan(gan);
+        records.push({
+          period: period,
+          year: d.year, month: d.month, day: d.day, weekday: d.weekday,
+          dans: dans,
+          drawNum: drawNum,
+          result: calcResult(dans, drawNum)
+        });
+      }
+
+      if (records.length === 0) {
+        showToast('📜 暂无历史记录');
+        return;
+      }
+      records.reverse(); // 最新在前
+
+      renderHistoryOverlay('p3', '🎯 排列三全部历史记录', {
+        records: records,
+        dansCol: '预测3胆',
+        drawCol: '排列三中奖号码'
+      });
+    }
+
+    // ---- 渲染历史记录浮层（通用） ----
+    function renderHistoryOverlay(type, title, opts) {
+      const records = opts.records;
+      let correctCount = 0;
+      let html = `
+        <div style="padding:16px;background:var(--card-bg);border:1px solid var(--border);border-radius:12px;margin-top:16px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+            <span style="font-size:16px;font-weight:600;">📜 ${title}（共 ${records.length} 期）</span>
+          </div>
+          <div style="overflow-x:auto;max-height:400px;overflow-y:auto;">
+            <table class="d3-pred-table">
+              <thead>
+                <tr>
+                  <th>期数</th>
+                  <th>日期</th>
+                  <th>星期</th>
+                  <th>${opts.dansCol}</th>
+                  <th>${opts.drawCol}</th>
+                  <th>结果</th>
+                </tr>
+              </thead>
+              <tbody>
+      `;
+
+      for (const r of records) {
+        const dateStr = formatDateStr(r.year, r.month, r.day);
+        const weekdayStr = '星期' + WEEKDAY_NAMES[r.weekday];
+        const dansStr = r.dans ? r.dans.join(',') : '—';
+        const drawStr = r.drawNum || '—';
+        const resultStr = r.result || '⏳';
+        if (r.result === '✅') correctCount++;
+
+        html += `
+          <tr>
+            <td style="font-weight:600;">${r.period}</td>
+            <td>${dateStr}</td>
+            <td>${weekdayStr}</td>
+            <td>${dansStr}</td>
+            <td>${drawStr}</td>
+            <td style="font-size:18px;font-weight:700;">${resultStr}</td>
+          </tr>
+        `;
+      }
+
+      const accuracy = records.length > 0 ? Math.round(correctCount / records.length * 100) : 0;
+      html += `
+              </tbody>
+            </table>
+          </div>
+          <div class="form-row" style="margin-top:12px;justify-content:space-between;align-items:center;">
+            <span style="font-size:13px;color:var(--text-light);">📊 正确 <strong style="color:#22c55e;">${correctCount}</strong> 期 / ${records.length} 期（${accuracy}%）</span>
+            <button class="btn-submit" style="padding:6px 20px;font-size:13px;background:linear-gradient(135deg,#6366f1,#8b5cf6);" onclick="closeHistoryOverlay('${type}')">关闭</button>
+          </div>
+        </div>
+      `;
+
+      closeHistoryOverlay(type);
+      const overlay = document.createElement('div');
+      overlay.className = type + '-history-overlay';
+      overlay.innerHTML = html;
+      // 插入到对应表格后面
+      if (type === 'cold') {
+        document.getElementById('coldPredTable').parentElement.appendChild(overlay);
+      } else {
+        document.getElementById('p3PredTable').parentElement.appendChild(overlay);
+      }
+    }
+
+    function closeHistoryOverlay(type) {
+      const sel = '.' + type + '-history-overlay';
+      const el = document.querySelector(sel);
+      if (el) el.remove();
     }
 
     // ============================================================
