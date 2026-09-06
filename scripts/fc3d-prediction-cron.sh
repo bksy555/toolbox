@@ -60,6 +60,21 @@ print(keys[0] if keys else '')
   fi
 fi
 
+# ---- 排列三（P3）最新中奖号码：kaijiang.500.com（主源）----
+echo "--- 步骤1.5: 获取排列三最新中奖号码 ---"
+PLS_FETCHED_DRAW=""
+PLS_FETCHED_PERIOD=""
+PLS_FETCHED_DATE=""
+RESULT_PLS=$(timeout 30 python3 scripts/pls-500-fetch.py 2>/dev/null)
+if [ -n "$RESULT_PLS" ] && [ "$RESULT_PLS" != "" ]; then
+  PLS_FETCHED_PERIOD=$(echo "$RESULT_PLS" | cut -d'|' -f1)
+  PLS_FETCHED_DRAW=$(echo "$RESULT_PLS" | cut -d'|' -f2)
+  PLS_FETCHED_DATE=$(echo "$RESULT_PLS" | cut -d'|' -f3)
+  echo "✅ 排列三从500获取: 第${PLS_FETCHED_PERIOD}期 = ${PLS_FETCHED_DRAW} (${PLS_FETCHED_DATE})"
+else
+  echo "⚠️ 排列三未能从500获取（可能未开奖）"
+fi
+
 # ---- 数据源3（兜底，仅回溯）: zhcw.com 分析文章 ----
 if [ -z "$FETCHED_DRAW" ]; then
   echo "尝试数据源3: zhcw.com 分析文章（兜底）..."
@@ -124,6 +139,10 @@ const DATA_FILE = '$DATA_FILE';
 // 网络获取的最新中奖号码
 const FETCHED_PERIOD = '$FETCHED_PERIOD';
 const FETCHED_DRAW = '$FETCHED_DRAW';
+
+// 排列三最新中奖号码（期号与3D一致：日历年天数-10）
+const PLS_FETCHED_PERIOD = '$PLS_FETCHED_PERIOD';
+const PLS_FETCHED_DRAW = '$PLS_FETCHED_DRAW';
 
 // ========== 时干天干3胆 ==========
 const GAN_TO_DAN = {
@@ -329,6 +348,82 @@ for (const key of allKeys) {
 // 保存
 fs.writeFileSync(DATA_FILE, JSON.stringify(stored, null, 2), 'utf8');
 console.log('✅ 预测数据已保存: ' + Object.keys(stored).length + ' 期记录（含冷号3胆）');
+
+// ========== 排列三（P3）预测数据生成 ==========
+// 预测3码与3D一致（同一套时干天干3胆），中奖号码独立更新
+const P3_DATA_FILE = './data/p3-prediction.json';
+let p3Stored = {};
+try {
+  if (fs.existsSync(P3_DATA_FILE)) {
+    p3Stored = JSON.parse(fs.readFileSync(P3_DATA_FILE, 'utf8'));
+  }
+} catch(e) {
+  p3Stored = {};
+}
+
+// 排列三最新期号与3D相同（日历年天数-10），直接用 predictions 生成
+for (const p of predictions) {
+  const key = p.period;
+  if (!p3Stored[key]) {
+    p3Stored[key] = {
+      period: p.period,
+      year: p.year,
+      month: p.month,
+      day: p.day,
+      weekday: p.weekday,
+      haiGan: p.haiGan,
+      dans: p.dans,
+      drawNum: null,
+      result: null,
+      updatedAt: null
+    };
+  } else {
+    // 更新预测（时干天干3胆与3D一致）
+    p3Stored[key].haiGan = p.haiGan;
+    p3Stored[key].dans = p.dans;
+    if (!p3Stored[key].year) Object.assign(p3Stored[key], { year: p.year, month: p.month, day: p.day, weekday: p.weekday });
+  }
+  // 若有中奖号码，计算结果
+  if (p3Stored[key].drawNum) {
+    p3Stored[key].result = calcResult(p3Stored[key].dans, p3Stored[key].drawNum);
+  }
+}
+
+// 从网络更新排列三中奖号码（期号与3D一致）
+if (PLS_FETCHED_PERIOD && PLS_FETCHED_DRAW) {
+  if (!p3Stored[PLS_FETCHED_PERIOD]) {
+    p3Stored[PLS_FETCHED_PERIOD] = { period: PLS_FETCHED_PERIOD };
+    // 补充日期（从期号推算）
+    const fy = parseInt(PLS_FETCHED_PERIOD.substring(0, 4));
+    const fpn = parseInt(PLS_FETCHED_PERIOD.substring(4));
+    const fsd = new Date(fy, 0, 0);
+    fsd.setDate(fsd.getDate() + (fpn + 10));
+    p3Stored[PLS_FETCHED_PERIOD].year = fsd.getFullYear();
+    p3Stored[PLS_FETCHED_PERIOD].month = fsd.getMonth() + 1;
+    p3Stored[PLS_FETCHED_PERIOD].day = fsd.getDate();
+    p3Stored[PLS_FETCHED_PERIOD].weekday = fsd.getDay();
+  }
+  p3Stored[PLS_FETCHED_PERIOD].drawNum = PLS_FETCHED_DRAW;
+  p3Stored[PLS_FETCHED_PERIOD].updatedAt = new Date().toISOString();
+  if (p3Stored[PLS_FETCHED_PERIOD].dans) {
+    p3Stored[PLS_FETCHED_PERIOD].result = calcResult(p3Stored[PLS_FETCHED_PERIOD].dans, PLS_FETCHED_DRAW);
+  }
+  console.log('📥 排列三从网络更新中奖号码: 第' + PLS_FETCHED_PERIOD + '期 = ' + PLS_FETCHED_DRAW);
+}
+
+// 保存排列三数据
+fs.writeFileSync(P3_DATA_FILE, JSON.stringify(p3Stored, null, 2), 'utf8');
+console.log('✅ 排列三预测数据已保存: ' + Object.keys(p3Stored).length + ' 期记录');
+
+// 显示排列三最近有中奖号码的记录
+const p3Entries = Object.entries(p3Stored)
+  .filter(([k, v]) => v.drawNum)
+  .sort(([a], [b]) => b.localeCompare(a))
+  .slice(0, 5);
+console.log('排列三最近中奖号码:');
+for (const [k, v] of p3Entries) {
+  console.log('  第' + k + '期: ' + v.drawNum + ' | 时干' + (v.dans ? '[' + v.dans.join(',') + ']' : '[]') + ' ' + (v.result || '?'));
+}
 
 // 显示最近有中奖号码的记录（含冷号）
 const entries = Object.entries(stored)

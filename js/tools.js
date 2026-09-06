@@ -5947,6 +5947,93 @@ greet('世界');</textarea>
       </div>
     `,
     handler: () => { setTimeout(htInit, 50); }
+  },
+  {
+    id: 'todo-list',
+    cat: 'time',
+    icon: '✅',
+    name: '待办清单',
+    desc: '灵感来源于 Todoist / TickTick / Lunatask 付费订阅，任务管理、优先级标注、分类标签、完成进度一目了然，数据保存在本地浏览器，双击可编辑，一键清空已完成，效率神器',
+    html: `
+      <div class="tool-card">
+        <div class="row" style="margin-bottom:12px;gap:8px;flex-wrap:wrap;">
+          <div class="input-group" style="flex:3;min-width:200px;">
+            <input type="text" id="td-input" placeholder="添加新任务，按回车确认…">
+          </div>
+          <div class="input-group" style="flex:1;min-width:120px;">
+            <select id="td-priority">
+              <option value="high">🔴 高优先级</option>
+              <option value="mid" selected>🟡 中优先级</option>
+              <option value="low">🟢 低优先级</option>
+            </select>
+          </div>
+          <div class="input-group" style="flex:1;min-width:120px;">
+            <select id="td-cat-select">
+              <option value="工作">💼 工作</option>
+              <option value="生活">🏠 生活</option>
+              <option value="学习">📚 学习</option>
+              <option value="其他">📦 其他</option>
+            </select>
+          </div>
+          <button class="btn btn-primary" onclick="tdAdd()">➕ 添加</button>
+        </div>
+        <div class="row" style="margin-bottom:12px;gap:8px;align-items:center;flex-wrap:wrap;">
+          <button class="btn btn-sm" data-filter="all" onclick="tdFilter(this)">全部</button>
+          <button class="btn btn-sm" data-filter="active" onclick="tdFilter(this)">进行中</button>
+          <button class="btn btn-sm" data-filter="done" onclick="tdFilter(this)">已完成</button>
+          <span style="flex:1"></span>
+          <span id="td-progress" style="font-size:12px;color:var(--text-light);"></span>
+          <button class="btn btn-sm btn-danger" onclick="tdClearDone()">🗑️ 清空已完成</button>
+        </div>
+        <div style="width:100%;height:8px;background:var(--bg);border-radius:4px;margin-bottom:12px;overflow:hidden;">
+          <div id="td-progress-bar" style="height:100%;width:0%;background:linear-gradient(90deg,#10b981,#3b82f6);border-radius:4px;transition:width .3s;"></div>
+        </div>
+        <div id="td-list" style="max-height:480px;overflow-y:auto;border:1px solid var(--border);border-radius:10px;padding:4px;"></div>
+        <div style="margin-top:8px;font-size:12px;color:var(--text-light);text-align:center;">💡 灵感来源于 Todoist / TickTick / Lunatask 付费订阅；数据保存在本地浏览器 localStorage，不上传服务器</div>
+      </div>
+    `,
+    handler: () => { setTimeout(tdInit, 50); }
+  },
+  {
+    id: 'daily-planner',
+    cat: 'time',
+    icon: '📅',
+    name: '每日计划',
+    desc: '灵感来源于 Sunsama / Akiflow / Timestripe 付费订阅，按时间轴规划一天，上午/下午/晚上分时任务、番茄时段、完成率统计，本地保存不丢失，高效掌控每一天',
+    html: `
+      <div class="tool-card">
+        <div class="row" style="margin-bottom:12px;gap:8px;align-items:center;flex-wrap:wrap;">
+          <div class="input-group" style="flex:1;min-width:150px;">
+            <label>时段</label>
+            <select id="dp-slot">
+              <option value="morning">🌅 上午</option>
+              <option value="afternoon">☀️ 下午</option>
+              <option value="evening">🌙 晚上</option>
+            </select>
+          </div>
+          <div class="input-group" style="flex:1;min-width:110px;">
+            <label>时间</label>
+            <input type="time" id="dp-time" value="09:00">
+          </div>
+          <div class="input-group" style="flex:2;min-width:180px;">
+            <label>计划内容</label>
+            <input type="text" id="dp-input" placeholder="如：完成周报、运动30分钟…">
+          </div>
+          <button class="btn btn-primary" style="margin-top:20px;" onclick="dpAdd()">➕ 添加</button>
+        </div>
+        <div class="row" style="margin-bottom:12px;gap:8px;align-items:center;flex-wrap:wrap;">
+          <span id="dp-date-label" style="font-weight:600;"></span>
+          <span style="flex:1"></span>
+          <span id="dp-progress" style="font-size:12px;color:var(--text-light);"></span>
+        </div>
+        <div style="width:100%;height:8px;background:var(--bg);border-radius:4px;margin-bottom:12px;overflow:hidden;">
+          <div id="dp-progress-bar" style="height:100%;width:0%;background:linear-gradient(90deg,#f59e0b,#ef4444);border-radius:4px;transition:width .3s;"></div>
+        </div>
+        <div id="dp-list" style="max-height:480px;overflow-y:auto;border:1px solid var(--border);border-radius:10px;padding:4px;"></div>
+        <div style="margin-top:8px;font-size:12px;color:var(--text-light);text-align:center;">💡 灵感来源于 Sunsama / Akiflow / Timestripe 付费订阅；数据保存在本地浏览器 localStorage，不上传服务器</div>
+      </div>
+    `,
+    handler: () => { setTimeout(dpInit, 50); }
   }
 ];
 

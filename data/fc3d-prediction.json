@@ -5848,5 +5848,27 @@
     "result": null,
     "coldResult": null,
     "updatedAt": null
+  },
+  "2026240": {
+    "period": "2026240",
+    "year": 2026,
+    "month": 9,
+    "day": 7,
+    "weekday": 1,
+    "haiGan": "乙",
+    "dans": [
+      3,
+      4,
+      8
+    ],
+    "coldDans": [
+      1,
+      4,
+      0
+    ],
+    "drawNum": null,
+    "result": null,
+    "coldResult": null,
+    "updatedAt": null
   }
 }
