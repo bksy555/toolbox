@@ -3829,11 +3829,11 @@ openclaw update</code></pre>
         <div class="row" style="gap:12px;align-items:flex-end;flex-wrap:wrap;">
           <div class="input-group" style="flex:1;min-width:200px;">
             <label>上传截图</label>
-            <input type="file" id="mm-file" accept="image/*" style="width:100%;">
+            <input type="file" id="mk-file" accept="image/*" style="width:100%;">
           </div>
           <div class="input-group" style="flex:1;min-width:140px;">
             <label>设备样式</label>
-            <select id="mm-device" style="width:100%;">
+            <select id="mk-device" style="width:100%;">
               <option value="iphone">📱 iPhone 手机</option>
               <option value="android">📱 安卓手机</option>
               <option value="browser">🌐 浏览器窗口</option>
@@ -3843,11 +3843,11 @@ openclaw update</code></pre>
           </div>
           <div class="input-group" style="min-width:140px;">
             <label>背景色</label>
-            <input type="color" id="mm-bg" value="#667eea" style="width:100%;height:38px;padding:2px;cursor:pointer;">
+            <input type="color" id="mk-bg" value="#667eea" style="width:100%;height:38px;padding:2px;cursor:pointer;">
           </div>
           <div class="input-group" style="min-width:120px;">
             <label>内阴影</label>
-            <select id="mm-shadow" style="width:100%;">
+            <select id="mk-shadow" style="width:100%;">
               <option value="none">无</option>
               <option value="soft" selected>柔和阴影</option>
               <option value="hard">硬阴影</option>
@@ -3855,13 +3855,13 @@ openclaw update</code></pre>
           </div>
         </div>
         <div class="btn-group" style="margin-top:10px;">
-          <button class="btn btn-primary" onclick="mmGenerate()">📱 生成样机</button>
-          <button class="btn btn-secondary" id="mm-download-btn" style="display:none;" onclick="mmDownload()">⬇️ 下载PNG</button>
-          <button class="btn btn-secondary" onclick="mmReset()">🔄 重新选择</button>
+          <button class="btn btn-primary" onclick="mkGenerate()">📱 生成样机</button>
+          <button class="btn btn-secondary" id="mk-download-btn" style="display:none;" onclick="mkDownload()">⬇️ 下载PNG</button>
+          <button class="btn btn-secondary" onclick="mkReset()">🔄 重新选择</button>
         </div>
         <div style="position:relative;width:100%;min-height:380px;background:var(--card-bg);border:1px solid var(--border);border-radius:12px;margin-top:8px;overflow:hidden;display:flex;align-items:center;justify-content:center;">
-          <canvas id="mm-canvas" style="display:none;max-width:100%;max-height:500px;"></canvas>
-          <div id="mm-placeholder" style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--text-light);">
+          <canvas id="mk-canvas" style="display:none;max-width:100%;max-height:500px;"></canvas>
+          <div id="mk-placeholder" style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--text-light);">
             <div style="font-size:48px;margin-bottom:12px;">📱</div>
             <div>上传截图后点击"生成样机"</div>
           </div>
@@ -8597,46 +8597,46 @@ function cmDownload() {
 // ============================================================
 // 截图美化/设备样机 处理函数
 // ============================================================
-var mmImage = null;
+var mkImage = null;
 
-function mmReset() {
-  mmImage = null;
-  document.getElementById('mm-file').value = '';
-  document.getElementById('mm-canvas').style.display = 'none';
-  document.getElementById('mm-placeholder').style.display = 'flex';
-  document.getElementById('mm-download-btn').style.display = 'none';
+function mkReset() {
+  mkImage = null;
+  document.getElementById('mk-file').value = '';
+  document.getElementById('mk-canvas').style.display = 'none';
+  document.getElementById('mk-placeholder').style.display = 'flex';
+  document.getElementById('mk-download-btn').style.display = 'none';
 }
 
-function mmGenerate() {
-  const fileInput = document.getElementById('mm-file');
+function mkGenerate() {
+  const fileInput = document.getElementById('mk-file');
   if (!fileInput.files || !fileInput.files[0]) {
     showToast('⚠️ 请先上传一张截图');
     return;
   }
-  if (!mmImage) {
+  if (!mkImage) {
     const reader = new FileReader();
     reader.onload = function(e) {
       const img = new Image();
       img.onload = function() {
-        mmImage = img;
-        mmRender();
+        mkImage = img;
+        mkRender();
       };
       img.src = e.target.result;
     };
     reader.readAsDataURL(fileInput.files[0]);
     return;
   }
-  mmRender();
+  mkRender();
 }
 
-function mmRender() {
-  if (!mmImage) return;
-  const device = document.getElementById('mm-device').value;
-  const bgColor = document.getElementById('mm-bg').value;
-  const shadow = document.getElementById('mm-shadow').value;
+function mkRender() {
+  if (!mkImage) return;
+  const device = document.getElementById('mk-device').value;
+  const bgColor = document.getElementById('mk-bg').value;
+  const shadow = document.getElementById('mk-shadow').value;
 
-  const img = mmImage;
-  const canvas = document.getElementById('mm-canvas');
+  const img = mkImage;
+  const canvas = document.getElementById('mk-canvas');
   const ctx = canvas.getContext('2d');
 
   // Target image display size
@@ -8703,7 +8703,7 @@ function mmRender() {
   // Frame
   const fx = pad, fy = pad;
   ctx.fillStyle = '#1a1a1a';
-  mmRoundRect(ctx, fx, fy, frameW, frameH, borderRadius);
+  mkRoundRect(ctx, fx, fy, frameW, frameH, borderRadius);
   ctx.fill();
 
   // Reset shadow for content
@@ -8717,7 +8717,7 @@ function mmRender() {
     const notchX = fx + (frameW - notchW) / 2;
     const notchY = fy + 12;
     ctx.beginPath();
-    mmRoundRect(ctx, notchX, notchY, notchW, notchH, 12);
+    mkRoundRect(ctx, notchX, notchY, notchW, notchH, 12);
     ctx.fillStyle = '#0a0a0a';
     ctx.fill();
 
@@ -8749,7 +8749,7 @@ function mmRender() {
     ctx.beginPath(); ctx.arc(fx + 52, fy + 20, dotR, 0, Math.PI * 2); ctx.fillStyle = '#28c840'; ctx.fill();
     // URL bar
     ctx.fillStyle = '#fff';
-    mmRoundRect(ctx, fx + 66, fy + 12, frameW - 82, 18, 4);
+    mkRoundRect(ctx, fx + 66, fy + 12, frameW - 82, 18, 4);
     ctx.fill();
     ctx.fillStyle = '#bbb';
     ctx.font = '9px Arial, sans-serif';
@@ -8806,12 +8806,12 @@ function mmRender() {
   ctx.restore();
 
   canvas.style.display = 'block';
-  document.getElementById('mm-placeholder').style.display = 'none';
-  document.getElementById('mm-download-btn').style.display = 'inline-block';
+  document.getElementById('mk-placeholder').style.display = 'none';
+  document.getElementById('mk-download-btn').style.display = 'inline-block';
   showToast('✅ 样机生成完成');
 }
 
-function mmRoundRect(ctx, x, y, w, h, r) {
+function mkRoundRect(ctx, x, y, w, h, r) {
   r = Math.min(r, w / 2, h / 2);
   ctx.beginPath();
   ctx.moveTo(x + r, y);
@@ -8826,8 +8826,8 @@ function mmRoundRect(ctx, x, y, w, h, r) {
   ctx.closePath();
 }
 
-function mmDownload() {
-  const canvas = document.getElementById('mm-canvas');
+function mkDownload() {
+  const canvas = document.getElementById('mk-canvas');
   const a = document.createElement('a');
   a.download = 'mockup-' + Date.now() + '.png';
   a.href = canvas.toDataURL('image/png');
