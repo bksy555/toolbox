@@ -6019,7 +6019,7 @@ greet('世界');</textarea>
             <label>计划内容</label>
             <input type="text" id="dp-input" placeholder="如：完成周报、运动30分钟…">
           </div>
-          <button class="btn btn-primary" style="margin-top:20px;" onclick="dpAdd()">➕ 添加</button>
+          <button class="btn btn-primary" style="margin-top:20px;" onclick="dplAdd()">➕ 添加</button>
         </div>
         <div class="row" style="margin-bottom:12px;gap:8px;align-items:center;flex-wrap:wrap;">
           <span id="dp-date-label" style="font-weight:600;"></span>
@@ -6033,7 +6033,7 @@ greet('世界');</textarea>
         <div style="margin-top:8px;font-size:12px;color:var(--text-light);text-align:center;">💡 灵感来源于 Sunsama / Akiflow / Timestripe 付费订阅；数据保存在本地浏览器 localStorage，不上传服务器</div>
       </div>
     `,
-    handler: () => { setTimeout(dpInit, 50); }
+    handler: () => { setTimeout(dplInit, 50); }
   }
 ];
 
@@ -7680,7 +7680,7 @@ const CATEGORIES = [
   { id: 'document', icon: '📄', name: '文档转换', desc: '图片转PDF、PDF转图片、Word解析、Excel转PDF、PDF合并、PDF拆分、简历生成、电子签名、表单制作、邮件签名、发票/收据生成器、证书生成器' },
   { id: 'convert', icon: '🔄', name: '转换工具', desc: '单位换算、进制转换、函数绘图' },
   { id: 'security', icon: '🔒', name: '安全工具', desc: '密码生成、Hash计算、随机数' },
-  { id: 'time', icon: '⏱️', name: '时间工具', desc: '时间戳转换、日期计算、番茄钟专注计时' },
+  { id: 'time', icon: '⏱️', name: '时间工具', desc: '时间戳转换、日期计算、番茄钟专注计时、待办清单、每日计划' },
   { id: 'color', icon: '🎨', name: '颜色工具', desc: 'HEX/RGB/HSL颜色转换、CSS渐变生成器、配色方案生成器' },
   { id: 'media', icon: '🎬', name: '媒体工具', desc: '抖音/TikTok去水印下载、视频转GIF、在线录音、录音转文字、音频波形可视化、白噪音发生器、音频变速变调、音频剪辑拼接、视频缩略图制作器、在线便签' },
   { id: 'ai', icon: '🤖', name: 'AI工具', desc: 'AI聊天、AI Agent安装、免费AI工具推荐' },
@@ -13962,4 +13962,227 @@ function htRender() {
   });
   html += '<div style="font-size:12px;color:var(--text-light);text-align:center;padding-top:8px;">点击日期小方块打卡 ✓ （今天有描边标记）</div>';
   listEl.innerHTML = html;
+}
+
+/* ========== 待办清单 todo-list (td*) ========== */
+var TD_KEY = 'qwp_todo_list';
+var tdTasks = [];
+var tdFilterMode = 'all';
+
+function tdInit() {
+  if (!document.getElementById('td-input')) return;
+  tdLoad();
+  tdRender();
+  var inp = document.getElementById('td-input');
+  if (inp) inp.addEventListener('keydown', function(e) { if (e.key === 'Enter') tdAdd(); });
+}
+
+function tdLoad() {
+  try { tdTasks = JSON.parse(localStorage.getItem(TD_KEY)) || []; }
+  catch (e) { tdTasks = []; }
+}
+
+function tdSave() {
+  try { localStorage.setItem(TD_KEY, JSON.stringify(tdTasks)); } catch (e) {}
+}
+
+function tdAdd() {
+  var inp = document.getElementById('td-input');
+  var text = (inp && inp.value || '').trim();
+  if (!text) { toast('⚠️ 请输入任务内容'); return; }
+  tdTasks.unshift({
+    id: 'td' + Date.now(),
+    text: text,
+    priority: document.getElementById('td-priority').value || 'mid',
+    cat: document.getElementById('td-cat-select').value || '其他',
+    done: false,
+    created: Date.now()
+  });
+  tdSave();
+  tdRender();
+  if (inp) inp.value = '';
+  toast('✅ 已添加任务');
+}
+
+function tdToggle(id) {
+  var t = tdTasks.find(function(x) { return x.id === id; });
+  if (!t) return;
+  t.done = !t.done;
+  tdSave();
+  tdRender();
+}
+
+function tdDelete(id) {
+  if (!confirm('确定删除该任务吗？')) return;
+  tdTasks = tdTasks.filter(function(x) { return x.id !== id; });
+  tdSave();
+  tdRender();
+}
+
+function tdEdit(id) {
+  var t = tdTasks.find(function(x) { return x.id === id; });
+  if (!t) return;
+  var v = prompt('修改任务内容：', t.text);
+  if (v && v.trim()) {
+    t.text = v.trim();
+    tdSave();
+    tdRender();
+    toast('✅ 已更新');
+  }
+}
+
+function tdFilter(btn) {
+  if (!btn) return;
+  tdFilterMode = btn.getAttribute('data-filter') || 'all';
+  document.querySelectorAll('#td-list').forEach(function() {});
+  var btns = document.querySelectorAll('button[data-filter]');
+  btns.forEach(function(b) {
+    b.style.opacity = (b.getAttribute('data-filter') === tdFilterMode) ? '1' : '.45';
+    b.style.fontWeight = (b.getAttribute('data-filter') === tdFilterMode) ? '700' : '400';
+  });
+  tdRender();
+}
+
+function tdClearDone() {
+  if (!tdTasks.some(function(t) { return t.done; })) { toast('ℹ️ 没有已完成任务'); return; }
+  if (!confirm('确定清空所有已完成任务吗？')) return;
+  tdTasks = tdTasks.filter(function(t) { return !t.done; });
+  tdSave();
+  tdRender();
+  toast('🗑️ 已清空已完成任务');
+}
+
+var TD_PRIORITY = { high: { label: '🔴 高', color: '#ef4444' }, mid: { label: '🟡 中', color: '#f59e0b' }, low: { label: '🟢 低', color: '#10b981' } };
+
+function tdRender() {
+  var listEl = document.getElementById('td-list');
+  if (!listEl) return;
+  var shown = tdTasks.filter(function(t) {
+    if (tdFilterMode === 'done') return t.done;
+    if (tdFilterMode === 'active') return !t.done;
+    return true;
+  });
+  var html = '';
+  if (!shown.length) {
+    html += '<div style="text-align:center;padding:30px 0;color:var(--text-light);font-size:13px;">🎉 ' + (tdTasks.length ? '没有匹配的任务' : '暂无任务，添加一个吧') + '</div>';
+  }
+  shown.forEach(function(t) {
+    var p = TD_PRIORITY[t.priority] || TD_PRIORITY.mid;
+    html += '<div style="display:flex;align-items:center;gap:8px;padding:8px 10px;border-bottom:1px solid var(--border);" ondblclick="tdEdit(\'' + t.id + '\')">';
+    html += '<button onclick="tdToggle(\'' + t.id + '\')" style="flex-shrink:0;width:22px;height:22px;border-radius:50%;border:2px solid ' + p.color + ';background:' + (t.done ? p.color : 'transparent') + ';cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:12px;color:#fff;" title="点击切换完成">' + (t.done ? '✓' : '') + '</button>';
+    html += '<span style="flex:1;font-size:14px;' + (t.done ? 'text-decoration:line-through;opacity:.55;' : '') + '">' + tdEsc(t.text) + '</span>';
+    html += '<span style="font-size:11px;padding:2px 8px;border-radius:10px;background:var(--bg);color:var(--text-light);">' + t.cat + '</span>';
+    html += '<span style="font-size:11px;font-weight:600;color:' + p.color + ';min-width:30px;">' + p.label + '</span>';
+    html += '<button onclick="tdDelete(\'' + t.id + '\')" style="flex-shrink:0;background:none;border:none;cursor:pointer;font-size:14px;color:var(--text-light);" title="删除">🗑️</button>';
+    html += '</div>';
+  });
+  listEl.innerHTML = html;
+  var done = tdTasks.filter(function(t) { return t.done; }).length;
+  var pct = tdTasks.length ? Math.round(done / tdTasks.length * 100) : 0;
+  var progEl = document.getElementById('td-progress');
+  if (progEl) progEl.textContent = '完成 ' + done + '/' + tdTasks.length + '（' + pct + '%）';
+  var barEl = document.getElementById('td-progress-bar');
+  if (barEl) barEl.style.width = pct + '%';
+}
+
+function tdEsc(s) {
+  return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
+/* ========== 每日计划 daily-planner (dpl*) ========== */
+var DPL_KEY = 'qwp_daily_plan';
+var dplTaskList = [];
+
+function dplInit() {
+  if (!document.getElementById('dp-input')) return;
+  dplLoad();
+  dplRender();
+  var inp = document.getElementById('dp-input');
+  if (inp) inp.addEventListener('keydown', function(e) { if (e.key === 'Enter') dplAdd(); });
+}
+
+function dplLoad() {
+  try { dplTaskList = JSON.parse(localStorage.getItem(DPL_KEY)) || []; }
+  catch (e) { dplTaskList = []; }
+}
+
+function dplSave() {
+  try { localStorage.setItem(DPL_KEY, JSON.stringify(dplTaskList)); } catch (e) {}
+}
+
+function dplAdd() {
+  var inp = document.getElementById('dp-input');
+  var text = (inp && inp.value || '').trim();
+  if (!text) { toast('⚠️ 请输入计划内容'); return; }
+  dplTaskList.push({
+    id: 'dpl' + Date.now(),
+    slot: document.getElementById('dp-slot').value || 'morning',
+    time: document.getElementById('dp-time').value || '09:00',
+    text: text,
+    done: false
+  });
+  dplSave();
+  dplRender();
+  if (inp) inp.value = '';
+  toast('✅ 已添加计划');
+}
+
+function dplToggle(id) {
+  var t = dplTaskList.find(function(x) { return x.id === id; });
+  if (!t) return;
+  t.done = !t.done;
+  dplSave();
+  dplRender();
+}
+
+function dplDelete(id) {
+  if (!confirm('确定删除这条计划吗？')) return;
+  dplTaskList = dplTaskList.filter(function(x) { return x.id !== id; });
+  dplSave();
+  dplRender();
+}
+
+var DPL_SLOTS = [
+  { key: 'morning', icon: '🌅', label: '上午' },
+  { key: 'afternoon', icon: '☀️', label: '下午' },
+  { key: 'evening', icon: '🌙', label: '晚上' }
+];
+
+function dplRender() {
+  var listEl = document.getElementById('dp-list');
+  if (!listEl) return;
+  var labelEl = document.getElementById('dp-date-label');
+  if (labelEl) labelEl.textContent = '📅 ' + tdTodayCN();
+  var html = '';
+  if (!dplTaskList.length) {
+    html += '<div style="text-align:center;padding:30px 0;color:var(--text-light);font-size:13px;">🌤 今天还没有计划，添加一条吧</div>';
+  }
+  DPL_SLOTS.forEach(function(slot) {
+    var items = dplTaskList.filter(function(t) { return t.slot === slot.key; });
+    if (!items.length) return;
+    html += '<div style="margin-top:10px;">';
+    html += '<div style="font-size:13px;font-weight:600;margin-bottom:6px;">' + slot.icon + ' ' + slot.label + '（' + items.length + '）</div>';
+    items.forEach(function(t) {
+      html += '<div style="display:flex;align-items:center;gap:8px;padding:7px 10px;border:1px solid var(--border);border-radius:8px;margin-bottom:6px;background:var(--card-bg);">';
+      html += '<button onclick="dplToggle(\'' + t.id + '\')" style="flex-shrink:0;width:20px;height:20px;border-radius:50%;border:2px solid #f59e0b;background:' + (t.done ? '#f59e0b' : 'transparent') + ';cursor:pointer;font-size:11px;color:#fff;">' + (t.done ? '✓' : '') + '</button>';
+      html += '<span style="font-size:12px;color:var(--text-light);min-width:48px;">' + tdEsc(t.time) + '</span>';
+      html += '<span style="flex:1;font-size:14px;' + (t.done ? 'text-decoration:line-through;opacity:.55;' : '') + '">' + tdEsc(t.text) + '</span>';
+      html += '<button onclick="dplDelete(\'' + t.id + '\')" style="flex-shrink:0;background:none;border:none;cursor:pointer;font-size:14px;color:var(--text-light);" title="删除">🗑️</button>';
+      html += '</div>';
+    });
+    html += '</div>';
+  });
+  listEl.innerHTML = html;
+  var done = dplTaskList.filter(function(t) { return t.done; }).length;
+  var pct = dplTaskList.length ? Math.round(done / dplTaskList.length * 100) : 0;
+  var progEl = document.getElementById('dp-progress');
+  if (progEl) progEl.textContent = '完成 ' + done + '/' + dplTaskList.length + '（' + pct + '%）';
+  var barEl = document.getElementById('dp-progress-bar');
+  if (barEl) barEl.style.width = pct + '%';
+}
+
+function tdTodayCN() {
+  var d = new Date();
+  var week = ['日','一','二','三','四','五','六'][d.getDay()];
+  return d.getFullYear() + '年' + (d.getMonth()+1) + '月' + d.getDate() + '日 星期' + week;
 }
