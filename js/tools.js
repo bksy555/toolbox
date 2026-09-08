@@ -6034,6 +6034,81 @@ greet('世界');</textarea>
       </div>
     `,
     handler: () => { setTimeout(dplInit, 50); }
+  },
+  {
+    id: 'vocal-remover',
+    cat: 'media',
+    icon: '🎤',
+    name: '人声分离/伴奏提取',
+    desc: '灵感来源于 LALAL.AI / Moises / Splice（付费会员），上传歌曲自动去除人声提取伴奏，或提取清唱，支持强度调节，纯本地处理不上传，音乐人/K歌者必备',
+    html: `
+      <div class="tool-card">
+        <div class="row" style="margin-bottom:12px;gap:8px;align-items:center;flex-wrap:wrap;">
+          <input type="file" id="vr-file" accept="audio/*" class="file-input" style="flex:1;min-width:180px;">
+        </div>
+        <div class="row" style="margin-bottom:12px;gap:8px;align-items:center;flex-wrap:wrap;">
+          <label style="font-size:13px;">处理模式</label>
+          <select id="vr-mode" style="flex:1;min-width:120px;">
+            <option value="accompaniment">🎵 提取伴奏（去人声）</option>
+            <option value="vocal">🎤 提取清唱（去伴奏）</option>
+          </select>
+          <label style="font-size:13px;">分离强度</label>
+          <input type="range" id="vr-strength" min="30" max="100" value="70" style="flex:1;min-width:120px;">
+        </div>
+        <div class="row" style="margin-bottom:12px;gap:8px;align-items:center;flex-wrap:wrap;">
+          <button class="btn btn-primary" onclick="vrProcess()">⚡ 开始处理</button>
+          <button class="btn btn-secondary" onclick="vrDownload()" id="vr-download-btn" disabled>⬇️ 下载结果</button>
+          <span id="vr-status" style="font-size:13px;color:var(--text-light);"></span>
+        </div>
+        <div id="vr-visual" style="text-align:center;padding:30px 0;border:1px dashed var(--border);border-radius:10px;color:var(--text-light);font-size:13px;">
+          📂 上传音频文件，选择模式后点击「开始处理」（支持 MP3 / WAV / M4A，本地处理不上传）
+        </div>
+        <div style="margin-top:8px;font-size:12px;color:var(--text-light);text-align:center;">💡 灵感来源于 LALAL.AI / Moises / Splice；采用中置声道抵消算法分离人声，纯本地处理不泄露隐私</div>
+      </div>
+    `,
+    handler: () => { setTimeout(vrInit, 50); }
+  },
+  {
+    id: 'photo-restore',
+    cat: 'image',
+    icon: '🖼️',
+    name: '老照片修复上色',
+    desc: '灵感来源于 Remini / MyHeritage（付费会员），老照片一键降噪除划痕、自动增强对比度、复古着色，支持多种色调风格，整修家族旧照神器，纯本地处理不上传',
+    html: `
+      <div class="tool-card">
+        <div class="row" style="margin-bottom:12px;gap:8px;align-items:center;flex-wrap:wrap;">
+          <input type="file" id="pr-file" accept="image/*" class="file-input" style="flex:1;min-width:180px;">
+          <select id="pr-style" style="flex:1;min-width:140px;">
+            <option value="sepia">🟤 复古怀旧（棕褐）</option>
+            <option value="warm">🟠 暖阳复古</option>
+            <option value="cool">🔵 冷调胶片</option>
+            <option value="green">🟢 墨绿岁月</option>
+            <option value="bw">⚫ 黑白增强</option>
+            <option value="color">🌈 智能着色（亮度映射）</option>
+          </select>
+        </div>
+        <div class="row" style="margin-bottom:12px;gap:8px;align-items:center;flex-wrap:wrap;">
+          <label style="font-size:13px;">降噪</label>
+          <input type="range" id="pr-noise" min="0" max="3" value="1" style="flex:1;min-width:100px;">
+          <label style="font-size:13px;">对比度</label>
+          <input type="range" id="pr-contrast" min="80" max="150" value="110" style="flex:1;min-width:100px;">
+          <button class="btn btn-primary" onclick="prProcess()">✨ 开始修复</button>
+          <button class="btn btn-secondary" onclick="prDownload()" id="pr-download-btn" disabled>⬇️ 下载成品</button>
+        </div>
+        <div class="row" style="gap:12px;align-items:flex-start;">
+          <div style="flex:1;min-width:0;text-align:center;">
+            <div style="font-size:13px;font-weight:600;margin-bottom:6px;">🖼️ 原图</div>
+            <div id="pr-original" style="border:1px solid var(--border);border-radius:10px;min-height:160px;background:var(--bg);display:flex;align-items:center;justify-content:center;color:var(--text-light);font-size:13px;overflow:hidden;">上传后显示</div>
+          </div>
+          <div style="flex:1;min-width:0;text-align:center;">
+            <div style="font-size:13px;font-weight:600;margin-bottom:6px;">✨ 修复效果</div>
+            <div id="pr-result" style="border:1px solid var(--border);border-radius:10px;min-height:160px;background:var(--bg);display:flex;align-items:center;justify-content:center;color:var(--text-light);font-size:13px;overflow:hidden;">处理后显示</div>
+          </div>
+        </div>
+        <div style="margin-top:8px;font-size:12px;color:var(--text-light);text-align:center;">💡 灵感来源于 Remini / MyHeritage；降噪+增强+着色全在浏览器本地完成，不上传照片保护隐私</div>
+      </div>
+    `,
+    handler: () => { setTimeout(prInit, 50); }
   }
 ];
 
@@ -7676,13 +7751,13 @@ function dpCopyText() {
 const CATEGORIES = [
   { id: 'text', icon: '✏️', name: '文本工具', desc: '字数统计、简繁转换、摩斯密码、文本转语音、文本对比' },
   { id: 'dev', icon: '💻', name: '开发者工具', desc: 'JSON格式化、二维码生成、二维码美化、条形码生成、Favicon图标生成、正则测试、Markdown、IP查询、思维导图、图表生成、代码图片生成、表格数据转换' },
-  { id: 'image', icon: '🖼️', name: '图片处理', desc: '去背景换底色、批量压缩、加水印、长图拼接、格式转换、裁剪、异形裁剪、马赛克打码、双色调滤镜、图片转字符画、照片卡通化、OCR、印章制作、九宫格切图、文字转手写体、表情包、社交媒体图片尺寸调整、艺术效果、像素画、设备样机、图片高清放大、图片转线稿、渐变背景、文字特效、拼贴画、图片相框、颜色盲区模拟、海报设计器' },
+  { id: 'image', icon: '🖼️', name: '图片处理', desc: '去背景换底色、批量压缩、加水印、长图拼接、格式转换、裁剪、异形裁剪、马赛克打码、双色调滤镜、图片转字符画、照片卡通化、OCR、印章制作、九宫格切图、文字转手写体、表情包、社交媒体图片尺寸调整、艺术效果、像素画、设备样机、图片高清放大、图片转线稿、渐变背景、文字特效、拼贴画、图片相框、颜色盲区模拟、海报设计器、老照片修复上色' },
   { id: 'document', icon: '📄', name: '文档转换', desc: '图片转PDF、PDF转图片、Word解析、Excel转PDF、PDF合并、PDF拆分、简历生成、电子签名、表单制作、邮件签名、发票/收据生成器、证书生成器' },
   { id: 'convert', icon: '🔄', name: '转换工具', desc: '单位换算、进制转换、函数绘图' },
   { id: 'security', icon: '🔒', name: '安全工具', desc: '密码生成、Hash计算、随机数' },
   { id: 'time', icon: '⏱️', name: '时间工具', desc: '时间戳转换、日期计算、番茄钟专注计时、待办清单、每日计划' },
   { id: 'color', icon: '🎨', name: '颜色工具', desc: 'HEX/RGB/HSL颜色转换、CSS渐变生成器、配色方案生成器' },
-  { id: 'media', icon: '🎬', name: '媒体工具', desc: '抖音/TikTok去水印下载、视频转GIF、在线录音、录音转文字、音频波形可视化、白噪音发生器、音频变速变调、音频剪辑拼接、视频缩略图制作器、在线便签' },
+  { id: 'media', icon: '🎬', name: '媒体工具', desc: '抖音/TikTok去水印下载、视频转GIF、在线录音、录音转文字、音频波形可视化、白噪音发生器、音频变速变调、音频剪辑拼接、视频缩略图制作器、在线便签、人声分离/伴奏提取' },
   { id: 'ai', icon: '🤖', name: 'AI工具', desc: 'AI聊天、AI Agent安装、免费AI工具推荐' },
   { id: 'voice', icon: '🗣️', name: '群众心声', desc: '提交工具建议、投票排行榜、前3名自动实现' },
   { id: 'lottery', icon: '🎰', name: '彩票工具', desc: '双色球、大乐透、福彩3D、快乐8、排列三…在线过滤缩水、选号、计算器' },
@@ -14185,4 +14260,266 @@ function tdTodayCN() {
   var d = new Date();
   var week = ['日','一','二','三','四','五','六'][d.getDay()];
   return d.getFullYear() + '年' + (d.getMonth()+1) + '月' + d.getDate() + '日 星期' + week;
+}
+
+/* ========== 人声分离/伴奏提取 vocal-remover (vr*) ========== */
+var vrAudioCtx = null, vrBuffer = null, vrResultBuffer = null;
+
+function vrInit() {
+  if (!document.getElementById('vr-file')) return;
+  var f = document.getElementById('vr-file');
+  f.onchange = function() {
+    var file = f.files && f.files[0];
+    if (!file) return;
+    var status = document.getElementById('vr-status');
+    if (status) status.textContent = '已选择: ' + file.name;
+    var visual = document.getElementById('vr-visual');
+    if (visual) visual.innerHTML = '🎵 已加载 <b>' + tdEsc(file.name) + '</b>，选择模式后点击「开始处理」';
+  };
+}
+
+function vrProcess() {
+  var f = document.getElementById('vr-file');
+  var file = f && f.files && f.files[0];
+  if (!file) { toast('⚠️ 请先选择音频文件'); return; }
+  var mode = document.getElementById('vr-mode').value;
+  var strength = parseInt(document.getElementById('vr-strength').value, 10) / 100;
+  var status = document.getElementById('vr-status');
+  var visual = document.getElementById('vr-visual');
+  if (status) status.textContent = '⏳ 解析中...';
+  if (visual) visual.innerHTML = '⏳ 正在解析音频，请稍候...';
+
+  try {
+    if (!vrAudioCtx) vrAudioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  } catch (e) { vrAudioCtx = null; }
+
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    var ctx = vrAudioCtx || new (window.AudioContext || window.webkitAudioContext)();
+    ctx.decodeAudioData(e.target.result).then(function(buf) {
+      vrBuffer = buf;
+      vrSeparate(mode, strength);
+      if (status) status.textContent = '✅ 处理完成，可下载';
+      if (visual) visual.innerHTML = '🎧 处理完成！时长 ' + buf.duration.toFixed(1) + ' 秒，点击「⬇️ 下载结果」保存';
+      var btn = document.getElementById('vr-download-btn');
+      if (btn) btn.disabled = false;
+    }).catch(function(err) {
+      if (status) status.textContent = '❌ 解码失败';
+      if (visual) visual.innerHTML = '❌ 无法解析该音频文件，请换用 MP3 / WAV / M4A';
+      console.error('decode error', err);
+    });
+  };
+  reader.onerror = function() {
+    if (status) status.textContent = '❌ 读取失败';
+    if (visual) visual.innerHTML = '❌ 文件读取失败';
+  };
+  reader.readAsArrayBuffer(file);
+}
+
+function vrSeparate(mode, strength) {
+  var src = vrBuffer;
+  var nCh = src.numberOfChannels;
+  var len = src.length;
+  var sr = src.sampleRate;
+  // 取出 L/R（若单声道则复制）
+  var L = src.getChannelData(0);
+  var R = nCh > 1 ? src.getChannelData(1) : L;
+  // 输出双声道
+  var ctx = vrAudioCtx || new (window.AudioContext || window.webkitAudioContext)();
+  vrResultBuffer = ctx.createBuffer(2, len, sr);
+  var outL = vrResultBuffer.getChannelData(0);
+  var outR = vrResultBuffer.getChannelData(1);
+
+  for (var i = 0; i < len; i++) {
+    var l = L[i], r = R[i];
+    var mid = (l + r) * 0.5;
+    var side = (l - r) * 0.5;
+    if (mode === 'vocal') {
+      // 提取清唱：中心声道（人声）为主，削弱立体声部分
+      var v = mid * (2 - strength) + side * (2 * strength - 1);
+      outL[i] = v;
+      outR[i] = v;
+    } else {
+      // 提取伴奏：侧声道为主，中心（人声）按强度抵消
+      outL[i] = side * (1 + strength);
+      outR[i] = -side * (1 + strength);
+    }
+  }
+}
+
+function vrDownload() {
+  if (!vrResultBuffer) { toast('⚠️ 请先处理音频'); return; }
+  var wav = vrBufferToWav(vrResultBuffer);
+  var blob = new Blob([wav], { type: 'audio/wav' });
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  var mode = document.getElementById('vr-mode').value;
+  a.download = (mode === 'vocal' ? '人声分离-清唱' : '伴奏提取') + '.wav';
+  document.body.appendChild(a);
+  a.click();
+  setTimeout(function() { URL.revokeObjectURL(a.href); a.remove(); }, 1000);
+  toast('⬇️ 已开始下载 WAV');
+}
+
+// AudioBuffer -> 16bit PCM WAV bytes
+function vrBufferToWav(buffer) {
+  var numCh = buffer.numberOfChannels;
+  var sr = buffer.sampleRate;
+  var len = buffer.length;
+  var bytesPerSample = 2;
+  var blockAlign = numCh * bytesPerSample;
+  var dataSize = len * blockAlign;
+  var ab = new ArrayBuffer(44 + dataSize);
+  var dv = new DataView(ab);
+  function writeStr(off, s) { for (var i = 0; i < s.length; i++) dv.setUint8(off + i, s.charCodeAt(i)); }
+  writeStr(0, 'RIFF'); dv.setUint32(4, 36 + dataSize, true); writeStr(8, 'WAVE');
+  writeStr(12, 'fmt '); dv.setUint32(16, 16, true); dv.setUint16(20, 1, true);
+  dv.setUint16(22, numCh, true); dv.setUint32(24, sr, true);
+  dv.setUint32(28, sr * blockAlign, true); dv.setUint16(32, blockAlign, true);
+  dv.setUint16(34, 16, true);
+  writeStr(36, 'data'); dv.setUint32(40, dataSize, true);
+  var offset = 44;
+  for (var ch = 0; ch < numCh; ch++) {
+    var data = buffer.getChannelData(ch);
+    for (var i = 0; i < len; i++) {
+      var s = Math.max(-1, Math.min(1, data[i]));
+      dv.setInt16(offset + i * blockAlign + ch * bytesPerSample, s < 0 ? s * 0x8000 : s * 0x7FFF, true);
+    }
+  }
+  return ab;
+}
+
+/* ========== 老照片修复上色 photo-restore (pr*) ========== */
+var prCanvasSrc = null, prResultCanvas = null, prImageData = null;
+
+var PR_STYLES = {
+  sepia:   [[40, 30, 20], [90, 70, 45], [150, 120, 80], [210, 180, 130], [245, 235, 215]],
+  warm:    [[70, 40, 25], [130, 85, 50], [190, 140, 90], [235, 200, 150], [255, 245, 225]],
+  cool:    [[30, 50, 80], [70, 110, 160], [120, 170, 220], [180, 215, 240], [235, 245, 255]],
+  green:   [[35, 70, 45], [80, 130, 85], [140, 185, 130], [200, 225, 180], [240, 250, 230]],
+  bw:      [[20, 20, 20], [70, 70, 70], [130, 130, 130], [195, 195, 195], [250, 250, 250]],
+  color:   [[45, 55, 80], [90, 110, 140], [160, 150, 130], [215, 195, 170], [250, 240, 230]]
+};
+
+function prInit() {
+  if (!document.getElementById('pr-file')) return;
+  var f = document.getElementById('pr-file');
+  f.onchange = function() {
+    var file = f.files && f.files[0];
+    if (!file) return;
+    var reader = new FileReader();
+    reader.onload = function(e) {
+      var img = new Image();
+      img.onload = function() {
+        prCanvasSrc = img;
+        var holder = document.getElementById('pr-original');
+        if (holder) {
+          holder.innerHTML = '';
+          var canvas = document.createElement('canvas');
+          canvas.width = img.naturalWidth;
+          canvas.height = img.naturalHeight;
+          canvas.style.maxWidth = '100%';
+          canvas.style.height = 'auto';
+          canvas.getContext('2d').drawImage(img, 0, 0);
+          holder.appendChild(canvas);
+        }
+        var rst = document.getElementById('pr-result');
+        if (rst) rst.innerHTML = '<div style="padding:30px 0;color:var(--text-light);font-size:13px;">✨ 选择风格后点击「开始修复」</div>';
+        prProcess();
+      };
+      img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+  };
+}
+
+function prProcess() {
+  if (!prCanvasSrc) { toast('⚠️ 请先选择照片'); return; }
+  var noise = parseInt(document.getElementById('pr-noise').value, 10);
+  var contrast = parseInt(document.getElementById('pr-contrast').value, 10) / 100;
+  var style = document.getElementById('pr-style').value;
+
+  var img = prCanvasSrc;
+  var w = img.naturalWidth, h = img.naturalHeight;
+  var canvas = document.createElement('canvas');
+  canvas.width = w; canvas.height = h;
+  var ctx = canvas.getContext('2d');
+
+  // 1) 灰度化 + 对比度增强
+  ctx.drawImage(img, 0, 0);
+  var data = ctx.getImageData(0, 0, w, h);
+  var px = data.data;
+  var c = contrast, b = 128 * (1 - c); // y = c*x + b
+  for (var i = 0; i < px.length; i += 4) {
+    var gray = 0.299 * px[i] + 0.587 * px[i + 1] + 0.114 * px[i + 2];
+    gray = Math.max(0, Math.min(255, gray * c + b));
+    px[i] = px[i + 1] = px[i + 2] = gray;
+  }
+  ctx.putImageData(data, 0, 0);
+
+  // 2) 降噪：多轮 3x3 均值模糊（迭代噪声次）
+  if (noise > 0) {
+    for (var n = 0; n < noise; n++) {
+      var d2 = ctx.getImageData(0, 0, w, h);
+      var p2 = d2.data;
+      var out = new Uint8ClampedArray(p2);
+      for (var y = 1; y < h - 1; y++) {
+        for (var x = 1; x < w - 1; x++) {
+          var idx = (y * w + x) * 4;
+          for (var ch = 0; ch < 3; ch++) {
+            var sum = 0;
+            for (var dy = -1; dy <= 1; dy++)
+              for (var dx = -1; dx <= 1; dx++)
+                sum += p2[((y + dy) * w + (x + dx)) * 4 + ch];
+            out[idx + ch] = sum / 9;
+          }
+        }
+      }
+      ctx.putImageData(new ImageData(out, w, h), 0, 0);
+    }
+  }
+
+  // 3) 着色：按亮度映射到选定的调色板
+  var palette = PR_STYLES[style] || PR_STYLES.sepia;
+  var d3 = ctx.getImageData(0, 0, w, h);
+  var p3 = d3.data;
+  for (i = 0; i < p3.length; i += 4) {
+    var g = p3[i];
+    var t = g / 255 * (palette.length - 1);
+    var idxA = Math.floor(t), idxB = Math.min(palette.length - 1, idxA + 1);
+    var frac = t - idxA;
+    var a = palette[idxA], b2 = palette[idxB];
+    p3[i]     = Math.round(a[0] + (b2[0] - a[0]) * frac);
+    p3[i + 1] = Math.round(a[1] + (b2[1] - a[1]) * frac);
+    p3[i + 2] = Math.round(a[2] + (b2[2] - a[2]) * frac);
+  }
+  ctx.putImageData(d3, 0, 0);
+
+  // 保存结果
+  prResultCanvas = canvas;
+  prImageData = ctx.getImageData(0, 0, w, h);
+  var holder = document.getElementById('pr-result');
+  if (holder) {
+    holder.innerHTML = '';
+    var outC = document.createElement('canvas');
+    outC.width = w; outC.height = h;
+    outC.style.maxWidth = '100%';
+    outC.style.height = 'auto';
+    outC.getContext('2d').drawImage(canvas, 0, 0);
+    holder.appendChild(outC);
+  }
+  var btn = document.getElementById('pr-download-btn');
+  if (btn) btn.disabled = false;
+  toast('✨ 修复完成');
+}
+
+function prDownload() {
+  if (!prResultCanvas) { toast('⚠️ 请先修复照片'); return; }
+  var a = document.createElement('a');
+  a.href = prResultCanvas.toDataURL('image/png');
+  a.download = '老照片修复-' + Date.now() + '.png';
+  document.body.appendChild(a);
+  a.click();
+  setTimeout(function() { a.remove(); }, 1000);
+  toast('⬇️ 已开始下载');
 }
