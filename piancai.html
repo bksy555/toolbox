@@ -445,7 +445,7 @@
             </tr>
           </thead>
           <tbody id="d3PredBody">
-            <tr><td colspan="6" style="text-align:center;padding:40px;color:var(--text-light);">
+            <tr><td colspan="7" style="text-align:center;padding:40px;color:var(--text-light);">
               <div class="piancai-loading"><div class="spinner"></div><div style="margin-top:12px;">⏳ 正在生成预测...</div></div>
             </td></tr>
           </tbody>
@@ -567,12 +567,13 @@
               <th style="width:105px;">日期</th>
               <th style="width:70px;">星期</th>
               <th style="width:160px;">预测3胆</th>
+              <th style="width:160px;">冷号3胆</th>
               <th style="width:180px;">排列三中奖号码</th>
               <th style="width:80px;">结果</th>
             </tr>
           </thead>
           <tbody id="p3PredBody">
-            <tr><td colspan="6" style="text-align:center;padding:40px;color:var(--text-light);">
+            <tr><td colspan="7" style="text-align:center;padding:40px;color:var(--text-light);">
               <div class="piancai-loading"><div class="spinner"></div><div style="margin-top:12px;">⏳ 正在生成预测...</div></div>
             </td></tr>
           </tbody>
@@ -921,6 +922,7 @@
             <td>${dateStr}</td>
             <td>${weekdayStr}</td>
             <td>${dansStr}</td>
+            <td>${coldStr} ${coldResultStr}</td>
             <td>${drawStr}</td>
             <td style="font-size:18px;font-weight:700;">${resultStr}</td>
           </tr>
@@ -1233,6 +1235,7 @@
             <td>${dateStr}</td>
             <td>${weekdayStr}</td>
             <td>${dansStr}</td>
+            <td>${coldStr} ${coldResultStr}</td>
             <td>${drawStr}</td>
             <td style="font-size:18px;font-weight:700;">${resultStr}</td>
           </tr>
@@ -1484,7 +1487,9 @@
 
     // 排列三中奖号码（从 data/p3-prediction.json 加载，服务器脚本每日更新）
     let KNOWN_P3_DRAW_NUMS = {};
+    let KNOWN_P3_COLD_DATA = {}; // {period: {coldDans: [...], coldResult: '✅'|'❌'}}
     const P3_DRAW_CACHE_KEY = 'p3_known_draw_nums';
+    const P3_COLD_CACHE_KEY = 'p3_cold_data';
 
     // 从 p3-prediction.json 动态加载排列三中奖号码（带时间戳破缓存）
     function loadP3DrawNums() {
@@ -1493,19 +1498,34 @@
         try { cachedNums = JSON.parse(localStorage.getItem(P3_DRAW_CACHE_KEY)) || {}; } catch(e) { cachedNums = {}; }
         if (Object.keys(cachedNums).length > 0) {
           KNOWN_P3_DRAW_NUMS = cachedNums;
+          try {
+            const cachedCold = JSON.parse(localStorage.getItem(P3_COLD_CACHE_KEY)) || {};
+            if (Object.keys(cachedCold).length > 0) KNOWN_P3_COLD_DATA = cachedCold;
+          } catch(e) {}
         }
 
         fetch('data/p3-prediction.json?t=' + Date.now(), { cache: 'no-store' })
           .then(function(res) { if (!res.ok) throw new Error(res.status); return res.json(); })
           .then(function(data) {
             const nums = {};
+            const coldData = {};
             for (const k in data) {
               const v = data[k];
               if (v && v.drawNum) nums[k] = String(v.drawNum);
+              if (v && v.coldDans && Array.isArray(v.coldDans) && v.coldDans.length > 0) {
+                coldData[k] = {
+                  coldDans: v.coldDans,
+                  coldResult: v.coldResult || null
+                };
+              }
             }
             if (Object.keys(nums).length > 0) {
               KNOWN_P3_DRAW_NUMS = nums;
               try { localStorage.setItem(P3_DRAW_CACHE_KEY, JSON.stringify(nums)); } catch(e) {}
+            }
+            if (Object.keys(coldData).length > 0) {
+              KNOWN_P3_COLD_DATA = coldData;
+              try { localStorage.setItem(P3_COLD_CACHE_KEY, JSON.stringify(coldData)); } catch(e) {}
             }
             resolve();
           })
@@ -1545,6 +1565,30 @@
           }
         }
 
+        // 冷号3胆（排列三独立冷号，近20期频率最低3个数字）
+        let coldStr = '';
+        let coldResultStr = '';
+        const p3Cold = KNOWN_P3_COLD_DATA[p.period];
+        if (p3Cold && p3Cold.coldDans && (p.isPast || p.isToday)) {
+          coldStr = p3Cold.coldDans.map(n => `<span class="d3-ball d3-ball-cold">${n}</span>`).join(' ');
+          if (p3Cold.coldResult === '✅') {
+            coldResultStr = '<span style="color:#22c55e;font-weight:700;">✅</span>';
+          } else if (p3Cold.coldResult === '❌') {
+            coldResultStr = '<span style="color:#ef4444;font-weight:700;">❌</span>';
+          }
+        } else if (p.isPast && KNOWN_P3_DRAW_NUMS[p.period] && p3Cold && p3Cold.coldDans) {
+          // 本地实时计算冷号结果（兜底）
+          const cd = p3Cold.coldDans;
+          const dn = String(KNOWN_P3_DRAW_NUMS[p.period]);
+          const res = calcResult(cd, dn);
+          coldStr = cd.map(n => `<span class="d3-ball d3-ball-cold">${n}</span>`).join(' ');
+          coldResultStr = res === '✅' ? '<span style="color:#22c55e;font-weight:700;">✅</span>' : '<span style="color:#ef4444;font-weight:700;">❌</span>';
+        } else if (p.isPast || p.isToday) {
+          coldStr = '<span style="color:var(--text-light);font-size:12px;">—</span>';
+        } else {
+          coldStr = '<span style="color:var(--text-light);font-size:12px;">🔮</span>';
+        }
+
         // 排列三中奖号码（独立数据源）
         let drawStr = '';
         let resultStr = '';
@@ -1579,6 +1623,7 @@
             <td>${dateStr}</td>
             <td>${weekdayStr}</td>
             <td>${dansStr}</td>
+            <td>${coldStr} ${coldResultStr}</td>
             <td>${drawStr}</td>
             <td style="font-size:18px;font-weight:700;">${resultStr}</td>
           </tr>

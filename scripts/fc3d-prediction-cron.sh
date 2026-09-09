@@ -350,7 +350,7 @@ fs.writeFileSync(DATA_FILE, JSON.stringify(stored, null, 2), 'utf8');
 console.log('✅ 预测数据已保存: ' + Object.keys(stored).length + ' 期记录（含冷号3胆）');
 
 // ========== 排列三（P3）预测数据生成 ==========
-// 预测3码与3D一致（同一套时干天干3胆），中奖号码独立更新
+// 预测3码与3D一致（同一套时干天干3胆），中奖号码独立更新；冷号3胆按P3自身近20期频率计算
 const P3_DATA_FILE = './data/p3-prediction.json';
 let p3Stored = {};
 try {
@@ -360,6 +360,13 @@ try {
 } catch(e) {
   p3Stored = {};
 }
+
+// 收集 P3 所有已知开奖号，用于冷号计算
+const p3DrawNums = {};
+for (const [k, v] of Object.entries(p3Stored)) {
+  if (v.drawNum) p3DrawNums[k] = v.drawNum;
+}
+if (PLS_FETCHED_PERIOD && PLS_FETCHED_DRAW) p3DrawNums[PLS_FETCHED_PERIOD] = PLS_FETCHED_DRAW;
 
 // 排列三最新期号与3D相同（日历年天数-10），直接用 predictions 生成
 for (const p of predictions) {
@@ -409,6 +416,17 @@ if (PLS_FETCHED_PERIOD && PLS_FETCHED_DRAW) {
     p3Stored[PLS_FETCHED_PERIOD].result = calcResult(p3Stored[PLS_FETCHED_PERIOD].dans, PLS_FETCHED_DRAW);
   }
   console.log('📥 排列三从网络更新中奖号码: 第' + PLS_FETCHED_PERIOD + '期 = ' + PLS_FETCHED_DRAW);
+}
+
+// 保存前统一为 P3 补冷号3胆（近20期频率最低3个数字）与冷号结果
+for (const key of Object.keys(p3Stored)) {
+  if (!p3Stored[key].coldDans && p3Stored[key].drawNum) {
+    const cold = calcColdDans(p3DrawNums, key);
+    if (cold) {
+      p3Stored[key].coldDans = cold;
+      p3Stored[key].coldResult = calcResult(cold, p3Stored[key].drawNum);
+    }
+  }
 }
 
 // 保存排列三数据
