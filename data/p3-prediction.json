@@ -5629,7 +5629,7 @@
     ],
     "drawNum": "050",
     "result": "❌",
-    "updatedAt": "2026-09-08T14:02:19.972Z"
+    "updatedAt": "2026-09-09T11:26:37.083Z"
   },
   "2026242": {
     "period": "2026242",
@@ -5642,6 +5642,22 @@
       2,
       4,
       9
+    ],
+    "drawNum": null,
+    "result": null,
+    "updatedAt": null
+  },
+  "2026243": {
+    "period": "2026243",
+    "year": 2026,
+    "month": 9,
+    "day": 10,
+    "weekday": 4,
+    "haiGan": "辛",
+    "dans": [
+      2,
+      6,
+      7
     ],
     "drawNum": null,
     "result": null,
