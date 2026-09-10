@@ -799,11 +799,14 @@
             // 更新预测数字（如果天干变化了）
             stored[key].haiGan = p.haiGan;
             stored[key].dans = p.dans;
-            // 如果之前没有中奖号码，从 KNOWN_DRAW_NUMS 补全（动态加载后刷新）
-            if (!stored[key].drawNum && KNOWN_DRAW_NUMS[key] && (p.isPast || p.isToday)) {
-              stored[key].drawNum = KNOWN_DRAW_NUMS[key];
-              stored[key].result = calcResult(p.dans, KNOWN_DRAW_NUMS[key]);
-              stored[key].updatedAt = new Date().toISOString();
+            // 服务器 JSON 是权威数据：号码为空或与服务器不一致时，一律以服务器为准覆盖
+            // （修复：localStorage 残留旧号码导致修正后的开奖号不更新的问题）
+            if (KNOWN_DRAW_NUMS[key] && (p.isPast || p.isToday)) {
+              const serverNum = String(KNOWN_DRAW_NUMS[key]);
+              if (!stored[key].drawNum || stored[key].drawNum !== serverNum) {
+                stored[key].drawNum = serverNum;
+                stored[key].updatedAt = new Date().toISOString();
+              }
             }
             // 如果已有中奖号码，更新结果
             if (stored[key].drawNum) {
