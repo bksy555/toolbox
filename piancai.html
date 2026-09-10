@@ -414,6 +414,7 @@
     <h1>🎯 福彩3D预测 - 3胆中1</h1>
     <div class="subtitle">
       每日19:25更新当日预测，预测3个号码中1个及以上即为<strong style="color:#22c55e;">正确 ✅</strong>，小于1个为<strong style="color:#ef4444;">错误 ❌</strong>。
+      <br>🧊 冷号3胆（近20期出现最少3个数字，回测411期准确率 <strong style="color:#22c55e;">75.9%</strong>）已并入本表，随开奖号码自动更新。
     </div>
 
     <div class="piancai-form">
@@ -425,11 +426,22 @@
         <div style="display:flex;gap:8px;flex-wrap:wrap;">
           <button class="btn-submit" style="padding:6px 16px;font-size:13px;background:linear-gradient(135deg,#6366f1,#8b5cf6);" onclick="refreshD3Prediction()">🔄 刷新预测</button>
           <button class="btn-submit" style="padding:6px 16px;font-size:13px;background:linear-gradient(135deg,#22c55e,#16a34a);" onclick="showD3History()">📜 历史记录</button>
+          <button class="btn-submit" style="padding:6px 16px;font-size:13px;background:linear-gradient(135deg,#06b6d4,#0891b2);" onclick="showColdHistory()">🧊 冷号历史</button>
         </div>
       </div>
 
       <!-- 统计信息 -->
       <div id="d3Stats" style="display:none;margin-bottom:16px;padding:12px 16px;background:rgba(99,102,241,0.06);border-radius:10px;font-size:14px;"></div>
+
+      <!-- 当前冷号提示 -->
+      <div id="currentColdTip" style="display:none;margin-bottom:16px;padding:16px 20px;background:linear-gradient(135deg,rgba(59,130,246,0.08),rgba(139,92,246,0.08));border:1px solid rgba(99,102,241,0.2);border-radius:12px;text-align:center;">
+        <span style="font-size:14px;color:var(--text-light);">📊 近20期冷号统计 → </span>
+        <span style="font-size:24px;font-weight:700;color:var(--primary);margin:0 8px;" id="currentColdDans"></span>
+        <span style="font-size:14px;color:var(--text-light);">作为今日胆码</span>
+        <br>
+        <span style="font-size:12px;color:var(--text-light);margin-top:4px;display:inline-block;" id="currentColdFreq"></span>
+      </div>
+
 
       <!-- 预测表格 -->
       <div style="overflow-x:auto;">
@@ -440,12 +452,13 @@
               <th style="width:105px;">日期</th>
               <th style="width:70px;">星期</th>
               <th style="width:160px;">预测3胆</th>
+              <th style="width:160px;">冷号3胆</th>
               <th style="width:180px;">中奖号码</th>
               <th style="width:80px;">结果</th>
             </tr>
           </thead>
           <tbody id="d3PredBody">
-            <tr><td colspan="6" style="text-align:center;padding:40px;color:var(--text-light);">
+            <tr><td colspan="7" style="text-align:center;padding:40px;color:var(--text-light);">
               <div class="piancai-loading"><div class="spinner"></div><div style="margin-top:12px;">⏳ 正在生成预测...</div></div>
             </td></tr>
           </tbody>
@@ -465,74 +478,6 @@
       · 预测数据存储在浏览器本地（localStorage），清除浏览器数据会丢失<br>
       · 3胆中1即预测的3个号码中包含1个及以上中奖号码即为正确 ✅<br>
       · 本工具不保证中奖，<strong>彩票有风险，投注需谨慎</strong> 🍀
-    </div>
-  </div>
-
-  <!-- ====== 福彩3D冷号预测 - 3胆中1 ====== -->
-  <div class="piancai-page" style="margin-top:40px;border-top:2px dashed var(--border);padding-top:40px;">
-    <h1>🧊 福彩3D冷号预测 - 3胆中1</h1>
-    <div class="subtitle">
-      统计最近20期开奖号码中出现最少的3个数字作为胆码，<strong>每日随开奖号码自动更新</strong>。
-      回测411期准确率 <strong style="color:#22c55e;">75.9%</strong>，最大连错仅4期 🎯
-    </div>
-
-    <div class="piancai-form">
-      <div class="form-row" style="justify-content:space-between;flex-wrap:wrap;">
-        <div>
-          <span style="font-size:15px;font-weight:600;">📊 近15期冷号预测记录</span>
-          <span style="font-size:12px;color:var(--text-light);margin-left:8px;" id="coldUpdateTime"></span>
-        </div>
-        <div style="display:flex;gap:8px;flex-wrap:wrap;">
-          <button class="btn-submit" style="padding:6px 16px;font-size:13px;background:linear-gradient(135deg,#6366f1,#8b5cf6);" onclick="refreshColdPrediction()">🔄 刷新预测</button>
-          <button class="btn-submit" style="padding:6px 16px;font-size:13px;background:linear-gradient(135deg,#22c55e,#16a34a);" onclick="showColdHistory()">📜 历史记录</button>
-        </div>
-      </div>
-
-      <!-- 统计信息 -->
-      <div id="coldStats" style="display:none;margin-bottom:16px;padding:12px 16px;background:rgba(99,102,241,0.06);border-radius:10px;font-size:14px;"></div>
-
-      <!-- 当前冷号提示 -->
-      <div id="currentColdTip" style="display:none;margin-bottom:16px;padding:16px 20px;background:linear-gradient(135deg,rgba(59,130,246,0.08),rgba(139,92,246,0.08));border:1px solid rgba(99,102,241,0.2);border-radius:12px;text-align:center;">
-        <span style="font-size:14px;color:var(--text-light);">📊 近20期冷号统计 → </span>
-        <span style="font-size:24px;font-weight:700;color:var(--primary);margin:0 8px;" id="currentColdDans"></span>
-        <span style="font-size:14px;color:var(--text-light);">作为今日胆码</span>
-        <br>
-        <span style="font-size:12px;color:var(--text-light);margin-top:4px;display:inline-block;" id="currentColdFreq"></span>
-      </div>
-
-      <!-- 冷号表格 -->
-      <div style="overflow-x:auto;">
-        <table class="d3-pred-table" id="coldPredTable">
-          <thead>
-            <tr>
-              <th style="width:80px;">期数</th>
-              <th style="width:105px;">日期</th>
-              <th style="width:70px;">星期</th>
-              <th style="width:160px;">冷号3胆</th>
-              <th style="width:180px;">中奖号码</th>
-              <th style="width:80px;">结果</th>
-            </tr>
-          </thead>
-          <tbody id="coldPredBody">
-            <tr><td colspan="6" style="text-align:center;padding:40px;color:var(--text-light);">
-              <div class="piancai-loading"><div class="spinner"></div><div style="margin-top:12px;">⏳ 正在计算冷号...</div></div>
-            </td></tr>
-          </tbody>
-        </table>
-      </div>
-
-      <div class="form-row" style="margin-top:12px;justify-content:space-between;">
-        <span style="font-size:13px;color:var(--text-light);" id="coldAccuracy"></span>
-        <span style="font-size:12px;color:var(--text-light);"></span>
-      </div>
-    </div>
-
-    <div class="disclaimer">
-      <strong>🧊 冷号3胆原理</strong><br>
-      · 统计最近20期（不含当前期）每个数字(0-9)的出现次数<br>
-      · 选取出现次数最少的3个数字作为胆码，即"冷号追号"策略<br>
-      · 回测411期，准确率 <strong style="color:#22c55e;">75.9%</strong>，最大连错仅4期，从未出现5期或以上连错<br>
-      · <strong>本方法基于统计规律，仅供参考，彩票有风险，投注需谨慎</strong> 🍀
     </div>
   </div>
 
@@ -864,10 +809,16 @@
       }
     }
 
-    // ---- 渲染预测表格 ----
+    // ---- 渲染预测表格（时干3胆 + 冷号3胆 合一，格式同排列三7列） ----
     function renderD3Table() {
       const predictions = generateD3Predictions();
       const stored = saveD3Data(predictions);
+      // 冷号预测数据（与独立冷号逻辑一致，优先服务器数据）
+      const coldPredictions = generateColdPredictions();
+      const coldMap = {};
+      for (let i = 0; i < coldPredictions.length; i++) {
+        coldMap[coldPredictions[i].period] = coldPredictions[i];
+      }
       
       const tbody = document.getElementById('d3PredBody');
       if (!tbody) return;
@@ -875,6 +826,8 @@
       let html = '';
       let correctCount = 0;
       let totalResolved = 0;
+      let coldCorrectCount = 0;
+      let coldTotalResolved = 0;
       
       // 展示顺序：最新的在前
       for (let i = predictions.length - 1; i >= 0; i--) {
@@ -898,16 +851,39 @@
           }
         }
         
+        // 冷号3胆（近20期频率最低3个数字）
+        let coldStr = '';
+        let coldResultStr = '';
+        const coldP = coldMap[p.period];
+        const coldDans = (coldP && coldP.dans) ? coldP.dans : null;
+        if (coldDans && (p.isPast || p.isToday)) {
+          coldStr = coldDans.map(n => `<span class="d3-ball d3-ball-cold">${n}</span>`).join(' ');
+        } else if (p.isPast || p.isToday) {
+          coldStr = '<span style="color:var(--text-light);font-size:12px;">—</span>';
+        } else {
+          coldStr = '<span style="color:var(--text-light);font-size:12px;">🔮</span>';
+        }
+        
         // 中奖号码
         let drawStr = '';
         let resultStr = '';
+        const drawNum = (record && record.drawNum) ? String(record.drawNum) : '';
         
-        if (record && record.drawNum) {
-          const drawArr = record.drawNum.split('');
-          drawStr = drawArr.map(n => `<span class="d3-ball d3-ball-draw ${record.result === '✅' ? 'd3-ball-hit' : ''}">${n}</span>`).join(' ');
-          resultStr = record.result || '';
-          if (record.result === '✅') correctCount++;
+        if (drawNum && drawNum.length === 3 && (p.isPast || p.isToday)) {
+          // 本地实时重算时干结果（drawNum 为服务器权威值）
+          const hit = calcResult(p.dans, drawNum) === '✅';
+          const drawArr = drawNum.split('');
+          drawStr = drawArr.map(n => `<span class="d3-ball d3-ball-draw ${hit ? 'd3-ball-hit' : ''}">${n}</span>`).join(' ');
+          resultStr = hit ? '✅' : '❌';
           totalResolved++;
+          if (hit) correctCount++;
+          // 冷号结果（本地实时重算）
+          if (coldDans) {
+            const coldHit = calcResult(coldDans, drawNum) === '✅';
+            coldResultStr = coldHit ? '<span style="color:#22c55e;font-weight:700;">✅</span>' : '<span style="color:#ef4444;font-weight:700;">❌</span>';
+            coldTotalResolved++;
+            if (coldHit) coldCorrectCount++;
+          }
         } else if (p.isPast || p.isToday) {
           drawStr = '<span style="color:var(--text-light);font-size:12px;">待更新</span>';
           resultStr = '⏳';
@@ -925,6 +901,7 @@
             <td>${dateStr}</td>
             <td>${weekdayStr}</td>
             <td>${dansStr}</td>
+            <td>${coldStr} ${coldResultStr}</td>
             <td>${drawStr}</td>
             <td style="font-size:18px;font-weight:700;">${resultStr}</td>
           </tr>
@@ -933,17 +910,26 @@
       
       tbody.innerHTML = html;
       
-      // 更新统计
+      // 更新统计（时干 + 冷号）
       const accuracy = totalResolved > 0 ? Math.round(correctCount / totalResolved * 100) : 0;
+      const coldAccuracy = coldTotalResolved > 0 ? Math.round(coldCorrectCount / coldTotalResolved * 100) : 0;
       const statsEl = document.getElementById('d3Stats');
       if (statsEl) {
         if (totalResolved > 0) {
           statsEl.style.display = 'block';
-          statsEl.innerHTML = `
-            📈 已开奖 ${totalResolved} 期 · 正确 <strong style="color:#22c55e;">${correctCount}</strong> 期 · 
+          let statsHtml = `
+            📈 时干3胆：已开奖 <strong>${totalResolved}</strong> 期 · 正确 <strong style="color:#22c55e;">${correctCount}</strong> 期 · 
             错误 <strong style="color:#ef4444;">${totalResolved - correctCount}</strong> 期 · 
             准确率 <strong style="color:var(--primary);">${accuracy}%</strong>
           `;
+          if (coldTotalResolved > 0) {
+            statsHtml += `
+              <br>🧊 冷号3胆：已开奖 <strong>${coldTotalResolved}</strong> 期 · 正确 <strong style="color:#22c55e;">${coldCorrectCount}</strong> 期 ·
+              错误 <strong style="color:#ef4444;">${coldTotalResolved - coldCorrectCount}</strong> 期 ·
+              准确率 <strong style="color:var(--primary);">${coldAccuracy}%</strong>
+            `;
+          }
+          statsEl.innerHTML = statsHtml;
         } else {
           statsEl.style.display = 'none';
         }
@@ -952,11 +938,18 @@
       const accEl = document.getElementById('d3Accuracy');
       if (accEl) {
         if (totalResolved > 0) {
-          accEl.textContent = `📊 已开奖 ${totalResolved} 期，正确 ${correctCount} 期（${accuracy}%）`;
+          let accText = `📊 时干3胆：已开奖 ${totalResolved} 期，正确 ${correctCount} 期（${accuracy}%）`;
+          if (coldTotalResolved > 0) {
+            accText += `｜🧊 冷号3胆：已开奖 ${coldTotalResolved} 期，正确 ${coldCorrectCount} 期（${coldAccuracy}%）`;
+          }
+          accEl.textContent = accText;
         } else {
           accEl.textContent = '📊 暂无已开奖记录';
         }
       }
+      
+      // 当前冷号提示（今日胆码）
+      updateColdTip();
       
       // 更新时间
       const updateEl = document.getElementById('d3UpdateTime');
@@ -1172,139 +1165,39 @@
       return predictions;
     }
 
-    // ---- 渲染冷号预测表格 ----
-    function renderColdTable() {
-      const tbody = document.getElementById('coldPredBody');
-      if (!tbody) return;
-
+    // ---- 更新当前冷号提示（今日胆码，冷号已合并进主表） ----
+    function updateColdTip() {
       const predictions = generateColdPredictions();
-      // 与主表格共用同一个数据源（localStorage stored），保证中奖号码一致
-      const stored = saveD3Data(generateD3Predictions());
-      let html = '';
-      let correctCount = 0;
-      let totalResolved = 0;
-
-      for (let i = predictions.length - 1; i >= 0; i--) {
-        const p = predictions[i];
-        const dateStr = formatDateStr(p.year, p.month, p.day);
-        const weekdayStr = '星期' + WEEKDAY_NAMES[p.weekday];
-
-        // 冷号3胆：过去/今天显示，未来显示待更新
-        let dansStr = '';
-        if (p.isPast || p.isToday) {
-          if (p.dans) {
-            dansStr = p.dans.map(n => `<span class="d3-ball">${n}</span>`).join(' ');
-          } else {
-            dansStr = '<span style="color:var(--text-light);font-size:12px;">数据不足</span>';
-          }
-        } else {
-          dansStr = '<span style="color:var(--text-light);font-size:12px;">待更新</span>';
-        }
-
-        // 中奖号码：与主表格完全一致，从 stored 读取
-        let drawStr = '';
-        let resultStr = '';
-        const record = stored ? stored[p.period] : null;
-
-        if (record && record.drawNum && (p.isPast || p.isToday)) {
-          const drawArr = record.drawNum.split('');
-          // 本地实时重算冷号结果（drawNum 为服务器权威值；避免服务器 coldResult 滞后导致的误判）
-          let hit = false;
-          if (p.dans) {
-            hit = p.dans.some(d => drawArr.map(Number).includes(d));
-          }
-          drawStr = drawArr.map(n => `<span class="d3-ball d3-ball-draw ${hit ? 'd3-ball-hit' : ''}">${n}</span>`).join(' ');
-          resultStr = hit ? '✅' : '❌';
-          if (p.dans) {
-            correctCount += hit ? 1 : 0;
-            totalResolved++;
-          }
-        } else if (p.isPast || p.isToday) {
-          drawStr = '<span style="color:var(--text-light);font-size:12px;">待更新</span>';
-          resultStr = '⏳';
-        } else {
-          drawStr = '<span style="color:var(--text-light);font-size:12px;">—</span>';
-          resultStr = '🔮';
-        }
-
-        const rowClass = p.isToday ? 'd3-row-today' : (p.isFuture ? 'd3-row-future' : 'd3-row-past');
-
-        html += `
-          <tr class="${rowClass}">
-            <td style="font-weight:600;">${p.period}</td>
-            <td>${dateStr}</td>
-            <td>${weekdayStr}</td>
-            <td>${dansStr}</td>
-            <td>${drawStr}</td>
-            <td style="font-size:18px;font-weight:700;">${resultStr}</td>
-          </tr>
-        `;
-      }
-
-      tbody.innerHTML = html;
-
-      // 统计
-      const accuracy = totalResolved > 0 ? Math.round(correctCount / totalResolved * 100) : 0;
-      const statsEl = document.getElementById('coldStats');
-      if (statsEl) {
-        if (totalResolved > 0) {
-          statsEl.style.display = 'block';
-          statsEl.innerHTML = `
-            📈 已开奖 ${totalResolved} 期 · 正确 <strong style="color:#22c55e;">${correctCount}</strong> 期 ·
-            错误 <strong style="color:#ef4444;">${totalResolved - correctCount}</strong> 期 ·
-            准确率 <strong style="color:var(--primary);">${accuracy}%</strong>
-          `;
-        } else {
-          statsEl.style.display = 'none';
-        }
-      }
-
-      const accEl = document.getElementById('coldAccuracy');
-      if (accEl) {
-        if (totalResolved > 0) {
-          accEl.textContent = `📊 已开奖 ${totalResolved} 期，正确 ${correctCount} 期（${accuracy}%）`;
-        } else {
-          accEl.textContent = '📊 暂无已开奖记录';
-        }
-      }
-
-      // 更新时间
-      const updateEl = document.getElementById('coldUpdateTime');
-      if (updateEl) {
-        const bj = getBeijingDate();
-        updateEl.textContent = `🕐 更新于 ${bj.year}-${String(bj.month).padStart(2,'0')}-${String(bj.day).padStart(2,'0')} ${String(bj.hour).padStart(2,'0')}:${String(bj.minute).padStart(2,'0')} 北京时间`;
-      }
-
-      // 当前冷号提示（今日胆码）
       const todayPred = predictions.find(p => p.isToday);
       const currentTip = document.getElementById('currentColdTip');
       const currentDans = document.getElementById('currentColdDans');
       const currentFreq = document.getElementById('currentColdFreq');
-      if (currentTip && currentDans && currentFreq && todayPred) {
-        if (todayPred.dans) {
-          const bj = getBeijingDate();
-          if (!todayPred.isFuture) {
-            currentTip.style.display = 'block';
-            currentDans.textContent = todayPred.dans.join(' ');
-            const freqStr = todayPred.freq ? todayPred.freq.map((f, d) => `${d}:${f}次`).join('  ') : '';
-            currentFreq.textContent = `近20期各数字出现次数: ${freqStr}`;
-          } else {
-            currentTip.style.display = 'none';
-          }
-        } else {
+      if (!currentTip || !currentDans || !currentFreq) return;
+      if (!todayPred) {
+        currentTip.style.display = 'none';
+        return;
+      }
+      if (todayPred.dans) {
+        if (!todayPred.isFuture) {
           currentTip.style.display = 'block';
-          currentDans.textContent = '数据不足';
-          currentFreq.textContent = `需要至少20期开奖数据，当前仅 ${todayPred.windowLen} 期`;
+          currentDans.textContent = todayPred.dans.join(' ');
+          const freqStr = todayPred.freq ? todayPred.freq.map((f, d) => `${d}:${f}次`).join('  ') : '';
+          currentFreq.textContent = `近20期各数字出现次数: ${freqStr}`;
+        } else {
+          currentTip.style.display = 'none';
         }
+      } else {
+        currentTip.style.display = 'block';
+        currentDans.textContent = '数据不足';
+        currentFreq.textContent = `需要至少20期开奖数据，当前仅 ${todayPred.windowLen} 期`;
       }
     }
 
-    // ---- 刷新冷号预测 ----
+    // ---- 刷新预测（冷号已合并进主表，一并刷新） ----
     function refreshColdPrediction() {
       loadKnownDrawNums().then(function() {
-        renderColdTable();
         renderD3Table();
-        showToast('🔄 冷号预测已刷新（数据已重新拉取）');
+        showToast('🔄 预测已刷新（时干+冷号已同步更新）');
       });
     }
 
@@ -1468,9 +1361,11 @@
       overlay.innerHTML = html;
       // 插入到对应表格后面
       if (type === 'cold') {
-        document.getElementById('coldPredTable').parentElement.appendChild(overlay);
-      } else {
+        document.getElementById('d3PredTable').parentElement.appendChild(overlay);
+      } else if (type === 'p3') {
         document.getElementById('p3PredTable').parentElement.appendChild(overlay);
+      } else {
+        document.getElementById('d3PredTable').parentElement.appendChild(overlay);
       }
     }
 
@@ -1681,7 +1576,6 @@
         // 先加载中奖号码数据（含缓存快速渲染），再渲染表格
         loadKnownDrawNums().then(function() {
           renderD3Table();
-          renderColdTable();
         });
         loadP3DrawNums().then(function() {
           renderP3Table();
