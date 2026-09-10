@@ -1208,11 +1208,9 @@
 
         if (record && record.drawNum && (p.isPast || p.isToday)) {
           const drawArr = record.drawNum.split('');
-          // 优先使用服务器端结果，回退到客户端计算
+          // 本地实时重算冷号结果（drawNum 为服务器权威值；避免服务器 coldResult 滞后导致的误判）
           let hit = false;
-          if (KNOWN_COLD_DATA[p.period] && KNOWN_COLD_DATA[p.period].coldResult) {
-            hit = KNOWN_COLD_DATA[p.period].coldResult === '✅';
-          } else if (p.dans) {
+          if (p.dans) {
             hit = p.dans.some(d => drawArr.map(Number).includes(d));
           }
           drawStr = drawArr.map(n => `<span class="d3-ball d3-ball-draw ${hit ? 'd3-ball-hit' : ''}">${n}</span>`).join(' ');
@@ -1572,10 +1570,12 @@
         const p3Cold = KNOWN_P3_COLD_DATA[p.period];
         if (p3Cold && p3Cold.coldDans && (p.isPast || p.isToday)) {
           coldStr = p3Cold.coldDans.map(n => `<span class="d3-ball d3-ball-cold">${n}</span>`).join(' ');
-          if (p3Cold.coldResult === '✅') {
-            coldResultStr = '<span style="color:#22c55e;font-weight:700;">✅</span>';
-          } else if (p3Cold.coldResult === '❌') {
-            coldResultStr = '<span style="color:#ef4444;font-weight:700;">❌</span>';
+          // 本地实时重算冷号结果（drawNum 为服务器权威值）
+          const cd = p3Cold.coldDans;
+          const dn = String(KNOWN_P3_DRAW_NUMS[p.period] || '');
+          if (dn.length === 3) {
+            const res = calcResult(cd, dn);
+            coldResultStr = res === '✅' ? '<span style="color:#22c55e;font-weight:700;">✅</span>' : '<span style="color:#ef4444;font-weight:700;">❌</span>';
           }
         } else if (p.isPast && KNOWN_P3_DRAW_NUMS[p.period] && p3Cold && p3Cold.coldDans) {
           // 本地实时计算冷号结果（兜底）
