@@ -5954,10 +5954,10 @@
       3,
       7
     ],
-    "drawNum": null,
-    "result": null,
-    "coldResult": null,
-    "updatedAt": null
+    "drawNum": "654",
+    "result": "✅",
+    "coldResult": "✅",
+    "updatedAt": "2026-09-11T14:31:16.593Z"
   },
   "2026245": {
     "period": "2026245",
