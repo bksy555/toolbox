@@ -7347,7 +7347,7 @@
     ],
     "drawNum": "620",
     "result": "✅",
-    "updatedAt": "2026-09-12T11:26:21.216Z",
+    "updatedAt": "2026-09-12T11:44:17.497Z",
     "coldDans": [
       8,
       2,
@@ -7369,7 +7369,12 @@
     ],
     "drawNum": null,
     "result": null,
-    "updatedAt": null
+    "updatedAt": null,
+    "coldDans": [
+      8,
+      2,
+      3
+    ]
   },
   "2026246": {
     "period": "2026246",
@@ -7385,6 +7390,11 @@
     ],
     "drawNum": null,
     "result": null,
-    "updatedAt": null
+    "updatedAt": null,
+    "coldDans": [
+      8,
+      2,
+      3
+    ]
   }
 }

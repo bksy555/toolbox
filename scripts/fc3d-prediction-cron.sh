@@ -419,12 +419,15 @@ if (PLS_FETCHED_PERIOD && PLS_FETCHED_DRAW) {
 }
 
 // 保存前统一为 P3 补冷号3胆（近20期频率最低3个数字）与冷号结果
+// 注意：不仅给已开奖期补，也给下一期预测期补冷号（预测3码+冷号同步更新）
 for (const key of Object.keys(p3Stored)) {
-  if (!p3Stored[key].coldDans && p3Stored[key].drawNum) {
+  if (!p3Stored[key].coldDans) {
     const cold = calcColdDans(p3DrawNums, key);
     if (cold) {
       p3Stored[key].coldDans = cold;
-      p3Stored[key].coldResult = calcResult(cold, p3Stored[key].drawNum);
+      if (p3Stored[key].drawNum) {
+        p3Stored[key].coldResult = calcResult(cold, p3Stored[key].drawNum);
+      }
     }
   }
 }
