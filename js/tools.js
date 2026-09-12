@@ -6140,7 +6140,7 @@ greet('世界');</textarea>
           <span>🏆 最佳 <b id="ts-best">--</b> WPM</span>
         </div>
         <div id="ts-target" style="font-size:20px;line-height:2.2;letter-spacing:1px;padding:16px;border:1px solid var(--border);border-radius:10px;background:var(--bg);min-height:110px;margin-bottom:12px;color:var(--text-light);"></div>
-        <input type="text" id="ts-input" placeholder="🚀 点击「开始测试」后在此打字，空格键提交当前词..." autocomplete="off" spellcheck="false" style="width:100%;padding:12px;border:1px solid var(--border);border-radius:10px;background:var(--bg);color:var(--text);font-size:16px;" disabled>
+        <input type="text" id="ts-type-input" placeholder="🚀 点击「开始测试」后在此打字，空格键提交当前词..." autocomplete="off" spellcheck="false" style="width:100%;padding:12px;border:1px solid var(--border);border-radius:10px;background:var(--bg);color:var(--text);font-size:16px;" disabled>
         <div style="margin-top:8px;font-size:12px;color:var(--text-light);text-align:center;">💡 灵感来源于 TypingTest / 10FastFingers / Ratatype；WPM = 正确字符 ÷ 5 ÷ 分钟数，测试结束自动结算并记录最佳成绩，纯本地运行</div>
       </div>
     `,
@@ -7819,7 +7819,7 @@ function dpCopyText() {
 // 分类定义
 // ============================================================
 const CATEGORIES = [
-  { id: 'text', icon: '✏️', name: '文本工具', desc: '字数统计、简繁转换、摩斯密码、文本转语音、文本对比' },
+  { id: 'text', icon: '✏️', name: '文本工具', desc: '字数统计、简繁转换、摩斯密码、文本转语音、文本对比、电子名片生成器' },
   { id: 'dev', icon: '💻', name: '开发者工具', desc: 'JSON格式化、二维码生成、二维码美化、条形码生成、Favicon图标生成、正则测试、Markdown、IP查询、思维导图、图表生成、代码图片生成、表格数据转换' },
   { id: 'image', icon: '🖼️', name: '图片处理', desc: '去背景换底色、批量压缩、加水印、长图拼接、格式转换、裁剪、异形裁剪、马赛克打码、双色调滤镜、图片转字符画、照片卡通化、OCR、印章制作、九宫格切图、文字转手写体、表情包、社交媒体图片尺寸调整、艺术效果、像素画、设备样机、图片高清放大、图片转线稿、渐变背景、文字特效、拼贴画、图片相框、颜色盲区模拟、海报设计器、老照片修复上色' },
   { id: 'document', icon: '📄', name: '文档转换', desc: '图片转PDF、PDF转图片、Word解析、Excel转PDF、PDF合并、PDF拆分、简历生成、电子签名、表单制作、邮件签名、发票/收据生成器、证书生成器' },
@@ -7833,7 +7833,7 @@ const CATEGORIES = [
   { id: 'lottery', icon: '🎰', name: '彩票工具', desc: '双色球、大乐透、福彩3D、快乐8、排列三…在线过滤缩水、选号、计算器' },
   { id: 'fun', icon: '🎪', name: '趣味工具', desc: '表情包生成、决策转盘、抽奖抽签、词云生成、涂鸦画板、娱乐好玩' },
   { id: 'finance', icon: '💰', name: '财务工具', desc: '家庭记账本、收支统计、月度汇总' },
-  { id: 'edu', icon: '📚', name: '教育资源', desc: '电子教材在线阅读、学习资源导航、元素周期表、习惯打卡' }
+  { id: 'edu', icon: '📚', name: '教育资源', desc: '电子教材在线阅读、学习资源导航、元素周期表、习惯打卡、打字速度测试' }
 ];
 
 // ============================================================
@@ -14592,4 +14592,367 @@ function prDownload() {
   a.click();
   setTimeout(function() { a.remove(); }, 1000);
   toast('⬇️ 已开始下载');
+}
+
+// ========== 打字速度测试 typing-speed (ts*) ==========
+var tsWords = {
+  en: ['the','dream','future','work','learn','code','build','happy','light','world','time','place','music','water','green','speed','focus','smart','quick','cloud','storm','peace','power','heart','stone','river','flame','wind','gold','brave','bright','clear','daily','early','fresh','great','house','image','jump','kind','laugh','magic','night','ocean','piano','quiet','reach','silver','tiger','united','voice','wonder'],
+  zh: ['梦想','未来','奋斗','学习','创新','科技','坚持','勇气','希望','热爱','成长','自由','快乐','友谊','旅行','音乐','美食','运动','阅读','设计','开发','天空','大海','森林','阳光','星星','月亮','彩虹','城市','乡村','青春','智慧','温暖','勇敢','勤奋','耐心','专注','效率','进步','成功']
+};
+var tsList = [], tsCurrent = 0, tsTimer = null, tsLeft = 0, tsTotalSec = 60, tsCorrectChars = 0, tsTotalWords = 0, tsWrongWords = 0;
+
+function tsInit() {
+  var input = document.getElementById('ts-input');
+  if (!input) return;
+  input.addEventListener('input', tsOnInput);
+  var best = localStorage.getItem('ts-best');
+  var be = document.getElementById('ts-best');
+  if (be) be.textContent = best || '--';
+  tsGenWords();
+  tsRenderTarget();
+}
+function tsGenWords() {
+  var lang = document.getElementById('ts-lang') ? document.getElementById('ts-lang').value : 'en';
+  var words = tsWords[lang] || tsWords.en;
+  tsList = [];
+  for (var i = 0; i < 50; i++) tsList.push(words[Math.floor(Math.random() * words.length)]);
+  tsCurrent = 0;
+}
+function tsAppendWords() {
+  var lang = document.getElementById('ts-lang') ? document.getElementById('ts-lang').value : 'en';
+  var words = tsWords[lang] || tsWords.en;
+  for (var i = 0; i < 20; i++) tsList.push(words[Math.floor(Math.random() * words.length)]);
+}
+function tsRenderTarget() {
+  var el = document.getElementById('ts-target');
+  if (!el) return;
+  var html = '';
+  for (var i = 0; i < tsList.length; i++) {
+    if (i === tsCurrent) html += '<b style="color:#6366f1;background:rgba(99,102,241,0.12);border-radius:4px;padding:0 3px;">' + tsList[i] + '</b> ';
+    else html += '<span>' + tsList[i] + '</span> ';
+  }
+  el.innerHTML = html;
+}
+function tsStart() {
+  tsTotalSec = parseInt(document.getElementById('ts-time').value, 10) || 60;
+  tsLeft = tsTotalSec;
+  tsCorrectChars = 0; tsTotalWords = 0; tsWrongWords = 0;
+  tsGenWords();
+  tsRenderTarget();
+  var input = document.getElementById('ts-input');
+  input.disabled = false;
+  input.value = '';
+  input.focus();
+  document.getElementById('ts-left').textContent = tsTotalSec;
+  document.getElementById('ts-wpm').textContent = '0';
+  document.getElementById('ts-acc').textContent = '100%';
+  document.getElementById('ts-err').textContent = '0';
+  if (tsTimer) clearInterval(tsTimer);
+  tsTimer = setInterval(tsTick, 1000);
+  toast('🚀 开始打字！');
+}
+function tsTick() {
+  tsLeft--;
+  var el = document.getElementById('ts-left');
+  if (el) el.textContent = tsLeft;
+  tsUpdateStats();
+  if (tsLeft <= 0) {
+    clearInterval(tsTimer);
+    tsTimer = null;
+    tsFinish();
+  }
+}
+function tsOnInput(e) {
+  if (tsLeft <= 0) return;
+  var input = e.target;
+  var val = input.value;
+  if (val.indexOf(' ') >= 0) {
+    var word = val.replace(/ +/g, ' ').trim();
+    if (word.length > 0) {
+      tsTotalWords++;
+      var target = tsList[tsCurrent];
+      if (word === target) {
+        tsCorrectChars += target.length;
+      } else {
+        tsWrongWords++;
+      }
+      tsCurrent++;
+      if (tsCurrent >= tsList.length - 5) tsAppendWords();
+      tsRenderTarget();
+    }
+    input.value = '';
+    tsUpdateStats();
+  }
+}
+function tsUpdateStats() {
+  var elapsedMin = (tsTotalSec - tsLeft) / 60;
+  var wpm = elapsedMin > 0 ? Math.round(tsCorrectChars / 5 / elapsedMin) : 0;
+  var e2 = document.getElementById('ts-wpm');
+  if (e2) e2.textContent = wpm;
+  var acc = tsTotalWords > 0 ? Math.round((tsTotalWords - tsWrongWords) / tsTotalWords * 100) : 100;
+  var a2 = document.getElementById('ts-acc');
+  if (a2) a2.textContent = acc + '%';
+  var e3 = document.getElementById('ts-err');
+  if (e3) e3.textContent = tsWrongWords;
+}
+function tsFinish() {
+  var input = document.getElementById('ts-input');
+  if (input) input.disabled = true;
+  var elapsedMin = tsTotalSec / 60;
+  var wpm = Math.round(tsCorrectChars / 5 / elapsedMin);
+  var acc = tsTotalWords > 0 ? Math.round((tsTotalWords - tsWrongWords) / tsTotalWords * 100) : 100;
+  var best = parseInt(localStorage.getItem('ts-best'), 10) || 0;
+  var isBest = wpm > best;
+  if (isBest) localStorage.setItem('ts-best', wpm);
+  var be = document.getElementById('ts-best');
+  if (be) be.textContent = isBest ? wpm : (best || '--');
+  toast('🎉 测试结束！速度 ' + wpm + ' WPM，准确率 ' + acc + '%' + (isBest ? ' 🏆 新纪录！' : ''));
+}
+
+// ========== 电子名片生成器 vcard-maker (vc*) ==========
+function vcInit() {
+  var ids = ['vc-name', 'vc-title', 'vc-company', 'vc-phone', 'vc-email', 'vc-site', 'vc-addr', 'vc-color'];
+  ids.forEach(function(id) {
+    var el = document.getElementById(id);
+    if (el) el.addEventListener('input', vcPreview);
+  });
+  vcPreview();
+}
+function vcFields() {
+  function v(id) {
+    var el = document.getElementById(id);
+    return el ? el.value.trim() : '';
+  }
+  return {
+    name: v('vc-name'), title: v('vc-title'), company: v('vc-company'),
+    phone: v('vc-phone'), email: v('vc-email'), site: v('vc-site'), addr: v('vc-addr')
+  };
+}
+function vcEsc(s) {
+  return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+function vcPreview() {
+  var f = vcFields();
+  var holder = document.getElementById('vc-preview');
+  if (!holder) return;
+  var name = f.name || '你的姓名';
+  var colorEl = document.getElementById('vc-color');
+  var color = colorEl ? colorEl.value : '#6366f1';
+  var badge = '<div style="width:54px;height:54px;border-radius:12px;background:' + color + ';color:#fff;display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:700;flex-shrink:0;">' + vcEsc(name.charAt(0).toUpperCase()) + '</div>';
+  var lines = '';
+  if (f.title || f.company) {
+    var role = [];
+    if (f.title) role.push(vcEsc(f.title));
+    if (f.company) role.push(vcEsc(f.company));
+    lines += '<div style="font-weight:600;margin-bottom:6px;">' + role.join(' · ') + '</div>';
+  }
+  if (f.phone) lines += '<div style="font-size:13px;opacity:.9;margin-top:2px;">📞 ' + vcEsc(f.phone) + '</div>';
+  if (f.email) lines += '<div style="font-size:13px;opacity:.9;margin-top:2px;">✉️ ' + vcEsc(f.email) + '</div>';
+  if (f.site) lines += '<div style="font-size:13px;opacity:.9;margin-top:2px;">🌐 ' + vcEsc(f.site) + '</div>';
+  if (f.addr) lines += '<div style="font-size:13px;opacity:.9;margin-top:2px;">📍 ' + vcEsc(f.addr) + '</div>';
+  holder.innerHTML = '<div style="display:flex;gap:14px;align-items:flex-start;padding:22px;border-radius:14px;background:' + color + '14;border:1px solid ' + color + '55;">' + badge + '<div style="min-width:0;"><div style="font-size:19px;font-weight:700;margin-bottom:2px;">' + vcEsc(name) + '</div>' + lines + '</div></div>';
+}
+function vcGenerate() {
+  var f = vcFields();
+  if (!f.name) { toast('⚠️ 请先填写姓名'); return; }
+  var lines = ['BEGIN:VCARD', 'VERSION:3.0', 'FN:' + f.name];
+  if (f.title) lines.push('TITLE:' + f.title);
+  if (f.company) lines.push('ORG:' + f.company);
+  if (f.phone) lines.push('TEL;TYPE=CELL:' + f.phone);
+  if (f.email) lines.push('EMAIL;TYPE=INTERNET:' + f.email);
+  if (f.site) lines.push('URL:' + f.site);
+  if (f.addr) lines.push('ADR;TYPE=WORK:;;' + f.addr + ';;;;');
+  lines.push('END:VCARD');
+  var text = lines.join('\r\n');
+  var out = document.getElementById('vc-output');
+  if (out) {
+    out.value = text;
+    out.style.display = 'block';
+  }
+  var blob = new Blob([text], { type: 'text/vcard' });
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = (f.name || 'card') + '.vcf';
+  document.body.appendChild(a);
+  a.click();
+  setTimeout(function() { URL.revokeObjectURL(a.href); a.remove(); }, 1000);
+  toast('⬇️ 已导出 vCard 名片');
+}
+function vcCopy() {
+  var out = document.getElementById('vc-output');
+  if (!out || !out.value) { toast('⚠️ 请先「生成并导出 .vcf」'); return; }
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(out.value).then(function() { toast('✅ 已复制 vCard 文本'); });
+  } else {
+    out.select();
+    document.execCommand('copy');
+    toast('✅ 已复制 vCard 文本');
+  }
+}
+
+// ========== 打字速度测试 typing-speed (ts*) ==========
+var tsWords = {
+  en: ['the','dream','future','work','learn','code','build','happy','light','world','time','place','music','water','green','speed','focus','smart','quick','cloud','storm','peace','power','heart','stone','river','flame','wind','gold','trust','great','story','space','truth','honor','grace','brave','fresh','value'],
+  zh: ['梦想','未来','奋斗','学习','创新','科技','坚持','勇气','希望','热爱','成长','自由','快乐','友谊','旅行','音乐','美食','运动','阅读','设计','开发','天空','大海','森林','阳光','星星','月亮','彩虹','城市','乡村']
+};
+var tsList = [], tsCurrent = 0, tsTimer = null, tsLeft = 0, tsTotalSec = 60;
+var tsCorrectChars = 0, tsTotalWords = 0, tsWrongWords = 0;
+
+function tsInit() {
+  var input = document.getElementById('ts-type-input');
+  if (!input) return;
+  input.addEventListener('input', tsOnInput);
+  var be = document.getElementById('ts-best');
+  if (be) be.textContent = localStorage.getItem('ts-best') || '--';
+  tsGenWords();
+  tsRenderTarget();
+}
+function tsGenWords() {
+  var lang = document.getElementById('ts-lang') ? document.getElementById('ts-lang').value : 'en';
+  var words = tsWords[lang] || tsWords.en;
+  tsList = [];
+  for (var i = 0; i < 50; i++) tsList.push(words[Math.floor(Math.random() * words.length)]);
+  tsCurrent = 0;
+}
+function tsAppendWords() {
+  var lang = document.getElementById('ts-lang') ? document.getElementById('ts-lang').value : 'en';
+  var words = tsWords[lang] || tsWords.en;
+  for (var i = 0; i < 20; i++) tsList.push(words[Math.floor(Math.random() * words.length)]);
+}
+function tsRenderTarget() {
+  var el = document.getElementById('ts-target');
+  if (!el) return;
+  var html = '';
+  for (var i = 0; i < tsList.length; i++) {
+    if (i < tsCurrent) html += '<span style="opacity:.25;text-decoration:line-through;">' + tsList[i] + '</span> ';
+    else if (i === tsCurrent) html += '<b style="color:#6366f1;">' + tsList[i] + '</b> ';
+    else html += '<span>' + tsList[i] + '</span> ';
+  }
+  el.innerHTML = html;
+}
+function tsStart() {
+  tsTotalSec = parseInt(document.getElementById('ts-time').value, 10) || 60;
+  tsLeft = tsTotalSec;
+  tsCorrectChars = 0; tsTotalWords = 0; tsWrongWords = 0;
+  tsGenWords(); tsRenderTarget();
+  var input = document.getElementById('ts-type-input');
+  input.disabled = false; input.value = ''; input.focus();
+  document.getElementById('ts-left').textContent = tsTotalSec;
+  tsUpdateStats();
+  if (tsTimer) clearInterval(tsTimer);
+  tsTimer = setInterval(tsTick, 1000);
+  toast('🚀 开始打字！');
+}
+function tsTick() {
+  tsLeft--;
+  var el = document.getElementById('ts-left');
+  if (el) el.textContent = tsLeft;
+  tsUpdateStats();
+  if (tsLeft <= 0) { clearInterval(tsTimer); tsFinish(); }
+}
+function tsOnInput(e) {
+  var input = e.target;
+  var val = input.value;
+  if (val.indexOf(' ') >= 0) {
+    var word = val.replace(/ +/g, ' ').trim();
+    if (word.length) {
+      tsTotalWords++;
+      var target = tsList[tsCurrent];
+      if (word === target) { tsCorrectChars += target.length; }
+      else { tsWrongWords++; }
+      tsCurrent++;
+      if (tsCurrent >= tsList.length - 5) tsAppendWords();
+      tsRenderTarget();
+    }
+    input.value = '';
+    tsUpdateStats();
+  }
+}
+function tsUpdateStats() {
+  var elapsedMin = (tsTotalSec - tsLeft) / 60;
+  var wpm = elapsedMin > 0 ? Math.round(tsCorrectChars / 5 / elapsedMin) : 0;
+  var e = document.getElementById('ts-wpm'); if (e) e.textContent = wpm;
+  var acc = tsTotalWords > 0 ? Math.round((tsTotalWords - tsWrongWords) / tsTotalWords * 100) : 100;
+  var a = document.getElementById('ts-acc'); if (a) a.textContent = acc + '%';
+  var er = document.getElementById('ts-err'); if (er) er.textContent = tsWrongWords;
+}
+function tsFinish() {
+  var input = document.getElementById('ts-type-input');
+  if (input) input.disabled = true;
+  var elapsedMin = tsTotalSec / 60;
+  var wpm = Math.round(tsCorrectChars / 5 / elapsedMin);
+  var acc = tsTotalWords > 0 ? Math.round((tsTotalWords - tsWrongWords) / tsTotalWords * 100) : 100;
+  var best = parseInt(localStorage.getItem('ts-best'), 10) || 0;
+  var isBest = wpm > best;
+  if (isBest) localStorage.setItem('ts-best', wpm);
+  var be = document.getElementById('ts-best'); if (be) be.textContent = Math.max(best, wpm);
+  toast('🎉 测试结束！速度 ' + wpm + ' WPM，准确率 ' + acc + '%' + (isBest ? '（新纪录！🏆）' : ''));
+}
+
+// ========== 电子名片生成器 vcard-maker (vc*) ==========
+function vcInit() {
+  var ids = ['vc-name', 'vc-title', 'vc-company', 'vc-phone', 'vc-email', 'vc-site', 'vc-addr', 'vc-color'];
+  ids.forEach(function(id) {
+    var el = document.getElementById(id);
+    if (el) el.addEventListener('input', vcPreview);
+  });
+  vcPreview();
+}
+function vcFields() {
+  function g(id) { var el = document.getElementById(id); return el ? el.value.trim() : ''; }
+  return {
+    name: g('vc-name'), title: g('vc-title'), company: g('vc-company'),
+    phone: g('vc-phone'), email: g('vc-email'), site: g('vc-site'), addr: g('vc-addr')
+  };
+}
+function vcEsc(s) {
+  return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+function vcPreview() {
+  var holder = document.getElementById('vc-preview');
+  if (!holder) return;
+  var f = vcFields();
+  var name = f.name || '你的姓名';
+  var colorEl = document.getElementById('vc-color');
+  var color = colorEl ? colorEl.value : '#6366f1';
+  var badge = '<div style="width:52px;height:52px;border-radius:12px;background:' + color + ';color:#fff;display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:700;flex-shrink:0;">' + vcEsc(name.charAt(0)) + '</div>';
+  var lines = '';
+  if (f.title || f.company) lines += '<div style="font-weight:600;margin-bottom:4px;">' + vcEsc(f.title || '') + (f.title && f.company ? ' · ' : '') + vcEsc(f.company || '') + '</div>';
+  if (f.phone) lines += '<div style="font-size:13px;opacity:.85;margin-top:2px;">📞 ' + vcEsc(f.phone) + '</div>';
+  if (f.email) lines += '<div style="font-size:13px;opacity:.85;margin-top:2px;">✉️ ' + vcEsc(f.email) + '</div>';
+  if (f.site) lines += '<div style="font-size:13px;opacity:.85;margin-top:2px;">🌐 ' + vcEsc(f.site) + '</div>';
+  if (f.addr) lines += '<div style="font-size:13px;opacity:.85;margin-top:2px;">📍 ' + vcEsc(f.addr) + '</div>';
+  holder.innerHTML = '<div style="display:flex;gap:14px;align-items:flex-start;padding:20px;border-radius:14px;background:' + color + '1A;border:1px solid ' + color + '44;">' + badge + '<div style="min-width:0;"><div style="font-size:18px;font-weight:700;margin-bottom:2px;">' + vcEsc(name) + '</div>' + lines + '</div></div>';
+}
+function vcGenerate() {
+  var f = vcFields();
+  if (!f.name) { toast('⚠️ 请先填写姓名'); return; }
+  var lines = ['BEGIN:VCARD', 'VERSION:3.0', 'FN:' + f.name];
+  if (f.title) lines.push('TITLE:' + f.title);
+  if (f.company) lines.push('ORG:' + f.company);
+  if (f.phone) lines.push('TEL;TYPE=CELL:' + f.phone);
+  if (f.email) lines.push('EMAIL;TYPE=INTERNET:' + f.email);
+  if (f.site) lines.push('URL:' + f.site);
+  if (f.addr) lines.push('ADR;TYPE=WORK:;;' + f.addr + ';;;;');
+  lines.push('END:VCARD');
+  var text = lines.join('\r\n');
+  var out = document.getElementById('vc-output');
+  if (out) { out.value = text; out.style.display = 'block'; }
+  var blob = new Blob([text], { type: 'text/vcard' });
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = (f.name || 'card') + '.vcf';
+  document.body.appendChild(a);
+  a.click();
+  setTimeout(function() { URL.revokeObjectURL(a.href); a.remove(); }, 1000);
+  toast('⬇️ 已导出 vCard 名片');
+}
+function vcCopy() {
+  var out = document.getElementById('vc-output');
+  if (!out || !out.value) { toast('⚠️ 请先生成名片'); return; }
+  navigator.clipboard.writeText(out.value).then(function() { toast('✅ 已复制 vCard 文本'); }, function() {
+    out.select();
+    document.execCommand('copy');
+    toast('✅ 已复制 vCard 文本');
+  });
 }
