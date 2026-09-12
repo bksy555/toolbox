@@ -15,7 +15,7 @@ const TOOLS = [
       <div class="tool-card">
         <div class="input-group">
           <label>输入文本</label>
-          <textarea id="wc-input" placeholder="在此输入或粘贴文本..." oninput="wordCount()"></textarea>
+          <textarea id="wc-count-input" placeholder="在此输入或粘贴文本..." oninput="wordCount()"></textarea>
         </div>
         <div class="stats-row" id="wc-stats">
           <div class="stat-item">字数: <strong id="wc-words">0</strong></div>
@@ -25,7 +25,7 @@ const TOOLS = [
           <div class="stat-item">段落: <strong id="wc-paras">0</strong></div>
         </div>
         <div class="btn-group">
-          <button class="btn btn-secondary" onclick="document.getElementById('wc-input').value='';wordCount()">清空</button>
+          <button class="btn btn-secondary" onclick="document.getElementById('wc-count-input').value='';wordCount()">清空</button>
         </div>
       </div>
     `,
@@ -3571,7 +3571,7 @@ openclaw update</code></pre>
       <div class="tool-card">
         <div class="input-group">
           <label>输入文字</label>
-          <textarea id="wc-input" style="min-height:140px;" placeholder="输入或粘贴文字，支持中英文。例：&#10;梦想 未来 奋斗 梦想 科技 未来 创新 梦想 学习 进步 科技 未来 奋斗 坚持 梦想"></textarea>
+          <textarea id="wc-text" style="min-height:140px;" placeholder="输入或粘贴文字，支持中英文。例：&#10;梦想 未来 奋斗 梦想 科技 未来 创新 梦想 学习 进步 科技 未来 奋斗 坚持 梦想"></textarea>
         </div>
         <div class="row" style="gap:12px;align-items:center;flex-wrap:wrap;">
           <div class="input-group" style="flex:1;min-width:140px;">
@@ -6109,6 +6109,76 @@ greet('世界');</textarea>
       </div>
     `,
     handler: () => { setTimeout(prInit, 50); }
+  },
+  {
+    id: 'typing-speed',
+    cat: 'edu',
+    icon: '⌨️',
+    name: '打字速度测试',
+    desc: '灵感来源于 TypingTest / 10FastFingers / Ratatype（付费会员），随机中英文词组、30/60/120秒限时测试，实时统计 WPM/CPM 速度与准确率，最佳成绩本地保存，练习键盘指法必备',
+    html: `
+      <div class="tool-card">
+        <div class="row" style="margin-bottom:12px;gap:8px;align-items:center;flex-wrap:wrap;">
+          <label style="font-size:13px;">词库</label>
+          <select id="ts-lang" style="flex:1;min-width:110px;">
+            <option value="en" selected>英文高频词</option>
+            <option value="zh">中文常用词</option>
+          </select>
+          <label style="font-size:13px;">时长</label>
+          <select id="ts-time" style="flex:1;min-width:90px;">
+            <option value="30">30 秒</option>
+            <option value="60" selected>60 秒</option>
+            <option value="120">120 秒</option>
+          </select>
+          <button class="btn btn-primary" onclick="tsStart()">🚀 开始测试</button>
+        </div>
+        <div id="ts-stats" style="display:flex;gap:18px;flex-wrap:wrap;margin-bottom:12px;font-size:14px;padding:10px 14px;border:1px solid var(--border);border-radius:10px;background:var(--bg);">
+          <span>⏱️ 剩余 <b id="ts-left">0</b>s</span>
+          <span>⚡ 速度 <b id="ts-wpm">0</b> WPM</span>
+          <span>🎯 准确率 <b id="ts-acc">100%</b></span>
+          <span>❌ 错误 <b id="ts-err">0</b> 词</span>
+          <span>🏆 最佳 <b id="ts-best">--</b> WPM</span>
+        </div>
+        <div id="ts-target" style="font-size:20px;line-height:2.2;letter-spacing:1px;padding:16px;border:1px solid var(--border);border-radius:10px;background:var(--bg);min-height:110px;margin-bottom:12px;color:var(--text-light);"></div>
+        <input type="text" id="ts-input" placeholder="🚀 点击「开始测试」后在此打字，空格键提交当前词..." autocomplete="off" spellcheck="false" style="width:100%;padding:12px;border:1px solid var(--border);border-radius:10px;background:var(--bg);color:var(--text);font-size:16px;" disabled>
+        <div style="margin-top:8px;font-size:12px;color:var(--text-light);text-align:center;">💡 灵感来源于 TypingTest / 10FastFingers / Ratatype；WPM = 正确字符 ÷ 5 ÷ 分钟数，测试结束自动结算并记录最佳成绩，纯本地运行</div>
+      </div>
+    `,
+    handler: () => { setTimeout(tsInit, 50); }
+  },
+  {
+    id: 'vcard-maker',
+    cat: 'text',
+    icon: '📇',
+    name: '电子名片生成器',
+    desc: '灵感来源于 HiHello / Blinq / 名片全能王（付费会员），填写姓名职位联系方式，实时预览数字名片，一键导出 vCard(.vcf) 导入手机通讯录或复制文本，商务社交加好友神器',
+    html: `
+      <div class="tool-card">
+        <div class="row" style="margin-bottom:12px;gap:8px;align-items:center;flex-wrap:wrap;">
+          <input type="text" id="vc-name" placeholder="姓名 *" style="flex:1;min-width:140px;">
+          <input type="text" id="vc-title" placeholder="职位" style="flex:1;min-width:140px;">
+          <input type="text" id="vc-company" placeholder="公司" style="flex:1;min-width:140px;">
+        </div>
+        <div class="row" style="margin-bottom:12px;gap:8px;align-items:center;flex-wrap:wrap;">
+          <input type="tel" id="vc-phone" placeholder="手机号" style="flex:1;min-width:120px;">
+          <input type="email" id="vc-email" placeholder="邮箱" style="flex:1;min-width:190px;">
+          <input type="url" id="vc-site" placeholder="网站/主页" style="flex:1;min-width:190px;">
+        </div>
+        <div class="row" style="margin-bottom:12px;gap:8px;align-items:center;flex-wrap:wrap;">
+          <input type="text" id="vc-addr" placeholder="地址（可选）" style="flex:2;min-width:200px;">
+          <label style="font-size:13px;">头像色</label>
+          <input type="color" id="vc-color" value="#6366f1" style="flex:0 0 46px;height:38px;padding:2px;">
+        </div>
+        <div id="vc-preview" style="margin-bottom:12px;"></div>
+        <div class="row" style="gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:12px;">
+          <button class="btn btn-primary" onclick="vcGenerate()">📇 生成并导出 .vcf</button>
+          <button class="btn btn-secondary" onclick="vcCopy()">📋 复制 vCard 文本</button>
+        </div>
+        <textarea id="vc-output" style="width:100%;min-height:110px;display:none;border:1px solid var(--border);border-radius:8px;background:var(--bg);color:var(--text);font-family:monospace;font-size:12px;padding:10px;" readonly placeholder="vCard 内容将显示在这里"></textarea>
+        <div style="margin-top:8px;font-size:12px;color:var(--text-light);text-align:center;">💡 灵感来源于 HiHello / Blinq / 名片全能王；生成标准 vCard(.vcf) 可导入手机通讯录，预览与导出全在本地完成，不上传资料</div>
+      </div>
+    `,
+    handler: () => { setTimeout(vcInit, 50); }
   }
 ];
 
@@ -6890,7 +6960,7 @@ function wcSplit(text) {
 }
 
 function wcGenerate() {
-  var text = document.getElementById('wc-input').value.trim();
+  var text = document.getElementById('wc-text').value.trim();
   if (!text) { showToast('⚠️ 请先输入文字'); return; }
   var words = wcSplit(text);
   if (words.length === 0) { showToast('⚠️ 未识别到有效词语'); return; }
@@ -6927,7 +6997,7 @@ function wcGenerate() {
     if (shape === 'circle') return r <= 1;
     if (shape === 'diamond') return Math.abs(dx) + Math.abs(dy) <= 1;
     if (shape === 'heart') {
-      var nx = (x - cx) / 34, ny = (y - cy) / 34;
+      var nx = (x - cx) / 150, ny = (y - cy) / 150;
       if (nx < -3.5 || nx > 3.5 || ny < -2.5 || ny > 2.8) return false;
       var val = Math.pow(nx * nx + ny * ny - 1, 3) - nx * nx * ny * ny * ny;
       return val <= 0;

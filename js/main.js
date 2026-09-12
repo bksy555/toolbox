@@ -212,7 +212,7 @@ function searchTools() {
 
 // ---- 字数统计 ----
 function wordCount() {
-  const text = document.getElementById('wc-input').value;
+  const text = document.getElementById('wc-count-input').value;
   document.getElementById('wc-words').textContent = text ? text.match(/\S+/g)?.length || 0 : 0;
   document.getElementById('wc-chars').textContent = text.length;
   document.getElementById('wc-chars-ns').textContent = text.replace(/\s/g, '').length;
