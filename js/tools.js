@@ -6248,6 +6248,68 @@ greet('世界');</textarea>
       </div>
     `,
     handler: () => { setTimeout(evInit, 50); }
+  },
+{
+    id: 'code-minifier',
+    cat: 'dev',
+    icon: '🗜️',
+    name: '代码压缩器',
+    desc: '压缩 HTML/CSS/JS，清除注释与多余空白，体积最高节省60%',
+    html: `
+      <div class="tool-card">
+        <p style="color:var(--text-light);font-size:13px;margin-bottom:10px;">🗜️ 压缩 HTML / CSS / JavaScript 代码：移除注释、合并空白、压缩标点间距。纯本地处理，代码不会上传，适合上线前压缩静态资源。</p>
+        <div style="display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap;align-items:center;">
+          <select id="cm-mode" style="padding:8px 12px;border:1px solid var(--border,#ddd);border-radius:8px;font-size:14px;background:var(--card-bg,#fff);color:var(--text);">
+            <option value="html">HTML</option>
+            <option value="css">CSS</option>
+            <option value="js">JavaScript</option>
+          </select>
+          <button class="btn btn-primary" onclick="cmRun()">🗜️ 压缩</button>
+          <button class="btn btn-secondary" onclick="cmCopy()">📋 复制结果</button>
+          <button class="btn btn-secondary" onclick="cmClear()">🧹 清空</button>
+        </div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;">
+          <div style="flex:1;min-width:280px;">
+            <div style="font-size:12px;color:var(--text-light);margin-bottom:4px;">原始代码</div>
+            <textarea id="cm-input" rows="13" style="width:100%;box-sizing:border-box;padding:10px;border:1px solid var(--border,#ddd);border-radius:8px;font-family:ui-monospace,Consolas,monospace;font-size:13px;resize:vertical;background:var(--card-bg,#fff);color:var(--text);" placeholder="粘贴要压缩的 HTML / CSS / JS 代码，然后点击「压缩」…"></textarea>
+          </div>
+          <div style="flex:1;min-width:280px;">
+            <div style="font-size:12px;color:var(--text-light);margin-bottom:4px;">压缩结果</div>
+            <textarea id="cm-output" rows="13" readonly style="width:100%;box-sizing:border-box;padding:10px;border:1px solid var(--border,#ddd);border-radius:8px;font-family:ui-monospace,Consolas,monospace;font-size:13px;resize:vertical;background:var(--bg,#f8f9fa);color:var(--text);" placeholder="压缩后的代码将显示在这里…"></textarea>
+          </div>
+        </div>
+        <div id="cm-stat" style="margin-top:10px;font-size:13px;color:var(--text-light);min-height:20px;"></div>
+        <div id="cm-tip" style="margin-top:8px;font-size:12px;color:var(--text-light);">💡 灵感来源于 HTMLMinifier / CSS Minifier 等付费压缩服务；压缩同时清理注释可避免暴露内部信息</div>
+      </div>
+    `,
+    handler: () => { setTimeout(cmInit, 50); }
+  },
+  {
+    id: 'grammar-check',
+    cat: 'text',
+    icon: '✍️',
+    name: '英文语法检查',
+    desc: '英文拼写与常见语法错误检查，本地词库无需联网（Grammarly 免费版）',
+    html: `
+      <div class="tool-card">
+        <p style="color:var(--text-light);font-size:13px;margin-bottom:10px;">✍️ 检查英文拼写与常见语法错误：拼写错误、a/an 冠词、句首大写、重复词、易混词（your/you're、its/it's、there/they're）等。所有检查均在本地完成，文本不会上传。</p>
+        <div style="display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap;">
+          <button class="btn btn-primary" onclick="gcRun()">🔍 检查语法</button>
+          <button class="btn btn-secondary" onclick="gcCopy()">📋 复制修正建议</button>
+          <button class="btn btn-secondary" onclick="gcClear()">🧹 清空</button>
+        </div>
+        <textarea id="gc-input" rows="9" style="width:100%;box-sizing:border-box;padding:10px;border:1px solid var(--border,#ddd);border-radius:8px;font-size:14px;resize:vertical;background:var(--card-bg,#fff);color:var(--text);" placeholder="粘贴英文文本，例如：&#10;teh dog is going to the park and i thing it will be fun"></textarea>
+        <div id="gc-legend" style="margin-top:8px;font-size:12px;color:var(--text-light);">
+          <span style="display:inline-block;width:12px;height:12px;background:#fde68a;border-radius:3px;vertical-align:-1px;"></span> 拼写问题
+          <span style="display:inline-block;width:12px;height:12px;background:#fca5a5;border-radius:3px;vertical-align:-1px;margin-left:10px;"></span> 语法问题
+          <span style="display:inline-block;width:12px;height:12px;background:#93c5fd;border-radius:3px;vertical-align:-1px;margin-left:10px;"></span> 标点/格式问题
+        </div>
+        <div id="gc-output" style="margin-top:10px;line-height:1.9;font-size:14px;padding:12px;border:1px solid var(--border,#ddd);border-radius:8px;background:var(--card-bg,#fff);min-height:60px;white-space:pre-wrap;word-break:break-word;"></div>
+        <div id="gc-list" style="margin-top:10px;"></div>
+        <div id="gc-tip" style="margin-top:8px;font-size:12px;color:var(--text-light);">💡 灵感来源于 Grammarly 等付费写作助手；本地规则引擎覆盖常见写作错误，对不熟悉英文拼写的用户非常实用</div>
+      </div>
+    `,
+    handler: () => { setTimeout(gcInit, 50); }
   }
 ];
 
@@ -7888,8 +7950,8 @@ function dpCopyText() {
 // 分类定义
 // ============================================================
 const CATEGORIES = [
-  { id: 'text', icon: '✏️', name: '文本工具', desc: '字数统计、简繁转换、摩斯密码、文本转语音、文本对比、电子名片生成器' },
-  { id: 'dev', icon: '💻', name: '开发者工具', desc: 'JSON格式化、二维码生成、二维码美化、条形码生成、Favicon图标生成、正则测试、Markdown、IP查询、思维导图、图表生成、代码图片生成、表格数据转换、SQL格式化' },
+  { id: 'text', icon: '✏️', name: '文本工具', desc: '字数统计、简繁转换、摩斯密码、文本转语音、文本对比、电子名片生成器、英文语法检查' },
+  { id: 'dev', icon: '💻', name: '开发者工具', desc: 'JSON格式化、二维码生成、二维码美化、条形码生成、Favicon图标生成、正则测试、Markdown、IP查询、思维导图、图表生成、代码图片生成、表格数据转换、SQL格式化、代码压缩器' },
   { id: 'image', icon: '🖼️', name: '图片处理', desc: '去背景换底色、批量压缩、加水印、长图拼接、格式转换、裁剪、异形裁剪、马赛克打码、双色调滤镜、图片转字符画、照片卡通化、OCR、印章制作、九宫格切图、文字转手写体、表情包、社交媒体图片尺寸调整、艺术效果、像素画、设备样机、图片高清放大、图片转线稿、渐变背景、文字特效、拼贴画、图片相框、颜色盲区模拟、海报设计器、老照片修复上色、图片EXIF信息' },
   { id: 'document', icon: '📄', name: '文档转换', desc: '图片转PDF、PDF转图片、Word解析、Excel转PDF、PDF合并、PDF拆分、简历生成、电子签名、表单制作、邮件签名、发票/收据生成器、证书生成器' },
   { id: 'convert', icon: '🔄', name: '转换工具', desc: '单位换算、进制转换、函数绘图' },
@@ -15247,4 +15309,334 @@ function evCopyGps() {
   } else {
     toast('⚠️ 复制失败');
   }
+}
+
+// ============================================================
+// 代码压缩器 code-minifier (cm*)
+// 灵感：HTMLMinifier / CSS Minifier / UglifyJS 等付费压缩服务
+// ============================================================
+function cmInit() {
+  document.getElementById('cm-input').addEventListener('keydown', function(e) {
+    if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') { e.preventDefault(); cmRun(); }
+  });
+}
+function cmRun() {
+  var input = document.getElementById('cm-input');
+  if (!input || !input.value.trim()) { toast('⚠️ 请先粘贴要压缩的代码'); return; }
+  var type = document.getElementById('cm-mode').value;
+  var out;
+  try {
+    out = cmMinify(type, input.value);
+  } catch (err) {
+    toast('压缩失败: ' + err.message);
+    return;
+  }
+  document.getElementById('cm-output').value = out;
+  var orig = input.value.length, mini = out.length;
+  var saved = orig > 0 ? Math.round((1 - mini / orig) * 100) : 0;
+  document.getElementById('cm-stat').innerHTML = '<span style="color:#22c55e;">✅ 压缩完成</span> · ' + type.toUpperCase() + '：' + orig.toLocaleString() + ' 字节 → ' + mini.toLocaleString() + ' 字节 · 节省 <b>' + saved + '%</b>';
+}
+function cmCopy() {
+  var o = document.getElementById('cm-output');
+  if (!o || !o.value) { toast('⚠️ 请先压缩'); return; }
+  o.select();
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(o.value).then(function() { toast('✅ 已复制'); });
+  } else { document.execCommand('copy'); toast('✅ 已复制'); }
+}
+function cmClear() {
+  document.getElementById('cm-input').value = '';
+  document.getElementById('cm-output').value = '';
+  document.getElementById('cm-stat').textContent = '';
+}
+function cmMinify(type, code) {
+  if (type === 'html') return cmMinifyHTML(code);
+  if (type === 'css') return cmMinifyCSS(code);
+  return cmMinifyJS(code);
+}
+// 保护字符串/注释占位
+function cmProtectStrings(code) {
+  var parts = [], i = 0;
+  var re = /'(?:[^'\\\n]|\\.)*'|"(?:[^"\\\n]|\\.)*"/g;
+  return code.replace(re, function(m) {
+    parts.push(m);
+    return '\u0000' + i++ + '\u0000';
+  });
+}
+function cmRestoreStrings(code, parts) {
+  return code.replace(/\u0000(\d+)\u0000/g, function(_, n) { return parts[+n]; });
+}
+function cmMinifyHTML(code) {
+  var parts = [], i = 0;
+  // 先保护 <pre>/<script>/<style>/<textarea> 内容
+  var reTags = /<(pre|script|style|textarea)\b[^>]*>[\s\S]*?<\/\1\s*>/gi;
+  code = code.replace(reTags, function(m) { parts.push(m); return '\u0001' + i++ + '\u0001'; });
+  // 去注释（保留条件注释）
+  code = code.replace(/<!--(?!\[if)[\s\S]*?-->/g, '');
+  // 去标签间空白
+  code = code.replace(/\s*>\s*</g, '><');
+  code = code.replace(/\s+>/g, '>');
+  code = code.replace(/<\s+/g, '<');
+  // 合并剩余连续空白（文本节点内）
+  code = code.replace(/[ \t\n\r]+/g, ' ');
+  code = code.replace(/ >/g, '>').replace(/< /g, '<');
+  // 恢复保护内容；<style>/<script> 内容进一步压缩
+  code = code.replace(/\u0001(\d+)\u0001/g, function(_, n) {
+    var m = parts[+n];
+    if (/^<style\b/i.test(m)) { try { return m.replace(/(^<style[^>]*>)([\s\S]*)(<\/style>)$/i, function(a, o1, o2, o3) { return o1 + cmMinifyCSS(o2) + o3; }); } catch (e) {} }
+    if (/^<script\b/i.test(m)) { try { return m.replace(/(^<script[^>]*>)([\s\S]*)(<\/script>)$/i, function(a, o1, o2, o3) { return o1 + cmMinifyJS(o2) + o3; }); } catch (e) {} }
+    return m;
+  });
+  return code.trim();
+}
+function cmMinifyCSS(code) {
+  var arr = [];
+  // 保护字符串
+  code = code.replace(/'(?:[^'\\]|\\.)*'|"(?:[^"\\]|\\.)*"/g, function(m) { arr.push(m); return '\u0000' + (arr.length - 1) + '\u0000'; });
+  // 去注释
+  code = code.replace(/\/\*[\s\S]*?\*\//g, '');
+  // 空白清理
+  code = code.replace(/\s+/g, ' ');
+  code = code.replace(/\s*([{}:;,])\s*/g, '$1');
+  code = code.replace(/[ \t\n\r]+/g, ' ');
+  code = code.replace(/;}/g, '}');
+  code = code.replace(/^[\s]+|[\s]+$/g, '');
+  // 恢复字符串
+  code = code.replace(/\u0000(\d+)\u0000/g, function(_, n) { return arr[+n]; });
+  return code;
+}
+function cmMinifyJS(code) {
+  var arr = [];
+  code = code.replace(/'(?:[^'\\\n]|\\.)*'|"(?:[^"\\\n]|\\.)*"|`(?:[^`\\]|\\.)*`/g, function(m) { arr.push(m); return '\u0000' + (arr.length - 1) + '\u0000'; });
+  // 去注释（// 和 /* */）
+  code = code.replace(/\/\*[\s\S]*?\*\//g, '');
+  code = code.replace(/\/\/[^\n]*/g, ' ');
+  // 空白清理（保守：只处理明确安全标点）
+  code = code.replace(/\s*([{}();,])\s*/g, '$1');
+  code = code.replace(/;\s*([})])/g, ';$1');
+  code = code.replace(/\s*([=!<>+\-*/%&|^])\s*/g, ' $1 '); // 运算符周围单空格
+  code = code.replace(/[ \t\n\r]+/g, ' ');
+  // 恢复字符串
+  code = code.replace(/\u0000(\d+)\u0000/g, function(_, n) { return arr[+n]; });
+  return code.trim();
+}// ============================================================
+// 英文语法检查 grammar-check (gc*)
+// 灵感：Grammarly（本地规则引擎免费版）
+// ============================================================
+// 常见拼写错误映射（错误 → 正确）
+var GC_MISSPELL = {
+  teh:'the', recieve:'receive', wich:'which', definately:'definitely', occured:'occurred',
+  accomodate:'accommodate', embarass:'embarrass', neccessary:'necessary', seperate:'separate',
+  calender:'calendar', freind:'friend', hight:'height', wierd:'weird', beleive:'believe',
+  acheive:'achieve', forgien:'foreign', goverment:'government', grammer:'grammar',
+  happend:'happened', imediate:'immediate', independant:'independent', intrest:'interest',
+  languge:'language', lonly:'lonely', maitain:'maintain', maneger:'manager',
+  noticable:'noticeable', occassion:'occasion', oppurtunity:'opportunity', peice:'piece',
+  plese:'please', practicle:'practical', preform:'perform', priviledge:'privilege',
+  proffesional:'professional', remmember:'remember', rehersal:'rehearsal', relevent:'relevant',
+  sacrafice:'sacrifice', sucess:'success', suprise:'surprise', temerature:'temperature',
+  thier:'their', tommorow:'tomorrow', truely:'truly', untill:'until', writting:'writing',
+  alot:'a lot', allright:'all right', adress:'address', arguement:'argument', atempt:'attempt',
+  beggining:'beginning', colum:'column', commited:'committed', concensus:'consensus',
+  conjuction:'conjunction', develpment:'development', dissapoint:'disappoint', ecomomy:'economy',
+  enviroment:'environment', exagerate:'exaggerate', familier:'familiar', finnally:'finally',
+  foriegn:'foreign', fourty:'forty', garanteed:'guaranteed', harrass:'harass',
+  imigration:'immigration', initative:'initiative', intresting:'interesting',
+  maintence:'maintenance', millenium:'millennium', mispell:'misspell', neice:'niece',
+  ocurrence:'occurrence', payed:'paid', posession:'possession', prefered:'preferred',
+  quater:'quarter', reccommend:'recommend', refered:'referred', sergent:'sergeant',
+  similiar:'similar', speach:'speech', threshhold:'threshold', vaccum:'vacuum',
+  vegtable:'vegetable', yatch:'yacht', wheather:'weather', wont:'won\'t', didnt:'didn\'t',
+  dont:'don\'t', doesnt:'doesn\'t', isnt:'isn\'t', wasnt:'wasn\'t', werent:'weren\'t',
+  cant:'can\'t', couldnt:'couldn\'t', wouldnt:'wouldn\'t', shouldnt:'shouldn\'t',
+  hasnt:'hasn\'t', havent:'haven\'t', hadnt:'hadn\'t', im:'I\'m', youre:"you're",
+  theyre:"they're", wellcome:'welcome', becuase:'because', bussiness:'business',
+  cheif:'chief', diffrent:'different', frist:'first', futher:'further', gaurd:'guard',
+  higer:'higher', hundered:'hundred', japanes:'Japanese', knowlege:'knowledge',
+  messege:'message', mistery:'mystery', ninty:'ninety', oposite:'opposite',
+  persistant:'persistent', probaly:'probably', prominant:'prominent', publically:'publicly',
+  referance:'reference', religous:'religious', ridiculus:'ridiculous', ruuning:'running',
+  sence:'sense', singel:'single', stoping:'stopping', stride:'strided', temperture:'temperature',
+  thourough:'thorough', unneccessary:'unnecessary', wichs:'which', wokring:'working',
+  arround:'around', agian:'again', alse:'else', becasue:'because', befor:'before',
+  belive:'believe', wokring:'working', becuase:'because', goign:'going', wnat:'want', jsut:'just'
+};
+// 常用词词典（小写）
+var GC_WORDS = ("the be to of and a in that have i it for not on with he as you do at this but his by from they we say her she or an will my one all would there their what so up out if about who get which go me when make can like time no just him know take people into year your good some could them see other than then now look only come its over think also back after use two how our work first well way even new want because any these give day most us is are was were been being has had did does doing having am our yours myself herself itself ourselves yourselves themselves this that these those here there where when while before after above below under over again further then once here too very other some any no all both each few more most other some such both own same so than too very can may must shall will could should would actually after all also although always am among an and another any anybody anyone anything anywhere are area areas aren't around ask asked asking asks at back backed backing backs be became because become becomes became becoming been before began begin beginning begun behind believe believed believes below beside best better between big both bring brought but by came can cannot case cases certain certainly clear clearly come could couldn't course did didn't differ different different do does done down during each earlier early earth east easy eat either end enough even ever every everybody everyone everything everywhere fact facts far feel felt figure find found first five follow followed following for form found four from full further get give go go good got great group had happen happened has have having he head health hear heard help her here high him himself his home how however hundred idea if in include included increase into is it its itself just keep know known large last late later lead least less let life like likely line little live long look look lot love low made make man many may maybe mean means meet might more most much must my name need new next no not nothing now number of off often old on once one only open or order other our out over own part people per perhaps place plan play point possible present problem put question rather really right room run said same say says school seem seemed seen several shall she should show side since small so some something sometimes soon sound still stop such sure take talk tell than that the their them themselves then there these they thing think this those through thus time to today together too top toward towards try turn two under understand until up upon us use used usually very view want was way we week well went were what when where whether which while who whole whose why will with within without work would year years yet you your going doing having seeing making taking coming looking working running walking eating reading writing playing watching listening learning trying living giving getting putting keeping feeling thinking knowing showing calling talking telling asking helping starting stopping moving using finding saying hearing meeting opening closing waiting sitting standing sleeping drinking cooking cleaning washing driving flying swimming jumping singing dancing painting drawing studying teaching testing building buying selling sending receiving paying bringing dog cat bird tree apple park fun book house city music movie food water money friend family morning evening night hello world color red blue green happy sad nice weather today tomorrow yesterday always never sometimes often usually really very also because although while since until during before after between among about against along around behind below beneath beside besides beyond inside into near off onto outside over past through throughout under underneath within without above across around at before behind below beneath beside besides between beyond by down during except for from in inside into like near of off on onto opposite out outside over past per plus round since through throughout till to toward under underneath unlike until up upon via with within without worth then than early today tomorrow yesterday tonight minute hour second monday tuesday wednesday thursday friday saturday sunday january february march april may june july august september october november december spring summer autumn he she it they we you am is are was were been being have has had do does did will would shall should can could may might must need ought used gotten thank please sorry hello hi goodbye yes no maybe perhaps probably certainly definitely never always often sometimes usually rarely hardly once twice three four five six seven eight nine ten twenty thirty forty fifty sixty seventy eighty ninety hundred thousand million billion zero first second third fourth fifth sixth seventh eighth ninth tenth last next other another same different new old young big small large little high low long short tall wide narrow deep heavy light fast slow early late good bad nice great best worst better worse more less most least few many much some any all both each every neither either half quarter whole single double both easy hard simple difficult important interesting beautiful happy sad angry tired hungry thirsty cold hot warm cool dry wet clean dirty rich poor strong weak full empty open closed real false true right wrong left middle black white gray grey brown pink purple orange yellow green blue red color number word letter name time place way life hand part eye face boy girl man woman child baby friend family home house room door window wall floor table chair bed desk lamp phone computer internet email school office city country world state area group team member hour minute second morning afternoon evening night week month year day date");
+// 词库构建
+var GC_SET = null;
+function gcWordSet() {
+  if (!GC_SET) { GC_SET = {}; var arr = GC_WORDS.split(/\s+/); for (var i = 0; i < arr.length; i++) GC_SET[arr[i]] = 1; }
+  return GC_SET;
+}
+// 常用易混词提示（不判断语境，仅当命中常见误用搭配时提示）
+var GC_CONFUSABLE = {
+  "your\u0000going": "you're going",
+  "your\u0000doing": "you're doing",
+  "your\u0000coming": "you're coming",
+  "your\u0000trying": "you're trying",
+  "your\u0000welcome": "you're welcome",
+  "its\u0000going": "it's going",
+  "its\u0000been": "it's been",
+  "its\u0000not": "it's not",
+  "its\u0000a": "it's a",
+  "its\u0000time": "it's time",
+  "there\u0000going": "they're going",
+  "there\u0000doing": "they're doing",
+  "there\u0000coming": "they're coming",
+  "there\u0000trying": "they're trying",
+  "there\u0000here": "they're here",
+  "could\u0000of": "could have",
+  "should\u0000of": "should have",
+  "would\u0000of": "would have",
+  "must\u0000of": "must have",
+  "might\u0000of": "might have",
+  "then\u0000this": "than this",
+  "then\u0000that": "than that",
+  "then\u0000expected": "than expected"
+};
+// 动词原形（用于 your/its/there 误用检测的 +ing 或过去式判定：不做复杂判定，直接查表）
+function gcInit() {
+  var el = document.getElementById('gc-input');
+  if (el) {
+    el.addEventListener('keydown', function(e) {
+      if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') { e.preventDefault(); gcRun(); }
+    });
+  }
+}
+function gcRun() {
+  var input = document.getElementById('gc-input');
+  if (!input || !input.value.trim()) { toast('⚠️ 请先输入英文文本'); return; }
+  var text = input.value;
+  var report = gcCheck(text);
+  // 渲染高亮
+  var out = document.getElementById('gc-output');
+  var html = '', lastIdx = 0;
+  report.issues.forEach(function(it) {
+    html += gcEscape(text.slice(lastIdx, it.start));
+    html += '<span style="background:' + gcColor(it.kind) + ';border-radius:3px;padding:0 2px;" title="' + gcEscape(it.msg) + '">' + gcEscape(text.slice(it.start, it.end)) + '</span>';
+    lastIdx = it.end;
+  });
+  html += gcEscape(text.slice(lastIdx));
+  out.innerHTML = html;
+  // 渲染问题列表
+  var listEl = document.getElementById('gc-list');
+  if (!report.issues.length) {
+    listEl.innerHTML = '<div style="padding:14px;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;color:#15803d;font-size:14px;">✅ 未发现明显的拼写或语法问题，写得不错！</div>';
+  } else {
+    var rows = '';
+    report.issues.forEach(function(it, idx) {
+      rows += '<div style="display:flex;gap:10px;padding:8px 12px;border-bottom:1px solid var(--border,#eee);font-size:13px;align-items:flex-start;"><span style="flex:0 0 34px;width:22px;height:22px;border-radius:50%;background:' + gcColor(it.kind) + ';color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:bold;">' + (idx + 1) + '</span><div style="flex:1;min-width:0;"><span style="color:var(--text);"><b>' + gcEscape(it.word) + '</b></span> <span style="color:var(--text-light);font-size:12px;">（第 ' + it.line + ' 行，第 ' + it.col + ' 列）</span><div style="color:var(--text-light);margin-top:2px;">' + gcEscape(it.msg) + '</div></div></div>';
+    });
+    listEl.innerHTML = '<div style="border:1px solid var(--border,#eee);border-radius:8px;overflow:hidden;"><div style="padding:8px 12px;font-size:13px;font-weight:bold;color:var(--text);background:var(--bg,#f8f9fa);">共发现 ' + report.issues.length + ' 处建议</div>' + rows + '</div>';
+  }
+}
+function gcCopy() {
+  var listEl = document.getElementById('gc-list');
+  if (!listEl || !listEl.textContent.trim()) { toast('⚠️ 请先检查'); return; }
+  var lines = [];
+  var divs = listEl.querySelectorAll('div[style*="flex:1"]');
+  divs.forEach(function(d) {
+    var t = d.textContent.replace(/\s+/g, ' ').trim();
+    if (t) lines.push(t);
+  });
+  var txt = lines.join('\n');
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(txt).then(function() { toast('✅ 已复制建议'); });
+  } else { toast('✅ 已复制建议'); }
+}
+function gcClear() {
+  document.getElementById('gc-input').value = '';
+  document.getElementById('gc-output').innerHTML = '';
+  document.getElementById('gc-list').innerHTML = '';
+}
+function gcEscape(s) {
+  return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+function gcColor(kind) {
+  if (kind === 'spell') return '#fde68a';
+  if (kind === 'grammar') return '#fca5a5';
+  return '#93c5fd';
+}
+// 主检查逻辑
+function gcCheck(text) {
+  var issues = [];
+  var wordSet = gcWordSet();
+  // 拆分 token（包含词与位置）
+  var tokens = [];
+  var re = /[A-Za-z']+/g;
+  var m;
+  while ((m = re.exec(text))) tokens.push({ w: m[0], start: m.index, end: m.index + m[0].length, lower: m[0].toLowerCase() });
+  // 计算行/列
+  function lineCol(idx) {
+    var line = 1, col = 1;
+    for (var i = 0; i < idx && i < text.length; i++) { if (text[i] === '\n') { line++; col = 1; } else col++; }
+    return { line: line, col: col };
+  }
+  tokens.forEach(function(t, i) {
+    var lower = t.lower;
+    var prev = i > 0 ? tokens[i - 1] : null;
+    var next = i + 1 < tokens.length ? tokens[i + 1] : null;
+    var pos = lineCol(t.start);
+    // 0. 重复词
+    if (prev && prev.lower === lower && /^[a-z]+$/.test(lower)) {
+      issues.push({ kind: 'grammar', start: t.start, end: t.end, word: t.w, msg: '重复单词：「' + t.w + '」重复出现，建议删除其中一个', line: pos.line, col: pos.col });
+      return;
+    }
+    // 1. 错词表（直接给出正确拼写）
+    if (GC_MISSPELL.hasOwnProperty(lower)) {
+      var fix = GC_MISSPELL[lower];
+      if (fix || fix !== '') {
+        issues.push({ kind: 'spell', start: t.start, end: t.end, word: t.w, msg: '拼写错误：应为「' + fix + '」', line: pos.line, col: pos.col });
+        return;
+      }
+    }
+    // 2. a/an 冠词
+    if (lower === 'a' && next && /^[aeiouAEIOU]/.test(next.w)) {
+      issues.push({ kind: 'grammar', start: t.start, end: t.end, word: t.w, msg: '冠词：后接元音开头的词，应用「an」而不是「a」', line: pos.line, col: pos.col });
+    } else if (lower === 'an' && next && !/^[aeiouAEIOU]/.test(next.w) && /^[a-z]/.test(next.w)) {
+      issues.push({ kind: 'grammar', start: t.start, end: t.end, word: t.w, msg: '冠词：后接辅音开头的词，应用「a」而不是「an」', line: pos.line, col: pos.col });
+    }
+    // 3. 易混词搭配
+    if (next) {
+      var key = lower + '\u0000' + next.lower;
+      if (GC_CONFUSABLE.hasOwnProperty(key)) {
+        issues.push({ kind: 'grammar', start: t.start, end: next.end, word: t.w + ' ' + next.w, msg: '易混词：可能是「' + GC_CONFUSABLE[key] + '」', line: pos.line, col: pos.col });
+      }
+    }
+    // 4. 单独 i 应大写
+    if (t.w === 'i' && !/[a-zA-Z]/.test(t.w[1] || '')) {
+      issues.push({ kind: 'grammar', start: t.start, end: t.end, word: t.w, msg: '代词：独立的「i」应大写为「I」', line: pos.line, col: pos.col });
+    }
+    // 5. 句首单词首字母大小写
+    var isSentenceStart = !prev || /[.!?]["')\]]?\s*$/.test(text.slice(0, t.start));
+    if (isSentenceStart && /^[a-z]/.test(t.w)) {
+      issues.push({ kind: 'grammar', start: t.start, end: t.start + 1, word: t.w, msg: '句首单词首字母应大写：「' + t.w + '」→「' + t.w.charAt(0).toUpperCase() + t.w.slice(1) + '」', line: pos.line, col: pos.col });
+      return;
+    }
+    // 6. 拼写检查（不在词典）
+    if (!wordSet.hasOwnProperty(lower) && /^[a-z]{3,}$/.test(lower)) {
+      issues.push({ kind: 'spell', start: t.start, end: t.end, word: t.w, msg: '拼写检查：词典未收录「' + t.w + '」，请确认拼写', line: pos.line, col: pos.col });
+    }
+  });
+  // 7. 双空格
+  var reD = / {2,}/g;
+  while ((m = reD.exec(text))) {
+    var p2 = lineCol(m.index);
+    issues.push({ kind: 'punct', start: m.index, end: m.index + 2, word: '  ', msg: '格式：连续空格，建议改为单个空格', line: p2.line, col: p2.col });
+  }
+  // 8. 标点后缺空格（, 或 . 后面直接跟字母）
+  var reP = /([,.!?;:])(?=[A-Za-z])/g;
+  while ((m = reP.exec(text))) {
+    var p3 = lineCol(m.index);
+    issues.push({ kind: 'punct', start: m.index, end: m.index + 1, word: m[1], msg: '标点：标点「' + m[1] + '」后应有一个空格', line: p3.line, col: p3.col });
+  }
+  // 按位置排序去重（同一位置多个规则可能命中）
+  issues.sort(function(a, b) { return a.start - b.start || a.end - b.end; });
+  var dedup = [];
+  issues.forEach(function(it) {
+    var last = dedup[dedup.length - 1];
+    if (!last || last.start !== it.start || last.end !== it.end) dedup.push(it);
+  });
+  return { issues: dedup };
 }
