@@ -7723,14 +7723,15 @@
       4,
       9
     ],
-    "drawNum": null,
-    "result": null,
-    "updatedAt": null,
+    "drawNum": "286",
+    "result": "✅",
+    "updatedAt": "2026-09-13T14:02:03.138Z",
     "coldDans": [
       8,
       2,
       3
-    ]
+    ],
+    "coldResult": "✅"
   },
   "2026247": {
     "period": "2026247",
