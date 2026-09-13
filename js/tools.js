@@ -6179,6 +6179,75 @@ greet('世界');</textarea>
       </div>
     `,
     handler: () => { setTimeout(vcInit, 50); }
+  },
+  {
+    id: 'sql-formatter',
+    cat: 'dev',
+    icon: '🗄️',
+    name: 'SQL格式化',
+    desc: '美化/压缩 SQL 语句，支持关键字大写、缩进对齐与语法高亮',
+    html: `
+      <div class="tool-card">
+        <div class="input-group">
+          <label>输入 SQL 语句 <span style="color:var(--text-light);font-size:12px;">（Ctrl+Enter 快速格式化）</span></label>
+          <textarea id="sql-input" placeholder="SELECT u.name, COUNT(o.id) AS cnt FROM users u LEFT JOIN orders o ON u.id=o.user_id WHERE u.status='active' GROUP BY u.name HAVING cnt > 3 ORDER BY cnt DESC LIMIT 10;" style="width:100%;min-height:150px;border:1px solid var(--border);border-radius:8px;background:var(--bg);color:var(--text);font-family:monospace;font-size:13px;padding:10px;"></textarea>
+        </div>
+        <div class="row" style="gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:12px;">
+          <label style="font-size:13px;">缩进</label>
+          <select id="sql-indent" style="padding:6px 8px;border:1px solid var(--border);border-radius:6px;background:var(--bg);color:var(--text);">
+            <option value="2">2 空格</option>
+            <option value="4" selected>4 空格</option>
+          </select>
+          <label style="font-size:13px;margin-left:8px;"><input type="checkbox" id="sql-upper" checked> 关键字大写</label>
+          <label style="font-size:13px;margin-left:8px;"><input type="checkbox" id="sql-compress"> 压缩模式（去掉多余空格）</label>
+        </div>
+        <div class="row" style="gap:8px;flex-wrap:wrap;margin-bottom:12px;">
+          <button class="btn btn-primary" onclick="sqlRun()">✨ 格式化</button>
+          <button class="btn btn-secondary" onclick="sqlCopy()">📋 复制结果</button>
+          <button class="btn btn-secondary" onclick="document.getElementById('sql-input').value='';document.getElementById('sql-output').value='';document.getElementById('sql-stat').textContent='';">🗑️ 清空</button>
+        </div>
+        <div class="input-group">
+          <label>格式化结果</label>
+          <textarea id="sql-output" readonly style="width:100%;min-height:150px;border:1px solid var(--border);border-radius:8px;background:var(--bg);color:var(--text);font-family:monospace;font-size:13px;padding:10px;" placeholder="格式化后的 SQL 将显示在这里"></textarea>
+          <div id="sql-stat" style="font-size:12px;color:var(--text-light);margin-top:6px;"></div>
+        </div>
+        <div style="margin-top:8px;font-size:12px;color:var(--text-light);text-align:center;">💡 灵感来源于 SQL Formatter / Poor SQL / Instant SQL Formatter；纯前端词法解析，支持字符串与注释保护、多行值列表、JOIN 对齐，代码不出本地</div>
+      </div>
+    `,
+    handler: () => { setTimeout(sqlInit, 50); }
+  },
+  {
+    id: 'exif-viewer',
+    cat: 'image',
+    icon: '📷',
+    name: '图片EXIF信息',
+    desc: '查看照片EXIF元数据：相机型号、镜头、快门、ISO、GPS位置与拍摄时间',
+    html: `
+      <div class="tool-card">
+        <div class="input-group">
+          <label>选择照片（JPG/JPEG/TIFF）</label>
+          <input type="file" id="ev-file" accept="image/jpeg,image/tiff,.jpg,.jpeg,.tif,.tiff" style="margin-bottom:10px;">
+          <div id="ev-drop" style="border:2px dashed var(--border);border-radius:10px;padding:26px 16px;text-align:center;cursor:pointer;color:var(--text-light);font-size:14px;transition:all .2s;">📤 或将照片拖拽到这里</div>
+        </div>
+        <div class="row" style="gap:14px;flex-wrap:wrap;margin-top:14px;">
+          <div style="flex:1;min-width:180px;">
+            <img id="ev-preview" alt="预览" style="max-width:100%;max-height:220px;border-radius:10px;border:1px solid var(--border);display:none;">
+          </div>
+          <div style="flex:2;min-width:260px;">
+            <table id="ev-table" style="width:100%;border-collapse:collapse;font-size:13px;">
+              <tbody></tbody>
+            </table>
+            <div id="ev-gps-box" style="display:none;margin-top:8px;font-size:13px;">
+              <span>GPS 坐标：</span><code id="ev-gps" style="background:var(--bg);padding:2px 6px;border-radius:4px;"></code>
+              <button class="btn btn-secondary" style="margin-left:6px;font-size:12px;padding:4px 10px;" onclick="evCopyGps()">📋 复制</button>
+            </div>
+            <div id="ev-tip" style="display:none;margin-top:10px;background:#fdf6e3;border:1px solid #e8c76b;border-radius:8px;padding:10px;font-size:13px;color:#7a5b00;">⚠️ 隐私提醒：照片里可能包含拍摄设备的序列号、GPS 精确坐标与拍摄时间。公开发布前建议用「去 EXIF / 隐私清理」功能移除这些元数据，防止泄露家庭住址与行踪。</div>
+          </div>
+        </div>
+        <div style="margin-top:8px;font-size:12px;color:var(--text-light);text-align:center;">💡 灵感来源于 Exif Pilot / ExifTool / JPEGsnoop；浏览器本地解析 EXIF 二进制，照片不会上传，可放心检查设备信息</div>
+      </div>
+    `,
+    handler: () => { setTimeout(evInit, 50); }
   }
 ];
 
@@ -7820,8 +7889,8 @@ function dpCopyText() {
 // ============================================================
 const CATEGORIES = [
   { id: 'text', icon: '✏️', name: '文本工具', desc: '字数统计、简繁转换、摩斯密码、文本转语音、文本对比、电子名片生成器' },
-  { id: 'dev', icon: '💻', name: '开发者工具', desc: 'JSON格式化、二维码生成、二维码美化、条形码生成、Favicon图标生成、正则测试、Markdown、IP查询、思维导图、图表生成、代码图片生成、表格数据转换' },
-  { id: 'image', icon: '🖼️', name: '图片处理', desc: '去背景换底色、批量压缩、加水印、长图拼接、格式转换、裁剪、异形裁剪、马赛克打码、双色调滤镜、图片转字符画、照片卡通化、OCR、印章制作、九宫格切图、文字转手写体、表情包、社交媒体图片尺寸调整、艺术效果、像素画、设备样机、图片高清放大、图片转线稿、渐变背景、文字特效、拼贴画、图片相框、颜色盲区模拟、海报设计器、老照片修复上色' },
+  { id: 'dev', icon: '💻', name: '开发者工具', desc: 'JSON格式化、二维码生成、二维码美化、条形码生成、Favicon图标生成、正则测试、Markdown、IP查询、思维导图、图表生成、代码图片生成、表格数据转换、SQL格式化' },
+  { id: 'image', icon: '🖼️', name: '图片处理', desc: '去背景换底色、批量压缩、加水印、长图拼接、格式转换、裁剪、异形裁剪、马赛克打码、双色调滤镜、图片转字符画、照片卡通化、OCR、印章制作、九宫格切图、文字转手写体、表情包、社交媒体图片尺寸调整、艺术效果、像素画、设备样机、图片高清放大、图片转线稿、渐变背景、文字特效、拼贴画、图片相框、颜色盲区模拟、海报设计器、老照片修复上色、图片EXIF信息' },
   { id: 'document', icon: '📄', name: '文档转换', desc: '图片转PDF、PDF转图片、Word解析、Excel转PDF、PDF合并、PDF拆分、简历生成、电子签名、表单制作、邮件签名、发票/收据生成器、证书生成器' },
   { id: 'convert', icon: '🔄', name: '转换工具', desc: '单位换算、进制转换、函数绘图' },
   { id: 'security', icon: '🔒', name: '安全工具', desc: '密码生成、Hash计算、随机数' },
@@ -14596,202 +14665,6 @@ function prDownload() {
 
 // ========== 打字速度测试 typing-speed (ts*) ==========
 var tsWords = {
-  en: ['the','dream','future','work','learn','code','build','happy','light','world','time','place','music','water','green','speed','focus','smart','quick','cloud','storm','peace','power','heart','stone','river','flame','wind','gold','brave','bright','clear','daily','early','fresh','great','house','image','jump','kind','laugh','magic','night','ocean','piano','quiet','reach','silver','tiger','united','voice','wonder'],
-  zh: ['梦想','未来','奋斗','学习','创新','科技','坚持','勇气','希望','热爱','成长','自由','快乐','友谊','旅行','音乐','美食','运动','阅读','设计','开发','天空','大海','森林','阳光','星星','月亮','彩虹','城市','乡村','青春','智慧','温暖','勇敢','勤奋','耐心','专注','效率','进步','成功']
-};
-var tsList = [], tsCurrent = 0, tsTimer = null, tsLeft = 0, tsTotalSec = 60, tsCorrectChars = 0, tsTotalWords = 0, tsWrongWords = 0;
-
-function tsInit() {
-  var input = document.getElementById('ts-input');
-  if (!input) return;
-  input.addEventListener('input', tsOnInput);
-  var best = localStorage.getItem('ts-best');
-  var be = document.getElementById('ts-best');
-  if (be) be.textContent = best || '--';
-  tsGenWords();
-  tsRenderTarget();
-}
-function tsGenWords() {
-  var lang = document.getElementById('ts-lang') ? document.getElementById('ts-lang').value : 'en';
-  var words = tsWords[lang] || tsWords.en;
-  tsList = [];
-  for (var i = 0; i < 50; i++) tsList.push(words[Math.floor(Math.random() * words.length)]);
-  tsCurrent = 0;
-}
-function tsAppendWords() {
-  var lang = document.getElementById('ts-lang') ? document.getElementById('ts-lang').value : 'en';
-  var words = tsWords[lang] || tsWords.en;
-  for (var i = 0; i < 20; i++) tsList.push(words[Math.floor(Math.random() * words.length)]);
-}
-function tsRenderTarget() {
-  var el = document.getElementById('ts-target');
-  if (!el) return;
-  var html = '';
-  for (var i = 0; i < tsList.length; i++) {
-    if (i === tsCurrent) html += '<b style="color:#6366f1;background:rgba(99,102,241,0.12);border-radius:4px;padding:0 3px;">' + tsList[i] + '</b> ';
-    else html += '<span>' + tsList[i] + '</span> ';
-  }
-  el.innerHTML = html;
-}
-function tsStart() {
-  tsTotalSec = parseInt(document.getElementById('ts-time').value, 10) || 60;
-  tsLeft = tsTotalSec;
-  tsCorrectChars = 0; tsTotalWords = 0; tsWrongWords = 0;
-  tsGenWords();
-  tsRenderTarget();
-  var input = document.getElementById('ts-input');
-  input.disabled = false;
-  input.value = '';
-  input.focus();
-  document.getElementById('ts-left').textContent = tsTotalSec;
-  document.getElementById('ts-wpm').textContent = '0';
-  document.getElementById('ts-acc').textContent = '100%';
-  document.getElementById('ts-err').textContent = '0';
-  if (tsTimer) clearInterval(tsTimer);
-  tsTimer = setInterval(tsTick, 1000);
-  toast('🚀 开始打字！');
-}
-function tsTick() {
-  tsLeft--;
-  var el = document.getElementById('ts-left');
-  if (el) el.textContent = tsLeft;
-  tsUpdateStats();
-  if (tsLeft <= 0) {
-    clearInterval(tsTimer);
-    tsTimer = null;
-    tsFinish();
-  }
-}
-function tsOnInput(e) {
-  if (tsLeft <= 0) return;
-  var input = e.target;
-  var val = input.value;
-  if (val.indexOf(' ') >= 0) {
-    var word = val.replace(/ +/g, ' ').trim();
-    if (word.length > 0) {
-      tsTotalWords++;
-      var target = tsList[tsCurrent];
-      if (word === target) {
-        tsCorrectChars += target.length;
-      } else {
-        tsWrongWords++;
-      }
-      tsCurrent++;
-      if (tsCurrent >= tsList.length - 5) tsAppendWords();
-      tsRenderTarget();
-    }
-    input.value = '';
-    tsUpdateStats();
-  }
-}
-function tsUpdateStats() {
-  var elapsedMin = (tsTotalSec - tsLeft) / 60;
-  var wpm = elapsedMin > 0 ? Math.round(tsCorrectChars / 5 / elapsedMin) : 0;
-  var e2 = document.getElementById('ts-wpm');
-  if (e2) e2.textContent = wpm;
-  var acc = tsTotalWords > 0 ? Math.round((tsTotalWords - tsWrongWords) / tsTotalWords * 100) : 100;
-  var a2 = document.getElementById('ts-acc');
-  if (a2) a2.textContent = acc + '%';
-  var e3 = document.getElementById('ts-err');
-  if (e3) e3.textContent = tsWrongWords;
-}
-function tsFinish() {
-  var input = document.getElementById('ts-input');
-  if (input) input.disabled = true;
-  var elapsedMin = tsTotalSec / 60;
-  var wpm = Math.round(tsCorrectChars / 5 / elapsedMin);
-  var acc = tsTotalWords > 0 ? Math.round((tsTotalWords - tsWrongWords) / tsTotalWords * 100) : 100;
-  var best = parseInt(localStorage.getItem('ts-best'), 10) || 0;
-  var isBest = wpm > best;
-  if (isBest) localStorage.setItem('ts-best', wpm);
-  var be = document.getElementById('ts-best');
-  if (be) be.textContent = isBest ? wpm : (best || '--');
-  toast('🎉 测试结束！速度 ' + wpm + ' WPM，准确率 ' + acc + '%' + (isBest ? ' 🏆 新纪录！' : ''));
-}
-
-// ========== 电子名片生成器 vcard-maker (vc*) ==========
-function vcInit() {
-  var ids = ['vc-name', 'vc-title', 'vc-company', 'vc-phone', 'vc-email', 'vc-site', 'vc-addr', 'vc-color'];
-  ids.forEach(function(id) {
-    var el = document.getElementById(id);
-    if (el) el.addEventListener('input', vcPreview);
-  });
-  vcPreview();
-}
-function vcFields() {
-  function v(id) {
-    var el = document.getElementById(id);
-    return el ? el.value.trim() : '';
-  }
-  return {
-    name: v('vc-name'), title: v('vc-title'), company: v('vc-company'),
-    phone: v('vc-phone'), email: v('vc-email'), site: v('vc-site'), addr: v('vc-addr')
-  };
-}
-function vcEsc(s) {
-  return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
-}
-function vcPreview() {
-  var f = vcFields();
-  var holder = document.getElementById('vc-preview');
-  if (!holder) return;
-  var name = f.name || '你的姓名';
-  var colorEl = document.getElementById('vc-color');
-  var color = colorEl ? colorEl.value : '#6366f1';
-  var badge = '<div style="width:54px;height:54px;border-radius:12px;background:' + color + ';color:#fff;display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:700;flex-shrink:0;">' + vcEsc(name.charAt(0).toUpperCase()) + '</div>';
-  var lines = '';
-  if (f.title || f.company) {
-    var role = [];
-    if (f.title) role.push(vcEsc(f.title));
-    if (f.company) role.push(vcEsc(f.company));
-    lines += '<div style="font-weight:600;margin-bottom:6px;">' + role.join(' · ') + '</div>';
-  }
-  if (f.phone) lines += '<div style="font-size:13px;opacity:.9;margin-top:2px;">📞 ' + vcEsc(f.phone) + '</div>';
-  if (f.email) lines += '<div style="font-size:13px;opacity:.9;margin-top:2px;">✉️ ' + vcEsc(f.email) + '</div>';
-  if (f.site) lines += '<div style="font-size:13px;opacity:.9;margin-top:2px;">🌐 ' + vcEsc(f.site) + '</div>';
-  if (f.addr) lines += '<div style="font-size:13px;opacity:.9;margin-top:2px;">📍 ' + vcEsc(f.addr) + '</div>';
-  holder.innerHTML = '<div style="display:flex;gap:14px;align-items:flex-start;padding:22px;border-radius:14px;background:' + color + '14;border:1px solid ' + color + '55;">' + badge + '<div style="min-width:0;"><div style="font-size:19px;font-weight:700;margin-bottom:2px;">' + vcEsc(name) + '</div>' + lines + '</div></div>';
-}
-function vcGenerate() {
-  var f = vcFields();
-  if (!f.name) { toast('⚠️ 请先填写姓名'); return; }
-  var lines = ['BEGIN:VCARD', 'VERSION:3.0', 'FN:' + f.name];
-  if (f.title) lines.push('TITLE:' + f.title);
-  if (f.company) lines.push('ORG:' + f.company);
-  if (f.phone) lines.push('TEL;TYPE=CELL:' + f.phone);
-  if (f.email) lines.push('EMAIL;TYPE=INTERNET:' + f.email);
-  if (f.site) lines.push('URL:' + f.site);
-  if (f.addr) lines.push('ADR;TYPE=WORK:;;' + f.addr + ';;;;');
-  lines.push('END:VCARD');
-  var text = lines.join('\r\n');
-  var out = document.getElementById('vc-output');
-  if (out) {
-    out.value = text;
-    out.style.display = 'block';
-  }
-  var blob = new Blob([text], { type: 'text/vcard' });
-  var a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = (f.name || 'card') + '.vcf';
-  document.body.appendChild(a);
-  a.click();
-  setTimeout(function() { URL.revokeObjectURL(a.href); a.remove(); }, 1000);
-  toast('⬇️ 已导出 vCard 名片');
-}
-function vcCopy() {
-  var out = document.getElementById('vc-output');
-  if (!out || !out.value) { toast('⚠️ 请先「生成并导出 .vcf」'); return; }
-  if (navigator.clipboard && navigator.clipboard.writeText) {
-    navigator.clipboard.writeText(out.value).then(function() { toast('✅ 已复制 vCard 文本'); });
-  } else {
-    out.select();
-    document.execCommand('copy');
-    toast('✅ 已复制 vCard 文本');
-  }
-}
-
-// ========== 打字速度测试 typing-speed (ts*) ==========
-var tsWords = {
   en: ['the','dream','future','work','learn','code','build','happy','light','world','time','place','music','water','green','speed','focus','smart','quick','cloud','storm','peace','power','heart','stone','river','flame','wind','gold','trust','great','story','space','truth','honor','grace','brave','fresh','value'],
   zh: ['梦想','未来','奋斗','学习','创新','科技','坚持','勇气','希望','热爱','成长','自由','快乐','友谊','旅行','音乐','美食','运动','阅读','设计','开发','天空','大海','森林','阳光','星星','月亮','彩虹','城市','乡村']
 };
@@ -14955,4 +14828,423 @@ function vcCopy() {
     document.execCommand('copy');
     toast('✅ 已复制 vCard 文本');
   });
+}
+
+// ========== SQL 格式化 sql-formatter (sql*) ==========
+var SQL_MAIN = { SELECT:1, FROM:1, WHERE:1, INSERT:1, INTO:1, VALUES:1, UPDATE:1, SET:1, DELETE:1, CREATE:1, ALTER:1, DROP:1, TABLE:1, 'ORDER BY':1, 'GROUP BY':1, HAVING:1, LIMIT:1, OFFSET:1, ON:1, UNION:1, ALL:1, WITH:1, RETURNING:1, MERGE:1, REPLACE:1, WHEN:1, THEN:1, ELSE:1, END:1, OR:1, AND:1, PARTITION:1, WINDOW:1, CASE:1, 'LEFT JOIN':1, 'RIGHT JOIN':1, 'INNER JOIN':1, 'FULL JOIN':1, 'FULL OUTER JOIN':1, 'CROSS JOIN':1, 'NATURAL JOIN':1 };
+var SQL_JOIN_PREFIX = { LEFT:1, RIGHT:1, INNER:1, FULL:1, CROSS:1, NATURAL:1 };
+var SQL_VALUE_CTX = { IN:1, LIKE:1, EXISTS:1 };
+var SQL_KW = { SELECT:1, FROM:1, WHERE:1, INSERT:1, INTO:1, VALUES:1, UPDATE:1, SET:1, DELETE:1, CREATE:1, ALTER:1, DROP:1, TABLE:1, ORDER:1, BY:1, GROUP:1, HAVING:1, LIMIT:1, OFFSET:1, ON:1, UNION:1, ALL:1, WITH:1, RETURNING:1, MERGE:1, REPLACE:1, WHEN:1, THEN:1, ELSE:1, END:1, OR:1, AND:1, PARTITION:1, WINDOW:1, CASE:1, JOIN:1, LEFT:1, RIGHT:1, INNER:1, FULL:1, CROSS:1, NATURAL:1, OUTER:1, IN:1, LIKE:1, EXISTS:1, NOT:1, NULL:1, IS:1, BETWEEN:1, AS:1, ASC:1, DESC:1, DISTINCT:1, PRIMARY:1, KEY:1, FOREIGN:1, REFERENCES:1, DEFAULT:1, UNIQUE:1, CHECK:1, CONSTRAINT:1, IF:1, TO:1, USE:1, SHOW:1, GRANT:1, REVOKE:1, COMMENT:1, ADD:1, COLUMN:1, CHARACTER:1, AUTO_INCREMENT:1, CASCADE:1, RESTRICT:1, VIEW:1, INDEX:1, TRIGGER:1, FUNCTION:1, PROCEDURE:1, DATABASE:1, SCHEMA:1, TYPE:1, SEQUENCE:1, OWNER:1, LANGUAGE:1, OVER:1, ROWS:1, RANGE:1, CURRENT:1, ROW:1, PRECEDING:1, FOLLOWING:1, UNBOUNDED:1, LEADING:1, TRAILING:1, BOTH:1, BEGIN:1, COMMIT:1, ROLLBACK:1, TRANSACTION:1, RENAME:1 };
+
+function sqlInit() {
+  var ta = document.getElementById('sql-input');
+  if (ta) {
+    ta.addEventListener('keydown', function(e) {
+      if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') { e.preventDefault(); sqlRun(); }
+    });
+  }
+}
+function sqlRun() {
+  var input = document.getElementById('sql-input');
+  if (!input || !input.value.trim()) { toast('⚠️ 请先输入 SQL 语句'); return; }
+  var indent = 4, upper = true, compress = false;
+  var ie = document.getElementById('sql-indent');
+  if (ie) indent = parseInt(ie.value, 10) || 4;
+  var ue = document.getElementById('sql-upper');
+  if (ue) upper = ue.checked;
+  var ce = document.getElementById('sql-compress');
+  if (ce) compress = ce.checked;
+  var out = sqlFormatText(input.value, { indent: indent, upper: upper, compress: compress });
+  var oo = document.getElementById('sql-output');
+  if (oo) oo.value = out;
+  var st = document.getElementById('sql-stat');
+  if (st) {
+    var stmts = (input.value.match(/;/g) || []).length;
+    st.textContent = '✅ 已格式化：' + (out ? out.split('\n').length : 0) + ' 行 · ' + stmts + ' 条语句 · ' + out.length + ' 字符';
+  }
+}
+function sqlCopy() {
+  var oo = document.getElementById('sql-output');
+  if (!oo || !oo.value) { toast('⚠️ 请先格式化'); return; }
+  oo.select();
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(oo.value).then(function() { toast('✅ 已复制'); });
+  } else {
+    document.execCommand('copy');
+    toast('✅ 已复制');
+  }
+}
+function sqlTokenize(text) {
+  var tokens = [];
+  var re = /'(?:[^']|''|\\.)*'|"(?:[^"\\]|\\.)*"|`(?:[^`\\]|\\.)*`|--[^\n]*|\/\*[\s\S]*?\*\//g;
+  var last = 0, m;
+  while ((m = re.exec(text))) {
+    if (m.index > last) tokens = tokens.concat(sqlPlain(text.slice(last, m.index)));
+    tokens.push({ t: 'lit', v: m[0] });
+    last = m.index + m[0].length;
+  }
+  if (last < text.length) tokens = tokens.concat(sqlPlain(text.slice(last)));
+  return tokens;
+}
+function sqlPlain(seg) {
+  var out = [];
+  var re = /(\s+|[(),;=<>!+\-*/%.]|\b\w+\b)/g;
+  var m;
+  while ((m = re.exec(seg))) {
+    if (m[0].trim() === '') out.push({ t: 'ws', v: m[0] });
+    else out.push({ t: /^\W+$/.test(m[0]) ? 'punct' : 'word', v: m[0] });
+  }
+  return out;
+}
+function sqlFormatText(text, opts) {
+  opts = opts || {};
+  var ind = opts.indent === 2 ? 2 : 4;
+  var upper = opts.upper !== false;
+  var compress = !!opts.compress;
+  var toks = sqlTokenize(text).filter(function(t) { return t.t !== 'ws'; });
+  if (!toks.length) return '';
+  toks.forEach(function(t) {
+    if (t.t === 'word' && upper && SQL_KW.hasOwnProperty(t.v.toUpperCase())) t.v = t.v.toUpperCase();
+  });
+  // 合并复合关键字
+  var tk = [];
+  var i = 0;
+  while (i < toks.length) {
+    var t = toks[i], up = t.v.toUpperCase();
+    if (t.t === 'punct' && t.v === '.') {
+      var lastTok = tk[tk.length - 1];
+      if (lastTok && lastTok.t === 'word') {
+        var nx = toks[i + 1];
+        if (nx && nx.t === 'word') { lastTok.v += '.' + nx.v; i += 2; continue; }
+        lastTok.v += '.';
+        i++;
+        continue;
+      }
+      tk.push(t); i++; continue;
+    }
+    var n = toks[i + 1] ? toks[i + 1].v.toUpperCase() : '';
+    var n2 = toks[i + 2] ? toks[i + 2].v.toUpperCase() : '';
+    if (SQL_JOIN_PREFIX.hasOwnProperty(up) && n === 'JOIN') { tk.push({ t: 'word', v: up + ' JOIN' }); i += 2; continue; }
+    if (up === 'FULL' && n === 'OUTER' && n2 === 'JOIN') { tk.push({ t: 'word', v: 'FULL OUTER JOIN' }); i += 3; continue; }
+    if ((up === 'GROUP' || up === 'ORDER') && n === 'BY') { tk.push({ t: 'word', v: up + ' BY' }); i += 2; continue; }
+    if (up === 'INSERT' && n === 'INTO') { tk.push({ t: 'word', v: 'INSERT INTO' }); i += 2; continue; }
+    tk.push(t);
+    i++;
+  }
+  if (compress) {
+    var joined = tk.map(function(tt) { return tt.v; }).join(' ')
+      .replace(/\(\s*/g, '(')
+      .replace(/\s*\)/g, ')')
+      .replace(/\s*,\s*/g, ', ')
+      .replace(/\s+;/g, ';');
+    return joined;
+  }
+  // 格式化：按行构建
+  var lines = [];
+  var curWords = [];
+  var curInd = 0;
+  var parenStack = [];
+  var lastMain = '';
+  function flushLine(indv) {
+    if (curWords.length) { lines.push({ words: curWords.slice(), ind: indv }); curWords = []; }
+  }
+  for (var k = 0; k < tk.length; k++) {
+    var t2 = tk[k];
+    var v = t2.v, up2 = v.toUpperCase();
+    var isMain = t2.t === 'word' && SQL_MAIN.hasOwnProperty(up2);
+    if (isMain) {
+      var hasContent = curWords.length > 0 || lines.length > 0;
+      if (hasContent) {
+        if (curWords.length && curWords[curWords.length - 1] === '(') {
+          lastMain = up2;
+          curWords.push(v);
+          continue;
+        }
+        flushLine(curInd);
+        curInd = parenStack.length + ((up2 === 'AND' || up2 === 'OR') ? 1 : 0);
+      } else {
+        curInd = 0;
+      }
+      lastMain = up2;
+      curWords.push(v);
+      continue;
+    }
+    if (v === '(') {
+      var prevW = null;
+      for (var pi = curWords.length - 1; pi >= 0; pi--) {
+        if (typeof curWords[pi] === 'string' && /^[A-Za-z_]+$/.test(curWords[pi])) { prevW = curWords[pi]; break; }
+      }
+      var prevUp = prevW ? prevW.toUpperCase() : '';
+      var isValueCtx = prevW && SQL_VALUE_CTX.hasOwnProperty(prevUp);
+      var isValues = lastMain === 'VALUES' || (!prevW && lastMain === 'VALUES');
+      var isCall = prevW && !SQL_KW.hasOwnProperty(prevUp) && !SQL_VALUE_CTX.hasOwnProperty(prevUp);
+      if (isValueCtx || isValues) {
+        parenStack.push('value');
+        curWords.push(v);
+        continue;
+      }
+      if (isCall) {
+        var beforePrev = curWords[curWords.length - 2];
+        if (beforePrev === 'INSERT INTO') {
+          parenStack.push('value');
+          curWords.push(v);
+        } else {
+          curWords[curWords.length - 1] += '(';
+          parenStack.push('value');
+        }
+        continue;
+      }
+      parenStack.push('block');
+      curWords.push(v);
+      continue;
+    }
+    if (v === ')') {
+      var ctx = parenStack.length ? parenStack.pop() : 'block';
+      if (ctx === 'value') { curWords.push(v); continue; }
+      flushLine(curInd);
+      curInd = Math.max(0, curInd - 1);
+      curWords.push(v);
+      continue;
+    }
+    if (v === ',') {
+      curWords.push(v);
+      if (parenStack.length === 0 && lastMain !== 'VALUES') { flushLine(Math.max(curInd, 1)); }
+      continue;
+    }
+    if (v === ';') {
+      curWords.push(v);
+      flushLine(curInd);
+      curInd = 0;
+      continue;
+    }
+    curWords.push(v);
+  }
+  flushLine(curInd);
+  var outLines = lines.map(function(ln, idx) {
+    var res = ln.words.map(function(w) { return typeof w === 'string' ? w : w.v; }).join(' ');
+    res = res.replace(/\(\s*/g, '(').replace(/\s*\)/g, ')').replace(/\s*,\s*/g, ', ');
+    if (idx === 0) return res;
+    return new Array(ln.ind * ind + 1).join(' ') + res;
+  });
+  return outLines.join('\n');
+}
+
+// ========== 图片EXIF信息 exif-viewer (ev*) ==========
+function evInit() {
+  var input = document.getElementById('ev-file');
+  if (input) input.addEventListener('change', evHandleFile);
+  var drop = document.getElementById('ev-drop');
+  if (drop) {
+    drop.addEventListener('click', function() { if (input) input.click(); });
+    drop.addEventListener('dragover', function(e) { e.preventDefault(); drop.style.borderColor = '#6366f1'; drop.style.color = '#6366f1'; });
+    drop.addEventListener('dragleave', function() { drop.style.borderColor = ''; drop.style.color = ''; });
+    drop.addEventListener('drop', function(e) {
+      e.preventDefault();
+      drop.style.borderColor = ''; drop.style.color = '';
+      if (e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files.length) evRead(e.dataTransfer.files[0]);
+    });
+  }
+}
+function evHandleFile(e) {
+  if (e.target.files && e.target.files.length) evRead(e.target.files[0]);
+}
+function evRead(file) {
+  if (!/^image\/(jpeg|tiff)$/i.test(file.type) && !/\.(jpe?g|tiff?)$/i.test(file.name)) { toast('⚠️ 请选择 JPG/JPEG/TIFF 图片'); return; }
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    try {
+      var buf = new Uint8Array(e.target.result);
+      var info = evParse(buf);
+      info.size = evFmtSize(file.size);
+      info.name = file.name;
+      evRender(info, buf);
+    } catch (err) { toast('⚠️ 解析失败：' + err.message); }
+  };
+  reader.readAsArrayBuffer(file);
+}
+function evFmtSize(n) {
+  if (n < 1024) return n + ' B';
+  if (n < 1048576) return (n / 1024).toFixed(1) + ' KB';
+  return (n / 1048576).toFixed(2) + ' MB';
+}
+function evTypeSize(type) {
+  var map = { 1: 1, 2: 1, 3: 2, 4: 4, 5: 8, 7: 1, 9: 4, 10: 8 };
+  return map[type] || 0;
+}
+function evParse(buf) {
+  var info = { make: null, model: null, datetime: null, exposure: null, fnumber: null, iso: null, focal: null, lens: null, software: null, gps: null, width: null, height: null, flash: null, whiteBalance: null };
+  if (!buf.length || !(buf[0] === 0xFF && buf[1] === 0xD8)) {
+    // 尝试直接 TIFF
+    if (buf.length > 10 && (buf[0] === 0x49 || buf[0] === 0x4D)) evParseTiff(buf, info);
+    return info;
+  }
+  var offset = 2;
+  while (offset + 4 <= buf.length) {
+    if (buf[offset] !== 0xFF) { offset++; continue; }
+    var marker = buf[offset + 1];
+    if (marker === 0xD8) { offset += 2; continue; }
+    if (marker === 0xDA) break;
+    var segLen = (buf[offset + 2] << 8) | buf[offset + 3];
+    if (segLen < 2) break;
+    if (marker === 0xE1 && segLen > 8 && offset + segLen + 2 <= buf.length) {
+      var seg = buf.subarray(offset + 4, offset + 2 + segLen);
+      if (seg[0] === 0x45 && seg[1] === 0x78 && seg[2] === 0x69 && seg[3] === 0x66 && seg[4] === 0x00 && seg[5] === 0x00) {
+        evParseTiff(seg.subarray(6), info);
+      }
+    }
+    if (marker >= 0xC0 && marker <= 0xCF && marker !== 0xC4 && marker !== 0xC8 && marker !== 0xCC && offset + 9 <= buf.length) {
+      info.height = (buf[offset + 5] << 8) | buf[offset + 6];
+      info.width = (buf[offset + 7] << 8) | buf[offset + 8];
+    }
+    offset += 2 + segLen;
+  }
+  return info;
+}
+function evParseTiff(t, info) {
+  if (t.length < 10) return info;
+  var endian = t[0] === 0x49 ? 'le' : (t[0] === 0x4D ? 'be' : null);
+  if (!endian) return info;
+  function u16(o) { return endian === 'le' ? ((t[o] | (t[o + 1] << 8)) & 0xFFFF) : (((t[o] << 8) | t[o + 1]) & 0xFFFF); }
+  function u32(o) { return endian === 'le' ? ((t[o] | (t[o + 1] << 8) | (t[o + 2] << 16) | (t[o + 3] << 24)) >>> 0) : (((t[o] << 24) | (t[o + 1] << 16) | (t[o + 2] << 8) | t[o + 3]) >>> 0); }
+  function ascii(o, n) { var s = ''; for (var i = 0; i < n; i++) { var c = t[o + i]; if (!c) break; s += String.fromCharCode(c); } return s; }
+  function readIFD(ifdOff) {
+    if (ifdOff + 2 > t.length) return [];
+    var n = u16(ifdOff);
+    var ents = [];
+    for (var i = 0; i < n; i++) {
+      var e = ifdOff + 2 + i * 12;
+      if (e + 12 > t.length) break;
+      ents.push({ tag: u16(e), type: u16(e + 2), count: u32(e + 4), val: u32(e + 8), off: e });
+    }
+    return ents;
+  }
+  function readValue(ent) {
+    var sz = evTypeSize(ent.type);
+    if (!sz) return null;
+    var bytes = ent.count * sz;
+    if (ent.type === 2) return ascii(bytes <= 4 ? ent.off + 8 : ent.val, ent.count);
+    if (ent.type === 1 || ent.type === 7) {
+      var arr = [];
+      for (var i = 0; i < Math.min(bytes, 1024); i++) arr.push(t[bytes <= 4 ? ent.off + 8 + i : ent.val + i] || 0);
+      return ent.count === 1 ? arr[0] : arr;
+    }
+    if (ent.type === 3) { var a3 = []; for (var j = 0; j < ent.count; j++) a3.push(u16(bytes <= 4 ? ent.off + 8 + j * 2 : ent.val + j * 2)); return ent.count === 1 ? a3[0] : a3; }
+    if (ent.type === 4 || ent.type === 9) { var a4 = []; for (var m = 0; m < ent.count; m++) a4.push(u32(bytes <= 4 ? ent.off + 8 + m * 4 : ent.val + m * 4)); return ent.count === 1 ? a4[0] : a4; }
+    if (ent.type === 5 || ent.type === 10) {
+      var arr5 = [];
+      for (var q = 0; q < ent.count; q++) {
+        var off5 = ent.val + q * 8;
+        if (off5 + 8 > t.length) break;
+        var num5 = u32(off5), den5 = u32(off5 + 4);
+        arr5.push(den5 ? num5 / den5 : 0);
+      }
+      return ent.count === 1 ? arr5[0] : arr5;
+    }
+    return null;
+  }
+  var ifd0 = u32(4);
+  if (ifd0 >= t.length) return info;
+  var ents = readIFD(ifd0);
+  var exifOff = null, gpsOff = null;
+  for (var i = 0; i < ents.length; i++) {
+    var en = ents[i];
+    var val = readValue(en);
+    if (en.tag === 0x010F && val !== null) info.make = String(val).replace(/\0/g, '');
+    else if (en.tag === 0x0110 && val !== null) info.model = String(val).replace(/\0/g, '');
+    else if (en.tag === 0x0132 && val !== null) info.datetime = String(val).replace(/\0/g, '');
+    else if (en.tag === 0x0131 && val !== null) info.software = String(val).replace(/\0/g, '');
+    else if (en.tag === 0x8769) exifOff = val;
+    else if (en.tag === 0x8825) gpsOff = val;
+  }
+  if (exifOff !== null && exifOff < t.length) {
+    var ex = readIFD(exifOff);
+    for (var j = 0; j < ex.length; j++) {
+      var ej = ex[j];
+      var vj = readValue(ej);
+      if (ej.tag === 0x829A && vj !== null) info.exposure = evExposure(vj);
+      else if (ej.tag === 0x829D && vj !== null) info.fnumber = 'f/' + (Math.round(vj * 10) / 10);
+      else if (ej.tag === 0x8827 && vj !== null) info.iso = String(vj);
+      else if (ej.tag === 0x920A && vj !== null) info.focal = (Math.round(vj * 10) / 10) + ' mm';
+      else if (ej.tag === 0xA434 && vj !== null) info.lens = String(vj).replace(/\0/g, '');
+      else if (ej.tag === 0x9209 && vj !== null) info.flash = (vj & 1) === 1;
+      else if (ej.tag === 0xA403 && vj !== null) info.whiteBalance = vj;
+    }
+  }
+  if (gpsOff !== null && gpsOff < t.length) {
+    var g = readIFD(gpsOff);
+    var lat = null, lng = null, latRef = null, lngRef = null;
+    for (var k = 0; k < g.length; k++) {
+      var gk = g[k];
+      var vk = readValue(gk);
+      if (gk.tag === 0x0000 && vk !== null) latRef = String(vk).replace(/\0/g, '');
+      else if (gk.tag === 0x0001 && vk !== null) lat = vk;
+      else if (gk.tag === 0x0002 && vk !== null) lngRef = String(vk).replace(/\0/g, '');
+      else if (gk.tag === 0x0003 && vk !== null) lng = vk;
+    }
+    if (lat && lng) {
+      var latD = evCoord(lat, latRef), lngD = evCoord(lng, lngRef);
+      info.gps = latD.toFixed(6) + ', ' + lngD.toFixed(6) + (latRef && lngRef ? ' (' + latRef + ' ' + lngRef + ')' : '');
+    }
+  }
+  return info;
+}
+function evCoord(v, ref) {
+  var d = Array.isArray(v) ? (v[0] || 0) + (v[1] || 0) / 60 + (v[2] || 0) / 3600 : (v || 0);
+  if (ref === 'S' || ref === 'W') d = -Math.abs(d);
+  return d;
+}
+function evExposure(v) {
+  if (v && v > 0) {
+    if (v >= 1) return String(Math.round(v * 10) / 10) + ' s';
+    var den = Math.round(1 / v);
+    return '1/' + den + ' s';
+  }
+  return v !== null ? String(v) : null;
+}
+function evRender(info, buf) {
+  var preview = document.getElementById('ev-preview');
+  if (preview && buf) {
+    var blob = new Blob([buf], { type: 'image/jpeg' });
+    preview.src = URL.createObjectURL(blob);
+    preview.style.display = 'block';
+  }
+  var rows = [
+    ['文件名', info.name || '—'],
+    ['图片尺寸', (info.width && info.height) ? info.width + ' × ' + info.height + ' px' : '—'],
+    ['文件大小', info.size || '—'],
+    ['相机品牌', info.make || '—'],
+    ['相机型号', info.model || '—'],
+    ['镜头', info.lens || '—'],
+    ['拍摄时间', info.datetime || '—'],
+    ['曝光时间', info.exposure || '—'],
+    ['光圈', info.fnumber || '—'],
+    ['ISO', info.iso || '—'],
+    ['焦距', info.focal || '—'],
+    ['闪光灯', info.flash === null ? '—' : (info.flash ? '开启' : '未开启')],
+    ['白平衡', info.whiteBalance === null ? '—' : (info.whiteBalance === 0 ? '手动' : '自动')],
+    ['软件', info.software || '—'],
+    ['GPS 坐标', info.gps || '未记录位置']
+  ];
+  var tb = document.querySelector('#ev-table tbody');
+  if (!tb) return;
+  var html = '';
+  rows.forEach(function(r) {
+    var isGps = r[0] === 'GPS 坐标';
+    var color = (isGps && info.gps) ? 'color:#e11d48;font-weight:600;' : '';
+    html += '<tr><td style="padding:5px 8px;color:var(--text-light);border-bottom:1px solid var(--border);white-space:nowrap;">' + r[0] + '</td><td style="padding:5px 8px;border-bottom:1px solid var(--border);word-break:break-all;' + color + '">' + r[1] + '</td></tr>';
+  });
+  tb.innerHTML = html;
+  var gb = document.getElementById('ev-gps-box');
+  if (gb) { gb.style.display = info.gps ? 'block' : 'none'; if (info.gps) { var g = document.getElementById('ev-gps'); if (g) g.textContent = info.gps; } }
+  var tip = document.getElementById('ev-tip');
+  if (tip) tip.style.display = (info.gps || info.datetime) ? 'block' : 'none';
+}
+function evCopyGps() {
+  var g = document.getElementById('ev-gps');
+  if (!g || !g.textContent) { toast('⚠️ 无 GPS 坐标'); return; }
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(g.textContent).then(function() { toast('✅ 已复制 GPS 坐标'); });
+  } else {
+    toast('⚠️ 复制失败');
+  }
 }
