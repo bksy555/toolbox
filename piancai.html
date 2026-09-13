@@ -420,7 +420,7 @@
     <div class="piancai-form">
       <div class="form-row" style="justify-content:space-between;flex-wrap:wrap;">
         <div>
-          <span style="font-size:15px;font-weight:600;">📊 近15期预测记录</span>
+          <span style="font-size:15px;font-weight:600;">📊 近16期预测记录 · 含下期</span>
           <span style="font-size:12px;color:var(--text-light);margin-left:8px;" id="d3UpdateTime"></span>
         </div>
         <div style="display:flex;gap:8px;flex-wrap:wrap;">
@@ -491,7 +491,7 @@
     <div class="piancai-form">
       <div class="form-row" style="justify-content:space-between;flex-wrap:wrap;">
         <div>
-          <span style="font-size:15px;font-weight:600;">📊 近15期排列三预测记录</span>
+          <span style="font-size:15px;font-weight:600;">📊 近16期排列三预测记录 · 含下期</span>
           <span style="font-size:12px;color:var(--text-light);margin-left:8px;" id="p3UpdateTime"></span>
         </div>
         <div style="display:flex;gap:8px;flex-wrap:wrap;">
@@ -668,17 +668,17 @@
       });
     }
 
-    // ---- 获取15期预测数据 ----
+    // ---- 获取16期预测数据（含下期预测） ----
     function generateD3Predictions() {
       const bj = getBeijingDate();
       const today = new Date(bj.year, bj.month - 1, bj.day);
 
-      // 从今天往前推14天 = 15期（不含未来日期）
+      // 从今天往前推14天到今天+1 = 16期（含明天=下期预测；前一晚开奖号码更新后，下期预测3码/冷号同步显示）
       const predictions = [];
       const start = new Date(today);
       start.setDate(start.getDate() - 14);
       
-      for (let i = 0; i < 15; i++) {
+      for (let i = 0; i < 16; i++) {
         const cursor = new Date(start);
         cursor.setDate(start.getDate() + i);
         const y = cursor.getFullYear();
@@ -838,9 +838,9 @@
         const dateStr = formatDateStr(p.year, p.month, p.day);
         const weekdayStr = '星期' + WEEKDAY_NAMES[p.weekday];
         
-        // 预测3胆：已开奖期与今日期（前一晚开奖号码更新后已同步生成）直接显示
+        // 预测3胆：已开奖期、今日期、下期（前一晚开奖号码更新后已同步生成）直接显示
         let dansStr = '';
-        if (p.isPast || p.isToday) {
+        if (p.isPast || p.isToday || p.isFuture) {
           dansStr = p.dans.map(n => `<span class="d3-ball">${n}</span>`).join(' ');
         }
         
@@ -849,9 +849,9 @@
         let coldResultStr = '';
         const coldP = coldMap[p.period];
         const coldDans = (coldP && coldP.dans) ? coldP.dans : null;
-        if (coldDans && (p.isPast || p.isToday)) {
+        if (coldDans && (p.isPast || p.isToday || p.isFuture)) {
           coldStr = coldDans.map(n => `<span class="d3-ball d3-ball-cold">${n}</span>`).join(' ');
-        } else if (p.isPast || p.isToday) {
+        } else if (p.isPast || p.isToday || p.isFuture) {
           coldStr = '<span style="color:var(--text-light);font-size:12px;">—</span>';
         } else {
           coldStr = '<span style="color:var(--text-light);font-size:12px;">🔮</span>';
@@ -1126,7 +1126,7 @@
       return { dans: dans, freq: freq, windowLen: window.length, fromServer: false };
     }
 
-    // ---- 生成15期冷号预测数据 ----
+    // ---- 生成16期冷号预测数据（含下期预测） ----
     function generateColdPredictions() {
       const bj = getBeijingDate();
       const today = new Date(bj.year, bj.month - 1, bj.day);
@@ -1135,7 +1135,7 @@
       const start = new Date(today);
       start.setDate(start.getDate() - 14);
 
-      for (let i = 0; i < 15; i++) {
+      for (let i = 0; i < 16; i++) {
         const cursor = new Date(start);
         cursor.setDate(start.getDate() + i);
         const y = cursor.getFullYear();
@@ -1439,9 +1439,9 @@
         const dateStr = formatDateStr(p.year, p.month, p.day);
         const weekdayStr = '星期' + WEEKDAY_NAMES[p.weekday];
 
-        // 预测3胆（与3D相同）：已开奖期与今日期直接显示
+        // 预测3胆（与3D相同）：已开奖期、今日期、下期直接显示
         let dansStr = '';
-        if (p.isPast || p.isToday) {
+        if (p.isPast || p.isToday || p.isFuture) {
           dansStr = p.dans.map(n => `<span class="d3-ball">${n}</span>`).join(' ');
         }
 
@@ -1449,7 +1449,7 @@
         let coldStr = '';
         let coldResultStr = '';
         const p3Cold = KNOWN_P3_COLD_DATA[p.period];
-        if (p3Cold && p3Cold.coldDans && (p.isPast || p.isToday)) {
+        if (p3Cold && p3Cold.coldDans && (p.isPast || p.isToday || p.isFuture)) {
           coldStr = p3Cold.coldDans.map(n => `<span class="d3-ball d3-ball-cold">${n}</span>`).join(' ');
           // 本地实时重算冷号结果（drawNum 为服务器权威值）
           const cd = p3Cold.coldDans;
@@ -1465,7 +1465,7 @@
           const res = calcResult(cd, dn);
           coldStr = cd.map(n => `<span class="d3-ball d3-ball-cold">${n}</span>`).join(' ');
           coldResultStr = res === '✅' ? '<span style="color:#22c55e;font-weight:700;">✅</span>' : '<span style="color:#ef4444;font-weight:700;">❌</span>';
-        } else if (p.isPast || p.isToday) {
+        } else if (p.isPast || p.isToday || p.isFuture) {
           coldStr = '<span style="color:var(--text-light);font-size:12px;">—</span>';
         } else {
           coldStr = '<span style="color:var(--text-light);font-size:12px;">🔮</span>';
