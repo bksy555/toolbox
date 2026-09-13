@@ -413,7 +413,7 @@
   <div class="piancai-page" style="margin-top:40px;border-top:2px dashed var(--border);padding-top:40px;">
     <h1>🎯 福彩3D预测 - 3胆中1</h1>
     <div class="subtitle">
-      每日22:00更新当日预测（开奖号码更新后同步更新），预测3个号码中1个及以上即为<strong style="color:#22c55e;">正确 ✅</strong>，小于1个为<strong style="color:#ef4444;">错误 ❌</strong>。
+      每日22:00更新开奖号码，并同步生成次日预测。当日预测已在前一晚开奖后更新完成，预测3个号码中1个及以上即为<strong style="color:#22c55e;">正确 ✅</strong>，小于1个为<strong style="color:#ef4444;">错误 ❌</strong>。
       <br>🧊 冷号3胆（近20期出现最少3个数字，回测411期准确率 <strong style="color:#22c55e;">75.9%</strong>）已并入本表，随开奖号码自动更新。
     </div>
 
@@ -838,17 +838,10 @@
         const dateStr = formatDateStr(p.year, p.month, p.day);
         const weekdayStr = '星期' + WEEKDAY_NAMES[p.weekday];
         
-        // 预测3胆：今日22:00后显示，之前显示待更新
+        // 预测3胆：已开奖期与今日期（前一晚开奖号码更新后已同步生成）直接显示
         let dansStr = '';
-        if (p.isPast) {
+        if (p.isPast || p.isToday) {
           dansStr = p.dans.map(n => `<span class="d3-ball">${n}</span>`).join(' ');
-        } else if (p.isToday) {
-          const bj = getBeijingDate();
-          if (bj.hour > 22 || (bj.hour === 22 && bj.minute >= 0)) {
-            dansStr = p.dans.map(n => `<span class="d3-ball">${n}</span>`).join(' ');
-          } else {
-            dansStr = '<span style="color:var(--text-light);font-size:12px;">待22:00更新</span>';
-          }
         }
         
         // 冷号3胆（近20期频率最低3个数字）
@@ -1446,17 +1439,10 @@
         const dateStr = formatDateStr(p.year, p.month, p.day);
         const weekdayStr = '星期' + WEEKDAY_NAMES[p.weekday];
 
-        // 预测3胆（与3D相同）
+        // 预测3胆（与3D相同）：已开奖期与今日期直接显示
         let dansStr = '';
-        if (p.isPast) {
+        if (p.isPast || p.isToday) {
           dansStr = p.dans.map(n => `<span class="d3-ball">${n}</span>`).join(' ');
-        } else if (p.isToday) {
-          const bj = getBeijingDate();
-          if (bj.hour > 22 || (bj.hour === 22 && bj.minute >= 0)) {
-            dansStr = p.dans.map(n => `<span class="d3-ball">${n}</span>`).join(' ');
-          } else {
-            dansStr = '<span style="color:var(--text-light);font-size:12px;">待22:00更新</span>';
-          }
         }
 
         // 冷号3胆（排列三独立冷号，近20期频率最低3个数字）
