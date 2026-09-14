@@ -420,7 +420,7 @@
     <div class="piancai-form">
       <div class="form-row" style="justify-content:space-between;flex-wrap:wrap;">
         <div>
-          <span style="font-size:15px;font-weight:600;">📊 近16期预测记录 · 含下期</span>
+          <span style="font-size:15px;font-weight:600;">📊 近15期预测记录 · 下期同步显示</span>
           <span style="font-size:12px;color:var(--text-light);margin-left:8px;" id="d3UpdateTime"></span>
         </div>
         <div style="display:flex;gap:8px;flex-wrap:wrap;">
@@ -491,7 +491,7 @@
     <div class="piancai-form">
       <div class="form-row" style="justify-content:space-between;flex-wrap:wrap;">
         <div>
-          <span style="font-size:15px;font-weight:600;">📊 近16期排列三预测记录 · 含下期</span>
+          <span style="font-size:15px;font-weight:600;">📊 近15期排列三预测记录 · 下期同步显示</span>
           <span style="font-size:12px;color:var(--text-light);margin-left:8px;" id="p3UpdateTime"></span>
         </div>
         <div style="display:flex;gap:8px;flex-wrap:wrap;">
@@ -668,17 +668,23 @@
       });
     }
 
-    // ---- 获取16期预测数据（含下期预测） ----
+    // ---- 获取预测数据（含下期预测） ----
     function generateD3Predictions() {
       const bj = getBeijingDate();
       const today = new Date(bj.year, bj.month - 1, bj.day);
 
-      // 从今天往前推14天到今天+1 = 16期（含明天=下期预测；前一晚开奖号码更新后，下期预测3码/冷号同步显示）
+      // 下期预测显示范围：
+      //   今日期开奖号码已更新（22:00 cron 跑完）→ 含明天=下期预测（16期）
+      //   今日期尚未开奖（白天/22:00前）→ 只显示到今天（15期）；明天的预测要等今晚开奖号码更新后才生成
+      const todayKey = getPeriodNum(bj.year, bj.month, bj.day);
+      const todayDraw = KNOWN_DRAW_NUMS[todayKey];
+      const todayUpdated = !!(todayDraw && String(todayDraw).length === 3);
+      const span = todayUpdated ? 16 : 15;
       const predictions = [];
       const start = new Date(today);
       start.setDate(start.getDate() - 14);
-      
-      for (let i = 0; i < 16; i++) {
+
+      for (let i = 0; i < span; i++) {
         const cursor = new Date(start);
         cursor.setDate(start.getDate() + i);
         const y = cursor.getFullYear();
@@ -1126,16 +1132,20 @@
       return { dans: dans, freq: freq, windowLen: window.length, fromServer: false };
     }
 
-    // ---- 生成16期冷号预测数据（含下期预测） ----
+    // ---- 生成冷号预测数据（含下期预测，范围与 generateD3Predictions 一致） ----
     function generateColdPredictions() {
       const bj = getBeijingDate();
       const today = new Date(bj.year, bj.month - 1, bj.day);
 
+      const todayKey = getPeriodNum(bj.year, bj.month, bj.day);
+      const todayDraw = KNOWN_DRAW_NUMS[todayKey];
+      const todayUpdated = !!(todayDraw && String(todayDraw).length === 3);
+      const span = todayUpdated ? 16 : 15;
       const predictions = [];
       const start = new Date(today);
       start.setDate(start.getDate() - 14);
 
-      for (let i = 0; i < 16; i++) {
+      for (let i = 0; i < span; i++) {
         const cursor = new Date(start);
         cursor.setDate(start.getDate() + i);
         const y = cursor.getFullYear();
