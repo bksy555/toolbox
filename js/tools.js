@@ -6310,6 +6310,79 @@ greet('世界');</textarea>
       </div>
     `,
     handler: () => { setTimeout(gcInit, 50); }
+  },
+  {
+    id: 'subnet-calc',
+    cat: 'dev',
+    icon: '🌐',
+    name: '子网计算器',
+    desc: 'IPv4/CIDR 子网计算：网络地址、广播地址、子网掩码、可用主机一键算出（ipcalc 免费版）',
+    html: `
+      <div class="tool-card">
+        <p style="color:var(--text-light);font-size:13px;margin-bottom:10px;">🌐 输入 IPv4 地址与子网前缀，一键算出网络地址、广播地址、子网掩码、可用主机范围与数量。本地计算不联网（灵感来源于 ipcalc、Subnet Calculator 等付费/订阅制网络工具）。</p>
+        <div style="display:flex;gap:10px;margin-bottom:10px;flex-wrap:wrap;align-items:flex-end;">
+          <div>
+            <div style="font-size:12px;color:var(--text-light);margin-bottom:4px;">IP 地址</div>
+            <input id="sc-ip" type="text" value="192.168.1.0" style="width:150px;padding:8px 10px;border:1px solid var(--border,#ddd);border-radius:8px;font-size:14px;background:var(--card-bg,#fff);color:var(--text);box-sizing:border-box;" placeholder="如 192.168.1.0">
+          </div>
+          <div>
+            <div style="font-size:12px;color:var(--text-light);margin-bottom:4px;">前缀长度</div>
+            <div style="display:flex;align-items:center;gap:4px;">
+              <span style="font-size:16px;">/</span>
+              <input id="sc-prefix" type="number" min="0" max="32" value="24" style="width:72px;padding:8px 10px;border:1px solid var(--border,#ddd);border-radius:8px;font-size:14px;background:var(--card-bg,#fff);color:var(--text);box-sizing:border-box;">
+            </div>
+          </div>
+          <button class="btn btn-primary" onclick="scRun()">🧮 计算</button>
+          <button class="btn btn-secondary" onclick="scExample()">🎲 示例</button>
+          <button class="btn btn-secondary" onclick="scClear()">🧹 清空</button>
+        </div>
+        <label style="font-size:13px;color:var(--text-light);display:block;margin-bottom:10px;">
+          <input type="checkbox" id="sc-showbin" onchange="scRun()" style="margin-right:4px;">同时显示二进制位
+        </label>
+        <div id="sc-result"></div>
+        <div id="sc-tip" style="margin-top:10px;font-size:12px;color:var(--text-light);">💡 常见场景：判断两个地址是否同网段、规划子网掩码、计算办公网可用 IP 数、合并/拆分网段。</div>
+      </div>
+    `,
+    handler: () => { setTimeout(scInit, 50); }
+  },
+  {
+    id: 'contrast-checker',
+    cat: 'color',
+    icon: '🎨',
+    name: '颜色对比度检查',
+    desc: '前景/背景色对比度计算，自动判断 WCAG AA/AAA 是否达标（无障碍设计必备）',
+    html: `
+      <div class="tool-card">
+        <p style="color:var(--text-light);font-size:13px;margin-bottom:10px;">🎨 输入前景色（文字）与背景色，实时计算对比度比值，并自动判断 WCAG 2.1 AA/AAA 是否达标。设计网页、PPT、无障碍文案必备（WebAIM、Figma 插件等无障碍工具的免费替代）。</p>
+        <div style="display:flex;gap:20px;margin-bottom:12px;flex-wrap:wrap;">
+          <div>
+            <div style="font-size:12px;color:var(--text-light);margin-bottom:4px;">前景色（文字）</div>
+            <div style="display:flex;align-items:center;gap:8px;">
+              <input type="color" id="cc-fg-color" value="#333333" onchange="ccFromPicker('fg')" style="width:46px;height:34px;border:1px solid var(--border,#ddd);border-radius:6px;padding:2px;background:var(--card-bg,#fff);cursor:pointer;">
+              <input type="text" id="cc-fg" value="#333333" oninput="ccFromText('fg')" style="width:120px;padding:8px 10px;border:1px solid var(--border,#ddd);border-radius:8px;font-size:14px;background:var(--card-bg,#fff);color:var(--text);box-sizing:border-box;" placeholder="#333333">
+            </div>
+          </div>
+          <div>
+            <div style="font-size:12px;color:var(--text-light);margin-bottom:4px;">背景色</div>
+            <div style="display:flex;align-items:center;gap:8px;">
+              <input type="color" id="cc-bg-color" value="#ffffff" onchange="ccFromPicker('bg')" style="width:46px;height:34px;border:1px solid var(--border,#ddd);border-radius:6px;padding:2px;background:var(--card-bg,#fff);cursor:pointer;">
+              <input type="text" id="cc-bg" value="#ffffff" oninput="ccFromText('bg')" style="width:120px;padding:8px 10px;border:1px solid var(--border,#ddd);border-radius:8px;font-size:14px;background:var(--card-bg,#fff);color:var(--text);box-sizing:border-box;" placeholder="#ffffff">
+            </div>
+          </div>
+        </div>
+        <div style="display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap;align-items:center;">
+          <span style="font-size:12px;color:var(--text-light);">预设：</span>
+          <button class="btn btn-secondary" onclick="ccPreset('#ffffff','#000000')">黑白</button>
+          <button class="btn btn-secondary" onclick="ccPreset('#ffd700','#000000')">黄底黑字</button>
+          <button class="btn btn-secondary" onclick="ccPreset('#ffffff','#1e40af')">蓝底白字</button>
+          <button class="btn btn-secondary" onclick="ccPreset('#ffffff','#15803d')">绿底白字</button>
+        </div>
+        <div id="cc-preview" style="padding:26px 18px;border-radius:10px;text-align:center;margin-bottom:14px;font-size:18px;border:1px solid rgba(0,0,0,0.08);font-weight:600;letter-spacing:0.5px;">示例：夜色中的城市灯火</div>
+        <div id="cc-result"></div>
+        <div id="cc-tip" style="margin-top:10px;font-size:12px;color:var(--text-light);">💡 WCAG 2.1 参考值：正文 ≥4.5:1（AA）、≥7:1（AAA）；大号文字（≥18pt 或 ≥14pt 加粗）≥3:1（AA）、≥4.5:1（AAA）。</div>
+      </div>
+    `,
+    handler: () => { setTimeout(ccInit, 50); }
   }
 ];
 
@@ -7951,13 +8024,13 @@ function dpCopyText() {
 // ============================================================
 const CATEGORIES = [
   { id: 'text', icon: '✏️', name: '文本工具', desc: '字数统计、简繁转换、摩斯密码、文本转语音、文本对比、电子名片生成器、英文语法检查' },
-  { id: 'dev', icon: '💻', name: '开发者工具', desc: 'JSON格式化、二维码生成、二维码美化、条形码生成、Favicon图标生成、正则测试、Markdown、IP查询、思维导图、图表生成、代码图片生成、表格数据转换、SQL格式化、代码压缩器' },
+  { id: 'dev', icon: '💻', name: '开发者工具', desc: 'JSON格式化、二维码生成、二维码美化、条形码生成、Favicon图标生成、正则测试、Markdown、IP查询、子网计算、思维导图、图表生成、代码图片生成、表格数据转换、SQL格式化、代码压缩器' },
   { id: 'image', icon: '🖼️', name: '图片处理', desc: '去背景换底色、批量压缩、加水印、长图拼接、格式转换、裁剪、异形裁剪、马赛克打码、双色调滤镜、图片转字符画、照片卡通化、OCR、印章制作、九宫格切图、文字转手写体、表情包、社交媒体图片尺寸调整、艺术效果、像素画、设备样机、图片高清放大、图片转线稿、渐变背景、文字特效、拼贴画、图片相框、颜色盲区模拟、海报设计器、老照片修复上色、图片EXIF信息' },
   { id: 'document', icon: '📄', name: '文档转换', desc: '图片转PDF、PDF转图片、Word解析、Excel转PDF、PDF合并、PDF拆分、简历生成、电子签名、表单制作、邮件签名、发票/收据生成器、证书生成器' },
   { id: 'convert', icon: '🔄', name: '转换工具', desc: '单位换算、进制转换、函数绘图' },
   { id: 'security', icon: '🔒', name: '安全工具', desc: '密码生成、Hash计算、随机数' },
   { id: 'time', icon: '⏱️', name: '时间工具', desc: '时间戳转换、日期计算、番茄钟专注计时、待办清单、每日计划' },
-  { id: 'color', icon: '🎨', name: '颜色工具', desc: 'HEX/RGB/HSL颜色转换、CSS渐变生成器、配色方案生成器' },
+  { id: 'color', icon: '🎨', name: '颜色工具', desc: 'HEX/RGB/HSL颜色转换、颜色对比度检查、CSS渐变生成器、配色方案生成器' },
   { id: 'media', icon: '🎬', name: '媒体工具', desc: '抖音/TikTok去水印下载、视频转GIF、在线录音、录音转文字、音频波形可视化、白噪音发生器、音频变速变调、音频剪辑拼接、视频缩略图制作器、在线便签、人声分离/伴奏提取' },
   { id: 'ai', icon: '🤖', name: 'AI工具', desc: 'AI聊天、AI Agent安装、免费AI工具推荐' },
   { id: 'voice', icon: '🗣️', name: '群众心声', desc: '提交工具建议、投票排行榜、前3名自动实现' },
@@ -15639,4 +15712,183 @@ function gcCheck(text) {
     if (!last || last.start !== it.start || last.end !== it.end) dedup.push(it);
   });
   return { issues: dedup };
+}
+
+// ============ 子网计算器 ============
+function scInit() {
+  var el = document.getElementById('sc-result');
+  if (el && !el.innerHTML.trim()) scRun();
+}
+function scParseIp(s) {
+  var parts = String(s || '').trim().split('.');
+  if (parts.length !== 4) return null;
+  var oct = parts.map(function(x) { return Number(x); });
+  for (var i = 0; i < oct.length; i++) {
+    if (!Number.isInteger(oct[i]) || oct[i] < 0 || oct[i] > 255) return null;
+  }
+  return oct;
+}
+function scToStr(n) {
+  n = n >>> 0;
+  return [(n >>> 24) & 255, (n >>> 16) & 255, (n >>> 8) & 255, n & 255].join('.');
+}
+function scToBin(n) {
+  n = n >>> 0;
+  return [(n >>> 24) & 255, (n >>> 16) & 255, (n >>> 8) & 255, n & 255].map(function(x) { return x.toString(2).padStart(8, '0'); }).join('.');
+}
+function scRun() {
+  var out = document.getElementById('sc-result');
+  if (!out) return;
+  var ip = scParseIp(document.getElementById('sc-ip').value);
+  var prefix = parseInt(document.getElementById('sc-prefix').value, 10);
+  if (!ip) {
+    out.innerHTML = '<div style="color:#ef4444;padding:10px;background:#fef2f2;border-radius:8px;">⚠️ IP 地址格式不正确，请输入如 192.168.1.0 的 IPv4 地址</div>';
+    return;
+  }
+  if (!Number.isInteger(prefix) || prefix < 0 || prefix > 32) {
+    out.innerHTML = '<div style="color:#ef4444;padding:10px;background:#fef2f2;border-radius:8px;">⚠️ 前缀长度需为 0 ~ 32 的整数</div>';
+    return;
+  }
+  var ipInt = 0;
+  for (var i = 0; i < 4; i++) ipInt = ((ipInt << 8) | ip[i]) >>> 0;
+  var mask = prefix === 0 ? 0 : (0xFFFFFFFF << (32 - prefix)) >>> 0;
+  var wildcard = (~mask) >>> 0;
+  var net = (ipInt & mask) >>> 0;
+  var bcast = (net | wildcard) >>> 0;
+  var hostBits = 32 - prefix;
+  var hostsTotal = Math.pow(2, hostBits);
+  var usable = hostBits >= 2 ? hostsTotal - 2 : (hostBits === 1 ? 0 : (hostBits === 0 ? 1 : 0));
+  var first = hostBits >= 2 ? net + 1 : net;
+  var last = hostBits >= 2 ? bcast - 1 : bcast;
+  var showBin = document.getElementById('sc-showbin').checked;
+  var o1 = ip[0];
+  var netType = '';
+  if (o1 <= 126) netType = 'A 类';
+  else if (o1 <= 191) netType = 'B 类';
+  else if (o1 <= 223) netType = 'C 类';
+  else netType = 'D/E 类（组播/保留）';
+  var isPrivate = (o1 === 10) || (o1 === 172 && ip[1] >= 16 && ip[1] <= 31) || (o1 === 192 && ip[1] === 168) || (o1 === 127);
+  var isLoopback = o1 === 127;
+  function row(k, v) {
+    return '<tr><td style="padding:7px 12px;border-bottom:1px solid var(--border,#eee);color:var(--text-light);font-size:13px;white-space:nowrap;">' + k + '</td><td style="padding:7px 12px;border-bottom:1px solid var(--border,#eee);font-size:14px;font-weight:600;font-family:monospace;">' + v + '</td></tr>';
+  }
+  var html = '<div style="border:1px solid var(--border,#ddd);border-radius:10px;overflow:hidden;">';
+  html += '<div style="background:linear-gradient(135deg,#0ea5e9,#2563eb);color:#fff;padding:10px 14px;font-weight:700;font-size:14px;">🧮 ' + scToStr(net) + '/' + prefix + ' 子网信息</div>';
+  html += '<table style="width:100%;border-collapse:collapse;background:var(--card-bg,#fff);">';
+  html += row('CIDR 表示', scToStr(net) + '/' + prefix);
+  html += row('子网掩码', scToStr(mask) + (showBin ? '<div style="font-weight:400;font-size:12px;color:var(--text-light);">' + scToBin(mask) + '</div>' : ''));
+  html += row('通配符掩码', scToStr(wildcard));
+  html += row('网络地址', scToStr(net));
+  html += row('广播地址', scToStr(bcast));
+  html += row('可用主机范围', (first > last ? '—' : scToStr(first) + ' ~ ' + scToStr(last)));
+  html += row('可用主机数', (prefix < 31 ? (usable) : usable) + ' 台' + (showBin ? '<div style="font-weight:400;font-size:12px;color:var(--text-light);">总地址数 ' + hostsTotal + ' 个（含网络/广播）</div>' : ''));
+  html += row('IP 所属', netType + (isLoopback ? '（回环地址）' : isPrivate ? '（私网地址）' : '（公网地址）'));
+  html += '</table></div>';
+  html += '<div style="margin-top:10px;font-size:12px;color:var(--text-light);">' + (prefix <= 31 ? '可用主机 = 2^(32-前缀) - 2（扣除网络地址与广播地址）' : '') + '</div>';
+  out.innerHTML = html;
+}
+function scExample() {
+  var seeds = [
+    ['192.168.1.10', '24'], ['10.0.0.5', '8'], ['172.16.32.1', '20'],
+    ['203.0.113.77', '26'], ['192.168.100.254', '30'], ['8.8.8.8', '29']
+  ];
+  var pick = seeds[Math.floor(Math.random() * seeds.length)];
+  document.getElementById('sc-ip').value = pick[0];
+  document.getElementById('sc-prefix').value = pick[1];
+  scRun();
+}
+function scClear() {
+  document.getElementById('sc-ip').value = '';
+  document.getElementById('sc-prefix').value = '24';
+  document.getElementById('sc-result').innerHTML = '';
+  document.getElementById('sc-tip').style.display = '';
+}
+
+// ============ 颜色对比度检查器 ============
+function ccInit() {
+  ccUpdate();
+  var ip = document.getElementById('cc-fg-color');
+  if (ip) ip.onchange = function() { ccFromPicker('fg'); };
+  var ib = document.getElementById('cc-bg-color');
+  if (ib) ib.onchange = function() { ccFromPicker('bg'); };
+}
+function ccParseColor(s) {
+  s = String(s || '').trim().toLowerCase();
+  var m = s.match(/^#([0-9a-f]{3})$/);
+  if (m) {
+    var h1 = m[1];
+    return { r: parseInt(h1[0] + h1[0], 16), g: parseInt(h1[1] + h1[1], 16), b: parseInt(h1[2] + h1[2], 16) };
+  }
+  m = s.match(/^#([0-9a-f]{6})$/);
+  if (m) return { r: parseInt(m[1].slice(0, 2), 16), g: parseInt(m[1].slice(2, 4), 16), b: parseInt(m[1].slice(4, 6), 16) };
+  m = s.match(/^rgb\(\s*(\d{1,3})\s*,\s*(\d{1,3})\s*,\s*(\d{1,3})\s*\)$/);
+  if (m) return { r: Math.min(255, parseInt(m[1], 10)), g: Math.min(255, parseInt(m[2], 10)), b: Math.min(255, parseInt(m[3], 10)) };
+  return null;
+}
+function ccLum(c) {
+  var f = function(v) {
+    var s = v / 255;
+    return s <= 0.03928 ? s / 12.92 : Math.pow((s + 0.055) / 1.055, 2.4);
+  };
+  return 0.2126 * f(c.r) + 0.7152 * f(c.g) + 0.0722 * f(c.b);
+}
+function ccRatio(fg, bg) {
+  var l1 = ccLum(fg), l2 = ccLum(bg);
+  var hi = Math.max(l1, l2) + 0.05, lo = Math.min(l1, l2) + 0.05;
+  return hi / lo;
+}
+function ccFromPicker(which) {
+  var v = document.getElementById('cc-' + which + '-color').value;
+  document.getElementById('cc-' + which).value = v.toUpperCase();
+  ccUpdate();
+}
+function ccFromText(which) {
+  var v = document.getElementById('cc-' + which).value.trim();
+  var c = ccParseColor(v);
+  if (c) {
+    var hex = '#' + ((1 << 24) | (c.r << 16) | (c.g << 8) | c.b).toString(16).slice(1).toUpperCase();
+    document.getElementById('cc-' + which + '-color').value = hex.toLowerCase();
+  }
+  ccUpdate();
+}
+function ccPreset(fg, bg) {
+  document.getElementById('cc-fg-color').value = fg.toLowerCase();
+  document.getElementById('cc-fg').value = fg.toUpperCase();
+  document.getElementById('cc-bg-color').value = bg.toLowerCase();
+  document.getElementById('cc-bg').value = bg.toUpperCase();
+  ccUpdate();
+}
+function ccUpdate() {
+  var fg = ccParseColor(document.getElementById('cc-fg').value);
+  var bg = ccParseColor(document.getElementById('cc-bg').value);
+  var prev = document.getElementById('cc-preview');
+  var out = document.getElementById('cc-result');
+  if (!prev || !out) return;
+  if (!fg || !bg) {
+    prev.style.color = '#333';
+    prev.style.background = '#fff';
+    out.innerHTML = '<div style="color:#ef4444;padding:10px;background:#fef2f2;border-radius:8px;font-size:13px;">⚠️ 颜色格式不正确，支持 #333 / #333333 / rgb(51,51,51)</div>';
+    return;
+  }
+  prev.style.color = 'rgb(' + fg.r + ',' + fg.g + ',' + fg.b + ')';
+  prev.style.background = 'rgb(' + bg.r + ',' + bg.g + ',' + bg.b + ')';
+  var ratio = ccRatio(fg, bg);
+  function badge(pass, label, need) {
+    var cls = pass ? 'background:#dcfce7;color:#166534;' : 'background:#fee2e2;color:#991b1b;';
+    return '<div style="flex:1;min-width:120px;padding:10px 8px;border-radius:8px;text-align:center;' + cls + '"><div style="font-weight:700;font-size:13px;">' + (pass ? '✅ 通过' : '❌ 未达标') + '</div><div style="font-size:12px;opacity:0.85;">' + label + ' ' + need + '</div></div>';
+  }
+  var big = ratio >= 3, aa = ratio >= 4.5, aaaBig = ratio >= 4.5, aaa = ratio >= 7;
+  var bar = ratio >= 7 ? 100 : ratio >= 4.5 ? 64 : ratio >= 3 ? 43 : (ratio / 3) * 43;
+  out.innerHTML =
+    '<div style="display:flex;align-items:center;gap:14px;margin-bottom:10px;flex-wrap:wrap;">' +
+      '<div style="font-size:30px;font-weight:800;font-family:monospace;">' + ratio.toFixed(2) + '<span style="font-size:14px;color:var(--text-light);font-weight:400;"> : 1</span></div>' +
+      '<div style="flex:1;min-width:140px;height:12px;background:#e5e7eb;border-radius:6px;overflow:hidden;"><div style="height:100%;width:' + bar + '%;background:linear-gradient(90deg,#ef4444,#f59e0b,#22c55e);border-radius:6px;"></div></div>' +
+    '</div>' +
+    '<div style="display:flex;gap:8px;flex-wrap:wrap;">' +
+      badge(aa, 'AA 正文', '≥4.5:1') +
+      badge(big, 'AA 大号文字', '≥3:1') +
+      badge(aaa, 'AAA 正文', '≥7:1') +
+      badge(aaaBig, 'AAA 大号文字', '≥4.5:1') +
+    '</div>' +
+    '<div style="margin-top:8px;font-size:12px;color:var(--text-light);">实时对比度 = ' + ratio.toFixed(2) + ':1；推荐 <span style="font-weight:700;color:#166534;">' + (aa ? '可安全用于正文' : (big ? '仅限大号文字/图形' : '不满足 AA，建议加深文字色')) + '</span></div>';
 }
