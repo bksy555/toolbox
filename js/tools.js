@@ -6383,6 +6383,74 @@ greet('世界');</textarea>
       </div>
     `,
     handler: () => { setTimeout(ccInit, 50); }
+  },
+{
+    id: 'timezone-converter',
+    cat: 'time',
+    icon: '🕐',
+    name: '世界时区转换器',
+    desc: '全球30+城市实时时钟对比，指定时间一键换算其他城市时刻，跨国开会排期神器（World Time Buddy 免费版）',
+    html: `
+      <div class="tool-card">
+        <p style="color:var(--text-light);font-size:13px;margin-bottom:10px;">🕐 多城市实时时钟 + 时间换算：全球 30+ 城市一键对比，输入某城市时间即可算出其他城市对应时刻。跨国开会、远程协作、游戏开黑排时间必备（灵感来源于 World Time Buddy 付费会员工具）。</p>
+        <div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;align-items:flex-end;">
+          <div>
+            <div style="font-size:12px;color:var(--text-light);margin-bottom:4px;">添加城市</div>
+            <select id="tz-select" style="width:200px;padding:8px 10px;border:1px solid var(--border,#ddd);border-radius:8px;font-size:14px;background:var(--card-bg,#fff);color:var(--text);"></select>
+          </div>
+          <button class="btn btn-primary" onclick="tzAddCity()">＋ 添加</button>
+          <button class="btn btn-secondary" onclick="tzReset()">↺ 恢复默认</button>
+        </div>
+        <div id="tz-list" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(205px,1fr));gap:10px;margin-bottom:16px;"></div>
+        <div style="border-top:1px solid var(--border,#eee);padding-top:14px;">
+          <p style="font-size:13px;font-weight:600;margin-bottom:8px;">⏺ 时间换算</p>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;margin-bottom:10px;">
+            <div>
+              <div style="font-size:12px;color:var(--text-light);margin-bottom:4px;">基准城市</div>
+              <select id="tz-base" style="width:170px;padding:8px 10px;border:1px solid var(--border,#ddd);border-radius:8px;font-size:14px;background:var(--card-bg,#fff);color:var(--text);"></select>
+            </div>
+            <div>
+              <div style="font-size:12px;color:var(--text-light);margin-bottom:4px;">基准时间</div>
+              <input type="datetime-local" id="tz-dt" style="padding:7px 10px;border:1px solid var(--border,#ddd);border-radius:8px;font-size:14px;background:var(--card-bg,#fff);color:var(--text);box-sizing:border-box;">
+            </div>
+            <button class="btn btn-primary" onclick="tzCalc()">🔁 换算</button>
+          </div>
+          <div id="tz-result"></div>
+        </div>
+      </div>
+    `,
+    handler: () => { setTimeout(tzInit, 50); }
+  },
+{
+    id: 'yaml-json',
+    cat: 'dev',
+    icon: '🔀',
+    name: 'YAML/JSON 互转',
+    desc: 'JSON 与 YAML 一键双向转换，自动识别格式，支持多层嵌套、数组与注释（配置开发必备）',
+    html: `
+      <div class="tool-card">
+        <p style="color:var(--text-light);font-size:13px;margin-bottom:10px;">🔀 JSON ↔ YAML 双向互转：粘贴 JSON 或 YAML 内容，自动识别格式一键转换。支持多层嵌套、数组、注释，配置文件编辑、API 参数调试必备（灵感来源于 Code Beautify / JSON2YAML 等付费转换工具，本地转换不上传）。</p>
+        <div style="display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap;align-items:center;">
+          <button class="btn btn-primary" onclick="yjConvert()">🔁 转换</button>
+          <button class="btn btn-secondary" onclick="yjExample()">📋 示例</button>
+          <button class="btn btn-secondary" onclick="yjClear()">🧹 清空</button>
+          <button class="btn btn-secondary" onclick="yjCopy()">📤 复制结果</button>
+          <span style="font-size:12px;color:var(--text-light);" id="yj-mode-hint">自动识别格式</span>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+          <div>
+            <div style="font-size:12px;color:var(--text-light);margin-bottom:4px;">输入（YAML 或 JSON）</div>
+            <textarea id="yj-input" rows="14" placeholder="粘贴 YAML 或 JSON 内容..." style="width:100%;padding:10px;border:1px solid var(--border,#ddd);border-radius:8px;font-size:13px;font-family:monospace;background:var(--card-bg,#fff);color:var(--text);box-sizing:border-box;resize:vertical;"></textarea>
+          </div>
+          <div>
+            <div style="font-size:12px;color:var(--text-light);margin-bottom:4px;">输出</div>
+            <textarea id="yj-output" rows="14" readonly placeholder="转换结果将显示在这里..." style="width:100%;padding:10px;border:1px solid var(--border,#ddd);border-radius:8px;font-size:13px;font-family:monospace;background:var(--card-bg,#fff);color:var(--text);box-sizing:border-box;resize:vertical;"></textarea>
+          </div>
+        </div>
+        <div id="yj-error" style="margin-top:8px;font-size:12px;color:#dc2626;display:none;"></div>
+      </div>
+    `,
+    handler: () => { setTimeout(yjInit, 50); }
   }
 ];
 
@@ -8024,12 +8092,12 @@ function dpCopyText() {
 // ============================================================
 const CATEGORIES = [
   { id: 'text', icon: '✏️', name: '文本工具', desc: '字数统计、简繁转换、摩斯密码、文本转语音、文本对比、电子名片生成器、英文语法检查' },
-  { id: 'dev', icon: '💻', name: '开发者工具', desc: 'JSON格式化、二维码生成、二维码美化、条形码生成、Favicon图标生成、正则测试、Markdown、IP查询、子网计算、思维导图、图表生成、代码图片生成、表格数据转换、SQL格式化、代码压缩器' },
+  { id: 'dev', icon: '💻', name: '开发者工具', desc: 'JSON格式化、YAML/JSON互转、二维码生成、二维码美化、条形码生成、Favicon图标生成、正则测试、Markdown、IP查询、子网计算、思维导图、图表生成、代码图片生成、表格数据转换、SQL格式化、代码压缩器' },
   { id: 'image', icon: '🖼️', name: '图片处理', desc: '去背景换底色、批量压缩、加水印、长图拼接、格式转换、裁剪、异形裁剪、马赛克打码、双色调滤镜、图片转字符画、照片卡通化、OCR、印章制作、九宫格切图、文字转手写体、表情包、社交媒体图片尺寸调整、艺术效果、像素画、设备样机、图片高清放大、图片转线稿、渐变背景、文字特效、拼贴画、图片相框、颜色盲区模拟、海报设计器、老照片修复上色、图片EXIF信息' },
   { id: 'document', icon: '📄', name: '文档转换', desc: '图片转PDF、PDF转图片、Word解析、Excel转PDF、PDF合并、PDF拆分、简历生成、电子签名、表单制作、邮件签名、发票/收据生成器、证书生成器' },
   { id: 'convert', icon: '🔄', name: '转换工具', desc: '单位换算、进制转换、函数绘图' },
   { id: 'security', icon: '🔒', name: '安全工具', desc: '密码生成、Hash计算、随机数' },
-  { id: 'time', icon: '⏱️', name: '时间工具', desc: '时间戳转换、日期计算、番茄钟专注计时、待办清单、每日计划' },
+  { id: 'time', icon: '⏱️', name: '时间工具', desc: '时间戳转换、日期计算、世界时区转换、番茄钟专注计时、待办清单、每日计划' },
   { id: 'color', icon: '🎨', name: '颜色工具', desc: 'HEX/RGB/HSL颜色转换、颜色对比度检查、CSS渐变生成器、配色方案生成器' },
   { id: 'media', icon: '🎬', name: '媒体工具', desc: '抖音/TikTok去水印下载、视频转GIF、在线录音、录音转文字、音频波形可视化、白噪音发生器、音频变速变调、音频剪辑拼接、视频缩略图制作器、在线便签、人声分离/伴奏提取' },
   { id: 'ai', icon: '🤖', name: 'AI工具', desc: 'AI聊天、AI Agent安装、免费AI工具推荐' },
@@ -15891,4 +15959,399 @@ function ccUpdate() {
       badge(aaaBig, 'AAA 大号文字', '≥4.5:1') +
     '</div>' +
     '<div style="margin-top:8px;font-size:12px;color:var(--text-light);">实时对比度 = ' + ratio.toFixed(2) + ':1；推荐 <span style="font-weight:700;color:#166534;">' + (aa ? '可安全用于正文' : (big ? '仅限大号文字/图形' : '不满足 AA，建议加深文字色')) + '</span></div>';
+}
+
+// ============================================================
+// 世界时区转换器 处理函数 (替代 World Time Buddy 付费版)
+// ============================================================
+const TZ_CITIES = [
+  { tz: 'Asia/Shanghai', name: '上海', flag: '🇨🇳' },
+  { tz: 'Asia/Hong_Kong', name: '香港', flag: '🇭🇰' },
+  { tz: 'Asia/Taipei', name: '台北', flag: '🇹🇼' },
+  { tz: 'Asia/Tokyo', name: '东京', flag: '🇯🇵' },
+  { tz: 'Asia/Seoul', name: '首尔', flag: '🇰🇷' },
+  { tz: 'Asia/Singapore', name: '新加坡', flag: '🇸🇬' },
+  { tz: 'Asia/Bangkok', name: '曼谷', flag: '🇹🇭' },
+  { tz: 'Asia/Dubai', name: '迪拜', flag: '🇦🇪' },
+  { tz: 'Asia/Kolkata', name: '孟买', flag: '🇮🇳' },
+  { tz: 'Asia/Jerusalem', name: '耶路撒冷', flag: '🇮🇱' },
+  { tz: 'Europe/London', name: '伦敦', flag: '🇬🇧' },
+  { tz: 'Europe/Paris', name: '巴黎', flag: '🇫🇷' },
+  { tz: 'Europe/Berlin', name: '柏林', flag: '🇩🇪' },
+  { tz: 'Europe/Madrid', name: '马德里', flag: '🇪🇸' },
+  { tz: 'Europe/Rome', name: '罗马', flag: '🇮🇹' },
+  { tz: 'Europe/Moscow', name: '莫斯科', flag: '🇷🇺' },
+  { tz: 'Europe/Istanbul', name: '伊斯坦布尔', flag: '🇹🇷' },
+  { tz: 'America/New_York', name: '纽约', flag: '🇺🇸' },
+  { tz: 'America/Los_Angeles', name: '洛杉矶', flag: '🇺🇸' },
+  { tz: 'America/Chicago', name: '芝加哥', flag: '🇺🇸' },
+  { tz: 'America/Denver', name: '丹佛', flag: '🇺🇸' },
+  { tz: 'America/Toronto', name: '多伦多', flag: '🇨🇦' },
+  { tz: 'America/Vancouver', name: '温哥华', flag: '🇨🇦' },
+  { tz: 'America/Mexico_City', name: '墨西哥城', flag: '🇲🇽' },
+  { tz: 'America/Sao_Paulo', name: '圣保罗', flag: '🇧🇷' },
+  { tz: 'Australia/Sydney', name: '悉尼', flag: '🇦🇺' },
+  { tz: 'Pacific/Auckland', name: '奥克兰', flag: '🇳🇿' },
+  { tz: 'Africa/Cairo', name: '开罗', flag: '🇪🇬' },
+  { tz: 'Africa/Johannesburg', name: '约翰内斯堡', flag: '🇿🇦' },
+  { tz: 'Africa/Lagos', name: '拉各斯', flag: '🇳🇬' }
+];
+let tzSelected = ['Asia/Shanghai', 'Asia/Tokyo', 'Europe/London', 'America/New_York', 'America/Los_Angeles', 'Australia/Sydney'];
+let tzTimer = null;
+
+function tzCityInfo(tz) {
+  for (let i = 0; i < TZ_CITIES.length; i++) if (TZ_CITIES[i].tz === tz) return TZ_CITIES[i];
+  return { tz: tz, name: tz, flag: '🌍' };
+}
+
+function tzOffsetMin(tz) {
+  try {
+    const parts = new Intl.DateTimeFormat('en-US', { timeZone: tz, timeZoneName: 'shortOffset' }).formatToParts(new Date());
+    const p = parts.find(function (x) { return x.type === 'timeZoneName'; });
+    if (p && p.value) {
+      const m = p.value.match(/GMT([+-])(\d{1,2})(?::(\d{2}))?/);
+      if (m) {
+        const h = parseInt(m[2], 10);
+        const mm = m[3] ? parseInt(m[3], 10) : 0;
+        return (h * 60 + mm) * (m[1] === '-' ? -1 : 1);
+      }
+    }
+  } catch (e) { }
+  return NaN;
+}
+
+function tzOffStr(min) {
+  if (isNaN(min)) return 'UTC?';
+  const sign = min >= 0 ? '+' : '-';
+  const a = Math.abs(min);
+  const h = Math.floor(a / 60), m = a % 60;
+  return 'UTC' + sign + String(h).padStart(2, '0') + (m ? ':' + String(m).padStart(2, '0') : '');
+}
+
+function tzNowTime(tz) {
+  try {
+    return new Date().toLocaleTimeString('zh-CN', { timeZone: tz, hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit' });
+  } catch (e) { return '--:--:--'; }
+}
+
+function tzNowDate(tz) {
+  try {
+    return new Date().toLocaleDateString('zh-CN', { timeZone: tz, month: '2-digit', day: '2-digit', weekday: 'short' });
+  } catch (e) { return ''; }
+}
+
+function tzLocalZone() {
+  try { return Intl.DateTimeFormat().resolvedOptions().timeZone; } catch (e) { return 'Asia/Shanghai'; }
+}
+
+function tzInit() {
+  if (tzTimer) { clearInterval(tzTimer); tzTimer = null; }
+  tzRenderOptions();
+  tzRender();
+  tzTimer = setInterval(tzRender, 1000);
+}
+
+function tzRenderOptions() {
+  const sel = document.getElementById('tz-select');
+  if (!sel) return;
+  sel.innerHTML = TZ_CITIES.filter(function (c) { return tzSelected.indexOf(c.tz) === -1; })
+    .map(function (c) { return '<option value="' + c.tz + '">' + c.flag + ' ' + c.name + ' (' + c.tz + ')</option>'; }).join('');
+}
+
+function tzRender() {
+  const list = document.getElementById('tz-list');
+  if (!list) return;
+  const localOff = tzOffsetMin(tzLocalZone());
+  list.innerHTML = tzSelected.map(function (tz, idx) {
+    const info = tzCityInfo(tz);
+    const off = tzOffsetMin(tz);
+    const diffMin = off - localOff;
+    const diffStr = (diffMin >= 0 ? '+' : '') + (diffMin / 60);
+    return '<div style="background:var(--card-bg,#f9fafb);border:1px solid var(--border,#eee);border-radius:10px;padding:10px 12px;">' +
+      '<div style="display:flex;justify-content:space-between;align-items:center;">' +
+      '<span style="font-size:13px;font-weight:600;">' + info.flag + ' ' + info.name + '</span>' +
+      '<span style="font-size:11px;color:var(--text-light);cursor:pointer;" onclick="tzRemove(\'' + tz + '\')" title="移除">✕</span></div>' +
+      '<div style="font-size:12px;color:var(--text-light);">' + tzNowDate(tz) + '</div>' +
+      '<div style="font-size:20px;font-weight:700;font-variant-numeric:tabular-nums;" id="tz-time-' + idx + '">' + tzNowTime(tz) + '</div>' +
+      '<div style="font-size:11px;color:var(--text-light);">' + tzOffStr(off) + '（比本地 ' + (isNaN(diffMin) ? '?' : diffStr + 'h') + '）</div></div>';
+  }).join('');
+  const base = document.getElementById('tz-base');
+  if (base) {
+    base.innerHTML = tzSelected.map(function (tz) {
+      const info = tzCityInfo(tz);
+      return '<option value="' + tz + '">' + info.flag + ' ' + info.name + '</option>';
+    }).join('');
+  }
+}
+
+function tzAddCity() {
+  const sel = document.getElementById('tz-select');
+  if (!sel || !sel.value) return;
+  if (tzSelected.indexOf(sel.value) !== -1) return;
+  tzSelected.push(sel.value);
+  tzRenderOptions();
+  tzRender();
+}
+
+function tzRemove(tz) {
+  tzSelected = tzSelected.filter(function (t) { return t !== tz; });
+  tzRenderOptions();
+  tzRender();
+}
+
+function tzReset() {
+  tzSelected = ['Asia/Shanghai', 'Asia/Tokyo', 'Europe/London', 'America/New_York', 'America/Los_Angeles', 'Australia/Sydney'];
+  tzRenderOptions();
+  tzRender();
+}
+
+function tzConvertTime(timeStr, baseOff, targetOff) {
+  const sp = timeStr.split('T');
+  const dp = sp[0].split('-');
+  const tp = sp[1].split(':');
+  const y = parseInt(dp[0], 10), mo = parseInt(dp[1], 10), da = parseInt(dp[2], 10);
+  const h = parseInt(tp[0], 10), mi = parseInt(tp[1], 10);
+  let total = h * 60 + mi + (targetOff - baseOff);
+  const dayShift = Math.floor(total / 1440);
+  let mins = ((total % 1440) + 1440) % 1440;
+  const d = new Date(y, mo - 1, da + dayShift);
+  const hh = String(Math.floor(mins / 60)).padStart(2, '0');
+  const mm = String(mins % 60).padStart(2, '0');
+  return { date: d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'), time: hh + ':' + mm, shift: dayShift };
+}
+
+function tzCalc() {
+  const base = document.getElementById('tz-base');
+  const dt = document.getElementById('tz-dt');
+  const res = document.getElementById('tz-result');
+  if (!base || !dt || !res) return;
+  if (!dt.value) {
+    res.innerHTML = '<div style="font-size:13px;color:#dc2626;">请先选择基准时间</div>';
+    return;
+  }
+  const baseOff = tzOffsetMin(base.value);
+  const rows = tzSelected.map(function (tz) {
+    const info = tzCityInfo(tz);
+    const c = tzConvertTime(dt.value, baseOff, tzOffsetMin(tz));
+    const dayTag = c.shift === 0 ? '' : (c.shift > 0 ? ' <span style="color:#dc2626;">(+' + c.shift + '天)</span>' : ' <span style="color:#1d4ed8;">(' + c.shift + '天)</span>');
+    return '<div style="display:flex;justify-content:space-between;padding:7px 10px;border-bottom:1px solid var(--border,#f0f0f0);font-size:13px;">' +
+      '<span>' + info.flag + ' ' + info.name + '</span>' +
+      '<span style="font-weight:600;font-variant-numeric:tabular-nums;">' + c.date + ' ' + c.time + dayTag + '</span></div>';
+  }).join('');
+  const baseInfo = tzCityInfo(base.value);
+  res.innerHTML = '<div style="border:1px solid var(--border,#eee);border-radius:10px;overflow:hidden;">' +
+    '<div style="padding:8px 10px;background:var(--primary-light,rgba(79,70,229,0.08));font-size:12px;color:var(--text-light);">基准：' + baseInfo.flag + ' ' + baseInfo.name + ' ' + dt.value.replace('T', ' ') + '</div>' + rows + '</div>';
+}
+
+// ============================================================
+// YAML/JSON 互转 处理函数 (替代付费转换工具)
+// ============================================================
+function yjScalar(s) {
+  s = s.trim();
+  const hash = s.indexOf(' #');
+  if (hash > -1) s = s.slice(0, hash).trim();
+  if (s.length >= 2 && ((s.charAt(0) === '"' && s.charAt(s.length - 1) === '"') || (s.charAt(0) === "'" && s.charAt(s.length - 1) === "'"))) {
+    return s.slice(1, -1).replace(/\\"/g, '"');
+  }
+  if (s === 'true') return true;
+  if (s === 'false') return false;
+  if (s === 'null' || s === '~') return null;
+  if (/^-?\d+$/.test(s)) return parseInt(s, 10);
+  if (/^-?\d+\.\d+$/.test(s)) return parseFloat(s);
+  return s;
+}
+
+function yjBlock(items, i, indent) {
+  const first = items[i];
+  if (first.content.indexOf('-') === 0) {
+    const arr = [];
+    while (i < items.length && items[i].indent === indent && items[i].content.indexOf('-') === 0) {
+      let rest = items[i].content.slice(1).trim();
+      if (rest === '') {
+        if (i + 1 < items.length && items[i + 1].indent > indent) {
+          const child = yjBlock(items, i + 1, items[i + 1].indent);
+          arr.push(child[0]);
+          i = child[1] - 1;
+        } else {
+          arr.push(null);
+        }
+      } else if (rest.indexOf(':') > -1) {
+        const colon = rest.indexOf(':');
+        const k = rest.slice(0, colon).trim().replace(/^['"]|['"]$/g, '');
+        let v = rest.slice(colon + 1).trim();
+        const obj = {};
+        if (v === '') {
+          if (i + 1 < items.length && items[i + 1].indent > indent && items[i + 1].content.indexOf('-') !== 0) {
+            const child = yjBlock(items, i + 1, items[i + 1].indent);
+            obj[k] = child[0];
+            i = child[1] - 1;
+          } else {
+            obj[k] = null;
+          }
+        } else {
+          obj[k] = yjScalar(v);
+        }
+        while (i + 1 < items.length && items[i + 1].indent > indent && items[i + 1].content.indexOf('-') !== 0) {
+          const sub = yjBlock(items, i + 1, items[i + 1].indent);
+          for (const sk in sub[0]) obj[sk] = sub[0][sk];
+          i = sub[1] - 1;
+        }
+        arr.push(obj);
+      } else {
+        arr.push(yjScalar(rest));
+      }
+      i++;
+    }
+    return [arr, i];
+  }
+  const obj = {};
+  while (i < items.length && items[i].indent === indent && items[i].content.indexOf('-') !== 0) {
+    const line = items[i].content;
+    const colon = line.indexOf(':');
+    if (colon < 0) { i++; continue; }
+    const k = line.slice(0, colon).trim().replace(/^['"]|['"]$/g, '');
+    let v = line.slice(colon + 1).trim();
+    if (v === '') {
+      if (i + 1 < items.length && items[i + 1].indent > indent) {
+        const child = yjBlock(items, i + 1, items[i + 1].indent);
+        obj[k] = child[0];
+        i = child[1] - 1;
+      } else {
+        obj[k] = null;
+      }
+    } else {
+      obj[k] = yjScalar(v);
+    }
+    i++;
+  }
+  return [obj, i];
+}
+
+function yjParseYaml(src) {
+  const lines = src.split(/\r?\n/);
+  const items = [];
+  let baseIndent = null;
+  for (let k = 0; k < lines.length; k++) {
+    const line = lines[k].replace(/\t/g, '  ');
+    const content = line.trim();
+    if (!content || content.indexOf('#') === 0) continue;
+    const indent = line.length - line.replace(/^\s+/, '').length;
+    if (baseIndent === null) baseIndent = indent;
+    items.push({ indent: indent, content: content });
+  }
+  if (!items.length) return { err: '输入为空' };
+  const root = yjBlock(items, 0, items[0].indent);
+  return { value: root[0], err: null };
+}
+
+function yjScalarStr(v) {
+  if (v === null || v === undefined) return 'null';
+  if (typeof v === 'string') {
+    if (/^[\w\u4e00-\u9fa5 .\-/:#@&%+=()?*!]*$/.test(v)) return v;
+    return JSON.stringify(v);
+  }
+  return String(v);
+}
+
+function yjToYamlLines(value, indent) {
+  indent = indent || 0;
+  const pad = '  '.repeat(indent);
+  const lines = [];
+  if (Array.isArray(value)) {
+    value.forEach(function (v) {
+      if (v !== null && typeof v === 'object') {
+        lines.push(pad + '-');
+        const sub = yjToYamlLines(v, indent + 1);
+        for (let i = 0; i < sub.length; i++) lines.push(sub[i]);
+      } else {
+        lines.push(pad + '- ' + yjScalarStr(v));
+      }
+    });
+  } else if (value !== null && typeof value === 'object') {
+    Object.keys(value).forEach(function (k) {
+      const v = value[k];
+      if (v !== null && typeof v === 'object') {
+        lines.push(pad + k + ':');
+        const sub = yjToYamlLines(v, indent + 1);
+        for (let i = 0; i < sub.length; i++) lines.push(sub[i]);
+      } else {
+        lines.push(pad + k + ': ' + yjScalarStr(v));
+      }
+    });
+  } else {
+    lines.push(pad + yjScalarStr(value));
+  }
+  return lines;
+}
+
+function yjInit() {
+  const inp = document.getElementById('yj-input');
+  if (inp && !inp.value) yjExample();
+}
+
+function yjShowError(msg) {
+  const el = document.getElementById('yj-error');
+  if (!el) return;
+  if (msg) { el.style.display = 'block'; el.textContent = '❌ ' + msg; }
+  else { el.style.display = 'none'; el.textContent = ''; }
+}
+
+function yjConvert() {
+  const inp = document.getElementById('yj-input');
+  const out = document.getElementById('yj-output');
+  const hint = document.getElementById('yj-mode-hint');
+  if (!inp || !out) return;
+  const src = inp.value.trim();
+  yjShowError('');
+  if (!src) { out.value = ''; if (hint) hint.textContent = '自动识别格式'; return; }
+  const looksJson = src.charAt(0) === '{' || src.charAt(0) === '[';
+  if (looksJson) {
+    try {
+      const obj = JSON.parse(src);
+      out.value = yjToYamlLines(obj, 0).join('\n');
+      if (hint) hint.textContent = 'JSON → YAML ✓';
+    } catch (e) {
+      yjShowError('JSON 解析失败：' + e.message);
+    }
+  } else {
+    const r = yjParseYaml(src);
+    if (r.err) { yjShowError(r.err); return; }
+    try {
+      out.value = JSON.stringify(r.value, null, 2);
+      if (hint) hint.textContent = 'YAML → JSON ✓';
+    } catch (e) {
+      yjShowError('YAML 解析结果序列化失败：' + e.message);
+    }
+  }
+}
+
+function yjExample() {
+  const inp = document.getElementById('yj-input');
+  const out = document.getElementById('yj-output');
+  if (inp) inp.value = '# 服务器配置示例\nserver:\n  host: api.example.com\n  port: 443\n  ssl: true\n  tags: [web, api]  # 行内数组\nfeatures:\n  - name: login\n    enabled: true\n  - name: export\n    enabled: false\nretry: 3\nmessage: "hello world"';
+  if (out) out.value = '';
+  yjShowError('');
+  yjConvert();
+}
+
+function yjClear() {
+  const inp = document.getElementById('yj-input');
+  const out = document.getElementById('yj-output');
+  const hint = document.getElementById('yj-mode-hint');
+  if (inp) inp.value = '';
+  if (out) out.value = '';
+  if (hint) hint.textContent = '自动识别格式';
+  yjShowError('');
+}
+
+function yjCopy() {
+  const out = document.getElementById('yj-output');
+  if (!out || !out.value) return;
+  navigator.clipboard.writeText(out.value).then(function () {
+    showToast('✅ 已复制到剪贴板');
+  }).catch(function () {
+    out.select();
+    document.execCommand('copy');
+    showToast('✅ 已复制');
+  });
 }
