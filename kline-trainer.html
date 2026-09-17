@@ -219,7 +219,9 @@ body {
       每局训练会随机选取一只A股<br>
       先展示 <strong>近3个月的历史K线</strong> 作为参考<br>
       然后逐步揭示 <strong>30根K线</strong>，每根做出买卖判断<br>
-      共 <strong>20局</strong>，结束后统计总盈亏<br>
+      共 <strong>20局</strong>，为一局完整训练<br>
+      每局结束后的资产 <strong>自动滚入下一局</strong>（复利累计）<br>
+      重开新局时从本金 <strong>100,000</strong> 重新开始<br>
       <span style="color:var(--text-light);font-size:12px;">数据来源：腾讯财经 · 真实A股行情</span>
     </p>
     <button class="start-btn" onclick="startGame()">🎯 开始训练</button>
@@ -228,7 +230,7 @@ body {
   <div id="gameUI" class="hidden">
     <div class="round-info">
       <div class="round">第 <span id="roundNum">0</span>/20 局</div>
-      <div class="score">累计: <span id="totalScore">0.00%</span></div>
+      <div class="score">当前本金: <span id="totalScore">¥100,000</span></div>
     </div>
 
     <div class="chart-wrap">
@@ -307,6 +309,10 @@ body {
       <div class="final-stat">
         <div class="fs-label">最大单局盈利</div>
         <div class="fs-value" id="maxWin" style="color:var(--green)">0%</div>
+      </div>
+      <div class="final-stat">
+        <div class="fs-label">最终资产</div>
+        <div class="fs-value" id="finalCash">¥100,000</div>
       </div>
     </div>
     <div class="advice-box" id="adviceBox"></div>
@@ -504,7 +510,7 @@ function pickStock() {
 }
 
 async function startGame() {
-  state = {round:0,totalPnl:0,wins:0,losses:0,maxWin:0,maxLoss:0,roundResults:[]};
+  state = {round:0,totalPnl:0,wins:0,losses:0,maxWin:0,maxLoss:0,roundResults:[],cash:INIT_CASH};
   document.getElementById('startScreen').classList.add('hidden');
   document.getElementById('gameUI').classList.remove('hidden');
   document.getElementById('finalResult').classList.remove('show');
@@ -517,13 +523,14 @@ async function startRound() {
   if (state.round > TOTAL_ROUNDS) { showFinal(); return; }
   
   document.getElementById('roundNum').textContent = state.round;
-  document.getElementById('totalScore').textContent = (state.totalPnl >= 0 ? '+' : '') + state.totalPnl.toFixed(2) + '%';
+  document.getElementById('totalScore').textContent = '¥' + Math.round(state.cash).toLocaleString();
   
   round = {
     stock: pickStock(),
     history:[], revealed:[], blankCnt:BLANK_CNT,
     candleIdx:0, action:'', position:'cash',
-    cash:INIT_CASH, shares:0, costBasis:0,
+    cash: state.cash, shares:0, costBasis:0,
+    startCash: state.cash,
     trades:[], done:false
   };
   document.getElementById('btnBuy').disabled = false;
@@ -659,7 +666,7 @@ function updatePosDisplay() {
   const lastClose = round.revealed.length > 0 ? +round.revealed[round.revealed.length-1][2] : 0;
   const holdValue = round.shares * lastClose;
   const total = round.cash + holdValue;
-  const pnlPct = ((total - INIT_CASH) / INIT_CASH) * 100;
+  const pnlPct = ((total - round.startCash) / round.startCash) * 100;
   
   document.getElementById('cashDisplay').textContent = Math.round(round.cash).toLocaleString();
   document.getElementById('holdingsDisplay').textContent = Math.round(holdValue).toLocaleString();
@@ -697,7 +704,7 @@ function showRoundResult() {
   const lastClose = round.revealed.length > 0 ? +round.revealed[round.revealed.length-1][2] : 0;
   const holdValue = round.shares * lastClose;
   const total = round.cash + holdValue;
-  const pnlPct = ((total - INIT_CASH) / INIT_CASH) * 100;
+  const pnlPct = ((total - round.startCash) / round.startCash) * 100;
   
   state.totalPnl += pnlPct;
   if (pnlPct > 0) state.wins++;
@@ -710,15 +717,18 @@ function showRoundResult() {
     trades: round.trades.length
   });
   
+  // 本轮结束资产滚入下一局（复利累计）
+  state.cash = total;
+  
   document.getElementById('rrRound').textContent = state.round;
   const pnlEl = document.getElementById('rrPnl');
   pnlEl.textContent = (pnlPct >= 0 ? '+' : '') + pnlPct.toFixed(2) + '%';
   pnlEl.className = 'pnl ' + (pnlPct >= 0 ? 'up' : 'down');
   
   const trades = round.trades;
-  let detail = '';
+  let detail = '资金: ¥' + Math.round(round.startCash).toLocaleString() + ' → ¥' + Math.round(total).toLocaleString();
   if (trades.length === 0) {
-    detail = '整局未交易，不亏不赚';
+    detail += ' | 整局未交易，不亏不赚';
   } else {
     detail = `交易次数: ${trades.length} 次`;
     if (trades.filter(t=>t.type==='sell').length > 0) {
@@ -747,7 +757,8 @@ function showFinal() {
   document.getElementById('gameUI').classList.add('hidden');
   document.getElementById('finalResult').classList.add('show');
   
-  const totalPnl = state.totalPnl;
+  // 复利总收益率 = (最终资产 - 初始本金) / 初始本金
+  const totalPnl = ((state.cash - INIT_CASH) / INIT_CASH) * 100;
   const winRate = TOTAL_ROUNDS > 0 ? (state.wins / TOTAL_ROUNDS * 100) : 0;
   
   const totalEl = document.getElementById('finalTotal');
@@ -758,6 +769,13 @@ function showFinal() {
   document.getElementById('loseCount').textContent = state.losses;
   document.getElementById('winRate').textContent = winRate.toFixed(0) + '%';
   document.getElementById('maxWin').textContent = (state.maxWin >= 0 ? '+' : '') + state.maxWin.toFixed(2) + '%';
+  
+  // 最终资产展示
+  const cashEl = document.getElementById('finalCash');
+  if (cashEl) {
+    cashEl.textContent = '¥' + Math.round(state.cash).toLocaleString();
+    cashEl.className = 'fs-value ' + (state.cash >= INIT_CASH ? 'up' : 'down');
+  }
   
   // Generate advice
   const advice = generateAdvice(totalPnl, winRate, state.wins, state.losses);
@@ -801,7 +819,7 @@ function generateAdvice(totalPnl, winRate, wins, losses) {
 function restartGame() {
   document.getElementById('finalResult').classList.remove('show');
   document.getElementById('startScreen').classList.remove('hidden');
-  state = {round:0,totalPnl:0,wins:0,losses:0,maxWin:0,maxLoss:0,roundResults:[]};
+  state = {round:0,totalPnl:0,wins:0,losses:0,maxWin:0,maxLoss:0,roundResults:[],cash:INIT_CASH};
 }
 
 function showToast(msg) {
