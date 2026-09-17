@@ -6451,6 +6451,99 @@ greet('世界');</textarea>
       </div>
     `,
     handler: () => { setTimeout(yjInit, 50); }
+  },
+  {
+    id: 'mock-data-generator',
+    cat: 'dev',
+    icon: '🧪',
+    name: '假数据生成器',
+    desc: '一键生成姓名、手机号、邮箱、地址等测试假数据，支持批量导出 CSV/JSON（Mockaroo 免费版）',
+    html: `
+      <div class="tool-card">
+        <p style="color:var(--text-light);font-size:13px;margin-bottom:10px;">🧪 按字段类型批量生成测试假数据：中文/英文姓名、手机号、邮箱、公司、城市、地址、UUID、IP、日期、金额等，一键导出 CSV / JSON。开发调试、演示 DEMO、录入测试必备（灵感来源于 Mockaroo 等付费数据生成服务，全程本地生成不上传）。</p>
+        <div style="display:flex;gap:10px;margin-bottom:12px;flex-wrap:wrap;align-items:flex-end;">
+          <div>
+            <div style="font-size:12px;color:var(--text-light);margin-bottom:4px;">生成条数</div>
+            <input id="mg-count" type="number" min="1" max="200" value="10" style="width:90px;padding:8px 10px;border:1px solid var(--border,#ddd);border-radius:8px;font-size:14px;background:var(--card-bg,#fff);color:var(--text);box-sizing:border-box;">
+          </div>
+          <button class="btn btn-primary" onclick="mgRun()">🎲 生成数据</button>
+          <button class="btn btn-secondary" onclick="mgExport('csv')">📄 导出 CSV</button>
+          <button class="btn btn-secondary" onclick="mgExport('json')">📦 导出 JSON</button>
+          <button class="btn btn-secondary" onclick="mgCopy()">📋 复制一行</button>
+        </div>
+        <div style="display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap;">
+          <span style="font-size:12px;color:var(--text-light);padding-top:6px;">字段：</span>
+          <label style="font-size:13px;display:flex;align-items:center;gap:4px;background:var(--card-bg,#fff);border:1px solid var(--border,#ddd);border-radius:6px;padding:4px 8px;cursor:pointer;"><input type="checkbox" id="mg-f-name" checked style="margin:0;">中文姓名</label>
+          <label style="font-size:13px;display:flex;align-items:center;gap:4px;background:var(--card-bg,#fff);border:1px solid var(--border,#ddd);border-radius:6px;padding:4px 8px;cursor:pointer;"><input type="checkbox" id="mg-f-enname" checked style="margin:0;">英文名</label>
+          <label style="font-size:13px;display:flex;align-items:center;gap:4px;background:var(--card-bg,#fff);border:1px solid var(--border,#ddd);border-radius:6px;padding:4px 8px;cursor:pointer;"><input type="checkbox" id="mg-f-phone" checked style="margin:0;">手机号</label>
+          <label style="font-size:13px;display:flex;align-items:center;gap:4px;background:var(--card-bg,#fff);border:1px solid var(--border,#ddd);border-radius:6px;padding:4px 8px;cursor:pointer;"><input type="checkbox" id="mg-f-email" checked style="margin:0;">邮箱</label>
+          <label style="font-size:13px;display:flex;align-items:center;gap:4px;background:var(--card-bg,#fff);border:1px solid var(--border,#ddd);border-radius:6px;padding:4px 8px;cursor:pointer;"><input type="checkbox" id="mg-f-company" checked style="margin:0;">公司</label>
+          <label style="font-size:13px;display:flex;align-items:center;gap:4px;background:var(--card-bg,#fff);border:1px solid var(--border,#ddd);border-radius:6px;padding:4px 8px;cursor:pointer;"><input type="checkbox" id="mg-f-city" checked style="margin:0;">城市</label>
+          <label style="font-size:13px;display:flex;align-items:center;gap:4px;background:var(--card-bg,#fff);border:1px solid var(--border,#ddd);border-radius:6px;padding:4px 8px;cursor:pointer;"><input type="checkbox" id="mg-f-address" checked style="margin:0;">地址</label>
+          <label style="font-size:13px;display:flex;align-items:center;gap:4px;background:var(--card-bg,#fff);border:1px solid var(--border,#ddd);border-radius:6px;padding:4px 8px;cursor:pointer;"><input type="checkbox" id="mg-f-uuid" style="margin:0;">UUID</label>
+          <label style="font-size:13px;display:flex;align-items:center;gap:4px;background:var(--card-bg,#fff);border:1px solid var(--border,#ddd);border-radius:6px;padding:4px 8px;cursor:pointer;"><input type="checkbox" id="mg-f-ip" style="margin:0;">IP</label>
+          <label style="font-size:13px;display:flex;align-items:center;gap:4px;background:var(--card-bg,#fff);border:1px solid var(--border,#ddd);border-radius:6px;padding:4px 8px;cursor:pointer;"><input type="checkbox" id="mg-f-date" style="margin:0;">日期</label>
+          <label style="font-size:13px;display:flex;align-items:center;gap:4px;background:var(--card-bg,#fff);border:1px solid var(--border,#ddd);border-radius:6px;padding:4px 8px;cursor:pointer;"><input type="checkbox" id="mg-f-amount" style="margin:0;">金额</label>
+          <label style="font-size:13px;display:flex;align-items:center;gap:4px;background:var(--card-bg,#fff);border:1px solid var(--border,#ddd);border-radius:6px;padding:4px 8px;cursor:pointer;"><input type="checkbox" id="mg-f-color" style="margin:0;">颜色</label>
+        </div>
+        <div id="mg-table-wrap" style="overflow-x:auto;border:1px solid var(--border,#ddd);border-radius:8px;max-height:360px;overflow-y:auto;"></div>
+        <div id="mg-tip" style="margin-top:10px;font-size:12px;color:var(--text-light);">💡 常用场景：接口联调造数、前端表格/图表演示、数据库批量造数、Demo 环境演示数据。数据全部本地随机生成，不收集任何信息。</div>
+      </div>
+    `,
+    handler: () => { setTimeout(mgInit, 50); }
+  },
+  {
+    id: 'placeholder-generator',
+    cat: 'image',
+    icon: '📐',
+    name: '占位图生成器',
+    desc: '自定义尺寸/背景色/文字一键生成占位图，下载 PNG 或复制 HTML/Markdown 代码（Placeholder.com 免费版）',
+    html: `
+      <div class="tool-card">
+        <p style="color:var(--text-light);font-size:13px;margin-bottom:10px;">📐 自定义宽度、高度、背景色、文字颜色与文字内容，实时预览并下载占位图 PNG，还可一键复制 <code>&lt;img&gt;</code> 或 Markdown 引用代码。网页切图占位、PPT 配图、开发联调、文档插图神器（灵感来源于 Placeholder.com 等付费占位图服务，纯本地生成）。</p>
+        <div style="display:flex;gap:10px;margin-bottom:12px;flex-wrap:wrap;align-items:flex-end;">
+          <div>
+            <div style="font-size:12px;color:var(--text-light);margin-bottom:4px;">宽度</div>
+            <input id="pg-w" type="number" min="50" max="2000" value="800" style="width:90px;padding:8px 10px;border:1px solid var(--border,#ddd);border-radius:8px;font-size:14px;background:var(--card-bg,#fff);color:var(--text);box-sizing:border-box;">
+          </div>
+          <div>
+            <div style="font-size:12px;color:var(--text-light);margin-bottom:4px;">高度</div>
+            <input id="pg-h" type="number" min="50" max="2000" value="400" style="width:90px;padding:8px 10px;border:1px solid var(--border,#ddd);border-radius:8px;font-size:14px;background:var(--card-bg,#fff);color:var(--text);box-sizing:border-box;">
+          </div>
+          <div>
+            <div style="font-size:12px;color:var(--text-light);margin-bottom:4px;">背景色</div>
+            <div style="display:flex;align-items:center;gap:6px;">
+              <input type="color" id="pg-bg-picker" value="#6366f1" onchange="pgSync('bg')" style="width:44px;height:34px;border:1px solid var(--border,#ddd);border-radius:6px;padding:2px;background:var(--card-bg,#fff);cursor:pointer;">
+              <input id="pg-bg" type="text" value="#6366f1" oninput="pgSync('bg')" style="width:96px;padding:8px 10px;border:1px solid var(--border,#ddd);border-radius:8px;font-size:13px;background:var(--card-bg,#fff);color:var(--text);box-sizing:border-box;">
+            </div>
+          </div>
+          <div>
+            <div style="font-size:12px;color:var(--text-light);margin-bottom:4px;">文字色</div>
+            <div style="display:flex;align-items:center;gap:6px;">
+              <input type="color" id="pg-fg-picker" value="#ffffff" onchange="pgSync('fg')" style="width:44px;height:34px;border:1px solid var(--border,#ddd);border-radius:6px;padding:2px;background:var(--card-bg,#fff);cursor:pointer;">
+              <input id="pg-fg" type="text" value="#ffffff" oninput="pgSync('fg')" style="width:96px;padding:8px 10px;border:1px solid var(--border,#ddd);border-radius:8px;font-size:13px;background:var(--card-bg,#fff);color:var(--text);box-sizing:border-box;">
+            </div>
+          </div>
+          <div style="flex:1;min-width:180px;">
+            <div style="font-size:12px;color:var(--text-light);margin-bottom:4px;">文字内容（留空则显示 宽x高）</div>
+            <input id="pg-text" type="text" value="" placeholder="如：产品主图" style="width:100%;padding:8px 10px;border:1px solid var(--border,#ddd);border-radius:8px;font-size:13px;background:var(--card-bg,#fff);color:var(--text);box-sizing:border-box;">
+          </div>
+        </div>
+        <div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;">
+          <button class="btn btn-primary" onclick="pgDownload()">⬇️ 下载 PNG</button>
+          <button class="btn btn-secondary" onclick="pgCopyHTML()">📋 复制 &lt;img&gt; 代码</button>
+          <button class="btn btn-secondary" onclick="pgCopyMD()">📋 复制 Markdown</button>
+          <button class="btn btn-secondary" onclick="pgPreset('1200','630')">公众号头图 1200×630</button>
+          <button class="btn btn-secondary" onclick="pgPreset('800','450')">文章封面 800×450</button>
+          <button class="btn btn-secondary" onclick="pgPreset('300','300')">方形头像 300×300</button>
+        </div>
+        <div style="display:flex;justify-content:center;padding:16px;background:#f1f5f9;border-radius:10px;border:1px dashed #cbd5e1;margin-bottom:10px;min-height:80px;">
+          <canvas id="pg-canvas" style="max-width:100%;height:auto;border-radius:6px;box-shadow:0 2px 8px rgba(0,0,0,0.15);"></canvas>
+        </div>
+        <div id="pg-tip" style="margin-top:8px;font-size:12px;color:var(--text-light);">💡 预设尺寸对应常见场景：公众号封面、文章配图、社交头像、Banner 占位。生成结果可下载 PNG 或直接复制引用代码嵌入页面。</div>
+      </div>
+    `,
+    handler: () => { setTimeout(pgInit, 50); }
   }
 ];
 
@@ -16354,4 +16447,465 @@ function yjCopy() {
     document.execCommand('copy');
     showToast('✅ 已复制');
   });
+}
+
+// ============================================================
+// 假数据生成器 mock-data-generator (mg*)
+// ============================================================
+var mgRows = [], mgFields = [];
+function mgInit() {
+  mgRows = []; mgFields = [];
+  const count = document.getElementById('mg-count');
+  if (count) count.value = '10';
+  const wrap = document.getElementById('mg-table-wrap');
+  if (wrap) wrap.innerHTML = '';
+  mgRun();
+}
+function mgFieldsArr() {
+  const defs = [
+    ['mg-f-name', '姓名', function () { return mgNameCN(); }],
+    ['mg-f-enname', '英文名', function () { return mgNameEN(); }],
+    ['mg-f-phone', '手机号', function () { return mgPhone(); }],
+    ['mg-f-email', '邮箱', function () { return mgEmail(); }],
+    ['mg-f-company', '公司', function () { return mgCompany(); }],
+    ['mg-f-city', '城市', function () { return mgCity(); }],
+    ['mg-f-address', '地址', function () { return mgAddress(); }],
+    ['mg-f-uuid', 'UUID', function () { return mgUUID(); }],
+    ['mg-f-ip', 'IP', function () { return mgIP(); }],
+    ['mg-f-date', '日期', function () { return mgDate(); }],
+    ['mg-f-amount', '金额', function () { return mgAmount(); }],
+    ['mg-f-color', '颜色', function () { return mgColor(); }]
+  ];
+  return defs.filter(function (d) {
+    const el = document.getElementById(d[0]);
+    return el && el.checked;
+  }).map(function (d) { return { label: d[1], gen: d[2] }; });
+}
+function mgRun() {
+  const countEl = document.getElementById('mg-count');
+  let n = countEl ? parseInt(countEl.value) || 10 : 10;
+  n = Math.max(1, Math.min(200, n));
+  mgFields = mgFieldsArr();
+  if (mgFields.length === 0) { alert('请至少选择一个字段'); return; }
+  mgRows = [];
+  for (let i = 0; i < n; i++) {
+    const row = {};
+    mgFields.forEach(function (f) { row[f.label] = f.gen(); });
+    mgRows.push(row);
+  }
+  mgRender();
+}
+function mgRender() {
+  const wrap = document.getElementById('mg-table-wrap');
+  if (!wrap) return;
+  let html = '<table style="width:100%;border-collapse:collapse;font-size:13px;"><thead><tr>';
+  mgFields.forEach(function (f) {
+    html += '<th style="padding:8px 10px;text-align:left;background:#f8fafc;border-bottom:2px solid #e2e8f0;position:sticky;top:0;white-space:nowrap;">' + f.label + '</th>';
+  });
+  html += '</tr></thead><tbody>';
+  mgRows.forEach(function (r) {
+    html += '<tr>';
+    mgFields.forEach(function (f) {
+      html += '<td style="padding:7px 10px;border-bottom:1px solid #f1f5f9;white-space:nowrap;">' + escapeHtml(r[f.label]) + '</td>';
+    });
+    html += '</tr>';
+  });
+  html += '</tbody></table>';
+  wrap.innerHTML = html;
+}
+function mgExport(type) {
+  if (mgRows.length === 0) { alert('请先生成数据'); return; }
+  if (type === 'json') {
+    const blob = new Blob([JSON.stringify(mgRows, null, 2)], { type: 'application/json' });
+    mgDownloadBlob(blob, 'mock-data.json');
+  } else {
+    const headers = mgFields.map(function (f) { return f.label; });
+    const lines = [headers.join(',')];
+    mgRows.forEach(function (r) {
+      lines.push(headers.map(function (h) { return '"' + String(r[h]).replace(/"/g, '""') + '"'; }).join(','));
+    });
+    const blob = new Blob(['\ufeff' + lines.join('\n')], { type: 'text/csv;charset=utf-8' });
+    mgDownloadBlob(blob, 'mock-data.csv');
+  }
+  showToast('✅ 已导出 ' + (type === 'json' ? 'JSON' : 'CSV'));
+}
+function mgDownloadBlob(blob, filename) {
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = filename;
+  document.body.appendChild(a); a.click();
+  setTimeout(function () { document.body.removeChild(a); URL.revokeObjectURL(url); }, 200);
+}
+function mgCopy() {
+  if (mgRows.length === 0) { alert('请先生成数据'); return; }
+  const first = mgRows[0];
+  const text = Object.keys(first).map(function (k) { return k + ': ' + first[k]; }).join(' | ');
+  const done = function () { showToast('✅ 已复制：' + text); };
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(done).catch(function () {
+      const ta = document.createElement('textarea');
+      ta.value = text; document.body.appendChild(ta); ta.select();
+      document.execCommand('copy'); document.body.removeChild(ta); done();
+    });
+  } else {
+    const ta = document.createElement('textarea');
+    ta.value = text; document.body.appendChild(ta); ta.select();
+    document.execCommand('copy'); document.body.removeChild(ta); done();
+  }
+}
+function mgPick(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
+function mgRandInt(max) { return Math.floor(Math.random() * max); }
+var mgSurCN = ['张','李','王','刘','陈','杨','赵','黄','周','吴','徐','孙','胡','朱','高','林','何','郭','马','罗','梁','宋','郑','谢','韩','唐','冯','于','董','萧','程','曹','袁','邓','许','傅','沈','曾','彭','吕','苏','卢','蒋','蔡','贾','丁','魏','薛','叶','阎','余','潘','杜','戴','夏','钟','汪','田','任','姜','范','方','石','姚','谭','廖','邹','熊','金','陆','郝','孔','白','崔','康','毛','邱','秦','江','史','顾','侯','邵','孟','龙','万','段','雷','钱','汤','尹','黎','易','常','武','乔','贺','赖','龚','文'];
+var mgGivenCN = ['伟','芳','娜','敏','静','磊','军','洋','勇','艳','杰','娟','涛','明','超','秀英','霞','平','刚','桂英','文','辉','力','建华','建国','志强','丽','桂兰','玉兰','秀兰','玉梅','红','春梅','晨','宇','子涵','欣怡','浩然','思远','嘉懿','雨桐','一诺','俊杰','若曦','梓萱','诗涵','天佑','欣妍','可欣','紫萱','思涵','昊然','铭泽','睿泽'];
+function mgNameCN() { return mgPick(mgSurCN) + mgPick(mgGivenCN) + (Math.random() < 0.25 ? mgPick(mgGivenCN) : ''); }
+var mgEnFirst = ['James','Mary','John','Patricia','Robert','Jennifer','Michael','Linda','David','Elizabeth','William','Barbara','Richard','Susan','Joseph','Jessica','Thomas','Sarah','Charles','Karen','Daniel','Nancy','Matthew','Lisa','Anthony','Betty','Mark','Sandra','Donald','Ashley','Steven','Emily','Andrew','Kimberly','Paul','Donna','Joshua','Michelle','Kevin','Carol','Brian','Amanda','George','Melissa','Eric','Deborah','Laura','Daniel','Kevin'];
+var mgEnLast = ['Smith','Johnson','Williams','Brown','Jones','Garcia','Miller','Davis','Rodriguez','Martinez','Hernandez','Lopez','Gonzalez','Wilson','Anderson','Thomas','Taylor','Moore','Jackson','Martin','Lee','Perez','Thompson','White','Harris','Sanchez','Clark','Ramirez','Lewis','Robinson','Walker','Young','Allen','King','Wright','Scott','Torres','Nguyen','Hill','Flores','Green','Adams','Nelson','Baker','Hall','Rivera','Campbell','Mitchell','Carter','Roberts'];
+function mgNameEN() { return mgPick(mgEnFirst) + ' ' + mgPick(mgEnLast); }
+function mgPhone() {
+  const prefix = ['130','131','132','133','135','136','137','138','139','150','151','152','153','155','156','157','158','159','170','171','176','177','178','180','181','182','183','185','186','187','188','189'];
+  let p = mgPick(prefix);
+  for (let i = 0; i < 8; i++) p += mgRandInt(10);
+  return p;
+}
+var mgMailDomains = ['qq.com','163.com','gmail.com','outlook.com','foxmail.com','126.com','sina.com','aliyun.com','icloud.com','hotmail.com'];
+function mgEmail() {
+  const name = mgNameEN().toLowerCase().replace(/[^a-z]/g, '') + mgRandInt(99);
+  return name + '@' + mgPick(mgMailDomains);
+}
+var mgCompanies = ['云创科技','星辰网络','蓝海数据','极光智能','华宇软件','天工互联','万象传媒','中科曙光','恒信金服','智联未来','锐捷电子','远方信息','博雅文化','卓然设计','启明星辰','环球贸易','新锐教育','联众健康','康达医药','飞驰物流','盛世传媒','量子引擎','深海科技','凌云智造','南山云谷'];
+function mgCompany() { return mgPick(mgCompanies) + (Math.random() < 0.5 ? mgPick(['有限公司','科技公司','集团','工作室']) : ''); }
+var mgCities = ['北京','上海','广州','深圳','杭州','成都','重庆','武汉','西安','南京','苏州','天津','长沙','郑州','青岛','大连','厦门','福州','合肥','昆明','贵阳','南宁','海口','三亚','哈尔滨','长春','沈阳','石家庄','太原','济南','南昌','兰州','西宁','银川','乌鲁木齐','拉萨','呼和浩特','香港','澳门','台北'];
+function mgCity() { return mgPick(mgCities); }
+function mgAddress() {
+  const road = mgPick(['人民路','中山路','解放路','建设路','和平路','长江路','黄河路','朝阳路','光明路','幸福路','高新路','科技大道','创新街','文化街','胜利街','友谊街']);
+  const district = mgPick(['东城区','西城区','南山区','朝阳区','高新区','开发区','工业园区','滨江区','福田区','天府新区','解放区','海淀区','鼓楼区','玄武区']);
+  return mgCity() + district + road + (mgRandInt(200) + 1) + '号';
+}
+function mgUUID() {
+  const hex = '0123456789abcdef';
+  let s = '';
+  for (let i = 0; i < 36; i++) {
+    if (i === 8 || i === 13 || i === 18 || i === 23) s += '-';
+    else if (i === 14) s += '4';
+    else if (i === 19) s += hex[(mgRandInt(4)) + 8];
+    else s += hex[mgRandInt(16)];
+  }
+  return s;
+}
+function mgIP() {
+  return [1, 2, 3, 4].map(function () { return mgRandInt(256); }).join('.');
+}
+function mgDate() {
+  const y = 2019 + mgRandInt(8);
+  const m = mgRandInt(12) + 1;
+  const d = mgRandInt(28) + 1;
+  return y + '-' + String(m).padStart(2, '0') + '-' + String(d).padStart(2, '0');
+}
+function mgAmount() {
+  return (Math.random() * 90000 + 100).toFixed(2);
+}
+function mgColor() {
+  return '#' + mgRandInt(16777215).toString(16).padStart(6, '0');
+}
+function escapeHtml(s) {
+  return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
+// ============================================================
+// 占位图生成器 placeholder-generator (pg*)
+// ============================================================
+function pgInit() { pgRender(); }
+function pgSync(which) {
+  const textEl = document.getElementById('pg-' + which);
+  const pickerEl = document.getElementById('pg-' + which + '-picker');
+  if (!textEl || !pickerEl) return;
+  let v = textEl.value.trim();
+  if (/^[0-9a-fA-F]{3}$/.test(v)) v = '#' + v;
+  if (/^[0-9a-fA-F]{6}$/.test(v)) v = '#' + v;
+  if (/^#[0-9a-fA-F]{3}$/.test(v)) {
+    const r = v[1], g = v[2], b = v[3];
+    v = '#' + r + r + g + g + b + b;
+  }
+  if (/^#[0-9a-fA-F]{6}$/.test(v)) pickerEl.value = v;
+  pgRender();
+}
+function pgGet() {
+  const g = function (id, def) {
+    const el = document.getElementById(id);
+    return el ? el.value : def;
+  };
+  let w = parseInt(g('pg-w', '800')) || 800;
+  let h = parseInt(g('pg-h', '400')) || 400;
+  w = Math.max(50, Math.min(2000, w));
+  h = Math.max(50, Math.min(2000, h));
+  const bg = /^#[0-9a-fA-F]{6}$/.test(g('pg-bg', '#6366f1')) ? g('pg-bg') : '#6366f1';
+  const fg = /^#[0-9a-fA-F]{6}$/.test(g('pg-fg', '#ffffff')) ? g('pg-fg') : '#ffffff';
+  let text = g('pg-text', '').trim();
+  if (!text) text = w + ' x ' + h;
+  return { w: w, h: h, bg: bg, fg: fg, text: text };
+}
+function pgRender() {
+  const canvas = document.getElementById('pg-canvas');
+  if (!canvas) return;
+  const p = pgGet();
+  canvas.width = p.w;
+  canvas.height = p.h;
+  const maxW = 640;
+  const scale = Math.min(1, maxW / p.w);
+  canvas.style.width = Math.round(p.w * scale) + 'px';
+  const ctx = canvas.getContext('2d');
+  ctx.fillStyle = p.bg;
+  ctx.fillRect(0, 0, p.w, p.h);
+  const fontSize = Math.max(12, Math.round(Math.min(p.w, p.h) / (p.text.length > 6 ? 8 : 5)));
+  ctx.fillStyle = p.fg;
+  ctx.font = 'bold ' + fontSize + 'px sans-serif';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText(p.text, p.w / 2, p.h / 2);
+}
+function pgDownload() {
+  const canvas = document.getElementById('pg-canvas');
+  if (!canvas) return;
+  const p = pgGet();
+  const a = document.createElement('a');
+  a.href = canvas.toDataURL('image/png');
+  a.download = 'placeholder-' + p.w + 'x' + p.h + '.png';
+  document.body.appendChild(a); a.click();
+  setTimeout(function () { document.body.removeChild(a); }, 200);
+  showToast('✅ 已下载占位图 ' + p.w + 'x' + p.h);
+}
+function pgCopyHTML() {
+  const p = pgGet();
+  const code = '<img src="placeholder-' + p.w + 'x' + p.h + '.png" width="' + p.w + '" height="' + p.h + '" alt="' + (p.text === (p.w + ' x ' + p.h) ? 'placeholder' : p.text) + '">';
+  const done = function () { showToast('✅ 已复制 <img> 代码'); };
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(code).then(done).catch(function () {
+      const ta = document.createElement('textarea');
+      ta.value = code; document.body.appendChild(ta); ta.select();
+      document.execCommand('copy'); document.body.removeChild(ta); done();
+    });
+  } else {
+    const ta = document.createElement('textarea');
+    ta.value = code; document.body.appendChild(ta); ta.select();
+    document.execCommand('copy'); document.body.removeChild(ta); done();
+  }
+}
+function pgCopyMD() {
+  const p = pgGet();
+  const code = '![占位图](placeholder-' + p.w + 'x' + p.h +
+// ============================================================
+// 假数据生成器 mock-data-generator (mg*)
+// ============================================================
+var mgRows = [], mgFields = [];
+function mgInit() {
+  mgRows = []; mgFields = [];
+  const count = document.getElementById('mg-count');
+  if (count) count.value = '10';
+  const wrap = document.getElementById('mg-table-wrap');
+  if (wrap) wrap.innerHTML = '';
+  mgRun();
+}
+function mgPick(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
+function mgFieldsArr() {
+  const defs = [
+    ['mg-f-name', '姓名', function () { return mgPick(mgSurCN) + mgPick(mgGivenCN) + (Math.random() < 0.3 ? mgPick(mgGivenCN) : ''); }],
+    ['mg-f-enname', '英文名', function () { return mgPick(mgEnFirst) + ' ' + mgPick(mgEnLast); }],
+    ['mg-f-phone', '手机号', function () {
+      const prefix = ['130','131','132','133','135','136','137','138','139','150','151','152','153','155','156','157','158','159','170','171','176','177','178','180','181','182','183','185','186','187','188','189'];
+      let p = mgPick(prefix);
+      for (let i = 0; i < 8; i++) p += Math.floor(Math.random() * 10);
+      return p;
+    }],
+    ['mg-f-email', '邮箱', function () {
+      const name = (mgPick(mgEnFirst) + mgPick(mgEnLast)).toLowerCase().replace(/[^a-z]/g, '') + Math.floor(Math.random() * 99);
+      return name + '@' + mgPick(['qq.com','163.com','gmail.com','outlook.com','foxmail.com','126.com','sina.com','aliyun.com','icloud.com','hotmail.com']);
+    }],
+    ['mg-f-company', '公司', function () { return mgPick(mgCompanies) + (Math.random() < 0.5 ? mgPick(['有限公司','科技公司','集团','工作室']) : ''); }],
+    ['mg-f-city', '城市', function () { return mgPick(mgCities); }],
+    ['mg-f-address', '地址', function () {
+      const road = mgPick(['人民路','中山路','解放路','建设路','和平路','长江路','黄河路','朝阳路','光明路','幸福路','高新路','科技大道','创新街','文化街','胜利街','友谊街']);
+      return mgPick(mgCities) + mgPick(['','']) + mgPick(['东城区','西城区','南山区','朝阳区','高新区','开发区','工业园区','滨江区','福田区','天府新区','解放区','海淀区']) + road + (Math.floor(Math.random() * 200) + 1) + '号';
+    }],
+    ['mg-f-uuid', 'UUID', function () {
+      const hex = '0123456789abcdef'; let s = '';
+      for (let i = 0; i < 36; i++) {
+        if (i === 8 || i === 13 || i === 18 || i === 23) s += '-';
+        else if (i === 14) s += '4';
+        else if (i === 19) s += hex[(Math.random() * 4 | 0) + 8];
+        else s += hex[Math.floor(Math.random() * 16)];
+      }
+      return s;
+    }],
+    ['mg-f-ip', 'IP', function () { return [1,2,3,4].map(function () { return Math.floor(Math.random() * 256); }).join('.'); }],
+    ['mg-f-date', '日期', function () {
+      const y = 2019 + Math.floor(Math.random() * 8);
+      const m = Math.floor(Math.random() * 12) + 1;
+      const d = Math.floor(Math.random() * 28) + 1;
+      return y + '-' + String(m).padStart(2, '0') + '-' + String(d).padStart(2, '0');
+    }],
+    ['mg-f-amount', '金额', function () { return (Math.random() * 90000 + 100).toFixed(2); }],
+    ['mg-f-color', '颜色', function () { return '#' + Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0'); }]
+  ];
+  return defs.filter(function (d) {
+    const el = document.getElementById(d[0]);
+    return el && el.checked;
+  }).map(function (d) { return { label: d[1], gen: d[2] }; });
+}
+function mgRun() {
+  const countEl = document.getElementById('mg-count');
+  let n = countEl ? (parseInt(countEl.value) || 10) : 10;
+  n = Math.max(1, Math.min(200, n));
+  mgFields = mgFieldsArr();
+  if (mgFields.length === 0) { alert('请至少选择一个字段'); return; }
+  mgRows = [];
+  for (let i = 0; i < n; i++) {
+    const row = {};
+    mgFields.forEach(function (f) { row[f.label] = f.gen(); });
+    mgRows.push(row);
+  }
+  mgRender();
+}
+function mgRender() {
+  const wrap = document.getElementById('mg-table-wrap');
+  if (!wrap) return;
+  let html = '<table style="width:100%;border-collapse:collapse;font-size:13px;"><thead><tr>';
+  mgFields.forEach(function (f) { html += '<th style="padding:8px 10px;text-align:left;background:#f8fafc;border-bottom:2px solid #e2e8f0;position:sticky;top:0;white-space:nowrap;">' + f.label + '</th>'; });
+  html += '</tr></thead><tbody>';
+  mgRows.forEach(function (r) {
+    html += '<tr>';
+    mgFields.forEach(function (f) { html += '<td style="padding:7px 10px;border-bottom:1px solid #f1f5f9;white-space:nowrap;">' + String(r[f.label]).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</td>'; });
+    html += '</tr>';
+  });
+  html += '</tbody></table>';
+  wrap.innerHTML = html;
+}
+function mgExport(type) {
+  if (mgRows.length === 0) { alert('请先生成数据'); return; }
+  if (type === 'json') {
+    const blob = new Blob([JSON.stringify(mgRows, null, 2)], { type: 'application/json' });
+    mgDownloadBlob(blob, 'mock-data.json');
+  } else {
+    const headers = mgFields.map(function (f) { return f.label; });
+    const lines = [headers.join(',')];
+    mgRows.forEach(function (r) {
+      lines.push(headers.map(function (h) { return '"' + String(r[h]).replace(/"/g, '""') + '"'; }).join(','));
+    });
+    const blob = new Blob(['\ufeff' + lines.join('\n')], { type: 'text/csv;charset=utf-8' });
+    mgDownloadBlob(blob, 'mock-data.csv');
+  }
+  showToast('✅ 已导出 ' + (type === 'json' ? 'JSON' : 'CSV'));
+}
+function mgDownloadBlob(blob, filename) {
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = filename;
+  document.body.appendChild(a); a.click();
+  setTimeout(function () { document.body.removeChild(a); URL.revokeObjectURL(url); }, 200);
+}
+function mgCopy() {
+  if (mgRows.length === 0) { alert('请先生成数据'); return; }
+  const first = mgRows[0];
+  const text = Object.keys(first).map(function (k) { return k + ': ' + first[k]; }).join(' | ');
+  navigator.clipboard.writeText(text).then(function () { showToast('✅ 已复制第一行数据'); }).catch(function () {});
+}
+var mgSurCN = ['张','李','王','刘','陈','杨','赵','黄','周','吴','徐','孙','胡','朱','高','林','何','郭','马','罗','梁','宋','郑','谢','韩','唐','冯','于','董','萧','程','曹','袁','邓','许','傅','沈','曾','彭','吕','苏','卢','蒋','蔡','贾','丁','魏','薛','叶','阎','余','潘','杜','戴','夏','钟','汪','田','任','姜','范','方','石','姚','谭','廖','邹','熊','金','陆','郝','孔','白','崔','康','毛','邱','秦','江','史','顾','侯','邵','孟','龙','万','段','雷','钱','汤','尹','黎','易','常','武','乔','贺','赖','龚','文'];
+var mgGivenCN = ['伟','芳','娜','敏','静','磊','军','洋','勇','艳','杰','娟','涛','明','超','秀英','霞','平','刚','桂英','文','辉','力','丽','红','晨','宇','子涵','欣怡','浩然','思远','嘉懿','雨桐','一诺','俊杰','若曦','梓萱','诗涵','天佑','欣妍','泽宇','可欣','瑞霖','雅静','明轩','梦琪','嘉怡','晨曦'];
+var mgEnFirst = ['James','Mary','John','Patricia','Robert','Jennifer','Michael','Linda','David','Elizabeth','William','Barbara','Richard','Susan','Joseph','Jessica','Thomas','Sarah','Charles','Karen','Daniel','Nancy','Matthew','Lisa','Anthony','Betty','Mark','Sandra','Donald','Ashley','Steven','Emily','Andrew','Kimberly','Paul','Donna','Joshua','Michelle','Kevin','Carol','Brian','Amanda','George','Melissa','Eric','Deborah'];
+var mgEnLast = ['Smith','Johnson','Williams','Brown','Jones','Garcia','Miller','Davis','Rodriguez','Martinez','Hernandez','Lopez','Gonzalez','Wilson','Anderson','Thomas','Taylor','Moore','Jackson','Martin','Lee','Perez','Thompson','White','Harris','Sanchez','Clark','Ramirez','Lewis','Robinson','Walker','Young','Allen','King','Wright','Scott','Torres','Nguyen','Hill','Flores','Green','Adams','Nelson','Baker','Hall','Rivera'];
+var mgCompanies = ['云创科技','星辰网络','蓝海数据','极光智能','华宇软件','天工互联','万象传媒','中科曙光','恒信金服','智联未来','锐捷电子','远方信息','博雅文化','卓然设计','启明星辰','环球贸易','新锐教育','联众健康','康达医药','飞驰物流','盛世传媒','量子引擎','深海科技','凌云智造'];
+var mgCities = ['北京','上海','广州','深圳','杭州','成都','重庆','武汉','西安','南京','苏州','天津','长沙','郑州','青岛','大连','厦门','福州','合肥','昆明','贵阳','南宁','海口','三亚','哈尔滨','长春','沈阳','石家庄','太原','济南','南昌','兰州','西宁','银川','乌鲁木齐','拉萨','呼和浩特','香港','澳门','台北'];
+
+// ============================================================
+// 占位图生成器 placeholder-generator (pg*)
+// ============================================================
+function pgInit() {
+  pgRender();
+}
+function pgSync(which) {
+  const textEl = document.getElementById('pg-' + which);
+  const pickerEl = document.getElementById('pg-' + which + '-picker');
+  if (!textEl || !pickerEl) return;
+  let v = textEl.value.trim();
+  if (/^[0-9a-fA-F]{3}$/.test(v)) v = '#' + v;
+  if (/^[0-9a-fA-F]{6}$/.test(v)) v = '#' + v;
+  if (/^#[0-9a-fA-F]{3}$/.test(v)) {
+    v = '#' + v[1] + v[1] + v[2] + v[2] + v[3] + v[3];
+  }
+  if (/^#[0-9a-fA-F]{6}$/.test(v)) {
+    pickerEl.value = v;
+  }
+  pgRender();
+}
+function pgGet() {
+  function g(id, def) {
+    const el = document.getElementById(id);
+    return el ? el.value : def;
+  }
+  let w = parseInt(g('pg-w', '800')) || 800;
+  let h = parseInt(g('pg-h', '400')) || 400;
+  w = Math.max(50, Math.min(2000, w));
+  h = Math.max(50, Math.min(2000, h));
+  const bg = /^#[0-9a-fA-F]{6}$/.test(g('pg-bg', '#6366f1')) ? g('pg-bg') : '#6366f1';
+  const fg = /^#[0-9a-fA-F]{6}$/.test(g('pg-fg', '#ffffff')) ? g('pg-fg') : '#ffffff';
+  let text = g('pg-text', '').trim();
+  if (!text) text = w + ' x ' + h;
+  return { w: w, h: h, bg: bg, fg: fg, text: text };
+}
+function pgRender() {
+  const canvas = document.getElementById('pg-canvas');
+  if (!canvas) return;
+  const p = pgGet();
+  const maxW = 640;
+  const scale = Math.min(1, maxW / p.w);
+  canvas.width = p.w;
+  canvas.height = p.h;
+  canvas.style.width = Math.round(p.w * scale) + 'px';
+  const ctx = canvas.getContext('2d');
+  ctx.fillStyle = p.bg;
+  ctx.fillRect(0, 0, p.w, p.h);
+  const fontSize = Math.max(12, Math.round(Math.min(p.w, p.h) / (p.text.length > 6 ? 8 : 5)));
+  ctx.fillStyle = p.fg;
+  ctx.font = 'bold ' + fontSize + 'px sans-serif';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText(p.text, p.w / 2, p.h / 2);
+}
+function pgDownload() {
+  const canvas = document.getElementById('pg-canvas');
+  if (!canvas) return;
+  const p = pgGet();
+  const a = document.createElement('a');
+  a.href = canvas.toDataURL('image/png');
+  a.download = 'placeholder-' + p.w + 'x' + p.h + '.png';
+  document.body.appendChild(a); a.click();
+  setTimeout(function () { document.body.removeChild(a); }, 200);
+  showToast('✅ 已下载占位图 ' + p.w + 'x' + p.h);
+}
+function pgCopyHTML() {
+  const p = pgGet();
+  const altText = p.text === (p.w + ' x ' + p.h) ? 'placeholder' : p.text;
+  const code = '<img src="placeholder-' + p.w + 'x' + p.h + '.png" width="' + p.w + '" height="' + p.h + '" alt="' + altText + '">';
+  pgClipboard(code, '✅ 已复制 <img> 代码');
+}
+function pgCopyMD() {
+  const p = pgGet();
+  const code = '![占位图](placeholder-' + p.w + 'x' + p.h + '.png "' + p.w + 'x' + p.h + '")';
+  pgClipboard(code, '✅ 已复制 Markdown 代码');
+}
+function pgClipboard(text, msg) {
+  navigator.clipboard.writeText(text).then(function () {
+    showToast(msg);
+  }).catch(function () {
+    const ta = document.createElement('textarea');
+    ta.value = text; document.body.appendChild(ta); ta.select();
+    document.execCommand('copy'); document.body.removeChild(ta);
+    showToast(msg);
+  });
+}
+function pgPreset(w, h) {
+  const we = document.getElementById('pg-w');
+  const he = document.getElementById('pg-h');
+  if (we) we.value = w;
+  if (he) he.value = h;
+  pgRender();
 }
