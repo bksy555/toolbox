@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>在线艺术滤镜：4步把照片变成素描/油画/漫画风（7种滤镜免费） - ToolBox 工具箱指南</title>
+  <meta name="description" content="图文详解在线给图片添加艺术效果的完整步骤：素描、油画、马赛克、浮雕、漫画、复古、边缘检测7种滤镜一键套用，纯本地处理不上传，免费在线使用。">
+  <meta name="keywords" content="在线艺术滤镜,图片滤镜,素描滤镜,油画滤镜,漫画滤镜,照片艺术效果,免费滤镜,Prisma替代">
+  <meta name="author" content="ToolBox">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://toolai.ccwu.cc/guides/art-filter-guide.html">
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    :root {
+      --bg: #0f0f1a;
+      --bg-card: #1a1a2e;
+      --text: #e0e0e0;
+      --text-light: #8888aa;
+      --border: #2a2a44;
+      --accent: #6366f1;
+      --accent-hover: #4f46e5;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Noto Sans SC', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      margin: 0;
+      line-height: 1.8;
+    }
+    .guide-header {
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+      border-bottom: 1px solid var(--border);
+      padding: 20px 0;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(10px);
+    }
+    .guide-header-inner {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 0 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .guide-header a {
+      color: var(--accent);
+      text-decoration: none;
+      font-size: 14px;
+    }
+    .guide-header a:hover { color: var(--accent-hover); }
+    .guide-container {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 40px 20px 80px;
+    }
+    .guide-breadcrumb {
+      font-size: 13px;
+      color: var(--text-light);
+      margin-bottom: 20px;
+    }
+    .guide-breadcrumb a { color: var(--accent); text-decoration: none; }
+    .guide-breadcrumb a:hover { text-decoration: underline; }
+    h1 {
+      font-size: 32px;
+      font-weight: 700;
+      margin: 0 0 10px;
+      line-height: 1.3;
+      background: linear-gradient(135deg, #e0e0e0, #a78bfa);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .guide-meta {
+      font-size: 13px;
+      color: var(--text-light);
+      margin-bottom: 30px;
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .guide-meta span { display: flex; align-items: center; gap: 4px; }
+    h2 {
+      font-size: 22px;
+      font-weight: 600;
+      margin: 40px 0 16px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border);
+      color: #e0e0e0;
+    }
+    h3 {
+      font-size: 18px;
+      font-weight: 600;
+      margin: 28px 0 12px;
+      color: #ccc;
+    }
+    p { margin: 0 0 16px; color: #ccc; }
+    .guide-step {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px;
+      margin: 24px 0;
+      position: relative;
+    }
+    .guide-step-number {
+      position: absolute;
+      top: -12px;
+      left: 20px;
+      background: var(--accent);
+      color: #fff;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: 700;
+    }
+    .guide-step h3 { margin-top: 0; }
+    .guide-img {
+      max-width: 100%;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      margin: 16px 0;
+      display: block;
+    }
+    .guide-img-caption {
+      text-align: center;
+      font-size: 13px;
+      color: var(--text-light);
+      margin: 4px 0 16px;
+    }
+    .guide-tip {
+      background: rgba(99,102,241,0.1);
+      border-left: 4px solid var(--accent);
+      padding: 12px 16px;
+      border-radius: 0 8px 8px 0;
+      margin: 16px 0;
+      font-size: 14px;
+      color: #ccc;
+    }
+    .guide-tip strong { color: #a78bfa; }
+    .guide-gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 16px;
+      margin: 16px 0;
+    }
+    .guide-gallery-item {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+      text-align: center;
+    }
+    .guide-gallery-item img { width: 100%; display: block; }
+    .guide-gallery-item .label {
+      padding: 8px;
+      font-size: 13px;
+      color: var(--text-light);
+    }
+    .guide-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16px 0;
+      font-size: 14px;
+    }
+    .guide-table th, .guide-table td {
+      border: 1px solid var(--border);
+      padding: 10px 14px;
+      text-align: left;
+    }
+    .guide-table th { background: var(--bg-card); color: #e0e0e0; font-weight: 600; }
+    .guide-table td { color: #ccc; }
+    .guide-cta {
+      text-align: center;
+      background: linear-gradient(135deg, #1a1a2e, #16213e);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 32px;
+      margin: 40px 0;
+    }
+    .guide-cta p { font-size: 16px; margin-bottom: 20px; }
+    .guide-cta .btn {
+      display: inline-block;
+      background: linear-gradient(135deg, #6366f1, #8b5cf6);
+      color: #fff;
+      padding: 12px 32px;
+      border-radius: 30px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 16px;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .guide-cta .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(99,102,241,0.3); }
+    .footer-nav {
+      margin-top: 40px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      font-size: 14px;
+    }
+    .footer-nav a { color: var(--accent); text-decoration: none; }
+    .footer-nav a:hover { text-decoration: underline; }
+    @media (max-width: 600px) {
+      h1 { font-size: 24px; }
+      .guide-container { padding: 20px 16px 60px; }
+      .guide-step { padding: 20px 16px; }
+      .guide-gallery { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <header class="guide-header">
+    <div class="guide-header-inner">
+      <a href="https://toolai.ccwu.cc/">🧰 ToolBox 首页</a>
+      <a href="../index.html#guides">📖 工具箱指南</a>
+    </div>
+  </header>
+
+  <div class="guide-container">
+    <!-- 面包屑 -->
+    <div class="guide-breadcrumb">
+      <a href="https://toolai.ccwu.cc/">首页</a> / <a href="../index.html#guides">工具箱指南</a> / 图片艺术效果
+    </div>
+
+    <h1>在线艺术滤镜：4步把照片变成素描/油画/漫画风</h1>
+
+    <div class="guide-meta">
+      <span>📅 2026-09-18</span>
+      <span>✏️ ToolBox 编辑部</span>
+      <span>📖 阅读约 5 分钟</span>
+    </div>
+
+    <p>看到别人朋友圈里那些像手绘一样的照片，是不是很羡慕？想给自拍加个素描滤镜，想给风景照来点油画质感，想用马赛克挡住车牌和脸——这些听起来要下载 App、开会员才能做的事，其实在浏览器里 30 秒就能搞定。</p>
+
+    <p><strong>图片艺术效果</strong> 就是这样一个免费工具：上传照片后，一键套用 <strong>素描、油画、马赛克、浮雕、漫画、复古、边缘检测</strong> 7 种艺术滤镜，效果实时预览，满意后一键下载高清 PNG。</p>
+
+    <p>灵感来源于 Prisma（$7.99/月）、PicsArt Premium（$11.99/月）等付费艺术滤镜应用——而这里完全免费，图片也只在你的浏览器本地处理，不会上传到任何服务器。</p>
+
+    <!-- ====== 第一步 ====== -->
+    <div class="guide-step">
+      <div class="guide-step-number">1</div>
+      <h3>打开工具，准备一张照片</h3>
+      <p>进入 ToolBox 首页，点击「图片处理」分类，找到「✨ 图片艺术效果」工具卡片进入。界面分为三块：<strong>上方是图片选择</strong>、<strong>中间是 7 个滤镜按钮</strong>、<strong>下方是实时预览画布</strong>。目前画布是空的，显示"上传图片后选择滤镜效果"的提示。</p>
+      <img src="images/af-step1-interface.png" alt="图片艺术效果工具界面 - 上传前" class="guide-img">
+      <div class="guide-img-caption">▲ 工具界面：选图按钮 + 7 种滤镜按钮 + 预览画布</div>
+      <div class="guide-tip">
+        <strong>💡 小技巧：</strong> 想快速出效果的话，选颜色层次丰富、主体清晰的照片，素描和油画效果会更有质感。
+      </div>
+    </div>
+
+    <!-- ====== 第二步 ====== -->
+    <div class="guide-step">
+      <div class="guide-step-number">2</div>
+      <h3>上传本地图片</h3>
+      <p>点击「选择图片」按钮，从电脑里选一张照片（支持 JPG / PNG / WebP 等常见格式）。上传后原图会立刻显示在预览画布中——此时还没有任何滤镜，方便你对比"处理前 / 处理后"的差别。</p>
+      <img src="images/af-step2-uploaded.png" alt="上传图片后的原图预览" class="guide-img">
+      <div class="guide-img-caption">▲ 上传后显示原始照片，可随时点击「🔄 原图」回到这个状态</div>
+      <div class="guide-tip">
+        <strong>🔒 隐私安全：</strong> 图片全程在你自己的浏览器里用 Canvas 处理，不上传服务器。私密照片也可以放心处理。
+      </div>
+    </div>
+
+    <!-- ====== 第三步 ====== -->
+    <div class="guide-step">
+      <div class="guide-step-number">3</div>
+      <h3>一键套用滤镜：素描 / 油画</h3>
+      <p>上传完成后，点一下滤镜按钮，效果立刻呈现在画布上，无需等待、无需转圈。</p>
+      <p><strong>✏️ 素描</strong> 会把照片变成铅笔手绘质感——黑白灰的笔触、干净的线条，像刚刚画完的速写；<strong>🎨 油画</strong> 则强化色彩和笔触感，让照片像画布上的油彩，特别适合风景和人物照。</p>
+      <div class="guide-gallery">
+        <div class="guide-gallery-item">
+          <img src="images/af-step3-pencil.png" alt="素描滤镜效果">
+          <div class="label">✏️ 素描效果 — 铅笔手绘质感</div>
+        </div>
+        <div class="guide-gallery-item">
+          <img src="images/af-step4-oil.png" alt="油画滤镜效果">
+          <div class="label">🎨 油画效果 — 强化色彩与笔触</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ====== 第四步 ====== -->
+    <div class="guide-step">
+      <div class="guide-step-number">4</div>
+      <h3>马赛克 / 浮雕等更多效果，下载高清图</h3>
+      <p>除了素描和油画，还有 5 种风格等你尝试：</p>
+      <table class="guide-table">
+        <thead>
+          <tr><th>滤镜</th><th>效果特点</th><th>适合场景</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>🧩 马赛克</td><td>像素块化，模糊细节</td><td>遮挡人脸、车牌、隐私信息</td></tr>
+          <tr><td>🏛️ 浮雕</td><td>立体雕刻感，灰底凸起</td><td>创意海报、装饰画</td></tr>
+          <tr><td>🖍️ 漫画</td><td>卡通化处理，颜色明快</td><td>头像、趣味分享</td></tr>
+          <tr><td>📻 复古</td><td>做旧色调，怀旧胶片感</td><td>怀旧主题、vlog 封面</td></tr>
+          <tr><td>✒️ 边缘检测</td><td>线条轮廓提取，白底黑线</td><td>线稿素材、设计底图</td></tr>
+        </tbody>
+      </table>
+      <img src="images/af-step5-mosaic.png" alt="马赛克滤镜效果" class="guide-img">
+      <div class="guide-img-caption">▲ 马赛克效果：既可以是艺术风格，也可以用来遮挡敏感区域</div>
+      <img src="images/af-step6-emboss.png" alt="浮雕滤镜效果" class="guide-img">
+      <div class="guide-img-caption">▲ 浮雕效果：像刻在石板上的立体图案</div>
+      <p>选到满意的效果后，点击「⬇️ 下载效果图」按钮，处理好的图片会以 PNG 格式保存到你的电脑。整个过程不过 30 秒。</p>
+    </div>
+
+    <!-- ====== 使用场景 ====== -->
+    <h2>🎯 图片艺术效果的 5 个实用场景</h2>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin:20px 0;">
+      <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:16px;text-align:center;">
+        <div style="font-size:28px;margin-bottom:8px;">🖼️</div>
+        <div style="font-weight:600;font-size:14px;margin-bottom:4px;">社媒头像与封面</div>
+        <div style="font-size:12px;color:var(--text-light);">自拍变素描/漫画头像，朋友圈横幅不撞款</div>
+      </div>
+      <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:16px;text-align:center;">
+        <div style="font-size:28px;margin-bottom:8px;">📄</div>
+        <div style="font-weight:600;font-size:14px;margin-bottom:4px;">文章配图</div>
+        <div style="font-size:12px;color:var(--text-light);">油画风风景图配深度文章，格调拉满</div>
+      </div>
+      <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:16px;text-align:center;">
+        <div style="font-size:28px;margin-bottom:8px;">🎨</div>
+        <div style="font-weight:600;font-size:14px;margin-bottom:4px;">创意海报/壁纸</div>
+        <div style="font-size:12px;color:var(--text-light);">浮雕、马赛克做背景纹理，个性十足</div>
+      </div>
+      <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:16px;text-align:center;">
+        <div style="font-size:28px;margin-bottom:8px;">🕶️</div>
+        <div style="font-weight:600;font-size:14px;margin-bottom:4px;">隐私打码</div>
+        <div style="font-size:12px;color:var(--text-light);">马赛克遮挡人脸、车牌、地址信息</div>
+      </div>
+      <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:16px;text-align:center;">
+        <div style="font-size:28px;margin-bottom:8px;">✒️</div>
+        <div style="font-weight:600;font-size:14px;margin-bottom:4px;">线稿素材</div>
+        <div style="font-size:12px;color:var(--text-light);">边缘检测提取轮廓线，做涂色素材</div>
+      </div>
+    </div>
+
+    <!-- ====== 常见问题 ====== -->
+    <h2>❓ 常见问题</h2>
+
+    <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:20px;margin:16px 0;">
+      <p><strong>Q：支持哪些图片格式？有没有大小限制？</strong></p>
+      <p>支持 JPG、PNG、WebP、BMP 等常见格式。因为是本地处理，没有严格的大小限制，但超大图（如几十 MB 原图）处理时会稍慢，建议先用普通分辨率图片。</p>
+    </div>
+    <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:20px;margin:16px 0;">
+      <p><strong>Q：图片会被上传到服务器吗？隐私安全吗？</strong></p>
+      <p>不会。所有滤镜都是在你浏览器的 Canvas 画布本地计算的，图片从选择到下载都不离开你的设备，私密照片可以放心处理。</p>
+    </div>
+    <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:20px;margin:16px 0;">
+      <p><strong>Q：效果不满意怎么办？能回到原图吗？</strong></p>
+      <p>当然可以。随时点击「🔄 原图」按钮就能回到未处理的照片，也可以继续换其他滤镜叠加对比，直到满意再下载。</p>
+    </div>
+
+    <!-- ====== CTA ====== -->
+    <div class="guide-cta">
+      <p>📌 30 秒让照片变成艺术品，现在就试试</p>
+      <a href="https://toolai.ccwu.cc/" class="btn">✨ 去添加艺术滤镜 →</a>
+    </div>
+
+    <!-- ====== 底部导航 ====== -->
+    <div class="footer-nav">
+      <a href="../index.html#guides">← 返回工具箱指南列表</a>
+      <a href="https://toolai.ccwu.cc/">🏠 回到首页</a>
+    </div>
+  </div>
+</body>
+</html>
