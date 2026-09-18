@@ -6086,6 +6086,50 @@
       1,
       4
     ],
+    "drawNum": "954",
+    "result": "✅",
+    "coldResult": "✅",
+    "updatedAt": "2026-09-18T11:31:33.516Z"
+  },
+  "2026251": {
+    "period": "2026251",
+    "year": 2026,
+    "month": 9,
+    "day": 18,
+    "weekday": 5,
+    "haiGan": "丁",
+    "dans": [
+      2,
+      4,
+      9
+    ],
+    "coldDans": [
+      3,
+      1,
+      7
+    ],
+    "drawNum": null,
+    "result": null,
+    "coldResult": null,
+    "updatedAt": null
+  },
+  "2026252": {
+    "period": "2026252",
+    "year": 2026,
+    "month": 9,
+    "day": 19,
+    "weekday": 6,
+    "haiGan": "己",
+    "dans": [
+      2,
+      4,
+      9
+    ],
+    "coldDans": [
+      3,
+      1,
+      7
+    ],
     "drawNum": null,
     "result": null,
     "coldResult": null,
