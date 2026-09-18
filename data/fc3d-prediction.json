@@ -6108,10 +6108,10 @@
       1,
       7
     ],
-    "drawNum": null,
-    "result": null,
-    "coldResult": null,
-    "updatedAt": null
+    "drawNum": "777",
+    "result": "❌",
+    "coldResult": "✅",
+    "updatedAt": "2026-09-18T14:03:04.977Z"
   },
   "2026252": {
     "period": "2026252",
