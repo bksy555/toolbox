@@ -6667,6 +6667,75 @@ greet('世界');</textarea>
       </div>
     `,
     handler: () => { setTimeout(fgInit, 50); }
+  },
+  {
+    id: 'lorem-generator',
+    cat: 'text',
+    icon: '📝',
+    name: '占位文本生成器',
+    desc: '一键生成 Lorem Ipsum / 中文假文，段落字数随意调，复制即用（设计排版、前端原型必备）',
+    html: `
+      <div class="tool-card">
+        <p style="color:var(--text-light);font-size:13px;margin-bottom:10px;">📝 生成占位假文：Lorem Ipsum 经典英文假文 / 中文占位文本，支持按段落、句子、单词数量生成，一键复制。设计稿排版、前端页面原型、PPT 演示占位都离不开它（灵感来源于 Lorem Ipsum 生成器等付费订阅设计工具的内置功能，纯本地生成）。</p>
+        <div style="display:flex;gap:10px;margin-bottom:12px;flex-wrap:wrap;align-items:flex-end;">
+          <div>
+            <div style="font-size:12px;color:var(--text-light);margin-bottom:4px;">文本类型</div>
+            <select id="li-type" style="width:160px;padding:8px 10px;border:1px solid var(--border,#ddd);border-radius:8px;font-size:14px;background:var(--card-bg,#fff);color:var(--text);box-sizing:border-box;">
+              <option value="lorem">🇬🇧 Lorem Ipsum</option>
+              <option value="cn">🇨🇳 中文假文</option>
+              <option value="mix">🔀 中英混合</option>
+            </select>
+          </div>
+          <div>
+            <div style="font-size:12px;color:var(--text-light);margin-bottom:4px;">数量</div>
+            <input id="li-count" type="number" min="1" max="50" value="3" style="width:80px;padding:8px 10px;border:1px solid var(--border,#ddd);border-radius:8px;font-size:14px;background:var(--card-bg,#fff);color:var(--text);box-sizing:border-box;">
+          </div>
+          <div>
+            <div style="font-size:12px;color:var(--text-light);margin-bottom:4px;">单位</div>
+            <select id="li-unit" style="width:110px;padding:8px 10px;border:1px solid var(--border,#ddd);border-radius:8px;font-size:14px;background:var(--card-bg,#fff);color:var(--text);box-sizing:border-box;">
+              <option value="para" selected>段落</option>
+              <option value="sent">句子</option>
+              <option value="word">单词/字</option>
+            </select>
+          </div>
+          <button class="btn btn-primary" onclick="liRun()">🎲 生成</button>
+          <button class="btn btn-secondary" onclick="liCopy()">📋 复制</button>
+          <button class="btn btn-secondary" onclick="liClear()">🧹 清空</button>
+        </div>
+        <textarea id="li-output" rows="12" placeholder="生成的占位文本将显示在这里..." style="width:100%;box-sizing:border-box;padding:12px;border:1px solid var(--border,#ddd);border-radius:8px;font-size:13px;line-height:1.9;background:var(--card-bg,#fff);color:var(--text);resize:vertical;"></textarea>
+        <div id="li-tip" style="margin-top:8px;font-size:12px;color:var(--text-light);">💡 常用场景：UI 设计稿填充、前端开发占位、PPT 演示排版、文档示例、海报文字占位。生成结果纯本地，不收集任何信息。</div>
+      </div>
+    `,
+    handler: () => { setTimeout(liInit, 50); }
+  },
+  {
+    id: 'http-status',
+    cat: 'dev',
+    icon: '🔢',
+    name: 'HTTP 状态码速查',
+    desc: 'HTTP 状态码分类速查：1xx-5xx 全收录，中文说明+常见场景，支持搜索过滤（调试 API 必备）',
+    html: `
+      <div class="tool-card">
+        <p style="color:var(--text-light);font-size:13px;margin-bottom:10px;">🔢 前端调试、后端排查 API 问题时，随手查一下状态码含义：信息 1xx、成功 2xx、重定向 3xx、客户端错误 4xx、服务端错误 5xx 全部收录，附中文说明与常见场景（灵感来源于 HTTP Status Codes 等工具站/浏览器插件）。</p>
+        <div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;align-items:center;">
+          <input id="hs-search" type="text" placeholder="🔍 搜索状态码或名称，如：404 / Not Found / 未找到" oninput="hsRender()" style="flex:1;min-width:220px;padding:9px 12px;border:1px solid var(--border,#ddd);border-radius:8px;font-size:14px;background:var(--card-bg,#fff);color:var(--text);box-sizing:border-box;">
+          <button class="btn btn-secondary" onclick="hsPreset('4xx')">4xx 客户端错误</button>
+          <button class="btn btn-secondary" onclick="hsPreset('5xx')">5xx 服务端错误</button>
+          <button class="btn btn-secondary" onclick="hsPreset('')">全部</button>
+        </div>
+        <div style="display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap;">
+          <span style="font-size:12px;color:var(--text-light);padding-top:6px;">分组：</span>
+          <button class="btn btn-secondary" onclick="hsGroup('1xx')">1xx</button>
+          <button class="btn btn-secondary" onclick="hsGroup('2xx')">2xx</button>
+          <button class="btn btn-secondary" onclick="hsGroup('3xx')">3xx</button>
+          <button class="btn btn-secondary" onclick="hsGroup('4xx')">4xx</button>
+          <button class="btn btn-secondary" onclick="hsGroup('5xx')">5xx</button>
+        </div>
+        <div id="hs-list" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px;"></div>
+        <div id="hs-tip" style="margin-top:12px;font-size:12px;color:var(--text-light);">💡 排查思路：4xx 通常是请求本身有问题（参数/权限/路径），5xx 通常是服务器或后端服务出问题（数据库/网关/超时）。</div>
+      </div>
+    `,
+    handler: () => { setTimeout(hsInit, 50); }
   }
 ];
 
@@ -17031,4 +17100,184 @@ function fgCopy() {
     document.execCommand('copy'); document.body.removeChild(ta);
     showToast('✅ 已复制指纹结果 JSON');
   });
+}
+// ============================================================
+// 占位文本生成器 lorem-generator (li*)
+// ============================================================
+var liLoremWords = ['lorem','ipsum','dolor','sit','amet','consectetur','adipiscing','elit','sed','do','eiusmod','tempor','incididunt','ut','labore','et','dolore','magna','aliqua','enim','ad','minim','veniam','quis','nostrud','exercitation','ullamco','laboris','nisi','aliquip','ex','ea','commodo','consequat','duis','aute','irure','in','reprehenderit','voluptate','velit','esse','cillum','fugiat','nulla','pariatur','excepteur','sint','occaecat','cupidatat','non','proident','sunt','culpa','qui','officia','deserunt','mollit','anim','id','est','laborum'];
+var liCnParas = ['在信息爆炸的时代，我们每天都要面对海量的文字内容。无论是设计稿中的占位文本，还是页面原型里的示例段落，都需要一种既不干扰视觉、又能真实呈现排版效果的假文。这就是占位文本存在的意义：让设计师和开发者专注于布局与结构，而不是被真实内容带偏注意力。','一份优秀的设计，往往在文字填充之前就已经决定了骨架。占位文本的作用，正是为这个骨架披上一层拟真的外衣。它看起来像真正的文章，读起来却不会让人过分在意意思，从而把目光聚焦到字号、行距、留白与字体本身。','这里的每一句话都是精心编排的示例内容。它们组成段落、构成章节，模拟出一篇真实文章应当具有的节奏与密度。当你需要评估某段文字在版面上的视觉效果时，不妨用它们来填充，看看整体是否协调、段落是否透气、标题是否醒目。','技术飞速迭代，工具不断更迭，但排版的基本法则始终未变：清晰、易读、有层次。占位文本不是终点，而是帮助你把注意力放回关键问题的工具。好好利用它，让你的每一版设计都经得起推敲。'];
+function liInit() {
+  const out = document.getElementById('li-output');
+  if (out && !out.value) liRun();
+}
+function liWord() {
+  const type = document.getElementById('li-type') ? document.getElementById('li-type').value : 'lorem';
+  const rnd = function () { return liLoremWords[Math.floor(Math.random() * liLoremWords.length)]; };
+  if (type === 'lorem') return rnd();
+  const cn = ['的','了','和','是','在','有','我','不','他','这','你','都','一','个','上','也','就','到','说','要','去','会','着','没','看','好','天','生','头','里','可','走','起','做','把','然','那','坐','前','像','再','又','外','只','每','真','干','两','头','先','放','正','该','那','些','能','对','出','下','看','起','过','还','很','最','开','让','所','想','二','问','但','应','打','样','现','形','叫','当','身','给','什','知','回','门','进','跟','动','别','听','叫','主','行','种','这','次','真','开','是','么','见','点','边','其','走','得','里','中','道','几','见'];
+  const n = 5 + Math.floor(Math.random() * 8);
+  let s = '';
+  for (let i = 0; i < n; i++) s += cn[Math.floor(Math.random() * cn.length)];
+  return s;
+}
+function liSentence(type) {
+  const n = 10 + Math.floor(Math.random() * 12);
+  const words = [];
+  for (let i = 0; i < n; i++) words.push(liWord());
+  let s = words.join(' ');
+  if (s.length > 0) s = s.charAt(0).toUpperCase() + s.slice(1);
+  return s + '.';
+}
+function liRun() {
+  const out = document.getElementById('li-output');
+  if (!out) return;
+  const type = document.getElementById('li-type') ? document.getElementById('li-type').value : 'lorem';
+  const countEl = document.getElementById('li-count');
+  let count = countEl ? (parseInt(countEl.value) || 3) : 3;
+  count = Math.max(1, Math.min(50, count));
+  const unit = document.getElementById('li-unit') ? document.getElementById('li-unit').value : 'para';
+  let lines = [];
+  if (unit === 'para') {
+    for (let i = 0; i < count; i++) {
+      if (type === 'cn') {
+        lines.push(liCnParas[i % liCnParas.length]);
+      } else {
+        const sentCount = 3 + Math.floor(Math.random() * 3);
+        const sents = [];
+        for (let j = 0; j < sentCount; j++) sents.push(liSentence(type));
+        lines.push(sents.join(' '));
+      }
+    }
+  } else if (unit === 'sent') {
+    for (let i = 0; i < count; i++) lines.push(liSentence(type));
+  } else {
+    for (let i = 0; i < count; i++) lines.push(liWord());
+  }
+  out.value = lines.join(unit === 'para' ? '\n\n' : '\n');
+}
+function liCopy() {
+  const out = document.getElementById('li-output');
+  if (!out || !out.value) { alert('请先生成文本'); return; }
+  navigator.clipboard.writeText(out.value).then(function () {
+    showToast('✅ 已复制占位文本');
+  }).catch(function () {
+    out.select();
+    document.execCommand('copy');
+    showToast('✅ 已复制占位文本');
+  });
+}
+function liClear() {
+  const out = document.getElementById('li-output');
+  if (out) out.value = '';
+}
+
+// ============================================================
+// HTTP 状态码速查 http-status (hs*)
+// ============================================================
+var hsData = [
+  [100,'Continue','继续','客户端应继续发送请求体，服务器已收到请求头'],
+  [101,'Switching Protocols','切换协议','服务器根据 Upgrade 头切换到 WebSocket 等新协议'],
+  [102,'Processing','处理中','服务器已收到并正在处理请求（WebDAV）'],
+  [103,'Early Hints','早期提示','提前发送部分响应头，优化首屏性能'],
+  [200,'OK','成功','请求成功，响应包含所请求的数据'],
+  [201,'Created','已创建','请求成功且已创建新资源（POST/PUT）'],
+  [202,'Accepted','已接受','请求已被接受，但处理尚未完成（异步任务）'],
+  [203,'Non-Authoritative Info','非权威信息','返回的元信息来自第三方而非原服务器'],
+  [204,'No Content','无内容','请求成功但响应没有正文'],
+  [205,'Reset Content','重置内容','要求客户端重置表单视图'],
+  [206,'Partial Content','部分内容','断点续传或 Range 分片返回成功'],
+  [207,'Multi-Status','多状态','多个独立状态码（WebDAV）'],
+  [208,'Already Reported','已报告','DAV 绑定已枚举，避免重复'],
+  [226,'IM Used','已使用实例操作','服务器已完成基于实例操作的 GET 请求'],
+  [300,'Multiple Choices','多种选择','请求有多个可能响应，客户端需选择'],
+  [301,'Moved Permanently','永久重定向','资源已永久移动到新 URL，请更新书签'],
+  [302,'Found','临时重定向','资源临时位于另一 URL（常见登录跳转）'],
+  [303,'See Other','查看其他位置','应使用 GET 请求到另一 URL 获取结果'],
+  [304,'Not Modified','未修改','资源未变化，可直接用本地缓存'],
+  [305,'Use Proxy','使用代理','必须通过指定代理访问（已废弃）'],
+  [307,'Temporary Redirect','临时重定向','与 302 类似但保留请求方法'],
+  [308,'Permanent Redirect','永久重定向','与 301 类似但保留请求方法'],
+  [400,'Bad Request','请求错误','请求语法或参数有误，服务器无法理解'],
+  [401,'Unauthorized','未认证','需要登录或携带有效的认证凭证'],
+  [402,'Payment Required','需要付款','预留：需要付费才能访问（数字钱包）'],
+  [403,'Forbidden','禁止访问','服务器理解请求但拒绝执行（无权限）'],
+  [404,'Not Found','未找到','资源不存在或路径错误（最常见的错误码）'],
+  [405,'Method Not Allowed','方法不允许','请求方法不被该资源支持（如只允许 POST）'],
+  [406,'Not Acceptable','不可接受','服务器无法按 Accept 头生成可接受响应'],
+  [407,'Proxy Auth Required','需要代理认证','需先通过代理服务器认证'],
+  [408,'Request Timeout','请求超时','服务器等待请求超时'],
+  [409,'Conflict','冲突','请求与资源当前状态冲突（版本/并发修改）'],
+  [410,'Gone','资源已失效','资源已永久删除且无转发地址'],
+  [411,'Length Required','缺少长度','请求头缺少 Content-Length'],
+  [412,'Precondition Failed','前提条件失败','请求头前置条件不满足'],
+  [413,'Payload Too Large','请求体过大','上传内容超过服务器限制'],
+  [414,'URI Too Long','URL 过长','请求 URL 超过服务器允许长度'],
+  [415,'Unsupported Media Type','不支持的媒体类型','Content-Type 不被支持'],
+  [416,'Range Not Satisfiable','范围无法满足','Range 范围无效（超出资源大小）'],
+  [417,'Expectation Failed','预期失败','Expect 头要求无法满足'],
+  [418,'I am a Teapot','我是茶壶','愚人节彩蛋：服务器拒绝煮咖啡'],
+  [421,'Misdirected Request','请求被误导','请求发给无法产生响应的服务器'],
+  [422,'Unprocessable Entity','无法处理的实体','请求格式正确但语义有误（校验失败）'],
+  [423,'Locked','已锁定','目标资源被锁定（WebDAV）'],
+  [424,'Failed Dependency','依赖失败','前置请求失败导致无法完成'],
+  [425,'Too Early','太早','服务器担心请求会重放'],
+  [426,'Upgrade Required','需要升级','需要切换到指定协议（HTTP/2）'],
+  [428,'Precondition Required','需要前提条件','请求应使用条件头避免竞态'],
+  [429,'Too Many Requests','请求过多','请求频率超出限制（限流）'],
+  [431,'Request Header Fields Too Large','请求头过大','请求头字段超过服务器限制'],
+  [451,'Unavailable For Legal Reasons','法律原因不可用','因法律原因被屏蔽（审查）'],
+  [500,'Internal Server Error','服务器内部错误','服务器遇到意外错误（最常排查）'],
+  [501,'Not Implemented','未实现','服务器不支持该请求方法'],
+  [502,'Bad Gateway','网关错误','上游服务器返回无效响应（Nginx 常见）'],
+  [503,'Service Unavailable','服务不可用','服务器过载或维护中'],
+  [504,'Gateway Timeout','网关超时','上游服务器响应超时'],
+  [505,'HTTP Version Not Supported','HTTP 版本不支持','服务器不支持请求使用的 HTTP 版本'],
+  [506,'Variant Also Negotiates','变体协商循环','服务器配置导致内容协商循环'],
+  [507,'Insufficient Storage','存储不足','服务器存储空间不足（WebDAV）'],
+  [508,'Loop Detected','检测到循环','服务器检测到无限循环（WebDAV）'],
+  [510,'Not Extended','未扩展','请求需要进一步扩展才能处理'],
+  [511,'Network Auth Required','需要网络认证','需要登录 Wi-Fi/网络网关（强制门户）']
+];
+var hsGroupFilter = '';
+function hsInit() {
+  hsRender();
+}
+function hsRender() {
+  const list = document.getElementById('hs-list');
+  if (!list) return;
+  const q = document.getElementById('hs-search') ? document.getElementById('hs-search').value.trim().toLowerCase() : '';
+  const rows = hsData.filter(function (r) {
+    if (hsGroupFilter && String(r[0]).charAt(0) + 'xx' !== hsGroupFilter) return false;
+    if (!q) return true;
+    return String(r[0]).indexOf(q) >= 0 || String(r[1]).toLowerCase().indexOf(q) >= 0 || String(r[2]).toLowerCase().indexOf(q) >= 0 || String(r[3]).toLowerCase().indexOf(q) >= 0;
+  });
+  const color = function (code) {
+    if (code < 200) return '#64748b';
+    if (code < 300) return '#10b981';
+    if (code < 400) return '#f59e0b';
+    if (code < 500) return '#ef4444';
+    return '#8b5cf6';
+  };
+  if (rows.length === 0) {
+    list.innerHTML = '<div style="grid-column:1/-1;text-align:center;color:var(--text-light);padding:30px;">没有匹配的状态码，换个关键词试试</div>';
+    return;
+  }
+  list.innerHTML = rows.map(function (r) {
+    return '<div style="background:var(--card-bg,#fff);border:1px solid var(--border,#e2e8f0);border-radius:10px;padding:12px 14px;">' +
+      '<div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;">' +
+      '<span style="font-size:18px;font-weight:800;color:' + color(r[0]) + ';font-family:monospace;">' + r[0] + '</span>' +
+      '<span style="font-size:14px;font-weight:600;">' + r[1] + '</span>' +
+      '</div>' +
+      '<div style="font-size:12px;color:var(--text-light);margin-bottom:4px;">' + r[2] + '</div>' +
+      '<div style="font-size:12px;color:#94a3b8;">' + r[3] + '</div>' +
+      '</div>';
+  }).join('');
+}
+function hsGroup(g) {
+  hsGroupFilter = (hsGroupFilter === g) ? '' : g;
+  hsRender();
+}
+function hsPreset(p) {
+  hsGroupFilter = p;
+  hsRender();
 }
