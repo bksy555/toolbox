@@ -6544,6 +6544,129 @@ greet('世界');</textarea>
       </div>
     `,
     handler: () => { setTimeout(pgInit, 50); }
+  },
+  {
+    id: 'cron-generator',
+    cat: 'dev',
+    icon: '⏰',
+    name: 'Cron 表达式生成器',
+    desc: '可视化点选生成 Cron 定时表达式，中文说明+最近5次执行时间预览（crontab.guru 免费版）',
+    html: `
+      <div class="tool-card">
+        <p style="color:var(--text-light);font-size:13px;margin-bottom:10px;">⏰ 分/时/日/月/周 五段点选生成 Cron 表达式，实时中文说明 + 最近 5 次执行时间预览。服务器定时任务、数据备份、报表推送必备（灵感来源于 crontab.guru 等付费/订阅式定时工具，全部本地计算）。</p>
+        <div style="display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap;">
+          <button class="btn btn-primary" onclick="cgCopy()">📋 复制表达式</button>
+          <button class="btn btn-secondary" onclick="cgPreset('*/5 * * * *')">每5分钟</button>
+          <button class="btn btn-secondary" onclick="cgPreset('0 * * * *')">每小时</button>
+          <button class="btn btn-secondary" onclick="cgPreset('0 2 * * *')">每天凌晨2点</button>
+          <button class="btn btn-secondary" onclick="cgPreset('0 9 * * 1')">每周一9点</button>
+          <button class="btn btn-secondary" onclick="cgPreset('0 0 1 * *')">每月1号零点</button>
+          <button class="btn btn-secondary" onclick="cgPreset('0 0 */1 * *')">每天零点</button>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:10px;">
+          <div>
+            <div style="font-size:12px;color:var(--text-light);margin-bottom:4px;">分钟 0-59</div>
+            <select id="cg-min" onchange="cgRender()" style="width:100%;padding:8px;border:1px solid var(--border,#ddd);border-radius:8px;font-size:13px;background:var(--card-bg,#fff);color:var(--text);box-sizing:border-box;">
+              <option value="*">* 每分</option>
+              <option value="*/5">*/5 每5分</option>
+              <option value="*/10">*/10 每10分</option>
+              <option value="*/15">*/15 每15分</option>
+              <option value="*/30">*/30 每30分</option>
+              <option value="0" selected>0 整点</option>
+              <option value="5">5</option>
+              <option value="15">15</option>
+              <option value="30">30</option>
+              <option value="45">45</option>
+            </select>
+          </div>
+          <div>
+            <div style="font-size:12px;color:var(--text-light);margin-bottom:4px;">小时 0-23</div>
+            <select id="cg-hour" onchange="cgRender()" style="width:100%;padding:8px;border:1px solid var(--border,#ddd);border-radius:8px;font-size:13px;background:var(--card-bg,#fff);color:var(--text);box-sizing:border-box;">
+              <option value="*">* 每小时</option>
+              <option value="*/2">*/2 每2时</option>
+              <option value="*/6">*/6 每6时</option>
+              <option value="*/12">*/12 每12时</option>
+              <option value="0" selected>0 0点</option>
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="6">6</option>
+              <option value="9">9</option>
+              <option value="12">12</option>
+              <option value="18">18</option>
+              <option value="22">22</option>
+            </select>
+          </div>
+          <div>
+            <div style="font-size:12px;color:var(--text-light);margin-bottom:4px;">日 1-31</div>
+            <select id="cg-day" onchange="cgRender()" style="width:100%;padding:8px;border:1px solid var(--border,#ddd);border-radius:8px;font-size:13px;background:var(--card-bg,#fff);color:var(--text);box-sizing:border-box;">
+              <option value="*" selected>* 每天</option>
+              <option value="*/2">*/2 隔天</option>
+              <option value="1">1 每月1日</option>
+              <option value="5">5</option>
+              <option value="10">10</option>
+              <option value="15">15</option>
+              <option value="20">20</option>
+              <option value="25">25</option>
+              <option value="31">31</option>
+            </select>
+          </div>
+          <div>
+            <div style="font-size:12px;color:var(--text-light);margin-bottom:4px;">月 1-12</div>
+            <select id="cg-month" onchange="cgRender()" style="width:100%;padding:8px;border:1px solid var(--border,#ddd);border-radius:8px;font-size:13px;background:var(--card-bg,#fff);color:var(--text);box-sizing:border-box;">
+              <option value="*" selected>* 每月</option>
+              <option value="*/3">*/3 每季</option>
+              <option value="*/6">*/6 每半年</option>
+              <option value="1">1月</option>
+              <option value="3">3月</option>
+              <option value="6">6月</option>
+              <option value="9">9月</option>
+              <option value="12">12月</option>
+            </select>
+          </div>
+          <div>
+            <div style="font-size:12px;color:var(--text-light);margin-bottom:4px;">周 0-7</div>
+            <select id="cg-week" onchange="cgRender()" style="width:100%;padding:8px;border:1px solid var(--border,#ddd);border-radius:8px;font-size:13px;background:var(--card-bg,#fff);color:var(--text);box-sizing:border-box;">
+              <option value="*" selected>* 任意</option>
+              <option value="1">1 周一</option>
+              <option value="2">2 周二</option>
+              <option value="3">3 周三</option>
+              <option value="4">4 周四</option>
+              <option value="5">5 周五</option>
+              <option value="6">6 周六</option>
+              <option value="0">0 周日</option>
+            </select>
+          </div>
+        </div>
+        <div style="background:#f8fafc;border:1px solid var(--border,#e2e8f0);border-radius:10px;padding:14px 16px;margin-bottom:10px;">
+          <div style="font-size:12px;color:var(--text-light);margin-bottom:6px;">Cron 表达式</div>
+          <div id="cg-expr" style="font-family:monospace;font-size:20px;font-weight:700;color:#4f46e5;word-break:break-all;">0 0 * * *</div>
+        </div>
+        <div id="cg-desc" style="background:#eef2ff;border:1px solid #c7d2fe;border-radius:10px;padding:12px 16px;margin-bottom:10px;font-size:14px;"></div>
+        <div id="cg-next" style="border:1px solid var(--border,#e2e8f0);border-radius:10px;padding:12px 16px;font-size:13px;color:var(--text-light);"></div>
+        <div id="cg-tip" style="margin-top:10px;font-size:12px;color:var(--text-light);">💡 Cron 五段格式：分钟 小时 日 月 周。Linux crontab、各类定时任务平台通用；表达式与执行时间全部在本地解析，不联网。</div>
+      </div>
+    `,
+    handler: () => { setTimeout(cgInit, 50); }
+  },
+  {
+    id: 'fingerprint-scanner',
+    cat: 'security',
+    icon: '🧬',
+    name: '浏览器指纹检测器',
+    desc: '一键检测浏览器指纹：UA、语言、时区、Canvas/WebGL 哈希，看看网站如何识别你（FingerprintJS Pro 免费版）',
+    html: `
+      <div class="tool-card">
+        <p style="color:var(--text-light);font-size:13px;margin-bottom:10px;">🧬 一键收集并哈希你的浏览器特征：User-Agent、语言、时区、屏幕、Canvas 与 WebGL 指纹等。网站正是用这些信息在无 Cookie 的情况下识别访客（灵感来源于 FingerprintJS Pro 等付费设备指纹服务，检测完全在本地完成）。</p>
+        <div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;">
+          <button class="btn btn-primary" onclick="fgScan()">🔍 检测我的指纹</button>
+          <button class="btn btn-secondary" onclick="fgCopy()">📋 复制结果 JSON</button>
+        </div>
+        <div id="fg-basic" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;margin-bottom:12px;"></div>
+        <div id="fg-hash" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;margin-bottom:12px;"></div>
+        <div id="fg-tip" style="margin-top:10px;font-size:12px;color:var(--text-light);">💡 浏览器指纹是什么：即使清除 Cookie，网站仍可通过你的设备特征组合识别你。想降低被识别风险，可尝试无痕模式、限制 Canvas 读取的隐私插件、更换浏览器或关闭 WebGL。</div>
+      </div>
+    `,
+    handler: () => { setTimeout(fgInit, 50); }
   }
 ];
 
@@ -8185,11 +8308,11 @@ function dpCopyText() {
 // ============================================================
 const CATEGORIES = [
   { id: 'text', icon: '✏️', name: '文本工具', desc: '字数统计、简繁转换、摩斯密码、文本转语音、文本对比、电子名片生成器、英文语法检查' },
-  { id: 'dev', icon: '💻', name: '开发者工具', desc: 'JSON格式化、YAML/JSON互转、二维码生成、二维码美化、条形码生成、Favicon图标生成、正则测试、Markdown、IP查询、子网计算、思维导图、图表生成、代码图片生成、表格数据转换、SQL格式化、代码压缩器、假数据生成器' },
+  { id: 'dev', icon: '💻', name: '开发者工具', desc: 'JSON格式化、YAML/JSON互转、二维码生成、二维码美化、条形码生成、Favicon图标生成、正则测试、Markdown、IP查询、子网计算、思维导图、图表生成、代码图片生成、表格数据转换、SQL格式化、代码压缩器、假数据生成器、Cron表达式生成器' },
   { id: 'image', icon: '🖼️', name: '图片处理', desc: '去背景换底色、批量压缩、加水印、长图拼接、格式转换、裁剪、异形裁剪、马赛克打码、双色调滤镜、图片转字符画、照片卡通化、OCR、印章制作、九宫格切图、文字转手写体、表情包、社交媒体图片尺寸调整、艺术效果、像素画、设备样机、图片高清放大、图片转线稿、渐变背景、文字特效、拼贴画、图片相框、颜色盲区模拟、海报设计器、老照片修复上色、图片EXIF信息、占位图生成器' },
   { id: 'document', icon: '📄', name: '文档转换', desc: '图片转PDF、PDF转图片、Word解析、Excel转PDF、PDF合并、PDF拆分、简历生成、电子签名、表单制作、邮件签名、发票/收据生成器、证书生成器' },
   { id: 'convert', icon: '🔄', name: '转换工具', desc: '单位换算、进制转换、函数绘图' },
-  { id: 'security', icon: '🔒', name: '安全工具', desc: '密码生成、Hash计算、随机数' },
+  { id: 'security', icon: '🔒', name: '安全工具', desc: '密码生成、Hash计算、随机数、浏览器指纹检测' },
   { id: 'time', icon: '⏱️', name: '时间工具', desc: '时间戳转换、日期计算、世界时区转换、番茄钟专注计时、待办清单、每日计划' },
   { id: 'color', icon: '🎨', name: '颜色工具', desc: 'HEX/RGB/HSL颜色转换、颜色对比度检查、CSS渐变生成器、配色方案生成器' },
   { id: 'media', icon: '🎬', name: '媒体工具', desc: '抖音/TikTok去水印下载、视频转GIF、在线录音、录音转文字、音频波形可视化、白噪音发生器、音频变速变调、音频剪辑拼接、视频缩略图制作器、在线便签、人声分离/伴奏提取' },
@@ -16662,4 +16785,250 @@ function pgPreset(w, h) {
   if (we) we.value = w;
   if (he) he.value = h;
   pgRender();
+}
+// ============================================================
+// Cron 表达式生成器 cron-generator (cg*)
+// ============================================================
+var cgExpr = '0 0 * * *';
+function cgInit() {
+  cgRender();
+}
+function cgGetExpr() {
+  const g = function (id, def) {
+    const el = document.getElementById(id);
+    return el ? el.value : def;
+  };
+  return [g('cg-min','0'), g('cg-hour','0'), g('cg-day','*'), g('cg-month','*'), g('cg-week','*')].join(' ');
+}
+function cgRender() {
+  cgExpr = cgGetExpr();
+  const exprEl = document.getElementById('cg-expr');
+  if (exprEl) exprEl.textContent = cgExpr;
+  const desc = cgDescribe(cgExpr);
+  const descEl = document.getElementById('cg-desc');
+  if (descEl) descEl.innerHTML = '<strong>📖 中文说明：</strong>' + desc;
+  const next = cgNextTimes(cgExpr, 5);
+  const nextEl = document.getElementById('cg-next');
+  if (nextEl) {
+    if (next.length === 0) {
+      nextEl.innerHTML = '⚠️ 未能计算出执行时间（表达式可能过于复杂）';
+    } else {
+      nextEl.innerHTML = '<strong>⏱️ 最近 5 次执行时间：</strong><br>' + next.map(function (t) {
+        return '&nbsp;&nbsp;• ' + t.toLocaleString('zh-CN', { hour12: false });
+      }).join('<br>');
+    }
+  }
+}
+function cgDescribe(expr) {
+  const parts = expr.trim().split(/\s+/);
+  if (parts.length !== 5) return '表达式格式有误';
+  const min = parts[0], hour = parts[1], day = parts[2], month = parts[3], week = parts[4];
+  const weekNames = {0:'周日',1:'周一',2:'周二',3:'周三',4:'周四',5:'周五',6:'周六',7:'周日'};
+  let s = '';
+  if (min === '*') s += '每分钟';
+  else if (/^\*\/(\d+)$/.test(min)) s += '每' + RegExp.$1 + '分钟';
+  else if (min === '0') s += '整点';
+  else s += '第' + min + '分';
+  if (hour === '*') { if (min === '*') s = '每分钟'; else s += '（每小时）'; }
+  else if (/^\*\/(\d+)$/.test(hour)) s += '，每' + RegExp.$1 + '小时';
+  else if (hour !== '0') s += '，' + hour + '点';
+  if (day === '*') { /* 每天 */ }
+  else if (/^\*\/(\d+)$/.test(day)) s += '，每' + RegExp.$1 + '天';
+  else if (day !== '*') s += '，每月' + day + '日';
+  if (month !== '*') s += '，' + month + '月';
+  if (week === '*') { /* 任意 */ }
+  else if (weekNames[week]) s += '，' + weekNames[week];
+  if (min === '*') s += '执行';
+  else if (hour === '*') s += '执行';
+  else if (day === '*') s += '执行';
+  else s += '执行';
+  return s;
+}
+function cgMatch(date, parts) {
+  // cron 匹配：周与日同时受限时为 OR 语义
+  const min = parts[0], hour = parts[1], day = parts[2], month = parts[3], week = parts[4];
+  function matchPart(val, pat) {
+    if (pat === '*') return true;
+    if (/^\*\/(\d+)$/.test(pat)) return val % parseInt(RegExp.$1, 10) === 0;
+    if (pat.indexOf('-') >= 0) {
+      const r = pat.split('-');
+      return val >= parseInt(r[0],10) && val <= parseInt(r[1],10);
+    }
+    if (pat.indexOf(',') >= 0) return pat.split(',').map(Number).indexOf(val) >= 0;
+    return val === parseInt(pat, 10);
+  }
+  const mOk = matchPart(date.getMinutes(), min);
+  const hOk = matchPart(date.getHours(), hour);
+  const moOk = matchPart(date.getMonth() + 1, month);
+  const dOk = matchPart(date.getDate(), day);
+  const w = date.getDay(); // 0=周日
+  const wOk = matchPart(w === 0 ? 0 : w, week) || (week === '7' && w === 0);
+  if (day === '*' && week === '*') return mOk && hOk && moOk;
+  if (day !== '*' && week !== '*') return mOk && hOk && moOk && (dOk || wOk);
+  return mOk && hOk && moOk && dOk && wOk;
+}
+function cgNextTimes(expr, count) {
+  const parts = expr.trim().split(/\s+/);
+  if (parts.length !== 5) return [];
+  const now = new Date();
+  const res = [];
+  const stepMin = /^\*\/(\d+)$/.test(parts[0]) ? parseInt(RegExp.$1, 10) : 1;
+  const probe = new Date(now.getTime());
+  probe.setSeconds(0, 0);
+  let guard = 0;
+  const maxIter = Math.ceil((366 * 24 * 60) / stepMin) + 10;
+  while (res.length < count && guard < maxIter) {
+    probe.setMinutes(probe.getMinutes() + stepMin);
+    if (probe > now && cgMatch(probe, parts)) res.push(new Date(probe));
+    guard++;
+  }
+  return res;
+}
+function cgCopy() {
+  const code = cgExpr || cgGetExpr();
+  navigator.clipboard.writeText(code).then(function () {
+    showToast('✅ 已复制 Cron 表达式: ' + code);
+  }).catch(function () {
+    const ta = document.createElement('textarea');
+    ta.value = code; document.body.appendChild(ta); ta.select();
+    document.execCommand('copy'); document.body.removeChild(ta);
+    showToast('✅ 已复制 Cron 表达式');
+  });
+}
+function cgPreset(expr) {
+  const parts = expr.trim().split(/\s+/);
+  const ids = ['cg-min','cg-hour','cg-day','cg-month','cg-week'];
+  const defs = {'*':'*'};
+  // 尝试在各下拉中找到匹配选项，找不到就设置为该值
+  ids.forEach(function (id, idx) {
+    const sel = document.getElementById(id);
+    if (!sel) return;
+    const v = parts[idx] || '*';
+    let found = false;
+    for (let i = 0; i < sel.options.length; i++) {
+      if (sel.options[i].value === v) { sel.selectedIndex = i; found = true; break; }
+    }
+    if (!found) {
+      // 新增选项并选中
+      const opt = document.createElement('option');
+      opt.value = v; opt.textContent = v; opt.selected = true;
+      sel.appendChild(opt);
+    }
+  });
+  cgRender();
+}
+
+// ============================================================
+// 浏览器指纹检测器 fingerprint-scanner (fg*)
+// ============================================================
+var fgResult = {};
+function fgInit() {
+  // 打开工具时自动检测一次
+  setTimeout(fgScan, 60);
+}
+function fgHash(str) {
+  // FNV-1a 32bit
+  let h = 0x811c9dc5;
+  for (let i = 0; i < str.length; i++) {
+    h ^= str.charCodeAt(i);
+    h = (h * 0x01000193) >>> 0;
+  }
+  return ('00000000' + h.toString(16)).slice(-8);
+}
+function fgCanvasHash() {
+  try {
+    const c = document.createElement('canvas');
+    c.width = 280; c.height = 60;
+    const ctx = c.getContext('2d');
+    ctx.textBaseline = 'top';
+    ctx.font = '14px Arial';
+    ctx.fillStyle = '#f60';
+    ctx.fillRect(100, 10, 60, 20);
+    ctx.fillStyle = '#069';
+    ctx.fillText('ToolBox-Fingerprint-🧬', 2, 15);
+    ctx.fillStyle = 'rgba(102, 204, 0, 0.7)';
+    ctx.fillText('abcdefghijklmnopqrstuvwxyz', 4, 40);
+    const data = c.toDataURL();
+    return fgHash(data);
+  } catch (e) {
+    return '不可用';
+  }
+}
+function fgWebglHash() {
+  try {
+    const c = document.createElement('canvas');
+    const gl = c.getContext('webgl') || c.getContext('experimental-webgl');
+    if (!gl) return '不可用';
+    const ext = gl.getExtension('WEBGL_debug_renderer_info');
+    const renderer = ext ? gl.getParameter(ext.UNMASKED_RENDERER_WEBGL) : 'unknown';
+    const vendor = ext ? gl.getParameter(ext.UNMASKED_VENDOR_WEBGL) : 'unknown';
+    return { hash: fgHash(String(renderer) + '|' + String(vendor)), renderer: String(renderer), vendor: String(vendor) };
+  } catch (e) {
+    return { hash: '不可用', renderer: '—', vendor: '—' };
+  }
+}
+function fgCard(label, value, mono) {
+  return '<div style="background:var(--card-bg,#fff);border:1px solid var(--border,#e2e8f0);border-radius:10px;padding:12px 14px;">' +
+    '<div style="font-size:12px;color:var(--text-light);margin-bottom:4px;">' + label + '</div>' +
+    '<div style="font-size:14px;font-weight:600;word-break:break-all;' + (mono ? 'font-family:monospace;' : '') + '">' + value + '</div></div>';
+}
+function fgScan() {
+  const ua = navigator.userAgent || '';
+  const lang = navigator.language || '';
+  const langs = (navigator.languages || []).join(', ');
+  const tz = Intl.DateTimeFormat().resolvedOptions().timeZone || '—';
+  const scr = screen.width + ' × ' + screen.height + ' (dpr ' + (window.devicePixelRatio || 1) + ')';
+  const colorDepth = screen.colorDepth + ' bit';
+  const platform = navigator.platform || '—';
+  const cpu = navigator.hardwareConcurrency ? navigator.hardwareConcurrency + ' 核' : '—';
+  const mem = navigator.deviceMemory ? navigator.deviceMemory + ' GB' : '—';
+  const cookie = navigator.cookieEnabled ? '启用' : '禁用';
+  const online = navigator.onLine ? '在线' : '离线';
+
+  const gl = fgWebglHash();
+  const canvasH = fgCanvasHash();
+  const baseStr = [ua, lang, langs, tz, scr, colorDepth, platform, cpu, mem, String(canvasH), gl.hash].join('|');
+  const totalHash = fgHash(baseStr);
+
+  fgResult = {
+    userAgent: ua, language: lang, languages: langs, timezone: tz,
+    screen: scr, colorDepth: colorDepth, platform: platform,
+    cpuCores: cpu, deviceMemory: mem, cookieEnabled: cookie, online: online,
+    canvasHash: canvasH, webglHash: gl.hash, webglRenderer: gl.renderer,
+    fingerprintId: totalHash, scannedAt: new Date().toISOString()
+  };
+
+  const basic = document.getElementById('fg-basic');
+  if (basic) {
+    basic.innerHTML =
+      fgCard('🧬 综合指纹 ID', '<span style="color:#4f46e5;">' + totalHash + '</span>', true) +
+      fgCard('🌐 时区', tz) +
+      fgCard('🖥️ 屏幕', scr) +
+      fgCard('🔤 语言', lang + (langs ? '<br><span style="font-size:11px;color:var(--text-light);">' + langs + '</span>' : '')) +
+      fgCard('💻 平台', platform) +
+      fgCard('⚙️ CPU / 内存', cpu + ' / ' + mem) +
+      fgCard('🍪 Cookie', cookie + ' · ' + online);
+  }
+  const hash = document.getElementById('fg-hash');
+  if (hash) {
+    hash.innerHTML =
+      fgCard('🖌️ Canvas 指纹', canvasH, true) +
+      fgCard('🎮 WebGL 指纹', gl.hash, true) +
+      fgCard('🎮 GPU 渲染器', gl.renderer) +
+      fgCard('🎮 GPU 厂商', gl.vendor) +
+      fgCard('📄 User-Agent', '<span style="font-size:11px;font-weight:400;">' + ua + '</span>');
+  }
+  showToast('✅ 指纹检测完成，综合 ID: ' + totalHash);
+}
+function fgCopy() {
+  if (Object.keys(fgResult).length === 0) { alert('请先点击「检测我的指纹」'); return; }
+  const text = JSON.stringify(fgResult, null, 2);
+  navigator.clipboard.writeText(text).then(function () {
+    showToast('✅ 已复制指纹结果 JSON');
+  }).catch(function () {
+    const ta = document.createElement('textarea');
+    ta.value = text; document.body.appendChild(ta); ta.select();
+    document.execCommand('copy'); document.body.removeChild(ta);
+    showToast('✅ 已复制指纹结果 JSON');
+  });
 }
