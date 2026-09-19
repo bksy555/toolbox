@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>在线证书生成器：3步制作荣誉证书/奖状（4种模板免费） - ToolBox 工具箱指南</title>
+  <meta name="description" content="图文详解在线证书生成器的完整步骤：选模板、填姓名正文、一键导出高清PNG。荣誉证书、奖状、培训结业证书全支持，经典红金/简约蓝金/清新绿金/科技渐变4种模板，免费在线使用。">
+  <meta name="keywords" content="在线证书生成,荣誉证书制作,奖状生成器,结业证书,证书模板,免费证书,电子证书,奖状制作">
+  <meta name="author" content="ToolBox">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://toolai.ccwu.cc/guides/certificate-maker-guide.html">
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    :root {
+      --bg: #0f0f1a;
+      --bg-card: #1a1a2e;
+      --text: #e0e0e0;
+      --text-light: #8888aa;
+      --border: #2a2a44;
+      --accent: #6366f1;
+      --accent-hover: #4f46e5;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Noto Sans SC', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      margin: 0;
+      line-height: 1.8;
+    }
+    .guide-header {
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+      border-bottom: 1px solid var(--border);
+      padding: 20px 0;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(10px);
+    }
+    .guide-header-inner {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 0 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .guide-header a {
+      color: var(--accent);
+      text-decoration: none;
+      font-size: 14px;
+    }
+    .guide-header a:hover { color: var(--accent-hover); }
+    .guide-container {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 40px 20px 80px;
+    }
+    .guide-breadcrumb {
+      font-size: 13px;
+      color: var(--text-light);
+      margin-bottom: 20px;
+    }
+    .guide-breadcrumb a { color: var(--accent); text-decoration: none; }
+    .guide-breadcrumb a:hover { text-decoration: underline; }
+    h1 {
+      font-size: 32px;
+      font-weight: 700;
+      margin: 0 0 10px;
+      line-height: 1.3;
+      background: linear-gradient(135deg, #e0e0e0, #a78bfa);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .guide-meta {
+      font-size: 13px;
+      color: var(--text-light);
+      margin-bottom: 30px;
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .guide-meta span { display: flex; align-items: center; gap: 4px; }
+    h2 {
+      font-size: 22px;
+      font-weight: 600;
+      margin: 40px 0 16px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border);
+      color: #e0e0e0;
+    }
+    h3 {
+      font-size: 18px;
+      font-weight: 600;
+      margin: 28px 0 12px;
+      color: #ccc;
+    }
+    p { margin: 0 0 16px; color: #ccc; }
+    .guide-step {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px;
+      margin: 24px 0;
+      position: relative;
+    }
+    .guide-step-number {
+      position: absolute;
+      top: -12px;
+      left: 20px;
+      background: var(--accent);
+      color: #fff;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: 700;
+    }
+    .guide-step h3 { margin-top: 0; }
+    .guide-img {
+      max-width: 100%;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      margin: 16px 0;
+      display: block;
+    }
+    .guide-img-caption {
+      text-align: center;
+      font-size: 13px;
+      color: var(--text-light);
+      margin: 4px 0 16px;
+    }
+    .guide-tip {
+      background: rgba(99,102,241,0.1);
+      border-left: 4px solid var(--accent);
+      padding: 12px 16px;
+      border-radius: 0 8px 8px 0;
+      margin: 16px 0;
+      font-size: 14px;
+      color: #ccc;
+    }
+    .guide-tip strong { color: #a78bfa; }
+    .guide-gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 16px;
+      margin: 16px 0;
+    }
+    .guide-gallery-item {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+      text-align: center;
+    }
+    .guide-gallery-item img { width: 100%; display: block; }
+    .guide-gallery-item .label {
+      padding: 8px;
+      font-size: 13px;
+      color: var(--text-light);
+    }
+    .guide-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16px 0;
+      font-size: 14px;
+    }
+    .guide-table th, .guide-table td {
+      border: 1px solid var(--border);
+      padding: 10px 14px;
+      text-align: left;
+    }
+    .guide-table th { background: var(--bg-card); color: #e0e0e0; font-weight: 600; }
+    .guide-table td { color: #ccc; }
+    .guide-cta {
+      text-align: center;
+      background: linear-gradient(135deg, #1a1a2e, #16213e);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 32px;
+      margin: 40px 0;
+    }
+    .guide-cta p { font-size: 16px; margin-bottom: 20px; }
+    .guide-cta .btn {
+      display: inline-block;
+      background: linear-gradient(135deg, #6366f1, #8b5cf6);
+      color: #fff;
+      padding: 12px 32px;
+      border-radius: 30px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 16px;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .guide-cta .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(99,102,241,0.3); }
+    .footer-nav {
+      margin-top: 40px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      font-size: 14px;
+    }
+    .footer-nav a { color: var(--accent); text-decoration: none; }
+    .footer-nav a:hover { text-decoration: underline; }
+    @media (max-width: 600px) {
+      h1 { font-size: 24px; }
+      .guide-container { padding: 20px 16px 60px; }
+      .guide-step { padding: 20px 16px; }
+      .guide-gallery { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <header class="guide-header">
+    <div class="guide-header-inner">
+      <a href="https://toolai.ccwu.cc/">🧰 ToolBox 首页</a>
+      <a href="../index.html#guides">📖 工具箱指南</a>
+    </div>
+  </header>
+
+  <div class="guide-container">
+    <!-- 面包屑 -->
+    <div class="guide-breadcrumb">
+      <a href="https://toolai.ccwu.cc/">首页</a> / <a href="../index.html#guides">工具箱指南</a> / 在线证书生成器
+    </div>
+
+    <h1>在线证书生成器：3步制作荣誉证书/奖状</h1>
+
+    <div class="guide-meta">
+      <span>📅 2026-09-19</span>
+      <span>✏️ ToolBox 编辑部</span>
+      <span>📖 阅读约 4 分钟</span>
+    </div>
+
+    <p>要给学员发一张结业证书，活动结束想颁个奖状，或者公司内部表彰需要一张正式的荣誉证书——找设计公司做要等，用 Word 排版又总是歪歪扭扭。</p>
+
+    <p><strong>在线证书生成器</strong> 就是解决这个问题的：选好模板、填上姓名和正文、一键导出高清 PNG。内置 4 种模板（经典红金、简约蓝金、清新绿金、科技渐变），标题、获证者姓名、正文、颁发机构、日期、证书编号全部可自定义，全程在浏览器本地生成，不需要任何设计基础。</p>
+
+    <p>而且完全免费，不需要注册，证书内容不会上传到任何服务器。</p>
+
+    <!-- ====== 第一步 ====== -->
+    <div class="guide-step">
+      <div class="guide-step-number">1</div>
+      <h3>打开证书生成器</h3>
+      <p>进入 ToolBox 首页，点击「文档转换」分类，找到「证书生成器」工具卡片；或者点击下方按钮快速进入。</p>
+      <div style="text-align:center;margin:16px 0;">
+        <a href="https://toolai.ccwu.cc/" class="guide-cta-btn" style="display:inline-block;background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff;padding:10px 24px;border-radius:30px;text-decoration:none;font-weight:600;font-size:15px;" onclick="alert('请先回到首页，点击「文档转换」分类找到「证书生成器」工具')">🚀 打开证书生成器</a>
+      </div>
+      <p>工具默认给你一份「经典红金」模板的示例证书（标题：荣誉证书 / 获证者：张三），所有字段都可以直接修改，证书画布会实时刷新。</p>
+      <img src="images/cm-step1-default.png" alt="证书生成器初始界面 - 经典红金模板" class="guide-img">
+      <div class="guide-img-caption">▲ 打开工具后默认的经典红金模板示例证书，左侧参数、右侧证书实时预览</div>
+    </div>
+
+    <!-- ====== 第二步 ====== -->
+    <div class="guide-step">
+      <div class="guide-step-number">2</div>
+      <h3>选模板 + 填写证书信息</h3>
+      <p>先选择适合场景的模板：</p>
+      <table class="guide-table">
+        <thead>
+          <tr><th>模板</th><th>风格</th><th>适用场景</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>🎖️ 经典红金</td><td>红底金边，庄重大气</td><td>官方荣誉证书、年度评优</td></tr>
+          <tr><td>💠 简约蓝金</td><td>蓝白搭配，商务专业</td><td>培训结业、商务认证</td></tr>
+          <tr><td>🌿 清新绿金</td><td>绿金配色，清新活力</td><td>校园活动、夏令营、亲子奖状</td></tr>
+          <tr><td>🚀 科技渐变</td><td>蓝紫渐变，未来感</td><td>编程/机器人/科技类赛事</td></tr>
+        </tbody>
+      </table>
+      <p>然后依次填写：<strong>证书标题</strong>（如"优秀学员"）、<strong>获证者姓名</strong>、<strong>证书正文</strong>、<strong>颁发机构</strong>、<strong>日期</strong>、<strong>证书编号</strong>——每改一个字段，右侧证书都会实时更新。</p>
+      <img src="images/cm-step2-tech.png" alt="科技渐变模板 + 自定义证书信息" class="guide-img">
+      <div class="guide-img-caption">▲ 切换到「科技渐变」模板，标题改为"优秀学员"、获证者"小明同学"、机构"青禾教育"后的效果</div>
+      <div class="guide-tip">
+        <strong>💡 小技巧：</strong> 证书正文建议控制在 40 字以内，自动居中排版更美观。机构名 + 日期 + 编号三件套填齐，证书更显正式。
+      </div>
+    </div>
+
+    <!-- ====== 第三步 ====== -->
+    <div class="guide-step">
+      <div class="guide-step-number">3</div>
+      <h3>导出 PNG 或直接打印</h3>
+      <p>确认效果满意后，点击「⬇️ 导出 PNG」即可下载高清证书图片；也可以点「🖨️ 打印」直接打印纸质版。生成的 PNG 为证书画布原始分辨率，可直接打印、插入文档、发朋友圈或用于电子档案。</p>
+      <img src="images/cm-step3-green.png" alt="清新绿金模板证书效果" class="guide-img">
+      <div class="guide-img-caption">▲ 换一个场景：清新绿金模板 + 设置日期，适合校园活动奖状</div>
+      <p>一套模板可以批量改名字反复用——给全班同学生成结业证书、给整个团队做表彰证书，几分钟就能全部搞定。</p>
+    </div>
+
+    <!-- ====== 使用场景 ====== -->
+    <h2>🎯 证书生成器的 5 个实用场景</h2>
+
+    <p>生成的证书能用在哪些地方？这里列举最常见的几个：</p>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin:20px 0;">
+      <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:16px;text-align:center;">
+        <div style="font-size:28px;margin-bottom:8px;">🏆</div>
+        <div style="font-weight:600;font-size:14px;margin-bottom:4px;">荣誉表彰</div>
+        <div style="font-size:12px;color:var(--text-light);">年度评优、优秀员工、突出贡献</div>
+      </div>
+      <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:16px;text-align:center;">
+        <div style="font-size:28px;margin-bottom:8px;">🎓</div>
+        <div style="font-weight:600;font-size:14px;margin-bottom:4px;">培训结业</div>
+        <div style="font-size:12px;color:var(--text-light);">线上课、企业内训、技能班结业证</div>
+      </div>
+      <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:16px;text-align:center;">
+        <div style="font-size:28px;margin-bottom:8px;">🏫</div>
+        <div style="font-weight:600;font-size:14px;margin-bottom:4px;">校园活动</div>
+        <div style="font-size:12px;color:var(--text-light);">三好学生、比赛获奖、结营证书</div>
+      </div>
+      <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:16px;text-align:center;">
+        <div style="font-size:28px;margin-bottom:8px;">🤖</div>
+        <div style="font-weight:600;font-size:14px;margin-bottom:4px;">科技赛事</div>
+        <div style="font-size:12px;color:var(--text-light);">编程、机器人、创新大赛证书</div>
+      </div>
+      <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:16px;text-align:center;">
+        <div style="font-size:28px;margin-bottom:8px;">🎁</div>
+        <div style="font-weight:600;font-size:14px;margin-bottom:4px;">趣味奖状</div>
+        <div style="font-size:12px;color:var(--text-light);">"最佳铲屎官""全勤之星"等趣味奖</div>
+      </div>
+    </div>
+
+    <!-- ====== 常见问题 ====== -->
+    <h2>❓ 常见问题</h2>
+
+    <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:20px;margin:16px 0;">
+      <p><strong>Q：导出的证书图片清晰吗？能打印吗？</strong></p>
+      <p>导出的是高清 PNG，分辨率按证书画布生成，可直接打印 A4 或插入电子文档，完全满足日常使用。</p>
+    </div>
+    <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:20px;margin:16px 0;">
+      <p><strong>Q：能批量生成很多人的证书吗？</strong></p>
+      <p>当前工具一次生成一张。但改名字立即刷新，批量场景（如全班证书）只需逐次改姓名导出即可，一分钟能出十几张。</p>
+    </div>
+    <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:20px;margin:16px 0;">
+      <p><strong>Q：证书内容会被上传吗？安全吗？</strong></p>
+      <p>不会。证书在浏览器本地用 Canvas 渲染生成，所有文字内容不上传服务器，适合填写真实姓名、机构等信息。</p>
+    </div>
+    <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:20px;margin:16px 0;">
+      <p><strong>Q：能加自己的 Logo 或印章吗？</strong></p>
+      <p>当前版本暂不支持上传 Logo。可以先用「在线制作印章」工具生成一枚印章，再配合图片处理工具把印章叠加到证书图片上。</p>
+    </div>
+
+    <!-- ====== CTA ====== -->
+    <div class="guide-cta">
+      <p>📌 还没试过？现在就去制作第一张证书吧</p>
+      <a href="https://toolai.ccwu.cc/" class="btn">🏅 去制作证书 →</a>
+    </div>
+
+    <!-- ====== 底部导航 ====== -->
+    <div class="footer-nav">
+      <a href="../index.html#guides">← 返回工具箱指南列表</a>
+      <a href="https://toolai.ccwu.cc/">🏠 回到首页</a>
+    </div>
+  </div>
+</body>
+</html>
