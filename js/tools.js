@@ -6736,6 +6736,50 @@ greet('世界');</textarea>
       </div>
     `,
     handler: () => { setTimeout(hsInit, 50); }
+  },
+  {
+    id: 'emoji-library',
+    cat: 'fun',
+    icon: '😀',
+    name: 'Emoji 表情速查',
+    desc: '分类浏览+搜索 300+ Emoji，点击一键复制，发帖/文案/设计配图必备（Emojipedia 类站内替代）',
+    html: `
+      <div class="tool-card">
+        <p style="color:var(--text-light);font-size:13px;margin-bottom:10px;">😀 按分类浏览或搜索 Emoji，点击即可复制。写文案、发朋友圈、做设计、加标题表情都超方便（灵感来源于 Emojipedia 与各类 Emoji 键盘付费插件，本站直接内嵌免费使用）。</p>
+        <div style="display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap;align-items:center;">
+          <input id="em-search" type="text" placeholder="🔍 搜索表情，如：笑脸 / 猫 / 咖啡" oninput="emRender()" style="flex:1;min-width:200px;padding:9px 12px;border:1px solid var(--border,#ddd);border-radius:8px;font-size:14px;background:var(--card-bg,#fff);color:var(--text);box-sizing:border-box;">
+        </div>
+        <div id="em-cats" style="display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap;"></div>
+        <div id="em-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(56px,1fr));gap:8px;"></div>
+        <div id="em-tip" style="margin-top:10px;font-size:12px;color:var(--text-light);">💡 点击任意表情即可复制到剪贴板；搜索支持中文名与 emoji 本身。表情数据全部内置，无网络请求。</div>
+      </div>
+    `,
+    handler: () => { setTimeout(emInit, 50); }
+  },
+  {
+    id: 'id-card-checker',
+    cat: 'security',
+    icon: '🪪',
+    name: '身份证号码校验',
+    desc: '校验18位身份证号并解析出生日期/性别/地区，一键生成合法测试号（GB 11643-1999 算法）',
+    html: `
+      <div class="tool-card">
+        <p style="color:var(--text-light);font-size:13px;margin-bottom:10px;">🪪 输入 18 位身份证号，本地校验格式、校验码与出生日期，解析出地区、生日、性别；也可一键生成合法的测试号码用于开发联调（算法遵循 GB 11643-1999，全程本地计算不上传）。</p>
+        <div style="display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap;align-items:flex-end;">
+          <div style="flex:1;min-width:240px;">
+            <div style="font-size:12px;color:var(--text-light);margin-bottom:4px;">身份证号码</div>
+            <input id="ic-input" type="text" maxlength="18" placeholder="18 位身份证号码" style="width:100%;padding:9px 12px;border:1px solid var(--border,#ddd);border-radius:8px;font-size:14px;letter-spacing:1px;background:var(--card-bg,#fff);color:var(--text);box-sizing:border-box;">
+          </div>
+          <button class="btn btn-primary" onclick="icCheck()">🔍 校验</button>
+          <button class="btn btn-secondary" onclick="icGen(false)">👨 生成男测试号</button>
+          <button class="btn btn-secondary" onclick="icGen(true)">👩 生成女测试号</button>
+          <button class="btn btn-secondary" onclick="icCopy()">📋 复制</button>
+        </div>
+        <div id="ic-result" style="border:1px solid var(--border,#e2e8f0);border-radius:10px;padding:14px 16px;font-size:14px;line-height:2;"></div>
+        <div id="ic-tip" style="margin-top:10px;font-size:12px;color:var(--text-light);">💡 用途：表单校验开发、接口联调测试数据、了解身份证号结构。请勿使用真实个人信息测试；生成的测试号仅供开发演示。</div>
+      </div>
+    `,
+    handler: () => { setTimeout(icInit, 50); }
   }
 ];
 
@@ -8381,14 +8425,14 @@ const CATEGORIES = [
   { id: 'image', icon: '🖼️', name: '图片处理', desc: '去背景换底色、批量压缩、加水印、长图拼接、格式转换、裁剪、异形裁剪、马赛克打码、双色调滤镜、图片转字符画、照片卡通化、OCR、印章制作、九宫格切图、文字转手写体、表情包、社交媒体图片尺寸调整、艺术效果、像素画、设备样机、图片高清放大、图片转线稿、渐变背景、文字特效、拼贴画、图片相框、颜色盲区模拟、海报设计器、老照片修复上色、图片EXIF信息、占位图生成器' },
   { id: 'document', icon: '📄', name: '文档转换', desc: '图片转PDF、PDF转图片、Word解析、Excel转PDF、PDF合并、PDF拆分、简历生成、电子签名、表单制作、邮件签名、发票/收据生成器、证书生成器' },
   { id: 'convert', icon: '🔄', name: '转换工具', desc: '单位换算、进制转换、函数绘图' },
-  { id: 'security', icon: '🔒', name: '安全工具', desc: '密码生成、Hash计算、随机数、浏览器指纹检测' },
+  { id: 'security', icon: '🔒', name: '安全工具', desc: '密码生成、Hash计算、随机数、浏览器指纹检测、身份证号码校验' },
   { id: 'time', icon: '⏱️', name: '时间工具', desc: '时间戳转换、日期计算、世界时区转换、番茄钟专注计时、待办清单、每日计划' },
   { id: 'color', icon: '🎨', name: '颜色工具', desc: 'HEX/RGB/HSL颜色转换、颜色对比度检查、CSS渐变生成器、配色方案生成器' },
   { id: 'media', icon: '🎬', name: '媒体工具', desc: '抖音/TikTok去水印下载、视频转GIF、在线录音、录音转文字、音频波形可视化、白噪音发生器、音频变速变调、音频剪辑拼接、视频缩略图制作器、在线便签、人声分离/伴奏提取' },
   { id: 'ai', icon: '🤖', name: 'AI工具', desc: 'AI聊天、AI Agent安装、免费AI工具推荐' },
   { id: 'voice', icon: '🗣️', name: '群众心声', desc: '提交工具建议、投票排行榜、前3名自动实现' },
   { id: 'lottery', icon: '🎰', name: '彩票工具', desc: '双色球、大乐透、福彩3D、快乐8、排列三…在线过滤缩水、选号、计算器' },
-  { id: 'fun', icon: '🎪', name: '趣味工具', desc: '表情包生成、决策转盘、抽奖抽签、词云生成、涂鸦画板、娱乐好玩' },
+  { id: 'fun', icon: '🎪', name: '趣味工具', desc: '表情包生成、决策转盘、抽奖抽签、词云生成、涂鸦画板、Emoji表情速查、娱乐好玩' },
   { id: 'finance', icon: '💰', name: '财务工具', desc: '家庭记账本、收支统计、月度汇总' },
   { id: 'edu', icon: '📚', name: '教育资源', desc: '电子教材在线阅读、学习资源导航、元素周期表、习惯打卡、打字速度测试' }
 ];
@@ -17280,4 +17324,211 @@ function hsGroup(g) {
 function hsPreset(p) {
   hsGroupFilter = p;
   hsRender();
+}// ============================================================
+// Emoji 表情速查 emoji-library (em*)
+// ============================================================
+var emData = [
+  ['😀','笑脸','smile'],['😁','露齿笑','grin'],['😂','笑哭','joy'],['🤣','笑到地上','rofl'],['😊','微笑','smiling'],
+  ['😍','爱心眼','heart eyes'],['😘','飞吻','kiss'],['😜','吐舌','wink'],['🤔','思考','thinking'],['😎','墨镜','cool'],
+  ['🥳','庆祝','party'],['😢','哭泣','cry'],['😭','大哭','sob'],['😡','生气','angry'],['😱','惊吓','scream'],
+  ['😴','睡觉','sleep'],['🤒','生病','sick'],['👍','点赞','thumbs up'],['👎','踩','thumbs down'],['👏','鼓掌','clap'],
+  ['🙏','祈祷/感谢','pray'],['💪','肌肉','muscle'],['🤝','握手','handshake'],['👌','OK','ok'],['✌️','胜利','victory'],
+  ['🤞','好运','crossed'],['🫡','敬礼','salute'],['👋','挥手','wave'],['🤙','来电','call'],['🖐️','手掌','palm'],
+  ['👀','眼睛','eyes'],['👂','耳朵','ear'],['👃','鼻子','nose'],['👄','嘴巴','lips'],['🧠','大脑','brain'],
+  ['🐱','猫','cat'],['🐶','狗','dog'],['🐹','仓鼠','hamster'],['🐰','兔子','rabbit'],['🦊','狐狸','fox'],
+  ['🐻','熊','bear'],['🐼','熊猫','panda'],['🐨','考拉','koala'],['🐯','老虎','tiger'],['🦁','狮子','lion'],
+  ['🐮','牛','cow'],['🐷','猪','pig'],['🐸','青蛙','frog'],['🐵','猴子','monkey'],['🐔','鸡','chicken'],
+  ['🐧','企鹅','penguin'],['🐦','鸟','bird'],['🦅','鹰','eagle'],['🦉','猫头鹰','owl'],['🐢','乌龟','turtle'],
+  ['🐍','蛇','snake'],['🐉','龙','dragon'],['🐳','鲸鱼','whale'],['🐬','海豚','dolphin'],['🐟','鱼','fish'],
+  ['🦋','蝴蝶','butterfly'],['🐝','蜜蜂','bee'],['🐌','蜗牛','snail'],['🦄','独角兽','unicorn'],
+  ['🍎','苹果','apple'],['🍊','橘子','orange'],['🍋','柠檬','lemon'],['🍉','西瓜','watermelon'],['🍇','葡萄','grape'],
+  ['🍓','草莓','strawberry'],['🍑','桃子','peach'],['🍒','樱桃','cherry'],['🥑','牛油果','avocado'],['🥕','胡萝卜','carrot'],
+  ['🌽','玉米','corn'],['🍕','披萨','pizza'],['🍔','汉堡','burger'],['🍟','薯条','fries'],['🌭','热狗','hotdog'],
+  ['🍜','面条','noodle'],['🍣','寿司','sushi'],['🍦','冰淇淋','icecream'],['🍰','蛋糕','cake'],['🍫','巧克力','chocolate'],
+  ['☕','咖啡','coffee'],['🍵','茶','tea'],['🍺','啤酒','beer'],['🥤','饮料','drink'],['🍷','红酒','wine'],
+  ['🌍','地球','earth'],['🌞','太阳','sun'],['🌙','月亮','moon'],['⭐','星星','star'],['☀️','晴天','sunny'],
+  ['🌈','彩虹','rainbow'],['☁️','云','cloud'],['⛈️','雷雨','storm'],['❄️','雪','snow'],['🔥','火','fire'],
+  ['💧','水滴','drop'],['🌊','海浪','wave'],['🌲','树','tree'],['🌹','玫瑰','rose'],['🌻','向日葵','sunflower'],
+  ['🌸','樱花','cherry blossom'],['🍀','四叶草','clover'],['🍁','枫叶','maple'],['🪐','土星','saturn'],['🚀','火箭','rocket'],
+  ['✈️','飞机','plane'],['🚗','汽车','car'],['🚕','出租车','taxi'],['🚌','公交','bus'],['🚄','高铁','train'],
+  ['🚲','自行车','bike'],['🏠','房子','house'],['🏢','大楼','office'],['🏫','学校','school'],['🏥','医院','hospital'],
+  ['🏪','便利店','store'],['⛽','加油站','fuel'],['🚦','红绿灯','traffic'],['📍','定位','pin'],['🗺️','地图','map'],
+  ['⚽','足球','soccer'],['🏀','篮球','basketball'],['🏈','橄榄球','football'],['⚾','棒球','baseball'],['🎾','网球','tennis'],
+  ['🏐','排球','volleyball'],['🏓','乒乓球','pingpong'],['🎱','台球','billiards'],['🏆','奖杯','trophy'],['🥇','金牌','gold'],
+  ['🥈','银牌','silver'],['🥉','铜牌','bronze'],['🎮','游戏机','game'],['🎯','靶心','target'],['🎲','骰子','dice'],
+  ['🎧','耳机','headphone'],['🎤','麦克风','mic'],['🎵','音符','music'],['🎸','吉他','guitar'],['🎹','钢琴','piano'],
+  ['🥁','鼓','drum'],['🎨','调色板','palette'],['🎬','拍板','clapper'],['🎭','面具','mask'],['🎪','马戏团','circus'],
+  ['💡','灯泡','bulb'],['🔑','钥匙','key'],['🔒','锁','lock'],['🔓','开锁','unlock'],['📱','手机','phone'],
+  ['💻','电脑','computer'],['🖥️','台式机','desktop'],['⌚','手表','watch'],['📷','相机','camera'],['🎥','摄像机','video'],
+  ['📞','电话','telephone'],['📧','邮件','email'],['📮','邮筒','mailbox'],['📝','备忘录','memo'],['📌','图钉','pushpin'],
+  ['📎','回形针','paperclip'],['📏','尺子','ruler'],['✂️','剪刀','scissors'],['🖊️','笔','pen'],['📚','书','book'],
+  ['📖','打开的书','book open'],['📰','报纸','news'],['📊','图表','chart'],['📈','上升','trend up'],['📉','下降','trend down'],
+  ['💵','美元','dollar'],['💴','日元','yen'],['💶','欧元','euro'],['💷','英镑','pound'],['💰','钱袋','money'],
+  ['💳','银行卡','card'],['🧧','红包','red envelope'],['🎁','礼物','gift'],['🎈','气球','balloon'],['🎊','彩带','confetti'],
+  ['🎉','派对','party'],['🕯️','蜡烛','candle'],['🔔','铃铛','bell'],['⏰','闹钟','alarm'],['📅','日历','calendar'],
+  ['✅','对勾','check'],['❌','叉','cross'],['⚠️','警告','warning'],['❓','问号','question'],['❗','感叹号','exclamation'],
+  ['💯','满分','100'],['💤','睡觉ZZZ','zzz'],['💔','心碎','broken heart'],['❤️','红心','heart'],['🧡','橙心','orange heart'],
+  ['💛','黄心','yellow heart'],['💚','绿心','green heart'],['💙','蓝心','blue heart'],['💜','紫心','purple heart'],['🖤','黑心','black heart'],
+  ['💖','闪心','sparkle heart'],['💥','爆炸','boom'],['✨','闪光','sparkles'],['🌟','闪耀','glowing star'],['💫','流星','dizzy'],
+  ['⚡','闪电','zap'],['💨','风','dash'],['🕳️','黑洞','hole'],['🧊','冰块','ice']
+];
+var emCats = ['全部','笑脸','动物','食物','自然','出行','运动','物品','符号'];
+function emInit() {
+  const cats = document.getElementById('em-cats');
+  if (cats && !cats.innerHTML) {
+    cats.innerHTML = emCats.map(function (c) {
+      return '<button class="btn btn-secondary" onclick="emCat(\'' + c + '\')" data-emcat="' + c + '" style="font-size:13px;' + (c === '全部' ? 'background:var(--accent,#6366f1);color:#fff;' : '') + '">' + c + '</button>';
+    }).join('');
+  }
+  emRender();
+}
+var emCurCat = '全部';
+function emCat(c) {
+  emCurCat = c;
+  const btns = document.querySelectorAll('[data-emcat]');
+  btns.forEach(function (b) {
+    if (b.getAttribute('data-emcat') === c) b.style.background = 'var(--accent,#6366f1)';
+    else b.style.background = '';
+  });
+  emRender();
+}
+function emTag(emoji) {
+  // 返回分类标签
+  const list = [['笑脸','😀😁😂🤣😊😍😘😜🤔😎🥳😢😭😡😱😴🤒'],
+    ['动物','🐱🐶🐹🐰🦊🐻🐼🐨🐯🦁🐮🐷🐸🐵🐔🐧🐦🦅🦉🐢🐍🐉🐳🐬🐟🦋🐝🐌🦄'],
+    ['食物','🍎🍊🍋🍉🍇🍓🍑🍒🥑🥕🌽🍕🍔🍟🌭🍜🍣🍦🍰🍫☕🍵🍺🥤🍷'],
+    ['自然','🌍🌞🌙⭐☀️🌈☁️⛈️❄️🔥💧🌊🌲🌹🌻🌸🍀🍁🪐'],
+    ['出行','🚀✈️🚗🚕🚌🚄🚲🏠🏢🏫🏥🏪⛽🚦📍🗺️'],
+    ['运动','⚽🏀🏈⚾🎾🏐🏓🎱🏆🥇🥈🥉'],
+    ['物品','🎮🎯🎲🎧🎤🎵🎸🎹🥁🎨🎬🎭🎪💡🔑🔒🔓📱💻🖥️⌚📷🎥📞📧📮📝📌📎📏✂️🖊️📚📖📰📊📈📉💵💴💶💷💰💳🧧🎁🎈🎊🎉🕯️🔔⏰📅'],
+    ['符号','✅❌⚠️❓❗💯💤💔❤️🧡💛💚💙💜🖤💖💥✨🌟💫⚡💨🕳️🧊']];
+  for (let i = 0; i < list.length; i++) {
+    if (list[i][1].indexOf(emoji) >= 0) return list[i][0];
+  }
+  return '笑脸';
+}
+function emRender() {
+  const grid = document.getElementById('em-grid');
+  if (!grid) return;
+  const q = document.getElementById('em-search') ? document.getElementById('em-search').value.trim().toLowerCase() : '';
+  let list = emData;
+  if (emCurCat !== '全部') list = list.filter(function (e) { return emTag(e[0]) === emCurCat; });
+  if (q) list = list.filter(function (e) { return e[0].indexOf(q) >= 0 || e[1].indexOf(q) >= 0 || e[2].indexOf(q) >= 0; });
+  if (list.length === 0) {
+    grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;color:var(--text-light);padding:30px;">没有找到匹配的表情</div>';
+    return;
+  }
+  grid.innerHTML = list.map(function (e) {
+    return '<div title="' + e[1] + '" onclick="emCopy(\'' + e[0] + '\')" style="font-size:30px;text-align:center;padding:9px 4px;border:1px solid var(--border,#e2e8f0);border-radius:8px;cursor:pointer;background:var(--card-bg,#fff);transition:all .15s;" onmouseover="this.style.transform=\'scale(1.12)\';this.style.borderColor=\'var(--accent,#6366f1)\';" onmouseout="this.style.transform=\'none\';this.style.borderColor=\'var(--border,#e2e8f0)\';">' + e[0] + '</div>';
+  }).join('');
+}
+function emCopy(e) {
+  navigator.clipboard.writeText(e).then(function () {
+    showToast('✅ 已复制 ' + e);
+  }).catch(function () {
+    const ta = document.createElement('textarea');
+    ta.value = e; document.body.appendChild(ta); ta.select();
+    document.execCommand('copy'); document.body.removeChild(ta);
+    showToast('✅ 已复制 ' + e);
+  });
+}
+
+// ============================================================
+// 身份证号码校验 id-card-checker (ic*)
+// ============================================================
+var icProvMap = {11:'北京',12:'天津',13:'河北',14:'山西',15:'内蒙古',21:'辽宁',22:'吉林',23:'黑龙江',31:'上海',32:'江苏',33:'浙江',34:'安徽',35:'福建',36:'江西',37:'山东',41:'河南',42:'湖北',43:'湖南',44:'广东',45:'广西',46:'海南',50:'重庆',51:'四川',52:'贵州',53:'云南',54:'西藏',61:'陕西',62:'甘肃',63:'青海',64:'宁夏',65:'新疆'};
+var icCityMap = {'1101':'北京市辖区','1201':'天津市辖区','1301':'石家庄市','1302':'唐山市','1303':'秦皇岛市','1401':'太原市','1501':'呼和浩特市','2101':'沈阳市','2102':'大连市','2201':'长春市','2301':'哈尔滨市','3101':'上海市辖区','3201':'南京市','3202':'无锡市','3205':'苏州市','3301':'杭州市','3302':'宁波市','3501':'福州市','3502':'厦门市','3601':'南昌市','3701':'济南市','3702':'青岛市','4101':'郑州市','4201':'武汉市','4301':'长沙市','4401':'广州市','4403':'深圳市','4404':'珠海市','4501':'南宁市','4601':'海口市','5001':'重庆市辖区','5101':'成都市','5201':'贵阳市','5301':'昆明市','5401':'拉萨市','6101':'西安市','6201':'兰州市','6301':'西宁市','6401':'银川市','6501':'乌鲁木齐市'};
+function icInit() {
+  const el = document.getElementById('ic-input');
+  if (el) el.addEventListener('keydown', function (e) { if (e.key === 'Enter') icCheck(); });
+}
+function icSum(id) {
+  const w = [7,9,10,5,8,4,2,1,6,3,7,9,10,5,8,4,2];
+  let s = 0;
+  for (let i = 0; i < 17; i++) s += parseInt(id[i], 10) * w[i];
+  return s % 11;
+}
+function icCheckCode(id) {
+  const map = '10X98765432';
+  return map[icSum(id)];
+}
+function icCheck() {
+  const el = document.getElementById('ic-input');
+  const out = document.getElementById('ic-result');
+  if (!el || !out) return;
+  const id = el.value.trim();
+  let html = '', ok = true;
+  const add = function (label, val, err) {
+    html += '<div>' + label + '：<strong style="' + (err ? 'color:#dc2626;' : 'color:#10b981;') + '">' + val + '</strong></div>';
+    if (err) ok = false;
+  };
+  if (!/^\d{17}[\dXx]$/.test(id)) {
+    out.innerHTML = '<div style="color:#dc2626;">❌ 格式错误：必须是 18 位，前 17 位数字，最后一位数字或 X</div>';
+    return;
+  }
+  const norm = id.toUpperCase();
+  // 地区
+  const prov = icProvMap[norm.substr(0, 2)];
+  const city6 = icCityMap[norm.substr(0, 4)];
+  add('地区', (prov || '未知省份') + (city6 ? ' · ' + city6.replace(/市辖区/g, '') : ''));
+  if (!prov) ok = false;
+  // 出生日期
+  const y = parseInt(norm.substr(6, 4), 10), m = parseInt(norm.substr(10, 2), 10), d = parseInt(norm.substr(12, 2), 10);
+  const dt = new Date(y, m - 1, d);
+  const dateOk = dt.getFullYear() === y && dt.getMonth() === m - 1 && dt.getDate() === d && y >= 1900 && y <= new Date().getFullYear();
+  if (dateOk) {
+    const now = new Date();
+    let age = now.getFullYear() - y;
+    if (now.getMonth() + 1 < m || (now.getMonth() + 1 === m && now.getDate() < d)) age--;
+    add('出生日期', y + ' 年 ' + String(m).padStart(2, '0') + ' 月 ' + String(d).padStart(2, '0') + ' 日（' + Math.max(age, 0) + ' 岁）');
+  } else {
+    add('出生日期', '非法日期', true);
+  }
+  // 性别
+  const gender = parseInt(norm[16], 10) % 2 === 1 ? '男' : '女';
+  add('性别', gender);
+  // 校验码
+  const expected = icCheckCode(norm);
+  const actual = norm[17];
+  if (expected === actual) {
+    add('校验码', actual + '（通过 ✅）');
+  } else {
+    add('校验码', '应为 ' + expected + '，实际 ' + actual + '（错误 ❌）', true);
+  }
+  // 结果
+  const head = ok ? '<div style="font-size:16px;font-weight:700;color:#10b981;margin-bottom:6px;">✅ 身份证号码合法</div>' : '<div style="font-size:16px;font-weight:700;color:#dc2626;margin-bottom:6px;">❌ 身份证号码存在问题</div>';
+  out.innerHTML = head + html;
+}
+function icGen(female) {
+  const el = document.getElementById('ic-input');
+  if (!el) return;
+  const provKeys = Object.keys(icProvMap);
+  const p = icProvMap[provKeys[Math.floor(Math.random() * provKeys.length)]];
+  let provCode;
+  for (const k in icProvMap) { if (icProvMap[k] === p) { provCode = k; break; } }
+  // 随机市区码（00-99）
+  const cityCode = provCode + '0' + String(Math.floor(Math.random() * 9));
+  const y = 1965 + Math.floor(Math.random() * 45);
+  const m = Math.floor(Math.random() * 12) + 1;
+  const d = Math.floor(Math.random() * 28) + 1;
+  const birth = String(y) + String(m).padStart(2, '0') + String(d).padStart(2, '0');
+  // 顺序码：奇数男/偶数女
+  const seq = String(Math.floor(Math.random() * 900) + 100);
+  let seqFinal = seq;
+  const lastDigit = parseInt(seq[2], 10);
+  if (female && lastDigit % 2 === 1) seqFinal = seq.substr(0, 2) + (lastDigit === 9 ? 8 : lastDigit + 1);
+  if (!female && lastDigit % 2 === 0) seqFinal = seq.substr(0, 2) + (lastDigit === 0 ? 1 : lastDigit - 1);
+  const base = cityCode + birth + seqFinal;
+  const code = icCheckCode(base);
+  el.value = base + code;
+  icCheck();
+}
+function icCopy() {
+  const el = document.getElementById('ic-input');
+  if (!el || !el.value) { alert('请先生成或输入号码'); return; }
+  navigator.clipboard.writeText(el.value).then(function () { showToast('✅ 已复制身份证号'); }).catch(function () {
+    el.select();
+    document.execCommand('copy');
+    showToast('✅ 已复制身份证号');
+  });
 }
