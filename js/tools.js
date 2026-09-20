@@ -6780,6 +6780,65 @@ greet('世界');</textarea>
       </div>
     `,
     handler: () => { setTimeout(icInit, 50); }
+  },
+  {
+    id: 'seo-preview',
+    cat: 'dev',
+    icon: '🔎',
+    name: 'SEO 标题预览器',
+    desc: '输入标题/描述/URL 实时预览搜索引擎结果样式，自动检查字数是否被截断（SEO 优化必备）',
+    html: `
+      <div class="tool-card">
+        <p style="color:var(--text-light);font-size:13px;margin-bottom:10px;">🔎 模拟 Google / 百度搜索结果页展示效果：实时预览标题、链接与描述，自动提示标题长度（60 字符内最佳）与描述长度（150-160 字符内最佳），避免发布后标题被省略号截断（灵感来源于 SEO 付费工具如 Mangools、Screaming Frog 的 SERP 预览功能）。</p>
+        <div style="display:grid;grid-template-columns:1fr;gap:12px;">
+          <div>
+            <div style="font-size:12px;color:var(--text-light);margin-bottom:4px;">SEO 标题</div>
+            <input id="sp-title" type="text" value="免费在线工具集 - ToolBox 工具箱" oninput="spRender()" maxlength="120" style="width:100%;padding:9px 12px;border:1px solid var(--border,#ddd);border-radius:8px;font-size:14px;background:var(--card-bg,#fff);color:var(--text);box-sizing:border-box;">
+          </div>
+          <div>
+            <div style="font-size:12px;color:var(--text-light);margin-bottom:4px;">页面 URL</div>
+            <input id="sp-url" type="text" value="https://toolai.ccwu.cc/tools.html" oninput="spRender()" style="width:100%;padding:9px 12px;border:1px solid var(--border,#ddd);border-radius:8px;font-size:14px;background:var(--card-bg,#fff);color:var(--text);box-sizing:border-box;">
+          </div>
+          <div>
+            <div style="font-size:12px;color:var(--text-light);margin-bottom:4px;">Meta 描述</div>
+            <textarea id="sp-desc" rows="3" oninput="spRender()" style="width:100%;padding:9px 12px;border:1px solid var(--border,#ddd);border-radius:8px;font-size:13px;background:var(--card-bg,#fff);color:var(--text);box-sizing:border-box;resize:vertical;">一个完全免费的在线工具箱，提供文字、图片、PDF、开发者等各类实用小工具，无需注册即开即用。</textarea>
+          </div>
+        </div>
+        <div id="sp-lengths" style="display:flex;gap:16px;margin:12px 0;font-size:12px;flex-wrap:wrap;"></div>
+        <div style="background:#fff;border:1px solid #dadce0;border-radius:12px;padding:20px 22px;margin:14px 0;">
+          <div id="sp-preview-title" style="color:#1a0dab;font-size:20px;line-height:1.3;cursor:pointer;"></div>
+          <div id="sp-preview-url" style="color:#006621;font-size:14px;margin:4px 0;word-break:break-all;"></div>
+          <div id="sp-preview-desc" style="color:#545454;font-size:14px;line-height:1.55;margin-top:2px;"></div>
+        </div>
+        <div id="sp-tip" style="margin-top:8px;font-size:12px;color:var(--text-light);">💡 参考标准：标题建议 ≤60 字符（中文约 30 字），描述建议 150-160 字符。超长会被搜索引擎截断显示省略号。</div>
+      </div>
+    `,
+    handler: () => { setTimeout(spInit, 50); }
+  },
+  {
+    id: 'sudoku-generator',
+    cat: 'fun',
+    icon: '🧩',
+    name: '数独生成器',
+    desc: '三档难度生成数独谜题，在线填数+错误提示+一键查看答案（逻辑推理训练）',
+    html: `
+      <div class="tool-card">
+        <p style="color:var(--text-light);font-size:13px;margin-bottom:10px;">🧩 一键生成 9×9 数独谜题（简单/中等/困难三档），点击格子填入数字，自动提示填写错误，卡住可看答案。锻炼逻辑推理，碎片时间动动脑（灵感来源于数独付费应用与报纸数独专栏）。</p>
+        <div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;align-items:center;">
+          <button class="btn btn-primary" onclick="sdGen('easy')">😊 简单</button>
+          <button class="btn btn-primary" onclick="sdGen('medium')" style="background:#f59e0b;">🙂 中等</button>
+          <button class="btn btn-primary" onclick="sdGen('hard')" style="background:#ef4444;">😈 困难</button>
+          <button class="btn btn-secondary" onclick="sdCheck()">✅ 检查</button>
+          <button class="btn btn-secondary" onclick="sdHint()">💡 提示一格</button>
+          <button class="btn btn-secondary" onclick="sdAnswer()">👁️ 查看答案</button>
+          <button class="btn btn-secondary" onclick="sdClear()">🧹 清空填写</button>
+        </div>
+        <div id="sd-board" style="display:grid;grid-template-columns:repeat(9,1fr);gap:2px;max-width:480px;margin:0 auto;background:#cbd5e1;border:3px solid #334155;border-radius:6px;padding:2px;"></div>
+        <div id="sd-status" style="text-align:center;margin-top:12px;font-size:14px;"></div>
+        <div id="sd-tip" style="margin-top:8px;font-size:12px;color:var(--text-light);text-align:center;">💡 每行、每列、每个 3×3 宫格内数字 1-9 各出现一次。点击格子后从下方数字面板选择。</div>
+      </div>
+    `,
+    handler: () => { setTimeout(sdInit, 50); }
   }
 ];
 
@@ -8421,7 +8480,7 @@ function dpCopyText() {
 // ============================================================
 const CATEGORIES = [
   { id: 'text', icon: '✏️', name: '文本工具', desc: '字数统计、简繁转换、摩斯密码、文本转语音、文本对比、电子名片生成器、英文语法检查、占位文本生成' },
-  { id: 'dev', icon: '💻', name: '开发者工具', desc: 'JSON格式化、YAML/JSON互转、二维码生成、二维码美化、条形码生成、Favicon图标生成、正则测试、Markdown、IP查询、子网计算、思维导图、图表生成、代码图片生成、表格数据转换、SQL格式化、代码压缩器、假数据生成器、Cron表达式生成器、HTTP状态码速查' },
+  { id: 'dev', icon: '💻', name: '开发者工具', desc: 'JSON格式化、YAML/JSON互转、二维码生成、二维码美化、条形码生成、Favicon图标生成、正则测试、Markdown、IP查询、子网计算、思维导图、图表生成、代码图片生成、表格数据转换、SQL格式化、代码压缩器、假数据生成器、Cron表达式生成器、HTTP状态码速查、SEO标题预览' },
   { id: 'image', icon: '🖼️', name: '图片处理', desc: '去背景换底色、批量压缩、加水印、长图拼接、格式转换、裁剪、异形裁剪、马赛克打码、双色调滤镜、图片转字符画、照片卡通化、OCR、印章制作、九宫格切图、文字转手写体、表情包、社交媒体图片尺寸调整、艺术效果、像素画、设备样机、图片高清放大、图片转线稿、渐变背景、文字特效、拼贴画、图片相框、颜色盲区模拟、海报设计器、老照片修复上色、图片EXIF信息、占位图生成器' },
   { id: 'document', icon: '📄', name: '文档转换', desc: '图片转PDF、PDF转图片、Word解析、Excel转PDF、PDF合并、PDF拆分、简历生成、电子签名、表单制作、邮件签名、发票/收据生成器、证书生成器' },
   { id: 'convert', icon: '🔄', name: '转换工具', desc: '单位换算、进制转换、函数绘图' },
@@ -8432,7 +8491,7 @@ const CATEGORIES = [
   { id: 'ai', icon: '🤖', name: 'AI工具', desc: 'AI聊天、AI Agent安装、免费AI工具推荐' },
   { id: 'voice', icon: '🗣️', name: '群众心声', desc: '提交工具建议、投票排行榜、前3名自动实现' },
   { id: 'lottery', icon: '🎰', name: '彩票工具', desc: '双色球、大乐透、福彩3D、快乐8、排列三…在线过滤缩水、选号、计算器' },
-  { id: 'fun', icon: '🎪', name: '趣味工具', desc: '表情包生成、决策转盘、抽奖抽签、词云生成、涂鸦画板、Emoji表情速查、娱乐好玩' },
+  { id: 'fun', icon: '🎪', name: '趣味工具', desc: '表情包生成、决策转盘、抽奖抽签、词云生成、涂鸦画板、Emoji表情速查、数独生成器、娱乐好玩' },
   { id: 'finance', icon: '💰', name: '财务工具', desc: '家庭记账本、收支统计、月度汇总' },
   { id: 'edu', icon: '📚', name: '教育资源', desc: '电子教材在线阅读、学习资源导航、元素周期表、习惯打卡、打字速度测试' }
 ];
@@ -17531,4 +17590,197 @@ function icCopy() {
     document.execCommand('copy');
     showToast('✅ 已复制身份证号');
   });
+}// ============================================================
+// SEO 标题预览器 seo-preview (sp*)
+// ============================================================
+function spInit() {
+  spRender();
+}
+function spRender() {
+  const title = document.getElementById('sp-title');
+  const url = document.getElementById('sp-url');
+  const desc = document.getElementById('sp-desc');
+  const pt = document.getElementById('sp-preview-title');
+  const pu = document.getElementById('sp-preview-url');
+  const pd = document.getElementById('sp-preview-desc');
+  const pl = document.getElementById('sp-lengths');
+  if (!title || !pt) return;
+  const t = title.value || '';
+  const u = url.value || '';
+  const d = desc ? desc.value : '';
+  // 预览（标题 60 字符截断）
+  const tLen = Array.from(t).length;
+  const shownT = tLen > 60 ? Array.from(t).slice(0, 60).join('') + '…' : t;
+  pt.textContent = shownT;
+  pu.textContent = u;
+  const dLen = Array.from(d).length;
+  const shownD = dLen > 160 ? Array.from(d).slice(0, 160).join('') + '…' : d;
+  pd.textContent = shownD;
+  // 长度提示
+  const status = function (len, good, max) {
+    if (len === 0) return '<span style="color:#94a3b8;">0 字符（未填写）</span>';
+    const c = len <= good ? '#10b981' : (len <= max ? '#f59e0b' : '#ef4444');
+    return '<span style="color:' + c + ';">' + len + ' 字符' + (len > max ? ' ⚠️ 超长会被截断' : (len > good ? ' ⚠️ 偏长' : ' ✅ 良好')) + '</span>';
+  };
+  pl.innerHTML =
+    '<div>标题：' + status(tLen, 30, 60) + '</div>' +
+    '<div>描述：' + status(dLen, 120, 160) + '</div>';
+}
+function spCopyPreview() {
+  const pt = document.getElementById('sp-preview-title');
+  const pu = document.getElementById('sp-preview-url');
+  const pd = document.getElementById('sp-preview-desc');
+  if (!pt || !pu || !pd) return;
+  const text = pt.textContent + '\n' + pu.textContent + '\n' + pd.textContent;
+  navigator.clipboard.writeText(text).then(function () { showToast('✅ 已复制预览文本'); }).catch(function () {});
+}
+
+// ============================================================
+// 数独生成器 sudoku-generator (sd*)
+// ============================================================
+var sdBoard = [], sdSolution = [], sdFixed = [], sdSelected = -1;
+function sdInit() {
+  sdGen('easy');
+}
+function sdGen(diff) {
+  // 生成完整解
+  sdSolution = sdSolve();
+  // 挖空数量
+  const holes = diff === 'easy' ? 36 : (diff === 'medium' ? 48 : 58);
+  sdFixed = [];
+  sdBoard = [];
+  for (let i = 0; i < 81; i++) {
+    sdFixed[i] = true;
+    sdBoard[i] = sdSolution[i];
+  }
+  // 随机挖空
+  const idxs = [];
+  for (let i = 0; i < 81; i++) idxs.push(i);
+  for (let i = idxs.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    const tmp = idxs[i]; idxs[i] = idxs[j]; idxs[j] = tmp;
+  }
+  for (let k = 0; k < holes; k++) {
+    const pos = idxs[k];
+    sdFixed[pos] = false;
+    sdBoard[pos] = 0;
+  }
+  sdSelected = -1;
+  sdRender();
+  sdStatus('🧩 谜题已生成' + (diff === 'easy' ? '（简单）' : diff === 'medium' ? '（中等）' : '（困难）') + '，开始推理吧！', '#10b981');
+}
+function sdSolve() {
+  // 用回溯生成完整解（随机）
+  const board = [];
+  for (let i = 0; i < 81; i++) board.push(0);
+  const cand = [];
+  for (let n = 1; n <= 9; n++) cand.push(n);
+  function ok(pos, val) {
+    const r = Math.floor(pos / 9), c = pos % 9;
+    for (let i = 0; i < 9; i++) {
+      if (board[r * 9 + i] === val) return false;
+      if (board[i * 9 + c] === val) return false;
+    }
+    const br = Math.floor(r / 3) * 3, bc = Math.floor(c / 3) * 3;
+    for (let i = 0; i < 3; i++) for (let j = 0; j < 3; j++) {
+      if (board[(br + i) * 9 + bc + j] === val) return false;
+    }
+    return true;
+  }
+  function fill(pos) {
+    if (pos >= 81) return true;
+    if (board[pos] !== 0) return fill(pos + 1);
+    const nums = cand.slice();
+    for (let i = nums.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      const t = nums[i]; nums[i] = nums[j]; nums[j] = t;
+    }
+    for (let i = 0; i < nums.length; i++) {
+      if (ok(pos, nums[i])) {
+        board[pos] = nums[i];
+        if (fill(pos + 1)) return true;
+        board[pos] = 0;
+      }
+    }
+    return false;
+  }
+  fill(0);
+  return board;
+}
+function sdRender() {
+  const board = document.getElementById('sd-board');
+  if (!board) return;
+  let html = '';
+  for (let r = 0; r < 9; r++) {
+    for (let c = 0; c < 9; c++) {
+      const pos = r * 9 + c;
+      const val = sdBoard[pos] || '';
+      const fixed = sdFixed[pos];
+      // 宫格粗边框
+      const isRight = c === 2 || c === 5;
+      const isBottom = r === 2 || r === 5;
+      const style = 'width:100%;aspect-ratio:1;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:' + (fixed ? '700' : '500') + ';cursor:' + (fixed ? 'default' : 'pointer') + ';background:' + (pos === sdSelected ? '#c7d2fe' : (fixed ? '#e2e8f0' : '#fff')) + ';color:' + (fixed ? '#0f172a' : '#1d4ed8') + ';border-right:' + (isRight ? '3px solid #334155' : '1px solid #cbd5e1') + ';border-bottom:' + (isBottom ? '3px solid #334155' : '1px solid #cbd5e1') + ';';
+      html += '<div data-pos="' + pos + '" onclick="sdPick(' + pos + ')" style="' + style + '">' + val + '</div>';
+    }
+  }
+  // 数字面板
+  for (let n = 1; n <= 9; n++) {
+    html += '<div onclick="sdFill(' + n + ')" style="grid-column:auto;background:#eef2ff;border:1px solid #c7d2fe;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;color:#4f46e5;cursor:pointer;aspect-ratio:1;" onmouseover="this.style.background=\'#e0e7ff\';" onmouseout="this.style.background=\'#eef2ff\';">' + n + '</div>';
+  }
+  board.innerHTML = html;
+}
+function sdPick(pos) {
+  if (sdFixed[pos]) return;
+  sdSelected = pos;
+  sdRender();
+}
+function sdFill(n) {
+  if (sdSelected < 0 || sdFixed[sdSelected]) { sdStatus('👆 先点击一个可填的空格', '#f59e0b'); return; }
+  sdBoard[sdSelected] = n;
+  sdRender();
+}
+function sdCheck() {
+  let wrong = 0, empty = 0;
+  for (let i = 0; i < 81; i++) {
+    if (sdFixed[i]) continue;
+    if (sdBoard[i] === 0) empty++;
+    else if (sdBoard[i] !== sdSolution[i]) wrong++;
+  }
+  if (empty > 0) {
+    sdStatus('⏳ 还有 ' + empty + ' 格未填写，' + wrong + ' 格填写错误', wrong > 0 ? '#ef4444' : '#f59e0b');
+  } else if (wrong === 0) {
+    sdStatus('🎉 全部正确！太棒了！', '#10b981');
+  } else {
+    sdStatus('❌ 有 ' + wrong + ' 格填写错误，检查一下红色提示？', '#ef4444');
+  }
+}
+function sdHint() {
+  // 填一格当前为空的正确值
+  const empty = [];
+  for (let i = 0; i < 81; i++) {
+    if (!sdFixed[i] && sdBoard[i] === 0) empty.push(i);
+  }
+  if (empty.length === 0) { sdStatus('👍 没有空格需要提示了', '#10b981'); return; }
+  const pos = empty[Math.floor(Math.random() * empty.length)];
+  sdBoard[pos] = sdSolution[pos];
+  sdRender();
+  sdStatus('💡 已为你填入一格', '#6366f1');
+}
+function sdAnswer() {
+  for (let i = 0; i < 81; i++) {
+    if (!sdFixed[i]) sdBoard[i] = sdSolution[i];
+  }
+  sdRender();
+  sdStatus('👁️ 答案已展示', '#6366f1');
+}
+function sdClear() {
+  for (let i = 0; i < 81; i++) {
+    if (!sdFixed[i]) sdBoard[i] = 0;
+  }
+  sdRender();
+  sdStatus('🧹 已清空填写内容', '#94a3b8');
+}
+function sdStatus(msg, color) {
+  const el = document.getElementById('sd-status');
+  if (el) el.innerHTML = '<span style="color:' + color + ';font-weight:600;">' + msg + '</span>';
 }
