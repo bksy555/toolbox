@@ -7877,14 +7877,15 @@
       6,
       7
     ],
-    "drawNum": null,
-    "result": null,
-    "updatedAt": null,
+    "drawNum": "893",
+    "result": "❌",
+    "updatedAt": "2026-09-20T14:03:28.963Z",
     "coldDans": [
       4,
       8,
       3
-    ]
+    ],
+    "coldResult": "✅"
   },
   "2026254": {
     "period": "2026254",
