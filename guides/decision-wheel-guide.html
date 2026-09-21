@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>在线决策转盘：3步做选择困难症神器（抽奖抽签都行） - ToolBox 工具箱指南</title>
+  <meta name="description" content="图文详解在线决策转盘的完整步骤：添加选项、点击转盘、看结果。吃饭选择、抽奖抽签、家务分配、活动点名全支持，免费在线使用，选择困难症必备。">
+  <meta name="keywords" content="决策转盘,转盘抽奖,在线抽签,随机决定,选择困难症,抽奖转盘,转盘生成器,抽签工具">
+  <meta name="author" content="ToolBox">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://toolai.ccwu.cc/guides/decision-wheel-guide.html">
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    :root {
+      --bg: #0f0f1a;
+      --bg-card: #1a1a2e;
+      --text: #e0e0e0;
+      --text-light: #8888aa;
+      --border: #2a2a44;
+      --accent: #6366f1;
+      --accent-hover: #4f46e5;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Noto Sans SC', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      margin: 0;
+      line-height: 1.8;
+    }
+    .guide-header {
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+      border-bottom: 1px solid var(--border);
+      padding: 20px 0;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(10px);
+    }
+    .guide-header-inner {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 0 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .guide-header a {
+      color: var(--accent);
+      text-decoration: none;
+      font-size: 14px;
+    }
+    .guide-header a:hover { color: var(--accent-hover); }
+    .guide-container {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 40px 20px 80px;
+    }
+    .guide-breadcrumb {
+      font-size: 13px;
+      color: var(--text-light);
+      margin-bottom: 20px;
+    }
+    .guide-breadcrumb a { color: var(--accent); text-decoration: none; }
+    .guide-breadcrumb a:hover { text-decoration: underline; }
+    h1 {
+      font-size: 32px;
+      font-weight: 700;
+      margin: 0 0 10px;
+      line-height: 1.3;
+      background: linear-gradient(135deg, #e0e0e0, #a78bfa);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .guide-meta {
+      font-size: 13px;
+      color: var(--text-light);
+      margin-bottom: 30px;
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .guide-meta span { display: flex; align-items: center; gap: 4px; }
+    h2 {
+      font-size: 22px;
+      font-weight: 600;
+      margin: 40px 0 16px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border);
+      color: #e0e0e0;
+    }
+    h3 {
+      font-size: 18px;
+      font-weight: 600;
+      margin: 28px 0 12px;
+      color: #ccc;
+    }
+    p { margin: 0 0 16px; color: #ccc; }
+    .guide-step {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px;
+      margin: 24px 0;
+      position: relative;
+    }
+    .guide-step-number {
+      position: absolute;
+      top: -12px;
+      left: 20px;
+      background: var(--accent);
+      color: #fff;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: 700;
+    }
+    .guide-step h3 { margin-top: 0; }
+    .guide-img {
+      max-width: 100%;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      margin: 16px 0;
+      display: block;
+    }
+    .guide-img-caption {
+      text-align: center;
+      font-size: 13px;
+      color: var(--text-light);
+      margin: 4px 0 16px;
+    }
+    .guide-tip {
+      background: rgba(99,102,241,0.1);
+      border-left: 4px solid var(--accent);
+      padding: 12px 16px;
+      border-radius: 0 8px 8px 0;
+      margin: 16px 0;
+      font-size: 14px;
+      color: #ccc;
+    }
+    .guide-tip strong { color: #a78bfa; }
+    .guide-gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 16px;
+      margin: 16px 0;
+    }
+    .guide-gallery-item {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+      text-align: center;
+    }
+    .guide-gallery-item img { width: 100%; display: block; }
+    .guide-gallery-item .label {
+      padding: 8px;
+      font-size: 13px;
+      color: var(--text-light);
+    }
+    .guide-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16px 0;
+      font-size: 14px;
+    }
+    .guide-table th, .guide-table td {
+      border: 1px solid var(--border);
+      padding: 10px 14px;
+      text-align: left;
+    }
+    .guide-table th { background: var(--bg-card); color: #e0e0e0; font-weight: 600; }
+    .guide-table td { color: #ccc; }
+    .guide-cta {
+      text-align: center;
+      background: linear-gradient(135deg, #1a1a2e, #16213e);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 32px;
+      margin: 40px 0;
+    }
+    .guide-cta p { font-size: 16px; margin-bottom: 20px; }
+    .guide-cta .btn {
+      display: inline-block;
+      background: linear-gradient(135deg, #6366f1, #8b5cf6);
+      color: #fff;
+      padding: 12px 32px;
+      border-radius: 30px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 16px;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .guide-cta .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(99,102,241,0.3); }
+    .footer-nav {
+      margin-top: 40px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      font-size: 14px;
+    }
+    .footer-nav a { color: var(--accent); text-decoration: none; }
+    .footer-nav a:hover { text-decoration: underline; }
+    @media (max-width: 600px) {
+      h1 { font-size: 24px; }
+      .guide-container { padding: 20px 16px 60px; }
+      .guide-step { padding: 20px 16px; }
+      .guide-gallery { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <header class="guide-header">
+    <div class="guide-header-inner">
+      <a href="https://toolai.ccwu.cc/">🧰 ToolBox 首页</a>
+      <a href="../index.html#guides">📖 工具箱指南</a>
+    </div>
+  </header>
+
+  <div class="guide-container">
+    <!-- 面包屑 -->
+    <div class="guide-breadcrumb">
+      <a href="https://toolai.ccwu.cc/">首页</a> / <a href="../index.html#guides">工具箱指南</a> / 在线决策转盘
+    </div>
+
+    <h1>在线决策转盘：3步做选择困难症神器</h1>
+
+    <div class="guide-meta">
+      <span>📅 2026-09-21</span>
+      <span>✏️ ToolBox 编辑部</span>
+      <span>📖 阅读约 3 分钟</span>
+    </div>
+
+    <p>中午吃什么？周末去哪玩？今晚谁洗碗？年终抽奖谁来中？——生活中总有一些"选择困难"时刻，纠结半天不如转一下。</p>
+
+    <p><strong>在线决策转盘</strong> 就是为这些时刻准备的：把选项填进去，点一下转盘，答案立刻揭晓。支持吃饭选择、抽奖抽签、家务分配、活动点名等各种玩法，全部在浏览器本地运行，免费无限制。</p>
+
+    <!-- ====== 第一步 ====== -->
+    <div class="guide-step">
+      <div class="guide-step-number">1</div>
+      <h3>打开决策转盘，添加选项</h3>
+      <p>进入 ToolBox 首页，点击「趣味工具」分类，找到「决策转盘」；或者点击下方按钮快速进入。</p>
+      <div style="text-align:center;margin:16px 0;">
+        <a href="https://toolai.ccwu.cc/" class="guide-cta-btn" style="display:inline-block;background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff;padding:10px 24px;border-radius:30px;text-decoration:none;font-weight:600;font-size:15px;" onclick="alert('请先回到首页，点击「趣味工具」分类找到「决策转盘」工具')">🚀 打开决策转盘</a>
+      </div>
+      <p>单个添加：在「添加选项」输入框填一个选项，点「➕ 添加」；批量添加更高效：在下方文本框里每行写一个选项，点「📋 批量导入」即可全部加入。</p>
+      <img src="images/dw-step1-options.png" alt="决策转盘 - 批量导入5个选项" class="guide-img">
+      <div class="guide-img-caption">▲ 批量导入"吃火锅/吃烤串/吃面条/点外卖/自己做饭"后，转盘自动分成 5 个彩色扇区</div>
+      <div class="guide-tip">
+        <strong>💡 小技巧：</strong> 选项建议 2-8 个效果最好。超过 8 个扇区会变窄，文字显示会精简。选项也可以随时点 ✕ 删除或一键清空重来。
+      </div>
+    </div>
+
+    <!-- ====== 第二步 ====== -->
+    <div class="guide-step">
+      <div class="guide-step-number">2</div>
+      <h3>点击转盘，开始转动</h3>
+      <p>转盘准备好后，直接点击彩色转盘本身（或等指针停在顶部），它会加速旋转再缓缓停下，转盘动画约 3 秒，紧张感拉满。</p>
+      <p>转盘每个扇区颜色自动分配，指针固定在顶部——转到哪格全凭运气，公平公正。</p>
+    </div>
+
+    <!-- ====== 第三步 ====== -->
+    <div class="guide-step">
+      <div class="guide-step-number">3</div>
+      <h3>查看结果，开始行动</h3>
+      <p>转盘停下后，结果会以大字显示在转盘下方，同时弹出提示——今天吃火锅还是点外卖，答案当场揭晓！</p>
+      <img src="images/dw-step2-result.png" alt="决策转盘 - 转动结果" class="guide-img">
+      <div class="guide-img-caption">▲ 点击转盘后转动停止，结果高亮显示："🎉 结果：吃火锅"</div>
+      <p>换个场景也是一样的操作——比如用转盘决定家务分工：</p>
+      <img src="images/dw-step3-custom.png" alt="决策转盘 - 抽签场景" class="guide-img">
+      <div class="guide-img-caption">▲ 抽签玩法：选项换成"今天谁洗碗/做饭/拖地/倒垃圾/遛狗"，结果："今天谁拖地" 😄</div>
+    </div>
+
+    <!-- ====== 使用场景 ====== -->
+    <h2>🎯 决策转盘的 5 个实用场景</h2>
+
+    <p>转盘能用在哪？这里列举最常见的几个：</p>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin:20px 0;">
+      <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:16px;text-align:center;">
+        <div style="font-size:28px;margin-bottom:8px;">🍜</div>
+        <div style="font-weight:600;font-size:14px;margin-bottom:4px;">吃什么</div>
+        <div style="font-size:12px;color:var(--text-light);">午饭晚饭选择困难，转一下</div>
+      </div>
+      <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:16px;text-align:center;">
+        <div style="font-size:28px;margin-bottom:8px;">🧹</div>
+        <div style="font-weight:600;font-size:14px;margin-bottom:4px;">家务分配</div>
+        <div style="font-size:12px;color:var(--text-light);">谁洗碗谁拖地，转盘说了算</div>
+      </div>
+      <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:16px;text-align:center;">
+        <div style="font-size:28px;margin-bottom:8px;">🎁</div>
+        <div style="font-weight:600;font-size:14px;margin-bottom:4px;">抽奖抽签</div>
+        <div style="font-size:12px;color:var(--text-light);">年会、活动、直播抽奖公平随机</div>
+      </div>
+      <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:16px;text-align:center;">
+        <div style="font-size:28px;margin-bottom:8px;">🏫</div>
+        <div style="font-weight:600;font-size:14px;margin-bottom:4px;">课堂点名</div>
+        <div style="font-size:12px;color:var(--text-light);">老师随机点名回答问题，刺激</div>
+      </div>
+      <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:16px;text-align:center;">
+        <div style="font-size:28px;margin-bottom:8px;">🌍</div>
+        <div style="font-weight:600;font-size:14px;margin-bottom:4px;">周末去哪</div>
+        <div style="font-size:12px;color:var(--text-light);">电影/爬山/宅家，交给命运</div>
+      </div>
+    </div>
+
+    <!-- ====== 常见问题 ====== -->
+    <h2>❓ 常见问题</h2>
+
+    <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:20px;margin:16px 0;">
+      <p><strong>Q：最多能添加多少个选项？</strong></p>
+      <p>理论上没有限制，但建议 2-8 个效果最佳。超过 8 个后每个扇区会变窄，转盘上的文字会被精简显示。</p>
+    </div>
+    <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:20px;margin:16px 0;">
+      <p><strong>Q：结果是真随机吗？</strong></p>
+      <p>每次转动的角度由浏览器随机生成，旋转过程带物理缓动，无法人为控制结果，公平可靠。</p>
+    </div>
+    <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:20px;margin:16px 0;">
+      <p><strong>Q：能用于商业抽奖活动吗？</strong></p>
+      <p>可以。工具免费无限制，投影到大屏幕即可用于线下活动抽奖；本地方案不收集任何数据。</p>
+    </div>
+
+    <!-- ====== CTA ====== -->
+    <div class="guide-cta">
+      <p>📌 还在纠结？让转盘替你决定吧</p>
+      <a href="https://toolai.ccwu.cc/" class="btn">🎯 去转动转盘 →</a>
+    </div>
+
+    <!-- ====== 底部导航 ====== -->
+    <div class="footer-nav">
+      <a href="../index.html#guides">← 返回工具箱指南列表</a>
+      <a href="https://toolai.ccwu.cc/">🏠 回到首页</a>
+    </div>
+  </div>
+</body>
+</html>
