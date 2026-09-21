@@ -6839,6 +6839,51 @@ greet('世界');</textarea>
       </div>
     `,
     handler: () => { setTimeout(sdInit, 50); }
+  },
+  {
+    id: 'bmi-calculator',
+    cat: 'health',
+    icon: '⚖️',
+    name: 'BMI 指数计算器',
+    desc: '输入身高体重一键算 BMI，对照中国成人标准判断体型，附健康建议（健康管理必备）',
+    html: `
+      <div class="tool-card">
+        <p style="color:var(--text-light);font-size:13px;margin-bottom:10px;">⚖️ 输入身高和体重，一键计算 BMI（身体质量指数），对照中国成人参考标准判断体型，并给出体重管理建议。体检自查、健身监测、健康管理必备（灵感来源于各类健康 App 与医院体检报告，全程本地计算）。</p>
+        <div style="display:flex;gap:12px;margin-bottom:12px;flex-wrap:wrap;align-items:flex-end;">
+          <div>
+            <div style="font-size:12px;color:var(--text-light);margin-bottom:4px;">身高（cm）</div>
+            <input id="bm-height" type="number" min="80" max="250" value="170" placeholder="170" style="width:120px;padding:9px 12px;border:1px solid var(--border,#ddd);border-radius:8px;font-size:15px;background:var(--card-bg,#fff);color:var(--text);box-sizing:border-box;">
+          </div>
+          <div>
+            <div style="font-size:12px;color:var(--text-light);margin-bottom:4px;">体重（kg）</div>
+            <input id="bm-weight" type="number" min="20" max="300" value="65" placeholder="65" style="width:120px;padding:9px 12px;border:1px solid var(--border,#ddd);border-radius:8px;font-size:15px;background:var(--card-bg,#fff);color:var(--text);box-sizing:border-box;">
+          </div>
+          <button class="btn btn-primary" onclick="bmCalc()">🧮 计算 BMI</button>
+          <button class="btn btn-secondary" onclick="bmReset()">🧹 重置</button>
+        </div>
+        <div id="bm-result" style="border:1px solid var(--border,#e2e8f0);border-radius:12px;padding:18px 20px;"></div>
+        <div id="bm-scale" style="display:flex;margin:14px 0;border-radius:8px;overflow:hidden;height:14px;"></div>
+        <div id="bm-tip" style="margin-top:8px;font-size:12px;color:var(--text-light);">💡 中国成人 BMI 参考：<18.5 偏瘦，18.5-23.9 正常，24-27.9 超重，≥28 肥胖。BMI 仅作参考，运动员等肌肉量大者可能偏高。</div>
+      </div>
+    `,
+    handler: () => { setTimeout(bmInit, 50); }
+  },
+  {
+    id: 'keyboard-tester',
+    cat: 'dev',
+    icon: '⌨️',
+    name: '键盘按键测试',
+    desc: '按下任意按键实时检测是否触发，全键盘可视化测试，机械键盘验货必备',
+    html: `
+      <div class="tool-card">
+        <p style="color:var(--text-light);font-size:13px;margin-bottom:10px;">⌨️ 新键盘验货、机械键盘换轴后自检、排查按键失灵——按下按键看它是否亮起即可。支持字母/数字/功能键/方向键全键位可视化测试（灵感来源于 Keyboard Tester 等外设检测工具，纯本地运行）。</p>
+        <div style="text-align:center;margin-bottom:10px;font-size:13px;color:var(--text-light);">点击下方区域后开始敲击键盘，按下的键会亮起；松开后熄灭。</div>
+        <div id="kt-area" tabindex="0" style="outline:none;border:1px solid var(--border,#e2e8f0);border-radius:12px;padding:16px;background:var(--card-bg,#fff);cursor:text;"></div>
+        <div id="kt-status" style="margin-top:10px;font-size:14px;text-align:center;font-weight:600;"></div>
+        <div id="kt-tip" style="margin-top:8px;font-size:12px;color:var(--text-light);text-align:center;">💡 测试方法：点击测试区（或按 Tab 聚焦），逐个按下每个按键，确认都能亮起。常用检测键：WASD、方向键、Shift、Ctrl、空格、回车。</div>
+      </div>
+    `,
+    handler: () => { setTimeout(ktInit, 50); }
   }
 ];
 
@@ -8493,7 +8538,8 @@ const CATEGORIES = [
   { id: 'lottery', icon: '🎰', name: '彩票工具', desc: '双色球、大乐透、福彩3D、快乐8、排列三…在线过滤缩水、选号、计算器' },
   { id: 'fun', icon: '🎪', name: '趣味工具', desc: '表情包生成、决策转盘、抽奖抽签、词云生成、涂鸦画板、Emoji表情速查、数独生成器、娱乐好玩' },
   { id: 'finance', icon: '💰', name: '财务工具', desc: '家庭记账本、收支统计、月度汇总' },
-  { id: 'edu', icon: '📚', name: '教育资源', desc: '电子教材在线阅读、学习资源导航、元素周期表、习惯打卡、打字速度测试' }
+  { id: 'edu', icon: '📚', name: '教育资源', desc: '电子教材在线阅读、学习资源导航、元素周期表、习惯打卡、打字速度测试' },
+  { id: 'health', icon: '🏥', name: '健康工具', desc: 'BMI 指数计算、体重管理参考' }
 ];
 
 // ============================================================
@@ -17783,4 +17829,109 @@ function sdClear() {
 function sdStatus(msg, color) {
   const el = document.getElementById('sd-status');
   if (el) el.innerHTML = '<span style="color:' + color + ';font-weight:600;">' + msg + '</span>';
+}// ============================================================
+// BMI 指数计算器 bmi-calculator (bm*)
+// ============================================================
+function bmInit() {
+  bmCalc();
+}
+function bmCalc() {
+  const hEl = document.getElementById('bm-height');
+  const wEl = document.getElementById('bm-weight');
+  const out = document.getElementById('bm-result');
+  const scale = document.getElementById('bm-scale');
+  if (!hEl || !wEl || !out) return;
+  const h = parseFloat(hEl.value);
+  const w = parseFloat(wEl.value);
+  if (!h || !w || h < 60 || h > 250 || w < 10 || w > 400) {
+    out.innerHTML = '<div style="color:#ef4444;">请输入有效的身高（60-250cm）和体重（10-400kg）</div>';
+    return;
+  }
+  const bmi = w / Math.pow(h / 100, 2);
+  const b = Math.round(bmi * 10) / 10;
+  let label, color, advice;
+  if (b < 18.5) { label = '偏瘦'; color = '#0ea5e9'; advice = '体重偏低，注意均衡营养、增加优质蛋白摄入，必要时咨询营养师。'; }
+  else if (b < 24) { label = '正常'; color = '#10b981'; advice = '体型健康，继续保持规律饮食和适量运动的好习惯！'; }
+  else if (b < 28) { label = '超重'; color = '#f59e0b'; advice = '体重偏重，建议控制高热量饮食，每周 3-5 次有氧运动。'; }
+  else { label = '肥胖'; color = '#ef4444'; advice = '已达到肥胖范围，建议系统规划饮食与运动，必要时咨询医生或营养师。'; }
+  out.innerHTML =
+    '<div style="display:flex;align-items:center;gap:20px;flex-wrap:wrap;">' +
+    '<div style="text-align:center;">' +
+    '<div style="font-size:13px;color:var(--text-light);">BMI 指数</div>' +
+    '<div style="font-size:42px;font-weight:800;color:' + color + ';line-height:1.2;">' + b + '</div>' +
+    '</div>' +
+    '<div style="flex:1;min-width:180px;">' +
+    '<div style="font-size:16px;font-weight:700;color:' + color + ';margin-bottom:4px;">体型：' + label + '</div>' +
+    '<div style="font-size:13px;color:var(--text-light);">' + advice + '</div>' +
+    '</div></div>';
+  // 刻度条
+  if (scale) {
+    const segs = [['偏瘦', '#0ea5e9', 18.5], ['正常', '#10b981', 24], ['超重', '#f59e0b', 28], ['肥胖', '#ef4444', 40]];
+    let html = '';
+    let prev = 12;
+    segs.forEach(function (s) {
+      const wPct = ((s[2] - prev) / 40) * 100;
+      html += '<div style="width:' + wPct + '%;background:' + s[1] + ';" title="' + s[0] + '"></div>';
+      prev = s[2];
+    });
+    scale.innerHTML = html;
+    // 指示箭头
+    const pos = Math.min(96, Math.max(2, ((b - 12) / 40) * 100));
+    scale.style.position = 'relative';
+    scale.innerHTML += '<div style="position:absolute;left:' + pos + '%;top:-6px;transform:translateX(-50%);width:0;height:0;border-left:7px solid transparent;border-right:7px solid transparent;border-top:10px solid #0f172a;"></div>';
+  }
+}
+function bmReset() {
+  const hEl = document.getElementById('bm-height');
+  const wEl = document.getElementById('bm-weight');
+  if (hEl) hEl.value = '170';
+  if (wEl) wEl.value = '65';
+  bmCalc();
+}
+
+// ============================================================
+// 键盘按键测试 keyboard-tester (kt*)
+// ============================================================
+var ktLayout = [
+  ['Escape','Esc','f'],['F1','F1','f'],['F2','F2','f'],['F3','F3','f'],['F4','F4','f'],['F5','F5','f'],['F6','F6','f'],['F7','F7','f'],['F8','F8','f'],['F9','F9','f'],['F10','F10','f'],['F11','F11','f'],['F12','F12','f'],
+  ['Backquote','`','k'],['Digit1','1','k'],['Digit2','2','k'],['Digit3','3','k'],['Digit4','4','k'],['Digit5','5','k'],['Digit6','6','k'],['Digit7','7','k'],['Digit8','8','k'],['Digit9','9','k'],['Digit0','0','k'],['Minus','-','k'],['Equal','=','k'],['Backspace','⌫','w'],
+  ['Tab','Tab','w'],['KeyQ','Q','k'],['KeyW','W','k'],['KeyE','E','k'],['KeyR','R','k'],['KeyT','T','k'],['KeyY','Y','k'],['KeyU','U','k'],['KeyI','I','k'],['KeyO','O','k'],['KeyP','P','k'],['BracketLeft','[','k'],['BracketRight',']','k'],['Backslash','\\','k'],
+  ['CapsLock','Caps','w'],['KeyA','A','k'],['KeyS','S','k'],['KeyD','D','k'],['KeyF','F','k'],['KeyG','G','k'],['KeyH','H','k'],['KeyJ','J','k'],['KeyK','K','k'],['KeyL','L','k'],['Semicolon',';','k'],['Quote',"'",'k'],['Enter','↵','w'],
+  ['ShiftLeft','Shift','w'],['KeyZ','Z','k'],['KeyX','X','k'],['KeyC','C','k'],['KeyV','V','k'],['KeyB','B','k'],['KeyN','N','k'],['KeyM','M','k'],['Comma',',','k'],['Period','.','k'],['Slash','/','k'],['ShiftRight','Shift','w'],
+  ['ControlLeft','Ctrl','w'],['MetaLeft','Win','w'],['AltLeft','Alt','w'],['Space','空格','sp'],['AltRight','Alt','w'],['MetaRight','Win','w'],['ContextMenu','≡','w'],['ControlRight','Ctrl','w'],
+  ['ArrowUp','↑','nav'],['ArrowLeft','←','nav'],['ArrowDown','↓','nav'],['ArrowRight','→','nav']
+];
+function ktInit() {
+  const area = document.getElementById('kt-area');
+  if (!area) return;
+  // 渲染键盘
+  let html = '<div style="display:grid;grid-template-columns:repeat(14,1fr);gap:6px;margin-bottom:8px;">';
+  ktLayout.slice(0, 14).forEach(function (k) { html += ktKey(k[0], k[1], k[2]); });
+  html += '</div><div style="display:grid;grid-template-columns:repeat(14,1fr);gap:6px;margin-bottom:8px;">';
+  ktLayout.slice(14, 28).forEach(function (k) { html += ktKey(k[0], k[1], k[2]); });
+  html += '</div><div style="display:grid;grid-template-columns:repeat(14,1fr);gap:6px;margin-bottom:8px;">';
+  ktLayout.slice(28, 42).forEach(function (k) { html += ktKey(k[0], k[1], k[2]); });
+  html += '</div><div style="display:grid;grid-template-columns:repeat(14,1fr);gap:6px;margin-bottom:8px;">';
+  ktLayout.slice(42, 56).forEach(function (k) { html += ktKey(k[0], k[1], k[2]); });
+  html += '</div><div style="display:grid;grid-template-columns:repeat(14,1fr);gap:6px;margin-bottom:8px;">';
+  ktLayout.slice(56, 69).forEach(function (k) { html += ktKey(k[0], k[1], k[2]); });
+  html += '</div><div style="display:grid;grid-template-columns:repeat(14,1fr);gap:6px;margin-top:8px;">';
+  ktLayout.slice(69, 73).forEach(function (k) { html += ktKey(k[0], k[1], k[2]); });
+  html += '</div>';
+  area.innerHTML = html;
+  // 绑定事件
+  const status = document.getElementById('kt-status');
+  document.addEventListener('keydown', function (e) {
+    const el = document.getElementById('kt-' + e.code);
+    if (el) el.style.background = '#10b981';
+    if (status) status.textContent = '⌨️ 按下：' + (e.code || e.key) + '（' + (e.key || '') + '）';
+  });
+  document.addEventListener('keyup', function (e) {
+    const el = document.getElementById('kt-' + e.code);
+    if (el) el.style.background = '';
+  });
+}
+function ktKey(code, label, type) {
+  const span = type === 'w' ? 2 : (type === 'sp' ? 6 : (type === 'nav' ? 1 : 1));
+  return '<div id="kt-' + code + '" style="grid-column:span ' + span + ';padding:10px 4px;border:1px solid #cbd5e1;border-radius:6px;background:#f8fafc;color:#0f172a;font-size:12px;font-weight:600;text-align:center;font-family:monospace;transition:background .08s;user-select:none;">' + label + '</div>';
 }
