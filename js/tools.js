@@ -17934,4 +17934,159 @@ function ktInit() {
 function ktKey(code, label, type) {
   const span = type === 'w' ? 2 : (type === 'sp' ? 6 : (type === 'nav' ? 1 : 1));
   return '<div id="kt-' + code + '" style="grid-column:span ' + span + ';padding:10px 4px;border:1px solid #cbd5e1;border-radius:6px;background:#f8fafc;color:#0f172a;font-size:12px;font-weight:600;text-align:center;font-family:monospace;transition:background .08s;user-select:none;">' + label + '</div>';
+}// ============================================================
+// 决策转盘 decision-wheel (wheel*)
+// ============================================================
+var wheelOptions = [];
+var wheelAngle = 0;
+var wheelSpinning = false;
+function wheelAddOption() {
+  const inp = document.getElementById('wheel-input');
+  if (!inp) return;
+  const val = inp.value.trim();
+  if (!val) { showToast('⚠️ 请输入选项内容'); return; }
+  wheelOptions.push(val);
+  inp.value = '';
+  wheelDraw();
+  wheelUpdateList();
+}
+function wheelAddFromText() {
+  const ta = document.getElementById('wheel-textarea');
+  if (!ta) return;
+  const lines = ta.value.split('\n').map(function (s) { return s.trim(); }).filter(function (s) { return s.length > 0; });
+  if (lines.length === 0) { showToast('⚠️ 请先输入选项（每行一个）'); return; }
+  wheelOptions = wheelOptions.concat(lines);
+  ta.value = '';
+  wheelDraw();
+  wheelUpdateList();
+  showToast('✅ 已导入 ' + lines.length + ' 个选项');
+}
+function wheelRemoveOption(idx) {
+  wheelOptions.splice(idx, 1);
+  wheelDraw();
+  wheelUpdateList();
+}
+function wheelClear() {
+  wheelOptions = [];
+  wheelDraw();
+  wheelUpdateList();
+}
+function wheelUpdateList() {
+  const list = document.getElementById('wheel-list');
+  const count = document.getElementById('wheel-count');
+  if (!list) return;
+  if (wheelOptions.length === 0) {
+    list.innerHTML = '<div style="color:var(--text-light);padding:10px;font-size:13px;">暂无选项，请添加</div>';
+  } else {
+    list.innerHTML = wheelOptions.map(function (o, i) {
+      return '<div style="display:flex;justify-content:space-between;align-items:center;padding:4px 8px;background:var(--bg-card,#f8fafc);border:1px solid var(--border,#e2e8f0);border-radius:6px;margin-bottom:4px;font-size:13px;">' +
+        '<span>' + o + '</span>' +
+        '<button onclick="wheelRemoveOption(' + i + ')" style="border:none;background:none;color:#ef4444;cursor:pointer;font-size:14px;padding:0 4px;">✕</button>' +
+        '</div>';
+    }).join('');
+  }
+  if (count) count.textContent = '共 ' + wheelOptions.length + ' 个选项';
+}
+function wheelDraw() {
+  const canvas = document.getElementById('wheel-canvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
+  const cx = W / 2, cy = H / 2, r = W / 2 - 8;
+  ctx.clearRect(0, 0, W, H);
+  if (wheelOptions.length === 0) {
+    ctx.beginPath();
+    ctx.arc(cx, cy, r, 0, Math.PI * 2);
+    ctx.fillStyle = '#e2e8f0';
+    ctx.fill();
+    ctx.fillStyle = '#94a3b8';
+    ctx.font = '16px sans-serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText('请先添加选项', cx, cy);
+    return;
+  }
+  const palette = ['#6366f1','#f59e0b','#10b981','#ef4444','#8b5cf6','#0ea5e9','#f43f5e','#84cc16','#14b8a6','#a855f7','#f97316','#22c55e'];
+  const n = wheelOptions.length;
+  const step = (Math.PI * 2) / n;
+  ctx.save();
+  ctx.translate(cx, cy);
+  ctx.rotate(wheelAngle);
+  for (let i = 0; i < n; i++) {
+    ctx.beginPath();
+    ctx.moveTo(0, 0);
+    ctx.arc(0, 0, r, i * step, (i + 1) * step);
+    ctx.closePath();
+    ctx.fillStyle = palette[i % palette.length];
+    ctx.fill();
+    ctx.strokeStyle = '#fff';
+    ctx.lineWidth = 2;
+    ctx.stroke();
+    // 文字
+    ctx.save();
+    ctx.rotate(i * step + step / 2);
+    ctx.fillStyle = '#fff';
+    ctx.font = 'bold 14px sans-serif';
+    ctx.textAlign = 'right';
+    ctx.textBaseline = 'middle';
+    const label = wheelOptions[i].length > 6 ? wheelOptions[i].slice(0, 6) + '…' : wheelOptions[i];
+    ctx.fillText(label, r - 14, 0);
+    ctx.restore();
+  }
+  ctx.restore();
+  // 中心圆
+  ctx.beginPath();
+  ctx.arc(cx, cy, 22, 0, Math.PI * 2);
+  ctx.fillStyle = '#fff';
+  ctx.fill();
+  ctx.fillStyle = '#0f172a';
+  ctx.font = 'bold 12px sans-serif';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText('转!', cx, cy);
+  // 指针（顶部）
+  ctx.beginPath();
+  ctx.moveTo(cx - 10, 4);
+  ctx.lineTo(cx + 10, 4);
+  ctx.lineTo(cx, 28);
+  ctx.closePath();
+  ctx.fillStyle = '#ef4444';
+  ctx.fill();
+}
+function wheelSpin() {
+  if (wheelSpinning) return;
+  if (wheelOptions.length === 0) { showToast('⚠️ 请先添加选项'); return; }
+  wheelSpinning = true;
+  const resultEl = document.getElementById('wheel-result');
+  if (resultEl) resultEl.style.display = 'none';
+  const targetAngle = wheelAngle + Math.PI * (8 + Math.random() * 8);
+  const startAngle = wheelAngle;
+  const duration = 3000;
+  const startTime = Date.now();
+  function animate() {
+    const elapsed = Date.now() - startTime;
+    const t = Math.min(elapsed / duration, 1);
+    // easeOutCubic
+    const ease = 1 - Math.pow(1 - t, 3);
+    wheelAngle = startAngle + (targetAngle - startAngle) * ease;
+    wheelDraw();
+    if (t < 1) {
+      requestAnimationFrame(animate);
+    } else {
+      wheelSpinning = false;
+      // 指针在顶部（-90度 = -PI/2），计算指针指向哪个选项
+      const pointerAngle = (-Math.PI / 2) - wheelAngle;
+      const n = wheelOptions.length;
+      const step = (Math.PI * 2) / n;
+      let norm = ((pointerAngle % (Math.PI * 2)) + Math.PI * 2) % (Math.PI * 2);
+      const idx = Math.floor(norm / step) % n;
+      const winner = wheelOptions[idx];
+      if (resultEl) {
+        resultEl.style.display = 'block';
+        resultEl.textContent = '🎉 结果：' + winner;
+      }
+      showToast('🎉 转到：' + winner);
+    }
+  }
+  animate();
 }
