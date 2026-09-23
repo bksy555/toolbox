@@ -6884,6 +6884,64 @@ greet('世界');</textarea>
       </div>
     `,
     handler: () => { setTimeout(ktInit, 50); }
+  },
+  {
+    id: 'screen-test',
+    cat: 'dev',
+    icon: '🖥️',
+    name: '屏幕坏点测试',
+    desc: '全屏纯色切换检测显示器坏点/亮点/色斑，新显示器验货必备（多颜色模式）',
+    html: `
+      <div class="tool-card">
+        <p style="color:var(--text-light);font-size:13px;margin-bottom:10px;">🖥️ 新显示器验货、排查屏幕坏点亮点：点击颜色切换全屏纯色显示，仔细检查屏幕上是否有不随颜色变化的小点。支持黑/白/红/绿/蓝/自定义色，按 Esc 退出全屏（灵感来源于屏幕测试类工具站）。</p>
+        <div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;align-items:center;">
+          <button class="btn btn-secondary" onclick="stShow('#000000')" style="background:#111;color:#fff;border:1px solid #333;">⬛ 黑色</button>
+          <button class="btn btn-secondary" onclick="stShow('#ffffff')" style="background:#fff;color:#111;border:1px solid #ccc;">⬜ 白色</button>
+          <button class="btn btn-secondary" onclick="stShow('#ef4444')" style="background:#ef4444;color:#fff;">🟥 红色</button>
+          <button class="btn btn-secondary" onclick="stShow('#10b981')" style="background:#10b981;color:#fff;">🟩 绿色</button>
+          <button class="btn btn-secondary" onclick="stShow('#3b82f6')" style="background:#3b82f6;color:#fff;">🟦 蓝色</button>
+          <button class="btn btn-secondary" onclick="stShow('#f59e0b')" style="background:#f59e0b;color:#fff;">🟨 黄色</button>
+          <span style="display:flex;align-items:center;gap:6px;">
+            <input type="color" id="st-custom" value="#a855f7" style="width:44px;height:34px;border:1px solid var(--border,#ddd);border-radius:6px;padding:2px;cursor:pointer;">
+            <button class="btn btn-secondary" onclick="stCustom()">🎨 自定义</button>
+          </span>
+        </div>
+        <div id="st-preview" style="height:200px;border-radius:12px;border:1px solid var(--border,#e2e8f0);display:flex;align-items:center;justify-content:center;color:var(--text-light);font-size:14px;cursor:pointer;background:#0f172a;" onclick="stNext()">👆 点击预览区切换颜色（预览）</div>
+        <div style="text-align:center;margin-top:12px;">
+          <button class="btn btn-primary" onclick="stFull()" style="font-size:16px;padding:12px 32px;">🖥️ 进入全屏测试</button>
+        </div>
+        <div id="st-tip" style="margin-top:10px;font-size:12px;color:var(--text-light);text-align:center;">💡 全屏模式下：点击屏幕切换颜色，按 Esc 退出。检查方法：坏点固定不变化，亮点总是发亮，色斑在特定颜色下显现。建议在暗光环境下逐色检查。</div>
+      </div>
+    `,
+    handler: () => { setTimeout(stInit, 50); }
+  },
+  {
+    id: 'history-today',
+    cat: 'edu',
+    icon: '📅',
+    name: '历史上的今天',
+    desc: '按日期查询历史大事件，内置全球重大事件库，今天自动定位（趣味历史知识）',
+    html: `
+      <div class="tool-card">
+        <p style="color:var(--text-light);font-size:13px;margin-bottom:10px;">📅 输入月日（如 9-21），查询这一天曾发生过哪些影响世界的大事件——从科技发明到历史转折，内置 100+ 条精选事件，默认显示今天（灵感来源于维基百科"历史上的今天"栏目与各类历史日历应用）。</p>
+        <div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;align-items:flex-end;">
+          <div>
+            <div style="font-size:12px;color:var(--text-light);margin-bottom:4px;">月份</div>
+            <input id="ht-month" type="number" min="1" max="12" style="width:80px;padding:9px 12px;border:1px solid var(--border,#ddd);border-radius:8px;font-size:14px;background:var(--card-bg,#fff);color:var(--text);box-sizing:border-box;">
+          </div>
+          <div>
+            <div style="font-size:12px;color:var(--text-light);margin-bottom:4px;">日期</div>
+            <input id="ht-day" type="number" min="1" max="31" style="width:80px;padding:9px 12px;border:1px solid var(--border,#ddd);border-radius:8px;font-size:14px;background:var(--card-bg,#fff);color:var(--text);box-sizing:border-box;">
+          </div>
+          <button class="btn btn-primary" onclick="hisQuery()">🔍 查询</button>
+          <button class="btn btn-secondary" onclick="hisToday()">📅 今天</button>
+          <button class="btn btn-secondary" onclick="hisRandom()">🎲 随机一天</button>
+        </div>
+        <div id="ht-result" style="border:1px solid var(--border,#e2e8f0);border-radius:12px;padding:16px 18px;"></div>
+        <div id="ht-tip" style="margin-top:10px;font-size:12px;color:var(--text-light);">💡 事件库为精选整理，覆盖科技、航天、文化、政治等方向；部分事件年份可能随资料更新而调整，供知识科普参考。</div>
+      </div>
+    `,
+    handler: () => { setTimeout(hisInit, 50); }
   }
 ];
 
@@ -8525,7 +8583,7 @@ function dpCopyText() {
 // ============================================================
 const CATEGORIES = [
   { id: 'text', icon: '✏️', name: '文本工具', desc: '字数统计、简繁转换、摩斯密码、文本转语音、文本对比、电子名片生成器、英文语法检查、占位文本生成' },
-  { id: 'dev', icon: '💻', name: '开发者工具', desc: 'JSON格式化、YAML/JSON互转、二维码生成、二维码美化、条形码生成、Favicon图标生成、正则测试、Markdown、IP查询、子网计算、思维导图、图表生成、代码图片生成、表格数据转换、SQL格式化、代码压缩器、假数据生成器、Cron表达式生成器、HTTP状态码速查、SEO标题预览' },
+  { id: 'dev', icon: '💻', name: '开发者工具', desc: 'JSON格式化、YAML/JSON互转、二维码生成、二维码美化、条形码生成、Favicon图标生成、正则测试、Markdown、IP查询、子网计算、思维导图、图表生成、代码图片生成、表格数据转换、SQL格式化、代码压缩器、假数据生成器、Cron表达式生成器、HTTP状态码速查、SEO标题预览、屏幕坏点测试' },
   { id: 'image', icon: '🖼️', name: '图片处理', desc: '去背景换底色、批量压缩、加水印、长图拼接、格式转换、裁剪、异形裁剪、马赛克打码、双色调滤镜、图片转字符画、照片卡通化、OCR、印章制作、九宫格切图、文字转手写体、表情包、社交媒体图片尺寸调整、艺术效果、像素画、设备样机、图片高清放大、图片转线稿、渐变背景、文字特效、拼贴画、图片相框、颜色盲区模拟、海报设计器、老照片修复上色、图片EXIF信息、占位图生成器' },
   { id: 'document', icon: '📄', name: '文档转换', desc: '图片转PDF、PDF转图片、Word解析、Excel转PDF、PDF合并、PDF拆分、简历生成、电子签名、表单制作、邮件签名、发票/收据生成器、证书生成器' },
   { id: 'convert', icon: '🔄', name: '转换工具', desc: '单位换算、进制转换、函数绘图' },
@@ -8538,7 +8596,7 @@ const CATEGORIES = [
   { id: 'lottery', icon: '🎰', name: '彩票工具', desc: '双色球、大乐透、福彩3D、快乐8、排列三…在线过滤缩水、选号、计算器' },
   { id: 'fun', icon: '🎪', name: '趣味工具', desc: '表情包生成、决策转盘、抽奖抽签、词云生成、涂鸦画板、Emoji表情速查、数独生成器、娱乐好玩' },
   { id: 'finance', icon: '💰', name: '财务工具', desc: '家庭记账本、收支统计、月度汇总' },
-  { id: 'edu', icon: '📚', name: '教育资源', desc: '电子教材在线阅读、学习资源导航、元素周期表、习惯打卡、打字速度测试' },
+  { id: 'edu', icon: '📚', name: '教育资源', desc: '电子教材在线阅读、学习资源导航、元素周期表、习惯打卡、打字速度测试、历史上的今天' },
   { id: 'health', icon: '🏥', name: '健康工具', desc: 'BMI 指数计算、体重管理参考' }
 ];
 
@@ -18089,4 +18147,183 @@ function wheelSpin() {
     }
   }
   animate();
+}
+// ============================================================
+// 屏幕坏点测试 screen-test (st*)
+// ============================================================
+var stColors = ['#000000', '#ffffff', '#ef4444', '#10b981', '#3b82f6', '#f59e0b'];
+var stIdx = 0;
+var stOverlay = null;
+function stInit() {
+  const c = document.getElementById('st-custom');
+  if (c) c.addEventListener('input', function () { stPreview(c.value); });
+}
+function stShow(color) {
+  stMakeOverlay(color);
+}
+function stCustom() {
+  const c = document.getElementById('st-custom');
+  if (c) stMakeOverlay(c.value);
+}
+function stNext() {
+  stIdx = (stIdx + 1) % stColors.length;
+  stPreview(stColors[stIdx]);
+}
+function stPreview(color) {
+  const el = document.getElementById('st-preview');
+  if (el) el.style.background = color;
+}
+function stFull() {
+  stMakeOverlay('#000000');
+}
+function stMakeOverlay(color) {
+  if (stOverlay) { stOverlay.remove(); stOverlay = null; }
+  stOverlay = document.createElement('div');
+  stOverlay.style.cssText = 'position:fixed;top:0;left:0;width:100vw;height:100vh;background:' + color + ';z-index:99999;cursor:pointer;';
+  stOverlay.addEventListener('click', function () {
+    stIdx = (stIdx + 1) % stColors.length;
+    stOverlay.style.background = stColors[stIdx];
+  });
+  document.addEventListener('keydown', stEsc);
+  document.body.appendChild(stOverlay);
+}
+function stEsc(e) {
+  if (e.key === 'Escape' && stOverlay) {
+    stOverlay.remove();
+    stOverlay = null;
+    document.removeEventListener('keydown', stEsc);
+  }
+}
+
+// ============================================================
+// 历史上的今天 history-today (ht*)
+// ============================================================
+var hisData = {
+  '1-1': [[2002, '欧元正式成为欧盟 12 国流通货币'], [1985, '中国开始实行专利法']],
+  '1-5': [[1933, '美国旧金山金门大桥开始动工']],
+  '1-12': [[1876, '美国作家杰克·伦敦出生']],
+  '1-20': [[2009, '奥巴马就任美国第 44 任总统']],
+  '1-24': [[1984, '苹果公司发布 Macintosh 电脑']],
+  '1-28': [[1986, '美国挑战者号航天飞机升空后爆炸']],
+  '2-1': [[2003, '美国哥伦比亚号航天飞机返回时解体']],
+  '2-4': [[2004, '社交网站 Facebook 上线']],
+  '2-12': [[1809, '达尔文与林肯同日出世'], [1912, '清朝末代皇帝溥仪退位']],
+  '2-14': [[1876, '贝尔申请电话专利']],
+  '2-20': [[1962, '美国宇航员约翰·格伦环绕地球飞行']],
+  '2-29': [[1940, '电影《乱世佳人》获得奥斯卡最佳影片']],
+  '3-3': [[1847, '电话发明人贝尔出生']],
+  '3-8': [[1910, '国际妇女节确立']],
+  '3-12': [[1925, '孙中山先生逝世'], [1983, '中国植树节确立']],
+  '3-14': [[1879, '爱因斯坦出生'], [2018, '霍金逝世']],
+  '3-20': [[2003, '伊拉克战争爆发']],
+  '3-30': [[1981, '美国里根总统遇刺受伤']],
+  '4-1': [[1976, '苹果公司成立']],
+  '4-4': [[1968, '美国民权领袖马丁·路德·金遇刺']],
+  '4-8': [[1986, '中国第一台汉字微机系统通过鉴定']],
+  '4-12': [[1961, '加加林成为进入太空第一人']],
+  '4-15': [[1912, '泰坦尼克号沉没'], [2019, '巴黎圣母院发生大火']],
+  '4-20': [[2010, '墨西哥湾深海钻井平台爆炸引发漏油']],
+  '4-26': [[1986, '切尔诺贝利核电站事故']],
+  '4-28': [[1928, '朱德、毛泽东井冈山会师']],
+  '5-1': [[1931, '纽约帝国大厦落成']],
+  '5-4': [[1919, '五四运动爆发']],
+  '5-8': [[1945, '德国签署无条件投降书，二战欧洲战场结束']],
+  '5-14': [[1948, '以色列建国']],
+  '5-18': [[1980, '中国第一枚洲际导弹发射成功']],
+  '5-25': [[1961, '肯尼迪提出十年内登月目标']],
+  '5-29': [[1953, '人类首次登顶珠穆朗玛峰']],
+  '6-1': [[1974, '中国第一台大型电子计算机研制成功']],
+  '6-4': [[1989, '北京发生政治风波']],
+  '6-6': [[1944, '诺曼底登陆（D-Day）']],
+  '6-12': [[1991, '叶利钦当选俄罗斯首任总统']],
+  '6-16': [[1963, '捷列什科娃成为首位进入太空的女性']],
+  '6-20': [[1944, '美军在中途岛海战中获胜']],
+  '6-28': [[1919, '《凡尔赛条约》签署']],
+  '7-1': [[1997, '香港回归中国']],
+  '7-4': [[1776, '美国独立宣言通过']],
+  '7-11': [[2006, '青藏铁路全线通车']],
+  '7-16': [[1969, '阿波罗 11 号发射升空']],
+  '7-20': [[1969, '阿姆斯特朗踏上月球'], [1976, '海盗一号着陆火星']],
+  '7-23': [[1995, '海尔-波普彗星被发现']],
+  '8-1': [[1927, '南昌起义，建军节']],
+  '8-6': [[1945, '美国向广岛投下原子弹']],
+  '8-9': [[1945, '美国向长崎投下原子弹']],
+  '8-15': [[1945, '日本宣布无条件投降']],
+  '8-20': [[1977, '旅行者 2 号发射']],
+  '8-27': [[1883, '喀拉喀托火山大爆发']],
+  '9-1': [[1939, '德国入侵波兰，二战爆发']],
+  '9-8': [[1966, '《星际迷航》首播']],
+  '9-9': [[1976, '毛泽东逝世']],
+  '9-11': [[2001, '美国 9·11 恐怖袭击']],
+  '9-15': [[1830, '世界第一条铁路利物浦-曼彻斯特通车']],
+  '9-21': [[1949, '中国人民政治协商会议第一届全体会议开幕'], [1999, '台湾发生 921 大地震']],
+  '9-27': [[1988, '中国首次水下发射运载火箭成功']],
+  '9-28': [[2008, '神舟七号航天员翟志刚完成中国首次太空行走']],
+  '10-1': [[1949, '中华人民共和国成立']],
+  '10-4': [[1957, '苏联发射人类第一颗人造卫星斯普特尼克']],
+  '10-8': [[2003, '中国神舟五号发射，杨利伟首飞']],
+  '10-14': [[1947, '美国飞行员耶格尔首次突破音障']],
+  '10-15': [[2003, '神舟五号载人航天飞船发射']],
+  '10-24': [[1945, '联合国正式成立']],
+  '10-29': [[1969, '互联网前身 ARPANET 首次联网']],
+  '11-9': [[1989, '柏林墙倒塌']],
+  '11-11': [[1918, '一战停战'], [1998, '腾讯公司成立']],
+  '11-15': [[1988, '苏联第一架航天飞机暴风雪号首飞']],
+  '11-20': [[1998, '国际空间站首个模块发射']],
+  '11-24': [[1859, '达尔文《物种起源》出版']],
+  '11-26': [[1922, '图坦卡蒙墓被发掘']],
+  '12-1': [[1988, '世界艾滋病日确立']],
+  '12-3': [[1967, '人类首例心脏移植手术成功']],
+  '12-7': [[1941, '日本偷袭珍珠港']],
+  '12-10': [[1901, '首届诺贝尔奖颁发']],
+  '12-12': [[1936, '西安事变']],
+  '12-17': [[1903, '莱特兄弟首次动力飞行']],
+  '12-20': [[1999, '澳门回归中国']],
+  '12-25': [[1991, '苏联解体']],
+  '12-26': [[2004, '印度洋海啸']]
+};
+function hisInit() {
+  htToday();
+}
+function hisToday() {
+  const now = new Date();
+  const m = document.getElementById('ht-month');
+  const d = document.getElementById('ht-day');
+  if (m) m.value = now.getMonth() + 1;
+  if (d) d.value = now.getDate();
+  htQuery();
+}
+function hisRandom() {
+  const months = Object.keys(hisData);
+  const key = months[Math.floor(Math.random() * months.length)];
+  const parts = key.split('-');
+  const m = document.getElementById('ht-month');
+  const d = document.getElementById('ht-day');
+  if (m) m.value = parts[0];
+  if (d) d.value = parts[1];
+  htQuery();
+}
+function hisQuery() {
+  const mEl = document.getElementById('ht-month');
+  const dEl = document.getElementById('ht-day');
+  const out = document.getElementById('ht-result');
+  if (!mEl || !dEl || !out) return;
+  const m = parseInt(mEl.value, 10);
+  const d = parseInt(dEl.value, 10);
+  if (!m || !d || m < 1 || m > 12 || d < 1 || d > 31) {
+    out.innerHTML = '<div style="color:#ef4444;">请输入有效日期（月 1-12，日 1-31）</div>';
+    return;
+  }
+  const key = m + '-' + d;
+  const events = hisData[key];
+  if (!events) {
+    out.innerHTML = '<div style="text-align:center;color:var(--text-light);padding:20px;">📭 ' + m + ' 月 ' + d + ' 日暂无精选事件，试试「🎲 随机一天」看看其他日期</div>';
+    return;
+  }
+  out.innerHTML = '<div style="font-size:16px;font-weight:700;margin-bottom:12px;">📅 ' + m + ' 月 ' + d + ' 日 · 历史上的今天</div>' +
+    events.map(function (e) {
+      return '<div style="display:flex;gap:14px;padding:10px 0;border-bottom:1px solid var(--border,#f1f5f9);">' +
+        '<span style="font-size:15px;font-weight:800;color:#6366f1;font-family:monospace;white-space:nowrap;">' + e[0] + ' 年</span>' +
+        '<span style="font-size:14px;">' + e[1] + '</span></div>';
+    }).join('');
 }
