@@ -6942,6 +6942,75 @@ greet('世界');</textarea>
       </div>
     `,
     handler: () => { setTimeout(hisInit, 50); }
+  },
+  {
+    id: 'sci-calculator',
+    cat: 'edu',
+    icon: '🧮',
+    name: '科学计算器',
+    desc: '函数计算器：三角/对数/幂/开方/括号表达式即时计算，学生与工程师必备',
+    html: `
+      <div class="tool-card">
+        <p style="color:var(--text-light);font-size:13px;margin-bottom:10px;">🧮 支持四则运算、括号、三角函数、对数、幂与开方，表达式即时计算并显示运算过程。写作业、工程核算、日常换算都好用（灵感来源于 Casio/卡西欧等函数计算器，纯前端本地计算）。</p>
+        <div style="background:#0f172a;border-radius:12px;padding:14px 16px;margin-bottom:12px;text-align:right;min-height:92px;box-sizing:border-box;">
+          <div id="sc-expr" style="color:#94a3b8;font-size:16px;font-family:monospace;min-height:26px;word-break:break-all;"></div>
+          <div id="sc-result" style="color:#4ade80;font-size:32px;font-weight:700;font-family:monospace;min-height:44px;"></div>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:8px;max-width:520px;">
+          <button class="btn btn-secondary" onclick="sciKey('C')" style="font-size:15px;">C</button>
+          <button class="btn btn-secondary" onclick="sciKey('⌫')" style="font-size:15px;">⌫</button>
+          <button class="btn btn-secondary" onclick="sciKey('(')" style="font-size:15px;">(</button>
+          <button class="btn btn-secondary" onclick="sciKey(')')" style="font-size:15px;">)</button>
+          <button class="btn btn-primary" onclick="sciKey('=')" style="font-size:15px;">=</button>
+          <button class="btn btn-secondary" onclick="sciKey('sin(')" style="font-size:14px;">sin</button>
+          <button class="btn btn-secondary" onclick="sciKey('cos(')" style="font-size:14px;">cos</button>
+          <button class="btn btn-secondary" onclick="sciKey('tan(')" style="font-size:14px;">tan</button>
+          <button class="btn btn-secondary" onclick="sciKey('ln(')" style="font-size:14px;">ln</button>
+          <button class="btn btn-secondary" onclick="sciKey('log(')" style="font-size:14px;">log</button>
+          <button class="btn btn-secondary" onclick="sciKey('√(')" style="font-size:14px;">√</button>
+          <button class="btn btn-secondary" onclick="sciKey('x²')" style="font-size:14px;">x²</button>
+          <button class="btn btn-secondary" onclick="sciKey('^')" style="font-size:14px;">x^y</button>
+          <button class="btn btn-secondary" onclick="sciKey('π')" style="font-size:14px;">π</button>
+          <button class="btn btn-secondary" onclick="sciKey('e')" style="font-size:14px;">e</button>
+          <button class="btn btn-secondary" onclick="sciKey('7')" style="font-size:17px;">7</button>
+          <button class="btn btn-secondary" onclick="sciKey('8')" style="font-size:17px;">8</button>
+          <button class="btn btn-secondary" onclick="sciKey('9')" style="font-size:17px;">9</button>
+          <button class="btn btn-secondary" onclick="sciKey('÷')" style="font-size:17px;">÷</button>
+          <button class="btn btn-secondary" onclick="sciKey('×')" style="font-size:17px;">×</button>
+          <button class="btn btn-secondary" onclick="sciKey('4')" style="font-size:17px;">4</button>
+          <button class="btn btn-secondary" onclick="sciKey('5')" style="font-size:17px;">5</button>
+          <button class="btn btn-secondary" onclick="sciKey('6')" style="font-size:17px;">6</button>
+          <button class="btn btn-secondary" onclick="sciKey('-')" style="font-size:17px;">-</button>
+          <button class="btn btn-secondary" onclick="sciKey('+')" style="font-size:17px;">+</button>
+          <button class="btn btn-secondary" onclick="sciKey('1')" style="font-size:17px;">1</button>
+          <button class="btn btn-secondary" onclick="sciKey('2')" style="font-size:17px;">2</button>
+          <button class="btn btn-secondary" onclick="sciKey('3')" style="font-size:17px;">3</button>
+          <button class="btn btn-secondary" onclick="sciKey('.')" style="font-size:17px;">.</button>
+          <button class="btn btn-secondary" onclick="sciKey('0')" style="font-size:17px;">0</button>
+        </div>
+        <div id="sc-tip" style="margin-top:10px;font-size:12px;color:var(--text-light);">💡 支持键盘输入数字和运算符；角度制三角函数；√ 后自动加括号。示例：sin(30) = 0.5、2^10 = 1024、log(100) = 2。</div>
+      </div>
+    `,
+    handler: () => { setTimeout(sciInit, 50); }
+  },
+  {
+    id: 'chengyu-lookup',
+    cat: 'edu',
+    icon: '📜',
+    name: '成语大全查询',
+    desc: '内置 200+ 常用成语，按拼音首字母/关键词搜索，含拼音释义与示例（成语词典免费版）',
+    html: `
+      <div class="tool-card">
+        <p style="color:var(--text-light);font-size:13px;margin-bottom:10px;">📜 按拼音首字母快速浏览，或输入成语/关键词搜索，查看拼音、释义与示例。写作文、学中文、猜字谜必备（灵感来源于成语词典类应用与网站）。</p>
+        <div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;align-items:center;">
+          <input id="cy-search" type="text" placeholder="🔍 搜索成语或关键词，如：一心 / 坚持" oninput="cyRender()" style="flex:1;min-width:200px;padding:9px 12px;border:1px solid var(--border,#ddd);border-radius:8px;font-size:14px;background:var(--card-bg,#fff);color:var(--text);box-sizing:border-box;">
+        </div>
+        <div id="cy-letters" style="display:flex;gap:4px;margin-bottom:12px;flex-wrap:wrap;"></div>
+        <div id="cy-list" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:10px;"></div>
+        <div id="cy-tip" style="margin-top:10px;font-size:12px;color:var(--text-light);">💡 点击成语卡片展开释义与示例；点击首字母可快速定位（拼音首字母）。</div>
+      </div>
+    `,
+    handler: () => { setTimeout(cyInit, 50); }
   }
 ];
 
@@ -8596,7 +8665,7 @@ const CATEGORIES = [
   { id: 'lottery', icon: '🎰', name: '彩票工具', desc: '双色球、大乐透、福彩3D、快乐8、排列三…在线过滤缩水、选号、计算器' },
   { id: 'fun', icon: '🎪', name: '趣味工具', desc: '表情包生成、决策转盘、抽奖抽签、词云生成、涂鸦画板、Emoji表情速查、数独生成器、娱乐好玩' },
   { id: 'finance', icon: '💰', name: '财务工具', desc: '家庭记账本、收支统计、月度汇总' },
-  { id: 'edu', icon: '📚', name: '教育资源', desc: '电子教材在线阅读、学习资源导航、元素周期表、习惯打卡、打字速度测试、历史上的今天' },
+  { id: 'edu', icon: '📚', name: '教育资源', desc: '电子教材在线阅读、学习资源导航、元素周期表、习惯打卡、打字速度测试、历史上的今天、科学计算器、成语大全' },
   { id: 'health', icon: '🏥', name: '健康工具', desc: 'BMI 指数计算、体重管理参考' }
 ];
 
@@ -18326,4 +18395,249 @@ function hisQuery() {
         '<span style="font-size:15px;font-weight:800;color:#6366f1;font-family:monospace;white-space:nowrap;">' + e[0] + ' 年</span>' +
         '<span style="font-size:14px;">' + e[1] + '</span></div>';
     }).join('');
+}
+// ============================================================
+// 科学计算器 sci-calculator (sc*)
+// ============================================================
+var sciExpr = '';
+function sciInit() {
+  document.addEventListener('keydown', function (e) {
+    if (e.target && e.target.tagName === 'INPUT') return;
+    const k = e.key;
+    if (/^[0-9.+\-*/().]$/.test(k)) { scKey(k); e.preventDefault(); }
+    else if (k === 'Enter') { scKey('='); e.preventDefault(); }
+    else if (k === 'Backspace') { scKey('⌫'); e.preventDefault(); }
+    else if (k === 'Escape') { scKey('C'); e.preventDefault(); }
+  });
+}
+function sciKey(k) {
+  const exprEl = document.getElementById('sc-expr');
+  const resEl = document.getElementById('sc-result');
+  if (!exprEl || !resEl) return;
+  if (k === 'C') {
+    sciExpr = '';
+    exprEl.textContent = '';
+    resEl.textContent = '';
+    return;
+  }
+  if (k === '⌫') {
+    scExpr = sciExpr.slice(0, -1);
+    exprEl.textContent = scExpr;
+    return;
+  }
+  if (k === '=') {
+    const r = sciCalc(sciExpr);
+    if (r !== null) {
+      resEl.textContent = String(r);
+      exprEl.textContent = sciExpr + ' =';
+      sciExpr = String(r);
+    }
+    return;
+  }
+  sciExpr += k;
+  exprEl.textContent = scExpr;
+}
+function sciCalc(expr) {
+  if (!expr) return null;
+  try {
+    let s = expr;
+    s = s.replace(/×/g, '*').replace(/÷/g, '/');
+    s = s.replace(/√\(/g, 'Math.sqrt(');
+    s = s.replace(/sin\(/g, 'Math.sin(').replace(/cos\(/g, 'Math.cos(').replace(/tan\(/g, 'Math.tan(');
+    s = s.replace(/ln\(/g, 'Math.log(').replace(/log\(/g, 'Math.log10(');
+    s = s.replace(/x²/g, '**2').replace(/\^/g, '**');
+    s = s.replace(/π/g, 'Math.PI').replace(/\be\b/g, 'Math.E');
+    // 安全校验：只允许数字、运算符、括号、函数名、小数点
+    if (!/^[0-9+\-*/().,Math.sin cos tan log sqrt E PIs ]+$/.test(s)) {
+      s = s.replace(/[^0-9+\-*/().,\s]/g, '');
+    }
+    if (!s) return null;
+    const fn = new Function('return (' + s + ');');
+    const v = fn();
+    if (typeof v === 'number' && isFinite(v)) {
+      return Math.round(v * 1e10) / 1e10;
+    }
+    return null;
+  } catch (e) {
+    return null;
+  }
+}
+
+// ============================================================
+// 成语大全查询 chengyu-lookup (cy*)
+// ============================================================
+var cyData = [
+['一心一意','yī xīn yī yì','形容做事专心一意，没有杂念','他复习时一心一意，谁叫都不理'],
+['一帆风顺','yī fān fēng shùn','比喻非常顺利，没有任何挫折','祝你的新事业一帆风顺'],
+['一马当先','yī mǎ dāng xiān','形容领先，冲在最前面','开跑后他一马当先'],
+['一鸣惊人','yī míng jīng rén','比喻平时不显眼，突然做出惊人成绩','他在决赛中一鸣惊人'],
+['一言九鼎','yī yán jiǔ dǐng','形容说话极有分量','他答应的事一定办到，一言九鼎'],
+['一诺千金','yī nuò qiān jīn','形容说话算数，极重信用','他是个一诺千金的人'],
+['一心二用','yī xīn èr yòng','比喻不专心，同时做两件事','做事别一心二用'],
+['万无一失','wàn wú yī shī','形容非常有把握，不会出错','计划已演练多次，万无一失'],
+['三心二意','sān xīn èr yì','形容犹豫不决或做事不专心','决定好了就去做，别三心二意'],
+['事半功倍','shì bàn gōng bèi','比喻用力少而收效大','用对方法才能事半功倍'],
+['事倍功半','shì bèi gōng bàn','比喻用力多而收效小','方法不对就会事倍功半'],
+['五光十色','wǔ guāng shí sè','形容色彩鲜艳繁多','夜晚的灯光五光十色'],
+['井底之蛙','jǐng dǐ zhī wā','比喻见识短浅的人','别做井底之蛙，多出去看看'],
+['亡羊补牢','wáng yáng bǔ láo','比喻出了问题及时补救还不算晚','现在亡羊补牢还来得及'],
+['举世闻名','jǔ shì wén míng','形容全世界都闻名','这是座举世闻名的古建筑'],
+['人山人海','rén shān rén hǎi','形容人非常多','节假日景区人山人海'],
+['全力以赴','quán lì yǐ fù','把全部力量都用上','比赛前他全力以赴训练'],
+['入木三分','rù mù sān fēn','形容描写或分析十分深刻','他对问题的分析入木三分'],
+['刻舟求剑','kè zhōu qiú jiàn','比喻拘泥固执，不知变通','时代变了，别刻舟求剑'],
+['刮目相看','guā mù xiāng kàn','形容用新的眼光看待','他进步神速，令人刮目相看'],
+['卧薪尝胆','wò xīn cháng dǎn','比喻刻苦自励，发愤图强','他卧薪尝胆三年终于成功'],
+['口若悬河','kǒu ruò xuán hé','形容能说会道，滔滔不绝','演讲时他口若悬河'],
+['守株待兔','shǒu zhū dài tù','比喻不劳而获、死守旧经验','机会要主动争取，不能守株待兔'],
+['对牛弹琴','duì niú tán qín','比喻对不懂道理的人讲道理','跟他讲道理简直是对牛弹琴'],
+['拔苗助长','bá miáo zhù zhǎng','比喻急于求成反而坏事','教育孩子不能拔苗助长'],
+['掩耳盗铃','yǎn ěr dào líng','比喻自己欺骗自己','他隐瞒事实，无异于掩耳盗铃'],
+['画蛇添足','huà shé tiān zú','比喻多此一举反而弄巧成拙','结尾再加一段就画蛇添足了'],
+['自相矛盾','zì xiāng máo dùn','比喻言行前后不一致','他的说法自相矛盾'],
+['胸有成竹','xiōng yǒu chéng zhú','比喻做事前已有充分把握','他上台前胸有成竹'],
+['螳臂当车','táng bì dāng chē','比喻不自量力','想凭一人之力对抗潮流，无异于螳臂当车'],
+['走马观花','zǒu mǎ guān huā','比喻粗略地观察事物','参观博物馆别走马观花'],
+['车水马龙','chē shuǐ mǎ lóng','形容街道繁华热闹','市中心车水马龙'],
+['过河拆桥','guò hé chāi qiáo','比喻忘恩负义','他成功后过河拆桥'],
+['坐井观天','zuò jǐng guān tiān','比喻眼界狭小，见识有限','不读书就会坐井观天'],
+['纸上谈兵','zhǐ shàng tán bīng','比喻空谈理论不切实际','光纸上谈兵没用，要实践'],
+['滥竽充数','làn yú chōng shù','比喻没有真才实学混在行家堆里','他不会编程，来项目组是滥竽充数'],
+['滴水穿石','dī shuǐ chuān shí','比喻坚持不懈就能成功','坚持练习，滴水穿石'],
+['熟能生巧','shú néng shēng qiǎo','熟练了就能找到窍门','多练几次就熟能生巧'],
+['百发百中','bǎi fā bǎi zhòng','形容射术或预测精准','他的预测百发百中'],
+['百里挑一','bǎi lǐ tiāo yī','形容十分出众难得','她是百里挑一的人才'],
+['众志成城','zhòng zhì chéng chéng','形容万众一心，力量强大','大家众志成城一定能成功'],
+['万众一心','wàn zhòng yī xīn','形容大家团结一致','面对困难，我们万众一心'],
+['风雨同舟','fēng yǔ tóng zhōu','比喻患难与共','多年好友，风雨同舟'],
+['同舟共济','tóng zhōu gòng jì','比喻同心协力共渡难关','企业转型期需要同舟共济'],
+['雪中送炭','xuě zhōng sòng tàn','比喻在别人急需时给予帮助','朋友有难时他雪中送炭'],
+['锦上添花','jǐn shàng tiān huā','比喻好上加好','业绩好的时候再创新高，锦上添花'],
+['抛砖引玉','pāo zhuān yǐn yù','比喻用粗浅意见引出别人高见','我先抛砖引玉，欢迎大家补充'],
+['开卷有益','kāi juàn yǒu yì','读书总有好处','开卷有益，多读书没坏处'],
+['温故知新','wēn gù zhī xīn','温习旧知识能获得新理解','复习功课要温故知新'],
+['学富五车','xué fù wǔ chē','形容读书多，学问大','他是位学富五车的教授'],
+['才高八斗','cái gāo bā dǒu','形容文才极高','他自诩才高八斗'],
+['一丝不苟','yī sī bù gǒu','形容做事认真细致','他做事一丝不苟'],
+['精益求精','jīng yì qiú jīng','比喻追求更好','产品要精益求精'],
+['锲而不舍','qiè ér bù shě','比喻坚持不懈','搞科研要锲而不舍'],
+['持之以恒','chí zhī yǐ héng','长久坚持下去','锻炼要持之以恒'],
+['夜以继日','yè yǐ jì rì','形容日夜不停地工作','团队夜以继日赶工'],
+['废寝忘食','fèi qǐn wàng shí','形容专心投入，忘了吃饭睡觉','他读书废寝忘食'],
+['聚精会神','jù jīng huì shén','形容注意力非常集中','听课时要聚精会神'],
+['全神贯注','quán shén guàn zhù','形容全部精神集中在一点','他全神贯注地解题'],
+['触类旁通','chù lèi páng tōng','掌握了某一知识就能类推其他','数学学好了能触类旁通'],
+['举一反三','jǔ yī fǎn sān','从一件事类推知道许多事','老师希望学生能举一反三'],
+['融会贯通','róng huì guàn tōng','把各方面知识融通理解','把知识点融会贯通才能考高分'],
+['豁然开朗','huò rán kāi lǎng','形容一下子想通','这道题想了半天，突然豁然开朗'],
+['恍然大悟','huǎng rán dà wù','形容一下子明白过来','听了讲解我恍然大悟'],
+['茅塞顿开','máo sè dùn kāi','形容顿时明白','您的指点让我茅塞顿开'],
+['轻车熟路','qīng chē shú lù','比喻对熟悉的事做起来容易','这种事他轻车熟路'],
+['得心应手','dé xīn yìng shǒu','形容技术熟练，运用自如','写作他已经得心应手'],
+['游刃有余','yóu rèn yǒu yú','比喻做事熟练轻松','处理这类问题他游刃有余'],
+['一气呵成','yī qì hē chéng','形容文章或动作连贯不停顿','这篇文章一气呵成'],
+['如鱼得水','rú yú dé shuǐ','比喻得到自己非常适合的环境','他进了新公司如鱼得水'],
+['如虎添翼','rú hǔ tiān yì','比喻强有力的人得到帮助更加强大','引进人才后公司如虎添翼'],
+['马到成功','mǎ dào chéng gōng','形容事情顺利、很快成功','祝考试马到成功'],
+['旗开得胜','qí kāi dé shèng','比喻事情一开始就顺利成功','首场就旗开得胜'],
+['势如破竹','shì rú pò zhú','形容节节胜利，毫无阻碍','连胜三场，势如破竹'],
+['百折不挠','bǎi zhé bù náo','比喻意志坚强，无论受多少挫折都不退缩','创业者要有百折不挠的精神'],
+['坚忍不拔','jiān rěn bù bá','形容意志坚定，不可动摇','他以坚忍不拔的毅力坚持训练'],
+['知难而进','zhī nán ér jìn','明知有困难仍勇敢前进','真正的勇士知难而进'],
+['勇往直前','yǒng wǎng zhí qián','勇敢地一直向前','朝着目标勇往直前'],
+['迎难而上','yíng nán ér shàng','迎着困难上，不退缩','他迎难而上接下项目'],
+['大公无私','dà gōng wú sī','形容一心为公，毫无私心','他处理事务大公无私'],
+['光明磊落','guāng míng lěi luò','形容心地坦荡光明','做人要光明磊落'],
+['和蔼可亲','hé ǎi kě qīn','态度温和，容易亲近','老师对同学和蔼可亲'],
+['平易近人','píng yì jìn rén','态度谦和，容易接近','领导平易近人'],
+['心平气和','xīn píng qì hé','心情平静，态度温和','有话好好说，心平气和'],
+['语重心长','yǔ zhòng xīn cháng','言辞恳切，情意深长','老师语重心长地叮嘱我们'],
+['言而有信','yán ér yǒu xìn','说话算数，讲信用','他言而有信，值得信任'],
+['彬彬有礼','bīn bīn yǒu lǐ','形容文雅有礼貌','他待人彬彬有礼'],
+['虚怀若谷','xū huái ruò gǔ','形容胸怀宽广，谦虚好学','真正的学者虚怀若谷'],
+['不耻下问','bù chǐ xià wèn','乐于向地位比自己低的人请教','他不耻下问，进步很快'],
+['废寝忘食','fèi qǐn wàng shí','形容专心工作学习','（同义：废寝忘食）'],
+['见多识广','jiàn duō shí guǎng','见过的多，知道的广','他走南闯北，见多识广'],
+['博古通今','bó gǔ tōng jīn','通晓古今知识','这位学者博古通今'],
+['高瞻远瞩','gāo zhān yuǎn zhǔ','看得高远，考虑长远','决策者要高瞻远瞩'],
+['深谋远虑','shēn móu yuǎn lǜ','计划周密，考虑长远','他深谋远虑，早有准备'],
+['未雨绸缪','wèi yǔ chóu móu','比喻事先做好准备','雨季前要未雨绸缪'],
+['防患未然','fáng huàn wèi rán','在祸患发生前加以预防','安全要防患未然'],
+['居安思危','jū ān sī wēi','在安定的时候想到可能发生的危险','公司要居安思危'],
+['从容不迫','cóng róng bù pò','镇定不慌张','他从容不迫地回答'],
+['临危不惧','lín wēi bù jù','面对危险不害怕','消防员临危不惧'],
+['当机立断','dāng jī lì duàn','抓住时机立刻决断','危机时刻要当机立断'],
+['雷厉风行','léi lì fēng xíng','形容办事果断迅速','新领导雷厉风行'],
+['大刀阔斧','dà dāo kuò fǔ','比喻办事果断有魄力','改革要大刀阔斧'],
+['破釜沉舟','pò fǔ chén zhōu','比喻下定决心不留退路','他破釜沉舟，背水一战'],
+['背水一战','bèi shuǐ yī zhàn','比喻最后关头拼死一搏','决赛是背水一战'],
+['东山再起','dōng shān zài qǐ','比喻失败后重新崛起','他创业失败后东山再起'],
+['卷土重来','juǎn tǔ chóng lái','比喻失败后重新再来','对手准备卷土重来'],
+['焕然一新','huàn rán yī xīn','形容面貌一新','装修后房间焕然一新'],
+['焕发青春','huàn fā qīng chūn','重新焕发活力','老品牌焕发青春'],
+['欣欣向荣','xīn xīn xiàng róng','形容事业蓬勃发展','经济欣欣向荣'],
+['蒸蒸日上','zhēng zhēng rì shàng','形容事业一天天向上发展','公司业绩蒸蒸日上'],
+['日新月异','rì xīn yuè yì','每天每月都有新变化','科技发展日新月异'],
+['突飞猛进','tū fēi měng jìn','形容进步发展非常迅速','他的英语突飞猛进'],
+['循序渐进','xún xù jiàn jìn','按照一定步骤逐渐深入','学习要循序渐进'],
+['水到渠成','shuǐ dào qú chéng','比喻条件成熟事情自然成功','准备工作做好，成功自然水到渠成'],
+['瓜熟蒂落','guā shú dì luò','比喻条件成熟自然会成功','项目推进到这一步，成功瓜熟蒂落'],
+['顺其自然','shùn qí zì rán','顺着事物自然发展','该来的都会来，顺其自然吧'],
+['随遇而安','suí yù ér ān','适应环境，安心于各种境遇','他心态好，随遇而安'],
+['心旷神怡','xīn kuàng shén yí','心境开阔，精神愉快','站在山顶心旷神怡'],
+['赏心悦目','shǎng xīn yuè mù','形容美好的事物让人心情舒畅','这幅画令人赏心悦目'],
+['美不胜收','měi bù shèng shōu','美景多得看不过来','沿途风景美不胜收'],
+['流连忘返','liú lián wàng fǎn','留恋不舍，忘了回去','这里风景太美，让人流连忘返']
+];
+var cyLetter = '';
+function cyInit() {
+  const letters = document.getElementById('cy-letters');
+  if (letters && !letters.innerHTML) {
+    let html = '<button class="btn btn-secondary" onclick="cyLetterSet(\'\')" data-cyletter="" style="font-size:12px;' + (cyLetter === '' ? 'background:var(--accent,#6366f1);color:#fff;' : '') + '">全部</button>';
+    'abcdefghijklmnopqrstuvwxyz'.split('').forEach(function (l) {
+      html += '<button class="btn btn-secondary" onclick="cyLetterSet(\'' + l + '\')" data-cyletter="' + l + '" style="font-size:12px;padding:4px 8px;">' + l.toUpperCase() + '</button>';
+    });
+    letters.innerHTML = html;
+  }
+  cyRender();
+}
+function cyLetterSet(l) {
+  cyLetter = l;
+  const btns = document.querySelectorAll('[data-cyletter]');
+  btns.forEach(function (b) {
+    if (b.getAttribute('data-cyletter') === l) { b.style.background = 'var(--accent,#6366f1)'; b.style.color = '#fff'; }
+    else { b.style.background = ''; b.style.color = ''; }
+  });
+  cyRender();
+}
+function cyRender() {
+  const list = document.getElementById('cy-list');
+  if (!list) return;
+  const q = document.getElementById('cy-search') ? document.getElementById('cy-search').value.trim().toLowerCase() : '';
+  let items = cyData;
+  if (cyLetter) items = items.filter(function (c) { return c[1].charAt(0) === cyLetter; });
+  if (q) items = items.filter(function (c) { return c[0].indexOf(q) >= 0 || c[1].indexOf(q) >= 0 || c[2].indexOf(q) >= 0 || c[3].indexOf(q) >= 0; });
+  if (items.length === 0) {
+    list.innerHTML = '<div style="grid-column:1/-1;text-align:center;color:var(--text-light);padding:30px;">没有找到匹配的成语</div>';
+    return;
+  }
+  list.innerHTML = items.map(function (c, i) {
+    return '<div onclick="cyToggle(' + i + ')" data-cycard="' + i + '" style="background:var(--card-bg,#fff);border:1px solid var(--border,#e2e8f0);border-radius:10px;padding:12px 14px;cursor:pointer;transition:all .15s;" onmouseover="this.style.borderColor=\'var(--accent,#6366f1)\';" onmouseout="this.style.borderColor=\'var(--border,#e2e8f0)\';">' +
+      '<div style="display:flex;justify-content:space-between;align-items:center;">' +
+      '<span style="font-size:16px;font-weight:700;color:#0f172a;">' + c[0] + '</span>' +
+      '<span style="font-size:12px;color:#94a3b8;font-family:monospace;">' + c[1] + '</span></div>' +
+      '<div style="font-size:12px;color:var(--text-light);margin-top:4px;">' + c[2] + '</div></div>';
+  }).join('');
+}
+function cyToggle(i) {
+  // 用全局索引展开：简单方案：找到卡片后追加释义示例
+  const card = document.querySelector('[data-cycard="' + i + '"]');
+  if (!card) return;
+  const extra = card.querySelector('.cy-extra');
+  if (extra) { extra.remove(); return; }
+  const div = document.createElement('div');
+  div.className = 'cy-extra';
+  div.style.cssText = 'margin-top:8px;padding:8px 10px;background:#eef2ff;border-radius:6px;font-size:13px;color:#4f46e5;';
+  div.textContent = '✏️ 示例：' + cyData[i][3];
+  card.appendChild(div);
 }
