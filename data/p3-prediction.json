@@ -8009,14 +8009,15 @@
       6,
       8
     ],
-    "drawNum": null,
-    "result": null,
-    "updatedAt": null,
+    "drawNum": "379",
+    "result": "❌",
+    "updatedAt": "2026-09-26T14:34:17.271Z",
     "coldDans": [
       3,
       8,
       4
-    ]
+    ],
+    "coldResult": "✅"
   },
   "2026260": {
     "period": "2026260",
