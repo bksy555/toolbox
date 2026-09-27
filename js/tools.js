@@ -7011,6 +7011,82 @@ greet('世界');</textarea>
       </div>
     `,
     handler: () => { setTimeout(cyInit, 50); }
+  },
+  {
+    id: 'name-generator',
+    cat: 'fun',
+    icon: '👶',
+    name: '随机起名器',
+    desc: '按性别/风格生成中文名、网名与英文名，一键复制（起名灵感神器）',
+    html: `
+      <div class="tool-card">
+        <p style="color:var(--text-light);font-size:13px;margin-bottom:10px;">👶 宝宝起名没头绪？网名想不到？随机起名器按性别和风格生成中文名、网名、英文名，一键换一批、一键复制（灵感来源于起名网等付费起名服务，纯本地随机生成）。</p>
+        <div style="display:flex;gap:10px;margin-bottom:12px;flex-wrap:wrap;align-items:flex-end;">
+          <div>
+            <div style="font-size:12px;color:var(--text-light);margin-bottom:4px;">类型</div>
+            <select id="ng-type" style="width:130px;padding:8px 10px;border:1px solid var(--border,#ddd);border-radius:8px;font-size:14px;background:var(--card-bg,#fff);color:var(--text);box-sizing:border-box;">
+              <option value="cn">🇨🇳 中文名</option>
+              <option value="wang">🌐 网名</option>
+              <option value="en">🇬🇧 英文名</option>
+            </select>
+          </div>
+          <div>
+            <div style="font-size:12px;color:var(--text-light);margin-bottom:4px;">风格</div>
+            <select id="ng-style" style="width:130px;padding:8px 10px;border:1px solid var(--border,#ddd);border-radius:8px;font-size:14px;background:var(--card-bg,#fff);color:var(--text);box-sizing:border-box;">
+              <option value="random">🎲 随机</option>
+              <option value="wen">文雅</option>
+              <option value="gu">古风</option>
+              <option value="qin">清新</option>
+              <option value="ying">阳光</option>
+            </select>
+          </div>
+          <div>
+            <div style="font-size:12px;color:var(--text-light);margin-bottom:4px;">性别</div>
+            <select id="ng-gender" style="width:110px;padding:8px 10px;border:1px solid var(--border,#ddd);border-radius:8px;font-size:14px;background:var(--card-bg,#fff);color:var(--text);box-sizing:border-box;">
+              <option value="any">不限</option>
+              <option value="boy">男生</option>
+              <option value="girl">女生</option>
+            </select>
+          </div>
+          <button class="btn btn-primary" onclick="ngRun()">🎲 生成一批</button>
+          <button class="btn btn-secondary" onclick="ngCopy()">📋 复制</button>
+        </div>
+        <div id="ng-list" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;"></div>
+        <div id="ng-tip" style="margin-top:10px;font-size:12px;color:var(--text-light);">💡 中文名按声调与常用字搭配生成；网名含符号与叠字风格；英文名精选常见寓意好的名字。名字仅供灵感参考。</div>
+      </div>
+    `,
+    handler: () => { setTimeout(ngInit, 50); }
+  },
+  {
+    id: 'zodiac-lookup',
+    cat: 'fun',
+    icon: '🐲',
+    name: '生肖星座查询',
+    desc: '输入出生日期一键查生肖/星座/干支，附性格简评（趣味知识）',
+    html: `
+      <div class="tool-card">
+        <p style="color:var(--text-light);font-size:13px;margin-bottom:10px;">🐲 输入出生日期，一键查询你的生肖、星座、干支纪年与幸运数字，附一句趣味性格简评。聊天破冰、社交名片、自我了解都好玩（灵感来源于生肖星座类 App 与网站）。</p>
+        <div style="display:flex;gap:10px;margin-bottom:12px;flex-wrap:wrap;align-items:flex-end;">
+          <div>
+            <div style="font-size:12px;color:var(--text-light);margin-bottom:4px;">出生年份</div>
+            <input id="zl-year" type="number" min="1900" max="2100" placeholder="1990" style="width:100px;padding:9px 12px;border:1px solid var(--border,#ddd);border-radius:8px;font-size:14px;background:var(--card-bg,#fff);color:var(--text);box-sizing:border-box;">
+          </div>
+          <div>
+            <div style="font-size:12px;color:var(--text-light);margin-bottom:4px;">月份</div>
+            <input id="zl-month" type="number" min="1" max="12" placeholder="5" style="width:80px;padding:9px 12px;border:1px solid var(--border,#ddd);border-radius:8px;font-size:14px;background:var(--card-bg,#fff);color:var(--text);box-sizing:border-box;">
+          </div>
+          <div>
+            <div style="font-size:12px;color:var(--text-light);margin-bottom:4px;">日期</div>
+            <input id="zl-day" type="number" min="1" max="31" placeholder="20" style="width:80px;padding:9px 12px;border:1px solid var(--border,#ddd);border-radius:8px;font-size:14px;background:var(--card-bg,#fff);color:var(--text);box-sizing:border-box;">
+          </div>
+          <button class="btn btn-primary" onclick="zlQuery()">🔍 查询</button>
+          <button class="btn btn-secondary" onclick="zlToday()">📅 今天</button>
+        </div>
+        <div id="zl-result" style="border:1px solid var(--border,#e2e8f0);border-radius:12px;padding:18px 20px;"></div>
+        <div id="zl-tip" style="margin-top:10px;font-size:12px;color:var(--text-light);">💡 生肖以农历春节为界（简化：按公历年份计算，1 月 1 日-春节前出生属上一生肖，仅供参考）；星座按公历日期划分。</div>
+      </div>
+    `,
+    handler: () => { setTimeout(zlInit, 50); }
   }
 ];
 
@@ -8663,7 +8739,7 @@ const CATEGORIES = [
   { id: 'ai', icon: '🤖', name: 'AI工具', desc: 'AI聊天、AI Agent安装、免费AI工具推荐' },
   { id: 'voice', icon: '🗣️', name: '群众心声', desc: '提交工具建议、投票排行榜、前3名自动实现' },
   { id: 'lottery', icon: '🎰', name: '彩票工具', desc: '双色球、大乐透、福彩3D、快乐8、排列三…在线过滤缩水、选号、计算器' },
-  { id: 'fun', icon: '🎪', name: '趣味工具', desc: '表情包生成、决策转盘、抽奖抽签、词云生成、涂鸦画板、Emoji表情速查、数独生成器、娱乐好玩' },
+  { id: 'fun', icon: '🎪', name: '趣味工具', desc: '表情包生成、决策转盘、抽奖抽签、词云生成、涂鸦画板、Emoji表情速查、数独生成器、随机起名器、生肖星座查询、娱乐好玩' },
   { id: 'finance', icon: '💰', name: '财务工具', desc: '家庭记账本、收支统计、月度汇总' },
   { id: 'edu', icon: '📚', name: '教育资源', desc: '电子教材在线阅读、学习资源导航、元素周期表、习惯打卡、打字速度测试、历史上的今天、科学计算器、成语大全' },
   { id: 'health', icon: '🏥', name: '健康工具', desc: 'BMI 指数计算、体重管理参考' }
@@ -18640,4 +18716,134 @@ function cyToggle(i) {
   div.style.cssText = 'margin-top:8px;padding:8px 10px;background:#eef2ff;border-radius:6px;font-size:13px;color:#4f46e5;';
   div.textContent = '✏️ 示例：' + cyData[i][3];
   card.appendChild(div);
+}// ============================================================
+// 随机起名器 name-generator (ng*)
+// ============================================================
+var ngSur = ['李','王','张','刘','陈','杨','赵','黄','周','吴','徐','孙','胡','朱','高','林','何','郭','马','罗','梁','宋','郑','谢','韩','唐','冯','于','董','程','曹','袁','邓','许','傅','沈','曾','彭','吕','苏','卢','蒋','蔡','贾','丁','魏','薛','叶','潘','杜','戴','夏','钟','汪','田','任','姜','范','方','石','姚','谭','廖','邹','熊','金','陆','郝','孔','白','崔','康','毛','邱','秦','江','史','顾','侯','邵','孟','龙','万','段','雷','钱','汤','尹','黎','易','常','武','乔','贺','赖','龚','文'];
+var ngGirl = ['欣怡','诗涵','梓萱','若曦','雨桐','梦琪','嘉怡','晨曦','雅静','可欣','子涵','思远','一诺','天佑','俊杰','浩然','欣妍','婉婷','思彤','雨萱','芷若','清欢','明月','晚晴','初雪','安宁','知夏','南乔','以沫','芷晴','静好','安然','书瑶','念安','可萱','星月','洛依','语嫣','晓霜','听雨','初见','轻舟','微凉','半夏','余音','沉香','若水','烟雨','未央','青黛','小满','向晚','初晴','月白','流萤','知微','晚晚','桃夭','素心','拾光','顾念','安暖','望舒','疏影','清梦','知遥','暮雪','惊鸿','婉清','知乐','如初'];
+var ngBoy = ['浩然','子轩','宇轩','思远','俊杰','天佑','明轩','泽宇','瑞霖','嘉懿','晨曦','志强','文博','睿哲','浩宇','承泽','景行','博文','彦斌','梓墨','一鸣','知行','云帆','临风','星河','凌霄','鹤鸣','远山','长风','青松','北辰','望舒','牧之','修远','景明','问天','归海','卓然','明诚','时雨','观澜','清越','凌云','逐光','启明','书言','怀瑾','扶苏','惊鸿','千帆','既明','朝歌','知遇','常青','观棋','听松','照野','见山','如风','慕白','子衿','行舟','入云','揽月','听澜','逸尘','方遒','君临','云起'];
+var ngWang = ['清风','晚风','拾光','青柠','柚子','南巷','北岛','薄荷','糖糖','小鹿','夜航','拾忆','南风','旧梦','星河','木子','初阳','微甜','蓝调','茶茶','陌上','花间','渡口','远帆','等风','听雨','旧巷','暖阳','半糖','江晚','尘心','拾荒','云朵','鹿鸣','白鹭','栖迟','未眠','过客','逐梦','阿水','小满','知了','蝉鸣','凉夏','初雪','寻梦','星光','沐光','揽月','千寻'];
+var ngEn = ['Liam','Noah','Olivia','Emma','Ava','Sophia','Lucas','Mia','Amelia','Ethan','Mason','Isabella','Harper','Evelyn','James','Benjamin','Ella','Aria','Layla','Chloe','Henry','Alexander','Grace','Scarlett','Zoe','Nora','Eli','Leo','Ivy','Lily'];
+var ngStyle = 'random', ngGender = 'any';
+function ngInit() {
+  ngRun();
+}
+function ngPick(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
+function ngGen() {
+  const type = document.getElementById('ng-type') ? document.getElementById('ng-type').value : 'cn';
+  const style = document.getElementById('ng-style') ? document.getElementById('ng-style').value : 'random';
+  ngStyle = style; ngGender = document.getElementById('ng-gender') ? document.getElementById('ng-gender').value : 'any';
+  if (type === 'en') return ngPick(ngEn);
+  if (type === 'wang') return ngPick(ngWang);
+  // 中文名
+  let pool = ngGirl.concat(ngBoy);
+  if (ngGender === 'boy') pool = ngBoy;
+  else if (ngGender === 'girl') pool = ngGirl;
+  if (style === 'gu' || style === 'wen') {
+    const guPool = ngGirl.concat(ngBoy).filter(function (n) { return ['若曦','清欢','明月','晚晴','初雪','安然','书瑶','望舒','疏影','清梦','惊鸿','青黛','素心','初见','未央','以沫','芷晴','梓墨','景行','修远','牧之','星河','凌霄','鹤鸣','扶苏','怀瑾','知遇','朝歌','观澜','千帆','既明','揽月','慕白','子衿','行舟','照野','见山'].indexOf(n) >= 0; });
+    if (guPool.length > 0) pool = guPool;
+  } else if (style === 'qin') {
+    const qinPool = ['欣怡','诗涵','可欣','婉婷','思彤','初晴','知夏','小满','半夏','初见','微凉','如初','晨','宇','子涵','欣妍','安暖','拾光','晚晚','知微','月白','流萤'].filter(function (n) { return true; });
+    if (qinPool.length > 0) pool = qinPool.concat(ngGirl.slice(0, 20));
+  } else if (style === 'ying') {
+    const yingPool = ['浩然','子轩','宇轩','俊杰','天佑','晨曦','志强','明轩','瑞霖','泽宇','思远','一诺','嘉懿','博文','彦斌','文博','睿哲','承泽'].filter(function (n) { return true; });
+    pool = yingPool.concat(ngBoy.slice(0, 20));
+  }
+  return ngPick(ngSur) + ngPick(pool);
+}
+function ngRun() {
+  const list = document.getElementById('ng-list');
+  if (!list) return;
+  const items = [];
+  for (let i = 0; i < 8; i++) items.push(ngGen());
+  list.innerHTML = items.map(function (n, i) {
+    return '<div onclick="ngCopyOne(\'' + n + '\')" title="点击复制" style="background:var(--card-bg,#fff);border:1px solid var(--border,#e2e8f0);border-radius:10px;padding:14px;text-align:center;cursor:pointer;font-size:18px;font-weight:700;color:#0f172a;transition:all .15s;" onmouseover="this.style.borderColor=\'var(--accent,#6366f1)\';" onmouseout="this.style.borderColor=\'var(--border,#e2e8f0)\';">' + n + '</div>';
+  }).join('');
+}
+function ngCopyOne(n) {
+  navigator.clipboard.writeText(n).then(function () { showToast('✅ 已复制 ' + n); }).catch(function () {});
+}
+function ngCopy() {
+  const list = document.getElementById('ng-list');
+  if (!list) return;
+  const text = Array.prototype.map.call(list.children, function (c) { return c.textContent; }).join('、');
+  navigator.clipboard.writeText(text).then(function () { showToast('✅ 已复制全部名字'); }).catch(function () {});
+}
+
+// ============================================================
+// 生肖星座查询 zodiac-lookup (zl*)
+// ============================================================
+var zlZodiac = ['鼠','牛','虎','兔','龙','蛇','马','羊','猴','鸡','狗','猪'];
+var zlZodiacDesc = {
+  '鼠':'聪明机敏，善于观察，适应力强','牛':'踏实稳重，坚韧不拔，值得信赖','虎':'勇敢自信，行动力强，天生领袖','兔':'温和细腻，善解人意，人缘极好','龙':'自信大气，目标远大，气势不凡','蛇':'冷静睿智，洞察力强，神秘内敛','马':'热情奔放，精力充沛，追求自由','羊':'温顺善良，心思细腻，审美出众','猴':'灵活机智，幽默风趣，创意十足','鸡':'认真严谨，条理清晰，追求完美','狗':'忠诚可靠，正直善良，责任心强','猪':'豁达乐观，随和知足，福气满满'};
+var zlZodiacPoem = ['子','丑','寅','卯','辰','巳','午','未','申','酉','戌','亥'];
+var zlHeaven = ['甲','乙','丙','丁','戊','己','庚','辛','壬','癸'];
+var zlEarth = ['子','丑','寅','卯','辰','巳','午','未','申','酉','戌','亥'];
+var zlStar = [
+  {name:'摩羯座', icon:'♑', start:[12,22], end:[1,19], desc:'沉稳务实，责任心强，目标感十足'},
+  {name:'水瓶座', icon:'♒', start:[1,20], end:[2,18], desc:'独立创新，思维跳跃，与众不同'},
+  {name:'双鱼座', icon:'♓', start:[2,19], end:[3,20], desc:'浪漫感性，想象力丰富，温柔共情'},
+  {name:'白羊座', icon:'♈', start:[3,21], end:[4,19], desc:'热情冲动，敢想敢干，充满活力'},
+  {name:'金牛座', icon:'♉', start:[4,20], end:[5,20], desc:'沉稳固执，审美在线，踏实可靠'},
+  {name:'双子座', icon:'♊', start:[5,21], end:[6,21], desc:'聪明灵活，好奇心强，能言善辩'},
+  {name:'巨蟹座', icon:'♋', start:[6,22], end:[7,22], desc:'温柔顾家，情感细腻，直觉敏锐'},
+  {name:'狮子座', icon:'♌', start:[7,23], end:[8,22], desc:'自信耀眼，热情慷慨，天生主角'},
+  {name:'处女座', icon:'♍', start:[8,23], end:[9,22], desc:'细致严谨，追求完美，分析力强'},
+  {name:'天秤座', icon:'♎', start:[9,23], end:[10,23], desc:'优雅平衡，善于协调，审美出众'},
+  {name:'天蝎座', icon:'♏', start:[10,24], end:[11,22], desc:'深沉专注，洞察人心，意志坚定'},
+  {name:'射手座', icon:'♐', start:[11,23], end:[12,21], desc:'自由乐观，热爱冒险，坦率真诚'}
+];
+function zlInit() {
+  zlToday();
+}
+function zlToday() {
+  const now = new Date();
+  const y = document.getElementById('zl-year');
+  const m = document.getElementById('zl-month');
+  const d = document.getElementById('zl-day');
+  if (y) y.value = now.getFullYear();
+  if (m) m.value = now.getMonth() + 1;
+  if (d) d.value = now.getDate();
+  zlQuery();
+}
+function zlQuery() {
+  const yEl = document.getElementById('zl-year');
+  const mEl = document.getElementById('zl-month');
+  const dEl = document.getElementById('zl-day');
+  const out = document.getElementById('zl-result');
+  if (!yEl || !mEl || !dEl || !out) return;
+  const y = parseInt(yEl.value, 10);
+  const m = parseInt(mEl.value, 10);
+  const d = parseInt(dEl.value, 10);
+  if (!y || !m || !d || y < 1900 || y > 2100 || m < 1 || m > 12 || d < 1 || d > 31) {
+    out.innerHTML = '<div style="color:#ef4444;">请输入有效日期（1900-2100）</div>';
+    return;
+  }
+  // 生肖（公历年）
+  const zodiac = zlZodiac[(y - 1900) % 12 < 0 ? (y - 1900) % 12 + 12 : (y - 1900) % 12];
+  // 干支
+  const gan = zlHeaven[(y - 4) % 10];
+  const zhi = zlEarth[(y - 4) % 12];
+  // 星座
+  let star = zlStar[0];
+  zlStar.forEach(function (s) {
+    const sm = s.start[0], sd = s.start[1], em = s.end[0], ed = s.end[1];
+    if (sm < em) {
+      if ((m === sm && d >= sd) || (m === em && d <= ed) || (m > sm && m < em)) star = s;
+    } else {
+      if ((m === sm && d >= sd) || (m === em && d <= ed) || (m > sm || m < em)) star = s;
+    }
+  });
+  const lucky = ((y + m + d) % 9) + 1;
+  out.innerHTML =
+    '<div style="font-size:18px;font-weight:800;color:#0f172a;margin-bottom:12px;">' + y + ' 年 ' + m + ' 月 ' + d + ' 日</div>' +
+    '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;">' +
+    '<div style="background:#eef2ff;border-radius:10px;padding:12px;text-align:center;"><div style="font-size:12px;color:#64748b;">生肖</div><div style="font-size:26px;font-weight:800;color:#4f46e5;margin-top:4px;">🐾 ' + zodiac + '</div></div>' +
+    '<div style="background:#ecfdf5;border-radius:10px;padding:12px;text-align:center;"><div style="font-size:12px;color:#64748b;">星座</div><div style="font-size:26px;font-weight:800;color:#059669;margin-top:4px;">' + star.icon + ' ' + star.name + '</div></div>' +
+    '<div style="background:#fff7ed;border-radius:10px;padding:12px;text-align:center;"><div style="font-size:12px;color:#64748b;">干支纪年</div><div style="font-size:26px;font-weight:800;color:#d97706;margin-top:4px;">' + gan + zhi + ' 年</div></div>' +
+    '<div style="background:#fdf2f8;border-radius:10px;padding:12px;text-align:center;"><div style="font-size:12px;color:#64748b;">幸运数字</div><div style="font-size:26px;font-weight:800;color:#db2777;margin-top:4px;">' + lucky + '</div></div>' +
+    '</div>' +
+    '<div style="margin-top:14px;padding:12px 14px;background:#f8fafc;border-radius:10px;font-size:14px;color:#334155;">' +
+    '<strong>🐲 ' + zodiac + ' 年生人：</strong>' + zlZodiacDesc[zodiac] + '<br>' +
+    '<strong>' + star.icon + ' ' + star.name + '：</strong>' + star.desc + '</div>';
 }
