@@ -7087,6 +7087,79 @@ greet('世界');</textarea>
       </div>
     `,
     handler: () => { setTimeout(zlInit, 50); }
+  },
+  {
+    id: 'font-pairing',
+    cat: 'dev',
+    icon: '🔤',
+    name: '字体配对推荐器',
+    desc: '输入主字体或选风格，按场景推荐搭配字体组合，设计排版必备（FontJoy 免费版）',
+    html: `
+      <div class="tool-card">
+        <p style="color:var(--text-light);font-size:13px;margin-bottom:10px;">🔤 选不好字体搭配？输入你已有的主字体（或选风格），自动推荐 3 组合适的搭配组合，并给出使用场景建议。做海报、PPT、网页设计再也不纠结（灵感来源于 FontJoy 等字体配对付费工具，纯本地推荐）。</p>
+        <div style="display:flex;gap:10px;margin-bottom:12px;flex-wrap:wrap;align-items:flex-end;">
+          <div style="flex:1;min-width:200px;">
+            <div style="font-size:12px;color:var(--text-light);margin-bottom:4px;">主字体（可输入自定义）</div>
+            <input id="fp-font" type="text" placeholder="如：Noto Sans SC / 宋体 / 输入任意字体名" value="思源黑体" style="width:100%;padding:9px 12px;border:1px solid var(--border,#ddd);border-radius:8px;font-size:14px;background:var(--card-bg,#fff);color:var(--text);box-sizing:border-box;">
+          </div>
+          <div>
+            <div style="font-size:12px;color:var(--text-light);margin-bottom:4px;">常见字体</div>
+            <select id="fp-preset" onchange="fpPreset()" style="width:180px;padding:9px 12px;border:1px solid var(--border,#ddd);border-radius:8px;font-size:14px;background:var(--card-bg,#fff);color:var(--text);box-sizing:border-box;">
+              <option value="">— 选择 —</option>
+              <option value="Noto Sans SC">思源黑体</option>
+              <option value="Noto Serif SC">思源宋体</option>
+              <option value="微软雅黑">微软雅黑</option>
+              <option value="楷体">楷体</option>
+              <option value="Playfair Display">Playfair Display</option>
+              <option value="Georgia">Georgia</option>
+              <option value="Caveat">Caveat（手写）</option>
+              <option value="JetBrains Mono">JetBrains Mono</option>
+            </select>
+          </div>
+          <div>
+            <div style="font-size:12px;color:var(--text-light);margin-bottom:4px;">使用场景</div>
+            <select id="fp-scene" style="width:130px;padding:9px 12px;border:1px solid var(--border,#ddd);border-radius:8px;font-size:14px;background:var(--card-bg,#fff);color:var(--text);box-sizing:border-box;">
+              <option value="web">网页</option>
+              <option value="poster">海报</option>
+              <option value="ppt">PPT</option>
+              <option value="doc">文档</option>
+            </select>
+          </div>
+          <button class="btn btn-primary" onclick="fntRun()">🔍 推荐搭配</button>
+        </div>
+        <div id="fp-result" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px;"></div>
+        <div id="fp-tip" style="margin-top:10px;font-size:12px;color:var(--text-light);">💡 经典原则：衬线配无衬线对比最醒目；标题用粗体装饰性字体、正文用易读字体；同一页面建议不超过 2-3 种字体。</div>
+      </div>
+    `,
+    handler: () => { setTimeout(fntInit, 50); }
+  },
+  {
+    id: 'caesar-cipher',
+    cat: 'security',
+    icon: '🔐',
+    name: '凯撒密码加密',
+    desc: '经典凯撒移位加密/解密，自定义偏移量，一键复制（密码学入门神器）',
+    html: `
+      <div class="tool-card">
+        <p style="color:var(--text-light);font-size:13px;margin-bottom:10px;">🔐 凯撒密码是最古老的加密方法之一：把每个字母按字母表向后（或向前）移动固定位数。输入明文/密文与偏移量，一键加密/解密并复制（灵感来源于密码学学习工具，纯本地运算）。</p>
+        <div style="display:flex;gap:10px;margin-bottom:12px;flex-wrap:wrap;align-items:flex-end;">
+          <div style="flex:1;min-width:200px;">
+            <div style="font-size:12px;color:var(--text-light);margin-bottom:4px;">文本</div>
+            <input id="cs-text" type="text" placeholder="输入要加密或解密的英文文本" value="HELLO WORLD" style="width:100%;padding:9px 12px;border:1px solid var(--border,#ddd);border-radius:8px;font-size:14px;letter-spacing:1px;background:var(--card-bg,#fff);color:var(--text);box-sizing:border-box;font-family:monospace;">
+          </div>
+          <div>
+            <div style="font-size:12px;color:var(--text-light);margin-bottom:4px;">偏移量（1-25）</div>
+            <input id="cs-shift" type="number" min="1" max="25" value="3" style="width:80px;padding:9px 12px;border:1px solid var(--border,#ddd);border-radius:8px;font-size:14px;background:var(--card-bg,#fff);color:var(--text);box-sizing:border-box;">
+          </div>
+          <button class="btn btn-primary" onclick="czRun(true)">🔒 加密</button>
+          <button class="btn btn-secondary" onclick="czRun(false)">🔓 解密</button>
+          <button class="btn btn-secondary" onclick="czCopy()">📋 复制结果</button>
+        </div>
+        <div id="cs-result" style="border:1px solid var(--border,#e2e8f0);border-radius:10px;padding:14px 16px;font-family:monospace;font-size:16px;letter-spacing:1px;word-break:break-all;min-height:50px;background:var(--card-bg,#fff);color:var(--text);"></div>
+        <div id="cs-tip" style="margin-top:10px;font-size:12px;color:var(--text-light);">💡 原理：字母按偏移量循环移位（如偏移 3：A→D、B→E…Z→C）。数字与符号原样保留；中文暂不支持，请用英文测试。尝试偏移 3 加密 "HELLO" 得到 "KHOOR"。</div>
+      </div>
+    `,
+    handler: () => { setTimeout(czInit, 50); }
   }
 ];
 
@@ -8728,11 +8801,11 @@ function dpCopyText() {
 // ============================================================
 const CATEGORIES = [
   { id: 'text', icon: '✏️', name: '文本工具', desc: '字数统计、简繁转换、摩斯密码、文本转语音、文本对比、电子名片生成器、英文语法检查、占位文本生成' },
-  { id: 'dev', icon: '💻', name: '开发者工具', desc: 'JSON格式化、YAML/JSON互转、二维码生成、二维码美化、条形码生成、Favicon图标生成、正则测试、Markdown、IP查询、子网计算、思维导图、图表生成、代码图片生成、表格数据转换、SQL格式化、代码压缩器、假数据生成器、Cron表达式生成器、HTTP状态码速查、SEO标题预览、屏幕坏点测试' },
+  { id: 'dev', icon: '💻', name: '开发者工具', desc: 'JSON格式化、YAML/JSON互转、二维码生成、二维码美化、条形码生成、Favicon图标生成、正则测试、Markdown、IP查询、子网计算、思维导图、图表生成、代码图片生成、表格数据转换、SQL格式化、代码压缩器、假数据生成器、Cron表达式生成器、HTTP状态码速查、SEO标题预览、屏幕坏点测试、字体配对' },
   { id: 'image', icon: '🖼️', name: '图片处理', desc: '去背景换底色、批量压缩、加水印、长图拼接、格式转换、裁剪、异形裁剪、马赛克打码、双色调滤镜、图片转字符画、照片卡通化、OCR、印章制作、九宫格切图、文字转手写体、表情包、社交媒体图片尺寸调整、艺术效果、像素画、设备样机、图片高清放大、图片转线稿、渐变背景、文字特效、拼贴画、图片相框、颜色盲区模拟、海报设计器、老照片修复上色、图片EXIF信息、占位图生成器' },
   { id: 'document', icon: '📄', name: '文档转换', desc: '图片转PDF、PDF转图片、Word解析、Excel转PDF、PDF合并、PDF拆分、简历生成、电子签名、表单制作、邮件签名、发票/收据生成器、证书生成器' },
   { id: 'convert', icon: '🔄', name: '转换工具', desc: '单位换算、进制转换、函数绘图' },
-  { id: 'security', icon: '🔒', name: '安全工具', desc: '密码生成、Hash计算、随机数、浏览器指纹检测、身份证号码校验' },
+  { id: 'security', icon: '🔒', name: '安全工具', desc: '密码生成、Hash计算、随机数、浏览器指纹检测、身份证号码校验、凯撒密码' },
   { id: 'time', icon: '⏱️', name: '时间工具', desc: '时间戳转换、日期计算、世界时区转换、番茄钟专注计时、待办清单、每日计划' },
   { id: 'color', icon: '🎨', name: '颜色工具', desc: 'HEX/RGB/HSL颜色转换、颜色对比度检查、CSS渐变生成器、配色方案生成器' },
   { id: 'media', icon: '🎬', name: '媒体工具', desc: '抖音/TikTok去水印下载、视频转GIF、在线录音、录音转文字、音频波形可视化、白噪音发生器、音频变速变调、音频剪辑拼接、视频缩略图制作器、在线便签、人声分离/伴奏提取' },
@@ -18846,4 +18919,127 @@ function zlQuery() {
     '<div style="margin-top:14px;padding:12px 14px;background:#f8fafc;border-radius:10px;font-size:14px;color:#334155;">' +
     '<strong>🐲 ' + zodiac + ' 年生人：</strong>' + zlZodiacDesc[zodiac] + '<br>' +
     '<strong>' + star.icon + ' ' + star.name + '：</strong>' + star.desc + '</div>';
+}// ============================================================
+// 字体配对推荐器 font-pairing (fp*)
+// ============================================================
+var fntKnown = {
+  'sans': ['Noto Sans SC','思源黑体','微软雅黑','Helvetica','Arial','Roboto','PingFang SC','Inter','Open Sans','Lato','Montserrat','Poppins','Source Sans Pro','黑体','雅黑'],
+  'serif': ['Noto Serif SC','思源宋体','宋体','Georgia','Times New Roman','Playfair Display','Lora','Merriweather','Source Serif Pro','Crimson Text','Songti SC'],
+  'hand': ['楷体','行书','草书','Caveat','Dancing Script','Pacifico','Great Vibes','ZCOOL XiaoWei','ZCOOL KuaiLe'],
+  'mono': ['JetBrains Mono','Fira Code','Courier New','Consolas','Menlo','Source Code Pro','IBM Plex Mono']
+};
+function fntInit() {
+  fntRun();
+}
+function fntPreset() {
+  const sel = document.getElementById('fp-preset');
+  const inp = document.getElementById('fp-font');
+  if (sel && inp && sel.value) inp.value = sel.value;
+  fntRun();
+}
+function fntCategorize(name) {
+  const n = name.toLowerCase();
+  for (const k in fntKnown) {
+    for (let i = 0; i < fntKnown[k].length; i++) {
+      if (n.indexOf(fntKnown[k][i].toLowerCase()) >= 0 || fntKnown[k][i].toLowerCase().indexOf(n) >= 0) return k;
+    }
+  }
+  if (n.indexOf('sans') >= 0 || n.indexOf('黑') >= 0 || n.indexOf('hei') >= 0) return 'sans';
+  if (n.indexOf('serif') >= 0 || n.indexOf('宋') >= 0 || n.indexOf('song') >= 0 || n.indexOf('明') >= 0) return 'serif';
+  if (n.indexOf('mono') >= 0 || n.indexOf('courier') >= 0 || n.indexOf('code') >= 0) return 'mono';
+  if (n.indexOf('楷') >= 0 || n.indexOf('行') >= 0 || n.indexOf('草') >= 0 || n.indexOf('script') >= 0 || n.indexOf('hand') >= 0) return 'hand';
+  return 'unknown';
+}
+function fntSample(cat) {
+  const map = { 'sans': 'Noto Sans SC, sans-serif', 'serif': 'Noto Serif SC, serif', 'hand': '楷体, cursive', 'mono': 'Courier New, monospace' };
+  return map[cat] || 'sans-serif';
+}
+function fntRun() {
+  const inp = document.getElementById('fp-font');
+  const out = document.getElementById('fp-result');
+  if (!inp || !out) return;
+  const main = inp.value.trim() || '思源黑体';
+  const scene = document.getElementById('fp-scene') ? document.getElementById('fp-scene').value : 'web';
+  const cat = fntCategorize(main);
+  const sceneName = { web: '网页', poster: '海报', ppt: 'PPT', doc: '文档' }[scene] || '网页';
+  let groups = [];
+  if (cat === 'serif') {
+    groups = [
+      { name: '经典衬线+无衬线', main: main, pair: '思源黑体 / Roboto', reason: '标题用衬线显典雅，正文用无衬线易读，最稳妥的经典组合', sample: fntSample('serif') },
+      { name: '高对比大标题', main: main, pair: 'Playfair Display + 思源黑体', reason: '海报/杂志风：装饰性衬线做标题，无衬线做说明文字', sample: fntSample('serif') },
+      { name: '衬线+衬线（文档）', main: main, pair: '宋体 + Georgia', reason: '文档正文与标题同为衬线，正式、耐读，适合报告与书稿', sample: fntSample('serif') }
+    ];
+  } else if (cat === 'sans') {
+    groups = [
+      { name: '现代无衬线+衬线', main: main, pair: 'Playfair Display / 思源宋体', reason: '标题衬线提升质感，正文无衬线保持现代感', sample: fntSample('sans') },
+      { name: '双无衬线（简洁）', main: main, pair: 'Roboto + Inter', reason: '全无衬线风格统一，适合科技感 UI 与移动端', sample: fntSample('sans') },
+      { name: '文艺手写点缀', main: main, pair: 'Caveat / 楷体', reason: '标题或点缀用手写体增加温度，适合生活类内容', sample: fntSample('sans') }
+    ];
+  } else if (cat === 'hand') {
+    groups = [
+      { name: '手写标题+无衬线正文', main: main, pair: '思源黑体 / Roboto', reason: '手写体做标题吸睛，正文用无衬线保证可读', sample: fntSample('hand') },
+      { name: '手写+衬线（文艺）', main: main, pair: 'Noto Serif SC / Georgia', reason: '文艺书卷气，适合随笔、手账、品牌故事', sample: fntSample('hand') },
+      { name: '手写+等宽（创意）', main: main, pair: 'JetBrains Mono', reason: '创意组合：手写与等宽形成有趣对比，适合设计感页面', sample: fntSample('hand') }
+    ];
+  } else if (cat === 'mono') {
+    groups = [
+      { name: '等宽+无衬线', main: main, pair: 'Inter / 思源黑体', reason: '代码/数据用等宽，说明文字用无衬线，开发者首选', sample: fntSample('mono') },
+      { name: '等宽标题+衬线', main: main, pair: 'Playfair Display', reason: '技术博客：等宽标题有极客感，衬线正文优雅易读', sample: fntSample('mono') },
+      { name: '纯等宽组合', main: main, pair: 'Fira Code + Courier New', reason: '代码块、终端风格页面统一使用等宽', sample: fntSample('mono') }
+    ];
+  } else {
+    groups = [
+      { name: '通用推荐', main: main, pair: '思源黑体 + 宋体', reason: '不确定类别时：无衬线做正文、衬线做标题的万能组合', sample: fntSample('sans') },
+      { name: '现代简洁', main: main, pair: 'Roboto + Inter', reason: '全无衬线，科技感强', sample: fntSample('sans') },
+      { name: '优雅衬线', main: main, pair: 'Playfair Display + Georgia', reason: '标题正文双衬线，适合品牌与文档', sample: fntSample('serif') }
+    ];
+  }
+  out.innerHTML = groups.map(function (g) {
+    return '<div style="background:var(--card-bg,#fff);border:1px solid var(--border,#e2e8f0);border-radius:12px;padding:16px;">' +
+      '<div style="font-size:14px;font-weight:700;color:#0f172a;margin-bottom:8px;">🎯 ' + g.name + '</div>' +
+      '<div style="font-size:15px;font-weight:600;color:#4f46e5;margin-bottom:6px;">' + g.main + ' + ' + g.pair + '</div>' +
+      '<div style="font-size:13px;color:var(--text-light);margin-bottom:12px;">' + g.reason + '</div>' +
+      '<div style="font-size:22px;font-weight:700;padding:10px;border-radius:8px;background:#f8fafc;color:#0f172a;font-family:' + g.sample + ';">Aa 排版示例 ' + sceneName + '</div>' +
+      '</div>';
+  }).join('');
+}
+
+// ============================================================
+// 凯撒密码加密 caesar-cipher (cs*)
+// ============================================================
+function czInit() {
+  const el = document.getElementById('cs-text');
+  if (el) el.addEventListener('keydown', function (e) { if (e.key === 'Enter') czRun(true); });
+}
+function czRun(enc) {
+  const txt = document.getElementById('cs-text');
+  const shiftEl = document.getElementById('cs-shift');
+  const out = document.getElementById('cs-result');
+  if (!txt || !shiftEl || !out) return;
+  let shift = parseInt(shiftEl.value, 10);
+  if (!shift || shift < 1 || shift > 25) shift = 3;
+  if (!enc) shift = (26 - shift) % 26;
+  let res = '';
+  const s = txt.value || '';
+  for (let i = 0; i < s.length; i++) {
+    const c = s[i];
+    const code = s.charCodeAt(i);
+    if (code >= 65 && code <= 90) {
+      res += String.fromCharCode(((code - 65 + shift) % 26) + 65);
+    } else if (code >= 97 && code <= 122) {
+      res += String.fromCharCode(((code - 97 + shift) % 26) + 97);
+    } else {
+      res += c;
+    }
+  }
+  out.textContent = res;
+}
+function czCopy() {
+  const out = document.getElementById('cs-result');
+  if (!out || !out.textContent) { alert('请先生成结果'); return; }
+  navigator.clipboard.writeText(out.textContent).then(function () { showToast('✅ 已复制结果'); }).catch(function () {
+    out.select();
+    document.execCommand('copy');
+    showToast('✅ 已复制结果');
+  });
 }
