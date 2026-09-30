@@ -7208,6 +7208,69 @@ greet('世界');</textarea>
       </div>
     `,
     handler: () => { setTimeout(stkInit, 50); }
+  },
+  // ==================== AI工具 ====================
+  {
+    id: 'grammar-check',
+    cat: 'ai',
+    icon: '✍️',
+    name: '语法检查',
+    desc: '自动检测文本中的语法错误、拼写错误和标点问题',
+    html: `
+      <div class="tool-card">
+        <div class="input-group">
+          <label>输入文本</label>
+          <textarea id="gc-input" placeholder="在此输入或粘贴需要检查的文本..." oninput="grammarCheck()" style="height:200px;"></textarea>
+        </div>
+        <div class="btn-group">
+          <button class="btn btn-secondary" onclick="document.getElementById('gc-input').value='';grammarCheck()">清空</button>
+          <button class="btn btn-primary" onclick="grammarCheck()">🔍 开始检查</button>
+        </div>
+        <div id="gc-result" style="margin-top:20px;border:1px solid var(--border,#e2e8f0);border-radius:12px;padding:16px;"></div>
+      </div>
+    `,
+    handler: () => { grammarCheck(); }
+  },
+  {
+    id: 'video-editor',
+    cat: 'video',
+    icon: '🎬',
+    name: '在线视频编辑',
+    desc: '简单视频剪辑工具，支持裁剪、合并、添加字幕',
+    html: `
+      <div class="tool-card">
+        <div class="input-group">
+          <label>选择视频文件</label>
+          <input type="file" id="ve-file" accept="video/*" onchange="videoEditorInit()" style="width:100%;">
+        </div>
+        <div id="ve-preview" style="margin-top:15px;display:none;">
+          <video id="ve-player" controls style="width:100%;border-radius:10px;"></video>
+          <div style="margin-top:15px;display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+            <div class="input-group">
+              <label>裁剪开始时间 (秒)</label>
+              <input type="number" id="ve-start" value="0" min="0" step="0.1">
+            </div>
+            <div class="input-group">
+              <label>裁剪结束时间 (秒)</label>
+              <input type="number" id="ve-end" value="10" min="0" step="0.1">
+            </div>
+          </div>
+          <div class="input-group" style="margin-top:10px;">
+            <label>添加字幕</label>
+            <input type="text" id="ve-captions" placeholder="输入字幕文字（用空格分隔）">
+          </div>
+          <div class="btn-group" style="margin-top:15px;">
+            <button class="btn btn-primary" onclick="videoEditorExport()">🎬 导出视频</button>
+            <button class="btn btn-secondary" onclick="document.getElementById('ve-file').value='';document.getElementById('ve-preview').style.display='none'">🗑️ 重新选择</button>
+          </div>
+        </div>
+        <div id="ve-tip" style="margin-top:15px;font-size:13px;color:var(--text-light);background:var(--bg-light,#f8fafc);padding:12px;border-radius:8px;">
+          💡 支持格式：MP4、WebM、OGG<br>
+          ⚠️ 注意：导出功能需要浏览器支持 MediaRecorder API
+        </div>
+      </div>
+    `,
+    handler: () => { }
   }
 ];
 
