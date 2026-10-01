@@ -3518,3 +3518,160 @@ function copySignature() {
   var rotatedCanvas = getRotatedCanvas()||document.getElementById('sm-canvas');
   rotatedCanvas.toBlob(function(blob){try{navigator.clipboard.write([new ClipboardItem({'image/png':blob})]).then(function(){showToast('✅ 已复制到剪贴板');}).catch(function(){showToast('⚠️ 复制失败，请使用下载功能');});}catch(e){showToast('⚠️ 复制失败，请使用下载功能');}});
 }
+
+// 语法检查函数
+function grammarCheck() {
+  var input = document.getElementById('gc-input');
+  var result = document.getElementById('gc-result');
+  if (!input || !result) return;
+  
+  var text = input.value;
+  if (!text.trim()) {
+    result.innerHTML = '<div style="color:var(--text-light)">请输入文本进行检查</div>';
+    return;
+  }
+  
+  var errors = [];
+  
+  // 拼写错误检测（基于常见错误列表）
+  var commonMistakes = {
+    '其其': '其', '的的': '', '的的': '',
+    '的的': '', '的的': '', '的的': '',
+    '的的': '', '的的': '', '的的': '',
+    '的的': '', '的的': '', '的的': ''
+  };
+  
+  // 检测重复字符
+  var repeatedChars = text.match(/(.)\1{2,}/g);
+  if (repeatedChars) {
+    errors.push({
+      type: 'warning',
+      text: '检测到重复字符：' + repeatedChars.join(', ')
+    });
+  }
+  
+  // 检测明显的语法错误
+  var grammarPatterns = [
+    { pattern: /的\s+的/g, text: '检测到"的 的"重复使用' },
+    { pattern: /不\s+不/g, text: '检测到"不 不"重复使用' },
+    { pattern: /很\s+很/g, text: '检测到"很 很"重复使用' },
+    { pattern: /非常\s+非常/g, text: '检测到"非常 很"重复使用' },
+    { pattern: /非常\s+很/g, text: '检测到"非常 很"重复使用' },
+    { pattern: /很\s+非常/g, text: '检测到"很 非常"重复使用' },
+    { pattern: /而且\s+而且/g, text: '检测到"而且 而且"重复使用' },
+    { pattern: /但是\s+但是/g, text: '检测到"但是 但是"重复使用' }
+  ];
+  
+  grammarPatterns.forEach(function(item) {
+    if (item.pattern.test(text)) {
+      errors.push({
+        type: 'warning',
+        text: item.text
+      });
+    }
+  });
+  
+  // 检测标点符号使用问题
+  var punctuationIssues = [];
+  if (text.endsWith('。') || text.endsWith('！') || text.endsWith('？')) {
+    punctuationIssues.push('句子末尾标点符号后建议添加空格');
+  }
+  
+  // 统计信息
+  var charCount = text.length;
+  var wordCount = text.trim().split(/\s+/).filter(function(w) { return w; }).length;
+  var lineCount = text.split('\n').length;
+  var charCountNoSpace = text.replace(/\s/g, '').length;
+  
+  // 生成结果HTML
+  var html = '<div style="margin-bottom:15px;"><strong>📊 统计信息：</strong></div>';
+  html += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:15px;">';
+  html += '<div style="background:var(--bg-light,#f8fafc);padding:10px;border-radius:8px;">';
+  html += '<div style="font-size:12px;color:var(--text-light)">总字符数</div>';
+  html += '<div style="font-size:24px;font-weight:bold;color:var(--accent,#6366f1)">' + charCount + '</div>';
+  html += '</div>';
+  html += '<div style="background:var(--bg-light,#f8fafc);padding:10px;border-radius:8px;">';
+  html += '<div style="font-size:12px;color:var(--text-light)">词数</div>';
+  html += '<div style="font-size:24px;font-weight:bold;color:var(--accent,#6366f1)">' + wordCount + '</div>';
+  html += '</div>';
+  html += '<div style="background:var(--bg-light,#f8fafc);padding:10px;border-radius:8px;">';
+  html += '<div style="font-size:12px;color:var(--text-light)">字符(无空格)</div>';
+  html += '<div style="font-size:24px;font-weight:bold;color:var(--accent,#6366f1)">' + charCountNoSpace + '</div>';
+  html += '</div>';
+  html += '<div style="background:var(--bg-light,#f8fafc);padding:10px;border-radius:8px;">';
+  html += '<div style="font-size:12px;color:var(--text-light)">行数</div>';
+  html += '<div style="font-size:24px;font-weight:bold;color:var(--accent,#6366f1)">' + lineCount + '</div>';
+  html += '</div>';
+  html += '</div>';
+  
+  if (errors.length > 0) {
+    html += '<div style="margin-bottom:15px;"><strong>⚠️ 检测到的问题：</strong></div>';
+    errors.forEach(function(err) {
+      html += '<div style="background:var(--warning-bg,#fef3c7);padding:10px;border-radius:8px;margin-bottom:8px;border-left:4px solid var(--warning,#f59e0b);">';
+      html += '<div style="font-size:13px;">' + err.text + '</div>';
+      html += '</div>';
+    });
+  }
+  
+  if (punctuationIssues.length > 0) {
+    html += '<div style="margin-bottom:15px;"><strong>💡 写作建议：</strong></div>';
+    punctuationIssues.forEach(function(adv) {
+      html += '<div style="background:var(--info-bg,#eff6ff);padding:10px;border-radius:8px;margin-bottom:8px;border-left:4px solid var(--info,#3b82f6);">';
+      html += '<div style="font-size:13px;">' + adv + '</div>';
+      html += '</div>';
+    });
+  }
+  
+  html += '<div style="font-size:12px;color:var(--text-light);text-align:center;">';
+  html += '💡 本工具为免费版本，仅提供基础语法检查和统计功能<br>';
+  html += '完整版需要连接AI服务进行深度分析';
+  html += '</div>';
+  
+  result.innerHTML = html;
+}
+
+// 视频编辑函数
+function videoEditorInit() {
+  var fileInput = document.getElementById('ve-file');
+  var preview = document.getElementById('ve-preview');
+  var player = document.getElementById('ve-player');
+  
+  if (!fileInput || !preview || !player) return;
+  
+  var file = fileInput.files[0];
+  if (!file) return;
+  
+  var url = URL.createObjectURL(file);
+  player.src = url;
+  preview.style.display = 'block';
+}
+
+function videoEditorExport() {
+  var player = document.getElementById('ve-player');
+  var startInput = document.getElementById('ve-start');
+  var endInput = document.getElementById('ve-end');
+  var captionsInput = document.getElementById('ve-captions');
+  
+  if (!player || !startInput || !endInput) {
+    showToast('⚠️ 请先选择视频文件');
+    return;
+  }
+  
+  var startTime = parseFloat(startInput.value) || 0;
+  var endTime = parseFloat(endInput.value) || 10;
+  var captions = captionsInput ? captionsInput.value.trim() : '';
+  
+  if (endTime <= startTime) {
+    showToast('⚠️ 结束时间必须大于开始时间');
+    return;
+  }
+  
+  showToast('🎬 开始导出视频...');
+  
+  // 注意：这是一个简化版本，实际导出功能需要更复杂的实现
+  // 浏览器的 MediaRecorder API 可以录制视频，但裁剪需要更高级的处理
+  setTimeout(function() {
+    showToast('✅ 视频导出功能演示完成（实际导出需要后端支持）');
+    showToast('💡 建议使用专业视频编辑软件进行精确剪辑');
+  }, 1000);
+}
