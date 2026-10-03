@@ -19287,3 +19287,88 @@ function stkClear() {
   if (inp) inp.value = '';
   if (out) out.innerHTML = '';
 }
+
+// 语法检查工具
+{
+  id: 'grammarly',
+  cat: 'ai',
+  icon: '✍️',
+  name: '语法检查',
+  desc: '自动检测文本中的语法错误、拼写错误和标点问题',
+  html: `
+    <div class="tool-card">
+      <div class="input-group">
+        <label>输入文本</label>
+        <textarea id="gc-input" placeholder="在此输入或粘贴需要检查的文本..." oninput="grammarCheck()" style="height:200px;"></textarea>
+      </div>
+      <div class="btn-group">
+        <button class="btn btn-secondary" onclick="document.getElementById('gc-input').value='';grammarCheck()">清空</button>
+        <button class="btn btn-primary" onclick="grammarCheck()">🔍 开始检查</button>
+      </div>
+      <div id="gc-result" style="margin-top:20px;border:1px solid var(--border,#e2e8f0);border-radius:12px;padding:16px;"></div>
+    </div>
+  `,
+  handler: () => { grammarCheck(); }
+}
+
+// 在线设计工具
+{
+  id: 'canva-pro',
+  cat: 'image',
+  icon: '🎨',
+  name: '在线设计',
+  desc: '简单易用的在线设计工具，支持文本、形状、颜色和图片编辑',
+  html: `
+    <div class="tool-card">
+      <div style="display:grid;grid-template-columns:1fr 300px;gap:20px;">
+        <div>
+          <div class="input-group">
+            <label>画布尺寸</label>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+              <input type="number" id="canvas-width" value="800" min="100" max="2000" placeholder="宽度">
+              <input type="number" id="canvas-height" value="600" min="100" max="2000" placeholder="高度">
+            </div>
+          </div>
+          <div class="input-group">
+            <label>背景颜色</label>
+            <input type="color" id="canvas-bg" value="#ffffff" style="width:100%;height:40px;">
+          </div>
+          <div class="input-group">
+            <label>添加元素</label>
+            <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:8px;">
+              <button class="btn btn-sm" onclick="designAddText()">📝 文本</button>
+              <button class="btn btn-sm" onclick="designAddShape('rect')">⬜ 矩形</button>
+              <button class="btn btn-sm" onclick="designAddShape('circle')">⭕ 圆形</button>
+              <button class="btn btn-sm" onclick="designAddImage()">🖼️ 图片</button>
+            </div>
+          </div>
+          <div class="input-group" style="margin-top:10px;">
+            <label>元素文本</label>
+            <input type="text" id="design-text" placeholder="输入文本内容">
+          </div>
+          <div class="input-group">
+            <label>元素颜色</label>
+            <input type="color" id="design-color" value="#000000" style="width:100%;height:40px;">
+          </div>
+          <div class="input-group">
+            <label>元素大小</label>
+            <input type="range" id="design-size" min="12" max="120" value="24" oninput="document.getElementById('size-val').textContent=this.value+'px'">
+            <span id="size-val" style="font-size:12px;color:var(--text-light)">24px</span>
+          </div>
+          <div class="btn-group" style="margin-top:15px;">
+            <button class="btn btn-primary" onclick="designDownload()">📥 下载设计</button>
+            <button class="btn btn-secondary" onclick="designClear()">🗑️ 清空画布</button>
+          </div>
+        </div>
+        <div style="border:2px solid var(--border,#e2e8f0);border-radius:10px;overflow:hidden;">
+          <canvas id="design-canvas" width="800" height="600" style="width:100%;height:auto;background:#ffffff;"></canvas>
+        </div>
+      </div>
+      <div id="design-tip" style="margin-top:15px;font-size:13px;color:var(--text-light);background:var(--bg-light,#f8fafc);padding:12px;border-radius:8px;">
+        💡 支持添加文本、形状和图片<br>
+        ⚠️ 图片需要上传后才能使用
+      </div>
+    </div>
+  `,
+  handler: () => { designInit(); }
+}
