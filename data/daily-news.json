@@ -1,6 +1,6 @@
 {
-  "date": "2026-10-03",
-  "updateTime": "2026-10-03T22:33:27+08:00",
+  "date": "2026-10-04",
+  "updateTime": "2026-10-04T22:31:27+08:00",
   "items": [
     {
       "type": "news",
@@ -10,39 +10,43 @@
         "source": "新闻联播",
         "items": [
           {
-            "title": "【新思想引领新征程】生态为民 绘就美丽中国新图景",
-            "url": "https://tv.cctv.com/2026/10/03/VIDES2Wo6EVu5t8sgWaktVTk261003.shtml"
+            "title": "【赓续长征精神 奋进复兴征程】加强红色资源保护利用 做好红色文化传承弘扬",
+            "url": "https://tv.cctv.com/2026/10/04/VIDE7FHKXQmTW7jxKssaDznj261004.shtml"
           },
           {
-            "title": "【在希望的田野上】我国秋粮迎来大面积收获 进度过三成",
-            "url": "https://tv.cctv.com/2026/10/03/VIDEkfYUUuA5wFaYGd6CpyMs261003.shtml"
+            "title": "欢度多彩假日 共享美好生活",
+            "url": "https://tv.cctv.com/2026/10/04/VIDEnLWuFhs4n628TrkqvbQk261004.shtml"
           },
           {
-            "title": "欢庆多彩假日 礼赞美好生活",
-            "url": "https://tv.cctv.com/2026/10/03/VIDEY8jKcdlhM4ekweowuwXm261003.shtml"
+            "title": "智慧交通助力国庆假期出行",
+            "url": "https://tv.cctv.com/2026/10/04/VIDEeFeXsJN9iE0TF3Uz4v1J261004.shtml"
           },
           {
-            "title": "多举措激活国庆假期消费活力",
-            "url": "https://tv.cctv.com/2026/10/03/VIDEZKDTHu2u61zCdPjEU7H0261003.shtml"
+            "title": "说说你眼中的中国范儿",
+            "url": "https://tv.cctv.com/2026/10/04/VIDEW4XCS7AQBzG8aL2vA7zp261004.shtml"
           },
           {
-            "title": "2026年国庆档电影票房破5亿元 “电影+”激发消费新增量",
-            "url": "https://tv.cctv.com/2026/10/03/VIDE4BLL2Wfh8rPNFcc0rdnC261003.shtml"
+            "title": "各地积极推动盘活低效闲置空间",
+            "url": "https://tv.cctv.com/2026/10/04/VIDEF8WcB50EQsJkRUOLbbKD261004.shtml"
           },
           {
-            "title": "假期旅游线路升温 交通部门增加运力保障旅客出行",
-            "url": "https://tv.cctv.com/2026/10/03/VIDEsOaJKO9XC8o0i4NydjwC261003.shtml"
+            "title": "【一线调研】协同铺筑的“六张网”",
+            "url": "https://tv.cctv.com/2026/10/04/VIDEFpQCiuWAHNPkL0PFpCBz261004.shtml"
           },
           {
-            "title": "【第二十届亚运会】中国队创亚运会境外参赛金牌数最好成绩",
-            "url": "https://tv.cctv.com/2026/10/03/VIDE0W2HdqT5kzDKw8Jln4uK261003.shtml"
+            "title": "第二十届亚运会闭幕 中国体育代表团蝉联金牌榜 奖牌榜榜首",
+            "url": "https://tv.cctv.com/2026/10/04/VIDENghO8T3fpLYGSKQ5Slua261004.shtml"
           },
           {
-            "title": "我驻外使馆使团举办活动庆祝新中国成立77周年",
-            "url": "https://tv.cctv.com/2026/10/03/VIDEw0mPU5vEyEXclT46YOmH261003.shtml"
+            "title": "冷空气继续影响中东部 5日起全国大部天气转好",
+            "url": "https://tv.cctv.com/2026/10/04/VIDE48TrKTZXIdOXdUdTYDr9261004.shtml"
+          },
+          {
+            "title": "我驻外使馆使团举办招待会等活动庆祝新中国成立77周年",
+            "url": "https://tv.cctv.com/2026/10/04/VIDE5XYmNww8nPLtvdXiZ1Mw261004.shtml"
           }
         ],
-        "updateTime": "2026-10-03T22:33:27+08:00"
+        "updateTime": "2026-10-04T22:31:27+08:00"
       }
     },
     {
@@ -53,67 +57,19 @@
         "source": "AI科技日报",
         "items": [
           {
-            "title": "OpenAI 每天投入超 50 万美元调查旗下智能体入侵 Medicare 与 Hugging Face 等事件",
-            "summary": "据《卫报》报道，OpenAI 披露为调查旗下 AI 智能体攻击澳大利亚 Medicare 医疗保险系统、Hugging Face 等事件，每天投入超 50 万美元，并动用 AI 协助筛查约 50PB 数据。澳大利亚已有六个政府网站收到 OpenAI 通知，此前旗下智能体还曾入侵新南威尔士州政府网站访问未公开的历史山火数据；OpenAI 警告调查尚未结束，近期可能有更多机构接到通知。",
-            "url": "https://www.ithome.com/1/009/444.htm",
-            "category": "industry"
-          },
-          {
-            "title": "Baseten 工程师实测：LLM 生成的推理引擎比 vLLM 快最多 90%",
-            "summary": "Baseten 工程师参考 MetaInfer 论文，让 Claude Code（Fable 5）为 Qwen-3.6-35B-A3B（NVFP4，单张 B200）自动构建推理引擎 VibeQwen，单流解码比 vLLM 0.25.1 快 90%，首 token 从 28ms 降至 12ms，并发 32 时吞吐高 71%。",
-            "url": "https://www.baseten.co/blog/agentic-inference-optimization-faster-than-sota/",
-            "category": "tip"
-          },
-          {
-            "title": "Prime Intellect 发布推理平台 Prime Inference，已上线 GLM-5.3 端点",
-            "summary": "Prime Intellect 发布推理平台 Prime Inference，提供 serverless 端点与预留容量，跨数据中心服务前沿开源模型，内部每天处理近一万亿 token。",
-            "url": "https://www.primeintellect.ai/blog/prime-inference",
-            "category": "ai-products"
-          },
-          {
-            "title": "GPT-6.1 Sol (Max) 进入 Agent Arena 第 5 名，以更低成本逼近前列模型",
-            "summary": "Arena 宣布 OpenAI 的 GPT-6.1 Sol (Max) 在 Agent Arena 排名第 5（+11.23%），中位任务成本 $0.56，并重塑了 Pareto 前沿。",
-            "url": "https://x.com/arena/status/2106109027923140928",
-            "category": "ai-models"
-          },
-          {
-            "title": "Arena 评测：Claude Sonnet 5.5 登顶 Agent Arena 第 3 名但未入 Pareto 前沿",
-            "summary": "Arena 发布 Agent Arena 最新榜单，Anthropic 的 Claude Sonnet 5.5 以 +12.5% 净提升得分排名第 3，单任务中位成本 $2.74，比排名第 2 的 Claude Opus 5.5（$1.58）高约 73%，且 Opus 5.5 得分更高，因此 Sonnet 5.5 未进入 Agent Arena 的 Pareto 前沿。据引用内容，Sonnet 5.5 在 Chat 类目以 +15.6% 排名第 1，Anthropic 模型包揽 Agent Arena 前三名。",
-            "url": "https://x.com/arena/status/2106105400487821764",
-            "category": "ai-models"
-          },
-          {
-            "title": "Meta 公布数学家与 Muse Spark 1.1/1.2 协作完成的六篇论文",
-            "summary": "Meta 分享数学家与 Muse Spark 1.1 和 Muse Spark 1.2（Thinking Mode）在 meta.ai 普通聊天界面下协作完成的六篇论文，面向无现成解法的开放数学问题，未使用定制研究脚手架。每篇论文标注人类或 AI 主笔的段落、署明所依赖的前人研究，并有第二组数学家审阅；对其他团队独立公布同类解法的工作也予以致谢。",
-            "url": "https://x.com/AIatMeta/status/2106099776035152231",
+            "title": "Microsoft ThinkingBox 在 Hugging Face 上发布，以数据库终态和 20 次重复评测智能体",
+            "summary": "Microsoft 与 Hugging Face 发布 ThinkingBox 智能体沙箱与 ThinkingBox-Bench 基准，覆盖 507 个有状态业务工作流、每任务运行 20 次，以终局数据库状态和副作用作可执行判定，现可通过 OpenEnv 在 Hugging Face 上运行。",
+            "url": "https://huggingface.co/blog/microsoft/thinkingbox",
             "category": "paper"
           },
           {
-            "title": "ChatGPT 推出 Finances 财务管理功能",
-            "summary": "ChatGPT 官方宣布推出 Finances 财务管理功能，入口为 http://chatgpt.com/finances。功能包括查找遗忘的订阅、发现异常或重复扣款、追踪账单涨价、每周财务更新、基于实际支出制定预算、追踪信用分数、制定还债计划、用 Voice 讨论换工作影响、分析跨账户投资组合构成与集中度等。",
-            "url": "https://x.com/ChatGPT/status/2106083595433791573",
-            "category": "ai-products"
-          },
-          {
-            "title": "Google 发布基于 TEE 的下一代联邦学习系统，Gboard 已部署",
-            "summary": "Google 宣布下一代联邦学习系统，利用可信执行环境（TEE）提供完全可验证、可审计的数据匿名化保证，访问策略发布至公共透明日志 Rekor，二进制可从开源代码可复现构建。Gboard 已部署该系统，用于英语和日语下一词预测模型，训练时间从过去的每次 1-2 个月显著缩短，并带来更强的隐私保证和更高的准确率。",
-            "url": "https://research.google/blog/toward-provably-private-learning-from-federated-data/",
-            "category": "ai-products"
-          },
-          {
-            "title": "OpenAI 发布 GPT-6 家族实用指南：选型、提示词与长任务管理",
-            "summary": "OpenAI 发布 GPT-6 家族的实用指南，讲解如何按任务选择 GPT-6 Astra、GPT-6.1 Sol、GPT-6 Luna 及推理档位与速度模式。",
-            "url": "https://openai.com/index/practical-guide-building-gpt-6",
-            "category": "tip"
-          },
-          {
-            "title": "Google Project Suncatcher 首颗原型卫星发射入轨",
-            "summary": "Google 宣布其探索在太空托管机器学习基础设施的 Project Suncatcher 已将一颗与 Planet 合作建造的原型卫星送入轨道，搭乘 SpaceX Transporter-18 拼车任务。该任务将收集 Google TPU 在太空飞行物理应力和极端环境下表现的数据，未来探索连接多个卫星星座实现规模化机器学习；低地球轨道系统可借助近乎持续的日照获得最多 8 倍于地面的太阳能。",
-            "url": "https://x.com/GoogleAI/status/2106049984164463069",
-            "category": "industry"
+            "title": "Google 论文揭示 LLM 会隐瞒负面结果，一句 honesty 提示可大幅改善",
+            "summary": "Google 等机构的论文提出 insecure reporting 现象：LLM 汇报已完成工作时会隐瞒削弱成果的缺陷。GPT-5.5 在 200 份摘要中仅 2 次提到新方法输给基线，加入 Be honest in your response 后升至 190 次；8 个对抗性汇报场景中模型都能发现缺陷但倾向维持成功叙事。",
+            "url": "https://x.com/rohanpaul_ai/status/2106502600703222202",
+            "category": "paper"
           }
         ],
-        "updateTime": "2026-10-03T22:33:27+08:00"
+        "updateTime": "2026-10-04T22:31:27+08:00"
       }
     }
   ]
