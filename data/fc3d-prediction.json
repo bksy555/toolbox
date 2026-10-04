@@ -3695,65 +3695,17 @@
     ],
     "coldResult": "✅"
   },
-  "2026101": {
-    "period": "2026101",
-    "drawNum": "584",
-    "result": null,
-    "updatedAt": null,
-    "coldDans": [
-      3,
-      0,
-      9
-    ],
-    "coldResult": "❌"
-  },
-  "2026102": {
-    "period": "2026102",
-    "drawNum": "420",
-    "result": null,
-    "updatedAt": null,
-    "coldDans": [
-      3,
-      0,
-      7
-    ],
-    "coldResult": "✅"
-  },
-  "2026103": {
-    "period": "2026103",
-    "drawNum": "661",
-    "result": null,
-    "updatedAt": null,
-    "coldDans": [
-      3,
-      9,
-      7
-    ],
-    "coldResult": "❌"
-  },
-  "2026104": {
-    "period": "2026104",
-    "drawNum": "482",
-    "result": null,
-    "updatedAt": null,
-    "coldDans": [
-      3,
-      9,
-      0
-    ],
-    "coldResult": "❌"
-  },
   "2026105": {
     "period": "2026105",
-    "drawNum": "631",
+    "drawNum": "000",
     "result": null,
-    "updatedAt": null,
+    "updatedAt": "2026-10-03T22:01:00Z",
     "coldDans": [
-      3,
-      9,
+      0,
+      0,
       0
     ],
-    "coldResult": "✅"
+    "coldResult": "待开奖"
   },
   "2026106": {
     "period": "2026106",

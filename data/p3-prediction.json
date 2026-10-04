@@ -4521,115 +4521,27 @@
     ],
     "coldResult": "❌"
   },
-  "2026101": {
-    "period": "2026101",
-    "drawNum": "090",
-    "updatedAt": "2026-09-06T14:30:24.113923Z",
-    "year": 2026,
-    "month": 4,
-    "day": 21,
-    "weekday": 2,
-    "haiGan": "丁",
-    "dans": [
-      2,
-      4,
-      9
-    ],
-    "result": "✅",
-    "coldDans": [
-      1,
-      5,
-      8
-    ],
-    "coldResult": "❌"
-  },
-  "2026102": {
-    "period": "2026102",
-    "drawNum": "490",
-    "updatedAt": "2026-09-06T14:30:24.113918Z",
-    "year": 2026,
-    "month": 4,
-    "day": 22,
-    "weekday": 3,
-    "haiGan": "己",
-    "dans": [
-      2,
-      4,
-      9
-    ],
-    "result": "✅",
-    "coldDans": [
-      1,
-      5,
-      8
-    ],
-    "coldResult": "❌"
-  },
-  "2026103": {
-    "period": "2026103",
-    "drawNum": "901",
-    "updatedAt": "2026-09-06T14:30:24.113913Z",
-    "year": 2026,
-    "month": 4,
-    "day": 23,
-    "weekday": 4,
-    "haiGan": "辛",
-    "dans": [
-      2,
-      6,
-      7
-    ],
-    "result": "❌",
-    "coldDans": [
-      1,
-      5,
-      8
-    ],
-    "coldResult": "✅"
-  },
-  "2026104": {
-    "period": "2026104",
-    "drawNum": "786",
-    "updatedAt": "2026-09-06T14:30:24.113908Z",
-    "year": 2026,
-    "month": 4,
-    "day": 24,
-    "weekday": 5,
-    "haiGan": "癸",
-    "dans": [
-      1,
-      6,
-      8
-    ],
-    "result": "✅",
-    "coldDans": [
-      5,
-      1,
-      8
-    ],
-    "coldResult": "✅"
-  },
   "2026105": {
     "period": "2026105",
-    "drawNum": "217",
-    "updatedAt": "2026-09-06T14:30:24.113903Z",
+    "drawNum": "000",
+    "updatedAt": "2026-10-03T22:01:00Z",
     "year": 2026,
-    "month": 4,
-    "day": 25,
+    "month": 10,
+    "day": 5,
     "weekday": 6,
-    "haiGan": "乙",
+    "haiGan": "戊",
     "dans": [
-      3,
-      4,
-      8
+      0,
+      0,
+      0
     ],
-    "result": "❌",
+    "result": "待开奖",
     "coldDans": [
-      5,
-      1,
-      3
+      0,
+      0,
+      0
     ],
-    "coldResult": "✅"
+    "coldResult": "待开奖"
   },
   "2026106": {
     "period": "2026106",
