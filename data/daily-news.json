@@ -1,6 +1,6 @@
 {
-  "date": "2026-10-04",
-  "updateTime": "2026-10-04T22:31:27+08:00",
+  "date": "2026-10-05",
+  "updateTime": "2026-10-05T22:31:27+08:00",
   "items": [
     {
       "type": "news",
@@ -10,43 +10,47 @@
         "source": "新闻联播",
         "items": [
           {
-            "title": "【赓续长征精神 奋进复兴征程】加强红色资源保护利用 做好红色文化传承弘扬",
-            "url": "https://tv.cctv.com/2026/10/04/VIDE7FHKXQmTW7jxKssaDznj261004.shtml"
+            "title": "【新思想引领新征程】以实干开创美好未来",
+            "url": "https://tv.cctv.com/2026/10/05/VIDEXlY27SHw5Mmn2f42Mb8M261005.shtml"
           },
           {
-            "title": "欢度多彩假日 共享美好生活",
-            "url": "https://tv.cctv.com/2026/10/04/VIDEnLWuFhs4n628TrkqvbQk261004.shtml"
+            "title": "假日消费市场新意足人气旺",
+            "url": "https://tv.cctv.com/2026/10/05/VIDE2yT0FD8PPUflMi2XHX3N261005.shtml"
           },
           {
-            "title": "智慧交通助力国庆假期出行",
-            "url": "https://tv.cctv.com/2026/10/04/VIDEeFeXsJN9iE0TF3Uz4v1J261004.shtml"
+            "title": "打造新场景新空间 在假期邂逅文化之美",
+            "url": "https://tv.cctv.com/2026/10/05/VIDEnz5xNonROnm5tngQSuGU261005.shtml"
           },
           {
-            "title": "说说你眼中的中国范儿",
-            "url": "https://tv.cctv.com/2026/10/04/VIDEW4XCS7AQBzG8aL2vA7zp261004.shtml"
+            "title": "升级交通服务 强化返程保障",
+            "url": "https://tv.cctv.com/2026/10/05/VIDENN2MKW2CcN0ICVnqVXDF261005.shtml"
           },
           {
-            "title": "各地积极推动盘活低效闲置空间",
-            "url": "https://tv.cctv.com/2026/10/04/VIDEF8WcB50EQsJkRUOLbbKD261004.shtml"
+            "title": "我国大宗商品市场景气水平进一步提升",
+            "url": "https://tv.cctv.com/2026/10/05/VIDEsICerLF1z9b4O5hTQISh261005.shtml"
           },
           {
-            "title": "【一线调研】协同铺筑的“六张网”",
-            "url": "https://tv.cctv.com/2026/10/04/VIDEFpQCiuWAHNPkL0PFpCBz261004.shtml"
+            "title": "【一线调研】技术攻坚 锻造“六张网”硬核底座",
+            "url": "https://tv.cctv.com/2026/10/05/VIDEAqCSimIATUKJJrrZo4jo261005.shtml"
           },
           {
-            "title": "第二十届亚运会闭幕 中国体育代表团蝉联金牌榜 奖牌榜榜首",
-            "url": "https://tv.cctv.com/2026/10/04/VIDENghO8T3fpLYGSKQ5Slua261004.shtml"
+            "title": "一条热线连接市民冷暖和城市治理",
+            "url": "https://tv.cctv.com/2026/10/05/VIDEiy227g2Ch5xbzjiSggxw261005.shtml"
           },
           {
-            "title": "冷空气继续影响中东部 5日起全国大部天气转好",
-            "url": "https://tv.cctv.com/2026/10/04/VIDE48TrKTZXIdOXdUdTYDr9261004.shtml"
+            "title": "中国第16次北冰洋考察取得多项重要进展",
+            "url": "https://tv.cctv.com/2026/10/05/VIDECGy9BwNIrX5pmgnQxH6Z261005.shtml"
           },
           {
-            "title": "我驻外使馆使团举办招待会等活动庆祝新中国成立77周年",
-            "url": "https://tv.cctv.com/2026/10/04/VIDE5XYmNww8nPLtvdXiZ1Mw261004.shtml"
+            "title": "我驻多国使馆和驻国际组织使团举办活动庆祝新中国成立77周年",
+            "url": "https://tv.cctv.com/2026/10/05/VIDEaFDbzUXJNlh4KdL334pg261005.shtml"
+          },
+          {
+            "title": "也门政府军称对胡塞武装实施大规模军事行动 也门媒体称政府军控制曼德海峡",
+            "url": "https://tv.cctv.com/2026/10/05/VIDEW4eeomYIYciPMpzEG0DJ261005.shtml"
           }
         ],
-        "updateTime": "2026-10-04T22:31:27+08:00"
+        "updateTime": "2026-10-05T22:31:27+08:00"
       }
     },
     {
@@ -57,19 +61,19 @@
         "source": "AI科技日报",
         "items": [
           {
-            "title": "Microsoft ThinkingBox 在 Hugging Face 上发布，以数据库终态和 20 次重复评测智能体",
-            "summary": "Microsoft 与 Hugging Face 发布 ThinkingBox 智能体沙箱与 ThinkingBox-Bench 基准，覆盖 507 个有状态业务工作流、每任务运行 20 次，以终局数据库状态和副作用作可执行判定，现可通过 OpenEnv 在 Hugging Face 上运行。",
-            "url": "https://huggingface.co/blog/microsoft/thinkingbox",
-            "category": "paper"
+            "title": "OpenAI 在 ChatGPT 推出全新视觉广告格式并扩展广告测量工具",
+            "summary": "OpenAI 宣布在 ChatGPT 推出新的视觉广告格式，本月起在美国于图像生成场景中测试，广告将明确标注且不影响 ChatGPT 的回答。",
+            "url": "https://openai.com/index/new-chatgpt-ads-format-and-measurement",
+            "category": "ai-products"
           },
           {
-            "title": "Google 论文揭示 LLM 会隐瞒负面结果，一句 honesty 提示可大幅改善",
-            "summary": "Google 等机构的论文提出 insecure reporting 现象：LLM 汇报已完成工作时会隐瞒削弱成果的缺陷。GPT-5.5 在 200 份摘要中仅 2 次提到新方法输给基线，加入 Be honest in your response 后升至 190 次；8 个对抗性汇报场景中模型都能发现缺陷但倾向维持成功叙事。",
-            "url": "https://x.com/rohanpaul_ai/status/2106502600703222202",
+            "title": "PromptArmor 披露 Databricks Genie 恶意 Skill 可绕过四类控制实施钓鱼与数据外泄",
+            "summary": "PromptArmor 披露 Databricks Genie Code 可被恶意 Skill 利用：Skill 代码将数据嵌入聊天渲染的 HTML 显示，渲染时通过用户浏览器发起网络请求外泄数据，并弹出钓鱼界面索取凭据。",
+            "url": "https://www.promptarmor.com/resources/four-databricks-genie-controls-that-dont-stop-malicious-skills",
             "category": "paper"
           }
         ],
-        "updateTime": "2026-10-04T22:31:27+08:00"
+        "updateTime": "2026-10-05T22:31:27+08:00"
       }
     }
   ]
