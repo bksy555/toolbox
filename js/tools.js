@@ -19444,3 +19444,80 @@ function stkClear() {
   `,
   handler: () => { tgInit(); }
 }
+
+// ============================================================
+// 密码保险库工具 1password (op*)
+// ============================================================
+{
+  id: '1password',
+  cat: 'security',
+  icon: '🔐',
+  name: '密码保险库',
+  desc: '本地加密存储密码，支持生成强密码、分类管理、一键复制',
+  html: `
+    <div class="tool-card">
+      <div class="input-group">
+        <label>网站/应用名称</label>
+        <input type="text" id="op-site" placeholder="如：gmail.com、淘宝">
+      </div>
+      <div class="input-group" style="margin-top:10px;">
+        <label>用户名</label>
+        <input type="text" id="op-user" placeholder="输入用户名或邮箱">
+      </div>
+      <div class="input-group" style="margin-top:10px;">
+        <label>密码（留空自动生成）</label>
+        <div style="display:flex;gap:8px;">
+          <input type="password" id="op-pass" placeholder="输入密码或留空生成" style="flex:1;">
+          <button class="btn btn-secondary" onclick="opGenPass()">🎲 生成</button>
+        </div>
+      </div>
+      <div class="btn-group" style="margin-top:15px;">
+        <button class="btn btn-primary" onclick="opSave()">💾 保存密码</button>
+        <button class="btn btn-secondary" onclick="opSearch()">🔍 搜索</button>
+        <button class="btn btn-secondary" onclick="opBackup()">📤 导出备份</button>
+      </div>
+      <div class="input-group" style="margin-top:15px;">
+        <input type="text" id="op-search-input" placeholder="搜索网站或用户名..." oninput="opSearch()">
+      </div>
+      <div id="op-list" style="margin-top:15px;"></div>
+      <div id="op-tip" style="margin-top:15px;font-size:13px;color:var(--text-light);background:var(--bg-light,#f8fafc);padding:12px;border-radius:8px;">
+        💡 所有密码仅保存在本地浏览器，不上传服务器，保护隐私安全
+      </div>
+    </div>
+  `,
+  handler: () => { opInit(); }
+}
+
+// ============================================================
+// 在线笔记工具 evernote (ev*)
+// ============================================================
+{
+  id: 'evernote',
+  cat: 'document',
+  icon: '📓',
+  name: '在线笔记本',
+  desc: '富文本笔记管理，支持分类标签、搜索、导出，数据保存在本地',
+  html: `
+    <div class="tool-card">
+      <div style="display:grid;grid-template-columns:220px 1fr;gap:15px;">
+        <div>
+          <div class="input-group">
+            <label>新建笔记</label>
+            <input type="text" id="ev-title" placeholder="笔记标题...">
+            <input type="text" id="ev-tag" placeholder="标签（用逗号分隔）" style="margin-top:8px;">
+            <textarea id="ev-content" placeholder="笔记内容..." style="height:120px;margin-top:8px;"></textarea>
+            <button class="btn btn-primary" style="width:100%;margin-top:10px;" onclick="evAdd()">➕ 保存笔记</button>
+            <button class="btn btn-secondary" style="width:100%;margin-top:8px;" onclick="evSearch()">🔍 搜索</button>
+          </div>
+        </div>
+        <div>
+          <div class="input-group">
+            <input type="text" id="ev-search-input" placeholder="搜索笔记..." oninput="evSearch()">
+          </div>
+          <div id="ev-list" style="margin-top:10px;"></div>
+        </div>
+      </div>
+    </div>
+  `,
+  handler: () => { evInit(); }
+}

@@ -3894,3 +3894,253 @@ function tgSave() {
     localStorage.setItem('tg-tasks', JSON.stringify(tgTasks));
   } catch(e) { }
 }
+
+// ============================================================
+// 密码保险库工具 (op*)
+// ============================================================
+var opLib = [];
+
+function opInit() {
+  try {
+    var saved = localStorage.getItem('op-vault');
+    if (saved) {
+      // 简单解密读取
+      opLib = JSON.parse(opDecrypt(saved));
+    }
+  } catch(e) { opLib = []; }
+  opRender();
+}
+
+// 简单异或加密（本地保存，非安全级）
+function opEncrypt(str) {
+  var key = 'toolbox-vault-2026';
+  var result = '';
+  for (var i = 0; i < str.length; i++) {
+    result += String.fromCharCode(str.charCodeAt(i) ^ key.charCodeAt(i % key.length));
+  }
+  return btoa(result);
+}
+
+function opDecrypt(base64) {
+  var key = 'toolbox-vault-2026';
+  var str = atob(base64);
+  var result = '';
+  for (var i = 0; i < str.length; i++) {
+    result += String.fromCharCode(str.charCodeAt(i) ^ key.charCodeAt(i % key.length));
+  }
+  return result;
+}
+
+function opGenPass() {
+  var chars = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz23456789!@#$%^&*';
+  var pass = '';
+  for (var i = 0; i < 16; i++) {
+    pass += chars.charAt(Math.floor(Math.random() * chars.length));
+  }
+  var input = document.getElementById('op-pass');
+  if (input) input.value = pass;
+  showToast('🎲 已生成强密码');
+}
+
+function opSave() {
+  var site = document.getElementById('op-site');
+  var user = document.getElementById('op-user');
+  var pass = document.getElementById('op-pass');
+  if (!site || !site.value.trim()) { showToast('⚠️ 请输入网站/应用名称'); return; }
+  if (!pass || !pass.value.trim()) opGenPass();
+  
+  opLib.push({
+    site: site.value.trim(),
+    user: user ? user.value.trim() : '',
+    pass: pass ? pass.value : '',
+    time: new Date().toLocaleString()
+  });
+  
+  opPersist();
+  opRender();
+  if (site) site.value = '';
+  if (user) user.value = '';
+  if (pass) pass.value = '';
+  showToast('✅ 密码已保存到保险库');
+}
+
+function opPersist() {
+  try {
+    localStorage.setItem('op-vault', opEncrypt(JSON.stringify(opLib)));
+  } catch(e) {
+    showToast('⚠️ 保存失败，浏览器存储空间不足');
+  }
+}
+
+function opSearch() {
+  var input = document.getElementById('op-search-input');
+  var q = input ? input.value.trim().toLowerCase() : '';
+  opRender(q);
+}
+
+function opRender(filter) {
+  var list = document.getElementById('op-list');
+  if (!list) return;
+  
+  var items = opLib;
+  if (filter) {
+    items = items.filter(function(item) {
+      return item.site.toLowerCase().includes(filter) || (item.user || '').toLowerCase().includes(filter);
+    });
+  }
+  
+  if (items.length === 0) {
+    list.innerHTML = '<div style="font-size:13px;color:var(--text-light);text-align:center;padding:20px;">保险库为空，添加你的第一个密码吧</div>';
+    return;
+  }
+  
+  var html = '<div style="font-weight:bold;margin-bottom:10px;">🔐 已保存 ' + items.length + ' 条</div>';
+  items.slice().reverse().forEach(function(item, idx) {
+    html += '<div style="display:flex;justify-content:space-between;align-items:center;padding:10px;background:var(--bg-light,#f8fafc);border-radius:8px;margin-bottom:8px;">';
+    html += '<div style="flex:1;"><div style="font-weight:600;">' + opEscape(item.site) + '</div>';
+    html += '<div style="font-size:12px;color:var(--text-light);">' + opEscape(item.user || '') + ' · ' + opEscape(item.time) + '</div></div>';
+    html += '<div style="display:flex;gap:6px;">';
+    html += '<button class="btn btn-sm" onclick="opCopyPass(' + (opLib.indexOf(item)) + ')">📋</button>';
+    html += '<button class="btn btn-sm btn-danger" onclick="opDelete(' + (opLib.indexOf(item)) + ')">🗑️</button>';
+    html += '</div></div>';
+  });
+  list.innerHTML = html;
+}
+
+function opEscape(str) {
+  var div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
+}
+
+function opCopyPass(idx) {
+  var item = opLib[idx];
+  if (!item) return;
+  navigator.clipboard.writeText(item.pass).then(function() {
+    showToast('🔐 密码已复制');
+  }).catch(function() {
+    showToast('⚠️ 复制失败');
+  });
+}
+
+function opDelete(idx) {
+  if (idx < 0 || idx >= opLib.length) return;
+  opLib.splice(idx, 1);
+  opPersist();
+  opRender();
+  showToast('✅ 已删除');
+}
+
+function opBackup() {
+  if (opLib.length === 0) { showToast('⚠️ 保险库为空'); return; }
+  var blob = new Blob([JSON.stringify(opLib, null, 2)], { type: 'application/json' });
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'password-vault-backup-' + new Date().toISOString().slice(0, 10) + '.json';
+  a.click();
+  showToast('📤 已导出备份文件');
+}
+
+// ============================================================
+// 在线笔记本工具 (ev*)
+// ============================================================
+var evNotes = [];
+
+function evInit() {
+  try {
+    var saved = localStorage.getItem('ev-notes');
+    if (saved) evNotes = JSON.parse(saved);
+  } catch(e) { evNotes = []; }
+  evRender();
+}
+
+function evAdd() {
+  var title = document.getElementById('ev-title');
+  var tag = document.getElementById('ev-tag');
+  var content = document.getElementById('ev-content');
+  if (!title || !title.value.trim()) { showToast('⚠️ 请输入笔记标题'); return; }
+  
+  evNotes.push({
+    id: Date.now(),
+    title: title.value.trim(),
+    tag: tag ? tag.value.trim() : '',
+    content: content ? content.value : '',
+    time: new Date().toLocaleString()
+  });
+  
+  evPersist();
+  evRender();
+  if (title) title.value = '';
+  if (tag) tag.value = '';
+  if (content) content.value = '';
+  showToast('✅ 笔记已保存');
+}
+
+function evPersist() {
+  try {
+    localStorage.setItem('ev-notes', JSON.stringify(evNotes));
+  } catch(e) { }
+}
+
+function evSearch() {
+  var input = document.getElementById('ev-search-input');
+  var q = input ? input.value.trim().toLowerCase() : '';
+  evRender(q);
+}
+
+function evRender(filter) {
+  var list = document.getElementById('ev-list');
+  if (!list) return;
+  
+  var items = evNotes;
+  if (filter) {
+    items = items.filter(function(n) {
+      return n.title.toLowerCase().includes(filter) || (n.content || '').toLowerCase().includes(filter) || (n.tag || '').toLowerCase().includes(filter);
+    });
+  }
+  
+  if (items.length === 0) {
+    list.innerHTML = '<div style="font-size:13px;color:var(--text-light);text-align:center;padding:20px;">暂无笔记，创建你的第一条笔记吧</div>';
+    return;
+  }
+  
+  var html = '<div style="font-weight:bold;margin-bottom:10px;">📓 共 ' + items.length + ' 条笔记</div>';
+  items.slice().reverse().forEach(function(n) {
+    var tags = n.tag ? n.tag.split(/[,，]/).map(function(t) {
+      return '<span style="display:inline-block;background:#eef2ff;color:#4f46e5;font-size:11px;padding:2px 8px;border-radius:10px;margin-right:4px;">' + t.trim() + '</span>';
+    }).join('') : '';
+    html += '<div style="padding:12px;background:var(--bg-light,#f8fafc);border-radius:8px;margin-bottom:8px;cursor:pointer;" onclick="evOpen(' + evNotes.indexOf(n) + ')">';
+    html += '<div style="font-weight:600;">' + evEscape(n.title) + '</div>';
+    html += '<div style="font-size:12px;color:var(--text-light);margin-top:4px;">' + tags + ' ' + n.time + '</div>';
+    html += '<div style="font-size:13px;margin-top:6px;color:var(--text,#1f2937);max-height:40px;overflow:hidden;">' + evEscape(n.content || '').slice(0, 100) + '</div>';
+    html += '<div style="margin-top:6px;"><button class="btn btn-sm btn-danger" onclick="event.stopPropagation();evDelete(' + evNotes.indexOf(n) + ')">🗑️ 删除</button></div>';
+    html += '</div>';
+  });
+  list.innerHTML = html;
+}
+
+function evOpen(idx) {
+  var n = evNotes[idx];
+  if (!n) return;
+  var newContent = prompt('编辑笔记内容：', n.content);
+  if (newContent !== null) {
+    n.content = newContent;
+    evPersist();
+    evRender();
+    showToast('✅ 笔记已更新');
+  }
+}
+
+function evDelete(idx) {
+  if (idx < 0 || idx >= evNotes.length) return;
+  evNotes.splice(idx, 1);
+  evPersist();
+  evRender();
+  showToast('✅ 笔记已删除');
+}
+
+function evEscape(str) {
+  var div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
+}
