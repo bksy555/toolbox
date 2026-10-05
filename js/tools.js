@@ -19372,3 +19372,75 @@ function stkClear() {
   `,
   handler: () => { designInit(); }
 }
+// ============================================================
+// 屏幕截图工具 snagit (sn*)
+// ============================================================
+{
+  id: 'snagit',
+  cat: 'image',
+  icon: '📸',
+  name: '在线截图工具',
+  desc: '屏幕截图、区域截图、图片标注，无需安装任何软件',
+  html: `
+    <div class="tool-card">
+      <div class="input-group">
+        <label>选择截图方式</label>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:8px;">
+          <button class="btn btn-primary" onclick="snCapture()">📷 全屏截图</button>
+          <button class="btn btn-primary" onclick="snCaptureRegion()">🔲 区域截图</button>
+          <button class="btn btn-secondary" onclick="snClear()">🗑️ 清空</button>
+        </div>
+      </div>
+      <div id="sn-preview" style="margin-top:15px;display:none;">
+        <canvas id="sn-canvas" style="width:100%;border:2px solid var(--border,#e2e8f0);border-radius:10px;"></canvas>
+        <div class="btn-group" style="margin-top:15px;">
+          <button class="btn btn-primary" onclick="snDownload()">📥 下载截图</button>
+          <button class="btn btn-secondary" onclick="snCopy()">📋 复制到剪贴板</button>
+          <button class="btn btn-secondary" onclick="snAddText()">✏️ 添加文字</button>
+          <button class="btn btn-secondary" onclick="snAddArrow()">➡️ 添加箭头</button>
+        </div>
+      </div>
+      <div id="sn-tip" style="margin-top:15px;font-size:13px;color:var(--text-light);background:var(--bg-light,#f8fafc);padding:12px;border-radius:8px;">
+        💡 截图功能需要浏览器授予屏幕录制权限<br>
+        ⚠️ 支持 Chrome、Edge、Firefox 等现代浏览器
+      </div>
+    </div>
+  `,
+  handler: () => { }
+}
+
+// ============================================================
+// 时间追踪工具 toggl (tg*)
+// ============================================================
+{
+  id: 'toggl-track',
+  cat: 'time',
+  icon: '⏱️',
+  name: '时间追踪器',
+  desc: '记录时间、统计任务耗时、提高工作效率',
+  html: `
+    <div class="tool-card">
+      <div class="input-group">
+        <label>任务名称</label>
+        <input type="text" id="tg-task" placeholder="输入任务名称，如：写代码、开会...">
+      </div>
+      <div style="margin-top:10px;display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+        <div class="input-group">
+          <label>开始时间</label>
+          <input type="time" id="tg-start" value="09:00">
+        </div>
+        <div class="input-group">
+          <label>结束时间</label>
+          <input type="time" id="tg-end" value="10:00">
+        </div>
+      </div>
+      <div class="btn-group" style="margin-top:15px;">
+        <button class="btn btn-primary" onclick="tgAddTask()">➕ 添加任务</button>
+        <button class="btn btn-secondary" onclick="tgStartNow()">▶️ 立即开始</button>
+        <button class="btn btn-secondary" onclick="tgExport()">📊 导出统计</button>
+      </div>
+      <div id="tg-list" style="margin-top:20px;"></div>
+    </div>
+  `,
+  handler: () => { tgInit(); }
+}

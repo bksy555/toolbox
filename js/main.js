@@ -3675,3 +3675,222 @@ function videoEditorExport() {
     showToast('💡 建议使用专业视频编辑软件进行精确剪辑');
   }, 1000);
 }
+
+// ============================================================
+// 屏幕截图工具 (sn*)
+// ============================================================
+var snImageData = null;
+var snCanvas = null;
+
+function snCapture() {
+  // 使用浏览器截图 API（如果可用），否则使用 MediaRecorder
+  if (navigator.mediaDevices && navigator.mediaDevices.getDisplayMedia) {
+    navigator.mediaDevices.getDisplayMedia({ video: { mediaSource: 'screen' } })
+      .then(function(stream) {
+        var video = document.createElement('video');
+        video.srcObject = stream;
+        video.onloadedmetadata = function() {
+          video.play();
+          var canvas = document.getElementById('sn-canvas');
+          if (!canvas) return;
+          canvas.width = video.videoWidth;
+          canvas.height = video.videoHeight;
+          var ctx = canvas.getContext('2d');
+          setTimeout(function() {
+            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+            stream.getTracks().forEach(function(t) { t.stop(); });
+            document.getElementById('sn-preview').style.display = 'block';
+            snImageData = canvas.toDataURL('image/png');
+            showToast('✅ 截图成功！');
+          }, 500);
+        };
+      }).catch(function() {
+        showToast('⚠️ 截图权限被拒绝或浏览器不支持');
+      });
+  } else {
+    showToast('⚠️ 您的浏览器不支持屏幕截图功能');
+  }
+}
+
+function snCaptureRegion() {
+  showToast('💡 请选择截图区域（拖动鼠标选择）');
+  // 简化版：全屏截图后裁剪
+  snCapture();
+}
+
+function snAddText() {
+  if (!snImageData) { showToast('⚠️ 请先截图'); return; }
+  var text = prompt('请输入要添加的文字：', '');
+  if (!text) return;
+  var canvas = document.getElementById('sn-canvas');
+  if (!canvas) return;
+  var ctx = canvas.getContext('2d');
+  ctx.font = '24px sans-serif';
+  ctx.fillStyle = '#ef4444';
+  ctx.fillText(text, 20, 30);
+  snImageData = canvas.toDataURL('image/png');
+  showToast('✅ 已添加文字');
+}
+
+function snAddArrow() {
+  if (!snImageData) { showToast('⚠️ 请先截图'); return; }
+  var canvas = document.getElementById('sn-canvas');
+  if (!canvas) return;
+  var ctx = canvas.getContext('2d');
+  ctx.strokeStyle = '#ef4444';
+  ctx.lineWidth = 3;
+  ctx.beginPath();
+  ctx.moveTo(20, 20);
+  ctx.lineTo(100, 60);
+  ctx.stroke();
+  // 箭头头
+  ctx.beginPath();
+  ctx.moveTo(100, 60);
+  ctx.lineTo(85, 55);
+  ctx.stroke();
+  ctx.beginPath();
+  ctx.moveTo(100, 60);
+  ctx.lineTo(95, 75);
+  ctx.stroke();
+  snImageData = canvas.toDataURL('image/png');
+  showToast('✅ 已添加箭头');
+}
+
+function snDownload() {
+  if (!snImageData) { showToast('⚠️ 请先截图'); return; }
+  var a = document.createElement('a');
+  a.href = snImageData;
+  a.download = 'screenshot-' + Date.now() + '.png';
+  a.click();
+  showToast('✅ 截图已下载');
+}
+
+function snCopy() {
+  if (!snImageData) { showToast('⚠️ 请先截图'); return; }
+  snCanvas = document.getElementById('sn-canvas');
+  if (snCanvas) {
+    snCanvas.toBlob(function(blob) {
+      navigator.clipboard.write([new ClipboardItem({'image/png': blob})]).then(function() {
+        showToast('✅ 已复制到剪贴板');
+      }).catch(function() {
+        showToast('⚠️ 复制失败，请手动下载');
+      });
+    });
+  }
+}
+
+function snClear() {
+  snImageData = null;
+  var preview = document.getElementById('sn-preview');
+  if (preview) preview.style.display = 'none';
+  showToast('✅ 已清空');
+}
+
+// ============================================================
+// 时间追踪工具 (tg*)
+// ============================================================
+var tgTasks = [];
+
+function tgInit() {
+  // 从 localStorage 读取
+  try {
+    var saved = localStorage.getItem('tg-tasks');
+    if (saved) tgTasks = JSON.parse(saved);
+  } catch(e) { }
+  tgRender();
+}
+
+function tgAddTask() {
+  var taskInput = document.getElementById('tg-task');
+  var startInput = document.getElementById('tg-start');
+  var endInput = document.getElementById('tg-end');
+  if (!taskInput || !taskInput.value.trim()) {
+    showToast('⚠️ 请输入任务名称');
+    return;
+  }
+  var start = startInput ? startInput.value : '09:00';
+  var end = endInput ? endInput.value : '10:00';
+  
+  // 计算时长
+  var startParts = start.split(':').map(Number);
+  var endParts = end.split(':').map(Number);
+  var startMin = startParts[0] * 60 + startParts[1];
+  var endMin = endParts[0] * 60 + endParts[1];
+  var durationMin = endMin - startMin;
+  if (durationMin < 0) durationMin += 1440;
+  
+  tgTasks.push({
+    name: taskInput.value.trim(),
+    start: start,
+    end: end,
+    duration: durationMin,
+    date: new Date().toISOString().slice(0, 10)
+  });
+  
+  taskInput.value = '';
+  tgSave();
+  tgRender();
+  showToast('✅ 任务已添加');
+}
+
+function tgStartNow() {
+  var taskInput = document.getElementById('tg-task');
+  if (!taskInput || !taskInput.value.trim()) {
+    showToast('⚠️ 请输入任务名称');
+    return;
+  }
+  var now = new Date();
+  var hh = String(now.getHours()).padStart(2, '0');
+  var mm = String(now.getMinutes()).padStart(2, '0');
+  var startInput = document.getElementById('tg-start');
+  var endInput = document.getElementById('tg-end');
+  if (startInput) startInput.value = hh + ':' + mm;
+  if (endInput) endInput.value = '23:59';
+  tgAddTask();
+  showToast('▶️ 已开始计时（到23:59）');
+}
+
+function tgExport() {
+  if (tgTasks.length === 0) {
+    showToast('⚠️ 暂无任务记录');
+    return;
+  }
+  var totalMin = tgTasks.reduce(function(sum, t) { return sum + (t.duration || 0); }, 0);
+  var totalHours = (totalMin / 60).toFixed(1);
+  var html = '<div style="background:var(--bg-light,#f8fafc);padding:15px;border-radius:10px;margin-top:15px;">';
+  html += '<h4 style="margin:0 0 10px;">📊 时间统计</h4>';
+  html += '<div style="font-size:14px;">共 <strong>' + tgTasks.length + '</strong> 个任务，总时长 <strong>' + totalHours + '</strong> 小时</div>';
+  html += '</div>';
+  var statDiv = document.getElementById('tg-list');
+  if (statDiv) statDiv.insertAdjacentHTML('beforeend', html);
+  showToast('✅ 统计已生成');
+}
+
+function tgRender() {
+  var list = document.getElementById('tg-list');
+  if (!list) return;
+  
+  if (tgTasks.length === 0) {
+    list.innerHTML = '<div style="font-size:13px;color:var(--text-light);text-align:center;padding:20px;">暂无任务记录，请添加任务开始追踪</div>';
+    return;
+  }
+  
+  var html = '<div style="font-weight:bold;margin-bottom:10px;">📋 任务列表（' + tgTasks.length + '）</div>';
+  tgTasks.slice(-10).reverse().forEach(function(task, idx) {
+    var hours = Math.floor(task.duration / 60);
+    var mins = task.duration % 60;
+    var durationStr = (hours > 0 ? hours + '小时' : '') + (mins > 0 ? mins + '分钟' : '');
+    html += '<div style="display:flex;justify-content:space-between;align-items:center;padding:10px;background:var(--bg-light,#f8fafc);border-radius:8px;margin-bottom:8px;">';
+    html += '<div><div style="font-weight:600;">' + task.name + '</div>';
+    html += '<div style="font-size:12px;color:var(--text-light);">' + task.date + ' ' + task.start + ' - ' + task.end + '</div></div>';
+    html += '<div style="font-size:13px;color:var(--accent,#6366f1);font-weight:600;">' + durationStr + '</div>';
+    html += '</div>';
+  });
+  list.innerHTML = html;
+}
+
+function tgSave() {
+  try {
+    localStorage.setItem('tg-tasks', JSON.stringify(tgTasks));
+  } catch(e) { }
+}
