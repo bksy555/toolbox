@@ -19521,3 +19521,76 @@ function stkClear() {
   `,
   handler: () => { evInit(); }
 }
+
+// ============================================================
+// 预约排期工具 calendly (cl*)
+// ============================================================
+{
+  id: 'calendly',
+  cat: 'time',
+  icon: '📅',
+  name: '预约排期',
+  desc: '生成可复制的预约时间段，快速安排会议、课程和面试时间',
+  html: `
+    <div class="tool-card">
+      <div class="input-group">
+        <label>活动名称</label>
+        <input type="text" id="cl-event" placeholder="如：产品演示、课程辅导、面试">
+      </div>
+      <div class="input-group" style="margin-top:10px;">
+        <label>日期</label>
+        <input type="date" id="cl-date">
+      </div>
+      <div style="margin-top:10px;display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+        <div class="input-group">
+          <label>开始时间</label>
+          <input type="time" id="cl-start" value="09:00">
+        </div>
+        <div class="input-group">
+          <label>结束时间</label>
+          <input type="time" id="cl-end" value="18:00">
+        </div>
+      </div>
+      <div class="input-group" style="margin-top:10px;">
+        <label>时段长度（分钟）</label>
+        <select id="cl-duration" style="width:100%;">
+          <option value="15">15 分钟</option>
+          <option value="30" selected>30 分钟</option>
+          <option value="45">45 分钟</option>
+          <option value="60">60 分钟</option>
+        </select>
+      </div>
+      <div class="btn-group" style="margin-top:15px;">
+        <button class="btn btn-primary" onclick="clGenerate()">📅 生成时段</button>
+        <button class="btn btn-secondary" onclick="clCopy()">📋 复制全部</button>
+      </div>
+      <div id="cl-result" style="margin-top:15px;"></div>
+      <div id="cl-tip" style="margin-top:15px;font-size:13px;color:var(--text-light);background:var(--bg-light,#f8fafc);padding:12px;border-radius:8px;">
+        💡 生成的时段可复制到聊天软件或邮件中分享，让对方选择合适时间
+      </div>
+    </div>
+  `,
+  handler: () => { clInit(); }
+}
+
+// ============================================================
+// 图标速查工具 fontawesome (fa*)
+// ============================================================
+{
+  id: 'fontawesome',
+  cat: 'dev',
+  icon: '🔤',
+  name: '符号图标速查',
+  desc: '常用符号、图标和特殊字符速查，一键复制使用',
+  html: `
+    <div class="tool-card">
+      <div class="input-group">
+        <label>搜索符号（支持名称或关键词）</label>
+        <input type="text" id="fa-search" placeholder="如：心、箭头、对勾..." oninput="faRender()">
+      </div>
+      <div id="fa-cats" style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;"></div>
+      <div id="fa-list" style="margin-top:15px;"></div>
+    </div>
+  `,
+  handler: () => { faInit(); }
+}

@@ -4144,3 +4144,184 @@ function evEscape(str) {
   div.textContent = str;
   return div.innerHTML;
 }
+
+// ============================================================
+// 预约排期工具 (cl*)
+// ============================================================
+function clInit() {
+  // 默认日期为明天
+  var dateInput = document.getElementById('cl-date');
+  if (dateInput) {
+    var tomorrow = new Date(Date.now() + 24 * 60 * 60 * 1000);
+    dateInput.value = tomorrow.toISOString().slice(0, 10);
+  }
+}
+
+function clGenerate() {
+  var eventInput = document.getElementById('cl-event');
+  var dateInput = document.getElementById('cl-date');
+  var startInput = document.getElementById('cl-start');
+  var endInput = document.getElementById('cl-end');
+  var durationInput = document.getElementById('cl-duration');
+  
+  var event = eventInput ? eventInput.value.trim() : '';
+  var date = dateInput ? dateInput.value : '';
+  var start = startInput ? startInput.value : '09:00';
+  var end = endInput ? endInput.value : '18:00';
+  var duration = durationInput ? parseInt(durationInput.value) : 30;
+  
+  if (!event) { showToast('⚠️ 请输入活动名称'); return; }
+  if (!date) { showToast('⚠️ 请选择日期'); return; }
+  
+  // 解析时间
+  var startParts = start.split(':').map(Number);
+  var endParts = end.split(':').map(Number);
+  var startMin = startParts[0] * 60 + startParts[1];
+  var endMin = endParts[0] * 60 + endParts[1];
+  
+  if (endMin <= startMin) { showToast('⚠️ 结束时间必须晚于开始时间'); return; }
+  
+  // 生成时段
+  var slots = [];
+  for (var t = startMin; t + duration <= endMin; t += duration) {
+    var h1 = String(Math.floor(t / 60)).padStart(2, '0');
+    var m1 = String(t % 60).padStart(2, '0');
+    var t2 = t + duration;
+    var h2 = String(Math.floor(t2 / 60)).padStart(2, '0');
+    var m2 = String(t2 % 60).padStart(2, '0');
+    slots.push(h1 + ':' + m1 + ' ~ ' + h2 + ':' + m2);
+  }
+  
+  if (slots.length === 0) {
+    showToast('⚠️ 时间段太短，无法生成时段');
+    return;
+  }
+  
+  // 格式化日期（中文）
+  var dateObj = new Date(date + 'T00:00:00');
+  var weekdays = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
+  var dateStr = dateObj.getMonth() + 1 + '月' + dateObj.getDate() + '日 (' + weekdays[dateObj.getDay()] + ')';
+  
+  var html = '<div style="font-weight:bold;margin-bottom:10px;">📅 ' + clEscape(event) + ' · ' + dateStr + '</div>';
+  html += '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:8px;">';
+  slots.forEach(function(slot) {
+    html += '<div style="background:var(--bg-light,#f8fafc);border-radius:8px;padding:10px;text-align:center;cursor:pointer;font-size:13px;" onclick="clCopyOne(\'' + clEscape(slot) + '\')" title="点击复制">' + clEscape(slot) + '</div>';
+  });
+  html += '</div>';
+  html += '<div style="font-size:12px;color:var(--text-light);margin-top:8px;">💡 点击任意时段可复制</div>';
+  
+  var result = document.getElementById('cl-result');
+  if (result) result.innerHTML = html;
+  
+  // 保存生成的文本供复制全部
+  clGeneratedText = '【' + event + '】' + dateStr + '\n可选时段：\n' + slots.map(function(s) { return '  ' + s; }).join('\n');
+  showToast('✅ 已生成 ' + slots.length + ' 个时段');
+}
+
+var clGeneratedText = '';
+
+function clCopyOne(slot) {
+  navigator.clipboard.writeText(slot).then(function() {
+    showToast('📋 已复制：' + slot);
+  }).catch(function() {
+    showToast('⚠️ 复制失败');
+  });
+}
+
+function clCopy() {
+  if (!clGeneratedText) { showToast('⚠️ 请先生成时段'); return; }
+  navigator.clipboard.writeText(clGeneratedText).then(function() {
+    showToast('📋 已复制全部时段');
+  }).catch(function() {
+    showToast('⚠️ 复制失败');
+  });
+}
+
+function clEscape(str) {
+  var div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
+}
+
+// ============================================================
+// 符号图标速查工具 (fa*)
+// ============================================================
+var faData = [
+  { name: '心形', chars: '❤️ 💕 💗 💖 💘 💝 💓' },
+  { name: '表情', chars: '😀 😃 😄 😁 😆 😂 🤣 😊 😇 🙂 😉 😍 😘 😜 🤪 😎 🤩 🥳 😭 😢 😡 😱 🤯 😴' },
+  { name: '点赞', chars: '👍 👎 👏 🙌 🤝 👋 ✌️ 🤞 👌 OK🙆 🙅 💪' },
+  { name: '箭头', chars: '⬆️ ⬇️ ⬅️ ➡️ ↗️ ↘️ ↙️ ↖️ ⤴️ ⤵️ 🔄 ↩️ ↪️' },
+  { name: '对勾/叉', chars: '✅ ❌ ⭕ ✔️ ☑️ ❎ ⚠️ 🚫 ❗ ❓' },
+  { name: '星星/月亮', chars: '⭐ 🌟 ✨ ⚡ ☀️ 🌙 🌞 🌝 🌟 🌈 ☁️ ⛈️ ❄️ 🌊 ⛰️ 🌋' },
+  { name: '火焰', chars: '🔥 💥 💫 ✨ ⭐' },
+  { name: '动物', chars: '🐶 🐱 🐭 🐹 🐰 🦊 🐻 🐼 🐨 🐯 🦁 🐮 🐷 🐸 🐵 🐔 🐧 🐦 🦉 🦄 🐝 🐢 🐠 🦋' },
+  { name: '食物', chars: '🍎 🍊 🍋 🍌 🍉 🍇 🍓 🍑 🍒 🍍 🥥 🥝 🍅 🥑 🍔 🍟 🍕 🌭 🥪 🍜 🍣 🍩 🍦 🍪 🎂 🍺 ☕' },
+  { name: '交通', chars: '🚗 🚕 🚙 🚌 🚓 🚑 🚒 🚚 🚛 🚜 🚲 🛵 🏍️ 🚡 🚠 🚀 🚁 🛸 ⛵ 🚢 ✈️' },
+  { name: '办公', chars: '📱 💻 🖥️ ⌨️ 🖱️ 💾 📀 📁 📂 📋 📝 ✏️ 📌 📎 📏 🖊️' },
+  { name: '金钱', chars: '💰 💵 💴 💶 💷 💳 💎 🏆 🎯 🎁 🎀' },
+  { name: '奖杯/活动', chars: '🏆 🥇 🥈 🥉 🎖️ 🏅 🎯 🎨 🎮 🎲 🎭 🎪 🎟️' },
+  { name: '旗帜/符号', chars: '🚩 🏁 🇨🇳 🇺🇸 🇯🇵 🇰🇷 § © ® ™ ℃ € ¥ $ ₽ ₩' },
+  { name: '标点符号', chars: '。 ， 、 ； ： ？ ！ 「 」 『 』 （ ） 【 】 《 》 〈 〉 ～ · × ÷ ±' },
+  { name: '数学符号', chars: '+ - × ÷ = ≠ ≈ < > ≤ ≥ ∞ π √ ∑ ∫ ∈ % ‰ ° ′ ″' },
+  { name: '特殊符号', chars: '★ ☆ ♡ ♥ ♪ ♫ ♬ ✓ ✔ ✗ ✘ ✕ ✖ ☞ ☜ ☝ ✌ ➊ ➋ ➌ ➍ ➎' },
+  { name: '数字序号', chars: '①②③④⑤⑥⑦⑧⑨⑩ ⑴⑵⑶⑷⑸ ㈠㈡㈢ ❶❷❸❹' }
+];
+
+function faInit() {
+  faRender();
+}
+
+function faRender() {
+  var searchInput = document.getElementById('fa-search');
+  var q = searchInput ? searchInput.value.trim().toLowerCase() : '';
+  
+  var cats = document.getElementById('fa-cats');
+  var list = document.getElementById('fa-list');
+  if (!cats || !list) return;
+  
+  // 渲染分类按钮
+  var catHtml = '<button class="btn btn-sm" onclick="faFilter(\'\')">全部</button>';
+  faData.forEach(function(item) {
+    catHtml += '<button class="btn btn-sm" onclick="faFilter(\'' + item.name + '\')">' + item.name + '</button>';
+  });
+  cats.innerHTML = catHtml;
+  
+  var items = faData;
+  if (q) {
+    items = faData.filter(function(item) {
+      return item.name.includes(q) || item.chars.includes(q);
+    });
+  }
+  
+  if (items.length === 0) {
+    list.innerHTML = '<div style="text-align:center;padding:20px;color:var(--text-light);font-size:13px;">未找到匹配符号</div>';
+    return;
+  }
+  
+  var html = '';
+  items.forEach(function(item) {
+    html += '<div style="margin-bottom:15px;">';
+    html += '<div style="font-size:13px;font-weight:600;color:var(--text-light);margin-bottom:6px;">' + item.name + '</div>';
+    html += '<div style="display:flex;flex-wrap:wrap;gap:6px;">';
+    item.chars.split(' ').forEach(function(ch) {
+      if (!ch) return;
+      html += '<span style="display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;background:var(--bg-light,#f8fafc);border-radius:8px;font-size:22px;cursor:pointer;" onclick="faCopy(\'' + ch.replace(/'/g, "\\'") + '\')" title="点击复制">' + ch + '</span>';
+    });
+    html += '</div></div>';
+  });
+  list.innerHTML = html;
+}
+
+function faFilter(name) {
+  var searchInput = document.getElementById('fa-search');
+  if (searchInput) searchInput.value = name;
+  faRender();
+}
+
+function faCopy(ch) {
+  navigator.clipboard.writeText(ch).then(function() {
+    showToast('📋 已复制：' + ch);
+  }).catch(function() {
+    showToast('⚠️ 复制失败');
+  });
+}
