@@ -19594,3 +19594,94 @@ function stkClear() {
   `,
   handler: () => { faInit(); }
 }
+
+// ============================================================
+// 在线表单问卷工具 typeform (tf*)
+// ============================================================
+{
+  id: 'typeform',
+  cat: 'document',
+  icon: '📝',
+  name: '在线表单问卷',
+  desc: '快速创建问卷和表单，支持单选、多选、填空，收集答案并可导出',
+  html: `
+    <div class="tool-card">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:15px;">
+        <div>
+          <div class="input-group">
+            <label>问卷标题</label>
+            <input type="text" id="tf-title" placeholder="如：用户满意度调查">
+          </div>
+          <div class="input-group" style="margin-top:10px;">
+            <label>问题（每行一个问题）</label>
+            <textarea id="tf-questions" placeholder="问题1&#10;问题2&#10;问题3..." style="height:120px;"></textarea>
+          </div>
+          <div class="input-group" style="margin-top:10px;">
+            <label>题型</label>
+            <select id="tf-type" style="width:100%;">
+              <option value="radio">单选题</option>
+              <option value="checkbox">多选题</option>
+              <option value="text">填空题</option>
+            </select>
+          </div>
+          <div class="btn-group" style="margin-top:15px;">
+            <button class="btn btn-primary" onclick="tfPreview()">👁️ 预览问卷</button>
+            <button class="btn btn-secondary" onclick="tfClear()">🗑️ 清空</button>
+          </div>
+        </div>
+        <div>
+          <div class="input-group">
+            <label>问卷预览/答题区</label>
+            <div id="tf-preview" style="border:1px solid var(--border,#e2e8f0);border-radius:10px;padding:15px;min-height:260px;font-size:14px;">
+              <div style="color:var(--text-light);text-align:center;padding:40px 0;">填写标题和问题后点击"预览问卷"</div>
+            </div>
+          </div>
+          <div class="btn-group" style="margin-top:10px;">
+            <button class="btn btn-primary" onclick="tfExport()">📊 导出结果</button>
+            <button class="btn btn-secondary" onclick="tfReset()">🔄 重置答题</button>
+          </div>
+          <div id="tf-results" style="margin-top:10px;font-size:13px;"></div>
+        </div>
+      </div>
+      <div id="tf-tip" style="margin-top:15px;font-size:13px;color:var(--text-light);background:var(--bg-light,#f8fafc);padding:12px;border-radius:8px;">
+        💡 预览后可直接在右侧答题，答案保存在本地浏览器中
+      </div>
+    </div>
+  `,
+  handler: () => { tfInit(); }
+}
+
+// ============================================================
+// 在线白板工具 miro (mi*)
+// ============================================================
+{
+  id: 'miro',
+  cat: 'dev',
+  icon: '📊',
+  name: '在线白板',
+  desc: '自由画布，支持画笔、便签、文字、形状，适合头脑风暴和教学演示',
+  html: `
+    <div class="tool-card">
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px;align-items:center;">
+        <button class="btn btn-sm" onclick="miSetTool('pen')">✏️ 画笔</button>
+        <button class="btn btn-sm" onclick="miSetTool('eraser')">🧹 橡皮</button>
+        <button class="btn btn-sm" onclick="miAddText()">📝 文字</button>
+        <button class="btn btn-sm" onclick="miAddNote()">🏷️ 便签</button>
+        <button class="btn btn-sm" onclick="miAddShape('rect')">⬜ 矩形</button>
+        <button class="btn btn-sm" onclick="miAddShape('circle')">⭕ 圆形</button>
+        <input type="color" id="mi-color" value="#6366f1" style="width:36px;height:36px;border:none;background:none;cursor:pointer;">
+        <input type="range" id="mi-size" min="1" max="20" value="4" style="width:80px;" title="笔刷大小">
+        <button class="btn btn-sm btn-primary" onclick="miExport()">📥 导出PNG</button>
+        <button class="btn btn-sm btn-danger" onclick="miClear()">🗑️ 清空</button>
+      </div>
+      <div style="border:2px solid var(--border,#e2e8f0);border-radius:10px;overflow:hidden;position:relative;background:#ffffff;height:420px;">
+        <canvas id="mi-canvas" style="position:absolute;top:0;left:0;width:100%;height:100%;"></canvas>
+        <div id="mi-note-area" style="position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;"></div>
+      </div>
+      <div id="mi-tip" style="margin-top:10px;font-size:13px;color:var(--text-light);background:var(--bg-light,#f8fafc);padding:10px;border-radius:8px;">
+        💡 选择画笔后在画布上拖动绘制；选择"文字/便签/形状"后点击画布放置
+      </div>
+    </div>
+  `,
+  handler: () => { miInit(); }
+}

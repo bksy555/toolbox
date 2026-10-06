@@ -4325,3 +4325,296 @@ function faCopy(ch) {
     showToast('⚠️ 复制失败');
   });
 }
+
+// ============================================================
+// 在线表单问卷工具 (tf*)
+// ============================================================
+var tfAnswers = {};
+
+function tfInit() {
+  try {
+    var saved = localStorage.getItem('tf-answers');
+    if (saved) tfAnswers = JSON.parse(saved);
+  } catch(e) { tfAnswers = {}; }
+}
+
+function tfPreview() {
+  var titleInput = document.getElementById('tf-title');
+  var questionsInput = document.getElementById('tf-questions');
+  var typeInput = document.getElementById('tf-type');
+  var preview = document.getElementById('tf-preview');
+  if (!preview) return;
+  
+  var title = titleInput ? titleInput.value.trim() : '';
+  var questionsText = questionsInput ? questionsInput.value : '';
+  var type = typeInput ? typeInput.value : 'radio';
+  
+  if (!questionsText.trim()) {
+    preview.innerHTML = '<div style="color:var(--text-light);text-align:center;padding:40px 0;">请输入问题（每行一个）</div>';
+    return;
+  }
+  
+  var questions = questionsText.split('\n').map(function(q) { return q.trim(); }).filter(function(q) { return q; });
+  
+  var html = '';
+  if (title) html += '<div style="font-weight:bold;font-size:16px;margin-bottom:15px;">' + tfEscape(title) + '</div>';
+  
+  questions.forEach(function(q, i) {
+    html += '<div style="margin-bottom:15px;">';
+    html += '<div style="font-weight:600;margin-bottom:6px;">' + (i + 1) + '. ' + tfEscape(q) + '</div>';
+    if (type === 'text') {
+      html += '<input type="text" id="tf-a-' + i + '" style="width:100%;" placeholder="请输入答案">';
+    } else {
+      html += '<label style="display:flex;align-items:center;gap:6px;margin-bottom:4px;"><input type="' + type + '" name="tf-q' + i + '" id="tf-a-' + i + '"> ' + tfEscape(q) + '</label>';
+      html += '<label style="display:flex;align-items:center;gap:6px;margin-bottom:4px;"><input type="' + type + '" name="tf-q' + i + '" id="tf-b-' + i + '"> 是</label>';
+      html += '<label style="display:flex;align-items:center;gap:6px;"><input type="' + type + '" name="tf-q' + i + '" id="tf-c-' + i + '"> 否</label>';
+    }
+    html += '</div>';
+  });
+  
+  html += '<button class="btn btn-primary" style="margin-top:5px;" onclick="tfSubmit()">✅ 提交答案</button>';
+  preview.innerHTML = html;
+}
+
+function tfSubmit() {
+  var titleInput = document.getElementById('tf-title');
+  var questionsInput = document.getElementById('tf-questions');
+  var typeInput = document.getElementById('tf-type');
+  
+  var title = titleInput ? titleInput.value.trim() : '未命名问卷';
+  var questionsText = questionsInput ? questionsInput.value : '';
+  var type = typeInput ? typeInput.value : 'radio';
+  var questions = questionsText.split('\n').map(function(q) { return q.trim(); }).filter(function(q) { return q; });
+  
+  var answers = [];
+  questions.forEach(function(q, i) {
+    var answer = '';
+    if (type === 'text') {
+      var input = document.getElementById('tf-a-' + i);
+      answer = input ? input.value.trim() : '';
+    } else {
+      var checked = document.querySelector('input[name="tf-q' + i + '"]:checked');
+      answer = checked ? checked.value : '未选择';
+    }
+    answers.push({ q: q, a: answer });
+  });
+  
+  var record = {
+    title: title,
+    time: new Date().toLocaleString(),
+    answers: answers
+  };
+  
+  if (!tfAnswers[title]) tfAnswers[title] = [];
+  tfAnswers[title].push(record);
+  try { localStorage.setItem('tf-answers', JSON.stringify(tfAnswers)); } catch(e) { }
+  
+  var preview = document.getElementById('tf-preview');
+  if (preview) preview.innerHTML = '<div style="text-align:center;padding:50px 0;color:var(--accent,#6366f1);font-weight:bold;">✅ 提交成功！感谢参与</div>';
+  showToast('✅ 答案已保存');
+}
+
+function tfExport() {
+  var results = document.getElementById('tf-results');
+  if (!results) return;
+  
+  var count = 0;
+  for (var k in tfAnswers) count += tfAnswers[k].length;
+  
+  if (count === 0) {
+    results.innerHTML = '<div style="color:var(--text-light);">暂无提交记录</div>';
+    showToast('📊 暂无可导出的结果');
+    return;
+  }
+  
+  var lines = [];
+  for (var title in tfAnswers) {
+    tfAnswers[title].forEach(function(rec) {
+      lines.push('【' + title + '】' + rec.time);
+      rec.answers.forEach(function(a) {
+        lines.push('  ' + a.q + '：' + a.a);
+      });
+      lines.push('---');
+    });
+  }
+  
+  var blob = new Blob([lines.join('\n')], { type: 'text/plain' });
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'form-results-' + new Date().toISOString().slice(0, 10) + '.txt';
+  a.click();
+  results.innerHTML = '<div style="color:var(--accent,#6366f1);">已导出 ' + count + ' 份回答</div>';
+  showToast('📊 结果已导出');
+}
+
+function tfClear() {
+  var titleInput = document.getElementById('tf-title');
+  var questionsInput = document.getElementById('tf-questions');
+  if (titleInput) titleInput.value = '';
+  if (questionsInput) questionsInput.value = '';
+  var preview = document.getElementById('tf-preview');
+  if (preview) preview.innerHTML = '<div style="color:var(--text-light);text-align:center;padding:40px 0;">填写标题和问题后点击"预览问卷"</div>';
+}
+
+function tfReset() {
+  tfAnswers = {};
+  try { localStorage.removeItem('tf-answers'); } catch(e) { }
+  var results = document.getElementById('tf-results');
+  if (results) results.innerHTML = '<div style="color:var(--text-light);">已清空全部答题记录</div>';
+  showToast('🔄 已重置答题');
+}
+
+function tfEscape(str) {
+  var div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
+}
+
+// ============================================================
+// 在线白板工具 (mi*)
+// ============================================================
+var miCanvas = null;
+var miCtx = null;
+var miDrawing = false;
+var miTool = 'pen';
+var miNotes = [];
+
+function miInit() {
+  miCanvas = document.getElementById('mi-canvas');
+  if (!miCanvas) return;
+  
+  // 设置 canvas 物理尺寸
+  var rect = miCanvas.parentElement.getBoundingClientRect();
+  miCanvas.width = rect.width * 2;
+  miCanvas.height = rect.height * 2;
+  miCanvas.style.width = rect.width + 'px';
+  miCanvas.style.height = rect.height + 'px';
+  miCtx = miCanvas.getContext('2d');
+  miCtx.scale(2, 2);
+  miCtx.fillStyle = '#ffffff';
+  miCtx.fillRect(0, 0, miCanvas.width, miCanvas.height);
+  
+  // 绑定事件
+  miCanvas.addEventListener('mousedown', miStartDraw);
+  miCanvas.addEventListener('mousemove', miDraw);
+  miCanvas.addEventListener('mouseup', miEndDraw);
+  miCanvas.addEventListener('mouseleave', miEndDraw);
+  
+  // 便签点击
+  var noteArea = document.getElementById('mi-note-area');
+  if (noteArea) {
+    noteArea.addEventListener('click', function(e) {
+      var x = e.clientX - noteArea.getBoundingClientRect().left;
+      var y = e.clientY - noteArea.getBoundingClientRect().top;
+      miPlaceAt(x, y);
+    });
+  }
+}
+
+function miSetTool(tool) {
+  miTool = tool;
+  showToast('✅ 已切换到' + (tool === 'pen' ? '画笔' : '橡皮'));
+}
+
+function miStartDraw(e) {
+  if (miTool !== 'pen' && miTool !== 'eraser') return;
+  miDrawing = true;
+  miDraw(e);
+}
+
+function miDraw(e) {
+  if (!miDrawing) return;
+  var rect = miCanvas.getBoundingClientRect();
+  var x = e.clientX - rect.left;
+  var y = e.clientY - rect.top;
+  var colorInput = document.getElementById('mi-color');
+  var sizeInput = document.getElementById('mi-size');
+  var color = colorInput ? colorInput.value : '#6366f1';
+  var size = sizeInput ? parseInt(sizeInput.value) : 4;
+  
+  if (miTool === 'eraser') {
+    miCtx.strokeStyle = '#ffffff';
+    miCtx.lineWidth = size * 3;
+  } else {
+    miCtx.strokeStyle = color;
+    miCtx.lineWidth = size;
+  }
+  miCtx.lineCap = 'round';
+  miCtx.lineTo(x, y);
+  miCtx.stroke();
+  miCtx.beginPath();
+  miCtx.moveTo(x, y);
+}
+
+function miEndDraw() {
+  miDrawing = false;
+  miCtx.beginPath();
+}
+
+function miAddText() {
+  miTool = 'text';
+  showToast('📝 在画布上点击放置文字');
+}
+
+function miAddNote() {
+  miTool = 'note';
+  showToast('🏷️ 在画布上点击放置便签');
+}
+
+function miAddShape(shape) {
+  miTool = 'shape:' + shape;
+  showToast('⭕ 在画布上点击放置' + (shape === 'rect' ? '矩形' : '圆形'));
+}
+
+function miPlaceAt(x, y) {
+  if (!miCtx) return;
+  
+  var colorInput = document.getElementById('mi-color');
+  var color = colorInput ? colorInput.value : '#6366f1';
+  
+  if (miTool === 'text') {
+    var text = prompt('输入文字：', 'Hello');
+    if (text === null) return;
+    miCtx.font = '20px sans-serif';
+    miCtx.fillStyle = color;
+    miCtx.fillText(text, x, y);
+  } else if (miTool === 'note') {
+    var note = prompt('便签内容：', '想法...');
+    if (note === null) return;
+    var noteArea = document.getElementById('mi-note-area');
+    if (!noteArea) return;
+    var div = document.createElement('div');
+    div.style.cssText = 'position:absolute;left:' + (x - 5) + 'px;top:' + (y - 5) + 'px;width:130px;min-height:60px;background:#fef3c7;border:1px solid #f59e0b;border-radius:4px;padding:6px;font-size:12px;pointer-events:auto;cursor:move;box-shadow:2px 2px 6px rgba(0,0,0,0.15);';
+    div.textContent = note;
+    noteArea.appendChild(div);
+    miNotes.push({ x: x, y: y, text: note });
+  } else if (miTool === 'shape:rect') {
+    miCtx.fillStyle = color;
+    miCtx.fillRect(x - 30, y - 20, 60, 40);
+  } else if (miTool === 'shape:circle') {
+    miCtx.fillStyle = color;
+    miCtx.beginPath();
+    miCtx.arc(x, y, 25, 0, Math.PI * 2);
+    miCtx.fill();
+  }
+  miTool = 'pen';
+}
+
+function miExport() {
+  if (!miCanvas) return;
+  var a = document.createElement('a');
+  a.href = miCanvas.toDataURL('image/png');
+  a.download = 'whiteboard-' + Date.now() + '.png';
+  a.click();
+  showToast('📥 白板已导出为PNG');
+}
+
+function miClear() {
+  if (!miCtx || !miCanvas) return;
+  miCtx.fillStyle = '#ffffff';
+  miCtx.fillRect(0, 0, miCanvas.width, miCanvas.height);
+  var noteArea = document.getElementById('mi-note-area');
+  if (noteArea) noteArea.innerHTML = '';
+  miNotes = [];
+  showToast('🗑️ 已清空白板');
+}
