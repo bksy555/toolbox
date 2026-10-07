@@ -4736,3 +4736,184 @@ function cpClear() {
   if (preview) preview.srcdoc = '';
   showToast('🗑️ 已清空');
 }
+
+// ============================================================
+// 看板项目管理工具 (tl*)
+// ============================================================
+var tlColumns = [
+  { id: 'todo', name: '📝 待办', bg: '#fef3c7', tasks: [] },
+  { id: 'doing', name: '⚡ 进行中', bg: '#dbeafe', tasks: [] },
+  { id: 'done', name: '✅ 已完成', bg: '#dcfce7', tasks: [] }
+];
+
+function tlInit() {
+  try {
+    var saved = localStorage.getItem('tl-board');
+    if (saved) tlColumns = JSON.parse(saved);
+  } catch(e) { }
+  tlRender();
+}
+
+function tlAdd() {
+  var input = document.getElementById('tl-input');
+  if (!input || !input.value.trim()) { showToast('⚠️ 请输入任务名称'); return; }
+  tlColumns[0].tasks.push({ text: input.value.trim(), time: new Date().toLocaleString() });
+  input.value = '';
+  tlPersist();
+  tlRender();
+}
+
+function tlMove(colIdx, taskIdx) {
+  if (colIdx >= 2) return;
+  var task = tlColumns[colIdx].tasks[taskIdx];
+  tlColumns[colIdx].tasks.splice(taskIdx, 1);
+  tlColumns[colIdx + 1].tasks.push(task);
+  tlPersist();
+  tlRender();
+}
+
+function tlDelete(colIdx, taskIdx) {
+  tlColumns[colIdx].tasks.splice(taskIdx, 1);
+  tlPersist();
+  tlRender();
+}
+
+function tlPersist() {
+  try { localStorage.setItem('tl-board', JSON.stringify(tlColumns)); } catch(e) { }
+}
+
+function tlRender() {
+  var board = document.getElementById('tl-board');
+  if (!board) return;
+  
+  var html = '';
+  tlColumns.forEach(function(col, ci) {
+    html += '<div style="background:var(--bg-light,#f8fafc);border-radius:10px;padding:12px;">';
+    html += '<div style="font-weight:bold;margin-bottom:10px;font-size:14px;">' + col.name + ' (' + col.tasks.length + ')</div>';
+    
+    if (col.tasks.length === 0) {
+      html += '<div style="font-size:12px;color:var(--text-light);text-align:center;padding:15px 0;">暂无任务</div>';
+    }
+    
+    col.tasks.forEach(function(task, ti) {
+      html += '<div style="background:#fff;border:1px solid var(--border,#e2e8f0);border-radius:8px;padding:10px;margin-bottom:8px;">';
+      html += '<div style="font-size:13px;margin-bottom:6px;">' + tlEscape(task.text) + '</div>';
+      html += '<div style="font-size:11px;color:var(--text-light);margin-bottom:6px;">' + tlEscape(task.time || '') + '</div>';
+      html += '<div style="display:flex;gap:6px;">';
+      if (ci < 2) {
+        html += '<button class="btn btn-sm" onclick="tlMove(' + ci + ',' + ti + ')">→ 下一列</button>';
+      }
+      html += '<button class="btn btn-sm btn-danger" onclick="tlDelete(' + ci + ',' + ti + ')">🗑️</button>';
+      html += '</div></div>';
+    });
+    
+    html += '</div>';
+  });
+  board.innerHTML = html;
+}
+
+function tlEscape(str) {
+  var div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
+}
+
+// ============================================================
+// 任务管理工具 (as*)
+// ============================================================
+var asTasks = [];
+var asFilterType = 'all';
+
+function asInit() {
+  try {
+    var saved = localStorage.getItem('as-tasks');
+    if (saved) asTasks = JSON.parse(saved);
+  } catch(e) { asTasks = []; }
+  asRender();
+}
+
+function asAdd() {
+  var taskInput = document.getElementById('as-task');
+  var priorityInput = document.getElementById('as-priority');
+  var dueInput = document.getElementById('as-due');
+  if (!taskInput || !taskInput.value.trim()) { showToast('⚠️ 请输入任务内容'); return; }
+  
+  asTasks.push({
+    id: Date.now(),
+    text: taskInput.value.trim(),
+    priority: priorityInput ? priorityInput.value : 'mid',
+    due: dueInput ? dueInput.value : '',
+    done: false,
+    time: new Date().toLocaleString()
+  });
+  
+  taskInput.value = '';
+  asPersist();
+  asRender();
+}
+
+function asToggle(id) {
+  var task = asTasks.find(function(t) { return t.id === id; });
+  if (task) {
+    task.done = !task.done;
+    asPersist();
+    asRender();
+  }
+}
+
+function asDelete(id) {
+  asTasks = asTasks.filter(function(t) { return t.id !== id; });
+  asPersist();
+  asRender();
+}
+
+function asFilter(filter) {
+  asFilterType = filter;
+  asRender();
+}
+
+function asPersist() {
+  try { localStorage.setItem('as-tasks', JSON.stringify(asTasks)); } catch(e) { }
+}
+
+function asRender() {
+  var list = document.getElementById('as-list');
+  if (!list) return;
+  
+  var items = asTasks;
+  if (asFilterType === 'active') items = items.filter(function(t) { return !t.done; });
+  if (asFilterType === 'done') items = items.filter(function(t) { return t.done; });
+  
+  if (items.length === 0) {
+    list.innerHTML = '<div style="text-align:center;padding:25px;color:var(--text-light);font-size:13px;">暂无任务</div>';
+    return;
+  }
+  
+  var total = asTasks.length;
+  var done = asTasks.filter(function(t) { return t.done; }).length;
+  var html = '<div style="font-size:13px;margin-bottom:10px;">总任务 <strong>' + total + '</strong> · 已完成 <strong>' + done + '</strong></div>';
+  
+  // 优先级排序：高 > 中 > 低
+  var prioOrder = { high: 0, mid: 1, low: 2 };
+  items.sort(function(a, b) { return prioOrder[a.priority] - prioOrder[b.priority]; });
+  
+  items.forEach(function(task) {
+    var prioText = { high: '🔴 高', mid: '🟡 中', low: '🟢 低' }[task.priority] || '🟡 中';
+    var doneStyle = task.done ? 'text-decoration:line-through;opacity:0.6;' : '';
+    html += '<div style="display:flex;align-items:center;gap:10px;padding:10px;background:var(--bg-light,#f8fafc);border-radius:8px;margin-bottom:8px;">';
+    html += '<span style="cursor:pointer;font-size:18px;" onclick="asToggle(' + task.id + ')">' + (task.done ? '✅' : '⭕') + '</span>';
+    html += '<div style="flex:1;">';
+    html += '<div style="font-size:13px;' + doneStyle + '">' + asEscape(task.text) + '</div>';
+    html += '<div style="font-size:11px;color:var(--text-light);">' + prioText + (task.due ? ' · 截止 ' + asEscape(task.due) : '') + ' · ' + asEscape(task.time || '') + '</div>';
+    html += '</div>';
+    html += '<button class="btn btn-sm btn-danger" onclick="asDelete(' + task.id + ')">🗑️</button>';
+    html += '</div>';
+  });
+  list.innerHTML = html;
+}
+
+function asEscape(str) {
+  var div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
+}

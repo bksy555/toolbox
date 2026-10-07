@@ -19756,3 +19756,62 @@ function stkClear() {
   `,
   handler: () => { }
 }
+
+// ============================================================
+// 看板项目管理工具 trello (tl*)
+// ============================================================
+{
+  id: 'trello',
+  cat: 'time',
+  icon: '📋',
+  name: '看板项目管理',
+  desc: '拖拽式看板管理任务，待办/进行中/完成三列自由移动，数据保存在本地',
+  html: `
+    <div class="tool-card">
+      <div style="display:flex;gap:10px;margin-bottom:15px;align-items:center;">
+        <input type="text" id="tl-input" placeholder="输入任务名称..." style="flex:1;" onkeydown="if(event.key==='Enter')tlAdd()">
+        <button class="btn btn-primary" onclick="tlAdd()">➕ 添加任务</button>
+      </div>
+      <div id="tl-board" style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;"></div>
+      <div id="tl-tip" style="margin-top:15px;font-size:13px;color:var(--text-light);background:var(--bg-light,#f8fafc);padding:12px;border-radius:8px;">
+        💡 在任务卡片下方点击「→ 下一列」移动任务，支持删除，数据保存在本地浏览器
+      </div>
+    </div>
+  `,
+  handler: () => { tlInit(); }
+}
+
+// ============================================================
+// 任务管理工具 asana (as*)
+// ============================================================
+{
+  id: 'asana',
+  cat: 'time',
+  icon: '📊',
+  name: '任务管理',
+  desc: '任务分配和跟踪，支持优先级、截止日期、完成状态，效率工作必备',
+  html: `
+    <div class="tool-card">
+      <div style="display:grid;grid-template-columns:1fr 130px 130px auto;gap:10px;margin-bottom:15px;align-items:center;">
+        <input type="text" id="as-task" placeholder="任务内容..." onkeydown="if(event.key==='Enter')asAdd()">
+        <select id="as-priority">
+          <option value="high">🔴 高</option>
+          <option value="mid" selected>🟡 中</option>
+          <option value="low">🟢 低</option>
+        </select>
+        <input type="date" id="as-due">
+        <button class="btn btn-primary" onclick="asAdd()">➕ 添加</button>
+      </div>
+      <div id="as-filters" style="display:flex;gap:8px;margin-bottom:10px;">
+        <button class="btn btn-sm" onclick="asFilter('all')">全部</button>
+        <button class="btn btn-sm" onclick="asFilter('active')">待完成</button>
+        <button class="btn btn-sm" onclick="asFilter('done')">已完成</button>
+      </div>
+      <div id="as-list"></div>
+      <div id="as-tip" style="margin-top:15px;font-size:13px;color:var(--text-light);background:var(--bg-light,#f8fafc);padding:12px;border-radius:8px;">
+        💡 点击任务左侧圆圈标记完成，点击右侧 🗑️ 删除任务，数据保存在本地
+      </div>
+    </div>
+  `,
+  handler: () => { asInit(); }
+}
