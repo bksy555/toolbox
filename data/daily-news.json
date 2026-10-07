@@ -1,6 +1,6 @@
 {
-  "date": "2026-10-05",
-  "updateTime": "2026-10-05T22:31:27+08:00",
+  "date": "2026-10-07",
+  "updateTime": "2026-10-07T22:32:53+08:00",
   "items": [
     {
       "type": "news",
@@ -10,47 +10,43 @@
         "source": "新闻联播",
         "items": [
           {
-            "title": "【新思想引领新征程】以实干开创美好未来",
-            "url": "https://tv.cctv.com/2026/10/05/VIDEXlY27SHw5Mmn2f42Mb8M261005.shtml"
+            "title": "【新思想引领新征程】以习近平文化思想为指引 铸就中华文化新辉煌",
+            "url": "https://tv.cctv.com/2026/10/07/VIDEZYqJwWLZWXtFIQVSH2qV261007.shtml"
           },
           {
-            "title": "假日消费市场新意足人气旺",
-            "url": "https://tv.cctv.com/2026/10/05/VIDE2yT0FD8PPUflMi2XHX3N261005.shtml"
+            "title": "【在希望的田野上】各地秋粮加紧收获",
+            "url": "https://tv.cctv.com/2026/10/07/VIDEz1vaieKk4iuZ0f2jIQO0261007.shtml"
           },
           {
-            "title": "打造新场景新空间 在假期邂逅文化之美",
-            "url": "https://tv.cctv.com/2026/10/05/VIDEnz5xNonROnm5tngQSuGU261005.shtml"
+            "title": "国庆期间超2.1亿人次游公园 乐享假日时光",
+            "url": "https://tv.cctv.com/2026/10/07/VIDEiF84kvdIEBOVbcyEhP5j261007.shtml"
           },
           {
-            "title": "升级交通服务 强化返程保障",
-            "url": "https://tv.cctv.com/2026/10/05/VIDENN2MKW2CcN0ICVnqVXDF261005.shtml"
+            "title": "国庆假期出行需求旺盛 发展活力持续释放",
+            "url": "https://tv.cctv.com/2026/10/07/VIDEQcO3n5carxkaJB12XbHK261007.shtml"
           },
           {
-            "title": "我国大宗商品市场景气水平进一步提升",
-            "url": "https://tv.cctv.com/2026/10/05/VIDEsICerLF1z9b4O5hTQISh261005.shtml"
+            "title": "入境游持续升温 外国游客深度体验多彩中国",
+            "url": "https://tv.cctv.com/2026/10/07/VIDEDRebXPEpNZXmqTYRxqQ4261007.shtml"
           },
           {
-            "title": "【一线调研】技术攻坚 锻造“六张网”硬核底座",
-            "url": "https://tv.cctv.com/2026/10/05/VIDEAqCSimIATUKJJrrZo4jo261005.shtml"
+            "title": "阅读点亮假期生活 书香中国蔚然成风",
+            "url": "https://tv.cctv.com/2026/10/07/VIDEWPGMdqsQQ9uzzS1AAsyW261007.shtml"
           },
           {
-            "title": "一条热线连接市民冷暖和城市治理",
-            "url": "https://tv.cctv.com/2026/10/05/VIDEiy227g2Ch5xbzjiSggxw261005.shtml"
+            "title": "【一线调研】从物畅其流到产销联动",
+            "url": "https://tv.cctv.com/2026/10/07/VIDEGntmzOaneywBXyrDx00O261007.shtml"
           },
           {
-            "title": "中国第16次北冰洋考察取得多项重要进展",
-            "url": "https://tv.cctv.com/2026/10/05/VIDECGy9BwNIrX5pmgnQxH6Z261005.shtml"
+            "title": "俄称将采取一切措施应对立陶宛解禁部署核武器",
+            "url": "https://tv.cctv.com/2026/10/07/VIDE2uCMAddC7UVq49A2Xc7U261007.shtml"
           },
           {
-            "title": "我驻多国使馆和驻国际组织使团举办活动庆祝新中国成立77周年",
-            "url": "https://tv.cctv.com/2026/10/05/VIDEaFDbzUXJNlh4KdL334pg261005.shtml"
-          },
-          {
-            "title": "也门政府军称对胡塞武装实施大规模军事行动 也门媒体称政府军控制曼德海峡",
-            "url": "https://tv.cctv.com/2026/10/05/VIDEW4eeomYIYciPMpzEG0DJ261005.shtml"
+            "title": "也门胡塞武装称打击沙特主要机场和空军基地 在曼德海峡方向击退政府军进攻",
+            "url": "https://tv.cctv.com/2026/10/07/VIDEdmiygj5yB1X6DJwpOlHQ261007.shtml"
           }
         ],
-        "updateTime": "2026-10-05T22:31:27+08:00"
+        "updateTime": "2026-10-07T22:32:53+08:00"
       }
     },
     {
@@ -61,19 +57,79 @@
         "source": "AI科技日报",
         "items": [
           {
-            "title": "OpenAI 在 ChatGPT 推出全新视觉广告格式并扩展广告测量工具",
-            "summary": "OpenAI 宣布在 ChatGPT 推出新的视觉广告格式，本月起在美国于图像生成场景中测试，广告将明确标注且不影响 ChatGPT 的回答。",
-            "url": "https://openai.com/index/new-chatgpt-ads-format-and-measurement",
+            "title": "a16z 解析 Texas 为何让数据中心排队等待并网",
+            "summary": "a16z 的 Ryan McEntush 撰文分析 Texas 电网对数据中心按下暂停键的能源原因。",
+            "url": "https://www.a16z.news/p/why-texas-is-making-data-centers",
+            "category": "industry"
+          },
+          {
+            "title": "Nemotron 系列微调后达到 IOI 2026 与 IMO 2026 金牌水平",
+            "summary": "NVIDIA Nemotron 团队基于 Nemotron 3，用 SFT、RL 和反馈驱动推理分别构建了在 IOI 2026 与 IMO 2026 达到金牌水平的系统。",
+            "url": "https://huggingface.co/blog/nvidia/nemotron-ioi-and-imo-2026",
+            "category": "paper"
+          },
+          {
+            "title": "Mistral Large 4 进入 Code Arena: WebDev 排名第45，得分1534",
+            "summary": "Arena 宣布 Mistral Large 4 登陆 Code Arena: WebDev，以 1534 分排名第 45，比 Mistral Large 3（第130名）高 304 分，比 Mistral Medium 3.5 高 271 分。",
+            "url": "https://x.com/arena/status/2107717155374727602",
+            "category": "ai-models"
+          },
+          {
+            "title": "OpenAI 发布内部前沿模型产出的数学研究成果",
+            "summary": "OpenAI 发布一批由内部前沿模型产出的新数学成果，成果以 GitHub 仓库形式公开，并附论文修订与引用协议，其中许多证明已用 Lean 形式化以便计算机验证。",
+            "url": "https://openai.com/index/sharing-ai-progress-in-mathematics/",
+            "category": "paper"
+          },
+          {
+            "title": "GitHub 重建 Git 基础设施，应对智能体规模开发",
+            "summary": "GitHub 宣布重建 Git 基础设施，以支持智能体规模开发带来的高并发读写负载。2026 年 8 月 GitHub 月度 Git 事件量达 473.3 billion（一年翻倍以上），9 月智能体和开发者产生 7.38 billion commits（超一年前五倍），pushes 同比增长 4.9 倍。",
+            "url": "https://github.blog/engineering/architecture-optimization/building-git-infrastructure-for-agent-scale-development/",
+            "category": "industry"
+          },
+          {
+            "title": "ChatGPT 推出 Meetings 插件，可自动记会议纪要并跟进待办",
+            "summary": "ChatGPT 发布 Meetings 插件，可替用户记会议笔记，并基于 ChatGPT 对用户和既往工作的了解，在 ChatGPT Space 保存个性化摘要和后续步骤。笔记可私密保存或与团队共享，还能让 ChatGPT 更新项目计划或起草跟进内容。目前以 beta 形式面向 Pro 和 Business 用户开放，可在 macOS 桌面应用的插件目录搜索 Meetings 使用，Enterprise 版即将推出。作者 Tibo 补充称，可放心畅谈并将积累的上下文载入 codex 来完成任务。",
+            "url": "https://x.com/thsottiaux/status/2107573405553938664",
+            "category": "tip"
+          },
+          {
+            "title": "Google DeepMind 发布开源轻量多模态嵌入模型 EmbeddingGemma 2",
+            "summary": "Google DeepMind 发布 EmbeddingGemma 2，基于 Gemma 4 架构，以 Apache 2.0 许可开源，将文本、代码、图像、视频和音频映射到统一嵌入空间。",
+            "url": "https://deepmind.google/blog/embeddinggemma-2-an-open-lightweight-multimodal-embedding-model/",
+            "category": "ai-models"
+          },
+          {
+            "title": "亚利桑那州法院裁定AI生成受害者视频带有不当情感分量，凶手须重新量刑",
+            "summary": "亚利桑那州上诉法院裁定，Gabriel Horcasitas过失杀人案量刑中使用的受害者Christopher Pelkey AI生成视频带有不当情感重量，罪名维持但刑期须重新考虑。",
+            "url": "https://www.404media.co/her-ai-generated-video-swayed-the-judge-the-court-said-it-carried-undue-emotional-weight/",
+            "category": "industry"
+          },
+          {
+            "title": "DeepSeek 据报道接近完成至少 800 亿元融资，腾讯与宁德时代参与",
+            "summary": "据 Bloomberg 援引知情人士报道，DeepSeek 接近完成至少 800 亿元（约 120 亿美元）融资，高于原定约 500 亿元的目标。腾讯和电池厂商宁德时代是本轮最大投资方之一，融资预计很快完成，DeepSeek 还计划 2027 年初 IPO，细节仍可能变化。",
+            "url": "https://x.com/thexpin/status/2107524306058289533",
+            "category": "industry"
+          },
+          {
+            "title": "Sierra 与 Meta 联合多家企业发布 Personal Agent Protocol 开放协议",
+            "summary": "Sierra 与 Meta 联合 Genesys、Instinct、Rocket、Shopify、Stripe、Walmart 等伙伴宣布开发 Personal Agent Protocol，一个定义个人 AI 智能体如何与企业交互的开放标准，任何人都可实现。",
+            "url": "https://sierra.ai/blog/introducing-personal-agent-protocol",
+            "category": "industry"
+          },
+          {
+            "title": "Claude for Google Workspace 开启 beta，可直接在 Docs、Sheets、Slides 中编辑",
+            "summary": "Claude 宣布推出 Claude for Google Workspace（beta），一次安装即可覆盖 Google Docs、Sheets 和 Slides。",
+            "url": "https://www.youtube.com/watch?v=idJQMJwHtyM",
             "category": "ai-products"
           },
           {
-            "title": "PromptArmor 披露 Databricks Genie 恶意 Skill 可绕过四类控制实施钓鱼与数据外泄",
-            "summary": "PromptArmor 披露 Databricks Genie Code 可被恶意 Skill 利用：Skill 代码将数据嵌入聊天渲染的 HTML 显示，渲染时通过用户浏览器发起网络请求外泄数据，并弹出钓鱼界面索取凭据。",
-            "url": "https://www.promptarmor.com/resources/four-databricks-genie-controls-that-dont-stop-malicious-skills",
-            "category": "paper"
+            "title": "DeepSeek V4.1 Flash 在 ARC-AGI (Verified) 评测中的成绩公布",
+            "summary": "ARC Prize 公布 DeepSeek V4.1 Flash 在 ARC-AGI (Verified) 的成绩：ARC-AGI-2 得分 72.9%，每任务成本 $0.13；ARC-AGI-1 得分 94.5%，每任务成本 $0.07。相比 V4 Flash 的最佳成绩，ARC-AGI-1 高 5.5 分，ARC-AGI-2 高 11.5 分，但每任务成本高约 250%。",
+            "url": "https://x.com/arcprize/status/2107491194007585239",
+            "category": "ai-models"
           }
         ],
-        "updateTime": "2026-10-05T22:31:27+08:00"
+        "updateTime": "2026-10-07T22:32:53+08:00"
       }
     }
   ]
