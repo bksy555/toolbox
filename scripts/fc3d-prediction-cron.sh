@@ -167,22 +167,24 @@ const PLS_FETCHED_PERIOD = '$PLS_FETCHED_PERIOD';
 const PLS_FETCHED_DRAW = '$PLS_FETCHED_DRAW';
 const PLS_FETCHED_DATE = '$PLS_FETCHED_DATE';
 
-// 根据实际开奖日期计算正确期号（修复国庆等休市后期号错位问题）
-// 数据源返回的期号可能按官方连续计数（休市日不断号），
-// 而本站预测按"日历年天数-10"推算期号，两者在休市后会出现错位。
-// 规则：如果数据源返回的期号 < 按开奖日期推算的期号，说明官方期号跳过了休市日，
-// 本站应使用按开奖日期推算的期号来存储中奖号码。
-function normalizePeriod(fetchedPeriod, fetchedDate) {
-  if (!fetchedDate || fetchedDate.length < 10) return fetchedPeriod;
-  const parts = fetchedDate.split('-').map(Number);
-  if (parts.length !== 3 || parts.some(isNaN)) return fetchedPeriod;
-  const computedPeriod = getPeriodNum(parts[0], parts[1], parts[2]);
-  // 只有 computed > fetched 时才校正（官方期号因休市小于日历期号）
-  if (computedPeriod > fetchedPeriod) {
-    console.log('🔄 期号校正: ' + fetchedPeriod + ' → ' + computedPeriod + '（按开奖日期 ' + fetchedDate + '）');
-    return computedPeriod;
-  }
-  return fetchedPeriod;
+// ========== 休市日期表 ==========
+// 官方休市日不开奖（国庆10/1-10/4、春节等），预测生成时需跳过这些日期。
+// 注意：休市日没有对应期号，恢复开奖后续号（如2026263=09-30 → 2026264=10-05）。
+// 如需增加春节休市，在此数组追加日期即可。
+const HOLIDAYS = ['2026-10-01', '2026-10-02', '2026-10-03', '2026-10-04'];
+
+function isHoliday(date) {
+  const key = date.getFullYear() + '-' +
+    String(date.getMonth() + 1).padStart(2, '0') + '-' +
+    String(date.getDate()).padStart(2, '0');
+  return HOLIDAYS.includes(key);
+}
+
+// 格式化为 YYYY-MM-DD
+function fmtDate(date) {
+  return date.getFullYear() + '-' +
+    String(date.getMonth() + 1).padStart(2, '0') + '-' +
+    String(date.getDate()).padStart(2, '0');
 }
 
 // ========== 时干天干3胆 ==========
@@ -266,34 +268,7 @@ function calcColdDans(drawNums, period) {
 const bj = getBeijingDate();
 const today = new Date(bj.year, bj.month - 1, bj.day);
 
-// 生成15期预测
-const predictions = [];
-const start = new Date(today);
-start.setDate(start.getDate() - 14);
-
-for (let i = 0; i < 16; i++) {
-  const cursor = new Date(start);
-  cursor.setDate(start.getDate() + i);
-  const y = cursor.getFullYear();
-  const m = cursor.getMonth() + 1;
-  const d = cursor.getDate();
-  const w = cursor.getDay();
-
-  const gan = getHaiHourGan(y, m, d);
-  const dans = GAN_TO_DAN[gan] || [];
-  const period = getPeriodNum(y, m, d);
-  
-  predictions.push({
-    period: period, year: y, month: m, day: d, weekday: w,
-    haiGan: gan, dans: dans,
-    isPast: (y < bj.year || (y === bj.year && m < bj.month) || (y === bj.year && m === bj.month && d < bj.day)),
-    isToday: (y === bj.year && m === bj.month && d === bj.day)
-  });
-}
-
-while (predictions.length > 15) { predictions.shift(); }
-
-// 读取已有数据
+// 读取已有数据（先读，才能知道最新开奖期号和日期）
 let stored = {};
 let drawNums = {}; // 所有已知开奖号码，用于冷号计算
 try {
@@ -309,27 +284,94 @@ try {
   console.warn('读取已有数据失败，将新建');
 }
 
-// 如果有从网络获取的最新中奖号码，更新到drawNums和stored
-if (FETCHED_PERIOD && FETCHED_DRAW) {
-  // 按开奖日期校正期号（修复休市期错位，如国庆264-267期无开奖、268期=10-05）
-  const CORRECTED_PERIOD = normalizePeriod(FETCHED_PERIOD, FETCHED_DATE);
-  drawNums[CORRECTED_PERIOD] = FETCHED_DRAW;
-  if (!stored[CORRECTED_PERIOD]) {
-    stored[CORRECTED_PERIOD] = { period: CORRECTED_PERIOD };
+// ========== 生成预测：连续期号 + 跳过休市日 ==========
+// 说明：官方期号按开奖日连续计数（2026263=09-30 → 2026264=10-05），
+// 休市日（10/1-10/4）没有期号。预测从最新开奖期号+1开始，
+// 日期从最新开奖日期+1天开始，若遇休市日则继续顺延。
+function generatePredictions() {
+  // 确定最新开奖期号与日期
+  let latestPeriod = '';
+  let latestDate = null;
+  const sortedKeys = Object.keys(drawNums).sort();
+  if (sortedKeys.length > 0) {
+    latestPeriod = sortedKeys[sortedKeys.length - 1];
+    const sd = stored[latestPeriod] || {};
+    if (sd.year && sd.month && sd.day) {
+      latestDate = new Date(sd.year, sd.month - 1, sd.day);
+    }
   }
-  stored[CORRECTED_PERIOD].drawNum = FETCHED_DRAW;
-  stored[CORRECTED_PERIOD].updatedAt = new Date().toISOString();
-  // 补充日期信息（从期号推算）
-  const year = parseInt(CORRECTED_PERIOD.substring(0, 4));
-  const periodNum = parseInt(CORRECTED_PERIOD.substring(4));
-  const dayOfYear = periodNum + 10;
-  const startDate = new Date(year, 0, 0);
-  const targetDate = new Date(startDate);
-  targetDate.setDate(targetDate.getDate() + dayOfYear);
-  stored[CORRECTED_PERIOD].year = targetDate.getFullYear();
-  stored[CORRECTED_PERIOD].month = targetDate.getMonth() + 1;
-  stored[CORRECTED_PERIOD].day = targetDate.getDate();
-  console.log('📥 从网络更新中奖号码: 第' + CORRECTED_PERIOD + '期 = ' + FETCHED_DRAW + '（日期 ' + (FETCHED_DATE || '未知') + '）');
+  // 若数据源提供了开奖日期，优先使用（更准确）
+  if (FETCHED_DATE && FETCHED_DATE.length >= 10) {
+    const parts = FETCHED_DATE.split('-').map(Number);
+    if (!parts.some(isNaN)) {
+      latestDate = new Date(parts[0], parts[1] - 1, parts[2]);
+    }
+  }
+  // 兜底：今天
+  if (!latestDate) latestDate = new Date(today);
+
+  // 期号序列号（2026263 → 序列263）
+  let seq = parseInt(latestPeriod.substring(4));
+  const cursor = new Date(latestDate);
+  const predictions = [];
+
+  // 生成16期预测（含当前已开奖期，供回溯验证）
+  for (let i = 0; i < 16; i++) {
+    cursor.setDate(cursor.getDate() + 1);
+    while (isHoliday(cursor)) {
+      cursor.setDate(cursor.getDate() + 1);
+    }
+    seq += 1;
+    const y = cursor.getFullYear();
+    const m = cursor.getMonth() + 1;
+    const d = cursor.getDate();
+    const w = cursor.getDay();
+
+    const gan = getHaiHourGan(y, m, d);
+    const dans = GAN_TO_DAN[gan] || [];
+    const period = y + String(seq).padStart(3, '0');
+
+    predictions.push({
+      period: period, year: y, month: m, day: d, weekday: w,
+      haiGan: gan, dans: dans,
+      isPast: (y < bj.year || (y === bj.year && m < bj.month) || (y === bj.year && m === bj.month && d < bj.day)),
+      isToday: (y === bj.year && m === bj.month && d === bj.day)
+    });
+  }
+  return predictions;
+}
+
+const predictions = generatePredictions();
+
+// 如果有从网络获取的最新中奖号码，更新到drawNums和stored
+// 注意：直接使用数据源返回的官方连续期号（如2026264=10-05），不做日历校正
+if (FETCHED_PERIOD && FETCHED_DRAW) {
+  drawNums[FETCHED_PERIOD] = FETCHED_DRAW;
+  if (!stored[FETCHED_PERIOD]) {
+    stored[FETCHED_PERIOD] = { period: FETCHED_PERIOD };
+  }
+  stored[FETCHED_PERIOD].drawNum = FETCHED_DRAW;
+  stored[FETCHED_PERIOD].updatedAt = new Date().toISOString();
+  // 用数据源返回的实际开奖日期补充日期信息（比期号反推更准确）
+  if (FETCHED_DATE && FETCHED_DATE.length >= 10) {
+    const dp = FETCHED_DATE.split('-').map(Number);
+    if (!dp.some(isNaN)) {
+      stored[FETCHED_PERIOD].year = dp[0];
+      stored[FETCHED_PERIOD].month = dp[1];
+      stored[FETCHED_PERIOD].day = dp[2];
+      stored[FETCHED_PERIOD].weekday = new Date(dp[0], dp[1] - 1, dp[2]).getDay();
+    }
+  } else {
+    // 兜底：从期号反推（无休市时正确）
+    const year = parseInt(FETCHED_PERIOD.substring(0, 4));
+    const periodNum = parseInt(FETCHED_PERIOD.substring(4));
+    const targetDate = new Date(year, 0, 0);
+    targetDate.setDate(targetDate.getDate() + periodNum + 10);
+    stored[FETCHED_PERIOD].year = targetDate.getFullYear();
+    stored[FETCHED_PERIOD].month = targetDate.getMonth() + 1;
+    stored[FETCHED_PERIOD].day = targetDate.getDate();
+  }
+  console.log('📥 从网络更新中奖号码: 第' + FETCHED_PERIOD + '期 = ' + FETCHED_DRAW + '（日期 ' + (FETCHED_DATE || '未知') + '）');
 }
 
 // 合并新预测（时干天干3胆 + 冷号3胆）
@@ -409,8 +451,7 @@ const p3DrawNums = {};
 for (const [k, v] of Object.entries(p3Stored)) {
   if (v.drawNum) p3DrawNums[k] = v.drawNum;
 }
-const P3_CORRECTED_PERIOD = normalizePeriod(PLS_FETCHED_PERIOD, PLS_FETCHED_DATE);
-if (PLS_FETCHED_PERIOD && PLS_FETCHED_DRAW) p3DrawNums[P3_CORRECTED_PERIOD] = PLS_FETCHED_DRAW;
+if (PLS_FETCHED_PERIOD && PLS_FETCHED_DRAW) p3DrawNums[PLS_FETCHED_PERIOD] = PLS_FETCHED_DRAW;
 
 // 排列三最新期号与3D相同（日历年天数-10），直接用 predictions 生成
 for (const p of predictions) {
@@ -440,26 +481,37 @@ for (const p of predictions) {
   }
 }
 
-// 从网络更新排列三中奖号码（期号与3D一致，按开奖日期校正）
+// 从网络更新排列三中奖号码（期号与3D一致，直接使用官方连续期号）
 if (PLS_FETCHED_PERIOD && PLS_FETCHED_DRAW) {
-  if (!p3Stored[P3_CORRECTED_PERIOD]) {
-    p3Stored[P3_CORRECTED_PERIOD] = { period: P3_CORRECTED_PERIOD };
-    // 补充日期（从期号推算）
-    const fy = parseInt(P3_CORRECTED_PERIOD.substring(0, 4));
-    const fpn = parseInt(P3_CORRECTED_PERIOD.substring(4));
-    const fsd = new Date(fy, 0, 0);
-    fsd.setDate(fsd.getDate() + (fpn + 10));
-    p3Stored[P3_CORRECTED_PERIOD].year = fsd.getFullYear();
-    p3Stored[P3_CORRECTED_PERIOD].month = fsd.getMonth() + 1;
-    p3Stored[P3_CORRECTED_PERIOD].day = fsd.getDate();
-    p3Stored[P3_CORRECTED_PERIOD].weekday = fsd.getDay();
+  if (!p3Stored[PLS_FETCHED_PERIOD]) {
+    p3Stored[PLS_FETCHED_PERIOD] = { period: PLS_FETCHED_PERIOD };
+    // 补充日期（用数据源日期，更准确）
+    if (PLS_FETCHED_DATE && PLS_FETCHED_DATE.length >= 10) {
+      const dp = PLS_FETCHED_DATE.split('-').map(Number);
+      if (!dp.some(isNaN)) {
+        p3Stored[PLS_FETCHED_PERIOD].year = dp[0];
+        p3Stored[PLS_FETCHED_PERIOD].month = dp[1];
+        p3Stored[PLS_FETCHED_PERIOD].day = dp[2];
+        p3Stored[PLS_FETCHED_PERIOD].weekday = new Date(dp[0], dp[1] - 1, dp[2]).getDay();
+      }
+    } else {
+      // 兜底：从期号反推
+      const fy = parseInt(PLS_FETCHED_PERIOD.substring(0, 4));
+      const fpn = parseInt(PLS_FETCHED_PERIOD.substring(4));
+      const fsd = new Date(fy, 0, 0);
+      fsd.setDate(fsd.getDate() + (fpn + 10));
+      p3Stored[PLS_FETCHED_PERIOD].year = fsd.getFullYear();
+      p3Stored[PLS_FETCHED_PERIOD].month = fsd.getMonth() + 1;
+      p3Stored[PLS_FETCHED_PERIOD].day = fsd.getDate();
+      p3Stored[PLS_FETCHED_PERIOD].weekday = fsd.getDay();
+    }
   }
-  p3Stored[P3_CORRECTED_PERIOD].drawNum = PLS_FETCHED_DRAW;
-  p3Stored[P3_CORRECTED_PERIOD].updatedAt = new Date().toISOString();
-  if (p3Stored[P3_CORRECTED_PERIOD].dans) {
-    p3Stored[P3_CORRECTED_PERIOD].result = calcResult(p3Stored[P3_CORRECTED_PERIOD].dans, PLS_FETCHED_DRAW);
+  p3Stored[PLS_FETCHED_PERIOD].drawNum = PLS_FETCHED_DRAW;
+  p3Stored[PLS_FETCHED_PERIOD].updatedAt = new Date().toISOString();
+  if (p3Stored[PLS_FETCHED_PERIOD].dans) {
+    p3Stored[PLS_FETCHED_PERIOD].result = calcResult(p3Stored[PLS_FETCHED_PERIOD].dans, PLS_FETCHED_DRAW);
   }
-  console.log('📥 排列三从网络更新中奖号码: 第' + P3_CORRECTED_PERIOD + '期 = ' + PLS_FETCHED_DRAW + '（日期 ' + (PLS_FETCHED_DATE || '未知') + '）');
+  console.log('📥 排列三从网络更新中奖号码: 第' + PLS_FETCHED_PERIOD + '期 = ' + PLS_FETCHED_DRAW + '（日期 ' + (PLS_FETCHED_DATE || '未知') + '）');
 }
 
 // 保存前统一为 P3 补冷号3胆（近20期频率最低3个数字）与冷号结果
@@ -516,5 +568,47 @@ echo "--- 步骤3: 推送到 GitHub ---"
 git add -A
 git commit -m "🤖 福彩3D预测自动更新（含冷号3胆）$(date '+%Y-%m-%d %H:%M')" 2>/dev/null || echo "  无新变更"
 git push 2>/dev/null && echo "  ✅ 已推送到 GitHub" || echo "  ⚠️ 推送失败（可能无变更）"
+
+# 步骤4：验证更新是否成功（在网页上查询确认）
+# 说明：推送后等待Vercel部署（约10-20秒），然后检查线上页面数据是否已包含最新中奖号码。
+# 如果验证失败，自动重试一次；仍失败则告警提示人工检查。
+echo "--- 步骤4: 验证线上更新 ---"
+LATEST_PERIOD_FOR_CHECK=$(python3 -c "
+import json
+with open('data/fc3d-prediction.json') as f:
+    d = json.load(f)
+keys = sorted([k for k in d.keys() if d[k].get('drawNum')], reverse=True)
+print(keys[0] if keys else '')
+" 2>/dev/null)
+LATEST_DRAW_FOR_CHECK=$(python3 -c "
+import json
+with open('data/fc3d-prediction.json') as f:
+    d = json.load(f)
+keys = sorted([k for k in d.keys() if d[k].get('drawNum')], reverse=True)
+print(d[keys[0]]['drawNum'] if keys else '')
+" 2>/dev/null)
+echo "  本地最新开奖: 第${LATEST_PERIOD_FOR_CHECK}期 = ${LATEST_DRAW_FOR_CHECK}"
+
+VERIFY_OK=""
+sleep 15  # 等待Vercel部署
+for TRY in 1 2; do
+  echo "  验证尝试 $TRY: 检查线上预测数据页面..."
+  ONLINE_TEXT=$(curl -s --max-time 30 "https://tools-website-rust.vercel.app/data/fc3d-prediction.json" 2>/dev/null)
+  if echo "$ONLINE_TEXT" | grep -q "${LATEST_DRAW_FOR_CHECK}"; then
+    echo "  ✅ 线上已更新成功: 最新中奖号码 ${LATEST_DRAW_FOR_CHECK} 已生效"
+    VERIFY_OK="1"
+    break
+  else
+    echo "  ⚠️ 线上尚未更新（可能Vercel还在部署），5秒后重试..."
+    sleep 5
+  fi
+done
+
+if [ -z "$VERIFY_OK" ]; then
+  echo "  ❌ 线上验证失败：最新中奖号码 ${LATEST_DRAW_FOR_CHECK} 未在线上页面找到"
+  echo "  ⚠️ 请人工检查 https://tools-website-rust.vercel.app/ 是否部署成功"
+else
+  echo "  ✅ 验证通过"
+fi
 
 echo "=== 完成 ==="
