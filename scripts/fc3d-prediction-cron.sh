@@ -25,38 +25,50 @@ echo "--- 步骤1: 获取最新中奖号码 ---"
 FETCHED_DRAW=""
 FETCHED_PERIOD=""
 
-# ---- 数据源1（主源）: 500彩票网 首页（curl，无验证码）----
-echo "尝试数据源1: 500彩票网 zx.500.com/sd/ ..."
-RESULT_500=$(timeout 30 python3 scripts/fc3d-500-fetch.py 2>/dev/null)
-if [ -n "$RESULT_500" ] && [ "$RESULT_500" != "" ]; then
-  FETCHED_PERIOD=$(echo "$RESULT_500" | cut -d'|' -f1)
-  FETCHED_DRAW=$(echo "$RESULT_500" | cut -d'|' -f2)
-  FETCHED_DATE=$(echo "$RESULT_500" | cut -d'|' -f3)
-  echo "✅ 从500彩票网获取: 第${FETCHED_PERIOD}期 = ${FETCHED_DRAW} (${FETCHED_DATE})"
-fi
-
-# ---- 数据源2（备源）: 百度移动版官方福彩卡片（playwright）----
-if [ -z "$FETCHED_DRAW" ]; then
-  echo "尝试数据源2: 百度移动版搜索官方福彩卡片 ..."
-  # 先查本地最新期号，搜下一期（当天开奖后即出）
-  LOCAL_LATEST=$(python3 -c "
+# ---- 数据源1（主源）: 百度移动版官方福彩卡片（playwright）----
+# 说明：本站服务器位于国际网络（新加坡），500彩票网/中彩网等国内站点被墙/拦截，
+# 百度移动版是唯一稳定可用的数据源（已验证可正常返回）。
+# 百度源支持重试2次，避免偶发验证码导致获取失败。
+echo "尝试数据源1: 百度移动版搜索官方福彩卡片（主源，国际网络可用） ..."
+# 先查本地最新期号，搜下一期（当天开奖后即出）
+LOCAL_LATEST=$(python3 -c "
 import json
 with open('$DATA_FILE') as f:
     d = json.load(f)
 keys = sorted([k for k in d.keys() if k.startswith('2026') and d[k].get('drawNum') and d[k]['drawNum'] != '' and d[k]['drawNum'] != ' '], reverse=True)
 print(keys[0] if keys else '')
 " 2>/dev/null)
-  if [ -n "$LOCAL_LATEST" ]; then
-    NEXT_PERIOD=$((10#$LOCAL_LATEST + 1))
+if [ -n "$LOCAL_LATEST" ]; then
+  NEXT_PERIOD=$((10#$LOCAL_LATEST + 1))
+  for TRY in 1 2 3; do
     RESULT_BD=$(timeout 90 python3 scripts/fc3d-baidu-fetch.py "$NEXT_PERIOD" 2>/dev/null)
     if [ -n "$RESULT_BD" ] && [ "$RESULT_BD" != "" ]; then
       FETCHED_PERIOD=$(echo "$RESULT_BD" | cut -d'|' -f1)
       FETCHED_DRAW=$(echo "$RESULT_BD" | cut -d'|' -f2)
       FETCHED_DATE=$(echo "$RESULT_BD" | cut -d'|' -f3)
-      echo "✅ 从百度获取: 第${FETCHED_PERIOD}期 = ${FETCHED_DRAW} (${FETCHED_DATE})"
+      echo "✅ 从百度获取: 第${FETCHED_PERIOD}期 = ${FETCHED_DRAW} (${FETCHED_DATE})（第${TRY}次尝试）"
+      break
     else
-      echo "⚠️ 百度未能获取（可能未开奖或触发验证码）"
+      echo "⚠️ 百度第${TRY}次尝试失败（可能未开奖或触发验证码），重试..."
+      sleep 3
     fi
+  done
+  if [ -z "$FETCHED_DRAW" ]; then
+    echo "⚠️ 百度3次尝试均未成功"
+  fi
+fi
+
+# ---- 数据源2（备源）: 500彩票网 首页（curl，国际网络下通常被拦截，保留作后备）----
+if [ -z "$FETCHED_DRAW" ]; then
+  echo "尝试数据源2: 500彩票网 zx.500.com/sd/（国际网络下可能被拦截） ..."
+  RESULT_500=$(timeout 30 python3 scripts/fc3d-500-fetch.py 2>/dev/null)
+  if [ -n "$RESULT_500" ] && [ "$RESULT_500" != "" ]; then
+    FETCHED_PERIOD=$(echo "$RESULT_500" | cut -d'|' -f1)
+    FETCHED_DRAW=$(echo "$RESULT_500" | cut -d'|' -f2)
+    FETCHED_DATE=$(echo "$RESULT_500" | cut -d'|' -f3)
+    echo "✅ 从500彩票网获取: 第${FETCHED_PERIOD}期 = ${FETCHED_DRAW} (${FETCHED_DATE})"
+  else
+    echo "⚠️ 500彩票网获取失败（国际网络限制）"
   fi
 fi
 
