@@ -6367,8 +6367,8 @@
   },
   "2026264": {
     "period": "2026264",
-    "drawNum": "119",
-    "updatedAt": "2026-10-05T14:03:01.409Z",
+    "drawNum": null,
+    "updatedAt": null,
     "year": 2026,
     "month": 10,
     "day": 1,
@@ -6383,8 +6383,8 @@
       3,
       0
     ],
-    "result": "✅",
-    "coldResult": "❌"
+    "result": null,
+    "coldResult": null
   },
   "2026265": {
     "period": "2026265",
@@ -6403,10 +6403,10 @@
       3,
       0
     ],
-    "drawNum": "161",
-    "result": "❌",
-    "coldResult": "❌",
-    "updatedAt": "2026-10-06T14:33:52.072Z"
+    "drawNum": null,
+    "result": null,
+    "coldResult": null,
+    "updatedAt": null
   },
   "2026266": {
     "period": "2026266",
@@ -6469,10 +6469,10 @@
       3,
       0
     ],
-    "drawNum": null,
-    "result": null,
-    "coldResult": null,
-    "updatedAt": null
+    "drawNum": "119",
+    "result": "❌",
+    "coldResult": "❌",
+    "updatedAt": "2026-10-05T22:00:00Z"
   },
   "2026269": {
     "period": "2026269",
@@ -6491,10 +6491,10 @@
       3,
       0
     ],
-    "drawNum": null,
-    "result": null,
-    "coldResult": null,
-    "updatedAt": null
+    "drawNum": "161",
+    "result": "✅",
+    "coldResult": "❌",
+    "updatedAt": "2026-10-06T22:00:00Z"
   },
   "2026270": {
     "period": "2026270",

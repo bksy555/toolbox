@@ -139,10 +139,30 @@ const DATA_FILE = '$DATA_FILE';
 // 网络获取的最新中奖号码
 const FETCHED_PERIOD = '$FETCHED_PERIOD';
 const FETCHED_DRAW = '$FETCHED_DRAW';
+const FETCHED_DATE = '$FETCHED_DATE';
 
 // 排列三最新中奖号码（期号与3D一致：日历年天数-10）
 const PLS_FETCHED_PERIOD = '$PLS_FETCHED_PERIOD';
 const PLS_FETCHED_DRAW = '$PLS_FETCHED_DRAW';
+const PLS_FETCHED_DATE = '$PLS_FETCHED_DATE';
+
+// 根据实际开奖日期计算正确期号（修复国庆等休市后期号错位问题）
+// 数据源返回的期号可能按官方连续计数（休市日不断号），
+// 而本站预测按"日历年天数-10"推算期号，两者在休市后会出现错位。
+// 规则：如果数据源返回的期号 < 按开奖日期推算的期号，说明官方期号跳过了休市日，
+// 本站应使用按开奖日期推算的期号来存储中奖号码。
+function normalizePeriod(fetchedPeriod, fetchedDate) {
+  if (!fetchedDate || fetchedDate.length < 10) return fetchedPeriod;
+  const parts = fetchedDate.split('-').map(Number);
+  if (parts.length !== 3 || parts.some(isNaN)) return fetchedPeriod;
+  const computedPeriod = getPeriodNum(parts[0], parts[1], parts[2]);
+  // 只有 computed > fetched 时才校正（官方期号因休市小于日历期号）
+  if (computedPeriod > fetchedPeriod) {
+    console.log('🔄 期号校正: ' + fetchedPeriod + ' → ' + computedPeriod + '（按开奖日期 ' + fetchedDate + '）');
+    return computedPeriod;
+  }
+  return fetchedPeriod;
+}
 
 // ========== 时干天干3胆 ==========
 const GAN_TO_DAN = {
@@ -270,23 +290,25 @@ try {
 
 // 如果有从网络获取的最新中奖号码，更新到drawNums和stored
 if (FETCHED_PERIOD && FETCHED_DRAW) {
-  drawNums[FETCHED_PERIOD] = FETCHED_DRAW;
-  if (!stored[FETCHED_PERIOD]) {
-    stored[FETCHED_PERIOD] = { period: FETCHED_PERIOD };
+  // 按开奖日期校正期号（修复休市期错位，如国庆264-267期无开奖、268期=10-05）
+  const CORRECTED_PERIOD = normalizePeriod(FETCHED_PERIOD, FETCHED_DATE);
+  drawNums[CORRECTED_PERIOD] = FETCHED_DRAW;
+  if (!stored[CORRECTED_PERIOD]) {
+    stored[CORRECTED_PERIOD] = { period: CORRECTED_PERIOD };
   }
-  stored[FETCHED_PERIOD].drawNum = FETCHED_DRAW;
-  stored[FETCHED_PERIOD].updatedAt = new Date().toISOString();
+  stored[CORRECTED_PERIOD].drawNum = FETCHED_DRAW;
+  stored[CORRECTED_PERIOD].updatedAt = new Date().toISOString();
   // 补充日期信息（从期号推算）
-  const year = parseInt(FETCHED_PERIOD.substring(0, 4));
-  const periodNum = parseInt(FETCHED_PERIOD.substring(4));
+  const year = parseInt(CORRECTED_PERIOD.substring(0, 4));
+  const periodNum = parseInt(CORRECTED_PERIOD.substring(4));
   const dayOfYear = periodNum + 10;
   const startDate = new Date(year, 0, 0);
   const targetDate = new Date(startDate);
   targetDate.setDate(targetDate.getDate() + dayOfYear);
-  stored[FETCHED_PERIOD].year = targetDate.getFullYear();
-  stored[FETCHED_PERIOD].month = targetDate.getMonth() + 1;
-  stored[FETCHED_PERIOD].day = targetDate.getDate();
-  console.log('📥 从网络更新中奖号码: 第' + FETCHED_PERIOD + '期 = ' + FETCHED_DRAW);
+  stored[CORRECTED_PERIOD].year = targetDate.getFullYear();
+  stored[CORRECTED_PERIOD].month = targetDate.getMonth() + 1;
+  stored[CORRECTED_PERIOD].day = targetDate.getDate();
+  console.log('📥 从网络更新中奖号码: 第' + CORRECTED_PERIOD + '期 = ' + FETCHED_DRAW + '（日期 ' + (FETCHED_DATE || '未知') + '）');
 }
 
 // 合并新预测（时干天干3胆 + 冷号3胆）
@@ -366,7 +388,8 @@ const p3DrawNums = {};
 for (const [k, v] of Object.entries(p3Stored)) {
   if (v.drawNum) p3DrawNums[k] = v.drawNum;
 }
-if (PLS_FETCHED_PERIOD && PLS_FETCHED_DRAW) p3DrawNums[PLS_FETCHED_PERIOD] = PLS_FETCHED_DRAW;
+const P3_CORRECTED_PERIOD = normalizePeriod(PLS_FETCHED_PERIOD, PLS_FETCHED_DATE);
+if (PLS_FETCHED_PERIOD && PLS_FETCHED_DRAW) p3DrawNums[P3_CORRECTED_PERIOD] = PLS_FETCHED_DRAW;
 
 // 排列三最新期号与3D相同（日历年天数-10），直接用 predictions 生成
 for (const p of predictions) {
@@ -396,26 +419,26 @@ for (const p of predictions) {
   }
 }
 
-// 从网络更新排列三中奖号码（期号与3D一致）
+// 从网络更新排列三中奖号码（期号与3D一致，按开奖日期校正）
 if (PLS_FETCHED_PERIOD && PLS_FETCHED_DRAW) {
-  if (!p3Stored[PLS_FETCHED_PERIOD]) {
-    p3Stored[PLS_FETCHED_PERIOD] = { period: PLS_FETCHED_PERIOD };
+  if (!p3Stored[P3_CORRECTED_PERIOD]) {
+    p3Stored[P3_CORRECTED_PERIOD] = { period: P3_CORRECTED_PERIOD };
     // 补充日期（从期号推算）
-    const fy = parseInt(PLS_FETCHED_PERIOD.substring(0, 4));
-    const fpn = parseInt(PLS_FETCHED_PERIOD.substring(4));
+    const fy = parseInt(P3_CORRECTED_PERIOD.substring(0, 4));
+    const fpn = parseInt(P3_CORRECTED_PERIOD.substring(4));
     const fsd = new Date(fy, 0, 0);
     fsd.setDate(fsd.getDate() + (fpn + 10));
-    p3Stored[PLS_FETCHED_PERIOD].year = fsd.getFullYear();
-    p3Stored[PLS_FETCHED_PERIOD].month = fsd.getMonth() + 1;
-    p3Stored[PLS_FETCHED_PERIOD].day = fsd.getDate();
-    p3Stored[PLS_FETCHED_PERIOD].weekday = fsd.getDay();
+    p3Stored[P3_CORRECTED_PERIOD].year = fsd.getFullYear();
+    p3Stored[P3_CORRECTED_PERIOD].month = fsd.getMonth() + 1;
+    p3Stored[P3_CORRECTED_PERIOD].day = fsd.getDate();
+    p3Stored[P3_CORRECTED_PERIOD].weekday = fsd.getDay();
   }
-  p3Stored[PLS_FETCHED_PERIOD].drawNum = PLS_FETCHED_DRAW;
-  p3Stored[PLS_FETCHED_PERIOD].updatedAt = new Date().toISOString();
-  if (p3Stored[PLS_FETCHED_PERIOD].dans) {
-    p3Stored[PLS_FETCHED_PERIOD].result = calcResult(p3Stored[PLS_FETCHED_PERIOD].dans, PLS_FETCHED_DRAW);
+  p3Stored[P3_CORRECTED_PERIOD].drawNum = PLS_FETCHED_DRAW;
+  p3Stored[P3_CORRECTED_PERIOD].updatedAt = new Date().toISOString();
+  if (p3Stored[P3_CORRECTED_PERIOD].dans) {
+    p3Stored[P3_CORRECTED_PERIOD].result = calcResult(p3Stored[P3_CORRECTED_PERIOD].dans, PLS_FETCHED_DRAW);
   }
-  console.log('📥 排列三从网络更新中奖号码: 第' + PLS_FETCHED_PERIOD + '期 = ' + PLS_FETCHED_DRAW);
+  console.log('📥 排列三从网络更新中奖号码: 第' + P3_CORRECTED_PERIOD + '期 = ' + PLS_FETCHED_DRAW + '（日期 ' + (PLS_FETCHED_DATE || '未知') + '）');
 }
 
 // 保存前统一为 P3 补冷号3胆（近20期频率最低3个数字）与冷号结果
