@@ -117,7 +117,16 @@ if (results.length > 0) {
       PREV_ISSUE=$((LATEST_ISSUE - 1))
       FETCHED_DRAW=$(echo "$DRAW_RESULT" | grep -oP '\d \d \d' | tr -d ' ')
       FETCHED_PERIOD="$PREV_ISSUE"
-      echo "✅ 从zhcw获取: 第${FETCHED_PERIOD}期 = ${FETCHED_DRAW}"
+      # 从文章URL提取发布日期，上期开奖日期 = 文章日期 - 1 天（zhcw 分析文章滞后约1天）
+      ARTICLE_DATE=$(echo "$ARTICLE_URL" | grep -oP '2026-\d{2}-\d{2}' | head -1)
+      if [ -n "$ARTICLE_DATE" ]; then
+        FETCHED_DATE=$(python3 -c "
+from datetime import date, timedelta
+y, m, d = map(int, '$ARTICLE_DATE'.split('-'))
+print((date(y, m, d) - timedelta(days=1)).isoformat())
+" 2>/dev/null)
+      fi
+      echo "✅ 从zhcw获取: 第${FETCHED_PERIOD}期 = ${FETCHED_DRAW} (${FETCHED_DATE:-日期未知})"
     else
       echo "⚠️ 文章内容中未找到开奖结果"
     fi
