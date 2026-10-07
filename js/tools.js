@@ -19685,3 +19685,74 @@ function stkClear() {
   `,
   handler: () => { miInit(); }
 }
+
+// ============================================================
+// GIF动图速查工具 giphy (gp*)
+// ============================================================
+{
+  id: 'giphy',
+  cat: 'fun',
+  icon: '🎞️',
+  name: 'GIF动图速查',
+  desc: '常用表情包和动图速查，支持搜索关键词，一键复制动图链接',
+  html: `
+    <div class="tool-card">
+      <div class="input-group">
+        <label>搜索动图（如：开心、点赞、狗、猫...）</label>
+        <input type="text" id="gp-search" placeholder="输入关键词搜索动图..." oninput="gpRender()">
+      </div>
+      <div id="gp-tags" style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;"></div>
+      <div id="gp-list" style="margin-top:15px;"></div>
+      <div id="gp-tip" style="margin-top:15px;font-size:13px;color:var(--text-light);background:var(--bg-light,#f8fafc);padding:12px;border-radius:8px;">
+        💡 点击动图可复制图片链接，用于聊天和文案配图
+      </div>
+    </div>
+  `,
+  handler: () => { gpInit(); }
+}
+
+// ============================================================
+// 代码在线运行工具 codepen (cp*)
+// ============================================================
+{
+  id: 'codepen',
+  cat: 'dev',
+  icon: '💻',
+  name: '代码在线运行',
+  desc: '实时运行 HTML/CSS/JS 代码，快速预览效果，适合学习和调试',
+  html: `
+    <div class="tool-card">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:15px;">
+        <div>
+          <div class="input-group">
+            <label>HTML</label>
+            <textarea id="cp-html" placeholder="<div>Hello World</div>" style="height:120px;font-family:monospace;"></textarea>
+          </div>
+          <div class="input-group" style="margin-top:10px;">
+            <label>CSS</label>
+            <textarea id="cp-css" placeholder="body { color: red; }" style="height:120px;font-family:monospace;"></textarea>
+          </div>
+          <div class="input-group" style="margin-top:10px;">
+            <label>JavaScript</label>
+            <textarea id="cp-js" placeholder="console.log('hello')" style="height:120px;font-family:monospace;"></textarea>
+          </div>
+          <div class="btn-group" style="margin-top:15px;">
+            <button class="btn btn-primary" onclick="cpRun()">▶️ 运行代码</button>
+            <button class="btn btn-secondary" onclick="cpTemplate()">📋 加载示例</button>
+            <button class="btn btn-secondary" onclick="cpClear()">🗑️ 清空</button>
+          </div>
+        </div>
+        <div>
+          <div class="input-group">
+            <label>预览结果</label>
+            <iframe id="cp-preview" style="width:100%;height:430px;border:1px solid var(--border,#e2e8f0);border-radius:10px;background:#fff;"></iframe>
+          </div>
+        </div>
+      </div>
+      <div id="cp-tip" style="margin-top:15px;font-size:13px;color:var(--text-light);background:var(--bg-light,#f8fafc);padding:12px;border-radius:8px;">
+        💡 支持 HTML/CSS/JS 实时运行，纯本地执行，代码不会上传到服务器
+      </div>
+    </div>
+  `,
+  handler: () => { }
+}

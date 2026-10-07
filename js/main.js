@@ -4618,3 +4618,121 @@ function miClear() {
   miNotes = [];
   showToast('🗑️ 已清空白板');
 }
+
+// ============================================================
+// GIF动图速查工具 (gp*)
+// ============================================================
+var gpData = [
+  { name: '开心', gifs: ['😂', '😄', '🤣', '😁', '😆', '🥳', '🎉', '✨', '🌟', '🎊'] },
+  { name: '点赞', gifs: ['👍', '👏', '🙌', '🤝', '👌', '💪', '✅', '☑️', '🫶', '🥇'] },
+  { name: '难过', gifs: ['😭', '😢', '🥺', '😔', '💔', '😞', '😿', '🌧️', '🕯️', '🤧'] },
+  { name: '生气', gifs: ['😡', '🤬', '😠', '👿', '💢', '🔥', '😤', '🫠', '🤯', '😾'] },
+  { name: '惊讶', gifs: ['😱', '😲', '🤯', '🫢', '😳', '🫨', '🙀', '💥', '⚡', '🫣'] },
+  { name: '动物', gifs: ['🐶', '🐱', '🐰', '🐼', '🦊', '🐻', '🐨', '🦁', '🐯', '🐸'] },
+  { name: '爱心', gifs: ['❤️', '💕', '💖', '💗', '💘', '💝', '💓', '💞', '💌', '🩷'] },
+  { name: '庆祝', gifs: ['🎉', '🎊', '🎈', '🎁', '🏆', '🥳', '🎂', '🍾', '🎇', '🎆'] },
+  { name: '加油', gifs: ['💪', '🔥', '🚀', '⚡', '🎯', '🏃', '✊', '👊', '🙏', '✨'] },
+  { name: '晚安', gifs: ['🌙', '😴', '💤', '🌛', '🛏️', '⭐', '🌌', '🦉', '🥱', '🌃'] }
+];
+
+function gpInit() {
+  gpRender();
+}
+
+function gpRender() {
+  var searchInput = document.getElementById('gp-search');
+  var q = searchInput ? searchInput.value.trim().toLowerCase() : '';
+  
+  var tags = document.getElementById('gp-tags');
+  var list = document.getElementById('gp-list');
+  if (!tags || !list) return;
+  
+  // 分类按钮
+  var tagHtml = '<button class="btn btn-sm" onclick="gpFilter(\'\')">全部</button>';
+  gpData.forEach(function(item) {
+    tagHtml += '<button class="btn btn-sm" onclick="gpFilter(\'' + item.name + '\')">' + item.name + '</button>';
+  });
+  tags.innerHTML = tagHtml;
+  
+  var items = gpData;
+  if (q) {
+    items = gpData.filter(function(item) {
+      return item.name.includes(q) || item.gifs.some(function(g) { return g.includes(q); });
+    });
+  }
+  
+  if (items.length === 0) {
+    list.innerHTML = '<div style="text-align:center;padding:20px;color:var(--text-light);font-size:13px;">未找到相关动图</div>';
+    return;
+  }
+  
+  var html = '';
+  items.forEach(function(item) {
+    html += '<div style="margin-bottom:15px;">';
+    html += '<div style="font-size:13px;font-weight:600;color:var(--text-light);margin-bottom:6px;">' + item.name + '</div>';
+    html += '<div style="display:flex;flex-wrap:wrap;gap:6px;">';
+    item.gifs.forEach(function(g) {
+      html += '<span style="display:inline-flex;align-items:center;justify-content:center;width:52px;height:52px;background:var(--bg-light,#f8fafc);border-radius:8px;font-size:28px;cursor:pointer;" onclick="gpCopy(\'' + g.replace(/'/g, "\\'") + '\')" title="点击复制">' + g + '</span>';
+    });
+    html += '</div></div>';
+  });
+  list.innerHTML = html;
+}
+
+function gpFilter(name) {
+  var searchInput = document.getElementById('gp-search');
+  if (searchInput) searchInput.value = name;
+  gpRender();
+}
+
+function gpCopy(ch) {
+  navigator.clipboard.writeText(ch).then(function() {
+    showToast('📋 已复制：' + ch);
+  }).catch(function() {
+    showToast('⚠️ 复制失败');
+  });
+}
+
+// ============================================================
+// 代码在线运行工具 (cp*)
+// ============================================================
+function cpRun() {
+  var htmlInput = document.getElementById('cp-html');
+  var cssInput = document.getElementById('cp-css');
+  var jsInput = document.getElementById('cp-js');
+  var preview = document.getElementById('cp-preview');
+  if (!preview) return;
+  
+  var html = htmlInput ? htmlInput.value : '';
+  var css = cssInput ? cssInput.value : '';
+  var js = jsInput ? jsInput.value : '';
+  
+  var doc = '<!DOCTYPE html><html><head><meta charset="utf-8"><style>' + css + '</style></head><body>' + html + '<script>' + js + '<\/script></body></html>';
+  
+  // 使用 sandbox iframe 运行
+  preview.srcdoc = doc;
+  showToast('▶️ 代码已运行');
+}
+
+function cpTemplate() {
+  var htmlInput = document.getElementById('cp-html');
+  var cssInput = document.getElementById('cp-css');
+  var jsInput = document.getElementById('cp-js');
+  
+  if (htmlInput) htmlInput.value = '<div class="card">\n  <h1>你好，世界 👋</h1>\n  <p>这是一个 CodePen 风格示例</p>\n  <button onclick="hello()">点击我</button>\n</div>';
+  if (cssInput) cssInput.value = 'body {\n  font-family: sans-serif;\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  min-height: 100vh;\n  background: linear-gradient(135deg, #667eea, #764ba2);\n}\n.card {\n  background: #fff;\n  padding: 40px;\n  border-radius: 16px;\n  text-align: center;\n  box-shadow: 0 20px 60px rgba(0,0,0,0.3);\n}\nbutton {\n  background: #667eea;\n  color: #fff;\n  border: none;\n  padding: 10px 24px;\n  border-radius: 8px;\n  font-size: 16px;\n  cursor: pointer;\n}';
+  if (jsInput) jsInput.value = 'function hello() {\n  alert("Hello! 👋");\n}';
+  showToast('📋 已加载示例代码，点击"运行代码"预览');
+}
+
+function cpClear() {
+  var htmlInput = document.getElementById('cp-html');
+  var cssInput = document.getElementById('cp-css');
+  var jsInput = document.getElementById('cp-js');
+  var preview = document.getElementById('cp-preview');
+  if (htmlInput) htmlInput.value = '';
+  if (cssInput) cssInput.value = '';
+  if (jsInput) jsInput.value = '';
+  if (preview) preview.srcdoc = '';
+  showToast('🗑️ 已清空');
+}
