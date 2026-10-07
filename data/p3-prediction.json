@@ -8583,7 +8583,7 @@
     ],
     "drawNum": "121",
     "result": "❌",
-    "updatedAt": "2026-10-07T15:58:16.712Z",
+    "updatedAt": "2026-10-07T16:08:24.191Z",
     "coldDans": [
       0,
       4,
@@ -8597,11 +8597,11 @@
     "month": 10,
     "day": 8,
     "weekday": 3,
-    "haiGan": "乙",
+    "haiGan": "丁",
     "dans": [
-      3,
+      2,
       4,
-      8
+      9
     ],
     "drawNum": null,
     "result": null,
@@ -8619,7 +8619,7 @@
     "month": 10,
     "day": 9,
     "weekday": 4,
-    "haiGan": "丁",
+    "haiGan": "己",
     "dans": [
       2,
       4,
@@ -8641,11 +8641,11 @@
     "month": 10,
     "day": 10,
     "weekday": 5,
-    "haiGan": "己",
+    "haiGan": "辛",
     "dans": [
       2,
-      4,
-      9
+      6,
+      7
     ],
     "drawNum": null,
     "result": null,
@@ -8663,11 +8663,11 @@
     "month": 10,
     "day": 11,
     "weekday": 6,
-    "haiGan": "辛",
+    "haiGan": "癸",
     "dans": [
-      2,
+      1,
       6,
-      7
+      8
     ],
     "drawNum": null,
     "result": null,
@@ -8685,10 +8685,10 @@
     "month": 10,
     "day": 12,
     "weekday": 0,
-    "haiGan": "癸",
+    "haiGan": "乙",
     "dans": [
-      1,
-      6,
+      3,
+      4,
       8
     ],
     "drawNum": null,
@@ -8707,11 +8707,11 @@
     "month": 10,
     "day": 13,
     "weekday": 1,
-    "haiGan": "乙",
+    "haiGan": "丁",
     "dans": [
-      3,
+      2,
       4,
-      8
+      9
     ],
     "coldDans": [
       0,
@@ -8729,7 +8729,7 @@
     "month": 10,
     "day": 14,
     "weekday": 2,
-    "haiGan": "丁",
+    "haiGan": "己",
     "dans": [
       2,
       4,
@@ -8751,11 +8751,11 @@
     "month": 10,
     "day": 15,
     "weekday": 3,
-    "haiGan": "己",
+    "haiGan": "辛",
     "dans": [
       2,
-      4,
-      9
+      6,
+      7
     ],
     "coldDans": [
       0,
@@ -8773,11 +8773,11 @@
     "month": 10,
     "day": 16,
     "weekday": 4,
-    "haiGan": "辛",
+    "haiGan": "癸",
     "dans": [
-      2,
+      1,
       6,
-      7
+      8
     ],
     "coldDans": [
       0,
@@ -8795,10 +8795,10 @@
     "month": 10,
     "day": 17,
     "weekday": 5,
-    "haiGan": "癸",
+    "haiGan": "乙",
     "dans": [
-      1,
-      6,
+      3,
+      4,
       8
     ],
     "coldDans": [
@@ -8817,11 +8817,11 @@
     "month": 10,
     "day": 18,
     "weekday": 6,
-    "haiGan": "乙",
+    "haiGan": "丁",
     "dans": [
-      3,
+      2,
       4,
-      8
+      9
     ],
     "coldDans": [
       0,
@@ -8839,7 +8839,7 @@
     "month": 10,
     "day": 18,
     "weekday": 0,
-    "haiGan": "丁",
+    "haiGan": "己",
     "dans": [
       2,
       4,
@@ -8860,11 +8860,11 @@
     "month": 10,
     "day": 19,
     "weekday": 1,
-    "haiGan": "己",
+    "haiGan": "辛",
     "dans": [
       2,
-      4,
-      9
+      6,
+      7
     ],
     "drawNum": null,
     "result": null,
@@ -8881,11 +8881,11 @@
     "month": 10,
     "day": 20,
     "weekday": 2,
-    "haiGan": "辛",
+    "haiGan": "癸",
     "dans": [
-      2,
+      1,
       6,
-      7
+      8
     ],
     "drawNum": null,
     "result": null,
@@ -8902,10 +8902,10 @@
     "month": 10,
     "day": 21,
     "weekday": 3,
-    "haiGan": "癸",
+    "haiGan": "乙",
     "dans": [
-      1,
-      6,
+      3,
+      4,
       8
     ],
     "drawNum": null,
@@ -8923,11 +8923,11 @@
     "month": 10,
     "day": 22,
     "weekday": 4,
-    "haiGan": "乙",
+    "haiGan": "丁",
     "dans": [
-      3,
+      2,
       4,
-      8
+      9
     ],
     "drawNum": null,
     "result": null,

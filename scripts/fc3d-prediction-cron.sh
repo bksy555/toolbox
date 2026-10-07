@@ -300,8 +300,11 @@ function generatePredictions() {
       latestDate = new Date(sd.year, sd.month - 1, sd.day);
     }
   }
-  // 若数据源提供了开奖日期，优先使用（更准确）
-  if (FETCHED_DATE && FETCHED_DATE.length >= 10) {
+  // 只有本地没有日期信息时，才用数据源日期兜底。
+  // 注意：不能无条件下用 FETCHED_DATE 覆盖——当数据源返回滞后期号时
+  // （如 zhcw 兜底源滞后1天返回2026265=10-06），会错误地把最新开奖日期
+  // 提前一天，导致后续预测的日期/时干全部错位。
+  if (!latestDate && FETCHED_DATE && FETCHED_DATE.length >= 10) {
     const parts = FETCHED_DATE.split('-').map(Number);
     if (!parts.some(isNaN)) {
       latestDate = new Date(parts[0], parts[1] - 1, parts[2]);
