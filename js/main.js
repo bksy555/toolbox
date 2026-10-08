@@ -4917,3 +4917,184 @@ function asEscape(str) {
   div.textContent = str;
   return div.innerHTML;
 }
+
+// ============================================================
+// 在线表格数据库工具 (at*)
+// ============================================================
+var atData = {
+  name: '我的数据表',
+  cols: ['名称', '数量', '备注'],
+  rows: [['示例1', '10', ''], ['示例2', '20', '']]
+};
+
+function atInit() {
+  try {
+    var saved = localStorage.getItem('at-data');
+    if (saved) atData = JSON.parse(saved);
+  } catch(e) { }
+  atRender();
+}
+
+function atRender() {
+  var nameInput = document.getElementById('at-name');
+  if (nameInput) nameInput.value = atData.name;
+  var table = document.getElementById('at-table');
+  if (!table) return;
+  
+  var html = '<thead><tr style="background:var(--bg-light,#f8fafc);">';
+  atData.cols.forEach(function(col, ci) {
+    html += '<th style="padding:8px;border:1px solid var(--border,#e2e8f0);text-align:left;position:relative;">' + atEscape(col) +
+      ' <span style="cursor:pointer;color:#ef4444;font-size:11px;" onclick="atDelCol(' + ci + ')">✕</span></th>';
+  });
+  html += '</tr></thead><tbody>';
+  atData.rows.forEach(function(row, ri) {
+    html += '<tr>';
+    row.forEach(function(cell, ci) {
+      html += '<td style="padding:6px;border:1px solid var(--border,#e2e8f0);" ondblclick="atEditCell(' + ri + ',' + ci + ')" title="双击编辑">' + atEscape(cell) + '</td>';
+    });
+    html += '<td style="padding:6px;border:1px solid var(--border,#e2e8f0);"><span style="cursor:pointer;color:#ef4444;font-size:11px;" onclick="atDelRow(' + ri + ')">✕ 删除行</span></td>';
+    html += '</tr>';
+  });
+  html += '</tbody>';
+  table.innerHTML = html;
+}
+
+function atAddRow() {
+  var newRow = atData.cols.map(function() { return ''; });
+  atData.rows.push(newRow);
+  atPersist();
+  atRender();
+}
+
+function atAddCol() {
+  var name = prompt('新列名称：', '列' + (atData.cols.length + 1));
+  if (!name) return;
+  atData.cols.push(name);
+  atData.rows.forEach(function(row) { row.push(''); });
+  atPersist();
+  atRender();
+}
+
+function atDelRow(ri) {
+  atData.rows.splice(ri, 1);
+  atPersist();
+  atRender();
+}
+
+function atDelCol(ci) {
+  if (atData.cols.length <= 1) { showToast('⚠️ 至少保留一列'); return; }
+  atData.cols.splice(ci, 1);
+  atData.rows.forEach(function(row) { row.splice(ci, 1); });
+  atPersist();
+  atRender();
+}
+
+function atEditCell(ri, ci) {
+  var val = prompt('编辑内容：', atData.rows[ri][ci]);
+  if (val !== null) {
+    atData.rows[ri][ci] = val;
+    atPersist();
+    atRender();
+  }
+}
+
+function atPersist() {
+  try { localStorage.setItem('at-data', JSON.stringify(atData)); } catch(e) { }
+}
+
+function atExport() {
+  var lines = [atData.cols.join(',')];
+  atData.rows.forEach(function(row) {
+    lines.push(row.map(function(c) { return '"' + String(c || '').replace(/"/g, '""') + '"'; }).join(','));
+  });
+  var blob = new Blob([lines.join('\n')], { type: 'text/csv;charset=utf-8' });
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = (atData.name || 'table') + '-' + new Date().toISOString().slice(0, 10) + '.csv';
+  a.click();
+  showToast('📥 CSV 已导出');
+}
+
+function atClear() {
+  atData = { name: '我的数据表', cols: ['名称', '数量', '备注'], rows: [] };
+  atPersist();
+  atRender();
+  showToast('🗑️ 已清空表格');
+}
+
+function atEscape(str) {
+  var div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
+}
+
+// ============================================================
+// 标题灵感生成器工具 (bz*)
+// ============================================================
+var bzTitles = [];
+
+function bzGenerate() {
+  var topicInput = document.getElementById('bz-topic');
+  var list = document.getElementById('bz-list');
+  if (!topicInput || !list) return;
+  var topic = topicInput.value.trim();
+  if (!topic) { showToast('⚠️ 请输入主题'); return; }
+  
+  // 基于爆款标题模板生成
+  var templates = [
+    ['{t}的10个惊人真相，看完第3个我沉默了', '数字悬念'],
+    ['为什么大家都在偷偷学{t}？答案让你意外', '热点疑问'],
+    ['{t}终极指南：新手到高手只需7天', '攻略指南'],
+    ['别再做{t}了！90%的人都做错了', '纠正误区'],
+    ['{t}避坑指南：这5个错误千万别犯', '避坑提醒'],
+    ['我用{t}3个月，改变了人生（真实经历）', '亲历故事'],
+    ['{t} vs 传统方法：差距居然这么大', '对比测试'],
+    ['2026年最火的{t}趋势，再不学就晚了', '趋势提醒'],
+    ['月薪3千也能学会的{t}技巧，收藏了', '低门槛'],
+    ['{t}入门到精通：这一篇就够了（附资源）', '大全收藏'],
+    ['为什么你的{t}总是不成功？原因找到了', '问题剖析'],
+    ['从小白到大神：{t}学习路线图全公开', '学习路线'],
+    ['{t}翻车现场，这些坑我替你踩过了', '踩坑分享'],
+    ['学会{t}后，我的工作效率提升了一倍', '效率提升'],
+    ['{t}免费资源大合集，建议立即收藏', '资源合集']
+  ];
+  
+  bzTitles = templates.map(function(t) {
+    return { title: t[0].replace(/\{t\}/g, topic), tag: t[1] };
+  });
+  
+  var html = '<div style="font-weight:bold;margin-bottom:10px;">⚡ 生成 ' + bzTitles.length + ' 个标题灵感</div>';
+  bzTitles.forEach(function(item, i) {
+    html += '<div style="display:flex;justify-content:space-between;align-items:center;padding:10px;background:var(--bg-light,#f8fafc);border-radius:8px;margin-bottom:8px;cursor:pointer;" onclick="bzCopyOne(' + i + ')">';
+    html += '<div style="flex:1;"><span style="font-size:13px;">' + (i + 1) + '. ' + bzEscape(item.title) + '</span></div>';
+    html += '<span style="font-size:11px;color:var(--text-light);margin-left:10px;">' + item.tag + '</span>';
+    html += '</div>';
+  });
+  list.innerHTML = html;
+  showToast('⚡ 已生成 ' + bzTitles.length + ' 个标题');
+}
+
+function bzCopyOne(idx) {
+  if (idx < 0 || idx >= bzTitles.length) return;
+  navigator.clipboard.writeText(bzTitles[idx].title).then(function() {
+    showToast('📋 已复制标题 ' + (idx + 1));
+  }).catch(function() {
+    showToast('⚠️ 复制失败');
+  });
+}
+
+function bzCopy() {
+  if (bzTitles.length === 0) { showToast('⚠️ 请先生成标题'); return; }
+  var text = bzTitles.map(function(t, i) { return (i + 1) + '. ' + t.title; }).join('\n');
+  navigator.clipboard.writeText(text).then(function() {
+    showToast('📋 已复制全部 ' + bzTitles.length + ' 个标题');
+  }).catch(function() {
+    showToast('⚠️ 复制失败');
+  });
+}
+
+function bzEscape(str) {
+  var div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
+}

@@ -19815,3 +19815,63 @@ function stkClear() {
   `,
   handler: () => { asInit(); }
 }
+
+// ============================================================
+// 在线表格数据库工具 airtable (at*)
+// ============================================================
+{
+  id: 'airtable',
+  cat: 'document',
+  icon: '🗄️',
+  name: '在线表格数据库',
+  desc: '轻量数据表格，支持增删行/列、筛选排序、导出CSV，数据保存在本地',
+  html: `
+    <div class="tool-card">
+      <div class="input-group">
+        <label>表格名称</label>
+        <input type="text" id="at-name" value="我的数据表" onchange="atRender()">
+      </div>
+      <div class="btn-group" style="margin-top:10px;">
+        <button class="btn btn-sm" onclick="atAddRow()">➕ 添加行</button>
+        <button class="btn btn-sm" onclick="atAddCol()">➕ 添加列</button>
+        <button class="btn btn-sm" onclick="atExport()">📥 导出CSV</button>
+        <button class="btn btn-sm btn-danger" onclick="atClear()">🗑️ 清空</button>
+      </div>
+      <div style="margin-top:10px;overflow-x:auto;">
+        <table id="at-table" style="width:100%;border-collapse:collapse;font-size:13px;"></table>
+      </div>
+      <div id="at-tip" style="margin-top:10px;font-size:13px;color:var(--text-light);background:var(--bg-light,#f8fafc);padding:12px;border-radius:8px;">
+        💡 双击单元格可编辑内容，支持添加/删除行和列，数据保存在本地浏览器
+      </div>
+    </div>
+  `,
+  handler: () => { atInit(); }
+}
+
+// ============================================================
+// 标题灵感生成器工具 buzzsumo (bz*)
+// ============================================================
+{
+  id: 'buzzsumo',
+  cat: 'text',
+  icon: '📈',
+  name: '标题灵感生成器',
+  desc: '输入主题自动生成吸睛标题，自媒体爆款标题灵感必备',
+  html: `
+    <div class="tool-card">
+      <div class="input-group">
+        <label>输入文章主题（如：减肥、Python、旅行）</label>
+        <input type="text" id="bz-topic" placeholder="输入主题关键词..." onkeydown="if(event.key==='Enter')bzGenerate()">
+      </div>
+      <div class="btn-group" style="margin-top:10px;">
+        <button class="btn btn-primary" onclick="bzGenerate()">⚡ 生成标题</button>
+        <button class="btn btn-secondary" onclick="bzCopy()">📋 复制全部</button>
+      </div>
+      <div id="bz-list" style="margin-top:15px;"></div>
+      <div id="bz-tip" style="margin-top:15px;font-size:13px;color:var(--text-light);background:var(--bg-light,#f8fafc);padding:12px;border-radius:8px;">
+        💡 基于爆款标题模板生成，点击单个标题可复制
+      </div>
+    </div>
+  `,
+  handler: () => { }
+}
