@@ -735,9 +735,8 @@
       }
 
       const predictions = [];
-      let currentSeq = anchorSeq;
+      let currentSeq = anchorSeq - 1; // 第一期为 anchorSeq（对应 anchor 日期）
       for (let i = 0; i < 16; i++) {
-        // 当前 cursor 即第 i 期日期（起始=anchor，之后每天+1跳过休市）
         currentSeq += 1;
         const y = cursor.getFullYear();
         const m = cursor.getMonth() + 1;
@@ -1231,7 +1230,7 @@
       }
 
       const predictions = [];
-      let currentSeq = anchorSeq;
+      let currentSeq = anchorSeq - 1; // 第一期为 anchorSeq（对应 anchor 日期）
       for (let i = 0; i < 16; i++) {
         currentSeq += 1;
         const y = cursor.getFullYear();
