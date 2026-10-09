@@ -5098,3 +5098,153 @@ function bzEscape(str) {
   div.textContent = str;
   return div.innerHTML;
 }
+
+// ============================================================
+// 邮件模板生成器工具 (mc*)
+// ============================================================
+function mcPreview() {
+  var subject = document.getElementById('mc-subject');
+  var title = document.getElementById('mc-title');
+  var body = document.getElementById('mc-body');
+  var btn = document.getElementById('mc-btn');
+  var link = document.getElementById('mc-link');
+  var preview = document.getElementById('mc-preview');
+  if (!preview) return;
+  
+  var subjectText = subject ? subject.value.trim() : '邮件主题';
+  var titleText = title ? title.value.trim() : '标题';
+  var bodyText = body ? body.value : '';
+  var btnText = btn ? btn.value.trim() : '立即查看';
+  var linkText = link ? link.value.trim() : '#';
+  
+  var bodyHtml = bodyText.split('\n').map(function(line) {
+    return mcEscape(line.trim());
+  }).join('<br>');
+  
+  // 根据主题不同设置不同的强调色
+  var accent = '#4f46e5';
+  if (/促销|折扣|优惠|限时|新品/.test(subjectText + titleText)) accent = '#ef4444';
+  if (/感谢|欢迎|订阅/.test(subjectText + titleText)) accent = '#22c55e';
+  
+  var html = '<div style="font-family:Arial,sans-serif;background:#f4f4f4;padding:30px 20px;">' +
+    '<div style="max-width:480px;margin:0 auto;background:#ffffff;border-radius:12px;overflow:hidden;border:1px solid #e5e7eb;">' +
+    '<div style="background:' + accent + ';color:#fff;padding:24px;text-align:center;font-size:20px;font-weight:bold;">' + mcEscape(titleText) + '</div>' +
+    '<div style="padding:24px;color:#333;font-size:14px;line-height:1.8;">' + bodyHtml + '</div>' +
+    '<div style="padding:0 24px 30px;text-align:center;">' +
+    '<a href="' + mcEscape(linkText) + '" style="display:inline-block;background:' + accent + ';color:#fff;text-decoration:none;padding:12px 32px;border-radius:8px;font-size:15px;font-weight:bold;">' + mcEscape(btnText) + '</a>' +
+    '</div></div></div>';
+  
+  preview.innerHTML = html;
+  mcLastHtml = '<div style="font-family:Arial,sans-serif;background:#f4f4f4;padding:30px 20px;">' +
+    '<div style="max-width:480px;margin:0 auto;background:#ffffff;border-radius:12px;overflow:hidden;border:1px solid #e5e7eb;">' +
+    '<div style="background:' + accent + ';color:#fff;padding:24px;text-align:center;font-size:20px;font-weight:bold;">' + mcEscape(titleText) + '</div>' +
+    '<div style="padding:24px;color:#333;font-size:14px;line-height:1.8;">' + bodyHtml + '</div>' +
+    '<div style="padding:0 24px 30px;text-align:center;">' +
+    '<a href="' + mcEscape(linkText) + '" style="display:inline-block;background:' + accent + ';color:#fff;text-decoration:none;padding:12px 32px;border-radius:8px;font-size:15px;font-weight:bold;">' + mcEscape(btnText) + '</a>' +
+    '</div></div></div>';
+  showToast('👁️ 已预览邮件模板');
+}
+
+var mcLastHtml = '';
+
+function mcCopyHtml() {
+  mcPreview();
+  if (!mcLastHtml) { showToast('⚠️ 请先生成预览'); return; }
+  navigator.clipboard.writeText(mcLastHtml).then(function() {
+    showToast('📋 HTML 已复制');
+  }).catch(function() {
+    showToast('⚠️ 复制失败');
+  });
+}
+
+function mcEscape(str) {
+  var div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
+}
+
+// ============================================================
+// 营销文案生成器工具 (hs*)
+// ============================================================
+var hsTexts = [];
+
+function hsGenerate() {
+  var productInput = document.getElementById('hs-product');
+  var pointsInput = document.getElementById('hs-points');
+  var audienceInput = document.getElementById('hs-audience');
+  var list = document.getElementById('hs-list');
+  if (!productInput || !list) return;
+  var product = productInput.value.trim();
+  if (!product) { showToast('⚠️ 请输入产品/服务名称'); return; }
+  
+  var points = pointsInput ? pointsInput.value.split(/[,，]/).map(function(s) { return s.trim(); }).filter(Boolean) : [];
+  var audience = audienceInput ? audienceInput.value.trim() : '';
+  var pointsStr = points.length > 0 ? points[0] : '超值';
+  var pointsAll = points.length > 0 ? points.join('、') : '品质卓越';
+  
+  var titles = [
+    '【爆款】' + product + '：' + pointsStr + '，用过的人都后悔买晚了',
+    '告别' + (audience || '烦恼') + '！' + product + '让我效率翻倍',
+    '为什么' + (audience || '大家都在') + '选择' + product + '？真相是...',
+    '不想再' + (audience ? '被' + audience + '的难题困扰' : '踩坑') + '？试试' + product,
+    product + '实测' + pointsAll + '，亲测有效不踩雷',
+    '1分钟了解' + product + '的' + pointsAll + '，值不值一看便知',
+    (audience ? audience + '必看！' : '必看！') + product + '的' + pointsStr + '不是说说而已',
+    product + '到底好不好？用户真实评价告诉你'
+  ];
+  
+  var slogans = [
+    product + '，' + pointsStr + '看得见',
+    '选' + product + '，选' + pointsStr,
+    product + '——' + (audience || '每一个人') + '的' + pointsStr + '之选',
+    pointsAll + '，尽在' + product
+  ];
+  
+  var ctas = [
+    '立即抢购',
+    '马上体验',
+    '点击领取优惠',
+    '了解更多详情'
+  ];
+  
+  hsTexts = [];
+  titles.forEach(function(t) { hsTexts.push({ type: '标题', text: t }); });
+  slogans.forEach(function(s) { hsTexts.push({ type: '广告语', text: s }); });
+  ctas.forEach(function(c) { hsTexts.push({ type: 'CTA', text: c }); });
+  
+  var html = '<div style="font-weight:bold;margin-bottom:10px;">⚡ 已生成 ' + hsTexts.length + ' 条营销文案</div>';
+  hsTexts.forEach(function(item, i) {
+    var tagColor = item.type === '标题' ? '#6366f1' : (item.type === '广告语' ? '#22c55e' : '#f59e0b');
+    html += '<div style="display:flex;justify-content:space-between;align-items:center;padding:10px;background:var(--bg-light,#f8fafc);border-radius:8px;margin-bottom:8px;cursor:pointer;" onclick="hsCopyOne(' + i + ')">';
+    html += '<span style="font-size:11px;color:' + tagColor + ';font-weight:600;margin-right:8px;white-space:nowrap;">' + item.type + '</span>';
+    html += '<span style="font-size:13px;flex:1;">' + hsEscape(item.text) + '</span>';
+    html += '</div>';
+  });
+  list.innerHTML = html;
+  showToast('⚡ 已生成 ' + hsTexts.length + ' 条文案');
+}
+
+function hsCopyOne(idx) {
+  if (idx < 0 || idx >= hsTexts.length) return;
+  navigator.clipboard.writeText(hsTexts[idx].text).then(function() {
+    showToast('📋 已复制：' + hsTexts[idx].text.slice(0, 20) + '...');
+  }).catch(function() {
+    showToast('⚠️ 复制失败');
+  });
+}
+
+function hsCopy() {
+  if (hsTexts.length === 0) { showToast('⚠️ 请先生成文案'); return; }
+  var text = hsTexts.map(function(t, i) { return '【' + t.type + '】' + t.text; }).join('\n');
+  navigator.clipboard.writeText(text).then(function() {
+    showToast('📋 已复制全部 ' + hsTexts.length + ' 条');
+  }).catch(function() {
+    showToast('⚠️ 复制失败');
+  });
+}
+
+function hsEscape(str) {
+  var div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
+}

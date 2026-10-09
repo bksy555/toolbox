@@ -19875,3 +19875,92 @@ function stkClear() {
   `,
   handler: () => { }
 }
+
+// ============================================================
+// 邮件模板生成器工具 mailchimp (mc*)
+// ============================================================
+{
+  id: 'mailchimp',
+  cat: 'document',
+  icon: '📧',
+  name: '邮件模板生成器',
+  desc: '快速生成精美HTML邮件模板，支持标题、正文、按钮，一键复制',
+  html: `
+    <div class="tool-card">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:15px;">
+        <div>
+          <div class="input-group">
+            <label>邮件主题</label>
+            <input type="text" id="mc-subject" placeholder="如：本月新品上线通知">
+          </div>
+          <div class="input-group" style="margin-top:10px;">
+            <label>邮件标题（正文头部）</label>
+            <input type="text" id="mc-title" placeholder="如：🎉 新品首发 · 限时8折">
+          </div>
+          <div class="input-group" style="margin-top:10px;">
+            <label>正文内容（支持换行）</label>
+            <textarea id="mc-body" placeholder="亲爱的用户：&#10;本月我们带来全新产品..." style="height:120px;"></textarea>
+          </div>
+          <div class="input-group" style="margin-top:10px;">
+            <label>按钮文字</label>
+            <input type="text" id="mc-btn" value="立即查看" placeholder="如：立即查看、马上抢购">
+          </div>
+          <div class="input-group" style="margin-top:10px;">
+            <label>按钮链接</label>
+            <input type="text" id="mc-link" value="https://toolai.ccwu.cc" placeholder="https://...">
+          </div>
+          <div class="btn-group" style="margin-top:15px;">
+            <button class="btn btn-primary" onclick="mcPreview()">👁️ 预览</button>
+            <button class="btn btn-secondary" onclick="mcCopyHtml()">📋 复制HTML</button>
+          </div>
+        </div>
+        <div>
+          <div class="input-group">
+            <label>邮件预览</label>
+            <div id="mc-preview" style="border:1px solid var(--border,#e2e8f0);border-radius:10px;padding:0;min-height:320px;background:#fff;overflow:hidden;"></div>
+          </div>
+        </div>
+      </div>
+      <div id="mc-tip" style="margin-top:15px;font-size:13px;color:var(--text-light);background:var(--bg-light,#f8fafc);padding:12px;border-radius:8px;">
+        💡 复制 HTML 后可粘贴到邮件营销平台或自行发送，模板兼容主流邮箱客户端
+      </div>
+    </div>
+  `,
+  handler: () => { mcPreview(); }
+}
+
+// ============================================================
+// 营销文案生成器工具 hubspot (hs*)
+// ============================================================
+{
+  id: 'hubspot',
+  cat: 'text',
+  icon: '📈',
+  name: '营销文案生成器',
+  desc: '输入产品卖点，自动生成营销标题、广告语和CTA文案',
+  html: `
+    <div class="tool-card">
+      <div class="input-group">
+        <label>产品/服务名称</label>
+        <input type="text" id="hs-product" placeholder="如：智能手环、在线课程">
+      </div>
+      <div class="input-group" style="margin-top:10px;">
+        <label>核心卖点（选填，用逗号分隔）</label>
+        <input type="text" id="hs-points" placeholder="如：防水,长续航,性价比高">
+      </div>
+      <div class="input-group" style="margin-top:10px;">
+        <label>目标人群（选填）</label>
+        <input type="text" id="hs-audience" placeholder="如：上班族、学生、宝妈">
+      </div>
+      <div class="btn-group" style="margin-top:15px;">
+        <button class="btn btn-primary" onclick="hsGenerate()">⚡ 生成文案</button>
+        <button class="btn btn-secondary" onclick="hsCopy()">📋 复制全部</button>
+      </div>
+      <div id="hs-list" style="margin-top:15px;"></div>
+      <div id="hs-tip" style="margin-top:15px;font-size:13px;color:var(--text-light);background:var(--bg-light,#f8fafc);padding:12px;border-radius:8px;">
+        💡 生成营销标题、广告语、CTA，点击单项可复制，适合广告投放和社群运营
+      </div>
+    </div>
+  `,
+  handler: () => { }
+}
