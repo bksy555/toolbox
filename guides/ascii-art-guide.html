@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>图片转字符画教程：3步把照片变成ASCII艺术画 - ToolBox 工具箱指南</title>
+  <meta name="description" content="图文详解在线图片转字符画的完整步骤，支持黑白/彩色模式、字符密度调节、多种字符集，文艺封面与极客风头像一键生成，免费在线使用，无需注册。">
+  <meta name="keywords" content="图片转字符画,ASCII艺术,字符画生成器,照片转字符,在线字符画,ASCII art,极客头像">
+  <meta name="author" content="ToolBox">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://toolai.ccwu.cc/guides/ascii-art-guide.html">
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    :root {
+      --bg: #0f0f1a;
+      --bg-card: #1a1a2e;
+      --text: #e0e0e0;
+      --text-light: #8888aa;
+      --border: #2a2a44;
+      --accent: #6366f1;
+      --accent-hover: #4f46e5;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Noto Sans SC', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      margin: 0;
+      line-height: 1.8;
+    }
+    .guide-header {
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+      border-bottom: 1px solid var(--border);
+      padding: 20px 0;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(10px);
+    }
+    .guide-header-inner {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 0 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .guide-header a {
+      color: var(--accent);
+      text-decoration: none;
+      font-size: 14px;
+    }
+    .guide-header a:hover { color: var(--accent-hover); }
+    .guide-container {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 40px 20px 80px;
+    }
+    .guide-breadcrumb {
+      font-size: 13px;
+      color: var(--text-light);
+      margin-bottom: 20px;
+    }
+    .guide-breadcrumb a { color: var(--accent); text-decoration: none; }
+    .guide-breadcrumb a:hover { text-decoration: underline; }
+    h1 {
+      font-size: 32px;
+      font-weight: 700;
+      margin: 0 0 10px;
+      line-height: 1.3;
+      background: linear-gradient(135deg, #e0e0e0, #a78bfa);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .guide-meta {
+      font-size: 13px;
+      color: var(--text-light);
+      margin-bottom: 30px;
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .guide-meta span { display: flex; align-items: center; gap: 4px; }
+    h2 {
+      font-size: 22px;
+      font-weight: 600;
+      margin: 40px 0 16px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border);
+      color: #e0e0e0;
+    }
+    h3 {
+      font-size: 18px;
+      font-weight: 600;
+      margin: 28px 0 12px;
+      color: #ccc;
+    }
+    p { margin: 0 0 16px; color: #ccc; }
+    .guide-step {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 24px;
+    }
+    .guide-step .step-num {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      background: var(--accent);
+      color: #fff;
+      border-radius: 50%;
+      font-weight: 700;
+      margin-right: 10px;
+    }
+    .guide-step img {
+      max-width: 100%;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      margin: 14px 0 6px;
+    }
+    .guide-img-caption {
+      font-size: 12px;
+      color: var(--text-light);
+      margin-bottom: 10px;
+      text-align: center;
+    }
+    .guide-scene {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px 24px;
+      margin-bottom: 16px;
+    }
+    .guide-scene .scene-icon { font-size: 22px; margin-right: 8px; }
+    .guide-faq {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px 24px;
+      margin-bottom: 14px;
+    }
+    .guide-faq strong { color: #fff; display: block; margin-bottom: 6px; }
+    blockquote {
+      margin: 24px 0;
+      padding: 16px 20px;
+      background: rgba(99, 102, 241, 0.12);
+      border-left: 4px solid var(--accent);
+      border-radius: 0 8px 8px 0;
+      color: #c7d2fe;
+    }
+    .cta-box {
+      margin-top: 48px;
+      padding: 40px 20px;
+      text-align: center;
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+    }
+    .cta-box h2 { border: none; margin: 0 0 10px; }
+    .cta-btn {
+      display: inline-block;
+      background: var(--accent);
+      color: #fff;
+      text-decoration: none;
+      padding: 14px 40px;
+      border-radius: 10px;
+      font-weight: 600;
+      margin-top: 16px;
+      transition: background 0.2s;
+    }
+    .cta-btn:hover { background: var(--accent-hover); }
+    @media (max-width: 640px) {
+      h1 { font-size: 24px; }
+      .guide-container { padding: 24px 14px 60px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="guide-header">
+    <div class="guide-header-inner">
+      <a href="../index.html">← 返回工具箱首页</a>
+      <span style="color:var(--text-light);font-size:13px;">ToolBox 指南</span>
+    </div>
+  </div>
+
+  <div class="guide-container">
+    <div class="guide-breadcrumb">
+      <a href="../index.html">首页</a> / <span>图片转字符画教程</span>
+    </div>
+
+    <h1>图片转字符画：3步把照片变成 ASCII 艺术画</h1>
+    <div class="guide-meta">
+      <span>⏱️ 约2分钟</span>
+      <span>📊 难度：简单</span>
+      <span>💡 免费在线</span>
+    </div>
+
+    <p>想让照片变成复古又高级的"字符画"吗？用 <strong>图片转字符画</strong> 工具，只需上传一张图片，就能自动生成由字母、数字和符号拼成的 ASCII 艺术画。极客风头像、文艺封面、代码风壁纸……几分钟搞定！</p>
+
+    <blockquote>💡 <strong>什么是字符画？</strong>字符画（ASCII Art）是用字符的疏密来模拟图像明暗的艺术形式——亮的地方用空格/点，暗的地方用@/#/M等密集字符，复古感十足，程序员和设计爱好者最爱。</blockquote>
+
+    <h2>📖 操作步骤</h2>
+
+    <div class="guide-step">
+      <span class="step-num">1</span><strong>打开工具并上传图片</strong>
+      <p>进入工具箱首页，找到「图片转字符画」工具，点击「📂 选择图片」按钮，从电脑中选择你想要转换的照片（支持 JPG、PNG 等常见格式）。</p>
+      <img src="images/aa-step1-upload.png" alt="选择图片上传">
+      <div class="guide-img-caption">图1：点击选择图片，上传本地照片</div>
+    </div>
+
+    <div class="guide-step">
+      <span class="step-num">2</span><strong>调节参数，选择合适的风格</strong>
+      <p>上传后，根据喜好调节三个核心参数：</p>
+      <p>🎚️ <strong>字符密度</strong>：细（字符多，细节丰富）/ 中 / 粗（字符少，更简洁抽象）</p>
+      <p>🌈 <strong>颜色模式</strong>：黑白（经典复古）或 彩色（保留原图色彩，更炫酷）</p>
+      <p>🔤 <strong>字符集</strong>：默认推荐，也可以切换不同字符风格，效果各有特色</p>
+      <img src="images/aa-step2-config.png" alt="调节字符密度和颜色模式">
+      <div class="guide-img-caption">图2：调节密度、颜色模式和字符集</div>
+    </div>
+
+    <div class="guide-step">
+      <span class="step-num">3</span><strong>查看效果，复制或导出</strong>
+      <p>调节完成后自动生成字符画效果。点击「📋 复制文本」可把字符画复制到剪贴板（适合发到聊天/代码注释里），或点击「⬇️ 导出PNG」下载高清图片（适合做头像/壁纸）。</p>
+      <img src="images/aa-step3-result.png" alt="生成字符画结果">
+      <div class="guide-img-caption">图3：生成完成，可复制文本或导出PNG</div>
+    </div>
+
+    <h2>💼 使用场景</h2>
+
+    <div class="guide-scene">
+      <span class="scene-icon">🎨</span><strong>文艺封面图</strong> — 把喜欢的照片转成字符画，加水印后用作公众号封面、博客题图，文艺感拉满。
+    </div>
+    <div class="guide-scene">
+      <span class="scene-icon">🤖</span><strong>极客风头像</strong> — 把自己的照片转成黑白色字符画，作为程序员社区、Tech 社群的专属头像。
+    </div>
+    <div class="guide-scene">
+      <span class="scene-icon">💻</span><strong>代码彩蛋</strong> — 把字符画复制到代码注释里，给项目加一点"细节彩蛋"，同事看了会心一笑。
+    </div>
+    <div class="guide-scene">
+      <span class="scene-icon">🖼️</span><strong>海报装饰元素</strong> — 字符画作为海报背景纹样，叠加半透明效果，秒变设计感素材。
+    </div>
+    <div class="guide-scene">
+      <span class="scene-icon">🎁</span><strong>定制礼物</strong> — 把合照转成字符画打印出来，做成独一无二的纪念礼物。
+    </div>
+
+    <h2>❓ 常见问题</h2>
+
+    <div class="guide-faq">
+      <strong>Q1：图片会传到服务器吗？</strong>
+      不会。工具完全在浏览器本地运行，图片不会上传到任何服务器，隐私安全有保障。
+    </div>
+    <div class="guide-faq">
+      <strong>Q2：为什么生成的字符画不够清晰？</strong>
+      字符画效果与图片分辨率、明暗对比有关。建议选择高分辨率、主体突出、明暗分明的照片，并适当调高"字符密度"（选择"细"）获得更多细节。
+    </div>
+    <div class="guide-faq">
+      <strong>Q3：导出PNG和复制文本有什么区别？</strong>
+      导出PNG会生成一张图片文件（适合做头像/壁纸/打印）；复制文本会复制纯文本形式的字符画（适合粘贴到聊天、代码或文档中）。
+
+    <div class="cta-box">
+      <h2>🚀 现在就试试</h2>
+      <p>打开工具箱，3步生成你的专属字符画！</p>
+      <a href="../index.html" class="cta-btn">🎨 去使用图片转字符画</a>
+    </div>
+  </div>
+</body>
+</html>

@@ -19964,3 +19964,68 @@ function stkClear() {
   `,
   handler: () => { }
 }
+
+// ============================================================
+// 会议纪要生成器工具 fireflies (ff*)
+// ============================================================
+{
+  id: 'fireflies',
+  cat: 'document',
+  icon: '🎤',
+  name: '会议纪要生成器',
+  desc: '输入会议信息自动生成结构化纪要，含议题、决议、行动项，可复制',
+  html: `
+    <div class="tool-card">
+      <div class="input-group">
+        <label>会议主题</label>
+        <input type="text" id="ff-title" placeholder="如：Q3产品规划会议">
+      </div>
+      <div class="input-group" style="margin-top:10px;">
+        <label>参会人（用逗号分隔）</label>
+        <input type="text" id="ff-attendees" placeholder="如：张三、李四、王五">
+      </div>
+      <div class="input-group" style="margin-top:10px;">
+        <label>会议要点（每行一条）</label>
+        <textarea id="ff-points" placeholder="1. 讨论了新版功能优先级&#10;2. 确定10月上线计划&#10;3. 李四负责设计稿..." style="height:140px;"></textarea>
+      </div>
+      <div class="btn-group" style="margin-top:15px;">
+        <button class="btn btn-primary" onclick="ffGenerate()">📝 生成纪要</button>
+        <button class="btn btn-secondary" onclick="ffCopy()">📋 复制纪要</button>
+      </div>
+      <div id="ff-result" style="margin-top:15px;"></div>
+      <div id="ff-tip" style="margin-top:15px;font-size:13px;color:var(--text-light);background:var(--bg-light,#f8fafc);padding:12px;border-radius:8px;">
+        💡 生成结构化会议纪要，可直接粘贴到工作群或文档
+      </div>
+    </div>
+  `,
+  handler: () => { }
+}
+
+// ============================================================
+// SRT字幕生成器工具 descript (ds*)
+// ============================================================
+{
+  id: 'descript',
+  cat: 'media',
+  icon: '🎥',
+  name: 'SRT字幕生成器',
+  desc: '输入文本和时间点生成SRT字幕文件，支持批量编辑，视频字幕必备',
+  html: `
+    <div class="tool-card">
+      <div class="input-group">
+        <label>字幕内容（每行一条，格式：开始秒|结束秒|文本）</label>
+        <textarea id="ds-input" placeholder="0|3|大家好&#10;3|7|欢迎观看本期视频&#10;7|12|今天教大家制作字幕..." style="height:180px;font-family:monospace;"></textarea>
+      </div>
+      <div class="btn-group" style="margin-top:15px;">
+        <button class="btn btn-primary" onclick="dsGenerate()">⚡ 生成SRT</button>
+        <button class="btn btn-secondary" onclick="dsDownload()">📥 下载.srt文件</button>
+        <button class="btn btn-secondary" onclick="dsSample()">📋 加载示例</button>
+      </div>
+      <div id="ds-preview" style="margin-top:15px;border:1px solid var(--border,#e2e8f0);border-radius:10px;padding:15px;font-family:monospace;font-size:13px;white-space:pre-wrap;min-height:120px;"></div>
+      <div id="ds-tip" style="margin-top:15px;font-size:13px;color:var(--text-light);background:var(--bg-light,#f8fafc);padding:12px;border-radius:8px;">
+        💡 每行格式：开始秒|结束秒|文本，如 0|3|Hello。生成的SRT兼容主流视频剪辑软件
+      </div>
+    </div>
+  `,
+  handler: () => { }
+}
