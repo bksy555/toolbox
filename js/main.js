@@ -5248,3 +5248,154 @@ function hsEscape(str) {
   div.textContent = str;
   return div.innerHTML;
 }
+
+// ============================================================
+// 会议纪要生成器工具 (ff*)
+// ============================================================
+var ffLastText = '';
+
+function ffGenerate() {
+  var titleInput = document.getElementById('ff-title');
+  var attendeesInput = document.getElementById('ff-attendees');
+  var pointsInput = document.getElementById('ff-points');
+  var result = document.getElementById('ff-result');
+  if (!titleInput || !result) return;
+  
+  var title = titleInput.value.trim() || '未命名会议';
+  var attendees = attendeesInput ? attendeesInput.value.trim() : '';
+  var pointsText = pointsInput ? pointsInput.value : '';
+  var points = pointsText.split('\n').map(function(s) { return s.trim(); }).filter(Boolean);
+  
+  if (points.length === 0) { showToast('⚠️ 请输入会议要点'); return; }
+  
+  var now = new Date();
+  var dateStr = now.getFullYear() + '年' + (now.getMonth() + 1) + '月' + now.getDate() + '日';
+  var timeStr = String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0');
+  
+  // 提取决议和行动项
+  var resolutions = points.filter(function(p) {
+    return /决定|确认|同意|通过|敲定|确定/.test(p);
+  });
+  var actions = points.filter(function(p) {
+    return /负责|跟进|完成|提交|推进|安排/.test(p);
+  });
+  var others = points.filter(function(p) {
+    return resolutions.indexOf(p) === -1 && actions.indexOf(p) === -1;
+  });
+  
+  var html = '<div style="background:var(--bg-light,#f8fafc);border-radius:10px;padding:16px;font-size:13px;line-height:1.9;">';
+  html += '<div style="font-weight:bold;font-size:15px;margin-bottom:8px;">📋 会议纪要</div>';
+  html += '<div><strong>会议主题：</strong>' + ffEscape(title) + '</div>';
+  html += '<div><strong>时间：</strong>' + dateStr + ' ' + timeStr + '</div>';
+  if (attendees) html += '<div><strong>参会人：</strong>' + ffEscape(attendees) + '</div>';
+  
+  if (others.length > 0) {
+    html += '<div style="margin-top:8px;"><strong>会议要点：</strong></div>';
+    html += '<ul style="margin:4px 0 0;padding-left:20px;">' + others.map(function(p) {
+      return '<li>' + ffEscape(p) + '</li>';
+    }).join('') + '</ul>';
+  }
+  if (resolutions.length > 0) {
+    html += '<div style="margin-top:8px;"><strong>✅ 会议决议：</strong></div>';
+    html += '<ul style="margin:4px 0 0;padding-left:20px;color:#22c55e;">' + resolutions.map(function(p) {
+      return '<li>' + ffEscape(p) + '</li>';
+    }).join('') + '</ul>';
+  }
+  if (actions.length > 0) {
+    html += '<div style="margin-top:8px;"><strong>📌 行动项：</strong></div>';
+    html += '<ul style="margin:4px 0 0;padding-left:20px;color:#f59e0b;">' + actions.map(function(p) {
+      return '<li>' + ffEscape(p) + '</li>';
+    }).join('') + '</ul>';
+  }
+  html += '</div>';
+  
+  result.innerHTML = html;
+  
+  // 生成纯文本供复制
+  var lines = ['📋 会议纪要', '会议主题：' + title, '时间：' + dateStr + ' ' + timeStr];
+  if (attendees) lines.push('参会人：' + attendees);
+  if (others.length > 0) lines.push('会议要点：' + others.map(function(p) { return '\n  - ' + p; }).join(''));
+  if (resolutions.length > 0) lines.push('会议决议：' + resolutions.map(function(p) { return '\n  - ' + p; }).join(''));
+  if (actions.length > 0) lines.push('行动项：' + actions.map(function(p) { return '\n  - ' + p; }).join(''));
+  ffLastText = lines.join('\n');
+  
+  showToast('📝 纪要已生成');
+}
+
+function ffCopy() {
+  if (!ffLastText) { showToast('⚠️ 请先生成纪要'); return; }
+  navigator.clipboard.writeText(ffLastText).then(function() {
+    showToast('📋 纪要已复制');
+  }).catch(function() {
+    showToast('⚠️ 复制失败');
+  });
+}
+
+function ffEscape(str) {
+  var div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
+}
+
+// ============================================================
+// SRT字幕生成器工具 (ds*)
+// ============================================================
+var dsSrtText = '';
+
+function dsSample() {
+  var input = document.getElementById('ds-input');
+  if (input) {
+    input.value = '0|3|大家好\n3|7|欢迎观看本期视频\n7|12|今天教大家制作字幕\n12|18|只需要输入文本和时间点\n18|24|点击生成就能得到SRT文件';
+  }
+  dsGenerate();
+}
+
+function dsGenerate() {
+  var input = document.getElementById('ds-input');
+  var preview = document.getElementById('ds-preview');
+  if (!input || !preview) return;
+  
+  var lines = input.value.split('\n').map(function(s) { return s.trim(); }).filter(Boolean);
+  if (lines.length === 0) { showToast('⚠️ 请输入字幕内容'); return; }
+  
+  var srtLines = [];
+  var errors = 0;
+  lines.forEach(function(line, i) {
+    var parts = line.split('|').map(function(s) { return s.trim(); });
+    if (parts.length < 3) { errors++; return; }
+    var start = parseFloat(parts[0]);
+    var end = parseFloat(parts[1]);
+    var text = parts.slice(2).join('|');
+    if (isNaN(start) || isNaN(end) || !text) { errors++; return; }
+    
+    srtLines.push((i + 1) + '\n' + dsFormatTime(start) + ' --> ' + dsFormatTime(end) + '\n' + text + '\n');
+  });
+  
+  dsSrtText = srtLines.join('\n');
+  
+  var html = '';
+  if (errors > 0) html += '<div style="color:#ef4444;margin-bottom:8px;">⚠️ ' + errors + ' 行格式有误（需 开始秒|结束秒|文本）</div>';
+  html += dsSrtText || '<div style="color:var(--text-light);">无有效内容</div>';
+  preview.innerHTML = html;
+  
+  if (srtLines.length > 0) showToast('⚡ 已生成 ' + srtLines.length + ' 条字幕');
+}
+
+function dsFormatTime(sec) {
+  var s = Math.floor(sec);
+  var ms = Math.round((sec - s) * 1000);
+  var h = Math.floor(s / 3600);
+  var m = Math.floor((s % 3600) / 60);
+  var secs = s % 60;
+  return String(h).padStart(2, '0') + ':' + String(m).padStart(2, '0') + ':' + String(secs).padStart(2, '0') + ',' + String(ms).padStart(3, '0');
+}
+
+function dsDownload() {
+  if (!dsSrtText) { showToast('⚠️ 请先生成SRT内容'); return; }
+  var blob = new Blob([dsSrtText], { type: 'text/plain;charset=utf-8' });
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'subtitle-' + Date.now() + '.srt';
+  a.click();
+  showToast('📥 SRT 文件已下载');
+}
