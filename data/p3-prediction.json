@@ -8625,15 +8625,15 @@
       4,
       9
     ],
-    "drawNum": null,
-    "result": null,
-    "updatedAt": null,
+    "drawNum": "300",
+    "result": "❌",
+    "updatedAt": "2026-10-09T22:00:00Z",
     "coldDans": [
       0,
       6,
       8
     ],
-    "coldResult": null
+    "coldResult": "✅"
   },
   "2026269": {
     "period": "2026269",
@@ -8651,7 +8651,7 @@
     "result": null,
     "updatedAt": null,
     "coldDans": [
-      0,
+      5,
       6,
       8
     ],
@@ -8673,7 +8673,7 @@
     "result": null,
     "updatedAt": null,
     "coldDans": [
-      0,
+      5,
       6,
       8
     ],
@@ -8695,7 +8695,7 @@
     "result": null,
     "updatedAt": null,
     "coldDans": [
-      0,
+      5,
       6,
       8
     ],
@@ -8714,7 +8714,7 @@
       9
     ],
     "coldDans": [
-      0,
+      5,
       6,
       8
     ],
