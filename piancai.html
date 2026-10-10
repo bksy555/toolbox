@@ -908,10 +908,17 @@
         }
         
         // 冷号3胆（近20期频率最低3个数字）
+        // 规则：下一期（最新开奖期+1）冷号由 generateColdPredictions 计算；
+        //       已开奖历史期冷号从服务器权威数据 KNOWN_COLD_DATA 读取；
+        //       更远的预测期（统计不全）冷号为空，显示"—"。
         let coldStr = '';
         let coldResultStr = '';
         const coldP = coldMap[p.period];
-        const coldDans = (coldP && coldP.dans) ? coldP.dans : null;
+        let coldDans = (coldP && coldP.dans) ? coldP.dans : null;
+        // 已开奖期：优先使用服务器冷号数据（窗口完整）
+        if (!coldDans && KNOWN_COLD_DATA[p.period] && Array.isArray(KNOWN_COLD_DATA[p.period].coldDans) && KNOWN_COLD_DATA[p.period].coldDans.length > 0) {
+          coldDans = KNOWN_COLD_DATA[p.period].coldDans;
+        }
         if (coldDans && (p.isPast || p.isToday || p.isFuture)) {
           coldStr = coldDans.map(n => `<span class="d3-ball d3-ball-cold">${n}</span>`).join(' ');
         } else if (p.isPast || p.isToday || p.isFuture) {
@@ -1231,6 +1238,10 @@
 
       const predictions = [];
       let currentSeq = anchorSeq - 1; // 第一期为 anchorSeq（对应 anchor 日期）
+      // 冷号规则：只有"下一期"（最新开奖期+1）计算冷号，更远的预测期冷号为空。
+      // 原因：冷号统计需要"该期之前20期"全部开奖；下一期之前的20期刚好全开，
+      // 更远的期会包含未开奖的期，统计不全，冷号必须空着（等上一期开奖后再算）。
+      const onlyColdPeriod = latestPeriod ? String(parseInt(latestPeriod) + 1) : '';
       for (let i = 0; i < 16; i++) {
         currentSeq += 1;
         const y = cursor.getFullYear();
@@ -1238,7 +1249,11 @@
         const d = cursor.getDate();
         const w = cursor.getDay();
         const period = y + String(currentSeq).padStart(3, '0');
-        const cold = calcColdDans(period);
+        // 仅下一期计算冷号；已开奖历史期从 KNOWN_COLD_DATA 读取（服务器权威数据），此处不算
+        let cold = { dans: null, freq: [], windowLen: 0 };
+        if (period === onlyColdPeriod) {
+          cold = calcColdDans(period);
+        }
 
         predictions.push({
           year: y, month: m, day: d, weekday: w, period: period,

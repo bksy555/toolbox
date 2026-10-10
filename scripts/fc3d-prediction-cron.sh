@@ -378,13 +378,17 @@ if (FETCHED_PERIOD && FETCHED_DRAW) {
 }
 
 // 合并新预测（时干天干3胆 + 冷号3胆）
+// 冷号规则：只有"下一期"（最新开奖期+1）计算冷号，更远的预测期冷号置空。
+// 原因：冷号统计需要"该期之前20期"全部开奖。下一期之前的20期刚好全开，可算；
+// 更远的期会包含尚未开奖的期，统计不全，冷号必须空着（等上一期开奖号码更新后再算）。
+const ONLY_COLD_PERIOD = predictions.length > 0 ? predictions[0].period : '';
+
 for (const p of predictions) {
   const key = p.period;
+  // 只有下一期才计算冷号；其他预测期冷号置空
+  const coldDans = (key === ONLY_COLD_PERIOD) ? calcColdDans(drawNums, key) : null;
   
   if (!stored[key]) {
-    // 计算冷号3胆
-    const coldDans = calcColdDans(drawNums, key);
-    
     stored[key] = {
       period: p.period,
       year: p.year,
@@ -393,7 +397,7 @@ for (const p of predictions) {
       weekday: p.weekday,
       haiGan: p.haiGan,
       dans: p.dans,          // 时干天干3胆
-      coldDans: coldDans,    // 冷号3胆（近20期）
+      coldDans: coldDans,    // 冷号3胆（仅下一期有值）
       drawNum: null,
       result: null,
       coldResult: null,
@@ -405,11 +409,9 @@ for (const p of predictions) {
     stored[key].dans = p.dans;
     if (!stored[key].year) Object.assign(stored[key], { year: p.year, month: p.month, day: p.day, weekday: p.weekday });
     
-    // 计算/更新冷号3胆
-    if (!stored[key].coldDans) {
-      const coldDans = calcColdDans(drawNums, key);
-      stored[key].coldDans = coldDans;
-    }
+    // 冷号：仅下一期更新，其余保持空
+    stored[key].coldDans = coldDans;
+    stored[key].coldResult = null;
   }
   
   // 如果有中奖号码，更新两个结果
@@ -422,6 +424,7 @@ for (const p of predictions) {
 }
 
 // 对冷号：如果某些历史记录没有coldDans，现在补充
+// 说明：仅给"已开奖"的历史期补冷号（其前20期窗口完整），不碰未开奖的预测期
 const allKeys = Object.keys(stored).sort();
 for (const key of allKeys) {
   if (!stored[key].coldDans && stored[key].drawNum) {
@@ -517,15 +520,31 @@ if (PLS_FETCHED_PERIOD && PLS_FETCHED_DRAW) {
   console.log('📥 排列三从网络更新中奖号码: 第' + PLS_FETCHED_PERIOD + '期 = ' + PLS_FETCHED_DRAW + '（日期 ' + (PLS_FETCHED_DATE || '未知') + '）');
 }
 
-// 保存前统一为 P3 补冷号3胆（近20期频率最低3个数字）与冷号结果
-// 注意：不仅给已开奖期补，也给下一期预测期补冷号（预测3码+冷号同步更新）；
-// 已开奖期每次重算 coldResult，保证与 3D 侧行为一致
+// 保存前统一处理 P3 冷号3胆（近20期频率最低3个数字）与冷号结果
+// 冷号规则：只有"下一期"（最新开奖期+1）计算冷号；已开奖期若缺冷号则补算；
+// 未开奖的远期预测期冷号保持为空（前20期统计不全）。
+// 先确定 P3 最新开奖期号
+const p3SortedKeys = Object.keys(p3DrawNums).sort();
+const p3LatestPeriod = p3SortedKeys.length > 0 ? p3SortedKeys[p3SortedKeys.length - 1] : '';
+const p3NextPeriod = p3LatestPeriod ? String(parseInt(p3LatestPeriod) + 1) : '';
+
 for (const key of Object.keys(p3Stored)) {
-  if (!p3Stored[key].coldDans) {
-    const cold = calcColdDans(p3DrawNums, key);
-    if (cold) {
-      p3Stored[key].coldDans = cold;
+  const isNext = (key === p3NextPeriod);
+  const isDrawn = !!p3Stored[key].drawNum;
+  if (isNext || isDrawn) {
+    // 下一期 或 已开奖期：冷号窗口完整，可计算
+    if (!p3Stored[key].coldDans || isNext) {
+      const cold = calcColdDans(p3DrawNums, key);
+      if (cold) {
+        p3Stored[key].coldDans = cold;
+      } else {
+        p3Stored[key].coldDans = null;
+      }
     }
+  } else {
+    // 远期预测期：冷号置空（统计不全）
+    p3Stored[key].coldDans = null;
+    p3Stored[key].coldResult = null;
   }
   if (p3Stored[key].coldDans && p3Stored[key].drawNum) {
     p3Stored[key].coldResult = calcResult(p3Stored[key].coldDans, p3Stored[key].drawNum);
