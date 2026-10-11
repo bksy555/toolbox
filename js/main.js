@@ -5623,3 +5623,225 @@ function wtEscape(str) {
   div.textContent = str;
   return div.innerHTML;
 }
+
+// ============================================================
+// 在线设计工具 canva-pro (design*)
+// ============================================================
+var designElements = [];  // 元素列表 {type, x, y, text, color, size, shape, img}
+var designCanvas = null;
+var designCtx = null;
+
+function designInit() {
+  var canvas = document.getElementById('design-canvas');
+  if (!canvas) return;
+  designCanvas = canvas;
+  designCtx = canvas.getContext('2d');
+  designResize();
+  // 监听画布尺寸/背景变化
+  ['canvas-width', 'canvas-height', 'canvas-bg', 'design-color'].forEach(function(id) {
+    var el = document.getElementById(id);
+    if (el) el.addEventListener('change', designRedraw);
+  });
+}
+
+function designResize() {
+  var wInput = document.getElementById('canvas-width');
+  var hInput = document.getElementById('canvas-height');
+  var bgInput = document.getElementById('canvas-bg');
+  if (!designCanvas) return;
+  designCanvas.width = wInput ? parseInt(wInput.value) || 800 : 800;
+  designCanvas.height = hInput ? parseInt(hInput.value) || 600 : 600;
+  designRedraw();
+}
+
+function designRedraw() {
+  var ctx = designCtx;
+  var bgInput = document.getElementById('canvas-bg');
+  var bgColor = bgInput ? bgInput.value : '#ffffff';
+  if (!ctx) return;
+  ctx.fillStyle = bgColor;
+  ctx.fillRect(0, 0, designCanvas.width, designCanvas.height);
+  // 重绘所有元素
+  designElements.forEach(function(el) {
+    if (el.type === 'text') {
+      ctx.fillStyle = el.color;
+      ctx.font = el.size + 'px sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText(el.text, el.x, el.y);
+    } else if (el.type === 'rect') {
+      ctx.fillStyle = el.color;
+      ctx.fillRect(el.x - 40, el.y - 30, 80, 60);
+    } else if (el.type === 'circle') {
+      ctx.fillStyle = el.color;
+      ctx.beginPath();
+      ctx.arc(el.x, el.y, 30, 0, Math.PI * 2);
+      ctx.fill();
+    } else if (el.type === 'image' && el.img) {
+      ctx.drawImage(el.img, el.x - 50, el.y - 50, 100, 100);
+    }
+  });
+}
+
+function designAddText() {
+  var textInput = document.getElementById('design-text');
+  var colorInput = document.getElementById('design-color');
+  var sizeInput = document.getElementById('design-size');
+  var text = textInput ? textInput.value.trim() : '';
+  if (!text) { showToast('⚠️ 请输入文本内容'); return; }
+  designElements.push({
+    type: 'text',
+    x: designCanvas.width / 2,
+    y: designCanvas.height / 2,
+    text: text,
+    color: colorInput ? colorInput.value : '#000000',
+    size: sizeInput ? parseInt(sizeInput.value) : 24
+  });
+  designRedraw();
+  showToast('📝 已添加文本');
+}
+
+function designAddShape(shape) {
+  var colorInput = document.getElementById('design-color');
+  designElements.push({
+    type: shape === 'circle' ? 'circle' : 'rect',
+    x: designCanvas.width / 2,
+    y: designCanvas.height / 2,
+    color: colorInput ? colorInput.value : '#6366f1'
+  });
+  designRedraw();
+  showToast('⭕ 已添加' + (shape === 'circle' ? '圆形' : '矩形'));
+}
+
+function designAddImage() {
+  var input = document.createElement('input');
+  input.type = 'file';
+  input.accept = 'image/*';
+  input.onchange = function() {
+    var file = input.files[0];
+    if (!file) return;
+    var reader = new FileReader();
+    reader.onload = function(e) {
+      var img = new Image();
+      img.onload = function() {
+        designElements.push({
+          type: 'image',
+          x: designCanvas.width / 2,
+          y: designCanvas.height / 2,
+          img: img
+        });
+        designRedraw();
+        showToast('🖼️ 已添加图片');
+      };
+      img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+  };
+  input.click();
+}
+
+function designDownload() {
+  if (!designCanvas) return;
+  var a = document.createElement('a');
+  a.href = designCanvas.toDataURL('image/png');
+  a.download = 'design-' + Date.now() + '.png';
+  a.click();
+  showToast('📥 设计已下载');
+}
+
+function designClear() {
+  designElements = [];
+  designRedraw();
+  showToast('🗑️ 已清空画布');
+}
+
+// ============================================================
+// 表情包下载 meme-maker (downloadMeme)
+// ============================================================
+function downloadMeme() {
+  var canvas = document.getElementById('meme-canvas');
+  if (!canvas) return;
+  var a = document.createElement('a');
+  a.href = canvas.toDataURL('image/png');
+  a.download = 'meme-' + Date.now() + '.png';
+  a.click();
+  showToast('✅ 表情包已下载');
+}
+
+// ============================================================
+// 九宫格打包下载 9grid (downloadNineGridAll)
+// ============================================================
+function downloadNineGridAll() {
+  var file = document.getElementById('ng-file');
+  if (!file || !file.files[0]) { showToast('⚠️ 请先选择图片'); return; }
+  showToast('📦 开始下载九宫格...');
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    var img = new Image();
+    img.onload = function() {
+      var canvas = document.createElement('canvas');
+      var ctx = canvas.getContext('2d');
+      var w = img.width, h = img.height;
+      var size = Math.min(w, h);
+      var sx = (w - size) / 2, sy = (h - size) / 2;
+      var cw = size / 3, ch = size / 3;
+      for (var row = 0; row < 3; row++) {
+        for (var col = 0; col < 3; col++) {
+          (function(r, c) {
+            canvas.width = cw;
+            canvas.height = ch;
+            ctx.clearRect(0, 0, cw, ch);
+            ctx.drawImage(img, sx + c * cw, sy + r * ch, cw, ch, 0, 0, cw, ch);
+            var dataUrl = canvas.toDataURL('image/png');
+            setTimeout(function() {
+              var a = document.createElement('a');
+              a.href = dataUrl;
+              a.download = '九宫格_' + (r * 3 + c + 1) + '.png';
+              a.click();
+            }, c * 200 + r * 300);  // 延迟逐个下载，避免浏览器拦截
+          })(row, col);
+        }
+      }
+      showToast('📦 已开始下载9张图');
+    };
+    img.src = e.target.result;
+  };
+  reader.readAsDataURL(file.files[0]);
+}
+
+// ============================================================
+// IP 查询 ip-lookup (lookupIP)
+// ============================================================
+function lookupIP() {
+  var result = document.getElementById('ip-result');
+  var v4 = document.getElementById('ip-v4');
+  var v6 = document.getElementById('ip-v6');
+  var ua = document.getElementById('ip-ua');
+  if (!result) return;
+  result.style.display = 'block';
+  if (ua) ua.textContent = navigator.userAgent;
+  if (v4) v4.textContent = '查询中...';
+  if (v6) v6.textContent = '查询中...';
+
+  // IPv4 查询（多源兜底）
+  fetch('https://api.ipify.org?format=json')
+    .then(function(r) { return r.json(); })
+    .then(function(d) { if (v4) v4.textContent = d.ip; })
+    .catch(function() { if (v4) v4.textContent = '获取失败'; });
+
+  // IPv6 查询
+  fetch('https://api64.ipify.org?format=json')
+    .then(function(r) { return r.json(); })
+    .then(function(d) { if (v6) v6.textContent = d.ip; })
+    .catch(function() { if (v6) v6.textContent = '无'; });
+
+  showToast('🌐 正在查询 IP...');
+}
+
+// ============================================================
+// 诗词分类 poetry-quotes (pqCat)
+// ============================================================
+var pqCurrentCat = '';
+function pqCat(cat) {
+  pqCurrentCat = cat || '';
+  pqRender();
+}

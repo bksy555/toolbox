@@ -7272,6 +7272,762 @@ greet('世界');</textarea>
     `,
     handler: () => { }
   }
+,// 语法检查工具
+{
+  id: 'grammarly',
+  cat: 'ai',
+  icon: '✍️',
+  name: '语法检查',
+  desc: '自动检测文本中的语法错误、拼写错误和标点问题',
+  html: `
+    <div class="tool-card">
+      <div class="input-group">
+        <label>输入文本</label>
+        <textarea id="gc-input" placeholder="在此输入或粘贴需要检查的文本..." oninput="grammarCheck()" style="height:200px;"></textarea>
+      </div>
+      <div class="btn-group">
+        <button class="btn btn-secondary" onclick="document.getElementById('gc-input').value='';grammarCheck()">清空</button>
+        <button class="btn btn-primary" onclick="grammarCheck()">🔍 开始检查</button>
+      </div>
+      <div id="gc-result" style="margin-top:20px;border:1px solid var(--border,#e2e8f0);border-radius:12px;padding:16px;"></div>
+    </div>
+  `,
+  handler: () => { grammarCheck(); }
+},
+// 在线设计工具
+{
+  id: 'canva-pro',
+  cat: 'image',
+  icon: '🎨',
+  name: '在线设计',
+  desc: '简单易用的在线设计工具，支持文本、形状、颜色和图片编辑',
+  html: `
+    <div class="tool-card">
+      <div style="display:grid;grid-template-columns:1fr 300px;gap:20px;">
+        <div>
+          <div class="input-group">
+            <label>画布尺寸</label>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+              <input type="number" id="canvas-width" value="800" min="100" max="2000" placeholder="宽度">
+              <input type="number" id="canvas-height" value="600" min="100" max="2000" placeholder="高度">
+            </div>
+          </div>
+          <div class="input-group">
+            <label>背景颜色</label>
+            <input type="color" id="canvas-bg" value="#ffffff" style="width:100%;height:40px;">
+          </div>
+          <div class="input-group">
+            <label>添加元素</label>
+            <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:8px;">
+              <button class="btn btn-sm" onclick="designAddText()">📝 文本</button>
+              <button class="btn btn-sm" onclick="designAddShape('rect')">⬜ 矩形</button>
+              <button class="btn btn-sm" onclick="designAddShape('circle')">⭕ 圆形</button>
+              <button class="btn btn-sm" onclick="designAddImage()">🖼️ 图片</button>
+            </div>
+          </div>
+          <div class="input-group" style="margin-top:10px;">
+            <label>元素文本</label>
+            <input type="text" id="design-text" placeholder="输入文本内容">
+          </div>
+          <div class="input-group">
+            <label>元素颜色</label>
+            <input type="color" id="design-color" value="#000000" style="width:100%;height:40px;">
+          </div>
+          <div class="input-group">
+            <label>元素大小</label>
+            <input type="range" id="design-size" min="12" max="120" value="24" oninput="document.getElementById('size-val').textContent=this.value+'px'">
+            <span id="size-val" style="font-size:12px;color:var(--text-light)">24px</span>
+          </div>
+          <div class="btn-group" style="margin-top:15px;">
+            <button class="btn btn-primary" onclick="designDownload()">📥 下载设计</button>
+            <button class="btn btn-secondary" onclick="designClear()">🗑️ 清空画布</button>
+          </div>
+        </div>
+        <div style="border:2px solid var(--border,#e2e8f0);border-radius:10px;overflow:hidden;">
+          <canvas id="design-canvas" width="800" height="600" style="width:100%;height:auto;background:#ffffff;"></canvas>
+        </div>
+      </div>
+      <div id="design-tip" style="margin-top:15px;font-size:13px;color:var(--text-light);background:var(--bg-light,#f8fafc);padding:12px;border-radius:8px;">
+        💡 支持添加文本、形状和图片<br>
+        ⚠️ 图片需要上传后才能使用
+      </div>
+    </div>
+  `,
+  handler: () => { designInit(); }
+},
+// ============================================================
+{
+  id: 'snagit',
+  cat: 'image',
+  icon: '📸',
+  name: '在线截图工具',
+  desc: '屏幕截图、区域截图、图片标注，无需安装任何软件',
+  html: `
+    <div class="tool-card">
+      <div class="input-group">
+        <label>选择截图方式</label>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:8px;">
+          <button class="btn btn-primary" onclick="snCapture()">📷 全屏截图</button>
+          <button class="btn btn-primary" onclick="snCaptureRegion()">🔲 区域截图</button>
+          <button class="btn btn-secondary" onclick="snClear()">🗑️ 清空</button>
+        </div>
+      </div>
+      <div id="sn-preview" style="margin-top:15px;display:none;">
+        <canvas id="sn-canvas" style="width:100%;border:2px solid var(--border,#e2e8f0);border-radius:10px;"></canvas>
+        <div class="btn-group" style="margin-top:15px;">
+          <button class="btn btn-primary" onclick="snDownload()">📥 下载截图</button>
+          <button class="btn btn-secondary" onclick="snCopy()">📋 复制到剪贴板</button>
+          <button class="btn btn-secondary" onclick="snAddText()">✏️ 添加文字</button>
+          <button class="btn btn-secondary" onclick="snAddArrow()">➡️ 添加箭头</button>
+        </div>
+      </div>
+      <div id="sn-tip" style="margin-top:15px;font-size:13px;color:var(--text-light);background:var(--bg-light,#f8fafc);padding:12px;border-radius:8px;">
+        💡 截图功能需要浏览器授予屏幕录制权限<br>
+        ⚠️ 支持 Chrome、Edge、Firefox 等现代浏览器
+      </div>
+    </div>
+  `,
+  handler: () => { }
+},
+// ============================================================
+{
+  id: 'toggl-track',
+  cat: 'time',
+  icon: '⏱️',
+  name: '时间追踪器',
+  desc: '记录时间、统计任务耗时、提高工作效率',
+  html: `
+    <div class="tool-card">
+      <div class="input-group">
+        <label>任务名称</label>
+        <input type="text" id="tg-task" placeholder="输入任务名称，如：写代码、开会...">
+      </div>
+      <div style="margin-top:10px;display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+        <div class="input-group">
+          <label>开始时间</label>
+          <input type="time" id="tg-start" value="09:00">
+        </div>
+        <div class="input-group">
+          <label>结束时间</label>
+          <input type="time" id="tg-end" value="10:00">
+        </div>
+      </div>
+      <div class="btn-group" style="margin-top:15px;">
+        <button class="btn btn-primary" onclick="tgAddTask()">➕ 添加任务</button>
+        <button class="btn btn-secondary" onclick="tgStartNow()">▶️ 立即开始</button>
+        <button class="btn btn-secondary" onclick="tgExport()">📊 导出统计</button>
+      </div>
+      <div id="tg-list" style="margin-top:20px;"></div>
+    </div>
+  `,
+  handler: () => { tgInit(); }
+},
+// ============================================================
+{
+  id: '1password',
+  cat: 'security',
+  icon: '🔐',
+  name: '密码保险库',
+  desc: '本地加密存储密码，支持生成强密码、分类管理、一键复制',
+  html: `
+    <div class="tool-card">
+      <div class="input-group">
+        <label>网站/应用名称</label>
+        <input type="text" id="op-site" placeholder="如：gmail.com、淘宝">
+      </div>
+      <div class="input-group" style="margin-top:10px;">
+        <label>用户名</label>
+        <input type="text" id="op-user" placeholder="输入用户名或邮箱">
+      </div>
+      <div class="input-group" style="margin-top:10px;">
+        <label>密码（留空自动生成）</label>
+        <div style="display:flex;gap:8px;">
+          <input type="password" id="op-pass" placeholder="输入密码或留空生成" style="flex:1;">
+          <button class="btn btn-secondary" onclick="opGenPass()">🎲 生成</button>
+        </div>
+      </div>
+      <div class="btn-group" style="margin-top:15px;">
+        <button class="btn btn-primary" onclick="opSave()">💾 保存密码</button>
+        <button class="btn btn-secondary" onclick="opSearch()">🔍 搜索</button>
+        <button class="btn btn-secondary" onclick="opBackup()">📤 导出备份</button>
+      </div>
+      <div class="input-group" style="margin-top:15px;">
+        <input type="text" id="op-search-input" placeholder="搜索网站或用户名..." oninput="opSearch()">
+      </div>
+      <div id="op-list" style="margin-top:15px;"></div>
+      <div id="op-tip" style="margin-top:15px;font-size:13px;color:var(--text-light);background:var(--bg-light,#f8fafc);padding:12px;border-radius:8px;">
+        💡 所有密码仅保存在本地浏览器，不上传服务器，保护隐私安全
+      </div>
+    </div>
+  `,
+  handler: () => { opInit(); }
+},
+// ============================================================
+{
+  id: 'evernote',
+  cat: 'document',
+  icon: '📓',
+  name: '在线笔记本',
+  desc: '富文本笔记管理，支持分类标签、搜索、导出，数据保存在本地',
+  html: `
+    <div class="tool-card">
+      <div style="display:grid;grid-template-columns:220px 1fr;gap:15px;">
+        <div>
+          <div class="input-group">
+            <label>新建笔记</label>
+            <input type="text" id="ev-title" placeholder="笔记标题...">
+            <input type="text" id="ev-tag" placeholder="标签（用逗号分隔）" style="margin-top:8px;">
+            <textarea id="ev-content" placeholder="笔记内容..." style="height:120px;margin-top:8px;"></textarea>
+            <button class="btn btn-primary" style="width:100%;margin-top:10px;" onclick="evAdd()">➕ 保存笔记</button>
+            <button class="btn btn-secondary" style="width:100%;margin-top:8px;" onclick="evSearch()">🔍 搜索</button>
+          </div>
+        </div>
+        <div>
+          <div class="input-group">
+            <input type="text" id="ev-search-input" placeholder="搜索笔记..." oninput="evSearch()">
+          </div>
+          <div id="ev-list" style="margin-top:10px;"></div>
+        </div>
+      </div>
+    </div>
+  `,
+  handler: () => { evInit(); }
+},
+// ============================================================
+{
+  id: 'calendly',
+  cat: 'time',
+  icon: '📅',
+  name: '预约排期',
+  desc: '生成可复制的预约时间段，快速安排会议、课程和面试时间',
+  html: `
+    <div class="tool-card">
+      <div class="input-group">
+        <label>活动名称</label>
+        <input type="text" id="cl-event" placeholder="如：产品演示、课程辅导、面试">
+      </div>
+      <div class="input-group" style="margin-top:10px;">
+        <label>日期</label>
+        <input type="date" id="cl-date">
+      </div>
+      <div style="margin-top:10px;display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+        <div class="input-group">
+          <label>开始时间</label>
+          <input type="time" id="cl-start" value="09:00">
+        </div>
+        <div class="input-group">
+          <label>结束时间</label>
+          <input type="time" id="cl-end" value="18:00">
+        </div>
+      </div>
+      <div class="input-group" style="margin-top:10px;">
+        <label>时段长度（分钟）</label>
+        <select id="cl-duration" style="width:100%;">
+          <option value="15">15 分钟</option>
+          <option value="30" selected>30 分钟</option>
+          <option value="45">45 分钟</option>
+          <option value="60">60 分钟</option>
+        </select>
+      </div>
+      <div class="btn-group" style="margin-top:15px;">
+        <button class="btn btn-primary" onclick="clGenerate()">📅 生成时段</button>
+        <button class="btn btn-secondary" onclick="clCopy()">📋 复制全部</button>
+      </div>
+      <div id="cl-result" style="margin-top:15px;"></div>
+      <div id="cl-tip" style="margin-top:15px;font-size:13px;color:var(--text-light);background:var(--bg-light,#f8fafc);padding:12px;border-radius:8px;">
+        💡 生成的时段可复制到聊天软件或邮件中分享，让对方选择合适时间
+      </div>
+    </div>
+  `,
+  handler: () => { clInit(); }
+},
+// ============================================================
+{
+  id: 'fontawesome',
+  cat: 'dev',
+  icon: '🔤',
+  name: '符号图标速查',
+  desc: '常用符号、图标和特殊字符速查，一键复制使用',
+  html: `
+    <div class="tool-card">
+      <div class="input-group">
+        <label>搜索符号（支持名称或关键词）</label>
+        <input type="text" id="fa-search" placeholder="如：心、箭头、对勾..." oninput="faRender()">
+      </div>
+      <div id="fa-cats" style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;"></div>
+      <div id="fa-list" style="margin-top:15px;"></div>
+    </div>
+  `,
+  handler: () => { faInit(); }
+},
+// ============================================================
+{
+  id: 'typeform',
+  cat: 'document',
+  icon: '📝',
+  name: '在线表单问卷',
+  desc: '快速创建问卷和表单，支持单选、多选、填空，收集答案并可导出',
+  html: `
+    <div class="tool-card">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:15px;">
+        <div>
+          <div class="input-group">
+            <label>问卷标题</label>
+            <input type="text" id="tf-title" placeholder="如：用户满意度调查">
+          </div>
+          <div class="input-group" style="margin-top:10px;">
+            <label>问题（每行一个问题）</label>
+            <textarea id="tf-questions" placeholder="问题1&#10;问题2&#10;问题3..." style="height:120px;"></textarea>
+          </div>
+          <div class="input-group" style="margin-top:10px;">
+            <label>题型</label>
+            <select id="tf-type" style="width:100%;">
+              <option value="radio">单选题</option>
+              <option value="checkbox">多选题</option>
+              <option value="text">填空题</option>
+            </select>
+          </div>
+          <div class="btn-group" style="margin-top:15px;">
+            <button class="btn btn-primary" onclick="tfPreview()">👁️ 预览问卷</button>
+            <button class="btn btn-secondary" onclick="tfClear()">🗑️ 清空</button>
+          </div>
+        </div>
+        <div>
+          <div class="input-group">
+            <label>问卷预览/答题区</label>
+            <div id="tf-preview" style="border:1px solid var(--border,#e2e8f0);border-radius:10px;padding:15px;min-height:260px;font-size:14px;">
+              <div style="color:var(--text-light);text-align:center;padding:40px 0;">填写标题和问题后点击"预览问卷"</div>
+            </div>
+          </div>
+          <div class="btn-group" style="margin-top:10px;">
+            <button class="btn btn-primary" onclick="tfExport()">📊 导出结果</button>
+            <button class="btn btn-secondary" onclick="tfReset()">🔄 重置答题</button>
+          </div>
+          <div id="tf-results" style="margin-top:10px;font-size:13px;"></div>
+        </div>
+      </div>
+      <div id="tf-tip" style="margin-top:15px;font-size:13px;color:var(--text-light);background:var(--bg-light,#f8fafc);padding:12px;border-radius:8px;">
+        💡 预览后可直接在右侧答题，答案保存在本地浏览器中
+      </div>
+    </div>
+  `,
+  handler: () => { tfInit(); }
+},
+// ============================================================
+{
+  id: 'miro',
+  cat: 'dev',
+  icon: '📊',
+  name: '在线白板',
+  desc: '自由画布，支持画笔、便签、文字、形状，适合头脑风暴和教学演示',
+  html: `
+    <div class="tool-card">
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px;align-items:center;">
+        <button class="btn btn-sm" onclick="miSetTool('pen')">✏️ 画笔</button>
+        <button class="btn btn-sm" onclick="miSetTool('eraser')">🧹 橡皮</button>
+        <button class="btn btn-sm" onclick="miAddText()">📝 文字</button>
+        <button class="btn btn-sm" onclick="miAddNote()">🏷️ 便签</button>
+        <button class="btn btn-sm" onclick="miAddShape('rect')">⬜ 矩形</button>
+        <button class="btn btn-sm" onclick="miAddShape('circle')">⭕ 圆形</button>
+        <input type="color" id="mi-color" value="#6366f1" style="width:36px;height:36px;border:none;background:none;cursor:pointer;">
+        <input type="range" id="mi-size" min="1" max="20" value="4" style="width:80px;" title="笔刷大小">
+        <button class="btn btn-sm btn-primary" onclick="miExport()">📥 导出PNG</button>
+        <button class="btn btn-sm btn-danger" onclick="miClear()">🗑️ 清空</button>
+      </div>
+      <div style="border:2px solid var(--border,#e2e8f0);border-radius:10px;overflow:hidden;position:relative;background:#ffffff;height:420px;">
+        <canvas id="mi-canvas" style="position:absolute;top:0;left:0;width:100%;height:100%;"></canvas>
+        <div id="mi-note-area" style="position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;"></div>
+      </div>
+      <div id="mi-tip" style="margin-top:10px;font-size:13px;color:var(--text-light);background:var(--bg-light,#f8fafc);padding:10px;border-radius:8px;">
+        💡 选择画笔后在画布上拖动绘制；选择"文字/便签/形状"后点击画布放置
+      </div>
+    </div>
+  `,
+  handler: () => { miInit(); }
+},
+// ============================================================
+{
+  id: 'giphy',
+  cat: 'fun',
+  icon: '🎞️',
+  name: 'GIF动图速查',
+  desc: '常用表情包和动图速查，支持搜索关键词，一键复制动图链接',
+  html: `
+    <div class="tool-card">
+      <div class="input-group">
+        <label>搜索动图（如：开心、点赞、狗、猫...）</label>
+        <input type="text" id="gp-search" placeholder="输入关键词搜索动图..." oninput="gpRender()">
+      </div>
+      <div id="gp-tags" style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;"></div>
+      <div id="gp-list" style="margin-top:15px;"></div>
+      <div id="gp-tip" style="margin-top:15px;font-size:13px;color:var(--text-light);background:var(--bg-light,#f8fafc);padding:12px;border-radius:8px;">
+        💡 点击动图可复制图片链接，用于聊天和文案配图
+      </div>
+    </div>
+  `,
+  handler: () => { gpInit(); }
+},
+// ============================================================
+{
+  id: 'codepen',
+  cat: 'dev',
+  icon: '💻',
+  name: '代码在线运行',
+  desc: '实时运行 HTML/CSS/JS 代码，快速预览效果，适合学习和调试',
+  html: `
+    <div class="tool-card">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:15px;">
+        <div>
+          <div class="input-group">
+            <label>HTML</label>
+            <textarea id="cp-html" placeholder="<div>Hello World</div>" style="height:120px;font-family:monospace;"></textarea>
+          </div>
+          <div class="input-group" style="margin-top:10px;">
+            <label>CSS</label>
+            <textarea id="cp-css" placeholder="body { color: red; }" style="height:120px;font-family:monospace;"></textarea>
+          </div>
+          <div class="input-group" style="margin-top:10px;">
+            <label>JavaScript</label>
+            <textarea id="cp-js" placeholder="console.log('hello')" style="height:120px;font-family:monospace;"></textarea>
+          </div>
+          <div class="btn-group" style="margin-top:15px;">
+            <button class="btn btn-primary" onclick="cpRun()">▶️ 运行代码</button>
+            <button class="btn btn-secondary" onclick="cpTemplate()">📋 加载示例</button>
+            <button class="btn btn-secondary" onclick="cpClear()">🗑️ 清空</button>
+          </div>
+        </div>
+        <div>
+          <div class="input-group">
+            <label>预览结果</label>
+            <iframe id="cp-preview" style="width:100%;height:430px;border:1px solid var(--border,#e2e8f0);border-radius:10px;background:#fff;"></iframe>
+          </div>
+        </div>
+      </div>
+      <div id="cp-tip" style="margin-top:15px;font-size:13px;color:var(--text-light);background:var(--bg-light,#f8fafc);padding:12px;border-radius:8px;">
+        💡 支持 HTML/CSS/JS 实时运行，纯本地执行，代码不会上传到服务器
+      </div>
+    </div>
+  `,
+  handler: () => { }
+},
+// ============================================================
+{
+  id: 'trello',
+  cat: 'time',
+  icon: '📋',
+  name: '看板项目管理',
+  desc: '拖拽式看板管理任务，待办/进行中/完成三列自由移动，数据保存在本地',
+  html: `
+    <div class="tool-card">
+      <div style="display:flex;gap:10px;margin-bottom:15px;align-items:center;">
+        <input type="text" id="tl-input" placeholder="输入任务名称..." style="flex:1;" onkeydown="if(event.key==='Enter')tlAdd()">
+        <button class="btn btn-primary" onclick="tlAdd()">➕ 添加任务</button>
+      </div>
+      <div id="tl-board" style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;"></div>
+      <div id="tl-tip" style="margin-top:15px;font-size:13px;color:var(--text-light);background:var(--bg-light,#f8fafc);padding:12px;border-radius:8px;">
+        💡 在任务卡片下方点击「→ 下一列」移动任务，支持删除，数据保存在本地浏览器
+      </div>
+    </div>
+  `,
+  handler: () => { tlInit(); }
+},
+// ============================================================
+{
+  id: 'asana',
+  cat: 'time',
+  icon: '📊',
+  name: '任务管理',
+  desc: '任务分配和跟踪，支持优先级、截止日期、完成状态，效率工作必备',
+  html: `
+    <div class="tool-card">
+      <div style="display:grid;grid-template-columns:1fr 130px 130px auto;gap:10px;margin-bottom:15px;align-items:center;">
+        <input type="text" id="as-task" placeholder="任务内容..." onkeydown="if(event.key==='Enter')asAdd()">
+        <select id="as-priority">
+          <option value="high">🔴 高</option>
+          <option value="mid" selected>🟡 中</option>
+          <option value="low">🟢 低</option>
+        </select>
+        <input type="date" id="as-due">
+        <button class="btn btn-primary" onclick="asAdd()">➕ 添加</button>
+      </div>
+      <div id="as-filters" style="display:flex;gap:8px;margin-bottom:10px;">
+        <button class="btn btn-sm" onclick="asFilter('all')">全部</button>
+        <button class="btn btn-sm" onclick="asFilter('active')">待完成</button>
+        <button class="btn btn-sm" onclick="asFilter('done')">已完成</button>
+      </div>
+      <div id="as-list"></div>
+      <div id="as-tip" style="margin-top:15px;font-size:13px;color:var(--text-light);background:var(--bg-light,#f8fafc);padding:12px;border-radius:8px;">
+        💡 点击任务左侧圆圈标记完成，点击右侧 🗑️ 删除任务，数据保存在本地
+      </div>
+    </div>
+  `,
+  handler: () => { asInit(); }
+},
+// ============================================================
+{
+  id: 'airtable',
+  cat: 'document',
+  icon: '🗄️',
+  name: '在线表格数据库',
+  desc: '轻量数据表格，支持增删行/列、筛选排序、导出CSV，数据保存在本地',
+  html: `
+    <div class="tool-card">
+      <div class="input-group">
+        <label>表格名称</label>
+        <input type="text" id="at-name" value="我的数据表" onchange="atRender()">
+      </div>
+      <div class="btn-group" style="margin-top:10px;">
+        <button class="btn btn-sm" onclick="atAddRow()">➕ 添加行</button>
+        <button class="btn btn-sm" onclick="atAddCol()">➕ 添加列</button>
+        <button class="btn btn-sm" onclick="atExport()">📥 导出CSV</button>
+        <button class="btn btn-sm btn-danger" onclick="atClear()">🗑️ 清空</button>
+      </div>
+      <div style="margin-top:10px;overflow-x:auto;">
+        <table id="at-table" style="width:100%;border-collapse:collapse;font-size:13px;"></table>
+      </div>
+      <div id="at-tip" style="margin-top:10px;font-size:13px;color:var(--text-light);background:var(--bg-light,#f8fafc);padding:12px;border-radius:8px;">
+        💡 双击单元格可编辑内容，支持添加/删除行和列，数据保存在本地浏览器
+      </div>
+    </div>
+  `,
+  handler: () => { atInit(); }
+},
+// ============================================================
+{
+  id: 'buzzsumo',
+  cat: 'text',
+  icon: '📈',
+  name: '标题灵感生成器',
+  desc: '输入主题自动生成吸睛标题，自媒体爆款标题灵感必备',
+  html: `
+    <div class="tool-card">
+      <div class="input-group">
+        <label>输入文章主题（如：减肥、Python、旅行）</label>
+        <input type="text" id="bz-topic" placeholder="输入主题关键词..." onkeydown="if(event.key==='Enter')bzGenerate()">
+      </div>
+      <div class="btn-group" style="margin-top:10px;">
+        <button class="btn btn-primary" onclick="bzGenerate()">⚡ 生成标题</button>
+        <button class="btn btn-secondary" onclick="bzCopy()">📋 复制全部</button>
+      </div>
+      <div id="bz-list" style="margin-top:15px;"></div>
+      <div id="bz-tip" style="margin-top:15px;font-size:13px;color:var(--text-light);background:var(--bg-light,#f8fafc);padding:12px;border-radius:8px;">
+        💡 基于爆款标题模板生成，点击单个标题可复制
+      </div>
+    </div>
+  `,
+  handler: () => { }
+},
+// ============================================================
+{
+  id: 'mailchimp',
+  cat: 'document',
+  icon: '📧',
+  name: '邮件模板生成器',
+  desc: '快速生成精美HTML邮件模板，支持标题、正文、按钮，一键复制',
+  html: `
+    <div class="tool-card">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:15px;">
+        <div>
+          <div class="input-group">
+            <label>邮件主题</label>
+            <input type="text" id="mc-subject" placeholder="如：本月新品上线通知">
+          </div>
+          <div class="input-group" style="margin-top:10px;">
+            <label>邮件标题（正文头部）</label>
+            <input type="text" id="mc-title" placeholder="如：🎉 新品首发 · 限时8折">
+          </div>
+          <div class="input-group" style="margin-top:10px;">
+            <label>正文内容（支持换行）</label>
+            <textarea id="mc-body" placeholder="亲爱的用户：&#10;本月我们带来全新产品..." style="height:120px;"></textarea>
+          </div>
+          <div class="input-group" style="margin-top:10px;">
+            <label>按钮文字</label>
+            <input type="text" id="mc-btn" value="立即查看" placeholder="如：立即查看、马上抢购">
+          </div>
+          <div class="input-group" style="margin-top:10px;">
+            <label>按钮链接</label>
+            <input type="text" id="mc-link" value="https://toolai.ccwu.cc" placeholder="https://...">
+          </div>
+          <div class="btn-group" style="margin-top:15px;">
+            <button class="btn btn-primary" onclick="mcPreview()">👁️ 预览</button>
+            <button class="btn btn-secondary" onclick="mcCopyHtml()">📋 复制HTML</button>
+          </div>
+        </div>
+        <div>
+          <div class="input-group">
+            <label>邮件预览</label>
+            <div id="mc-preview" style="border:1px solid var(--border,#e2e8f0);border-radius:10px;padding:0;min-height:320px;background:#fff;overflow:hidden;"></div>
+          </div>
+        </div>
+      </div>
+      <div id="mc-tip" style="margin-top:15px;font-size:13px;color:var(--text-light);background:var(--bg-light,#f8fafc);padding:12px;border-radius:8px;">
+        💡 复制 HTML 后可粘贴到邮件营销平台或自行发送，模板兼容主流邮箱客户端
+      </div>
+    </div>
+  `,
+  handler: () => { mcPreview(); }
+},
+// ============================================================
+{
+  id: 'hubspot',
+  cat: 'text',
+  icon: '📈',
+  name: '营销文案生成器',
+  desc: '输入产品卖点，自动生成营销标题、广告语和CTA文案',
+  html: `
+    <div class="tool-card">
+      <div class="input-group">
+        <label>产品/服务名称</label>
+        <input type="text" id="hs-product" placeholder="如：智能手环、在线课程">
+      </div>
+      <div class="input-group" style="margin-top:10px;">
+        <label>核心卖点（选填，用逗号分隔）</label>
+        <input type="text" id="hs-points" placeholder="如：防水,长续航,性价比高">
+      </div>
+      <div class="input-group" style="margin-top:10px;">
+        <label>目标人群（选填）</label>
+        <input type="text" id="hs-audience" placeholder="如：上班族、学生、宝妈">
+      </div>
+      <div class="btn-group" style="margin-top:15px;">
+        <button class="btn btn-primary" onclick="hsGenerate()">⚡ 生成文案</button>
+        <button class="btn btn-secondary" onclick="hsCopy()">📋 复制全部</button>
+      </div>
+      <div id="hs-list" style="margin-top:15px;"></div>
+      <div id="hs-tip" style="margin-top:15px;font-size:13px;color:var(--text-light);background:var(--bg-light,#f8fafc);padding:12px;border-radius:8px;">
+        💡 生成营销标题、广告语、CTA，点击单项可复制，适合广告投放和社群运营
+      </div>
+    </div>
+  `,
+  handler: () => { }
+},
+// ============================================================
+{
+  id: 'fireflies',
+  cat: 'document',
+  icon: '🎤',
+  name: '会议纪要生成器',
+  desc: '输入会议信息自动生成结构化纪要，含议题、决议、行动项，可复制',
+  html: `
+    <div class="tool-card">
+      <div class="input-group">
+        <label>会议主题</label>
+        <input type="text" id="ff-title" placeholder="如：Q3产品规划会议">
+      </div>
+      <div class="input-group" style="margin-top:10px;">
+        <label>参会人（用逗号分隔）</label>
+        <input type="text" id="ff-attendees" placeholder="如：张三、李四、王五">
+      </div>
+      <div class="input-group" style="margin-top:10px;">
+        <label>会议要点（每行一条）</label>
+        <textarea id="ff-points" placeholder="1. 讨论了新版功能优先级&#10;2. 确定10月上线计划&#10;3. 李四负责设计稿..." style="height:140px;"></textarea>
+      </div>
+      <div class="btn-group" style="margin-top:15px;">
+        <button class="btn btn-primary" onclick="ffGenerate()">📝 生成纪要</button>
+        <button class="btn btn-secondary" onclick="ffCopy()">📋 复制纪要</button>
+      </div>
+      <div id="ff-result" style="margin-top:15px;"></div>
+      <div id="ff-tip" style="margin-top:15px;font-size:13px;color:var(--text-light);background:var(--bg-light,#f8fafc);padding:12px;border-radius:8px;">
+        💡 生成结构化会议纪要，可直接粘贴到工作群或文档
+      </div>
+    </div>
+  `,
+  handler: () => { }
+},
+// ============================================================
+{
+  id: 'descript',
+  cat: 'media',
+  icon: '🎥',
+  name: 'SRT字幕生成器',
+  desc: '输入文本和时间点生成SRT字幕文件，支持批量编辑，视频字幕必备',
+  html: `
+    <div class="tool-card">
+      <div class="input-group">
+        <label>字幕内容（每行一条，格式：开始秒|结束秒|文本）</label>
+        <textarea id="ds-input" placeholder="0|3|大家好&#10;3|7|欢迎观看本期视频&#10;7|12|今天教大家制作字幕..." style="height:180px;font-family:monospace;"></textarea>
+      </div>
+      <div class="btn-group" style="margin-top:15px;">
+        <button class="btn btn-primary" onclick="dsGenerate()">⚡ 生成SRT</button>
+        <button class="btn btn-secondary" onclick="dsDownload()">📥 下载.srt文件</button>
+        <button class="btn btn-secondary" onclick="dsSample()">📋 加载示例</button>
+      </div>
+      <div id="ds-preview" style="margin-top:15px;border:1px solid var(--border,#e2e8f0);border-radius:10px;padding:15px;font-family:monospace;font-size:13px;white-space:pre-wrap;min-height:120px;"></div>
+      <div id="ds-tip" style="margin-top:15px;font-size:13px;color:var(--text-light);background:var(--bg-light,#f8fafc);padding:12px;border-radius:8px;">
+        💡 每行格式：开始秒|结束秒|文本，如 0|3|Hello。生成的SRT兼容主流视频剪辑软件
+      </div>
+    </div>
+  `,
+  handler: () => { }
+},
+// ============================================================
+{
+  id: 'quillbot',
+  cat: 'text',
+  icon: '🔄',
+  name: '句子改写器',
+  desc: '输入句子自动生成多种改写版本，同义词替换、句式变换，写作查重必备',
+  html: `
+    <div class="tool-card">
+      <div class="input-group">
+        <label>输入句子</label>
+        <textarea id="qb-input" placeholder="输入你想改写的句子..." style="height:100px;"></textarea>
+      </div>
+      <div class="input-group" style="margin-top:10px;">
+        <label>改写模式</label>
+        <select id="qb-mode" style="width:100%;">
+          <option value="synonym">🔤 同义词替换</option>
+          <option value="formal">📄 更正式</option>
+          <option value="casual">💬 更口语</option>
+          <option value="short">✂️ 更简洁</option>
+        </select>
+      </div>
+      <div class="btn-group" style="margin-top:15px;">
+        <button class="btn btn-primary" onclick="qbGenerate()">⚡ 改写</button>
+        <button class="btn btn-secondary" onclick="qbCopy()">📋 复制全部</button>
+      </div>
+      <div id="qb-list" style="margin-top:15px;"></div>
+      <div id="qb-tip" style="margin-top:15px;font-size:13px;color:var(--text-light);background:var(--bg-light,#f8fafc);padding:12px;border-radius:8px;">
+        💡 内置常见同义词库和句式模板，纯本地处理
+      </div>
+    </div>
+  `,
+  handler: () => { }
+},
+// ============================================================
+{
+  id: 'wordtune',
+  cat: 'text',
+  icon: '✏️',
+  name: '文本润色器',
+  desc: '一键润色文本，切换正式/轻松/简洁语气，提升写作质感',
+  html: `
+    <div class="tool-card">
+      <div class="input-group">
+        <label>输入文本</label>
+        <textarea id="wt-input" placeholder="输入需要润色的文本..." style="height:120px;"></textarea>
+      </div>
+      <div class="input-group" style="margin-top:10px;">
+        <label>润色风格</label>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:8px;">
+          <button class="btn btn-sm" onclick="wtStyle('formal')">📄 正式</button>
+          <button class="btn btn-sm" onclick="wtStyle('casual')">💬 轻松</button>
+          <button class="btn btn-sm" onclick="wtStyle('concise')">✂️ 简洁</button>
+        </div>
+      </div>
+      <div class="btn-group" style="margin-top:15px;">
+        <button class="btn btn-primary" onclick="wtPolish()">✨ 润色</button>
+        <button class="btn btn-secondary" onclick="wtCopy()">📋 复制结果</button>
+      </div>
+      <div id="wt-result" style="margin-top:15px;border:1px solid var(--border,#e2e8f0);border-radius:10px;padding:16px;min-height:80px;font-size:14px;line-height:1.9;"></div>
+      <div id="wt-tip" style="margin-top:15px;font-size:13px;color:var(--text-light);background:var(--bg-light,#f8fafc);padding:12px;border-radius:8px;">
+        💡 根据风格自动调整开头、连接词和结尾，提升表达质感
+      </div>
+    </div>
+  `,
+  handler: () => { }
+},
+
+
 ];
 
 // ============================================================
@@ -9410,14 +10166,20 @@ function esEsc(s) {
 }
 
 function esBuildHtml(escapeIt) {
-  const name = document.getElementById('es-name').value.trim();
-  const title = document.getElementById('es-title').value.trim();
-  const company = document.getElementById('es-company').value.trim();
-  const phone = document.getElementById('es-phone').value.trim();
-  const email = document.getElementById('es-email').value.trim();
-  const web = document.getElementById('es-web').value.trim();
-  const color = document.getElementById('es-color').value;
-  const layout = document.getElementById('es-layout').value;
+  const g = function(id) { var el = document.getElementById(id); return el ? el : null; };
+  const nameEl = g('es-name'), titleEl = g('es-title'), companyEl = g('es-company'),
+        phoneEl = g('es-phone'), emailEl = g('es-email'), webEl = g('es-web'),
+        colorEl = g('es-color'), layoutEl = g('es-layout');
+  // 工具页面未渲染时元素为 null，安全返回空
+  if (!nameEl || !titleEl || !companyEl || !phoneEl || !emailEl || !webEl || !colorEl || !layoutEl) return '';
+  const name = nameEl.value.trim();
+  const title = titleEl.value.trim();
+  const company = companyEl.value.trim();
+  const phone = phoneEl.value.trim();
+  const email = emailEl.value.trim();
+  const web = webEl.value.trim();
+  const color = colorEl.value;
+  const layout = layoutEl.value;
   const esc = escapeIt ? esEsc : function(x){ return x; };
 
   const info = [
@@ -18612,7 +19374,7 @@ var hisData = {
   '12-26': [[2004, '印度洋海啸']]
 };
 function hisInit() {
-  htToday();
+  hisToday();
 }
 function hisToday() {
   const now = new Date();
@@ -18620,7 +19382,7 @@ function hisToday() {
   const d = document.getElementById('ht-day');
   if (m) m.value = now.getMonth() + 1;
   if (d) d.value = now.getDate();
-  htQuery();
+  hisQuery();
 }
 function hisRandom() {
   const months = Object.keys(hisData);
@@ -18630,7 +19392,7 @@ function hisRandom() {
   const d = document.getElementById('ht-day');
   if (m) m.value = parts[0];
   if (d) d.value = parts[1];
-  htQuery();
+  hisQuery();
 }
 function hisQuery() {
   const mEl = document.getElementById('ht-month');
@@ -19213,7 +19975,6 @@ var pqData = [
   ['己所不欲，勿施于人','孔子','哲理','《论语》','推己及人'],
   ['学而不思则罔，思而不学则殆','孔子','哲理','《论语》','学思结合']
 ];
-var pqCat = '';
 function pqInit() {
   pqRender();
 }
@@ -19231,7 +19992,7 @@ function pqRender() {
   if (!list) return;
   const q = document.getElementById('pq-search') ? document.getElementById('pq-search').value.trim().toLowerCase() : '';
   let items = pqData;
-  if (pqCat) items = items.filter(function (p) { return p[2] === pqCat; });
+  if (window.pqCurrentCat) items = items.filter(function (p) { return p[2] === window.pqCurrentCat; });
   if (q) items = items.filter(function (p) { return p[0].indexOf(q) >= 0 || p[1].indexOf(q) >= 0 || p[2].indexOf(q) >= 0 || p[3].indexOf(q) >= 0; });
   if (items.length === 0) {
     list.innerHTML = '<div style="grid-column:1/-1;text-align:center;color:var(--text-light);padding:30px;">没有找到匹配的名句</div>';
@@ -19288,817 +20049,4 @@ function stkClear() {
   if (out) out.innerHTML = '';
 }
 
-// 语法检查工具
-{
-  id: 'grammarly',
-  cat: 'ai',
-  icon: '✍️',
-  name: '语法检查',
-  desc: '自动检测文本中的语法错误、拼写错误和标点问题',
-  html: `
-    <div class="tool-card">
-      <div class="input-group">
-        <label>输入文本</label>
-        <textarea id="gc-input" placeholder="在此输入或粘贴需要检查的文本..." oninput="grammarCheck()" style="height:200px;"></textarea>
-      </div>
-      <div class="btn-group">
-        <button class="btn btn-secondary" onclick="document.getElementById('gc-input').value='';grammarCheck()">清空</button>
-        <button class="btn btn-primary" onclick="grammarCheck()">🔍 开始检查</button>
-      </div>
-      <div id="gc-result" style="margin-top:20px;border:1px solid var(--border,#e2e8f0);border-radius:12px;padding:16px;"></div>
-    </div>
-  `,
-  handler: () => { grammarCheck(); }
-}
 
-// 在线设计工具
-{
-  id: 'canva-pro',
-  cat: 'image',
-  icon: '🎨',
-  name: '在线设计',
-  desc: '简单易用的在线设计工具，支持文本、形状、颜色和图片编辑',
-  html: `
-    <div class="tool-card">
-      <div style="display:grid;grid-template-columns:1fr 300px;gap:20px;">
-        <div>
-          <div class="input-group">
-            <label>画布尺寸</label>
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
-              <input type="number" id="canvas-width" value="800" min="100" max="2000" placeholder="宽度">
-              <input type="number" id="canvas-height" value="600" min="100" max="2000" placeholder="高度">
-            </div>
-          </div>
-          <div class="input-group">
-            <label>背景颜色</label>
-            <input type="color" id="canvas-bg" value="#ffffff" style="width:100%;height:40px;">
-          </div>
-          <div class="input-group">
-            <label>添加元素</label>
-            <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:8px;">
-              <button class="btn btn-sm" onclick="designAddText()">📝 文本</button>
-              <button class="btn btn-sm" onclick="designAddShape('rect')">⬜ 矩形</button>
-              <button class="btn btn-sm" onclick="designAddShape('circle')">⭕ 圆形</button>
-              <button class="btn btn-sm" onclick="designAddImage()">🖼️ 图片</button>
-            </div>
-          </div>
-          <div class="input-group" style="margin-top:10px;">
-            <label>元素文本</label>
-            <input type="text" id="design-text" placeholder="输入文本内容">
-          </div>
-          <div class="input-group">
-            <label>元素颜色</label>
-            <input type="color" id="design-color" value="#000000" style="width:100%;height:40px;">
-          </div>
-          <div class="input-group">
-            <label>元素大小</label>
-            <input type="range" id="design-size" min="12" max="120" value="24" oninput="document.getElementById('size-val').textContent=this.value+'px'">
-            <span id="size-val" style="font-size:12px;color:var(--text-light)">24px</span>
-          </div>
-          <div class="btn-group" style="margin-top:15px;">
-            <button class="btn btn-primary" onclick="designDownload()">📥 下载设计</button>
-            <button class="btn btn-secondary" onclick="designClear()">🗑️ 清空画布</button>
-          </div>
-        </div>
-        <div style="border:2px solid var(--border,#e2e8f0);border-radius:10px;overflow:hidden;">
-          <canvas id="design-canvas" width="800" height="600" style="width:100%;height:auto;background:#ffffff;"></canvas>
-        </div>
-      </div>
-      <div id="design-tip" style="margin-top:15px;font-size:13px;color:var(--text-light);background:var(--bg-light,#f8fafc);padding:12px;border-radius:8px;">
-        💡 支持添加文本、形状和图片<br>
-        ⚠️ 图片需要上传后才能使用
-      </div>
-    </div>
-  `,
-  handler: () => { designInit(); }
-}
-// ============================================================
-// 屏幕截图工具 snagit (sn*)
-// ============================================================
-{
-  id: 'snagit',
-  cat: 'image',
-  icon: '📸',
-  name: '在线截图工具',
-  desc: '屏幕截图、区域截图、图片标注，无需安装任何软件',
-  html: `
-    <div class="tool-card">
-      <div class="input-group">
-        <label>选择截图方式</label>
-        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:8px;">
-          <button class="btn btn-primary" onclick="snCapture()">📷 全屏截图</button>
-          <button class="btn btn-primary" onclick="snCaptureRegion()">🔲 区域截图</button>
-          <button class="btn btn-secondary" onclick="snClear()">🗑️ 清空</button>
-        </div>
-      </div>
-      <div id="sn-preview" style="margin-top:15px;display:none;">
-        <canvas id="sn-canvas" style="width:100%;border:2px solid var(--border,#e2e8f0);border-radius:10px;"></canvas>
-        <div class="btn-group" style="margin-top:15px;">
-          <button class="btn btn-primary" onclick="snDownload()">📥 下载截图</button>
-          <button class="btn btn-secondary" onclick="snCopy()">📋 复制到剪贴板</button>
-          <button class="btn btn-secondary" onclick="snAddText()">✏️ 添加文字</button>
-          <button class="btn btn-secondary" onclick="snAddArrow()">➡️ 添加箭头</button>
-        </div>
-      </div>
-      <div id="sn-tip" style="margin-top:15px;font-size:13px;color:var(--text-light);background:var(--bg-light,#f8fafc);padding:12px;border-radius:8px;">
-        💡 截图功能需要浏览器授予屏幕录制权限<br>
-        ⚠️ 支持 Chrome、Edge、Firefox 等现代浏览器
-      </div>
-    </div>
-  `,
-  handler: () => { }
-}
-
-// ============================================================
-// 时间追踪工具 toggl (tg*)
-// ============================================================
-{
-  id: 'toggl-track',
-  cat: 'time',
-  icon: '⏱️',
-  name: '时间追踪器',
-  desc: '记录时间、统计任务耗时、提高工作效率',
-  html: `
-    <div class="tool-card">
-      <div class="input-group">
-        <label>任务名称</label>
-        <input type="text" id="tg-task" placeholder="输入任务名称，如：写代码、开会...">
-      </div>
-      <div style="margin-top:10px;display:grid;grid-template-columns:1fr 1fr;gap:10px;">
-        <div class="input-group">
-          <label>开始时间</label>
-          <input type="time" id="tg-start" value="09:00">
-        </div>
-        <div class="input-group">
-          <label>结束时间</label>
-          <input type="time" id="tg-end" value="10:00">
-        </div>
-      </div>
-      <div class="btn-group" style="margin-top:15px;">
-        <button class="btn btn-primary" onclick="tgAddTask()">➕ 添加任务</button>
-        <button class="btn btn-secondary" onclick="tgStartNow()">▶️ 立即开始</button>
-        <button class="btn btn-secondary" onclick="tgExport()">📊 导出统计</button>
-      </div>
-      <div id="tg-list" style="margin-top:20px;"></div>
-    </div>
-  `,
-  handler: () => { tgInit(); }
-}
-
-// ============================================================
-// 密码保险库工具 1password (op*)
-// ============================================================
-{
-  id: '1password',
-  cat: 'security',
-  icon: '🔐',
-  name: '密码保险库',
-  desc: '本地加密存储密码，支持生成强密码、分类管理、一键复制',
-  html: `
-    <div class="tool-card">
-      <div class="input-group">
-        <label>网站/应用名称</label>
-        <input type="text" id="op-site" placeholder="如：gmail.com、淘宝">
-      </div>
-      <div class="input-group" style="margin-top:10px;">
-        <label>用户名</label>
-        <input type="text" id="op-user" placeholder="输入用户名或邮箱">
-      </div>
-      <div class="input-group" style="margin-top:10px;">
-        <label>密码（留空自动生成）</label>
-        <div style="display:flex;gap:8px;">
-          <input type="password" id="op-pass" placeholder="输入密码或留空生成" style="flex:1;">
-          <button class="btn btn-secondary" onclick="opGenPass()">🎲 生成</button>
-        </div>
-      </div>
-      <div class="btn-group" style="margin-top:15px;">
-        <button class="btn btn-primary" onclick="opSave()">💾 保存密码</button>
-        <button class="btn btn-secondary" onclick="opSearch()">🔍 搜索</button>
-        <button class="btn btn-secondary" onclick="opBackup()">📤 导出备份</button>
-      </div>
-      <div class="input-group" style="margin-top:15px;">
-        <input type="text" id="op-search-input" placeholder="搜索网站或用户名..." oninput="opSearch()">
-      </div>
-      <div id="op-list" style="margin-top:15px;"></div>
-      <div id="op-tip" style="margin-top:15px;font-size:13px;color:var(--text-light);background:var(--bg-light,#f8fafc);padding:12px;border-radius:8px;">
-        💡 所有密码仅保存在本地浏览器，不上传服务器，保护隐私安全
-      </div>
-    </div>
-  `,
-  handler: () => { opInit(); }
-}
-
-// ============================================================
-// 在线笔记工具 evernote (ev*)
-// ============================================================
-{
-  id: 'evernote',
-  cat: 'document',
-  icon: '📓',
-  name: '在线笔记本',
-  desc: '富文本笔记管理，支持分类标签、搜索、导出，数据保存在本地',
-  html: `
-    <div class="tool-card">
-      <div style="display:grid;grid-template-columns:220px 1fr;gap:15px;">
-        <div>
-          <div class="input-group">
-            <label>新建笔记</label>
-            <input type="text" id="ev-title" placeholder="笔记标题...">
-            <input type="text" id="ev-tag" placeholder="标签（用逗号分隔）" style="margin-top:8px;">
-            <textarea id="ev-content" placeholder="笔记内容..." style="height:120px;margin-top:8px;"></textarea>
-            <button class="btn btn-primary" style="width:100%;margin-top:10px;" onclick="evAdd()">➕ 保存笔记</button>
-            <button class="btn btn-secondary" style="width:100%;margin-top:8px;" onclick="evSearch()">🔍 搜索</button>
-          </div>
-        </div>
-        <div>
-          <div class="input-group">
-            <input type="text" id="ev-search-input" placeholder="搜索笔记..." oninput="evSearch()">
-          </div>
-          <div id="ev-list" style="margin-top:10px;"></div>
-        </div>
-      </div>
-    </div>
-  `,
-  handler: () => { evInit(); }
-}
-
-// ============================================================
-// 预约排期工具 calendly (cl*)
-// ============================================================
-{
-  id: 'calendly',
-  cat: 'time',
-  icon: '📅',
-  name: '预约排期',
-  desc: '生成可复制的预约时间段，快速安排会议、课程和面试时间',
-  html: `
-    <div class="tool-card">
-      <div class="input-group">
-        <label>活动名称</label>
-        <input type="text" id="cl-event" placeholder="如：产品演示、课程辅导、面试">
-      </div>
-      <div class="input-group" style="margin-top:10px;">
-        <label>日期</label>
-        <input type="date" id="cl-date">
-      </div>
-      <div style="margin-top:10px;display:grid;grid-template-columns:1fr 1fr;gap:10px;">
-        <div class="input-group">
-          <label>开始时间</label>
-          <input type="time" id="cl-start" value="09:00">
-        </div>
-        <div class="input-group">
-          <label>结束时间</label>
-          <input type="time" id="cl-end" value="18:00">
-        </div>
-      </div>
-      <div class="input-group" style="margin-top:10px;">
-        <label>时段长度（分钟）</label>
-        <select id="cl-duration" style="width:100%;">
-          <option value="15">15 分钟</option>
-          <option value="30" selected>30 分钟</option>
-          <option value="45">45 分钟</option>
-          <option value="60">60 分钟</option>
-        </select>
-      </div>
-      <div class="btn-group" style="margin-top:15px;">
-        <button class="btn btn-primary" onclick="clGenerate()">📅 生成时段</button>
-        <button class="btn btn-secondary" onclick="clCopy()">📋 复制全部</button>
-      </div>
-      <div id="cl-result" style="margin-top:15px;"></div>
-      <div id="cl-tip" style="margin-top:15px;font-size:13px;color:var(--text-light);background:var(--bg-light,#f8fafc);padding:12px;border-radius:8px;">
-        💡 生成的时段可复制到聊天软件或邮件中分享，让对方选择合适时间
-      </div>
-    </div>
-  `,
-  handler: () => { clInit(); }
-}
-
-// ============================================================
-// 图标速查工具 fontawesome (fa*)
-// ============================================================
-{
-  id: 'fontawesome',
-  cat: 'dev',
-  icon: '🔤',
-  name: '符号图标速查',
-  desc: '常用符号、图标和特殊字符速查，一键复制使用',
-  html: `
-    <div class="tool-card">
-      <div class="input-group">
-        <label>搜索符号（支持名称或关键词）</label>
-        <input type="text" id="fa-search" placeholder="如：心、箭头、对勾..." oninput="faRender()">
-      </div>
-      <div id="fa-cats" style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;"></div>
-      <div id="fa-list" style="margin-top:15px;"></div>
-    </div>
-  `,
-  handler: () => { faInit(); }
-}
-
-// ============================================================
-// 在线表单问卷工具 typeform (tf*)
-// ============================================================
-{
-  id: 'typeform',
-  cat: 'document',
-  icon: '📝',
-  name: '在线表单问卷',
-  desc: '快速创建问卷和表单，支持单选、多选、填空，收集答案并可导出',
-  html: `
-    <div class="tool-card">
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:15px;">
-        <div>
-          <div class="input-group">
-            <label>问卷标题</label>
-            <input type="text" id="tf-title" placeholder="如：用户满意度调查">
-          </div>
-          <div class="input-group" style="margin-top:10px;">
-            <label>问题（每行一个问题）</label>
-            <textarea id="tf-questions" placeholder="问题1&#10;问题2&#10;问题3..." style="height:120px;"></textarea>
-          </div>
-          <div class="input-group" style="margin-top:10px;">
-            <label>题型</label>
-            <select id="tf-type" style="width:100%;">
-              <option value="radio">单选题</option>
-              <option value="checkbox">多选题</option>
-              <option value="text">填空题</option>
-            </select>
-          </div>
-          <div class="btn-group" style="margin-top:15px;">
-            <button class="btn btn-primary" onclick="tfPreview()">👁️ 预览问卷</button>
-            <button class="btn btn-secondary" onclick="tfClear()">🗑️ 清空</button>
-          </div>
-        </div>
-        <div>
-          <div class="input-group">
-            <label>问卷预览/答题区</label>
-            <div id="tf-preview" style="border:1px solid var(--border,#e2e8f0);border-radius:10px;padding:15px;min-height:260px;font-size:14px;">
-              <div style="color:var(--text-light);text-align:center;padding:40px 0;">填写标题和问题后点击"预览问卷"</div>
-            </div>
-          </div>
-          <div class="btn-group" style="margin-top:10px;">
-            <button class="btn btn-primary" onclick="tfExport()">📊 导出结果</button>
-            <button class="btn btn-secondary" onclick="tfReset()">🔄 重置答题</button>
-          </div>
-          <div id="tf-results" style="margin-top:10px;font-size:13px;"></div>
-        </div>
-      </div>
-      <div id="tf-tip" style="margin-top:15px;font-size:13px;color:var(--text-light);background:var(--bg-light,#f8fafc);padding:12px;border-radius:8px;">
-        💡 预览后可直接在右侧答题，答案保存在本地浏览器中
-      </div>
-    </div>
-  `,
-  handler: () => { tfInit(); }
-}
-
-// ============================================================
-// 在线白板工具 miro (mi*)
-// ============================================================
-{
-  id: 'miro',
-  cat: 'dev',
-  icon: '📊',
-  name: '在线白板',
-  desc: '自由画布，支持画笔、便签、文字、形状，适合头脑风暴和教学演示',
-  html: `
-    <div class="tool-card">
-      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px;align-items:center;">
-        <button class="btn btn-sm" onclick="miSetTool('pen')">✏️ 画笔</button>
-        <button class="btn btn-sm" onclick="miSetTool('eraser')">🧹 橡皮</button>
-        <button class="btn btn-sm" onclick="miAddText()">📝 文字</button>
-        <button class="btn btn-sm" onclick="miAddNote()">🏷️ 便签</button>
-        <button class="btn btn-sm" onclick="miAddShape('rect')">⬜ 矩形</button>
-        <button class="btn btn-sm" onclick="miAddShape('circle')">⭕ 圆形</button>
-        <input type="color" id="mi-color" value="#6366f1" style="width:36px;height:36px;border:none;background:none;cursor:pointer;">
-        <input type="range" id="mi-size" min="1" max="20" value="4" style="width:80px;" title="笔刷大小">
-        <button class="btn btn-sm btn-primary" onclick="miExport()">📥 导出PNG</button>
-        <button class="btn btn-sm btn-danger" onclick="miClear()">🗑️ 清空</button>
-      </div>
-      <div style="border:2px solid var(--border,#e2e8f0);border-radius:10px;overflow:hidden;position:relative;background:#ffffff;height:420px;">
-        <canvas id="mi-canvas" style="position:absolute;top:0;left:0;width:100%;height:100%;"></canvas>
-        <div id="mi-note-area" style="position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;"></div>
-      </div>
-      <div id="mi-tip" style="margin-top:10px;font-size:13px;color:var(--text-light);background:var(--bg-light,#f8fafc);padding:10px;border-radius:8px;">
-        💡 选择画笔后在画布上拖动绘制；选择"文字/便签/形状"后点击画布放置
-      </div>
-    </div>
-  `,
-  handler: () => { miInit(); }
-}
-
-// ============================================================
-// GIF动图速查工具 giphy (gp*)
-// ============================================================
-{
-  id: 'giphy',
-  cat: 'fun',
-  icon: '🎞️',
-  name: 'GIF动图速查',
-  desc: '常用表情包和动图速查，支持搜索关键词，一键复制动图链接',
-  html: `
-    <div class="tool-card">
-      <div class="input-group">
-        <label>搜索动图（如：开心、点赞、狗、猫...）</label>
-        <input type="text" id="gp-search" placeholder="输入关键词搜索动图..." oninput="gpRender()">
-      </div>
-      <div id="gp-tags" style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;"></div>
-      <div id="gp-list" style="margin-top:15px;"></div>
-      <div id="gp-tip" style="margin-top:15px;font-size:13px;color:var(--text-light);background:var(--bg-light,#f8fafc);padding:12px;border-radius:8px;">
-        💡 点击动图可复制图片链接，用于聊天和文案配图
-      </div>
-    </div>
-  `,
-  handler: () => { gpInit(); }
-}
-
-// ============================================================
-// 代码在线运行工具 codepen (cp*)
-// ============================================================
-{
-  id: 'codepen',
-  cat: 'dev',
-  icon: '💻',
-  name: '代码在线运行',
-  desc: '实时运行 HTML/CSS/JS 代码，快速预览效果，适合学习和调试',
-  html: `
-    <div class="tool-card">
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:15px;">
-        <div>
-          <div class="input-group">
-            <label>HTML</label>
-            <textarea id="cp-html" placeholder="<div>Hello World</div>" style="height:120px;font-family:monospace;"></textarea>
-          </div>
-          <div class="input-group" style="margin-top:10px;">
-            <label>CSS</label>
-            <textarea id="cp-css" placeholder="body { color: red; }" style="height:120px;font-family:monospace;"></textarea>
-          </div>
-          <div class="input-group" style="margin-top:10px;">
-            <label>JavaScript</label>
-            <textarea id="cp-js" placeholder="console.log('hello')" style="height:120px;font-family:monospace;"></textarea>
-          </div>
-          <div class="btn-group" style="margin-top:15px;">
-            <button class="btn btn-primary" onclick="cpRun()">▶️ 运行代码</button>
-            <button class="btn btn-secondary" onclick="cpTemplate()">📋 加载示例</button>
-            <button class="btn btn-secondary" onclick="cpClear()">🗑️ 清空</button>
-          </div>
-        </div>
-        <div>
-          <div class="input-group">
-            <label>预览结果</label>
-            <iframe id="cp-preview" style="width:100%;height:430px;border:1px solid var(--border,#e2e8f0);border-radius:10px;background:#fff;"></iframe>
-          </div>
-        </div>
-      </div>
-      <div id="cp-tip" style="margin-top:15px;font-size:13px;color:var(--text-light);background:var(--bg-light,#f8fafc);padding:12px;border-radius:8px;">
-        💡 支持 HTML/CSS/JS 实时运行，纯本地执行，代码不会上传到服务器
-      </div>
-    </div>
-  `,
-  handler: () => { }
-}
-
-// ============================================================
-// 看板项目管理工具 trello (tl*)
-// ============================================================
-{
-  id: 'trello',
-  cat: 'time',
-  icon: '📋',
-  name: '看板项目管理',
-  desc: '拖拽式看板管理任务，待办/进行中/完成三列自由移动，数据保存在本地',
-  html: `
-    <div class="tool-card">
-      <div style="display:flex;gap:10px;margin-bottom:15px;align-items:center;">
-        <input type="text" id="tl-input" placeholder="输入任务名称..." style="flex:1;" onkeydown="if(event.key==='Enter')tlAdd()">
-        <button class="btn btn-primary" onclick="tlAdd()">➕ 添加任务</button>
-      </div>
-      <div id="tl-board" style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;"></div>
-      <div id="tl-tip" style="margin-top:15px;font-size:13px;color:var(--text-light);background:var(--bg-light,#f8fafc);padding:12px;border-radius:8px;">
-        💡 在任务卡片下方点击「→ 下一列」移动任务，支持删除，数据保存在本地浏览器
-      </div>
-    </div>
-  `,
-  handler: () => { tlInit(); }
-}
-
-// ============================================================
-// 任务管理工具 asana (as*)
-// ============================================================
-{
-  id: 'asana',
-  cat: 'time',
-  icon: '📊',
-  name: '任务管理',
-  desc: '任务分配和跟踪，支持优先级、截止日期、完成状态，效率工作必备',
-  html: `
-    <div class="tool-card">
-      <div style="display:grid;grid-template-columns:1fr 130px 130px auto;gap:10px;margin-bottom:15px;align-items:center;">
-        <input type="text" id="as-task" placeholder="任务内容..." onkeydown="if(event.key==='Enter')asAdd()">
-        <select id="as-priority">
-          <option value="high">🔴 高</option>
-          <option value="mid" selected>🟡 中</option>
-          <option value="low">🟢 低</option>
-        </select>
-        <input type="date" id="as-due">
-        <button class="btn btn-primary" onclick="asAdd()">➕ 添加</button>
-      </div>
-      <div id="as-filters" style="display:flex;gap:8px;margin-bottom:10px;">
-        <button class="btn btn-sm" onclick="asFilter('all')">全部</button>
-        <button class="btn btn-sm" onclick="asFilter('active')">待完成</button>
-        <button class="btn btn-sm" onclick="asFilter('done')">已完成</button>
-      </div>
-      <div id="as-list"></div>
-      <div id="as-tip" style="margin-top:15px;font-size:13px;color:var(--text-light);background:var(--bg-light,#f8fafc);padding:12px;border-radius:8px;">
-        💡 点击任务左侧圆圈标记完成，点击右侧 🗑️ 删除任务，数据保存在本地
-      </div>
-    </div>
-  `,
-  handler: () => { asInit(); }
-}
-
-// ============================================================
-// 在线表格数据库工具 airtable (at*)
-// ============================================================
-{
-  id: 'airtable',
-  cat: 'document',
-  icon: '🗄️',
-  name: '在线表格数据库',
-  desc: '轻量数据表格，支持增删行/列、筛选排序、导出CSV，数据保存在本地',
-  html: `
-    <div class="tool-card">
-      <div class="input-group">
-        <label>表格名称</label>
-        <input type="text" id="at-name" value="我的数据表" onchange="atRender()">
-      </div>
-      <div class="btn-group" style="margin-top:10px;">
-        <button class="btn btn-sm" onclick="atAddRow()">➕ 添加行</button>
-        <button class="btn btn-sm" onclick="atAddCol()">➕ 添加列</button>
-        <button class="btn btn-sm" onclick="atExport()">📥 导出CSV</button>
-        <button class="btn btn-sm btn-danger" onclick="atClear()">🗑️ 清空</button>
-      </div>
-      <div style="margin-top:10px;overflow-x:auto;">
-        <table id="at-table" style="width:100%;border-collapse:collapse;font-size:13px;"></table>
-      </div>
-      <div id="at-tip" style="margin-top:10px;font-size:13px;color:var(--text-light);background:var(--bg-light,#f8fafc);padding:12px;border-radius:8px;">
-        💡 双击单元格可编辑内容，支持添加/删除行和列，数据保存在本地浏览器
-      </div>
-    </div>
-  `,
-  handler: () => { atInit(); }
-}
-
-// ============================================================
-// 标题灵感生成器工具 buzzsumo (bz*)
-// ============================================================
-{
-  id: 'buzzsumo',
-  cat: 'text',
-  icon: '📈',
-  name: '标题灵感生成器',
-  desc: '输入主题自动生成吸睛标题，自媒体爆款标题灵感必备',
-  html: `
-    <div class="tool-card">
-      <div class="input-group">
-        <label>输入文章主题（如：减肥、Python、旅行）</label>
-        <input type="text" id="bz-topic" placeholder="输入主题关键词..." onkeydown="if(event.key==='Enter')bzGenerate()">
-      </div>
-      <div class="btn-group" style="margin-top:10px;">
-        <button class="btn btn-primary" onclick="bzGenerate()">⚡ 生成标题</button>
-        <button class="btn btn-secondary" onclick="bzCopy()">📋 复制全部</button>
-      </div>
-      <div id="bz-list" style="margin-top:15px;"></div>
-      <div id="bz-tip" style="margin-top:15px;font-size:13px;color:var(--text-light);background:var(--bg-light,#f8fafc);padding:12px;border-radius:8px;">
-        💡 基于爆款标题模板生成，点击单个标题可复制
-      </div>
-    </div>
-  `,
-  handler: () => { }
-}
-
-// ============================================================
-// 邮件模板生成器工具 mailchimp (mc*)
-// ============================================================
-{
-  id: 'mailchimp',
-  cat: 'document',
-  icon: '📧',
-  name: '邮件模板生成器',
-  desc: '快速生成精美HTML邮件模板，支持标题、正文、按钮，一键复制',
-  html: `
-    <div class="tool-card">
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:15px;">
-        <div>
-          <div class="input-group">
-            <label>邮件主题</label>
-            <input type="text" id="mc-subject" placeholder="如：本月新品上线通知">
-          </div>
-          <div class="input-group" style="margin-top:10px;">
-            <label>邮件标题（正文头部）</label>
-            <input type="text" id="mc-title" placeholder="如：🎉 新品首发 · 限时8折">
-          </div>
-          <div class="input-group" style="margin-top:10px;">
-            <label>正文内容（支持换行）</label>
-            <textarea id="mc-body" placeholder="亲爱的用户：&#10;本月我们带来全新产品..." style="height:120px;"></textarea>
-          </div>
-          <div class="input-group" style="margin-top:10px;">
-            <label>按钮文字</label>
-            <input type="text" id="mc-btn" value="立即查看" placeholder="如：立即查看、马上抢购">
-          </div>
-          <div class="input-group" style="margin-top:10px;">
-            <label>按钮链接</label>
-            <input type="text" id="mc-link" value="https://toolai.ccwu.cc" placeholder="https://...">
-          </div>
-          <div class="btn-group" style="margin-top:15px;">
-            <button class="btn btn-primary" onclick="mcPreview()">👁️ 预览</button>
-            <button class="btn btn-secondary" onclick="mcCopyHtml()">📋 复制HTML</button>
-          </div>
-        </div>
-        <div>
-          <div class="input-group">
-            <label>邮件预览</label>
-            <div id="mc-preview" style="border:1px solid var(--border,#e2e8f0);border-radius:10px;padding:0;min-height:320px;background:#fff;overflow:hidden;"></div>
-          </div>
-        </div>
-      </div>
-      <div id="mc-tip" style="margin-top:15px;font-size:13px;color:var(--text-light);background:var(--bg-light,#f8fafc);padding:12px;border-radius:8px;">
-        💡 复制 HTML 后可粘贴到邮件营销平台或自行发送，模板兼容主流邮箱客户端
-      </div>
-    </div>
-  `,
-  handler: () => { mcPreview(); }
-}
-
-// ============================================================
-// 营销文案生成器工具 hubspot (hs*)
-// ============================================================
-{
-  id: 'hubspot',
-  cat: 'text',
-  icon: '📈',
-  name: '营销文案生成器',
-  desc: '输入产品卖点，自动生成营销标题、广告语和CTA文案',
-  html: `
-    <div class="tool-card">
-      <div class="input-group">
-        <label>产品/服务名称</label>
-        <input type="text" id="hs-product" placeholder="如：智能手环、在线课程">
-      </div>
-      <div class="input-group" style="margin-top:10px;">
-        <label>核心卖点（选填，用逗号分隔）</label>
-        <input type="text" id="hs-points" placeholder="如：防水,长续航,性价比高">
-      </div>
-      <div class="input-group" style="margin-top:10px;">
-        <label>目标人群（选填）</label>
-        <input type="text" id="hs-audience" placeholder="如：上班族、学生、宝妈">
-      </div>
-      <div class="btn-group" style="margin-top:15px;">
-        <button class="btn btn-primary" onclick="hsGenerate()">⚡ 生成文案</button>
-        <button class="btn btn-secondary" onclick="hsCopy()">📋 复制全部</button>
-      </div>
-      <div id="hs-list" style="margin-top:15px;"></div>
-      <div id="hs-tip" style="margin-top:15px;font-size:13px;color:var(--text-light);background:var(--bg-light,#f8fafc);padding:12px;border-radius:8px;">
-        💡 生成营销标题、广告语、CTA，点击单项可复制，适合广告投放和社群运营
-      </div>
-    </div>
-  `,
-  handler: () => { }
-}
-
-// ============================================================
-// 会议纪要生成器工具 fireflies (ff*)
-// ============================================================
-{
-  id: 'fireflies',
-  cat: 'document',
-  icon: '🎤',
-  name: '会议纪要生成器',
-  desc: '输入会议信息自动生成结构化纪要，含议题、决议、行动项，可复制',
-  html: `
-    <div class="tool-card">
-      <div class="input-group">
-        <label>会议主题</label>
-        <input type="text" id="ff-title" placeholder="如：Q3产品规划会议">
-      </div>
-      <div class="input-group" style="margin-top:10px;">
-        <label>参会人（用逗号分隔）</label>
-        <input type="text" id="ff-attendees" placeholder="如：张三、李四、王五">
-      </div>
-      <div class="input-group" style="margin-top:10px;">
-        <label>会议要点（每行一条）</label>
-        <textarea id="ff-points" placeholder="1. 讨论了新版功能优先级&#10;2. 确定10月上线计划&#10;3. 李四负责设计稿..." style="height:140px;"></textarea>
-      </div>
-      <div class="btn-group" style="margin-top:15px;">
-        <button class="btn btn-primary" onclick="ffGenerate()">📝 生成纪要</button>
-        <button class="btn btn-secondary" onclick="ffCopy()">📋 复制纪要</button>
-      </div>
-      <div id="ff-result" style="margin-top:15px;"></div>
-      <div id="ff-tip" style="margin-top:15px;font-size:13px;color:var(--text-light);background:var(--bg-light,#f8fafc);padding:12px;border-radius:8px;">
-        💡 生成结构化会议纪要，可直接粘贴到工作群或文档
-      </div>
-    </div>
-  `,
-  handler: () => { }
-}
-
-// ============================================================
-// SRT字幕生成器工具 descript (ds*)
-// ============================================================
-{
-  id: 'descript',
-  cat: 'media',
-  icon: '🎥',
-  name: 'SRT字幕生成器',
-  desc: '输入文本和时间点生成SRT字幕文件，支持批量编辑，视频字幕必备',
-  html: `
-    <div class="tool-card">
-      <div class="input-group">
-        <label>字幕内容（每行一条，格式：开始秒|结束秒|文本）</label>
-        <textarea id="ds-input" placeholder="0|3|大家好&#10;3|7|欢迎观看本期视频&#10;7|12|今天教大家制作字幕..." style="height:180px;font-family:monospace;"></textarea>
-      </div>
-      <div class="btn-group" style="margin-top:15px;">
-        <button class="btn btn-primary" onclick="dsGenerate()">⚡ 生成SRT</button>
-        <button class="btn btn-secondary" onclick="dsDownload()">📥 下载.srt文件</button>
-        <button class="btn btn-secondary" onclick="dsSample()">📋 加载示例</button>
-      </div>
-      <div id="ds-preview" style="margin-top:15px;border:1px solid var(--border,#e2e8f0);border-radius:10px;padding:15px;font-family:monospace;font-size:13px;white-space:pre-wrap;min-height:120px;"></div>
-      <div id="ds-tip" style="margin-top:15px;font-size:13px;color:var(--text-light);background:var(--bg-light,#f8fafc);padding:12px;border-radius:8px;">
-        💡 每行格式：开始秒|结束秒|文本，如 0|3|Hello。生成的SRT兼容主流视频剪辑软件
-      </div>
-    </div>
-  `,
-  handler: () => { }
-}
-
-// ============================================================
-// 句子改写器工具 quillbot (qb*)
-// ============================================================
-{
-  id: 'quillbot',
-  cat: 'text',
-  icon: '🔄',
-  name: '句子改写器',
-  desc: '输入句子自动生成多种改写版本，同义词替换、句式变换，写作查重必备',
-  html: `
-    <div class="tool-card">
-      <div class="input-group">
-        <label>输入句子</label>
-        <textarea id="qb-input" placeholder="输入你想改写的句子..." style="height:100px;"></textarea>
-      </div>
-      <div class="input-group" style="margin-top:10px;">
-        <label>改写模式</label>
-        <select id="qb-mode" style="width:100%;">
-          <option value="synonym">🔤 同义词替换</option>
-          <option value="formal">📄 更正式</option>
-          <option value="casual">💬 更口语</option>
-          <option value="short">✂️ 更简洁</option>
-        </select>
-      </div>
-      <div class="btn-group" style="margin-top:15px;">
-        <button class="btn btn-primary" onclick="qbGenerate()">⚡ 改写</button>
-        <button class="btn btn-secondary" onclick="qbCopy()">📋 复制全部</button>
-      </div>
-      <div id="qb-list" style="margin-top:15px;"></div>
-      <div id="qb-tip" style="margin-top:15px;font-size:13px;color:var(--text-light);background:var(--bg-light,#f8fafc);padding:12px;border-radius:8px;">
-        💡 内置常见同义词库和句式模板，纯本地处理
-      </div>
-    </div>
-  `,
-  handler: () => { }
-}
-
-// ============================================================
-// 文本润色器工具 wordtune (wt*)
-// ============================================================
-{
-  id: 'wordtune',
-  cat: 'text',
-  icon: '✏️',
-  name: '文本润色器',
-  desc: '一键润色文本，切换正式/轻松/简洁语气，提升写作质感',
-  html: `
-    <div class="tool-card">
-      <div class="input-group">
-        <label>输入文本</label>
-        <textarea id="wt-input" placeholder="输入需要润色的文本..." style="height:120px;"></textarea>
-      </div>
-      <div class="input-group" style="margin-top:10px;">
-        <label>润色风格</label>
-        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:8px;">
-          <button class="btn btn-sm" onclick="wtStyle('formal')">📄 正式</button>
-          <button class="btn btn-sm" onclick="wtStyle('casual')">💬 轻松</button>
-          <button class="btn btn-sm" onclick="wtStyle('concise')">✂️ 简洁</button>
-        </div>
-      </div>
-      <div class="btn-group" style="margin-top:15px;">
-        <button class="btn btn-primary" onclick="wtPolish()">✨ 润色</button>
-        <button class="btn btn-secondary" onclick="wtCopy()">📋 复制结果</button>
-      </div>
-      <div id="wt-result" style="margin-top:15px;border:1px solid var(--border,#e2e8f0);border-radius:10px;padding:16px;min-height:80px;font-size:14px;line-height:1.9;"></div>
-      <div id="wt-tip" style="margin-top:15px;font-size:13px;color:var(--text-light);background:var(--bg-light,#f8fafc);padding:12px;border-radius:8px;">
-        💡 根据风格自动调整开头、连接词和结尾，提升表达质感
-      </div>
-    </div>
-  `,
-  handler: () => { }
-}
