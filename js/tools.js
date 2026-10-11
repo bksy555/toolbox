@@ -10206,9 +10206,12 @@ function esBuildHtml(escapeIt) {
 
 function esPreview() {
   const preview = document.getElementById('es-preview');
+  const codeEl = document.getElementById('es-code');
+  // 工具页面未渲染时元素为 null，直接返回
+  if (!preview || !codeEl) return;
   const code = esBuildHtml(false);
   preview.innerHTML = code || '<div style="color:#999;text-align:center;padding-top:40px;">输入左侧信息即可预览</div>';
-  document.getElementById('es-code').value = esBuildHtml(true) || '<!-- 请填写姓名 -->';
+  codeEl.value = esBuildHtml(true) || '<!-- 请填写姓名 -->';
 }
 
 function esCopyHtml() {
