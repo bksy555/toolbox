@@ -5399,3 +5399,227 @@ function dsDownload() {
   a.click();
   showToast('📥 SRT 文件已下载');
 }
+
+// ============================================================
+// 句子改写器工具 (qb*)
+// ============================================================
+var qbResults = [];
+
+function qbGenerate() {
+  var input = document.getElementById('qb-input');
+  var mode = document.getElementById('qb-mode');
+  var list = document.getElementById('qb-list');
+  if (!input || !list) return;
+  var text = input.value.trim();
+  if (!text) { showToast('⚠️ 请输入需要改写的句子'); return; }
+  
+  qbResults = [];
+  var modeVal = mode ? mode.value : 'synonym';
+  
+  if (modeVal === 'synonym') {
+    qbResults = qbSynonym(text);
+  } else if (modeVal === 'formal') {
+    qbResults = qbFormal(text);
+  } else if (modeVal === 'casual') {
+    qbResults = qbCasual(text);
+  } else if (modeVal === 'short') {
+    qbResults = qbShort(text);
+  }
+  
+  var html = '<div style="font-weight:bold;margin-bottom:10px;">⚡ 已生成 ' + qbResults.length + ' 个改写版本</div>';
+  qbResults.forEach(function(r, i) {
+    html += '<div style="padding:10px;background:var(--bg-light,#f8fafc);border-radius:8px;margin-bottom:8px;cursor:pointer;font-size:13px;" onclick="qbCopyOne(' + i + ')" title="点击复制">';
+    html += '<span style="color:var(--text-light);font-size:11px;margin-right:8px;">' + (i + 1) + '</span>' + qbEscape(r);
+    html += '</div>';
+  });
+  list.innerHTML = html;
+  showToast('⚡ 已生成 ' + qbResults.length + ' 个版本');
+}
+
+function qbSynonym(text) {
+  // 常见同义词替换
+  var dict = [
+    ['very', 'extremely', 'particularly'],
+    ['good', 'great', 'excellent', 'wonderful'],
+    ['bad', 'terrible', 'awful'],
+    ['important', 'crucial', 'essential', 'vital'],
+    ['big', 'large', 'huge', 'massive'],
+    ['small', 'tiny', 'little', 'compact'],
+    ['happy', 'delighted', 'pleased', 'joyful'],
+    ['sad', 'unhappy', 'sorrowful'],
+    ['fast', 'quick', 'rapid', 'swift'],
+    ['begin', 'start', 'commence'],
+    ['help', 'assist', 'support'],
+    ['show', 'demonstrate', 'illustrate', 'display'],
+    ['buy', 'purchase', 'acquire'],
+    ['think', 'believe', 'consider', 'suppose'],
+    ['find', 'discover', 'locate'],
+    ['get', 'obtain', 'receive', 'acquire'],
+    ['make', 'create', 'produce', 'generate'],
+    ['use', 'utilize', 'employ'],
+    ['need', 'require', 'demand'],
+    ['want', 'desire', 'wish']
+  ];
+  var results = [];
+  // 生成最多8个不同版本
+  for (var v = 0; v < 8; v++) {
+    var newText = text;
+    dict.forEach(function(pair) {
+      var word = pair[0];
+      var replacement = pair[v % (pair.length - 1) + 1];
+      if (Math.random() > 0.4) {
+        newText = newText.replace(new RegExp('\\b' + word + '\\b', 'gi'), replacement);
+      }
+    });
+    if (newText !== text && results.indexOf(newText) === -1) results.push(newText);
+  }
+  if (results.length === 0) {
+    // 没有命中同义词，用句式变换兜底
+    results = qbFormal(text);
+  }
+  return results.slice(0, 6);
+}
+
+function qbFormal(text) {
+  var r = [];
+  r.push('值得注意的是，' + text.replace(/\.$/, '。'));
+  r.push('需要指出的是，' + text.replace(/\.$/, '，这一点值得关注。'));
+  r.push('综上所述，' + text.replace(/\.$/, '，其重要性不言而喻。'));
+  r.push('应当认识到，' + text.replace(/\.$/, '，这是不容忽视的。'));
+  r.push(text.replace(/\.$/, '。') + '这一点在多个层面都具有积极意义。');
+  return r;
+}
+
+function qbCasual(text) {
+  var r = [];
+  r.push('说真的，' + text.replace(/\.$/, '。'));
+  r.push('其实吧，' + text.replace(/\.$/, '。'));
+  r.push('我觉得，' + text.replace(/\.$/, '，真的挺重要。'));
+  r.push('咱就是说，' + text.replace(/\.$/, '，没毛病。'));
+  r.push(text.replace(/\.$/, '，就是这么个道理。'));
+  return r;
+}
+
+function qbShort(text) {
+  var r = [];
+  // 去修饰词，保留主干
+  var short1 = text.replace(/\b(very|really|extremely|a lot of|many|much)\b/gi, '').replace(/\s+/g, ' ').trim();
+  if (short1 !== text) r.push(short1);
+  r.push(text.replace(/^[^,，。]*[，,]?\s*/, '').replace(/\.$/, ''));
+  r.push(text.split(/[，。]/)[0] + '。');
+  if (r.length < 3) r.push(text.replace(/\.$/, '，简而言之就是如此。'));
+  return r;
+}
+
+function qbCopyOne(idx) {
+  if (idx < 0 || idx >= qbResults.length) return;
+  navigator.clipboard.writeText(qbResults[idx]).then(function() {
+    showToast('📋 已复制版本 ' + (idx + 1));
+  }).catch(function() {
+    showToast('⚠️ 复制失败');
+  });
+}
+
+function qbCopy() {
+  if (qbResults.length === 0) { showToast('⚠️ 请先改写'); return; }
+  var text = qbResults.map(function(r, i) { return (i + 1) + '. ' + r; }).join('\n');
+  navigator.clipboard.writeText(text).then(function() {
+    showToast('📋 已复制全部 ' + qbResults.length + ' 个版本');
+  }).catch(function() {
+    showToast('⚠️ 复制失败');
+  });
+}
+
+function qbEscape(str) {
+  var div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
+}
+
+// ============================================================
+// 文本润色器工具 (wt*)
+// ============================================================
+var wtStyleVal = 'formal';
+var wtLastText = '';
+
+function wtStyle(style) {
+  wtStyleVal = style;
+  showToast('📄 已选择' + (style === 'formal' ? '正式' : style === 'casual' ? '轻松' : '简洁') + '风格');
+}
+
+function wtPolish() {
+  var input = document.getElementById('wt-input');
+  var result = document.getElementById('wt-result');
+  if (!input || !result) return;
+  var text = input.value.trim();
+  if (!text) { showToast('⚠️ 请输入需要润色的文本'); return; }
+  
+  var polished = text;
+  switch (wtStyleVal) {
+    case 'formal':
+      polished = wtFormal(text);
+      break;
+    case 'casual':
+      polished = wtCasual(text);
+      break;
+    case 'concise':
+      polished = wtConcise(text);
+      break;
+  }
+  
+  wtLastText = polished;
+  result.innerHTML = wtEscape(polished);
+  showToast('✨ 润色完成');
+}
+
+function wtFormal(text) {
+  var t = text;
+  t = t.replace(/\bvery\b/gi, 'extremely');
+  t = t.replace(/\bgood\b/gi, 'excellent');
+  t = t.replace(/\bbig\b/gi, 'significant');
+  t = t.replace(/\bget\b/gi, 'obtain');
+  t = t.replace(/\bneed\b/gi, 'require');
+  t = t.replace(/\bshow\b/gi, 'demonstrate');
+  // 开头正式化
+  if (/^(我觉得|我认为|我想)/.test(t)) {
+    t = t.replace(/^(我觉得|我认为|我想)\s*/, '根据个人观点，');
+  }
+  return t.replace(/\.?$/, '。');
+}
+
+function wtCasual(text) {
+  var t = text;
+  t = t.replace(/\bhowever\b/gi, '不过呢');
+  t = t.replace(/\badditionally\b/gi, '还有啊');
+  t = t.replace(/\btherefore\b/gi, '所以说');
+  t = t.replace(/\bimportant\b/gi, '挺重要的');
+  t = t.replace(/\binteresting\b/gi, '蛮有意思的');
+  t = t.replace(/因此/g, '所以');
+  t = t.replace(/然而/g, '不过');
+  return t.replace(/\.?$/, '哈哈');
+}
+
+function wtConcise(text) {
+  var t = text;
+  // 去掉修饰词和冗余
+  t = t.replace(/\bvery\b|\breally\b|\bextremely\b|\bquite\b/gi, '');
+  t = t.replace(/非常|特别|真地|极其/g, '');
+  t = t.replace(/我认为|我觉得|我想强调的是/g, '');
+  t = t.replace(/\s+/g, ' ').trim();
+  return t.replace(/\.?$/, '。');
+}
+
+function wtCopy() {
+  if (!wtLastText) { showToast('⚠️ 请先润色'); return; }
+  navigator.clipboard.writeText(wtLastText).then(function() {
+    showToast('📋 润色结果已复制');
+  }).catch(function() {
+    showToast('⚠️ 复制失败');
+  });
+}
+
+function wtEscape(str) {
+  var div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
+}

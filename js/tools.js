@@ -20029,3 +20029,76 @@ function stkClear() {
   `,
   handler: () => { }
 }
+
+// ============================================================
+// 句子改写器工具 quillbot (qb*)
+// ============================================================
+{
+  id: 'quillbot',
+  cat: 'text',
+  icon: '🔄',
+  name: '句子改写器',
+  desc: '输入句子自动生成多种改写版本，同义词替换、句式变换，写作查重必备',
+  html: `
+    <div class="tool-card">
+      <div class="input-group">
+        <label>输入句子</label>
+        <textarea id="qb-input" placeholder="输入你想改写的句子..." style="height:100px;"></textarea>
+      </div>
+      <div class="input-group" style="margin-top:10px;">
+        <label>改写模式</label>
+        <select id="qb-mode" style="width:100%;">
+          <option value="synonym">🔤 同义词替换</option>
+          <option value="formal">📄 更正式</option>
+          <option value="casual">💬 更口语</option>
+          <option value="short">✂️ 更简洁</option>
+        </select>
+      </div>
+      <div class="btn-group" style="margin-top:15px;">
+        <button class="btn btn-primary" onclick="qbGenerate()">⚡ 改写</button>
+        <button class="btn btn-secondary" onclick="qbCopy()">📋 复制全部</button>
+      </div>
+      <div id="qb-list" style="margin-top:15px;"></div>
+      <div id="qb-tip" style="margin-top:15px;font-size:13px;color:var(--text-light);background:var(--bg-light,#f8fafc);padding:12px;border-radius:8px;">
+        💡 内置常见同义词库和句式模板，纯本地处理
+      </div>
+    </div>
+  `,
+  handler: () => { }
+}
+
+// ============================================================
+// 文本润色器工具 wordtune (wt*)
+// ============================================================
+{
+  id: 'wordtune',
+  cat: 'text',
+  icon: '✏️',
+  name: '文本润色器',
+  desc: '一键润色文本，切换正式/轻松/简洁语气，提升写作质感',
+  html: `
+    <div class="tool-card">
+      <div class="input-group">
+        <label>输入文本</label>
+        <textarea id="wt-input" placeholder="输入需要润色的文本..." style="height:120px;"></textarea>
+      </div>
+      <div class="input-group" style="margin-top:10px;">
+        <label>润色风格</label>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:8px;">
+          <button class="btn btn-sm" onclick="wtStyle('formal')">📄 正式</button>
+          <button class="btn btn-sm" onclick="wtStyle('casual')">💬 轻松</button>
+          <button class="btn btn-sm" onclick="wtStyle('concise')">✂️ 简洁</button>
+        </div>
+      </div>
+      <div class="btn-group" style="margin-top:15px;">
+        <button class="btn btn-primary" onclick="wtPolish()">✨ 润色</button>
+        <button class="btn btn-secondary" onclick="wtCopy()">📋 复制结果</button>
+      </div>
+      <div id="wt-result" style="margin-top:15px;border:1px solid var(--border,#e2e8f0);border-radius:10px;padding:16px;min-height:80px;font-size:14px;line-height:1.9;"></div>
+      <div id="wt-tip" style="margin-top:15px;font-size:13px;color:var(--text-light);background:var(--bg-light,#f8fafc);padding:12px;border-radius:8px;">
+        💡 根据风格自动调整开头、连接词和结尾，提升表达质感
+      </div>
+    </div>
+  `,
+  handler: () => { }
+}
