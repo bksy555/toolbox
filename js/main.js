@@ -5845,3 +5845,208 @@ function pqCat(cat) {
   pqCurrentCat = cat || '';
   pqRender();
 }
+
+// ============================================================
+// 甘特图生成器工具 (gt*)
+// ============================================================
+var gtCanvas = null;
+var gtCtx = null;
+
+function gtSample() {
+  var input = document.getElementById('gt-input');
+  if (input) {
+    input.value = '需求分析|10/1|10/3\n界面设计|10/4|10/8\n前端开发|10/9|10/20\n后端开发|10/10|10/22\n测试上线|10/23|10/25\n项目复盘|10/26|10/28';
+  }
+  gtGenerate();
+}
+
+function gtParseDate(str) {
+  // 支持 月/日 (10/5) 或 数字 (100 => 10月第0天?)
+  str = String(str).trim();
+  if (!str) return null;
+  var parts = str.split('/');
+  if (parts.length === 2) {
+    var m = parseInt(parts[0]);
+    var d = parseInt(parts[1]);
+    if (!isNaN(m) && !isNaN(d)) return m * 100 + d;
+  }
+  var n = parseInt(str);
+  if (!isNaN(n)) return n;
+  return null;
+}
+
+function gtGenerate() {
+  var input = document.getElementById('gt-input');
+  var wrap = document.getElementById('gt-canvas-wrap');
+  if (!input || !wrap) return;
+  var text = input.value.trim();
+  if (!text) { showToast('⚠️ 请输入任务列表'); return; }
+
+  var tasks = [];
+  text.split('\n').forEach(function(line) {
+    line = line.trim();
+    if (!line) return;
+    var parts = line.split('|');
+    if (parts.length < 3) return;
+    var name = parts[0].trim();
+    var start = gtParseDate(parts[1]);
+    var end = gtParseDate(parts[2]);
+    if (name && start !== null && end !== null && end >= start) {
+      tasks.push({ name: name, start: start, end: end });
+    }
+  });
+
+  if (tasks.length === 0) { showToast('⚠️ 没有有效任务，格式：任务名|开始|结束'); return; }
+
+  var canvas = document.getElementById('gt-canvas');
+  if (!canvas) return;
+  var ctx = canvas.getContext('2d');
+  gtCanvas = canvas;
+  gtCtx = ctx;
+
+  // 计算时间范围
+  var minStart = Math.min.apply(null, tasks.map(function(t) { return t.start; }));
+  var maxEnd = Math.max.apply(null, tasks.map(function(t) { return t.end; }));
+  var totalSpan = maxEnd - minStart;
+  if (totalSpan <= 0) totalSpan = 1;
+
+  var rowH = 36;
+  var headerH = 50;
+  var nameW = 160;
+  var chartLeft = nameW + 20;
+  var chartW = Math.max(500, wrap.clientWidth - chartLeft - 20);
+  var canvasW = chartLeft + chartW + 20;
+  var canvasH = headerH + tasks.length * rowH + 20;
+
+  canvas.width = canvasW;
+  canvas.height = canvasH;
+  ctx.fillStyle = '#ffffff';
+  ctx.fillRect(0, 0, canvasW, canvasH);
+
+  // 表头
+  var colors = ['#6366f1', '#22c55e', '#f59e0b', '#ef4444', '#06b6d4', '#a855f7', '#ec4899', '#84cc16'];
+  ctx.fillStyle = '#1e1b4b';
+  ctx.font = 'bold 16px sans-serif';
+  ctx.fillText('任务名', 10, 32);
+  ctx.fillText('时间轴 (最小单位=' + (totalSpan <= 31 ? '天' : '区间') + ')', chartLeft, 32);
+
+  // 绘制任务行
+  tasks.forEach(function(t, i) {
+    var y = headerH + i * rowH;
+    // 行背景
+    ctx.fillStyle = i % 2 === 0 ? '#f8fafc' : '#ffffff';
+    ctx.fillRect(0, y, canvasW, rowH);
+    // 任务名
+    ctx.fillStyle = '#0f172a';
+    ctx.font = '13px sans-serif';
+    ctx.fillText(t.name.length > 14 ? t.name.slice(0, 13) + '…' : t.name, 10, y + 24);
+    // 甘特条
+    var x1 = chartLeft + (t.start - minStart) / totalSpan * chartW;
+    var x2 = chartLeft + (t.end - minStart) / totalSpan * chartW;
+    var barW = Math.max(8, x2 - x1);
+    var color = colors[i % colors.length];
+    ctx.fillStyle = color;
+    ctx.beginPath();
+    ctx.roundRect ? ctx.roundRect(x1, y + 8, barW, 20, 5) : ctx.rect(x1, y + 8, barW, 20);
+    ctx.fill();
+    // 日期标签
+    ctx.fillStyle = '#64748b';
+    ctx.font = '11px sans-serif';
+    var label = String(Math.floor(t.start)) + ' → ' + String(Math.floor(t.end));
+    ctx.fillText(label, x1, y + rowH - 6);
+  });
+
+  // 边框
+  ctx.strokeStyle = '#e2e8f0';
+  ctx.lineWidth = 1;
+  ctx.strokeRect(0, 0, canvasW, canvasH);
+
+  wrap.style.display = 'block';
+  showToast('⚡ 甘特图已生成');
+}
+
+function gtDownload() {
+  if (!gtCanvas) { showToast('⚠️ 请先生成甘特图'); return; }
+  var a = document.createElement('a');
+  a.href = gtCanvas.toDataURL('image/png');
+  a.download = 'gantt-chart-' + Date.now() + '.png';
+  a.click();
+  showToast('📥 甘特图已导出');
+}
+
+// ============================================================
+// 文本摘要器工具 (ts*)
+// ============================================================
+var tsLen = 5;
+var tsSummary = '';
+
+function tsSetLen(n) {
+  tsLen = n;
+  showToast('📄 摘要长度设为 ' + n + ' 句');
+}
+
+function tsSummarize() {
+  var input = document.getElementById('ts-input');
+  var result = document.getElementById('ts-result');
+  if (!input || !result) return;
+  var text = input.value.trim();
+  if (!text) { showToast('⚠️ 请输入文本'); return; }
+
+  // 按句子分割（支持中英文标点）
+  var sentences = text.split(/(?<=[。！？!?.\n])/).map(function(s) { return s.trim(); }).filter(function(s) { return s.length > 1; });
+  if (sentences.length <= tsLen) {
+    tsSummary = sentences.join('\n');
+    result.innerHTML = '<div style="color:var(--text-light);margin-bottom:8px;">文本较短，以下为全文：</div>' + tsEscape(sentences.join('<br>'));
+    showToast('✨ 文本较短，直接显示全文');
+    return;
+  }
+
+  // 计算词频
+  var stopwords = ['的', '了', '是', '在', '和', '与', '及', '或', '有', '我', '你', '他', '她', '它', '这', '那', '也', '都', '而', '但', '并', '就', 'the', 'a', 'an', 'and', 'or', 'of', 'to', 'in', 'is', 'are', 'was'];
+  var freq = {};
+  var words = text.toLowerCase().match(/[\u4e00-\u9fa5]|[a-z]+/g) || [];
+  words.forEach(function(w) {
+    if (stopwords.indexOf(w) === -1) {
+      freq[w] = (freq[w] || 0) + 1;
+    }
+  });
+
+  // 句子评分：词频和 + 位置加权
+  var scored = sentences.map(function(s, idx) {
+    var score = 0;
+    var sWords = s.toLowerCase().match(/[\u4e00-\u9fa5]|[a-z]+/g) || [];
+    sWords.forEach(function(w) {
+      if (freq[w]) score += freq[w];
+    });
+    // 位置加权：前面句子略加分
+    score += (sentences.length - idx) * 0.5;
+    return { text: s, score: score, idx: idx };
+  });
+
+  // 取评分最高的 n 句，按原文顺序排列
+  var top = scored.slice().sort(function(a, b) { return b.score - a.score; }).slice(0, tsLen);
+  top.sort(function(a, b) { return a.idx - b.idx; });
+  tsSummary = top.map(function(s) { return s.text; }).join('\n');
+
+  var html = '<div style="color:var(--text-light);margin-bottom:8px;">✨ 从 ' + sentences.length + ' 句中提取 ' + tsLen + ' 句要点：</div>';
+  top.forEach(function(s) {
+    html += '<div style="padding:8px 0;border-bottom:1px dashed var(--border,#e2e8f0);">' + tsEscape(s.text) + '</div>';
+  });
+  result.innerHTML = html;
+  showToast('✨ 摘要已生成 ' + tsLen + ' 句');
+}
+
+function tsCopy() {
+  if (!tsSummary) { showToast('⚠️ 请先生成摘要'); return; }
+  navigator.clipboard.writeText(tsSummary).then(function() {
+    showToast('📋 摘要已复制');
+  }).catch(function() {
+    showToast('⚠️ 复制失败');
+  });
+}
+
+function tsEscape(str) {
+  var div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
+}

@@ -8027,6 +8027,74 @@ greet('世界');</textarea>
   handler: () => { }
 },
 
+// ============================================================
+// 甘特图生成器工具 gantt-chart (gt*)
+// ============================================================
+{
+  id: 'gantt-chart',
+  cat: 'dev',
+  icon: '📊',
+  name: '甘特图生成器',
+  desc: '输入任务和起止日期，自动生成可视化甘特图，支持导出PNG，项目管理必备',
+  html: `
+    <div class="tool-card">
+      <div class="input-group">
+        <label>任务列表（每行：任务名|开始日|结束日，日期格式 月/日 或 日）</label>
+        <textarea id="gt-input" placeholder="需求分析|10/1|10/3&#10;界面设计|10/4|10/8&#10;前端开发|10/9|10/20&#10;测试上线|10/21|10/25" style="height:160px;font-family:monospace;"></textarea>
+      </div>
+      <div class="btn-group" style="margin-top:15px;">
+        <button class="btn btn-primary" onclick="gtGenerate()">⚡ 生成甘特图</button>
+        <button class="btn btn-secondary" onclick="gtDownload()">📥 导出PNG</button>
+        <button class="btn btn-secondary" onclick="gtSample()">📋 加载示例</button>
+      </div>
+      <div id="gt-canvas-wrap" style="margin-top:15px;overflow-x:auto;display:none;">
+        <canvas id="gt-canvas"></canvas>
+      </div>
+      <div id="gt-tip" style="margin-top:15px;font-size:13px;color:var(--text-light);background:var(--bg-light,#f8fafc);padding:12px;border-radius:8px;">
+        💡 日期格式支持 月/日（如 10/1）或数字（10月第N天），自动按时间轴排列
+      </div>
+    </div>
+  `,
+  handler: () => { }
+},
+
+// ============================================================
+// 文本摘要器工具 text-summarizer (ts*)
+// ============================================================
+{
+  id: 'text-summarizer',
+  cat: 'text',
+  icon: '📄',
+  name: '文本摘要器',
+  desc: '输入长文本自动提取关键句生成摘要，论文/新闻/报告速读神器',
+  html: `
+    <div class="tool-card">
+      <div class="input-group">
+        <label>输入长文本</label>
+        <textarea id="ts-input" placeholder="粘贴需要摘要的长文本..." style="height:200px;"></textarea>
+      </div>
+      <div class="input-group" style="margin-top:10px;">
+        <label>摘要长度</label>
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:8px;">
+          <button class="btn btn-sm" onclick="tsSetLen(3)">3句</button>
+          <button class="btn btn-sm" onclick="tsSetLen(5)">5句</button>
+          <button class="btn btn-sm" onclick="tsSetLen(8)">8句</button>
+          <button class="btn btn-sm" onclick="tsSetLen(12)">12句</button>
+        </div>
+      </div>
+      <div class="btn-group" style="margin-top:15px;">
+        <button class="btn btn-primary" onclick="tsSummarize()">✨ 生成摘要</button>
+        <button class="btn btn-secondary" onclick="tsCopy()">📋 复制摘要</button>
+      </div>
+      <div id="ts-result" style="margin-top:15px;border:1px solid var(--border,#e2e8f0);border-radius:10px;padding:16px;min-height:80px;font-size:14px;line-height:1.9;"></div>
+      <div id="ts-tip" style="margin-top:15px;font-size:13px;color:var(--text-light);background:var(--bg-light,#f8fafc);padding:12px;border-radius:8px;">
+        💡 基于关键词频率和句子位置评分，选取关键句组成摘要
+      </div>
+    </div>
+  `,
+  handler: () => { }
+},
+
 
 ];
 
