@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>表情包生成器教程：3步自制专属斗图表情 - ToolBox 工具箱指南</title>
+  <meta name="description" content="图文详解在线制作表情包的完整步骤，支持上传图片加文字、纯文字生成、字号颜色描边自由调节，一键下载高清表情包，免费在线使用，无需注册。">
+  <meta name="keywords" content="表情包生成器,在线做表情包,斗图表情,自制表情包,表情包制作,梗图生成,加字表情">
+  <meta name="author" content="ToolBox">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://toolai.ccwu.cc/guides/meme-maker-guide.html">
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    :root {
+      --bg: #0f0f1a;
+      --bg-card: #1a1a2e;
+      --text: #e0e0e0;
+      --text-light: #8888aa;
+      --border: #2a2a44;
+      --accent: #6366f1;
+      --accent-hover: #4f46e5;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Noto Sans SC', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      margin: 0;
+      line-height: 1.8;
+    }
+    .guide-header {
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+      border-bottom: 1px solid var(--border);
+      padding: 20px 0;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(10px);
+    }
+    .guide-header-inner {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 0 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .guide-header a { color: var(--accent); text-decoration: none; font-size: 14px; }
+    .guide-header a:hover { color: var(--accent-hover); }
+    .guide-container { max-width: 860px; margin: 0 auto; padding: 40px 20px 80px; }
+    .guide-breadcrumb { font-size: 13px; color: var(--text-light); margin-bottom: 20px; }
+    .guide-breadcrumb a { color: var(--accent); text-decoration: none; }
+    .guide-breadcrumb a:hover { text-decoration: underline; }
+    h1 {
+      font-size: 32px; font-weight: 700; margin: 0 0 10px; line-height: 1.3;
+      background: linear-gradient(135deg, #e0e0e0, #a78bfa);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .guide-meta { font-size: 13px; color: var(--text-light); margin-bottom: 30px; display: flex; gap: 16px; flex-wrap: wrap; }
+    .guide-meta span { display: flex; align-items: center; gap: 4px; }
+    h2 { font-size: 22px; font-weight: 600; margin: 40px 0 16px; padding-bottom: 8px; border-bottom: 1px solid var(--border); color: #e0e0e0; }
+    p { margin: 0 0 16px; color: #ccc; }
+    .guide-step { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 24px; margin-bottom: 24px; }
+    .guide-step .step-num { display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; background: var(--accent); color: #fff; border-radius: 50%; font-weight: 700; margin-right: 10px; }
+    .guide-step img { max-width: 100%; border-radius: 8px; border: 1px solid var(--border); margin: 14px 0 6px; }
+    .guide-img-caption { font-size: 12px; color: var(--text-light); margin-bottom: 10px; text-align: center; }
+    .guide-scene { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 20px 24px; margin-bottom: 16px; }
+    .guide-scene .scene-icon { font-size: 22px; margin-right: 8px; }
+    .guide-faq { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 20px 24px; margin-bottom: 14px; }
+    .guide-faq strong { color: #fff; display: block; margin-bottom: 6px; }
+    blockquote { margin: 24px 0; padding: 16px 20px; background: rgba(99, 102, 241, 0.12); border-left: 4px solid var(--accent); border-radius: 0 8px 8px 0; color: #c7d2fe; }
+    .cta-box { margin-top: 48px; padding: 40px 20px; text-align: center; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); border: 1px solid var(--border); border-radius: 16px; }
+    .cta-box h2 { border: none; margin: 0 0 10px; }
+    .cta-btn { display: inline-block; background: var(--accent); color: #fff; text-decoration: none; padding: 14px 40px; border-radius: 10px; font-weight: 600; margin-top: 16px; transition: background 0.2s; }
+    .cta-btn:hover { background: var(--accent-hover); }
+    @media (max-width: 640px) { h1 { font-size: 24px; } .guide-container { padding: 24px 14px 60px; } }
+  </style>
+</head>
+<body>
+  <div class="guide-header">
+    <div class="guide-header-inner">
+      <a href="../index.html">← 返回工具箱首页</a>
+      <span style="color:var(--text-light);font-size:13px;">ToolBox 指南</span>
+    </div>
+  </div>
+
+  <div class="guide-container">
+    <div class="guide-breadcrumb">
+      <a href="../index.html">首页</a> / <span>表情包生成器教程</span>
+    </div>
+
+    <h1>表情包生成器：3步自制专属斗图表情</h1>
+    <div class="guide-meta">
+      <span>⏱️ 约1分钟</span>
+      <span>📊 难度：简单</span>
+      <span>💡 免费在线</span>
+    </div>
+
+    <p>群聊斗图总是找不到合适表情？用 <strong>表情包生成器</strong>，上传一张图片或直接纯文字，加上顶部/底部文字，一键生成专属表情包。经典黑白描边、任意颜色字号，下载高清 PNG，从此斗图不再输！</p>
+
+    <blockquote>💡 <strong>小知识：</strong>经典表情包通常采用"顶部小字 + 底部大字"的布局，配合白色文字和黑色描边，在图片上清晰醒目——本工具默认就是这个风格。</blockquote>
+
+    <h2>📖 操作步骤</h2>
+
+    <div class="guide-step">
+      <span class="step-num">1</span><strong>打开工具，选择图片</strong>
+      <p>进入工具箱首页，找到「表情包生成器」工具，点击「📁 选择图片」上传你想要的底图（也可以是纯文字模式，无需图片）。</p>
+      <img src="images/meme-step1-upload.png" alt="选择表情包底图">
+      <div class="guide-img-caption">图1：选择图片作为表情包底图</div>
+    </div>
+
+    <div class="guide-step">
+      <span class="step-num">2</span><strong>输入文字，调节样式</strong>
+      <p>分别输入顶部和底部文字（如"笑死我了"、"哈哈哈哈"），然后调节：<strong>字号</strong>（小/中/大/特大）、<strong>文字颜色</strong>、<strong>是否描边</strong>。</p>
+      <img src="images/meme-step2-text.png" alt="输入顶部底部文字调节样式">
+      <div class="guide-img-caption">图2：输入文字并调节字号、颜色、描边</div>
+    </div>
+
+    <div class="guide-step">
+      <span class="step-num">3</span><strong>生成并下载表情包</strong>
+      <p>点击「✨ 生成表情包」，预览效果满意后，点击「📥 下载表情包」保存高清 PNG 到手机/电脑，直接发到群里斗图！</p>
+      <img src="images/meme-step3-result.png" alt="生成表情包结果">
+      <div class="guide-img-caption">图3：生成完成，下载 PNG 表情包</div>
+    </div>
+
+    <h2>💼 使用场景</h2>
+
+    <div class="guide-scene">
+      <span class="scene-icon">💬</span><strong>群聊斗图</strong> — 用同事/好友照片加台词做表情，聊天氛围瞬间拉满。
+    </div>
+    <div class="guide-scene">
+      <span class="scene-icon">🐶</span><strong>宠物表情</strong> — 给自家猫狗照片加"吐槽"文字，做成专属宠物表情包。
+    </div>
+    <div class="guide-scene">
+      <span class="scene-icon">🎉</span><strong>节日祝福</strong> — 用纯文字模式生成"新年快乐""生日快乐"大字表情，喜庆又有梗。
+    </div>
+    <div class="guide-scene">
+      <span class="scene-icon">📣</span><strong>社群运营</strong> — 活动通知配上夸张表情包，群消息打开率更高。
+    </div>
+    <div class="guide-scene">
+      <span class="scene-icon">📚</span><strong>学习笔记</strong> — 把知识点做成"表情包"帮助记忆，复习时一目了然。
+    </div>
+
+    <h2>❓ 常见问题</h2>
+
+    <div class="guide-faq">
+      <strong>Q1：不传图片可以用吗？</strong>
+      可以。工具支持"纯文字模式"，会自动生成渐变背景 + 装饰圆圈的底图，再配上文字，同样能生成一张完整的表情包。
+    </div>
+    <div class="guide-faq">
+      <strong>Q2：如何让文字更醒目？</strong>
+      建议勾选"描边"选项（黑边白字是经典搭配），并选择"大字号"。也可以手动选一个高对比度的文字颜色。
+    </div>
+    <div class="guide-faq">
+      <strong>Q3：下载的图片是什么格式？</strong>
+      下载的是高清 PNG 格式（透明背景保留、清晰度好），适合微信、QQ、钉钉等所有主流聊天软件直接使用。
+
+    <div class="cta-box">
+      <h2>🚀 现在就试试</h2>
+      <p>打开工具箱，3步生成你的专属表情包！</p>
+      <a href="../index.html" class="cta-btn">😂 去使用表情包生成器</a>
+    </div>
+  </div>
+</body>
+</html>
