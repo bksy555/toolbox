@@ -6050,3 +6050,159 @@ function tsEscape(str) {
   div.textContent = str;
   return div.innerHTML;
 }
+
+// ============================================================
+// AI绘画提示词生成器工具 (pg*)
+// ============================================================
+var pgRatioVal = '1:1';
+var pgEn = '';
+var pgZh = '';
+
+var PG_STYLES = {
+  'cyberpunk': { en: 'cyberpunk city, neon lights, futuristic, high-tech, vivid colors', zh: '赛博朋克城市，霓虹灯光，未来科技感，高饱和色彩' },
+  'anime': { en: 'anime style, cel shading, vibrant, detailed, Studio Ghibli inspired', zh: '动漫风格，赛璐璐着色，色彩鲜艳，细节丰富，吉卜力风' },
+  'realistic': { en: 'photorealistic, ultra detailed, 8k, sharp focus, professional photography', zh: '超写实，极致细节，8K高清，锐利对焦，专业摄影' },
+  'oil': { en: 'oil painting style, rich texture, classical art, masterpiece', zh: '油画风格，笔触丰富，古典艺术，大师级作品' },
+  'watercolor': { en: 'watercolor painting, soft edges, light colors, artistic, delicate', zh: '水彩画，柔和边缘，淡雅配色，艺术感，精致' },
+  'fantasy': { en: 'fantasy art, magical, ethereal, epic, dramatic lighting', zh: '奇幻艺术，魔法氛围，空灵，史诗感，戏剧性光影' },
+  'minimalist': { en: 'minimalist, clean, simple composition, negative space, elegant', zh: '极简主义，干净简洁，留白构图，优雅' },
+  'steampunk': { en: 'steampunk, brass gears, vintage machinery, Victorian, intricate', zh: '蒸汽朋克，黄铜齿轮，复古机械，维多利亚风，精密' }
+};
+
+function pgRatio(r) {
+  pgRatioVal = r;
+  showToast('📐 比例设为 ' + r);
+}
+
+function pgGenerate() {
+  var topicInput = document.getElementById('pg-topic');
+  var styleInput = document.getElementById('pg-style');
+  var result = document.getElementById('pg-result');
+  if (!topicInput || !result) return;
+  var topic = topicInput.value.trim();
+  if (!topic) { showToast('⚠️ 请输入绘画主题'); return; }
+  var style = styleInput ? styleInput.value : 'cyberpunk';
+  var styleInfo = PG_STYLES[style] || PG_STYLES['cyberpunk'];
+
+  pgEn = topic + ', ' + styleInfo.en + ', detailed, masterpiece, best quality, --ar ' + pgRatioVal;
+  pgZh = '【主题】' + topic + '\n【风格】' + styleInfo.zh + '\n【质量】极致细节，大师级作品\n【比例】' + pgRatioVal;
+
+  var html = '<div style="margin-bottom:10px;"><strong>🇬🇧 英文提示词：</strong></div>' +
+    '<div style="background:var(--bg-light,#f8fafc);padding:12px;border-radius:8px;font-family:monospace;font-size:12px;">' + pgEscape(pgEn) + '</div>' +
+    '<div style="margin:14px 0 10px;"><strong>🇨🇳 中文说明：</strong></div>' +
+    '<div style="background:var(--bg-light,#f8fafc);padding:12px;border-radius:8px;font-size:12px;white-space:pre-wrap;">' + pgEscape(pgZh) + '</div>';
+  result.innerHTML = html;
+  showToast('⚡ 提示词已生成');
+}
+
+function pgCopy() {
+  if (!pgEn) { showToast('⚠️ 请先生成提示词'); return; }
+  navigator.clipboard.writeText(pgEn).then(function() {
+    showToast('📋 英文提示词已复制');
+  }).catch(function() {
+    showToast('⚠️ 复制失败');
+  });
+}
+
+function pgCopyZh() {
+  if (!pgZh) { showToast('⚠️ 请先生成提示词'); return; }
+  navigator.clipboard.writeText(pgZh).then(function() {
+    showToast('📋 中文说明已复制');
+  }).catch(function() {
+    showToast('⚠️ 复制失败');
+  });
+}
+
+function pgEscape(str) {
+  var div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
+}
+
+// ============================================================
+// 设计规范生成器工具 (dt*)
+// ============================================================
+var dtCss = '';
+var dtJson = '';
+
+function dtGenerate() {
+  var primary = document.getElementById('dt-primary');
+  var secondary = document.getElementById('dt-secondary');
+  var accent = document.getElementById('dt-accent');
+  var bodyFont = document.getElementById('dt-font-body');
+  var headingFont = document.getElementById('dt-font-heading');
+  var result = document.getElementById('dt-result');
+  if (!result) return;
+
+  var p = primary ? primary.value : '#6366f1';
+  var s = secondary ? secondary.value : '#22c55e';
+  var a = accent ? accent.value : '#f59e0b';
+  var bf = bodyFont ? bodyFont.value : 'Inter, system-ui, sans-serif';
+  var hf = headingFont ? headingFont.value : 'Poppins, sans-serif';
+
+  dtCss = ':root {\n' +
+    '  /* 品牌色 */\n' +
+    '  --color-primary: ' + p + ';\n' +
+    '  --color-secondary: ' + s + ';\n' +
+    '  --color-accent: ' + a + ';\n' +
+    '  /* 字体 */\n' +
+    '  --font-body: ' + bf + ';\n' +
+    '  --font-heading: ' + hf + ';\n' +
+    '  /* 圆角/间距 */\n' +
+    '  --radius-sm: 4px;\n' +
+    '  --radius-md: 8px;\n' +
+    '  --radius-lg: 12px;\n' +
+    '  --space-xs: 4px;\n' +
+    '  --space-sm: 8px;\n' +
+    '  --space-md: 16px;\n' +
+    '  --space-lg: 24px;\n' +
+    '}\n';
+
+  dtJson = '{\n' +
+    '  "color": {\n' +
+    '    "primary": "' + p + '",\n' +
+    '    "secondary": "' + s + '",\n' +
+    '    "accent": "' + a + '"\n' +
+    '  },\n' +
+    '  "font": {\n' +
+    '    "body": "' + bf + '",\n' +
+    '    "heading": "' + hf + '"\n' +
+    '  },\n' +
+    '  "radius": { "sm": "4px", "md": "8px", "lg": "12px" },\n' +
+    '  "space": { "xs": "4px", "sm": "8px", "md": "16px", "lg": "24px" }\n' +
+    '}';
+
+  // 预览色板
+  var swatches = '<div style="margin-bottom:10px;">🎨 色板预览：</div><div style="display:flex;gap:10px;margin-bottom:14px;">' +
+    '<div style="width:70px;height:50px;border-radius:8px;background:' + p + ';text-align:center;font-size:11px;color:#fff;display:flex;align-items:center;justify-content:center;">Primary</div>' +
+    '<div style="width:70px;height:50px;border-radius:8px;background:' + s + ';text-align:center;font-size:11px;color:#fff;display:flex;align-items:center;justify-content:center;">Secondary</div>' +
+    '<div style="width:70px;height:50px;border-radius:8px;background:' + a + ';text-align:center;font-size:11px;color:#fff;display:flex;align-items:center;justify-content:center;">Accent</div>' +
+    '</div>';
+
+  result.innerHTML = swatches + '<strong>CSS Variables:</strong>\n' + dtEscape(dtCss) + '\n<strong>JSON Tokens:</strong>\n' + dtEscape(dtJson);
+  showToast('⚡ 设计规范已生成');
+}
+
+function dtCopyCss() {
+  if (!dtCss) { showToast('⚠️ 请先生成规范'); return; }
+  navigator.clipboard.writeText(dtCss).then(function() {
+    showToast('📋 CSS 已复制');
+  }).catch(function() {
+    showToast('⚠️ 复制失败');
+  });
+}
+
+function dtCopyJson() {
+  if (!dtJson) { showToast('⚠️ 请先生成规范'); return; }
+  navigator.clipboard.writeText(dtJson).then(function() {
+    showToast('📋 JSON 已复制');
+  }).catch(function() {
+    showToast('⚠️ 复制失败');
+  });
+}
+
+function dtEscape(str) {
+  var div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
+}

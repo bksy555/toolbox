@@ -8095,6 +8095,104 @@ greet('世界');</textarea>
   handler: () => { }
 },
 
+// ============================================================
+// AI绘画提示词生成器工具 prompt-generator (pg*)
+// ============================================================
+{
+  id: 'prompt-generator',
+  cat: 'ai',
+  icon: '🎨',
+  name: 'AI绘画提示词',
+  desc: '输入主题自动生成专业AI绘画提示词，含风格/光线/镜头/质量词，Midjourney/SD通用',
+  html: `
+    <div class="tool-card">
+      <div class="input-group">
+        <label>绘画主题</label>
+        <input type="text" id="pg-topic" placeholder="如：赛博朋克城市、梦幻森林、宇航员..." onkeydown="if(event.key==='Enter')pgGenerate()">
+      </div>
+      <div class="input-group" style="margin-top:10px;">
+        <label>艺术风格</label>
+        <select id="pg-style" style="width:100%;">
+          <option value="cyberpunk">赛博朋克 Cyberpunk</option>
+          <option value="anime">动漫 Anime</option>
+          <option value="realistic">写实 Realistic</option>
+          <option value="oil">油画 Oil Painting</option>
+          <option value="watercolor">水彩 Watercolor</option>
+          <option value="fantasy">奇幻 Fantasy</option>
+          <option value="minimalist">极简 Minimalist</option>
+          <option value="steampunk">蒸汽朋克 Steampunk</option>
+        </select>
+      </div>
+      <div class="input-group" style="margin-top:10px;">
+        <label>画面比例</label>
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:8px;">
+          <button class="btn btn-sm" onclick="pgRatio('1:1')">1:1</button>
+          <button class="btn btn-sm" onclick="pgRatio('4:3')">4:3</button>
+          <button class="btn btn-sm" onclick="pgRatio('16:9')">16:9</button>
+          <button class="btn btn-sm" onclick="pgRatio('9:16')">9:16</button>
+        </div>
+      </div>
+      <div class="btn-group" style="margin-top:15px;">
+        <button class="btn btn-primary" onclick="pgGenerate()">⚡ 生成提示词</button>
+        <button class="btn btn-secondary" onclick="pgCopy()">📋 复制英文</button>
+        <button class="btn btn-secondary" onclick="pgCopyZh()">📋 复制中文</button>
+      </div>
+      <div id="pg-result" style="margin-top:15px;border:1px solid var(--border,#e2e8f0);border-radius:10px;padding:16px;min-height:100px;font-size:13px;line-height:1.9;"></div>
+      <div id="pg-tip" style="margin-top:15px;font-size:13px;color:var(--text-light);background:var(--bg-light,#f8fafc);padding:12px;border-radius:8px;">
+        💡 提示词结构：主题 + 风格 + 细节 + 光线 + 镜头 + 质量词，兼容 Midjourney / Stable Diffusion
+      </div>
+    </div>
+  `,
+  handler: () => { }
+},
+
+// ============================================================
+// 设计规范生成器工具 design-tokens (dt*)
+// ============================================================
+{
+  id: 'design-tokens',
+  cat: 'color',
+  icon: '🧩',
+  name: '设计规范生成器',
+  desc: '输入品牌色和字体，自动生成CSS变量与JSON设计Token，设计师前端协作必备',
+  html: `
+    <div class="tool-card">
+      <div class="input-group">
+        <label>品牌主色</label>
+        <input type="color" id="dt-primary" value="#6366f1" style="width:100%;height:40px;">
+      </div>
+      <div class="input-group" style="margin-top:10px;">
+        <label>次要色</label>
+        <input type="color" id="dt-secondary" value="#22c55e" style="width:100%;height:40px;">
+      </div>
+      <div class="input-group" style="margin-top:10px;">
+        <label>强调色</label>
+        <input type="color" id="dt-accent" value="#f59e0b" style="width:100%;height:40px;">
+      </div>
+      <div style="margin-top:10px;display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+        <div class="input-group">
+          <label>正文字体</label>
+          <input type="text" id="dt-font-body" value="Inter, system-ui, sans-serif">
+        </div>
+        <div class="input-group">
+          <label>标题字体</label>
+          <input type="text" id="dt-font-heading" value="Poppins, sans-serif">
+        </div>
+      </div>
+      <div class="btn-group" style="margin-top:15px;">
+        <button class="btn btn-primary" onclick="dtGenerate()">⚡ 生成规范</button>
+        <button class="btn btn-secondary" onclick="dtCopyCss()">📋 复制CSS</button>
+        <button class="btn btn-secondary" onclick="dtCopyJson()">📋 复制JSON</button>
+      </div>
+      <div id="dt-result" style="margin-top:15px;border:1px solid var(--border,#e2e8f0);border-radius:10px;padding:16px;min-height:100px;font-family:monospace;font-size:12px;white-space:pre-wrap;"></div>
+      <div id="dt-tip" style="margin-top:15px;font-size:13px;color:var(--text-light);background:var(--bg-light,#f8fafc);padding:12px;border-radius:8px;">
+        💡 自动生成 CSS 自定义属性和 JSON tokens，可用于设计系统与前端开发
+      </div>
+    </div>
+  `,
+  handler: () => { }
+},
+
 
 ];
 
