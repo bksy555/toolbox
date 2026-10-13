@@ -5687,9 +5687,9 @@
       4,
       8
     ],
-    "drawNum": "449",
+    "drawNum": "350",
     "result": "✅",
-    "updatedAt": "2026-09-27T16:03:31.654Z",
+    "updatedAt": "2026-09-27T16:05:00Z",
     "coldDans": [
       3,
       8,
@@ -5713,9 +5713,9 @@
     "result": "❌",
     "updatedAt": "2026-09-29T12:53:42.627Z",
     "coldDans": [
+      4,
       8,
-      3,
-      5
+      7
     ],
     "coldResult": "✅"
   },
@@ -5953,8 +5953,8 @@
     ],
     "coldDans": [
       8,
-      5,
-      0
+      4,
+      5
     ],
     "drawNum": null,
     "updatedAt": null,
