@@ -5951,11 +5951,7 @@
       4,
       9
     ],
-    "coldDans": [
-      8,
-      4,
-      5
-    ],
+    "coldDans": null,
     "drawNum": null,
     "updatedAt": null,
     "result": null,
@@ -5973,11 +5969,15 @@
       4,
       9
     ],
-    "coldDans": null,
-    "drawNum": null,
-    "updatedAt": null,
-    "result": null,
-    "coldResult": null
+    "coldDans": [
+      8,
+      4,
+      5
+    ],
+    "drawNum": "703",
+    "updatedAt": "2026-10-14T22:06:02.431Z",
+    "result": "❌",
+    "coldResult": "❌"
   },
   "2026274": {
     "period": "2026274",
@@ -5991,7 +5991,11 @@
       6,
       7
     ],
-    "coldDans": null,
+    "coldDans": [
+      8,
+      4,
+      5
+    ],
     "drawNum": null,
     "updatedAt": null,
     "result": null,
