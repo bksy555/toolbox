@@ -6206,3 +6206,128 @@ function dtEscape(str) {
   div.textContent = str;
   return div.innerHTML;
 }
+
+// ============================================================
+// UTM链接生成器工具 (ut*)
+// ============================================================
+var utLink = '';
+
+function utGenerate() {
+  var url = document.getElementById('ut-url');
+  var source = document.getElementById('ut-source');
+  var medium = document.getElementById('ut-medium');
+  var campaign = document.getElementById('ut-campaign');
+  var result = document.getElementById('ut-result');
+  if (!url || !result) return;
+
+  var base = url.value.trim();
+  if (!base) { showToast('⚠️ 请输入落地页URL'); return; }
+  // 基础 URL 校验
+  if (!/^https?:\/\//i.test(base)) {
+    base = 'https://' + base;
+  }
+
+  var params = [];
+  var s = source ? source.value.trim() : '';
+  var m = medium ? medium.value.trim() : '';
+  var c = campaign ? campaign.value.trim() : '';
+  if (s) params.push('utm_source=' + encodeURIComponent(s));
+  if (m) params.push('utm_medium=' + encodeURIComponent(m));
+  if (c) params.push('utm_campaign=' + encodeURIComponent(c));
+
+  if (params.length === 0) { showToast('⚠️ 请至少填写一个UTM参数'); return; }
+
+  var sep = base.indexOf('?') > -1 ? '&' : '?';
+  utLink = base + sep + params.join('&');
+  result.innerHTML = utEscape(utLink);
+  showToast('⚡ UTM链接已生成');
+}
+
+function utCopy() {
+  if (!utLink) { showToast('⚠️ 请先生成链接'); return; }
+  navigator.clipboard.writeText(utLink).then(function() {
+    showToast('📋 链接已复制');
+  }).catch(function() {
+    showToast('⚠️ 复制失败');
+  });
+}
+
+function utClear() {
+  var ids = ['ut-url', 'ut-source', 'ut-medium', 'ut-campaign'];
+  ids.forEach(function(id) {
+    var el = document.getElementById(id);
+    if (el) el.value = '';
+  });
+  var result = document.getElementById('ut-result');
+  if (result) result.innerHTML = '';
+  utLink = '';
+  showToast('🗑️ 已清空');
+}
+
+function utEscape(str) {
+  var div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
+}
+
+// ============================================================
+// API密钥生成器工具 (ak*)
+// ============================================================
+var akCurrentKey = '';
+var akCurrentType = 'sk';
+
+function akType(t) {
+  akCurrentType = t;
+  showToast('🔑 密钥类型：' + (t === 'sk' ? 'sk-前缀' : t === 'hex' ? 'HEX' : 'Base64'));
+}
+
+function akCryptoSafeChars(len) {
+  var cryptoObj = window.crypto || window.msCrypto;
+  var bytes = new Uint8Array(len * 2);
+  cryptoObj.getRandomValues(bytes);
+  var chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_';
+  var result = '';
+  for (var i = 0; i < len; i++) {
+    result += chars[bytes[i] % chars.length];
+  }
+  return result;
+}
+
+function akGenerate() {
+  var lenSelect = document.getElementById('ak-length');
+  var result = document.getElementById('ak-result');
+  if (!result) return;
+  var len = lenSelect ? parseInt(lenSelect.value) : 48;
+
+  var key = '';
+  if (akCurrentType === 'sk') {
+    key = 'sk-' + akCryptoSafeChars(len - 3);
+  } else if (akCurrentType === 'hex') {
+    var bytes = new Uint8Array(Math.ceil(len / 2));
+    (window.crypto || window.msCrypto).getRandomValues(bytes);
+    key = Array.prototype.map.call(bytes, function(b) {
+      return ('0' + b.toString(16)).slice(-2);
+    }).join('').slice(0, len);
+  } else {
+    key = akCryptoSafeChars(len);
+  }
+
+  akCurrentKey = key;
+  result.innerHTML = akEscape(key);
+  showToast('🔑 密钥已生成');
+}
+
+function akCopy() {
+  if (!akCurrentKey) { showToast('⚠️ 请先生成密钥'); return; }
+  navigator.clipboard.writeText(akCurrentKey).then(function() {
+    showToast('📋 密钥已复制');
+  }).catch(function() {
+    showToast('⚠️ 复制失败');
+  });
+}
+
+function akEscape(str) {
+  var div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
+}

@@ -8193,6 +8193,88 @@ greet('世界');</textarea>
   handler: () => { }
 },
 
+// ============================================================
+// UTM链接生成器工具 utmbuilder (ut*)
+// ============================================================
+{
+  id: 'utmbuilder',
+  cat: 'dev',
+  icon: '🔗',
+  name: 'UTM链接生成器',
+  desc: '为营销链接添加UTM追踪参数，来源/媒介/活动一目了然，一键复制',
+  html: `
+    <div class="tool-card">
+      <div class="input-group">
+        <label>落地页URL</label>
+        <input type="text" id="ut-url" placeholder="https://example.com/page">
+      </div>
+      <div class="input-group" style="margin-top:10px;">
+        <label>来源 (utm_source)</label>
+        <input type="text" id="ut-source" placeholder="如：google、wechat、baidu">
+      </div>
+      <div class="input-group" style="margin-top:10px;">
+        <label>媒介 (utm_medium)</label>
+        <input type="text" id="ut-medium" placeholder="如：cpc、email、social">
+      </div>
+      <div class="input-group" style="margin-top:10px;">
+        <label>活动 (utm_campaign)</label>
+        <input type="text" id="ut-campaign" placeholder="如：spring_sale、launch">
+      </div>
+      <div class="btn-group" style="margin-top:15px;">
+        <button class="btn btn-primary" onclick="utGenerate()">⚡ 生成链接</button>
+        <button class="btn btn-secondary" onclick="utCopy()">📋 复制</button>
+        <button class="btn btn-secondary" onclick="utClear()">🗑️ 清空</button>
+      </div>
+      <div id="ut-result" style="margin-top:15px;border:1px solid var(--border,#e2e8f0);border-radius:10px;padding:16px;min-height:50px;font-size:13px;word-break:break-all;"></div>
+      <div id="ut-tip" style="margin-top:15px;font-size:13px;color:var(--text-light);background:var(--bg-light,#f8fafc);padding:12px;border-radius:8px;">
+        💡 UTM参数用于Google Analytics等工具统计流量来源，营销必备
+      </div>
+    </div>
+  `,
+  handler: () => { }
+},
+
+// ============================================================
+// API密钥生成器工具 api-key-gen (ak*)
+// ============================================================
+{
+  id: 'api-key-gen',
+  cat: 'security',
+  icon: '🔑',
+  name: 'API密钥生成器',
+  desc: '生成高安全性的API密钥和签名密钥，支持多种格式，开发者必备',
+  html: `
+    <div class="tool-card">
+      <div class="input-group">
+        <label>密钥类型</label>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:8px;">
+          <button class="btn btn-sm" onclick="akType('sk')">sk-前缀</button>
+          <button class="btn btn-sm" onclick="akType('hex')">HEX</button>
+          <button class="btn btn-sm" onclick="akType('base64')">Base64</button>
+        </div>
+      </div>
+      <div class="input-group" style="margin-top:10px;">
+        <label>密钥长度（字符）</label>
+        <select id="ak-length" style="width:100%;">
+          <option value="32">32位</option>
+          <option value="48" selected>48位</option>
+          <option value="64">64位</option>
+          <option value="96">96位</option>
+        </select>
+      </div>
+      <div class="btn-group" style="margin-top:15px;">
+        <button class="btn btn-primary" onclick="akGenerate()">⚡ 生成密钥</button>
+        <button class="btn btn-secondary" onclick="akCopy()">📋 复制</button>
+      </div>
+      <div id="ak-result" style="margin-top:15px;border:1px solid var(--border,#e2e8f0);border-radius:10px;padding:16px;min-height:60px;font-family:monospace;font-size:12px;word-break:break-all;"></div>
+      <div id="ak-tip" style="margin-top:15px;font-size:13px;color:var(--text-light);background:var(--bg-light,#f8fafc);padding:12px;border-radius:8px;">
+        💡 使用浏览器加密随机源生成，适合用于API鉴权、签名、Token
+      </div>
+    </div>
+  `,
+  handler: () => { }
+},
+
 
 ];
 
