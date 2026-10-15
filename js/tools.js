@@ -8275,6 +8275,80 @@ greet('世界');</textarea>
   handler: () => { }
 },
 
+// ============================================================
+// 大纲生成器工具 outline-generator (og*)
+// ============================================================
+{
+  id: 'outline-generator',
+  cat: 'text',
+  icon: '📑',
+  name: '大纲生成器',
+  desc: '输入主题自动生成文章/视频/方案大纲，含标题、要点、小节，内容创作必备',
+  html: `
+    <div class="tool-card">
+      <div class="input-group">
+        <label>创作主题</label>
+        <input type="text" id="og-topic" placeholder="如：新手如何学Python、公司年会策划方案">
+      </div>
+      <div class="input-group" style="margin-top:10px;">
+        <label>内容类型</label>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:8px;">
+          <button class="btn btn-sm" onclick="ogType('article')">📄 文章</button>
+          <button class="btn btn-sm" onclick="ogType('video')">🎬 视频</button>
+          <button class="btn btn-sm" onclick="ogType('plan')">📋 方案</button>
+        </div>
+      </div>
+      <div class="btn-group" style="margin-top:15px;">
+        <button class="btn btn-primary" onclick="ogGenerate()">⚡ 生成大纲</button>
+        <button class="btn btn-secondary" onclick="ogCopy()">📋 复制大纲</button>
+      </div>
+      <div id="og-result" style="margin-top:15px;border:1px solid var(--border,#e2e8f0);border-radius:10px;padding:16px;min-height:100px;font-size:13px;line-height:1.9;"></div>
+      <div id="og-tip" style="margin-top:15px;font-size:13px;color:var(--text-light);background:var(--bg-light,#f8fafc);padding:12px;border-radius:8px;">
+        💡 基于主题自动生成结构化大纲，包含引言、小节、总结，可直接用于创作
+      </div>
+    </div>
+  `,
+  handler: () => { }
+},
+
+// ============================================================
+// SVG优化器工具 svg-minifier (sm*)
+// ============================================================
+{
+  id: 'svg-minifier',
+  cat: 'dev',
+  icon: '📉',
+  name: 'SVG优化器',
+  desc: '压缩优化SVG代码，移除冗余属性、压缩空格注释，减小文件体积',
+  html: `
+    <div class="tool-card">
+      <div class="input-group">
+        <label>粘贴SVG代码</label>
+        <textarea id="sm-input" placeholder="<svg xmlns='...'><path d='...'/>...</svg>" style="height:160px;font-family:monospace;"></textarea>
+      </div>
+      <div class="btn-group" style="margin-top:15px;">
+        <button class="btn btn-primary" onclick="smMinify()">⚡ 优化</button>
+        <button class="btn btn-secondary" onclick="smCopy()">📋 复制结果</button>
+        <button class="btn btn-secondary" onclick="smSample()">📋 示例</button>
+      </div>
+      <div style="margin-top:15px;display:grid;grid-template-columns:1fr 1fr;gap:15px;">
+        <div>
+          <div style="font-size:12px;color:var(--text-light);margin-bottom:6px;">优化前</div>
+          <div id="sm-before" style="border:1px solid var(--border,#e2e8f0);border-radius:8px;padding:10px;font-size:12px;color:var(--text);min-height:60px;word-break:break-all;"></div>
+        </div>
+        <div>
+          <div style="font-size:12px;color:var(--text-light);margin-bottom:6px;">优化后</div>
+          <div id="sm-after" style="border:1px solid #22c55e;border-radius:8px;padding:10px;font-size:12px;color:#22c55e;min-height:60px;word-break:break-all;"></div>
+        </div>
+      </div>
+      <div id="sm-tip" style="margin-top:15px;font-size:13px;color:var(--text-light);background:var(--bg-light,#f8fafc);padding:12px;border-radius:8px;">
+        💡 优化规则：移除注释、压缩空白、移除冗余属性（如空defs），保留可读性
+      </div>
+    </div>
+  `,
+  handler: () => { }
+},
+
 
 ];
 

@@ -6331,3 +6331,149 @@ function akEscape(str) {
   div.textContent = str;
   return div.innerHTML;
 }
+
+// ============================================================
+// 大纲生成器工具 (og*)
+// ============================================================
+var ogCurrentType = 'article';
+var ogOutline = '';
+
+function ogType(t) {
+  ogCurrentType = t;
+  showToast('📑 类型：' + (t === 'article' ? '文章' : t === 'video' ? '视频' : '方案'));
+}
+
+function ogGenerate() {
+  var topicInput = document.getElementById('og-topic');
+  var result = document.getElementById('og-result');
+  if (!topicInput || !result) return;
+  var topic = topicInput.value.trim();
+  if (!topic) { showToast('⚠️ 请输入创作主题'); return; }
+
+  var lines = ['『' + topic + '』' + ogTypeName() + '大纲'];
+  lines.push('');
+  if (ogCurrentType === 'video') {
+    lines.push('00:00 开场引言——点题与吸引');
+    lines.push('01:00 第一部分：' + topic + '的现状与背景');
+    lines.push('03:00 第二部分：核心要点深入拆解');
+    lines.push('06:00 第三部分：常见误区与避坑');
+    lines.push('09:00 第四部分：实战演示/案例');
+    lines.push('12:00 总结回顾 + 行动建议');
+    lines.push('13:00 结尾CTA：关注收藏转发');
+  } else if (ogCurrentType === 'plan') {
+    lines.push('一、背景与目标');
+    lines.push('    1.1 项目背景');
+    lines.push('    1.2 核心目标与预期成果');
+    lines.push('二、实施方案');
+    lines.push('    2.1 阶段一：前期准备');
+    lines.push('    2.2 阶段二：执行落地');
+    lines.push('    2.3 阶段三：复盘优化');
+    lines.push('三、资源与预算');
+    lines.push('四、风险与应对');
+    lines.push('五、时间规划表');
+    lines.push('六、总结展望');
+  } else {
+    lines.push('引言：为什么' + topic + '值得关注');
+    lines.push('');
+    lines.push('一、' + topic + '的基础认知');
+    lines.push('    1.1 核心概念与原理');
+    lines.push('    1.2 常见误区澄清');
+    lines.push('');
+    lines.push('二、' + topic + '的实用方法');
+    lines.push('    2.1 第一步：准备工作');
+    lines.push('    2.2 第二步：具体操作');
+    lines.push('    2.3 第三步：优化提升');
+    lines.push('');
+    lines.push('三、' + topic + '的进阶技巧');
+    lines.push('    3.1 常见问题与解决');
+    lines.push('    3.2 实战案例复盘');
+    lines.push('');
+    lines.push('结语：总结要点 + 行动号召');
+  }
+
+  ogOutline = lines.join('\n');
+  result.innerHTML = ogEscape(ogOutline).replace(/\n/g, '<br>');
+  showToast('📑 大纲已生成');
+}
+
+function ogTypeName() {
+  return ogCurrentType === 'article' ? '文章' : ogCurrentType === 'video' ? '视频' : '方案';
+}
+
+function ogCopy() {
+  if (!ogOutline) { showToast('⚠️ 请先生成大纲'); return; }
+  navigator.clipboard.writeText(ogOutline).then(function() {
+    showToast('📋 大纲已复制');
+  }).catch(function() {
+    showToast('⚠️ 复制失败');
+  });
+}
+
+function ogEscape(str) {
+  var div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
+}
+
+// ============================================================
+// SVG优化器工具 (sm*)
+// ============================================================
+var smResult = '';
+
+function smSample() {
+  var input = document.getElementById('sm-input');
+  if (input) {
+    input.value = '<!-- 示例图标 -->\n<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">\n  <defs></defs>\n  <path fill="#6366f1" d="M12 2 L15 9 L22 9.3 L16.5 14 L18 21 L12 17.3 L6 21 L7.5 14 L2 9.3 L9 9 Z" />\n</svg>';
+  }
+  smMinify();
+}
+
+function smMinify() {
+  var input = document.getElementById('sm-input');
+  var before = document.getElementById('sm-before');
+  var after = document.getElementById('sm-after');
+  if (!input || !before || !after) return;
+  var svg = input.value;
+  if (!svg.trim()) { showToast('⚠️ 请粘贴SVG代码'); return; }
+
+  var originalSize = svg.length;
+  var minified = svg;
+
+  // 1. 移除注释 <!-- ... -->
+  minified = minified.replace(/<!--[\s\S]*?-->/g, '');
+  // 2. 压缩空白（标签间）
+  minified = minified.replace(/>\s+</g, '><');
+  // 3. 移除行首缩进和多余空白
+  minified = minified.replace(/^\s+|\s+$/gm, '');
+  // 4. 合并连续空白
+  minified = minified.replace(/\s{2,}/g, ' ');
+  // 5. 移除空 defs
+  minified = minified.replace(/<defs>\s*<\/defs>/g, '');
+  // 6. 属性引号保留（安全），压缩属性间空格
+  minified = minified.replace(/(")\s+/g, '$1 ');
+  minified = minified.trim();
+
+  var newSize = minified.length;
+  var saved = originalSize - newSize;
+  var pct = originalSize > 0 ? Math.round(saved / originalSize * 100) : 0;
+
+  smResult = minified;
+  before.innerHTML = '<div>原始 ' + originalSize + ' 字符</div><div style="word-break:break-all;margin-top:6px;">' + smEscape(svg.slice(0, 300)) + (svg.length > 300 ? '…' : '') + '</div>';
+  after.innerHTML = '<div>优化后 ' + newSize + ' 字符（-' + saved + '，-'+ pct + '%）</div><div style="word-break:break-all;margin-top:6px;">' + smEscape(minified.slice(0, 300)) + (minified.length > 300 ? '…' : '') + '</div>';
+  showToast('📉 优化完成，减少 ' + saved + ' 字符（' + pct + '%）');
+}
+
+function smCopy() {
+  if (!smResult) { showToast('⚠️ 请先优化'); return; }
+  navigator.clipboard.writeText(smResult).then(function() {
+    showToast('📋 优化后SVG已复制');
+  }).catch(function() {
+    showToast('⚠️ 复制失败');
+  });
+}
+
+function smEscape(str) {
+  var div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
+}
