@@ -6477,3 +6477,198 @@ function smEscape(str) {
   div.textContent = str;
   return div.innerHTML;
 }
+
+// ============================================================
+// 时间线生成器工具 (tl*)
+// ============================================================
+var tlCanvas = null;
+
+function tlGenerate() {
+  var title = document.getElementById('tl-title');
+  var input = document.getElementById('tl-input');
+  var wrap = document.getElementById('tl-canvas-wrap');
+  if (!title || !input || !wrap) return;
+  var titleText = title.value.trim() || '我的时间线';
+  var text = input.value.trim();
+  if (!text) { showToast('⚠️ 请输入事件列表'); return; }
+
+  // 解析事件
+  var events = [];
+  text.split('\n').forEach(function(line) {
+    line = line.trim();
+    if (!line) return;
+    var parts = line.split('|');
+    if (parts.length < 2) return;
+    var year = parts[0].trim();
+    var desc = parts.slice(1).join('|').trim();
+    if (year && desc) events.push({ year: year, desc: desc });
+  });
+  if (events.length === 0) { showToast('⚠️ 没有有效事件，格式：年份|事件'); return; }
+
+  // 按年份排序
+  events.sort(function(a, b) {
+    var na = parseFloat(a.year) || 0, nb = parseFloat(b.year) || 0;
+    return na - nb;
+  });
+
+  var canvas = document.getElementById('tl-canvas');
+  if (!canvas) return;
+  tlCanvas = canvas;
+  var ctx = canvas.getContext('2d');
+
+  var itemH = 84;
+  var canvasW = 560;
+  var canvasH = 80 + events.length * itemH + 20;
+  canvas.width = canvasW;
+  canvas.height = canvasH;
+
+  ctx.fillStyle = '#ffffff';
+  ctx.fillRect(0, 0, canvasW, canvasH);
+
+  // 标题
+  ctx.fillStyle = '#1e1b4b';
+  ctx.font = 'bold 18px sans-serif';
+  ctx.textAlign = 'center';
+  ctx.fillText(titleText, canvasW / 2, 40);
+
+  // 中轴线
+  var lineX = 120;
+  ctx.strokeStyle = '#c7d2fe';
+  ctx.lineWidth = 3;
+  ctx.beginPath();
+  ctx.moveTo(lineX, 70);
+  ctx.lineTo(lineX, canvasH - 20);
+  ctx.stroke();
+
+  var colors = ['#6366f1', '#22c55e', '#f59e0b', '#ef4444', '#06b6d4', '#a855f7'];
+  events.forEach(function(ev, i) {
+    var y = 80 + i * itemH;
+    var color = colors[i % colors.length];
+    // 圆点
+    ctx.fillStyle = color;
+    ctx.beginPath();
+    ctx.arc(lineX, y, 10, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.strokeStyle = '#ffffff';
+    ctx.lineWidth = 2;
+    ctx.stroke();
+    // 年份
+    ctx.fillStyle = color;
+    ctx.font = 'bold 15px sans-serif';
+    ctx.textAlign = 'right';
+    ctx.fillText(ev.year, lineX - 20, y + 5);
+    // 描述
+    ctx.fillStyle = '#334155';
+    ctx.font = '13px sans-serif';
+    ctx.textAlign = 'left';
+    // 换行
+    var words = ev.desc;
+    var maxW = canvasW - lineX - 30;
+    var lines = [];
+    var cur = '';
+    for (var c = 0; c < words.length; c++) {
+      cur += words[c];
+      if (ctx.measureText(cur).width > maxW) {
+        lines.push(cur.slice(0, -1));
+        cur = words[c];
+      }
+    }
+    if (cur) lines.push(cur);
+    lines.slice(0, 3).forEach(function(line, li) {
+      ctx.fillText(line, lineX + 24, y + li * 18 - (lines.length > 1 ? 10 : 0) + 5);
+    });
+  });
+
+  // 边框
+  ctx.strokeStyle = '#e2e8f0';
+  ctx.lineWidth = 1;
+  ctx.strokeRect(0, 0, canvasW, canvasH);
+
+  wrap.style.display = 'block';
+  showToast('⏳ 时间线已生成 ' + events.length + ' 个事件');
+}
+
+function tlDownload() {
+  if (!tlCanvas) { showToast('⚠️ 请先生成时间线'); return; }
+  var a = document.createElement('a');
+  a.href = tlCanvas.toDataURL('image/png');
+  a.download = 'timeline-' + Date.now() + '.png';
+  a.click();
+  showToast('📥 时间线已导出');
+}
+
+// ============================================================
+// 提词器工具 (tp*)
+// ============================================================
+var tpOverlay = null;
+var tpTimer = null;
+var tpPos = 0;
+var tpPaused = false;
+
+function tpStart() {
+  var input = document.getElementById('tp-input');
+  if (!input) return;
+  var text = input.value.trim();
+  if (!text) { showToast('⚠️ 请先输入演讲稿'); return; }
+
+  var fsSelect = document.getElementById('tp-fontsize');
+  var spSelect = document.getElementById('tp-speed');
+  var fontSize = fsSelect ? parseInt(fsSelect.value) : 24;
+  var speed = spSelect ? parseInt(spSelect.value) : 60;
+
+  // 创建全屏遮罩
+  tpOverlay = document.createElement('div');
+  tpOverlay.style.cssText = 'position:fixed;top:0;left:0;width:100vw;height:100vh;background:#000;z-index:99999;overflow:hidden;cursor:pointer;display:flex;align-items:center;justify-content:center;';
+  var content = document.createElement('div');
+  content.id = 'tp-content';
+  content.style.cssText = 'color:#fff;font-size:' + fontSize + 'px;line-height:1.8;padding:40px;white-space:pre-wrap;width:80%;text-align:center;transition:transform 0.05s linear;';
+  content.textContent = text;
+  tpOverlay.appendChild(content);
+  document.body.appendChild(tpOverlay);
+
+  tpPos = 0;
+  tpPaused = false;
+  // 滚动逻辑：每帧上移
+  var lastTime = Date.now();
+  tpTimer = setInterval(function() {
+    if (tpPaused) return;
+    var now = Date.now();
+    var delta = (now - lastTime) / 1000;
+    lastTime = now;
+    tpPos += speed * 2 * delta;  // px/s
+    content.style.transform = 'translateY(' + (-tpPos) + 'px)';
+  }, 50);
+
+  // 键盘控制
+  document.addEventListener('keydown', tpKeyHandler);
+
+  // 点击暂停/继续
+  tpOverlay.onclick = function() { tpPaused = !tpPaused; };
+
+  showToast('🎙️ 提词器已启动，空格暂停，Esc退出');
+}
+
+function tpKeyHandler(e) {
+  if (!tpOverlay) return;
+  if (e.key === 'Escape') {
+    tpStop();
+  } else if (e.key === ' ') {
+    e.preventDefault();
+    tpPaused = !tpPaused;
+  } else if (e.key === 'ArrowUp') {
+    tpPos = Math.max(0, tpPos - 40);
+  } else if (e.key === 'ArrowDown') {
+    tpPos += 40;
+  }
+}
+
+function tpStop() {
+  if (tpTimer) clearInterval(tpTimer);
+  tpTimer = null;
+  if (tpOverlay) {
+    tpOverlay.remove();
+    tpOverlay = null;
+  }
+  document.removeEventListener('keydown', tpKeyHandler);
+  showToast('⏹️ 提词器已退出');
+}

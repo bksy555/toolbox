@@ -8349,6 +8349,87 @@ greet('世界');</textarea>
   handler: () => { }
 },
 
+// ============================================================
+// 时间线生成器工具 timeline-generator (tl*)
+// ============================================================
+{
+  id: 'timeline-generator',
+  cat: 'fun',
+  icon: '⏳',
+  name: '时间线生成器',
+  desc: '输入事件和时间点，自动生成可视化时间线，历史大事记/项目里程碑必备',
+  html: `
+    <div class="tool-card">
+      <div class="input-group">
+        <label>时间线标题</label>
+        <input type="text" id="tl-title" placeholder="如：公司发展历程、项目里程碑">
+      </div>
+      <div class="input-group" style="margin-top:10px;">
+        <label>事件列表（每行：年份|事件描述）</label>
+        <textarea id="tl-input" placeholder="2015|公司成立&#10;2018|获得A轮融资&#10;2020|用户突破百万&#10;2023|港股上市" style="height:140px;font-family:monospace;"></textarea>
+      </div>
+      <div class="btn-group" style="margin-top:15px;">
+        <button class="btn btn-primary" onclick="tlGenerate()">⚡ 生成时间线</button>
+        <button class="btn btn-secondary" onclick="tlDownload()">📥 导出PNG</button>
+      </div>
+      <div id="tl-canvas-wrap" style="margin-top:15px;overflow-x:auto;display:none;">
+        <canvas id="tl-canvas"></canvas>
+      </div>
+      <div id="tl-tip" style="margin-top:15px;font-size:13px;color:var(--text-light);background:var(--bg-light,#f8fafc);padding:12px;border-radius:8px;">
+        💡 每行格式：年份|事件，自动按时间排序生成竖向时间线
+      </div>
+    </div>
+  `,
+  handler: () => { }
+},
+
+// ============================================================
+// 提词器工具 teleprompter (tp*)
+// ============================================================
+{
+  id: 'teleprompter',
+  cat: 'media',
+  icon: '🎙️',
+  name: '提词器',
+  desc: '全屏滚动提词器，支持字号/速度调节，录视频、直播、演讲必备',
+  html: `
+    <div class="tool-card">
+      <div class="input-group">
+        <label>演讲稿/脚本内容</label>
+        <textarea id="tp-input" placeholder="粘贴你的演讲稿..." style="height:160px;"></textarea>
+      </div>
+      <div style="margin-top:10px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;">
+        <div class="input-group">
+          <label>字号</label>
+          <select id="tp-fontsize">
+            <option value="18">小</option>
+            <option value="24" selected>中</option>
+            <option value="32">大</option>
+            <option value="44">特大</option>
+          </select>
+        </div>
+        <div class="input-group">
+          <label>速度</label>
+          <select id="tp-speed">
+            <option value="40">慢</option>
+            <option value="60" selected>中</option>
+            <option value="80">快</option>
+            <option value="110">很快</option>
+          </select>
+        </div>
+        <div class="input-group">
+          <label>&nbsp;</label>
+          <button class="btn btn-primary" style="width:100%;" onclick="tpStart()">▶️ 开始提词</button>
+        </div>
+      </div>
+      <div id="tp-tip" style="margin-top:15px;font-size:13px;color:var(--text-light);background:var(--bg-light,#f8fafc);padding:12px;border-radius:8px;">
+        💡 点击"开始提词"进入全屏模式，按空格暂停/继续，Esc退出
+      </div>
+    </div>
+  `,
+  handler: () => { }
+},
+
 
 ];
 
