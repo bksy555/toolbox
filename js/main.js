@@ -6808,3 +6808,132 @@ function pcCheck() {
     return '<div style="display:flex;justify-content:space-between;padding:6px 10px;background:var(--bg-light,#f8fafc);border-radius:6px;"><span>' + c[0] + '</span><span style="color:' + c[1] + ';">' + c[0].slice(0,1) + '</span></div>';
   }).join('');
 }
+
+// ============================================================
+// URL解析器工具 (up*)
+// ============================================================
+var upParamsText = '';
+
+function upParse() {
+  var input = document.getElementById('up-url');
+  var result = document.getElementById('up-result');
+  if (!input || !result) return;
+  var url = input.value.trim();
+  if (!url) { showToast('⚠️ 请输入URL'); return; }
+  if (!/^https?:\/\//i.test(url)) {
+    url = 'https://' + url;
+  }
+
+  var parsed = new URL(url);
+  var html = '<div style="display:grid;gap:8px;font-size:13px;">';
+  var rows = [
+    ['协议', parsed.protocol.replace(':','')],
+    ['主机', parsed.hostname],
+    ['端口', parsed.port || '默认'],
+    ['路径', parsed.pathname || '/'],
+    ['哈希', parsed.hash || '无'],
+    ['查询参数', Object.keys(Object.fromEntries(parsed.searchParams)).length > 0 ? Object.keys(Object.fromEntries(parsed.searchParams)).length + ' 个' : '无']
+  ];
+  rows.forEach(function(r) {
+    html += '<div style="display:flex;padding:8px 12px;background:var(--bg-light,#f8fafc);border-radius:6px;"><span style="width:80px;color:var(--text-light);">' + r[0] + '</span><span style="flex:1;word-break:break-all;">' + upEscape(r[1]) + '</span></div>';
+  });
+
+  // 参数详情
+  var params = Object.fromEntries(parsed.searchParams);
+  var paramKeys = Object.keys(params);
+  if (paramKeys.length > 0) {
+    html += '<div style="margin-top:8px;font-weight:600;">📋 查询参数明细</div>';
+    paramKeys.forEach(function(k) {
+      html += '<div style="display:flex;padding:6px 12px;background:var(--bg-light,#f8fafc);border-radius:6px;margin-top:4px;"><span style="width:140px;color:var(--accent,#6366f1);word-break:break-all;">' + upEscape(k) + '</span><span style="flex:1;word-break:break-all;">' + upEscape(params[k]) + '</span></div>';
+    });
+    upParamsText = paramKeys.map(function(k) { return k + '=' + params[k]; }).join('\n');
+  } else {
+    upParamsText = '';
+  }
+
+  html += '</div>';
+  result.innerHTML = html;
+  showToast('🌐 URL已解析');
+}
+
+function upCopyParams() {
+  if (!upParamsText) { showToast('⚠️ 没有查询参数'); return; }
+  navigator.clipboard.writeText(upParamsText).then(function() {
+    showToast('📋 参数已复制');
+  }).catch(function() {
+    showToast('⚠️ 复制失败');
+  });
+}
+
+function upEscape(str) {
+  var div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
+}
+
+// ============================================================
+// 文本装饰器工具 (td*)
+// ============================================================
+var tdResults = [];
+
+function tdGenerate() {
+  var input = document.getElementById('td-input');
+  var list = document.getElementById('td-list');
+  if (!input || !list) return;
+  var text = input.value.trim();
+  if (!text) { showToast('⚠️ 请输入文字'); return; }
+
+  var styles = [
+    { name: '⭐ 星号环绕', fn: function(s) { return '★ ' + s + ' ★'; } },
+    { name: '💖 爱心包裹', fn: function(s) { return '❤ ' + s + ' ❤'; } },
+    { name: '✨ 闪烁装饰', fn: function(s) { return '✦ ' + s + ' ✦'; } },
+    { name: '🎀 缎带风格', fn: function(s) { return '『 ' + s + ' 』'; } },
+    { name: '🔥 火焰环绕', fn: function(s) { return '🔥' + s + '🔥'; } },
+    { name: '🌙 月亮装饰', fn: function(s) { return '☾ ' + s + ' ☽'; } },
+    { name: '♛ 皇冠前缀', fn: function(s) { return '♛ ' + s; } },
+    { name: '💎 钻石点缀', fn: function(s) { return '◆ ' + s + ' ◆'; } },
+    { name: '🌸 花瓣样式', fn: function(s) { return '✿ ' + s + ' ✿'; } },
+    { name: '📌 醒目强调', fn: function(s) { return '▶ ' + s + ' ◀'; } },
+    { name: '✨ 双星包裹', fn: function(s) { return '✦✦ ' + s + ' ✦✦'; } },
+    { name: '🎯 目标样式', fn: function(s) { return '◎ ' + s + ' ◎'; } }
+  ];
+
+  tdResults = styles.map(function(st) {
+    return { name: st.name, text: st.fn(text) };
+  });
+
+  var html = '<div style="font-weight:bold;margin-bottom:10px;">✨ 已生成 ' + tdResults.length + ' 种装饰样式</div>';
+  tdResults.forEach(function(item, i) {
+    html += '<div style="display:flex;justify-content:space-between;align-items:center;padding:10px;background:var(--bg-light,#f8fafc);border-radius:8px;margin-bottom:8px;cursor:pointer;" onclick="tdCopyOne(' + i + ')" title="点击复制">';
+    html += '<span style="font-size:11px;color:var(--text-light);margin-right:10px;">' + item.name + '</span>';
+    html += '<span style="font-size:14px;flex:1;text-align:center;">' + tdEscape(item.text) + '</span>';
+    html += '</div>';
+  });
+  list.innerHTML = html;
+  showToast('✨ 已生成 ' + tdResults.length + ' 种样式');
+}
+
+function tdCopyOne(idx) {
+  if (idx < 0 || idx >= tdResults.length) return;
+  navigator.clipboard.writeText(tdResults[idx].text).then(function() {
+    showToast('📋 已复制：' + tdResults[idx].name);
+  }).catch(function() {
+    showToast('⚠️ 复制失败');
+  });
+}
+
+function tdCopy() {
+  if (tdResults.length === 0) { showToast('⚠️ 请先生成'); return; }
+  var text = tdResults.map(function(r, i) { return r.text; }).join('\n');
+  navigator.clipboard.writeText(text).then(function() {
+    showToast('📋 已复制全部');
+  }).catch(function() {
+    showToast('⚠️ 复制失败');
+  });
+}
+
+function tdEscape(str) {
+  var div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
+}

@@ -8501,6 +8501,62 @@ greet('世界');</textarea>
   handler: () => { }
 },
 
+// ============================================================
+// URL解析器工具 url-parser (up*)
+// ============================================================
+{
+  id: 'url-parser',
+  cat: 'dev',
+  icon: '🌐',
+  name: 'URL解析器',
+  desc: '解析URL的协议、域名、路径、查询参数和哈希，快速读懂任何链接',
+  html: `
+    <div class="tool-card">
+      <div class="input-group">
+        <label>粘贴URL</label>
+        <input type="text" id="up-url" placeholder="https://example.com/path?query=1#hash" onkeydown="if(event.key==='Enter')upParse()">
+      </div>
+      <div class="btn-group" style="margin-top:15px;">
+        <button class="btn btn-primary" onclick="upParse()">⚡ 解析</button>
+        <button class="btn btn-secondary" onclick="upCopyParams()">📋 复制参数</button>
+      </div>
+      <div id="up-result" style="margin-top:15px;"></div>
+      <div id="up-tip" style="margin-top:15px;font-size:13px;color:var(--text-light);background:var(--bg-light,#f8fafc);padding:12px;border-radius:8px;">
+        💡 自动拆解URL各组成部分并列出查询参数，适合调试和营销分析
+      </div>
+    </div>
+  `,
+  handler: () => { }
+},
+
+// ============================================================
+// 文本装饰器工具 text-decorator (td*)
+// ============================================================
+{
+  id: 'text-decorator',
+  cat: 'text',
+  icon: '✨',
+  name: '文本装饰器',
+  desc: '一键生成带符号装饰/特殊字体的文本，用于昵称、签名、标题美化',
+  html: `
+    <div class="tool-card">
+      <div class="input-group">
+        <label>输入文字</label>
+        <input type="text" id="td-input" placeholder="如：Hello">
+      </div>
+      <div class="btn-group" style="margin-top:15px;">
+        <button class="btn btn-primary" onclick="tdGenerate()">⚡ 生成装饰</button>
+        <button class="btn btn-secondary" onclick="tdCopy()">📋 复制全部</button>
+      </div>
+      <div id="td-list" style="margin-top:15px;"></div>
+      <div id="td-tip" style="margin-top:15px;font-size:13px;color:var(--text-light);background:var(--bg-light,#f8fafc);padding:12px;border-radius:8px;">
+        💡 生成多种装饰样式：环绕符号、爱心包裹、空心字等，适合昵称和标题
+      </div>
+    </div>
+  `,
+  handler: () => { }
+},
+
 
 ];
 
