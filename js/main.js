@@ -6672,3 +6672,139 @@ function tpStop() {
   document.removeEventListener('keydown', tpKeyHandler);
   showToast('⏹️ 提词器已退出');
 }
+
+// ============================================================
+// README生成器工具 (rg*)
+// ============================================================
+var rgReadme = '';
+
+function rgGenerate() {
+  var name = document.getElementById('rg-name');
+  var desc = document.getElementById('rg-desc');
+  var features = document.getElementById('rg-features');
+  var install = document.getElementById('rg-install');
+  var result = document.getElementById('rg-result');
+  if (!name || !result) return;
+  var projectName = name.value.trim();
+  if (!projectName) { showToast('⚠️ 请输入项目名称'); return; }
+  var descText = desc ? desc.value.trim() : '';
+  var featuresText = features ? features.value : '';
+  var installCmd = install ? install.value.trim() : '';
+
+  var featuresList = featuresText.split('\n').map(function(s) { return s.trim(); }).filter(Boolean);
+  var md = '# ' + projectName + '\n\n';
+  if (descText) md += '> ' + descText + '\n\n';
+
+  // 徽章
+  md += '![GitHub stars](https://img.shields.io/badge/stars-★_star-yellow) ';
+  md += '![License](https://img.shields.io/badge/license-MIT-green) ';
+  md += '![Version](https://img.shields.io/badge/version-1.0.0-blue)\n\n';
+
+  md += '## ✨ 功能特点\n\n';
+  if (featuresList.length > 0) {
+    featuresList.forEach(function(f) { md += '- ' + f + '\n'; });
+  } else {
+    md += '- 快速上手\n- 轻量高效\n- 开源免费\n';
+  }
+  md += '\n';
+
+  md += '## 🚀 快速开始\n\n';
+  if (installCmd) {
+    md += '### 安装\n\n```bash\n' + installCmd + '\n```\n\n';
+  } else {
+    md += '```bash\n# 克隆仓库\ngit clone https://github.com/yourname/' + projectName.toLowerCase().replace(/\s+/g, '-') + '.git\n```\n\n';
+  }
+  md += '### 使用\n\n```\n// 示例代码\n```\n\n';
+
+  md += '## 📦 技术栈\n\n- JavaScript\n- HTML5 / CSS3\n\n';
+  md += '## 🤝 贡献指南\n\n欢迎提交 Issue 和 PR！\n\n';
+  md += '## 📄 License\n\n[MIT](LICENSE) © ' + new Date().getFullYear() + ' ' + projectName + '\n';
+
+  rgReadme = md;
+  result.textContent = md;
+  showToast('📘 README 已生成');
+}
+
+function rgCopy() {
+  if (!rgReadme) { showToast('⚠️ 请先生成README'); return; }
+  navigator.clipboard.writeText(rgReadme).then(function() {
+    showToast('📋 README 已复制');
+  }).catch(function() {
+    showToast('⚠️ 复制失败');
+  });
+}
+
+// ============================================================
+// 密码强度检测器工具 (pc*)
+// ============================================================
+var pcCommon = ['123456','password','12345678','qwerty','123456789','12345','1234','111111','1234567','dragon','123123','baseball','abc123','football','monkey','letmein','696969','shadow','master','666666','qwertyuiop','123321','mustang','1234567890','michael','654321','superman','1qaz2wsx','7777777','121212','000000','qazwsx','123qwe','killer','trustno1','jordan','jennifer','zxcvbnm','asdfgh','hunter','buster','soccer','harley','batman','andrew','tigger','sunshine','iloveyou','2000','charlie','robert','thomas','hockey','ranger','daniel','starwars','klaster','112233','george','computer','michelle','jessica','pepper','1111','zxcvbn','555555','11111111','131313','freedom','777777','pass','maggie','159753','aaaaaa','ginger','princess','joshua','cheese','amanda','summer','love','ashley','nicole','chelsea','biteme','matthew','access','yankees','987654321','dallas','austin','thunder','taylor','matrix','mobilemail','mom','monitor','monitoring','montana','moon','moscow'];
+
+function pcCheck() {
+  var input = document.getElementById('pc-password');
+  var bar = document.getElementById('pc-bar');
+  var score = document.getElementById('pc-score');
+  var verdict = document.getElementById('pc-verdict');
+  var details = document.getElementById('pc-details');
+  if (!input || !bar || !score || !verdict || !details) return;
+  var pwd = input.value;
+  if (!pwd) {
+    bar.style.width = '0%';
+    score.textContent = '—';
+    score.style.color = '';
+    verdict.textContent = '输入密码开始检测';
+    details.innerHTML = '';
+    return;
+  }
+
+  var points = 0;
+  var checks = [];
+  var len = pwd.length;
+
+  // 长度
+  if (len >= 8) { points += 20; checks.push(['✅ 长度 ≥ 8 位', '#22c55e']); }
+  else if (len >= 6) { points += 10; checks.push(['⚠️ 长度 6-7 位，建议 ≥ 8', '#f59e0b']); }
+  else { checks.push(['❌ 长度 < 6 位，太短', '#ef4444']); }
+
+  // 字符种类
+  var hasLower = /[a-z]/.test(pwd);
+  var hasUpper = /[A-Z]/.test(pwd);
+  var hasDigit = /\d/.test(pwd);
+  var hasSymbol = /[^A-Za-z0-9]/.test(pwd);
+  var variety = (hasLower ? 1 : 0) + (hasUpper ? 1 : 0) + (hasDigit ? 1 : 0) + (hasSymbol ? 1 : 0);
+  points += Math.min(40, variety * 10);
+  checks.push([variety >= 3 ? '✅ 包含 ' + variety + ' 种字符类型' : '⚠️ 字符类型较少（' + variety + ' 种）', variety >= 3 ? '#22c55e' : '#f59e0b']);
+
+  // 重复/顺序
+  if (/(.)\1{2,}/.test(pwd)) {
+    checks.push(['❌ 存在连续重复字符', '#ef4444']);
+  } else {
+    points += 10;
+    checks.push(['✅ 无连续重复字符', '#22c55e']);
+  }
+
+  // 常见密码
+  var lower = pwd.toLowerCase();
+  if (pcCommon.indexOf(lower) !== -1 || /^(123|abc|qwe|asd)/.test(lower) || /^\d+$/.test(pwd) && len < 8) {
+    checks.push(['❌ 属于常见/弱密码模式', '#ef4444']);
+  } else {
+    points += 10;
+    checks.push(['✅ 非常见密码', '#22c55e']);
+  }
+
+  // 总长度加分
+  if (len >= 12) { points += 20; checks.push(['✅ 长度 ≥ 12 位（推荐）', '#22c55e']); }
+  else if (len >= 8) { points += 10; checks.push(['✅ 长度 ≥ 8 位', '#22c55e']); }
+  else { checks.push(['⚠️ 建议使用 12 位以上', '#f59e0b']); }
+
+  points = Math.min(100, points);
+  bar.style.width = points + '%';
+  var color = points >= 80 ? '#22c55e' : points >= 50 ? '#f59e0b' : '#ef4444';
+  bar.style.background = color;
+  score.textContent = points + ' 分';
+  score.style.color = color;
+  verdict.textContent = points >= 80 ? '💪 强度高，密码很安全' : points >= 50 ? '⚠️ 强度一般，建议加强' : '❌ 强度弱，密码容易破解';
+
+  details.innerHTML = checks.map(function(c) {
+    return '<div style="display:flex;justify-content:space-between;padding:6px 10px;background:var(--bg-light,#f8fafc);border-radius:6px;"><span>' + c[0] + '</span><span style="color:' + c[1] + ';">' + c[0].slice(0,1) + '</span></div>';
+  }).join('');
+}

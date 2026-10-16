@@ -8430,6 +8430,77 @@ greet('世界');</textarea>
   handler: () => { }
 },
 
+// ============================================================
+// README生成器工具 readme-generator (rg*)
+// ============================================================
+{
+  id: 'readme-generator',
+  cat: 'dev',
+  icon: '📘',
+  name: 'README生成器',
+  desc: '输入项目信息自动生成专业README文档，含徽章、功能、安装步骤，开发者必备',
+  html: `
+    <div class="tool-card">
+      <div class="input-group">
+        <label>项目名称</label>
+        <input type="text" id="rg-name" placeholder="如：My Awesome Project">
+      </div>
+      <div class="input-group" style="margin-top:10px;">
+        <label>项目简介</label>
+        <textarea id="rg-desc" placeholder="一句话介绍项目..." style="height:60px;"></textarea>
+      </div>
+      <div class="input-group" style="margin-top:10px;">
+        <label>主要功能（每行一条）</label>
+        <textarea id="rg-features" placeholder="快速上手&#10;轻量高效&#10;跨平台支持" style="height:80px;"></textarea>
+      </div>
+      <div class="input-group" style="margin-top:10px;">
+        <label>安装命令（选填）</label>
+        <input type="text" id="rg-install" placeholder="npm install my-project">
+      </div>
+      <div class="btn-group" style="margin-top:15px;">
+        <button class="btn btn-primary" onclick="rgGenerate()">⚡ 生成README</button>
+        <button class="btn btn-secondary" onclick="rgCopy()">📋 复制MD</button>
+      </div>
+      <div id="rg-result" style="margin-top:15px;border:1px solid var(--border,#e2e8f0);border-radius:10px;padding:16px;min-height:100px;font-family:monospace;font-size:12px;white-space:pre-wrap;"></div>
+      <div id="rg-tip" style="margin-top:15px;font-size:13px;color:var(--text-light);background:var(--bg-light,#f8fafc);padding:12px;border-radius:8px;">
+        💡 生成标准 Markdown 格式，含 Shilds.io 徽章、功能列表、安装使用说明，直接粘贴到 GitHub
+      </div>
+    </div>
+  `,
+  handler: () => { }
+},
+
+// ============================================================
+// 密码强度检测器工具 password-checker (pc*)
+// ============================================================
+{
+  id: 'password-checker',
+  cat: 'security',
+  icon: '🛡️',
+  name: '密码强度检测',
+  desc: '检测密码强度，从长度/字符种类/常见密码多维度评估并给出改进建议',
+  html: `
+    <div class="tool-card">
+      <div class="input-group">
+        <label>输入密码</label>
+        <input type="text" id="pc-password" placeholder="输入要检测的密码..." oninput="pcCheck()">
+      </div>
+      <div style="margin-top:15px;text-align:center;">
+        <div id="pc-meter" style="height:12px;border-radius:6px;background:var(--bg-light,#f1f5f9);overflow:hidden;">
+          <div id="pc-bar" style="height:100%;width:0%;border-radius:6px;transition:width 0.3s,background 0.3s;"></div>
+        </div>
+        <div id="pc-score" style="font-size:22px;font-weight:700;margin-top:10px;">—</div>
+        <div id="pc-verdict" style="font-size:14px;color:var(--text-light);margin-top:4px;">输入密码开始检测</div>
+      </div>
+      <div id="pc-details" style="margin-top:15px;font-size:13px;display:grid;gap:8px;"></div>
+      <div id="pc-tip" style="margin-top:15px;font-size:13px;color:var(--text-light);background:var(--bg-light,#f8fafc);padding:12px;border-radius:8px;">
+        💡 评估维度：长度、大小写、数字、符号、常见密码；建议使用 12 位以上混合字符
+      </div>
+    </div>
+  `,
+  handler: () => { }
+},
+
 
 ];
 
