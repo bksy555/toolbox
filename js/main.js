@@ -6937,3 +6937,81 @@ function tdEscape(str) {
   div.textContent = str;
   return div.innerHTML;
 }
+
+// ============================================================
+// 图片隐私净化器工具 (ex*)
+// ============================================================
+var exImageUrl = null;
+
+function exProcess() {
+  var fileInput = document.getElementById('ex-file');
+  var filename = document.getElementById('ex-filename');
+  var result = document.getElementById('ex-result');
+  if (!fileInput || !filename || !result) return;
+  var file = fileInput.files[0];
+  if (!file) return;
+  filename.textContent = file.name;
+
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    var img = new Image();
+    img.onload = function() {
+      // 通过 canvas 重新绘制，剥离所有 EXIF 元数据
+      var canvas = document.createElement('canvas');
+      canvas.width = img.width;
+      canvas.height = img.height;
+      var ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0);
+      exImageUrl = canvas.toDataURL('image/png');  // PNG 不携带 EXIF
+      result.innerHTML = '<div style="padding:12px;background:var(--bg-light,#f8fafc);border-radius:8px;font-size:13px;">' +
+        '✅ 已净化（' + img.width + 'x' + img.height + '）<br>' +
+        '<span style="color:var(--text-light);font-size:12px;">EXIF/GPS 元数据已全部移除</span></div>';
+      showToast('🕵️ 图片已净化');
+    };
+    img.onerror = function() { showToast('⚠️ 图片加载失败'); };
+    img.src = e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+function exDownload() {
+  if (!exImageUrl) { showToast('⚠️ 请先选择并处理图片'); return; }
+  var a = document.createElement('a');
+  a.href = exImageUrl;
+  a.download = 'clean-' + Date.now() + '.png';
+  a.click();
+  showToast('📥 净化后图片已下载');
+}
+
+// ============================================================
+// 密码短语生成器工具 (pp*)
+// ============================================================
+var ppWordCount = 4;
+var ppSep = '-';
+var ppPhrase = '';
+
+function ppWords(n) { ppWordCount = n; showToast('🔤 单词数：' + n); }
+function ppSep(s) { ppSep = s; showToast('🔤 分隔符：' + (s || '无')); }
+
+function ppGenerate() {
+  var result = document.getElementById('pp-result');
+  if (!result) return;
+  // Diceware 风格常见单词表
+  var words = ['apple','blue','cloud','dragon','eagle','forest','grape','happy','island','jazz','koala','lemon','moon','night','ocean','piano','queen','river','sunset','tiger','umbrella','violet','water','yellow','zebra','fire','sky','rock','star','wind','stone','wave','mountain','garden','silver','gold','crystal','thunder','breeze','autumn','winter','spring','summer','spark','dream','light','shadow','rainbow','anchor','comet','falcon','glacier','harbor','ivory','jungle','kite','lunar','meadow','noble','orchid','pearl','quartz','raven','sapphire','temple','velvet','willow','zenith'];
+  var selected = [];
+  for (var i = 0; i < ppWordCount; i++) {
+    selected.push(words[Math.floor(Math.random() * words.length)]);
+  }
+  ppPhrase = selected.join(ppSep);
+  result.textContent = ppPhrase;
+  showToast('🔤 短语已生成');
+}
+
+function ppCopy() {
+  if (!ppPhrase) { showToast('⚠️ 请先生成短语'); return; }
+  navigator.clipboard.writeText(ppPhrase).then(function() {
+    showToast('📋 短语已复制');
+  }).catch(function() {
+    showToast('⚠️ 复制失败');
+  });
+}

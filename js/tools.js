@@ -8557,6 +8557,76 @@ greet('世界');</textarea>
   handler: () => { }
 },
 
+// ============================================================
+// 图片隐私净化器工具 exif-stripper (ex*)
+// ============================================================
+{
+  id: 'exif-stripper',
+  cat: 'image',
+  icon: '🕵️',
+  name: '图片隐私净化器',
+  desc: '去除图片中的EXIF/GPS等隐私元数据，重新导出纯净图片，保护隐私安全',
+  html: `
+    <div class="tool-card">
+      <div class="input-group">
+        <label>选择图片（JPG/PNG）</label>
+        <input type="file" id="ex-file" accept="image/*" style="display:none;" onchange="exProcess()">
+        <button class="btn btn-secondary" style="margin-top:6px;" onclick="document.getElementById('ex-file').click()">📁 选择图片</button>
+        <span id="ex-filename" style="font-size:12px;color:var(--text-light);margin-left:10px;"></span>
+      </div>
+      <div class="btn-group" style="margin-top:15px;">
+        <button class="btn btn-primary" onclick="exDownload()">📥 下载净化后图片</button>
+      </div>
+      <div id="ex-result" style="margin-top:15px;text-align:center;"></div>
+      <div id="ex-tip" style="margin-top:15px;font-size:13px;color:var(--text-light);background:var(--bg-light,#f8fafc);padding:12px;border-radius:8px;">
+        💡 照片常包含拍摄时间、GPS位置、设备型号等EXIF信息，分享前建议清除。本工具通过重新绘制图片剥离全部元数据。
+      </div>
+    </div>
+  `,
+  handler: () => { }
+},
+
+// ============================================================
+// 密码短语生成器工具 passphrase-generator (pp*)
+// ============================================================
+{
+  id: 'passphrase-generator',
+  cat: 'security',
+  icon: '🔤',
+  name: '密码短语生成器',
+  desc: '生成好记又安全的随机单词短语密码，比纯字符密码更易记更难破',
+  html: `
+    <div class="tool-card">
+      <div class="input-group">
+        <label>单词数量</label>
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:8px;">
+          <button class="btn btn-sm" onclick="ppWords(3)">3词</button>
+          <button class="btn btn-sm" onclick="ppWords(4)">4词</button>
+          <button class="btn btn-sm" onclick="ppWords(5)">5词</button>
+          <button class="btn btn-sm" onclick="ppWords(6)">6词</button>
+        </div>
+      </div>
+      <div class="input-group" style="margin-top:10px;">
+        <label>分隔符</label>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:8px;">
+          <button class="btn btn-sm" onclick="ppSep('-')">连字符 -</button>
+          <button class="btn btn-sm" onclick="ppSep('.')">句点 .</button>
+          <button class="btn btn-sm" onclick="ppSep('')">无分隔</button>
+        </div>
+      </div>
+      <div class="btn-group" style="margin-top:15px;">
+        <button class="btn btn-primary" onclick="ppGenerate()">⚡ 生成短语</button>
+        <button class="btn btn-secondary" onclick="ppCopy()">📋 复制</button>
+      </div>
+      <div id="pp-result" style="margin-top:15px;border:1px solid var(--border,#e2e8f0);border-radius:10px;padding:20px;min-height:60px;font-size:18px;font-weight:600;text-align:center;word-break:break-all;"></div>
+      <div id="pp-tip" style="margin-top:15px;font-size:13px;color:var(--text-light);background:var(--bg-light,#f8fafc);padding:12px;border-radius:8px;">
+        💡 采用 Diceware 思路：随机组合常见英文单词，好记且熵值高；建议 4-5 词 + 符号
+      </div>
+    </div>
+  `,
+  handler: () => { }
+},
+
 
 ];
 
