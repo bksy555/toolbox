@@ -8691,6 +8691,63 @@ greet('世界');</textarea>
   handler: () => { }
 },
 
+// ============================================================
+// 文本情绪分析器工具 text-sentiment (ts2*)
+// ============================================================
+{
+  id: 'text-sentiment',
+  cat: 'text',
+  icon: '💭',
+  name: '文本情绪分析',
+  desc: '分析文本中的积极/消极情绪，统计情感词，一眼看懂评论和反馈态度',
+  html: `
+    <div class="tool-card">
+      <div class="input-group">
+        <label>输入文本（评论/反馈/句子）</label>
+        <textarea id="ts2-input" placeholder="这部电影太棒了，演员演技出色，剧情引人入胜！" style="height:120px;"></textarea>
+      </div>
+      <div class="btn-group" style="margin-top:15px;">
+        <button class="btn btn-primary" onclick="ts2Analyze()">⚡ 分析情绪</button>
+        <button class="btn btn-secondary" onclick="ts2Sample()">📋 示例</button>
+      </div>
+      <div id="ts2-result" style="margin-top:15px;"></div>
+      <div id="ts2-tip" style="margin-top:15px;font-size:13px;color:var(--text-light);background:var(--bg-light,#f8fafc);padding:12px;border-radius:8px;">
+        💡 基于内置积极/消极情感词典统计，给出情绪倾向和情感词高亮（绿=积极，红=消极）
+      </div>
+    </div>
+  `,
+  handler: () => { }
+},
+
+// ============================================================
+// 素数工具 prime-checker (pm*)
+// ============================================================
+{
+  id: 'prime-checker',
+  cat: 'convert',
+  icon: '🧮',
+  name: '素数工具',
+  desc: '判断数字是否为素数、质因数分解、区间素数统计，数学学习好帮手',
+  html: `
+    <div class="tool-card">
+      <div class="input-group">
+        <label>输入数字</label>
+        <input type="number" id="pm-num" placeholder="如：97" onkeydown="if(event.key==='Enter')pmCheck()">
+      </div>
+      <div class="btn-group" style="margin-top:15px;">
+        <button class="btn btn-primary" onclick="pmCheck()">⚡ 检测</button>
+        <button class="btn btn-secondary" onclick="pmFactor()">🧩 质因数分解</button>
+        <button class="btn btn-secondary" onclick="pmNext()">➡️ 下一个素数</button>
+      </div>
+      <div id="pm-result" style="margin-top:15px;border:1px solid var(--border,#e2e8f0);border-radius:10px;padding:16px;min-height:60px;font-size:14px;line-height:1.9;"></div>
+      <div id="pm-tip" style="margin-top:15px;font-size:13px;color:var(--text-light);background:var(--bg-light,#f8fafc);padding:12px;border-radius:8px;">
+        💡 素数：只能被1和自身整除的大于1的自然数；支持质因数分解和找下一个素数
+      </div>
+    </div>
+  `,
+  handler: () => { }
+},
+
 
 ];
 

@@ -7149,3 +7149,137 @@ function fqEscape(str) {
   div.textContent = str;
   return div.innerHTML;
 }
+
+// ============================================================
+// 文本情绪分析器工具 (ts2*)
+// ============================================================
+var ts2Positive = ['好','棒','赞','优秀','出色','满意','喜欢','爱','美好','开心','高兴','愉快','幸福','感动','激动','精彩','完美','厉害','推荐','不错','感谢','谢谢','值得','实惠','方便','贴心','专业','神作','精品','惊喜','舒服','爽','超赞','好评','给力','酷','牛','强'];
+var ts2Negative = ['差','烂','糟糕','失望','伤心','生气','愤怒','讨厌','烦','垃圾','差评','坑','贵','慢','卡','失败','后悔','气人','无语','恶心','失望透顶','破碎','痛苦','害怕','担忧','焦虑','难过','郁闷','bug','毛病','问题','投诉','退款','差劲','山寨','差远了','黑心','吓人'];
+
+function ts2Analyze() {
+  var input = document.getElementById('ts2-input');
+  var result = document.getElementById('ts2-result');
+  if (!input || !result) return;
+  var text = input.value.trim();
+  if (!text) { showToast('⚠️ 请输入文本'); return; }
+
+  var positiveHits = [];
+  var negativeHits = [];
+  ts2Positive.forEach(function(w) {
+    if (text.indexOf(w) !== -1) positiveHits.push(w);
+  });
+  ts2Negative.forEach(function(w) {
+    if (text.indexOf(w) !== -1) negativeHits.push(w);
+  });
+
+  var pCount = positiveHits.length;
+  var nCount = negativeHits.length;
+  var total = pCount + nCount;
+  var score = total > 0 ? Math.round((pCount - nCount) / total * 100) : 0;
+
+  var sentiment = score > 20 ? '😄 积极' : score < -20 ? '😠 消极' : '😐 中性';
+  var color = score > 20 ? '#22c55e' : score < -20 ? '#ef4444' : '#f59e0b';
+
+  // 高亮文本（简单替换）
+  var highlighted = text;
+  positiveHits.forEach(function(w) {
+    highlighted = highlighted.split(w).join('<span style="background:#dcfce7;color:#16a34a;padding:0 2px;border-radius:3px;">' + w + '</span>');
+  });
+  negativeHits.forEach(function(w) {
+    highlighted = highlighted.split(w).join('<span style="background:#fee2e2;color:#dc2626;padding:0 2px;border-radius:3px;">' + w + '</span>');
+  });
+
+  var html = '<div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:12px;">';
+  html += '<div style="flex:1;min-width:140px;background:var(--bg-light,#f8fafc);border-radius:10px;padding:14px;text-align:center;"><div style="font-size:28px;">' + sentiment + '</div><div style="font-size:13px;color:' + color + ';font-weight:600;margin-top:4px;">情绪分数 ' + score + '</div></div>';
+  html += '<div style="flex:1;min-width:140px;background:#dcfce7;border-radius:10px;padding:14px;text-align:center;"><div style="font-size:24px;color:#16a34a;">+' + pCount + '</div><div style="font-size:12px;color:#16a34a;">积极词</div></div>';
+  html += '<div style="flex:1;min-width:140px;background:#fee2e2;border-radius:10px;padding:14px;text-align:center;"><div style="font-size:24px;color:#dc2626;">-' + nCount + '</div><div style="font-size:12px;color:#dc2626;">消极词</div></div>';
+  html += '</div>';
+  html += '<div style="font-size:13px;line-height:2;padding:12px;border:1px solid var(--border,#e2e8f0);border-radius:8px;">' + highlighted + '</div>';
+  result.innerHTML = html;
+  showToast('💭 情绪分析完成');
+}
+
+function ts2Sample() {
+  var input = document.getElementById('ts2-input');
+  if (input) input.value = '这款产品的质量真的很棒，价格也实惠，客服态度好，我很满意！就是偶尔会卡顿，希望改进。';
+  ts2Analyze();
+}
+
+// ============================================================
+// 素数工具 (pm*)
+// ============================================================
+function pmIsPrime(n) {
+  if (n < 2) return false;
+  if (n < 4) return true;
+  if (n % 2 === 0 || n % 3 === 0) return false;
+  for (var i = 5; i * i <= n; i += 6) {
+    if (n % i === 0 || n % (i + 2) === 0) return false;
+  }
+  return true;
+}
+
+function pmCheck() {
+  var input = document.getElementById('pm-num');
+  var result = document.getElementById('pm-result');
+  if (!input || !result) return;
+  var n = parseInt(input.value);
+  if (isNaN(n) || n < 1) { showToast('⚠️ 请输入正整数'); return; }
+  var isPrime = pmIsPrime(n);
+  result.innerHTML = '<div style="font-size:24px;font-weight:700;color:' + (isPrime ? '#22c55e' : '#ef4444') + ';">' + n + (isPrime ? ' 是素数 ✅' : ' 不是素数 ❌') + '</div>';
+  if (!isPrime && n > 1) {
+    var factors = pmGetFactors(n);
+    result.innerHTML += '<div style="margin-top:8px;color:var(--text-light);font-size:13px;">因数：' + factors.join('、') + '</div>';
+  }
+  result.innerHTML += '<div style="margin-top:8px;font-size:13px;color:var(--text-light);">' + pmCountPrimes(n) + '</div>';
+}
+
+function pmFactor() {
+  var input = document.getElementById('pm-num');
+  var result = document.getElementById('pm-result');
+  if (!input || !result) return;
+  var n = parseInt(input.value);
+  if (isNaN(n) || n < 2) { showToast('⚠️ 请输入≥2的整数'); return; }
+  var factorization = [];
+  var temp = n;
+  for (var p = 2; p * p <= temp; p++) {
+    while (temp % p === 0) {
+      factorization.push(p);
+      temp /= p;
+    }
+  }
+  if (temp > 1) factorization.push(temp);
+  result.innerHTML = '<div style="font-size:18px;font-weight:600;">' + n + ' 的质因数分解：</div>';
+  result.innerHTML += '<div style="font-size:22px;margin-top:8px;color:var(--accent,#6366f1);">' + n + ' = ' + factorization.join(' × ') + '</div>';
+  result.innerHTML += '<div style="font-size:12px;color:var(--text-light);margin-top:6px;">共 ' + factorization.length + ' 个质因数</div>';
+}
+
+function pmNext() {
+  var input = document.getElementById('pm-num');
+  var result = document.getElementById('pm-result');
+  if (!input || !result) return;
+  var n = parseInt(input.value);
+  if (isNaN(n) || n < 2) n = 2;
+  var next = n;
+  while (!pmIsPrime(++next)) {}
+  result.innerHTML = '<div style="font-size:18px;font-weight:600;">' + n + ' 之后的下一个素数：</div>';
+  result.innerHTML += '<div style="font-size:28px;margin-top:8px;color:#22c55e;font-weight:700;">' + next + '</div>';
+}
+
+function pmGetFactors(n) {
+  var factors = [];
+  for (var i = 1; i * i <= n; i++) {
+    if (n % i === 0) {
+      factors.push(i);
+      if (i !== n / i) factors.push(n / i);
+    }
+  }
+  return factors.sort(function(a, b) { return a - b; });
+}
+
+function pmCountPrimes(n) {
+  var count = 0;
+  for (var i = 2; i <= n; i++) {
+    if (pmIsPrime(i)) count++;
+  }
+  return '1-' + n + ' 之间共 ' + count + ' 个素数';
+}
