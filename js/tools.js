@@ -8627,6 +8627,70 @@ greet('世界');</textarea>
   handler: () => { }
 },
 
+// ============================================================
+// 首字母头像生成器工具 avatar-maker (av*)
+// ============================================================
+{
+  id: 'avatar-maker',
+  cat: 'image',
+  icon: '👤',
+  name: '首字母头像生成器',
+  desc: '输入名字或文字，生成渐变色首字母头像，适合群头像、用户头像和占位图',
+  html: `
+    <div class="tool-card">
+      <div class="input-group">
+        <label>文字/名字</label>
+        <input type="text" id="av-text" placeholder="如：李小明 或 Admin" onkeydown="if(event.key==='Enter')avGenerate()">
+      </div>
+      <div class="input-group" style="margin-top:10px;">
+        <label>风格</label>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:8px;">
+          <button class="btn btn-sm" onclick="avStyle('auto')">🎨 自动渐变</button>
+          <button class="btn btn-sm" onclick="avStyle('blue')">🔵 蓝色系</button>
+          <button class="btn btn-sm" onclick="avStyle('pink')">🌸 粉色系</button>
+        </div>
+      </div>
+      <div class="btn-group" style="margin-top:15px;">
+        <button class="btn btn-primary" onclick="avGenerate()">⚡ 生成头像</button>
+        <button class="btn btn-secondary" onclick="avDownload()">📥 下载PNG</button>
+      </div>
+      <div id="av-result" style="margin-top:15px;text-align:center;"></div>
+      <div id="av-tip" style="margin-top:15px;font-size:13px;color:var(--text-light);background:var(--bg-light,#f8fafc);padding:12px;border-radius:8px;">
+        💡 自动取文字前1-2个字符生成头像，适合公众号头像、社群头像、用户默认头像
+      </div>
+    </div>
+  `,
+  handler: () => { }
+},
+
+// ============================================================
+// FAQ代码生成器工具 faq-generator (fq*)
+// ============================================================
+{
+  id: 'faq-generator',
+  cat: 'dev',
+  icon: '💬',
+  name: 'FAQ代码生成器',
+  desc: '输入问答生成可折叠的HTML/CSS/JS FAQ区块代码，网页开发者必备',
+  html: `
+    <div class="tool-card">
+      <div class="input-group">
+        <label>问题与答案（每组两行：问题/答案）</label>
+        <textarea id="fq-input" placeholder="怎么注册？&#10;点击右上角注册按钮填写信息即可。&#10;怎么收费？&#10;目前完全免费，无需付费。&#10;支持哪些平台？&#10;支持微信、iOS、Android。" style="height:160px;font-family:monospace;"></textarea>
+      </div>
+      <div class="btn-group" style="margin-top:15px;">
+        <button class="btn btn-primary" onclick="fqGenerate()">⚡ 生成代码</button>
+        <button class="btn btn-secondary" onclick="fqCopy()">📋 复制HTML</button>
+      </div>
+      <div id="fq-result" style="margin-top:15px;border:1px solid var(--border,#e2e8f0);border-radius:10px;padding:16px;min-height:100px;font-family:monospace;font-size:12px;white-space:pre-wrap;"></div>
+      <div id="fq-tip" style="margin-top:15px;font-size:13px;color:var(--text-light);background:var(--bg-light,#f8fafc);padding:12px;border-radius:8px;">
+        💡 生成折叠动画FAQ区块，纯 HTML/CSS/JS，复制即可嵌入网页
+      </div>
+    </div>
+  `,
+  handler: () => { }
+},
+
 
 ];
 

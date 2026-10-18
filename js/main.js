@@ -7015,3 +7015,137 @@ function ppCopy() {
     showToast('⚠️ 复制失败');
   });
 }
+
+// ============================================================
+// 首字母头像生成器工具 (av*)
+// ============================================================
+var avCanvas = null;
+var avStyleVal = 'auto';
+
+function avStyle(s) { avStyleVal = s; showToast('🎨 风格：' + (s === 'auto' ? '自动渐变' : s === 'blue' ? '蓝色系' : '粉色系')); }
+
+function avGenerate() {
+  var input = document.getElementById('av-text');
+  var result = document.getElementById('av-result');
+  if (!input || !result) return;
+  var text = input.value.trim();
+  if (!text) { showToast('⚠️ 请输入文字'); return; }
+
+  // 取前1-2个字符（支持中文/英文）
+  var letters = '';
+  if (/[\u4e00-\u9fa5]/.test(text)) {
+    letters = text.slice(0, 2);
+  } else {
+    var words = text.split(/[\s_-]+/).filter(Boolean);
+    letters = words.slice(0, 2).map(function(w) { return w[0]; }).join('').toUpperCase() || text.slice(0, 2).toUpperCase();
+  }
+
+  // 配色
+  var palettes = {
+    auto: [['#667eea','#764ba2'], ['#f093fb','#f5576c'], ['#4facfe','#00f2fe'], ['#43e97b','#38f9d7'], ['#fa709a','#fee140'], ['#30cfd0','#330867']],
+    blue: [['#2193b0','#6dd5ed'], ['#1e3c72','#2a5298'], ['#00c6ff','#0072ff']],
+    pink: [['#ff9a9e','#fecfef'], ['#f953c6','#b91d73'], ['#fbc2eb','#a6c1ee']]
+  };
+  var list = palettes[avStyleVal] || palettes.auto;
+  var pair = list[Math.floor(Math.random() * list.length)];
+
+  // 绘制头像
+  var canvas = document.getElementById('av-canvas');
+  if (!canvas) {
+    canvas = document.createElement('canvas');
+    canvas.id = 'av-canvas';
+    result.appendChild(canvas);
+  } else {
+    result.appendChild(canvas);
+  }
+  avCanvas = canvas;
+  canvas.width = 256;
+  canvas.height = 256;
+  var ctx = canvas.getContext('2d');
+
+  // 渐变背景
+  var grad = ctx.createLinearGradient(0, 0, 256, 256);
+  grad.addColorStop(0, pair[0]);
+  grad.addColorStop(1, pair[1]);
+  ctx.fillStyle = grad;
+  ctx.fillRect(0, 0, 256, 256);
+
+  // 装饰圆点
+  ctx.fillStyle = 'rgba(255,255,255,0.08)';
+  for (var i = 0; i < 5; i++) {
+    ctx.beginPath();
+    ctx.arc(Math.random() * 256, Math.random() * 256, 30 + Math.random() * 60, 0, Math.PI * 2);
+    ctx.fill();
+  }
+
+  // 居中文字
+  ctx.fillStyle = '#ffffff';
+  ctx.font = 'bold 96px sans-serif';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.shadowColor = 'rgba(0,0,0,0.25)';
+  ctx.shadowBlur = 12;
+  ctx.fillText(letters, 128, 132);
+
+  showToast('👤 头像已生成');
+}
+
+function avDownload() {
+  if (!avCanvas) { showToast('⚠️ 请先生成头像'); return; }
+  var a = document.createElement('a');
+  a.href = avCanvas.toDataURL('image/png');
+  a.download = 'avatar-' + Date.now() + '.png';
+  a.click();
+  showToast('📥 头像已下载');
+}
+
+// ============================================================
+// FAQ代码生成器工具 (fq*)
+// ============================================================
+var fqCode = '';
+
+function fqGenerate() {
+  var input = document.getElementById('fq-input');
+  var result = document.getElementById('fq-result');
+  if (!input || !result) return;
+  var text = input.value.trim();
+  if (!text) { showToast('⚠️ 请输入问答内容'); return; }
+
+  var lines = text.split('\n').map(function(s) { return s.trim(); }).filter(Boolean);
+  var qas = [];
+  for (var i = 0; i < lines.length; i += 2) {
+    var q = lines[i];
+    var a = lines[i + 1] || '';
+    if (q) qas.push({ q: q, a: a });
+  }
+  if (qas.length === 0) { showToast('⚠️ 没有有效的问答对'); return; }
+
+  var uid = 'faq' + Date.now().toString().slice(-5);
+  var html = '<div class="' + uid + '-faq" style="max-width:640px;margin:0 auto;">\n';
+  qas.forEach(function(item, idx) {
+    html += '  <div style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:10px;overflow:hidden;">\n';
+    html += '    <button onclick="this.parentNode.querySelector(\'div\').style.display = this.parentNode.querySelector(\'div\').style.display === \'none\' ? \'block\' : \'none\';" style="width:100%;padding:14px 18px;background:#f8fafc;border:none;text-align:left;font-weight:600;font-size:15px;cursor:pointer;">' + fqEscape(item.q) + '</button>\n';
+    html += '    <div style="display:none;padding:14px 18px;color:#4b5563;font-size:14px;line-height:1.7;">' + fqEscape(item.a || '暂无答案') + '</div>\n';
+    html += '  </div>\n';
+  });
+  html += '</div>\n';
+
+  fqCode = html;
+  result.textContent = html;
+  showToast('💬 FAQ代码已生成');
+}
+
+function fqCopy() {
+  if (!fqCode) { showToast('⚠️ 请先生成代码'); return; }
+  navigator.clipboard.writeText(fqCode).then(function() {
+    showToast('📋 FAQ代码已复制');
+  }).catch(function() {
+    showToast('⚠️ 复制失败');
+  });
+}
+
+function fqEscape(str) {
+  var div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
+}
