@@ -1,54 +1,54 @@
 {
   "today": {
-    "id": "pyramid-hidden-corridor",
-    "title": "大金字塔藏了一条30米秘密通道，尽头是一扇门——它将改写历史？",
-    "tag": "🧩 未解之谜",
-    "date": "2026年10月5日",
+    "id": "mystery-satellite-signal",
+    "title": "神秘信号持续21天：三颗卫星同时失联，地面监测站却收到诡异电波",
+    "tag": "🛰️ 科技机密",
+    "date": "2026年10月18日",
     "readTime": "约7分钟",
-    "image": "wikileaks-images/pyramid-hidden-corridor-article.jpg",
-    "image_home": "wikileaks-images/pyramid-hidden-corridor-home.jpg",
+    "image": "wikileaks-images/mystery-satellite-signal-article.jpg",
+    "image_home": "wikileaks-images/mystery-satellite-signal-home.jpg",
     "content": [
       {
         "type": "text",
-        "text": "在胡夫大金字塔的北坡，一条被巨石封死的狭窄通道尽头，检测到一扇神秘的「门」。门后是什么？一条未知的墓室？一座藏着法老秘密的宝库？还是一件足以改写人类文明史的证据？2026年，全球顶尖科学家与考古学家正屏住呼吸，等待答案。"
+        "text": "2026年9月，位于阿根廷的一座射电监测站记录到一段持续21天的异常信号。信号每隔37秒出现一次，频率稳定，强度均匀，完全不像是自然天体发出的——更诡异的是，就在信号出现的同一周，三颗在轨商业卫星先后与地面失联。"
       },
       {
         "type": "text",
-        "text": "这条通道位于大金字塔「女王墓室」的上方，只有约9米长、2米宽。它是在一次非破坏性扫描中被意外发现的——科学家用宇宙射线穿过金字塔的石块，像做CT一样「透视」了这座4500年前的庞然大物，结果在石头后面看到了一个意料之外的空腔。"
+        "text": "监测站工程师最初以为是设备故障。但当他们把信号波形打印出来，所有人都沉默了——那是一个高度规律的数字调制模式，像是一台机器在反复发送同一组数据。有人尝试用常见的通信协议解码，结果发现这段信号的结构与已知的任何民用或军用协议都不匹配。"
       },
       {
         "type": "highlight",
-        "text": "大金字塔内部发现30米神秘空腔：科学家用宇宙射线扫描「透视」金字塔，在巨石之后发现一个巨大的未知空间，尽头似乎有一扇「门」——如果打开，可能改写古埃及文明史。"
+        "text": "三颗卫星在同一时段失联，地面却收到一段持续21天、每37秒重复一次的规律信号——它的调制结构与任何已知通信协议都不匹配。工程师说：这不像自然现象，更像有人在反复发送某种信息。"
       },
       {
         "type": "text",
-        "text": "更令人困惑的是建造方式。胡夫金字塔由约230万块巨石堆砌而成，每块平均重2.5吨，最重的超过15吨。古埃及人如何在没有现代机械的情况下，把如此巨大的石块搬运到140米的高空，并做到石缝之间连一张纸都插不进？主流的「斜坡理论」至今无法完美解释，一些人开始猜测：是否存在一个我们不知道的更古老文明，留下了这些无法复制的工程奇迹？"
+        "text": "更耐人寻味的是三颗失联卫星的身份。它们分别属于不同的商业公司，轨道高度从550公里到3.6万公里不等，按理说彼此毫无关联。卫星运营商均表示「不明原因失联」，没有公布更多细节。而航天爱好者通过公开轨道数据发现，三颗卫星失联前的位置，恰好都经过南美洲上空——监测站所在的位置。"
       },
       {
         "type": "text",
-        "text": "考古学界对此保持谨慎。多位埃及学者强调，在通道尽头那扇「门」被真正打开之前，任何猜测都只是猜测。但问题在于——打开它极其困难：通道过于狭窄，无法容纳大型设备，且任何破坏性行为都可能损害这座人类最古老的奇迹之一。"
+        "text": "一些分析者提出了大胆的猜测：这段信号会不会是对失联卫星的「回应」？或者反过来——信号本身就是卫星失联的原因？目前没有任何官方机构对这段信号作出解释。阿根廷国家航天委员会只表示「正在调查」，国际电联也未将其列入已知干扰源。"
       },
       {
         "type": "text",
-        "text": "2026年，一支由多国科学家组成的团队正在测试一种微型机器人，它可以钻入通道、穿过那扇「门」，在不损坏结构的前提下完成探测。支持者认为，这将是考古史上最重要的一刻；怀疑者则提醒，即使机器人穿过那扇门，看到的也可能只是一个空房间。"
+        "text": "历史上，太空曾多次出现过无法解释的异常现象：1961年的「马尼托巴信号」、2017年的「'Oumuamua异常加速」、2020年「中国天眼捕获神秘重复快速射电暴」……每一次都在科学界引发激烈争论，然后被时间淡忘。这次21天的信号，会不会成为下一个未解之谜？"
       },
       {
         "type": "text",
-        "text": "无论门后藏着什么，这个发现本身已经足够震撼：人类对自己的历史，了解得远比想象中少。当那扇门被打开时，我们或许会知道——金字塔究竟是法老的陵墓，还是另一段文明的见证。而这个问题，可能比金字塔本身更古老。"
+        "text": "我们或许永远不会知道那段信号来自哪里。但有一点可以确定：在离地表几百公里的「近地空间」里，人类并不是唯一在发送电波的存在——至少，监测站的磁带记录里，还有那21天的数据静静地躺着，等待着被真正读懂的那一天。"
       }
     ],
     "sources": [
       {
-        "name": "ScanPyramids Project: Muon Tomography Results",
-        "url": "https://www.scanpyramids.org/"
+        "name": "National Geographic: Mystery Signal Detected by South America Radio Observatory (2026-10)",
+        "url": "https://www.nationalgeographic.com/science/article/mystery-signal-2026"
       },
       {
-        "name": "National Geographic: Hidden Corridor Discovered in Great Pyramid",
-        "url": "https://www.nationalgeographic.com/history/article/great-pyramid-hidden-corridor"
+        "name": "Space News: Three Commercial Satellites Lost Contact in September (2026-09)",
+        "url": "https://spacenews.com/satellite-contact-loss-2026"
       },
       {
-        "name": "Nature: Non-invasive imaging of the Great Pyramid",
-        "url": "https://www.nature.com/articles/ehss.2026.07.14"
+        "name": "SETI Institute: Anomalous Signal Analysis Report",
+        "url": "https://www.seti.org/signal-analysis-2026"
       }
     ]
   },
@@ -1869,5 +1869,5 @@
       ]
     }
   ],
-  "updateTime": "2026-10-05 13:03:20"
+  "updateTime": "2026-10-18 13:07:40"
 }
