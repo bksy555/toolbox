@@ -3233,19 +3233,23 @@
     "period": "2026278",
     "year": 2026,
     "month": 10,
-    "day": 18,
-    "weekday": 0,
+    "day": 17,
+    "weekday": 6,
     "haiGan": "己",
     "dans": [
       2,
       4,
       9
     ],
-    "coldDans": null,
-    "drawNum": null,
-    "result": null,
-    "coldResult": null,
-    "updatedAt": null
+    "coldDans": [
+      2,
+      4,
+      5
+    ],
+    "drawNum": "960",
+    "result": "✅",
+    "coldResult": "❌",
+    "updatedAt": "2026-10-19T00:32:20.922Z"
   },
   "2026279": {
     "period": "2026279",
@@ -3488,6 +3492,24 @@
     "day": 2,
     "weekday": 1,
     "haiGan": "丁",
+    "dans": [
+      2,
+      4,
+      9
+    ],
+    "coldDans": null,
+    "drawNum": null,
+    "result": null,
+    "coldResult": null,
+    "updatedAt": null
+  },
+  "2026293": {
+    "period": "2026293",
+    "year": 2026,
+    "month": 11,
+    "day": 3,
+    "weekday": 2,
+    "haiGan": "己",
     "dans": [
       2,
       4,
