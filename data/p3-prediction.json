@@ -6075,7 +6075,7 @@
     "period": "2026278",
     "year": 2026,
     "month": 10,
-    "day": 18,
+    "day": 19,
     "weekday": 0,
     "haiGan": "己",
     "dans": [
@@ -6097,7 +6097,7 @@
     "period": "2026279",
     "year": 2026,
     "month": 10,
-    "day": 19,
+    "day": 20,
     "weekday": 1,
     "haiGan": "辛",
     "dans": [
@@ -6115,7 +6115,7 @@
     "period": "2026280",
     "year": 2026,
     "month": 10,
-    "day": 20,
+    "day": 21,
     "weekday": 2,
     "haiGan": "癸",
     "dans": [
@@ -6133,7 +6133,7 @@
     "period": "2026281",
     "year": 2026,
     "month": 10,
-    "day": 21,
+    "day": 22,
     "weekday": 3,
     "haiGan": "乙",
     "dans": [
@@ -6151,7 +6151,7 @@
     "period": "2026282",
     "year": 2026,
     "month": 10,
-    "day": 22,
+    "day": 23,
     "weekday": 4,
     "haiGan": "丁",
     "dans": [
@@ -6170,7 +6170,7 @@
     "year": 2026,
     "month": 10,
     "day": 24,
-    "weekday": 6,
+    "weekday": 5,
     "haiGan": "己",
     "dans": [
       2,
@@ -6188,7 +6188,7 @@
     "year": 2026,
     "month": 10,
     "day": 25,
-    "weekday": 0,
+    "weekday": 6,
     "haiGan": "辛",
     "dans": [
       2,
@@ -6206,7 +6206,7 @@
     "year": 2026,
     "month": 10,
     "day": 26,
-    "weekday": 1,
+    "weekday": 0,
     "haiGan": "癸",
     "dans": [
       1,
@@ -6224,7 +6224,7 @@
     "year": 2026,
     "month": 10,
     "day": 27,
-    "weekday": 2,
+    "weekday": 1,
     "haiGan": "乙",
     "dans": [
       3,
@@ -6242,7 +6242,7 @@
     "year": 2026,
     "month": 10,
     "day": 28,
-    "weekday": 3,
+    "weekday": 2,
     "haiGan": "丁",
     "dans": [
       2,
@@ -6260,7 +6260,7 @@
     "year": 2026,
     "month": 10,
     "day": 29,
-    "weekday": 4,
+    "weekday": 3,
     "haiGan": "己",
     "dans": [
       2,
@@ -6278,7 +6278,7 @@
     "year": 2026,
     "month": 10,
     "day": 30,
-    "weekday": 5,
+    "weekday": 4,
     "haiGan": "辛",
     "dans": [
       2,
@@ -6296,7 +6296,7 @@
     "year": 2026,
     "month": 10,
     "day": 31,
-    "weekday": 6,
+    "weekday": 5,
     "haiGan": "癸",
     "dans": [
       1,
@@ -6314,7 +6314,7 @@
     "year": 2026,
     "month": 11,
     "day": 1,
-    "weekday": 0,
+    "weekday": 6,
     "haiGan": "乙",
     "dans": [
       3,
@@ -6332,7 +6332,7 @@
     "year": 2026,
     "month": 11,
     "day": 2,
-    "weekday": 1,
+    "weekday": 0,
     "haiGan": "丁",
     "dans": [
       2,
@@ -6350,7 +6350,7 @@
     "year": 2026,
     "month": 11,
     "day": 3,
-    "weekday": 2,
+    "weekday": 1,
     "haiGan": "己",
     "dans": [
       2,
