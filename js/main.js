@@ -7283,3 +7283,174 @@ function pmCountPrimes(n) {
   }
   return '1-' + n + ' 之间共 ' + count + ' 个素数';
 }
+
+// ============================================================
+// JSON树形查看器工具 (jt*)
+// ============================================================
+function jtSample() {
+  var input = document.getElementById('jt-input');
+  if (input) {
+    input.value = '{\n  "name": "张三",\n  "age": 18,\n  "hobbies": ["篮球", "音乐", "编程"],\n  "address": {\n    "city": "北京",\n    "district": "海淀",\n    "zip": "100000"\n  },\n  "scores": {\n    "math": 95,\n    "english": 88\n  }\n}';
+  }
+  jtParse();
+}
+
+function jtParse() {
+  var input = document.getElementById('jt-input');
+  var result = document.getElementById('jt-result');
+  if (!input || !result) return;
+  var text = input.value.trim();
+  if (!text) { showToast('⚠️ 请输入JSON'); return; }
+  var data;
+  try {
+    data = JSON.parse(text);
+  } catch(e) {
+    result.innerHTML = '<div style="color:#ef4444;">❌ JSON 解析失败：' + jtEscape(e.message) + '</div>';
+    showToast('❌ JSON格式错误');
+    return;
+  }
+  var html = jtRenderNode(data, '$', 0);
+  result.innerHTML = '<div style="font-family:monospace;font-size:12px;line-height:1.8;">' + html + '</div>';
+  showToast('🌳 JSON 已解析为树形');
+}
+
+function jtRenderNode(node, path, depth) {
+  var indent = 0;
+  var html = '';
+  if (node === null) {
+    return '<span style="color:#94a3b8;">null</span>';
+  }
+  var type = typeof node;
+  if (type === 'object' && Array.isArray(node)) {
+    if (node.length === 0) return '<span style="color:#94a3b8;">[]</span>';
+    html += '<span style="color:#64748b;">[</span>';
+    node.forEach(function(item, i) {
+      html += '<div style="padding-left:' + (depth + 1) * 14 + 'px;">' + jtRenderNode(item, path + '[' + i + ']', depth + 1) + (i < node.length - 1 ? ',' : '') + '</div>';
+    });
+    html += '<div style="padding-left:' + depth * 14 + 'px;"><span style="color:#64748b;">]</span></div>';
+    return html;
+  }
+  if (type === 'object') {
+    var keys = Object.keys(node);
+    if (keys.length === 0) return '<span style="color:#94a3b8;">{}</span>';
+    html += '<span style="color:#64748b;">{</span>';
+    keys.forEach(function(k, i) {
+      var isObj = node[k] && typeof node[k] === 'object';
+      html += '<div style="padding-left:' + (depth + 1) * 14 + 'px;">';
+      html += '<span style="color:#6366f1;cursor:pointer;" onclick="jtToggle(this)" title="点击折叠">' + (isObj ? '▼ ' : '') + '</span>';
+      html += '<span style="color:#0f172a;">"' + jtEscape(k) + '"</span>: ';
+      html += jtRenderNode(node[k], path + '.' + k, depth + 1);
+      html += (i < keys.length - 1 ? ',' : '') + '</div>';
+    });
+    html += '<div style="padding-left:' + depth * 14 + 'px;"><span style="color:#64748b;">}</span></div>';
+    return html;
+  }
+  // 值
+  if (type === 'string') return '<span style="color:#16a34a;">"' + jtEscape(node) + '"</span>';
+  if (type === 'number') return '<span style="color:#f59e0b;">' + node + '</span>';
+  if (type === 'boolean') return '<span style="color:#ec4899;">' + node + '</span>';
+  return '<span>' + jtEscape(String(node)) + '</span>';
+}
+
+function jtToggle(arrowEl) {
+  var parentDiv = arrowEl.parentElement;
+  var siblings = [];
+  var next = parentDiv.nextElementSibling;
+  var isOpen = arrowEl.textContent === '▼ ';
+  // 折叠：隐藏后续直到遇到同缩进的闭合
+  if (isOpen) {
+    arrowEl.textContent = '▶ ';
+    var depth = parentDiv.style.paddingLeft ? parseInt(parentDiv.style.paddingLeft) / 14 : 0;
+    while (next) {
+      var nd = next.style.paddingLeft ? parseInt(next.style.paddingLeft) / 14 : 0;
+      if (nd <= depth) break;
+      next.style.display = 'none';
+      next = next.nextElementSibling;
+    }
+  } else {
+    arrowEl.textContent = '▼ ';
+    var depth2 = parentDiv.style.paddingLeft ? parseInt(parentDiv.style.paddingLeft) / 14 : 0;
+    while (next) {
+      var nd2 = next.style.paddingLeft ? parseInt(next.style.paddingLeft) / 14 : 0;
+      if (nd2 <= depth2) break;
+      next.style.display = '';
+      next = next.nextElementSibling;
+    }
+  }
+}
+
+function jtEscape(str) {
+  var div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
+}
+
+// ============================================================
+// 纪念日倒数器工具 (an*)
+// ============================================================
+var anCurrentType = 'anniversary';
+
+function anType(t) { anCurrentType = t; showToast('💞 类型：' + (t === 'anniversary' ? '周年' : t === 'birthday' ? '生日' : '自定义')); }
+
+function anCalculate() {
+  var nameInput = document.getElementById('an-name');
+  var dateInput = document.getElementById('an-date');
+  var result = document.getElementById('an-result');
+  if (!nameInput || !dateInput || !result) return;
+  var name = nameInput.value.trim() || '纪念日';
+  var dateStr = dateInput.value;
+  if (!dateStr) { showToast('⚠️ 请选择日期'); return; }
+
+  var target = new Date(dateStr + 'T00:00:00');
+  var now = new Date();
+  now.setHours(0, 0, 0, 0);
+  var diffMs = now - target;
+  var diffDays = Math.round(diffMs / (24 * 60 * 60 * 1000));
+
+  var html = '<div style="background:var(--bg-light,#f8fafc);border-radius:10px;padding:16px;font-size:13px;line-height:2;">';
+  html += '<div style="font-weight:bold;font-size:16px;margin-bottom:8px;">💞 ' + anEscape(name) + '</div>';
+  if (diffDays >= 0) {
+    var weeks = Math.floor(diffDays / 7);
+    var days = diffDays % 7;
+    var months = Math.floor(diffDays / 30);
+    var years = Math.floor(diffDays / 365);
+    html += '<div>已过去 <strong style="color:#6366f1;font-size:20px;">' + diffDays + '</strong> 天</div>';
+    html += '<div style="color:var(--text-light);">≈ ' + years + ' 年 ' + (diffDays % 365) + ' 天</div>';
+    html += '<div style="color:var(--text-light);">≈ ' + months + ' 个月 ' + (diffDays % 30) + ' 天</div>';
+    html += '<div style="color:var(--text-light);">≈ ' + weeks + ' 周 ' + days + ' 天</div>';
+
+    // 周年纪念
+    var anniversaryDays = years + 1;
+    var nextAnniv = new Date(target);
+    nextAnniv.setFullYear(target.getFullYear() + anniversaryDays);
+    var nextDiff = Math.round((nextAnniv - now) / (24 * 60 * 60 * 1000));
+    if (nextDiff > 0) {
+      html += '<div style="margin-top:6px;color:#22c55e;">🎉 ' + anniversaryDays + ' 周年倒计时：还有 <strong>' + nextDiff + '</strong> 天</div>';
+    }
+  } else {
+    html += '<div style="color:#f59e0b;">距离该日期还有 <strong>' + Math.abs(diffDays) + '</strong> 天</div>';
+  }
+  html += '</div>';
+  result.innerHTML = html;
+  showToast('💞 计算完成');
+}
+
+function anSave() {
+  var nameInput = document.getElementById('an-name');
+  var dateInput = document.getElementById('an-date');
+  if (!nameInput || !dateInput) return;
+  var name = nameInput.value.trim();
+  var dateStr = dateInput.value;
+  if (!name || !dateStr) { showToast('⚠️ 请输入名称和日期'); return; }
+  var saved = [];
+  try { saved = JSON.parse(localStorage.getItem('an-dates') || '[]'); } catch(e) { saved = []; }
+  saved.push({ name: name, date: dateStr, type: anCurrentType });
+  try { localStorage.setItem('an-dates', JSON.stringify(saved)); } catch(e) {}
+  showToast('💾 已保存（共 ' + saved.length + ' 个）');
+}
+
+function anEscape(str) {
+  var div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
+}

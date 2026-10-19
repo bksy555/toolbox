@@ -8748,6 +8748,74 @@ greet('世界');</textarea>
   handler: () => { }
 },
 
+// ============================================================
+// JSON树形查看器工具 json-tree (jt*)
+// ============================================================
+{
+  id: 'json-tree',
+  cat: 'dev',
+  icon: '🌳',
+  name: 'JSON树形查看器',
+  desc: '将JSON以可折叠树形展示，嵌套结构一目了然，支持复制路径',
+  html: `
+    <div class="tool-card">
+      <div class="input-group">
+        <label>粘贴JSON</label>
+        <textarea id="jt-input" placeholder='{"name":"张三","age":18,"hobbies":["篮球","音乐"],"address":{"city":"北京"}}' style="height:140px;font-family:monospace;"></textarea>
+      </div>
+      <div class="btn-group" style="margin-top:15px;">
+        <button class="btn btn-primary" onclick="jtParse()">⚡ 解析</button>
+        <button class="btn btn-secondary" onclick="jtSample()">📋 示例</button>
+      </div>
+      <div id="jt-result" style="margin-top:15px;border:1px solid var(--border,#e2e8f0);border-radius:10px;padding:16px;min-height:120px;font-size:13px;"></div>
+      <div id="jt-tip" style="margin-top:15px;font-size:13px;color:var(--text-light);background:var(--bg-light,#f8fafc);padding:12px;border-radius:8px;">
+        💡 树形展示，点击箭头展开/折叠；鼠标悬停节点显示路径
+      </div>
+    </div>
+  `,
+  handler: () => { }
+},
+
+// ============================================================
+// 纪念日倒数器工具 anniversary-counter (an*)
+// ============================================================
+{
+  id: 'anniversary-counter',
+  cat: 'time',
+  icon: '💞',
+  name: '纪念日倒数器',
+  desc: '记录恋爱/生日/重要日子，显示已过天数、周数、下次倒计时',
+  html: `
+    <div class="tool-card">
+      <div class="input-group">
+        <label>纪念日名称</label>
+        <input type="text" id="an-name" placeholder="如：在一起、宝宝生日">
+      </div>
+      <div class="input-group" style="margin-top:10px;">
+        <label>日期</label>
+        <input type="date" id="an-date">
+      </div>
+      <div class="input-group" style="margin-top:10px;">
+        <label>类型</label>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:8px;">
+          <button class="btn btn-sm" onclick="anType('anniversary')">💞 周年</button>
+          <button class="btn btn-sm" onclick="anType('birthday')">🎂 生日</button>
+          <button class="btn btn-sm" onclick="anType('custom')">📌 自定义</button>
+        </div>
+      </div>
+      <div class="btn-group" style="margin-top:15px;">
+        <button class="btn btn-primary" onclick="anCalculate()">⚡ 计算</button>
+        <button class="btn btn-secondary" onclick="anSave()">💾 保存</button>
+      </div>
+      <div id="an-result" style="margin-top:15px;"></div>
+      <div id="an-tip" style="margin-top:15px;font-size:13px;color:var(--text-light);background:var(--bg-light,#f8fafc);padding:12px;border-radius:8px;">
+        💡 展示已过天数/周数/月数，生日类型自动计算下次倒计时
+      </div>
+    </div>
+  `,
+  handler: () => { }
+},
+
 
 ];
 
