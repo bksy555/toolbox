@@ -3234,7 +3234,7 @@
     "year": 2026,
     "month": 10,
     "day": 19,
-    "weekday": 0,
+    "weekday": 1,
     "haiGan": "己",
     "dans": [
       2,
@@ -3246,10 +3246,10 @@
       4,
       5
     ],
-    "drawNum": null,
-    "result": null,
-    "coldResult": null,
-    "updatedAt": null
+    "drawNum": "666",
+    "result": "❌",
+    "coldResult": "❌",
+    "updatedAt": "2026-10-20T00:33:33.995Z"
   },
   "2026279": {
     "period": "2026279",

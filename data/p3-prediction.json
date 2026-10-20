@@ -6083,15 +6083,15 @@
       4,
       9
     ],
-    "drawNum": null,
-    "result": null,
-    "updatedAt": null,
+    "drawNum": "583",
+    "result": "❌",
+    "updatedAt": "2026-10-20T00:33:34.011Z",
     "coldDans": [
       4,
       8,
       5
     ],
-    "coldResult": null
+    "coldResult": "✅"
   },
   "2026279": {
     "period": "2026279",
@@ -6108,7 +6108,11 @@
     "drawNum": null,
     "result": null,
     "updatedAt": null,
-    "coldDans": null,
+    "coldDans": [
+      4,
+      8,
+      5
+    ],
     "coldResult": null
   },
   "2026280": {
