@@ -7454,3 +7454,134 @@ function anEscape(str) {
   div.textContent = str;
   return div.innerHTML;
 }
+
+// ============================================================
+// 批量二维码生成器工具 (bq*)
+// ============================================================
+var bqImages = [];
+
+function bqGenerate() {
+  var input = document.getElementById('bq-input');
+  var result = document.getElementById('bq-result');
+  if (!input || !result) return;
+  var text = input.value.trim();
+  if (!text) { showToast('⚠️ 请输入内容'); return; }
+  var lines = text.split('\n').map(function(s) { return s.trim(); }).filter(Boolean);
+  if (lines.length === 0) { showToast('⚠️ 没有有效内容'); return; }
+
+  // 动态加载 qrcode.js（若未加载）
+  if (typeof QRCode === 'undefined') {
+    var script = document.createElement('script');
+    script.src = 'https://unpkg.com/qrcodejs@1.0.0/qrcode.min.js';
+    script.onload = function() { bqRender(lines); };
+    document.head.appendChild(script);
+  } else {
+    bqRender(lines);
+  }
+  bqLines = lines;
+}
+
+var bqLines = [];
+
+function bqRender(lines) {
+  var result = document.getElementById('bq-result');
+  if (!result) return;
+  result.innerHTML = '';
+  bqImages = [];
+  lines.forEach(function(content, i) {
+    var wrap = document.createElement('div');
+    wrap.style.cssText = 'text-align:center;';
+    var box = document.createElement('div');
+    box.style.cssText = 'width:130px;height:130px;margin:0 auto;background:#fff;border-radius:8px;padding:6px;border:1px solid var(--border,#e2e8f0);';
+    wrap.appendChild(box);
+    var label = document.createElement('div');
+    label.style.cssText = 'font-size:11px;color:var(--text-light);margin-top:4px;word-break:break-all;max-height:30px;overflow:hidden;';
+    label.textContent = (i + 1) + '. ' + content.slice(0, 20) + (content.length > 20 ? '…' : '');
+    wrap.appendChild(label);
+    try {
+      new QRCode(box, { text: content, width: 118, height: 118 });
+      var img = box.querySelector('img') || box.querySelector('canvas');
+      if (img) bqImages.push({ content: content, el: img });
+    } catch(e) { }
+    // 点击下载
+    wrap.style.cursor = 'pointer';
+    wrap.onclick = function() {
+      var canvas = box.querySelector('canvas');
+      if (canvas) {
+        var a = document.createElement('a');
+        a.href = canvas.toDataURL('image/png');
+        a.download = 'qrcode-' + (i + 1) + '.png';
+        a.click();
+        showToast('📥 第' + (i + 1) + '个二维码已下载');
+      }
+    };
+    result.appendChild(wrap);
+  });
+  showToast('🔳 已生成 ' + lines.length + ' 个二维码');
+}
+
+function bqDownloadAll() {
+  if (bqImages.length === 0) { showToast('⚠️ 请先生成二维码'); return; }
+  bqImages.forEach(function(item, i) {
+    setTimeout(function() {
+      var canvas = item.el;
+      if (canvas && canvas.toDataURL) {
+        var a = document.createElement('a');
+        a.href = canvas.toDataURL('image/png');
+        a.download = 'qrcode-' + (i + 1) + '.png';
+        a.click();
+      } else if (item.el && item.el.src) {
+        var a2 = document.createElement('a');
+        a2.href = item.el.src;
+        a2.download = 'qrcode-' + (i + 1) + '.png';
+        a2.click();
+      }
+    }, i * 200);
+  });
+  showToast('📦 正在下载 ' + bqImages.length + ' 个二维码');
+}
+
+// ============================================================
+// 随机抽签器工具 (nd*)
+// ============================================================
+function ndDraw() {
+  var input = document.getElementById('nd-input');
+  var countInput = document.getElementById('nd-count');
+  var result = document.getElementById('nd-result');
+  if (!input || !countInput || !result) return;
+  var lines = input.value.split('\n').map(function(s) { return s.trim(); }).filter(Boolean);
+  if (lines.length === 0) { showToast('⚠️ 请输入名单'); return; }
+  var count = parseInt(countInput.value) || 1;
+  if (count > lines.length) count = lines.length;
+
+  // Fisher-Yates 打乱后取前N个
+  var arr = lines.slice();
+  for (var i = arr.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1));
+    var t = arr[i]; arr[i] = arr[j]; arr[j] = t;
+  }
+  var winners = arr.slice(0, count);
+
+  if (count === 1) {
+    result.innerHTML = '<div style="font-size:36px;color:#6366f1;font-weight:700;">' + ndEscape(winners[0]) + '</div><div style="font-size:13px;color:var(--text-light);margin-top:6px;">🎉 恭喜中签！</div>';
+  } else {
+    result.innerHTML = winners.map(function(w, i) {
+      return '<div style="display:inline-block;width:70px;height:70px;line-height:70px;border-radius:50%;background:#6366f1;color:#fff;font-size:15px;font-weight:600;margin:6px;">' + ndEscape(w) + '</div>';
+    }).join('') + '<div style="font-size:13px;color:var(--text-light);margin-top:6px;">🎉 恭喜 ' + winners.length + ' 位中签！</div>';
+  }
+  showToast('🎲 已抽取 ' + count + ' 人');
+}
+
+function ndClear() {
+  var input = document.getElementById('nd-input');
+  var result = document.getElementById('nd-result');
+  if (input) input.value = '';
+  if (result) result.innerHTML = '';
+  showToast('🗑️ 已清空');
+}
+
+function ndEscape(str) {
+  var div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
+}

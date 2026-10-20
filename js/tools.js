@@ -8816,6 +8816,66 @@ greet('世界');</textarea>
   handler: () => { }
 },
 
+// ============================================================
+// 批量二维码生成器工具 batch-qrcode (bq*)
+// ============================================================
+{
+  id: 'batch-qrcode',
+  cat: 'dev',
+  icon: '🔳',
+  name: '批量二维码生成',
+  desc: '多行文本一次生成多个二维码，适合批量商品码、桌码、WiFi码，可逐个下载',
+  html: `
+    <div class="tool-card">
+      <div class="input-group">
+        <label>内容（每行一个）</label>
+        <textarea id="bq-input" placeholder="https://example.com/a&#10;https://example.com/b&#10;WIFI:T:WPA;S:MyWifi;P:123456;;" style="height:140px;font-family:monospace;"></textarea>
+      </div>
+      <div class="btn-group" style="margin-top:15px;">
+        <button class="btn btn-primary" onclick="bqGenerate()">⚡ 批量生成</button>
+        <button class="btn btn-secondary" onclick="bqDownloadAll()">📦 下载全部</button>
+      </div>
+      <div id="bq-result" style="margin-top:15px;display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:12px;"></div>
+      <div id="bq-tip" style="margin-top:15px;font-size:13px;color:var(--text-light);background:var(--bg-light,#f8fafc);padding:12px;border-radius:8px;">
+        💡 每行内容生成一个二维码，点击单个可下载；支持文本、网址、WiFi配置
+      </div>
+    </div>
+  `,
+  handler: () => { }
+},
+
+// ============================================================
+// 随机抽签器工具 name-draw (nd*)
+// ============================================================
+{
+  id: 'name-draw',
+  cat: 'fun',
+  icon: '🎲',
+  name: '随机抽签器',
+  desc: '输入名单随机抽取，支持抽取数量、不重复，课堂点名/抽奖必备',
+  html: `
+    <div class="tool-card">
+      <div class="input-group">
+        <label>名单（每行一个名字）</label>
+        <textarea id="nd-input" placeholder="张三&#10;李四&#10;王五&#10;赵六&#10;钱七" style="height:120px;"></textarea>
+      </div>
+      <div class="input-group" style="margin-top:10px;">
+        <label>抽取人数</label>
+        <input type="number" id="nd-count" value="1" min="1" max="50" style="width:100px;">
+      </div>
+      <div class="btn-group" style="margin-top:15px;">
+        <button class="btn btn-primary" onclick="ndDraw()">🎲 开始抽签</button>
+        <button class="btn btn-secondary" onclick="ndClear()">🗑️ 清空</button>
+      </div>
+      <div id="nd-result" style="margin-top:15px;border:1px solid var(--border,#e2e8f0);border-radius:10px;padding:20px;min-height:60px;text-align:center;font-size:20px;font-weight:600;"></div>
+      <div id="nd-tip" style="margin-top:15px;font-size:13px;color:var(--text-light);background:var(--bg-light,#f8fafc);padding:12px;border-radius:8px;">
+        💡 抽取结果不重复；再次点击可重新抽取
+      </div>
+    </div>
+  `,
+  handler: () => { }
+},
+
 
 ];
 
