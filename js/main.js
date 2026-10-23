@@ -7585,3 +7585,141 @@ function ndEscape(str) {
   div.textContent = str;
   return div.innerHTML;
 }
+
+// ============================================================
+// 二维码识别器工具 (qd*)
+// ============================================================
+function qdDecode(fileInput) {
+  var filename = document.getElementById('qd-filename');
+  var result = document.getElementById('qd-result');
+  if (!fileInput || !result) return;
+  var file = fileInput.files[0];
+  if (!file) return;
+  if (filename) filename.textContent = file.name;
+
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    var img = new Image();
+    img.onload = function() {
+      // 动态加载 jsQR 解码库
+      if (typeof jsQR === 'undefined') {
+        var script = document.createElement('script');
+        script.src = 'https://unpkg.com/jsqr@1.4.0/dist/jsQR.js';
+        script.onload = function() { qdDecodeImage(img); };
+        document.head.appendChild(script);
+      } else {
+        qdDecodeImage(img);
+      }
+    };
+    img.onerror = function() { result.innerHTML = '<div style="color:#ef4444;">❌ 图片加载失败</div>'; };
+    img.src = e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+function qdDecodeImage(img) {
+  var result = document.getElementById('qd-result');
+  if (!result) return;
+  var canvas = document.createElement('canvas');
+  canvas.width = img.width;
+  canvas.height = img.height;
+  var ctx = canvas.getContext('2d');
+  ctx.drawImage(img, 0, 0);
+  var imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+
+  try {
+    var code = jsQR(imageData.data, imageData.width, imageData.height);
+    if (code && code.data) {
+      var text = code.data;
+      var isUrl = /^https?:\/\//i.test(text);
+      result.innerHTML = '<div style="color:#22c55e;font-weight:600;margin-bottom:8px;">✅ 二维码识别成功</div>';
+      result.innerHTML += '<div style="word-break:break-all;padding:10px;background:var(--bg-light,#f8fafc);border-radius:6px;">' + (isUrl ? '<a href="' + qdEscape(text) + '" target="_blank" style="color:#6366f1;">' + qdEscape(text) + '</a>' : qdEscape(text)) + '</div>';
+      result.innerHTML += '<button class="btn btn-sm" style="margin-top:8px;" onclick="navigator.clipboard.writeText(\'' + qdEscape(text).replace(/'/g, "\\'") + '\').then(function(){showToast(\'📋 已复制\')})">📋 复制内容</button>';
+      showToast('✅ 二维码识别成功');
+    } else {
+      result.innerHTML = '<div style="color:#f59e0b;">⚠️ 未在图片中识别到二维码，请换一张清晰的图片</div>';
+    }
+  } catch(e) {
+    result.innerHTML = '<div style="color:#ef4444;">❌ 识别失败：' + qdEscape(e.message) + '</div>';
+  }
+}
+
+function qdDecodeFromCam() {
+  showToast('📸 摄像头扫码功能需在 https 环境使用，建议直接上传图片识别');
+}
+
+function qdEscape(str) {
+  var div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
+}
+
+// ============================================================
+// 闪卡背诵器工具 (fc*)
+// ============================================================
+var fcCards = [];
+var fcIndex = 0;
+var fcFlipped = false;
+
+function fcStart() {
+  var input = document.getElementById('fc-input');
+  if (!input) return;
+  var lines = input.value.split('\n').map(function(s) { return s.trim(); }).filter(Boolean);
+  fcCards = [];
+  for (var i = 0; i + 1 < lines.length; i += 2) {
+    fcCards.push({ q: lines[i], a: lines[i + 1] });
+  }
+  if (fcCards.length === 0) { showToast('⚠️ 请输入卡片内容（问题/答案成对）'); return; }
+  fcIndex = 0;
+  fcFlipped = false;
+  fcRender();
+  showToast('🃏 共加载 ' + fcCards.length + ' 张卡片');
+}
+
+function fcShuffle() {
+  if (fcCards.length === 0) { showToast('⚠️ 请先开始背诵'); return; }
+  for (var i = fcCards.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1));
+    var t = fcCards[i]; fcCards[i] = fcCards[j]; fcCards[j] = t;
+  }
+  fcIndex = 0;
+  fcFlipped = false;
+  fcRender();
+  showToast('🔀 卡片已打乱');
+}
+
+function fcFlip() {
+  if (fcCards.length === 0) return;
+  fcFlipped = !fcFlipped;
+  fcRender();
+}
+
+function fcNext() {
+  if (fcCards.length === 0) return;
+  fcIndex = (fcIndex + 1) % fcCards.length;
+  fcFlipped = false;
+  fcRender();
+}
+
+function fcPrev() {
+  if (fcCards.length === 0) return;
+  fcIndex = (fcIndex - 1 + fcCards.length) % fcCards.length;
+  fcFlipped = false;
+  fcRender();
+}
+
+function fcRender() {
+  var card = document.getElementById('fc-card');
+  var count = document.getElementById('fc-count');
+  if (!card || !count) return;
+  if (fcCards.length === 0) {
+    card.textContent = '请先输入卡片内容并点击"开始背诵"';
+    count.textContent = '0/0';
+    return;
+  }
+  var current = fcCards[fcIndex];
+  card.textContent = fcFlipped ? current.a : current.q;
+  card.style.background = fcFlipped ? '#dcfce7' : 'var(--bg-light,#f8fafc)';
+  card.style.color = fcFlipped ? '#166534' : 'var(--text)';
+  count.textContent = (fcIndex + 1) + '/' + fcCards.length;
+}

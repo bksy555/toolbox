@@ -8876,6 +8876,68 @@ greet('世界');</textarea>
   handler: () => { }
 },
 
+// ============================================================
+// 二维码识别器工具 qrcode-decoder (qd*)
+// ============================================================
+{
+  id: 'qrcode-decoder',
+  cat: 'dev',
+  icon: '📷',
+  name: '二维码识别器',
+  desc: '上传含二维码的图片，自动识别解码内容，支持网址/文本/WiFi信息',
+  html: `
+    <div class="tool-card">
+      <div class="input-group">
+        <label>选择二维码图片</label>
+        <input type="file" id="qd-file" accept="image/*" style="display:none;" onchange="qdDecode(this)">
+        <button class="btn btn-secondary" style="margin-top:6px;" onclick="document.getElementById('qd-file').click()">📷 选择图片</button>
+        <span id="qd-filename" style="font-size:12px;color:var(--text-light);margin-left:10px;"></span>
+      </div>
+      <div class="btn-group" style="margin-top:15px;">
+        <button class="btn btn-primary" onclick="qdDecodeFromCam()">📸 摄像头扫码</button>
+      </div>
+      <div id="qd-result" style="margin-top:15px;border:1px solid var(--border,#e2e8f0);border-radius:10px;padding:16px;min-height:60px;"></div>
+      <div id="qd-tip" style="margin-top:15px;font-size:13px;color:var(--text-light);background:var(--bg-light,#f8fafc);padding:12px;border-radius:8px;">
+        💡 支持上传图片识别；摄像头扫码需授权摄像头权限
+      </div>
+    </div>
+  `,
+  handler: () => { }
+},
+
+// ============================================================
+// 闪卡背诵器工具 flashcard (fc*)
+// ============================================================
+{
+  id: 'flashcard',
+  cat: 'edu',
+  icon: '🃏',
+  name: '闪卡背诵器',
+  desc: '输入问题/答案卡片，正反翻转记忆，背单词/知识点必备',
+  html: `
+    <div class="tool-card">
+      <div class="input-group">
+        <label>卡片内容（每两行一组：问题/答案）</label>
+        <textarea id="fc-input" placeholder="apple&#10;苹果&#10;cat&#10;猫&#10;book&#10;书" style="height:120px;font-family:monospace;"></textarea>
+      </div>
+      <div class="btn-group" style="margin-top:15px;">
+        <button class="btn btn-primary" onclick="fcStart()">🃏 开始背诵</button>
+        <button class="btn btn-secondary" onclick="fcShuffle()">🔀 随机打乱</button>
+      </div>
+      <div id="fc-card" style="margin-top:15px;border:2px solid var(--accent,#6366f1);border-radius:14px;padding:40px 20px;text-align:center;font-size:22px;font-weight:600;min-height:100px;cursor:pointer;" onclick="fcFlip()">点击"开始背诵"加载卡片</div>
+      <div style="margin-top:12px;text-align:center;">
+        <button class="btn btn-sm" onclick="fcPrev()">⬅ 上一张</button>
+        <span id="fc-count" style="margin:0 10px;font-size:13px;color:var(--text-light);">0/0</span>
+        <button class="btn btn-sm" onclick="fcNext()">下一张 ➡</button>
+      </div>
+      <div id="fc-tip" style="margin-top:15px;font-size:13px;color:var(--text-light);background:var(--bg-light,#f8fafc);padding:12px;border-radius:8px;">
+        💡 点击卡片翻转正反面，左右切换卡片，可随机打乱顺序
+      </div>
+    </div>
+  `,
+  handler: () => { }
+},
+
 
 ];
 
