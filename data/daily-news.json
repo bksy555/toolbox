@@ -1,6 +1,6 @@
 {
   "date": "2026-10-28",
-  "updateTime": "2026-10-28T15:05:10+08:00",
+  "updateTime": "2026-10-28T22:30:55+08:00",
   "items": [
     {
       "type": "news",
@@ -9,7 +9,7 @@
       "data": {
         "source": "新闻联播",
         "items": [],
-        "updateTime": "2026-10-28T15:05:10+08:00"
+        "updateTime": "2026-10-28T22:30:55+08:00"
       }
     },
     {
@@ -19,6 +19,24 @@
       "data": {
         "source": "AI科技日报",
         "items": [
+          {
+            "title": "面壁智能发布并开源 MiniCPM-OCR 系列：1.3B 解析模型与 2B 判别模型",
+            "summary": "面壁智能发布并开源 MiniCPM-OCR 系列。MiniCPM-OCR 1.0（1.3B）在 Real5-OmniDocBench 取得 93.68 分、OCRBench v2 取得 54.7 分的 SOTA，经 DSpark 加速后吞吐达 1.217 页/秒，端到端效率提升 55%。",
+            "url": "https://mp.weixin.qq.com/s?__biz=Mzg3Mzg2MTg2NQ%3D%3D&mid=2247499654&idx=1&sn=9bcbf9492c492a5d5e611af41670425f",
+            "category": "ai-models"
+          },
+          {
+            "title": "Cathedral 用 AI 智能体侵入 Anthropic 内部系统，双方对事件范围说法不一",
+            "summary": "网络安全初创公司 Cathedral 通过第三方业务软件渗入 Anthropic 内部系统，称其 AI 智能体在不到十二小时内接触到会议记录、薪资数据和 Slack 消息，并借漏洞赏金计划披露问题。",
+            "url": "https://the-decoder.com/ai-agents-hacked-anthropic-maker-of-arguably-the-most-capable-ai-models-for-cyberdefense/",
+            "category": "industry"
+          },
+          {
+            "title": "Anthropic S-1 显示 90% 增量毛利，SemiAnalysis 播客详解其中数字",
+            "summary": "Saito 转述 SemiAnalysis 播客对 Anthropic S-1 的解读：招股书口径为增量毛利 90%、推理毛利 85%、连续两个季度盈利，Q1 净收入留存达 500%，收入同比涨 1368% 而算力费用只涨 300%。",
+            "url": "https://x.com/SaitoWu/status/2115376256929948006",
+            "category": "industry"
+          },
           {
             "title": "Addy Osmani 讲解如何上手 Claude Code Mods",
             "summary": "Addy Osmani 发布 Claude Code Mods 上手指南，说明 mods 是运行在会话中的 JavaScript/TypeScript 文件，可通过 hooks 观察事件、改写行为或渲染自定义界面。",
@@ -84,33 +102,9 @@
             "summary": "Replit 推出 Cloud Agents，面向 Pro 与 Enterprise 客户开放，让设计、客服等非工程人员用自然语言向公司核心代码库提交经测试的 pull request。",
             "url": "https://replit.com/blog/anyone-can-bring-ideas-to-company-codebase",
             "category": "ai-products"
-          },
-          {
-            "title": "Ben Horowitz 长文解析 Databricks 与智能体时代的公司形态",
-            "summary": "a16z 的 Ben Horowitz 发文解析 Databricks 如何成为智能体时代的公司基础设施，Databricks 已达到 70 亿美元收入运行率、同比增长 80%，估值 1900 亿美元。",
-            "url": "https://www.a16z.news/p/databricks-and-the-future-of-the",
-            "category": "opinion"
-          },
-          {
-            "title": "OpenAI 请外部专家核查其 AI 在数学、计算机科学和物理学领域产出的证明",
-            "summary": "The Decoder 报道 OpenAI 请外部专家担任\"shepherds\"核查其 AI 在计算机科学、数学和物理学领域的三项证明结果，并将部分证明翻译成 Lean 供计算机逐步验证。",
-            "url": "https://the-decoder.com/openai-asks-outside-experts-including-a-nobel-laureate-to-check-proofs-its-ai-produced-in-math-computer-science-and-physics/",
-            "category": "industry"
-          },
-          {
-            "title": "Ai2 发布 Old Ideas, Novel Problems 研究与 benchmark，揭示 LLM 新颖性裁判不稳定",
-            "summary": "Ai2 发布研究 Old Ideas, Novel Problems、配套 benchmark、数据、代码和自动化流水线，测试 LLM 作为研究想法新颖性裁判的可靠性。",
-            "url": "https://allenai.org/blog/novelty-bench",
-            "category": "paper"
-          },
-          {
-            "title": "Latent Space 解读 Anthropic 提交 S-1：拟以代码 AN 上市纳斯达克，H1 2026 营收 16.3B 美元",
-            "summary": "Latent Space 汇总解读 Anthropic 公开提交的 S-1 文件，公司计划以代码 AN 上市纳斯达克，营收从 2023 年的 41M 美元增至 H1 2026 的 16.3B 美元，Q2 营收 11.6B 美元同比增长 1,368%，营业利润 974M 美元，H1 2026 毛利率达 85%。",
-            "url": "https://latent.space/p/ainews-anthropic-s1/",
-            "category": "industry"
           }
         ],
-        "updateTime": "2026-10-28T15:05:10+08:00"
+        "updateTime": "2026-10-28T22:30:55+08:00"
       }
     }
   ]
