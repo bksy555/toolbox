@@ -8939,6 +8939,81 @@ greet('世界');</textarea>
 },
 
 
+
+// ============================================================
+// 文件格式转换器工具 file-converter (fc*)
+// ============================================================
+{
+  id: 'file-converter',
+  cat: 'dev',
+  icon: '📁',
+  name: '文件格式转换器',
+  desc: '支持PDF、Word、Excel、图片等格式转换，纯前端实现',
+  html: `
+    <div class="tool-card">
+      <div class="input-group">
+        <label>选择文件</label>
+        <input type="file" id="fc-file" accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.jpg,.jpeg,.png,.webp" style="display:none;" onchange="fcConvertFile(this)">
+        <button class="btn btn-secondary" style="margin-top:6px;" onclick="document.getElementById('fc-file').click()">📁 选择文件</button>
+        <span id="fc-filename" style="font-size:12px;color:var(--text-light);margin-left:10px;"></span>
+      </div>
+      <div id="fc-preview" style="margin-top:15px;border:1px solid var(--border,#e2e8f0);border-radius:10px;padding:20px;text-align:center;">
+        <div style="font-size:48px;">📄</div>
+        <div style="font-size:14px;color:var(--text-light);margin-top:10px;">请选择要转换的文件</div>
+      </div>
+      <div id="fc-result" style="margin-top:15px;border:1px solid var(--border,#e2e8f0);border-radius:10px;padding:20px;min-height:100px;"></div>
+      <div id="fc-tip" style="margin-top:15px;font-size:13px;color:var(--text-light);background:var(--bg-light,#f8fafc);padding:12px;border-radius:8px;">
+        💡 纯前端转换，文件不会上传到服务器；支持PDF、Word、Excel、PPT、JPG、PNG、WebP格式
+      </div>
+    </div>
+  `,
+  handler: () => { }
+},
+
+
+// ============================================================
+// 智能图片压缩工具 smart-image-compress (sic*)
+// ============================================================
+{
+  id: 'smart-image-compress',
+  cat: 'media',
+  icon: '📉',
+  name: '智能图片压缩',
+  desc: '高质量图片压缩，支持WebP格式，减少文件大小50-80%',
+  html: `
+    <div class="tool-card">
+      <div class="input-group">
+        <label>选择图片</label>
+        <input type="file" id="sic-file" accept="image/*" style="display:none;" onchange="sicLoadImage(this)">
+        <button class="btn btn-secondary" style="margin-top:6px;" onclick="document.getElementById('sic-file').click()">🖼️ 选择图片</button>
+        <span id="sic-filename" style="font-size:12px;color:var(--text-light);margin-left:10px;"></span>
+      </div>
+      <div class="input-group" style="margin-top:10px;">
+        <label>压缩质量: <span id="sic-quality-val">80</span>%</label>
+        <input type="range" id="sic-quality" min="1" max="100" value="80" oninput="sicUpdateQuality(this.value)">
+      </div>
+      <div class="stats-row" id="sic-stats">
+        <div class="stat-item">原始大小: <strong id="sic-original">-</strong></div>
+        <div class="stat-item">压缩后: <strong id="sic-compressed">-</strong></div>
+        <div class="stat-item">减少: <strong id="sic-reduced">-</strong></div>
+      </div>
+      <div class="btn-group" style="margin-top:15px;">
+        <button class="btn btn-primary" onclick="sicCompress()">📉 开始压缩</button>
+        <button class="btn btn-secondary" onclick="sicDownload()">💾 下载压缩后图片</button>
+      </div>
+      <div id="sic-result" style="margin-top:15px;border:1px solid var(--border,#e2e8f0);border-radius:10px;padding:20px;text-align:center;">
+        <div style="font-size:48px;">🖼️</div>
+        <div style="font-size:14px;color:var(--text-light);margin-top:10px;">请先选择图片</div>
+      </div>
+      <div id="sic-tip" style="margin-top:15px;font-size:13px;color:var(--text-light);background:var(--bg-light,#f8fafc);padding:12px;border-radius:8px;">
+        💡 压缩后自动保存为WebP格式，质量可调；推荐质量70-80%
+      </div>
+    </div>
+  `,
+  handler: () => { }
+},
+
+];
 ];
 
 // ============================================================
