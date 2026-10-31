@@ -21039,3 +21039,164 @@ function stkClear() {
 }
 
 
+
+// ============================================================
+// 文件格式转换器工具处理函数
+// ============================================================
+var fcFileData = null;
+var fcConvertedBlob = null;
+
+function fcConvertFile(input) {
+  const file = input.files[0];
+  if (!file) return;
+  
+  document.getElementById('fc-filename').textContent = file.name;
+  document.getElementById('fc-result').innerHTML = '<div style="text-align:center;">⏳ 正在转换...</div>';
+  
+  fcFileData = file;
+  
+  // 简单的纯前端转换演示（实际转换需要第三方API）
+  // 这里我们显示支持格式和文件信息
+  const sizeMB = (file.size / 1024 / 1024).toFixed(2);
+  const ext = file.name.split('.').pop().toLowerCase();
+  
+  let supportedFormats = [];
+  if (ext === 'jpg' || ext === 'jpeg' || ext === 'png' || ext === 'webp') {
+    supportedFormats = ['webp'];
+  } else if (ext === 'pdf') {
+    supportedFormats = ['jpg', 'png'];
+  } else if (['doc', 'docx'].includes(ext)) {
+    supportedFormats = ['pdf'];
+  } else if (['xls', 'xlsx'].includes(ext)) {
+    supportedFormats = ['csv'];
+  }
+  
+  document.getElementById('fc-preview').innerHTML = `
+    <div style="text-align:center;">
+      <div style="font-size:48px;">📄</div>
+      <div style="font-size:14px;color:var(--text-light);margin-top:10px;">${file.name}</div>
+      <div style="font-size:12px;color:var(--text-light);margin-top:5px;">${sizeMB} MB</div>
+      <div style="font-size:12px;color:var(--accent);margin-top:5px;">支持格式: ${supportedFormats.join(', ')}</div>
+    </div>
+  `;
+  
+  document.getElementById('fc-result').innerHTML = `
+    <div style="text-align:center;">
+      <div style="font-size:48px;">✅</div>
+      <div style="font-size:14px;font-weight:600;color:var(--text);margin-top:10px;">文件已就绪</div>
+      <div style="font-size:12px;color:var(--text-light);margin-top:5px;">请点击"开始转换"按钮</div>
+      <div style="font-size:12px;color:var(--text-light);margin-top:5px;">注意: 纯前端转换功能有限，建议使用专业工具</div>
+    </div>
+  `;
+}
+
+// ============================================================
+// 智能图片压缩工具处理函数
+// ============================================================
+var sicImage = null;
+var sicOriginalBlob = null;
+var sicCompressedBlob = null;
+var sicCompressedDataUrl = null;
+
+function sicLoadImage(input) {
+  const file = input.files[0];
+  if (!file) return;
+  
+  document.getElementById('sic-filename').textContent = file.name;
+  document.getElementById('sic-result').innerHTML = '<div style="text-align:center;">⏳ 正在加载图片...</div>';
+  
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    const img = new Image();
+    img.onload = function() {
+      sicImage = img;
+      sicOriginalBlob = file;
+      
+      const sizeMB = (file.size / 1024 / 1024).toFixed(2);
+      document.getElementById('sic-original').textContent = sizeMB + ' MB';
+      document.getElementById('sic-compressed').textContent = '-';
+      document.getElementById('sic-reduced').textContent = '-';
+      
+      document.getElementById('sic-result').innerHTML = `
+        <div style="text-align:center;">
+          <div style="font-size:48px;">🖼️</div>
+          <div style="font-size:14px;font-weight:600;color:var(--text);margin-top:10px;">图片已加载</div>
+          <div style="font-size:12px;color:var(--text-light);margin-top:5px;">尺寸: ${img.width} × ${img.height}</div>
+          <div style="font-size:12px;color:var(--text-light);margin-top:5px;">${sizeMB} MB</div>
+        </div>
+      `;
+    };
+    img.src = e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+function sicUpdateQuality(val) {
+  document.getElementById('sic-quality-val').textContent = val;
+}
+
+function sicCompress() {
+  if (!sicImage) {
+    showToast('❌ 请先选择图片');
+    return;
+  }
+  
+  const quality = parseInt(document.getElementById('sic-quality').value) / 100;
+  const canvas = document.createElement('canvas');
+  canvas.width = sicImage.width;
+  canvas.height = sicImage.height;
+  const ctx = canvas.getContext('2d');
+  
+  // 白色背景
+  ctx.fillStyle = '#FFFFFF';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  ctx.drawImage(sicImage, 0, 0);
+  
+  // 转换为WebP
+  sicCompressedDataUrl = canvas.toDataURL('image/webp', quality);
+  
+  // 计算大小
+  const head = 'data:image/webp;base64,';
+  const base64 = sicCompressedDataUrl.substring(head.length);
+  const sizeKB = Math.round((base64.length * 3) / 4 / 1024);
+  const sizeMB = (sizeKB / 1024).toFixed(2);
+  
+  const originalSizeKB = Math.round((sicOriginalBlob.size / 1024));
+  const reducedKB = originalSizeKB - sizeKB;
+  const reducedPercent = ((reducedKB / originalSizeKB) * 100).toFixed(1);
+  
+  document.getElementById('sic-compressed').textContent = sizeMB + ' MB';
+  document.getElementById('sic-reduced').textContent = '-' + reducedPercent + '%';
+  
+  // 显示预览
+  document.getElementById('sic-result').innerHTML = `
+    <div style="text-align:center;">
+      <div style="font-size:48px;">✅</div>
+      <div style="font-size:14px;font-weight:600;color:var(--text);margin-top:10px;">压缩完成</div>
+      <div style="font-size:12px;color:var(--text-light);margin-top:5px;">压缩率: ${reducedPercent}%</div>
+      <div style="font-size:12px;color:var(--text-light);margin-top:5px;">大小: ${sizeMB} MB</div>
+    </div>
+  `;
+  
+  // 保存blob
+  fetch(sicCompressedDataUrl)
+    .then(res => res.blob())
+    .then(blob => {
+      sicCompressedBlob = blob;
+    });
+  
+  showToast('✅ 图片压缩完成');
+}
+
+function sicDownload() {
+  if (!sicCompressedBlob) {
+    showToast('❌ 请先压缩图片');
+    return;
+  }
+  
+  const link = document.createElement('a');
+  link.download = 'compressed_' + sicOriginalBlob.name;
+  link.href = URL.createObjectURL(sicCompressedBlob);
+  link.click();
+  showToast('💾 已开始下载');
+}
