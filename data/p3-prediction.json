@@ -6201,7 +6201,7 @@
       3,
       4
     ],
-    "coldResult": null
+    "coldResult": "✅"
   },
   "2026284": {
     "period": "2026284",
@@ -6218,8 +6218,12 @@
     "drawNum": "677",
     "result": "✅",
     "updatedAt": "2026-10-31T14:05:00.000Z",
-    "coldDans": null,
-    "coldResult": null
+    "coldDans": [
+      5,
+      3,
+      4
+    ],
+    "coldResult": "❌"
   },
   "2026285": {
     "period": "2026285",
@@ -6236,8 +6240,12 @@
     "drawNum": "613",
     "result": "✅",
     "updatedAt": "2026-10-31T14:05:00.000Z",
-    "coldDans": null,
-    "coldResult": null
+    "coldDans": [
+      5,
+      9,
+      3
+    ],
+    "coldResult": "✅"
   },
   "2026286": {
     "period": "2026286",
@@ -6254,8 +6262,12 @@
     "drawNum": "218",
     "result": "✅",
     "updatedAt": "2026-10-31T14:05:00.000Z",
-    "coldDans": null,
-    "coldResult": null
+    "coldDans": [
+      5,
+      9,
+      4
+    ],
+    "coldResult": "❌"
   },
   "2026287": {
     "period": "2026287",
@@ -6272,8 +6284,12 @@
     "drawNum": "154",
     "result": "✅",
     "updatedAt": "2026-10-31T14:05:00.000Z",
-    "coldDans": null,
-    "coldResult": null
+    "coldDans": [
+      5,
+      9,
+      4
+    ],
+    "coldResult": "✅"
   },
   "2026288": {
     "period": "2026288",
@@ -6290,8 +6306,12 @@
     "drawNum": "415",
     "result": "✅",
     "updatedAt": "2026-10-31T14:05:00.000Z",
-    "coldDans": null,
-    "coldResult": null
+    "coldDans": [
+      5,
+      9,
+      4
+    ],
+    "coldResult": "✅"
   },
   "2026289": {
     "period": "2026289",
@@ -6308,8 +6328,12 @@
     "drawNum": "299",
     "result": "✅",
     "updatedAt": "2026-10-31T14:05:00.000Z",
-    "coldDans": null,
-    "coldResult": null
+    "coldDans": [
+      9,
+      5,
+      0
+    ],
+    "coldResult": "✅"
   },
   "2026290": {
     "period": "2026290",
@@ -6326,7 +6350,11 @@
     "drawNum": null,
     "result": null,
     "updatedAt": null,
-    "coldDans": null,
+    "coldDans": [
+      0,
+      5,
+      3
+    ],
     "coldResult": null
   },
   "2026291": {
