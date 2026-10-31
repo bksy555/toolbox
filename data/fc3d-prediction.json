@@ -2,247 +2,167 @@
   "2026080": {
     "period": "2026080",
     "drawNum": "802",
-    "result": null,
+    "result": "❌",
     "updatedAt": null,
-    "coldDans": [
-      0,
-      3,
-      4
-    ],
-    "coldResult": "✅"
+    "coldDans": null,
+    "coldResult": null
   },
   "2026081": {
     "period": "2026081",
     "drawNum": "827",
-    "result": null,
+    "result": "❌",
     "updatedAt": null,
-    "coldDans": [
-      3,
-      4,
-      5
-    ],
-    "coldResult": "❌"
+    "coldDans": null,
+    "coldResult": null
   },
   "2026082": {
     "period": "2026082",
     "drawNum": "942",
-    "result": null,
+    "result": "❌",
     "updatedAt": null,
-    "coldDans": [
-      3,
-      4,
-      5
-    ],
-    "coldResult": "✅"
+    "coldDans": null,
+    "coldResult": null
   },
   "2026083": {
     "period": "2026083",
     "drawNum": "506",
-    "result": null,
+    "result": "❌",
     "updatedAt": null,
-    "coldDans": [
-      3,
-      5,
-      0
-    ],
-    "coldResult": "✅"
+    "coldDans": null,
+    "coldResult": null
   },
   "2026084": {
     "period": "2026084",
     "drawNum": "456",
-    "result": null,
+    "result": "❌",
     "updatedAt": null,
-    "coldDans": [
-      3,
-      1,
-      5
-    ],
-    "coldResult": "✅"
+    "coldDans": null,
+    "coldResult": null
   },
   "2026085": {
     "period": "2026085",
     "drawNum": "118",
-    "result": null,
+    "result": "❌",
     "updatedAt": null,
-    "coldDans": [
-      1,
-      3,
-      0
-    ],
-    "coldResult": "✅"
+    "coldDans": null,
+    "coldResult": null
   },
   "2026086": {
     "period": "2026086",
     "drawNum": "382",
-    "result": null,
+    "result": "❌",
     "updatedAt": null,
-    "coldDans": [
-      3,
-      0,
-      1
-    ],
-    "coldResult": "✅"
+    "coldDans": null,
+    "coldResult": null
   },
   "2026087": {
     "period": "2026087",
     "drawNum": "911",
-    "result": null,
+    "result": "❌",
     "updatedAt": null,
-    "coldDans": [
-      3,
-      0,
-      1
-    ],
-    "coldResult": "✅"
+    "coldDans": null,
+    "coldResult": null
   },
   "2026088": {
     "period": "2026088",
     "drawNum": "608",
-    "result": null,
+    "result": "❌",
     "updatedAt": null,
-    "coldDans": [
-      3,
-      7,
-      0
-    ],
-    "coldResult": "✅"
+    "coldDans": null,
+    "coldResult": null
   },
   "2026089": {
     "period": "2026089",
     "drawNum": "922",
-    "result": null,
+    "result": "❌",
     "updatedAt": null,
-    "coldDans": [
-      3,
-      7,
-      0
-    ],
-    "coldResult": "❌"
+    "coldDans": null,
+    "coldResult": null
   },
   "2026090": {
     "period": "2026090",
     "drawNum": "816",
-    "result": null,
+    "result": "❌",
     "updatedAt": null,
-    "coldDans": [
-      3,
-      7,
-      0
-    ],
-    "coldResult": "❌"
+    "coldDans": null,
+    "coldResult": null
   },
   "2026091": {
     "period": "2026091",
     "drawNum": "537",
-    "result": null,
+    "result": "❌",
     "updatedAt": null,
-    "coldDans": [
-      3,
-      7,
-      0
-    ],
-    "coldResult": "✅"
+    "coldDans": null,
+    "coldResult": null
   },
   "2026092": {
     "period": "2026092",
     "drawNum": "870",
-    "result": null,
+    "result": "❌",
     "updatedAt": null,
-    "coldDans": [
-      3,
-      4,
-      0
-    ],
-    "coldResult": "✅"
+    "coldDans": null,
+    "coldResult": null
   },
   "2026093": {
     "period": "2026093",
     "drawNum": "518",
-    "result": null,
+    "result": "❌",
     "updatedAt": null,
-    "coldDans": [
-      3,
-      4,
-      5
-    ],
-    "coldResult": "✅"
+    "coldDans": null,
+    "coldResult": null
   },
   "2026094": {
     "period": "2026094",
     "drawNum": "418",
-    "result": null,
+    "result": "❌",
     "updatedAt": null,
-    "coldDans": [
-      3,
-      4,
-      6
-    ],
-    "coldResult": "✅"
+    "coldDans": null,
+    "coldResult": null
   },
   "2026095": {
     "period": "2026095",
     "drawNum": "022",
-    "result": null,
+    "result": "❌",
     "updatedAt": null,
-    "coldDans": [
-      3,
-      6,
-      9
-    ],
-    "coldResult": "❌"
+    "coldDans": null,
+    "coldResult": null
   },
   "2026096": {
     "period": "2026096",
     "drawNum": "689",
-    "result": null,
+    "result": "❌",
     "updatedAt": null,
-    "coldDans": [
-      3,
-      9,
-      6
-    ],
-    "coldResult": "✅"
+    "coldDans": null,
+    "coldResult": null
   },
   "2026097": {
     "period": "2026097",
     "drawNum": "818",
-    "result": null,
+    "result": "❌",
     "updatedAt": null,
-    "coldDans": [
-      3,
-      7,
-      9
-    ],
-    "coldResult": "❌"
+    "coldDans": null,
+    "coldResult": null
   },
   "2026098": {
     "period": "2026098",
     "drawNum": "513",
-    "result": null,
+    "result": "❌",
     "updatedAt": null,
-    "coldDans": [
-      3,
-      7,
-      4
-    ],
-    "coldResult": "✅"
+    "coldDans": null,
+    "coldResult": null
   },
   "2026099": {
     "period": "2026099",
     "drawNum": "877",
-    "result": null,
+    "result": "❌",
     "updatedAt": null,
-    "coldDans": [
-      3,
-      7,
-      4
-    ],
-    "coldResult": "✅"
+    "coldDans": null,
+    "coldResult": null
   },
   "2026100": {
     "period": "2026100",
     "drawNum": "414",
-    "result": null,
+    "result": "❌",
     "updatedAt": null,
     "coldDans": [
       3,
@@ -254,7 +174,7 @@
   "2026101": {
     "period": "2026101",
     "drawNum": "584",
-    "result": null,
+    "result": "❌",
     "updatedAt": null,
     "coldDans": [
       3,
@@ -266,7 +186,7 @@
   "2026102": {
     "period": "2026102",
     "drawNum": "420",
-    "result": null,
+    "result": "❌",
     "updatedAt": null,
     "coldDans": [
       3,
@@ -278,7 +198,7 @@
   "2026103": {
     "period": "2026103",
     "drawNum": "661",
-    "result": null,
+    "result": "❌",
     "updatedAt": null,
     "coldDans": [
       3,
@@ -290,7 +210,7 @@
   "2026104": {
     "period": "2026104",
     "drawNum": "482",
-    "result": null,
+    "result": "❌",
     "updatedAt": null,
     "coldDans": [
       3,
@@ -302,19 +222,19 @@
   "2026106": {
     "period": "2026106",
     "drawNum": "928",
-    "result": null,
+    "result": "❌",
     "updatedAt": null,
     "coldDans": [
+      3,
       9,
-      0,
-      3
+      0
     ],
     "coldResult": "✅"
   },
   "2026107": {
     "period": "2026107",
     "drawNum": "278",
-    "result": null,
+    "result": "❌",
     "updatedAt": null,
     "coldDans": [
       3,
@@ -326,35 +246,35 @@
   "2026108": {
     "period": "2026108",
     "drawNum": "671",
-    "result": null,
+    "result": "❌",
     "updatedAt": null,
     "coldDans": [
       3,
-      9,
-      0
+      0,
+      5
     ],
     "coldResult": "❌"
   },
   "2026109": {
     "period": "2026109",
     "drawNum": "195",
-    "result": null,
+    "result": "❌",
     "updatedAt": null,
     "coldDans": [
-      0,
       3,
-      9
+      9,
+      0
     ],
     "coldResult": "✅"
   },
   "2026110": {
     "period": "2026110",
     "drawNum": "379",
-    "result": null,
+    "result": "❌",
     "updatedAt": null,
     "coldDans": [
-      0,
       3,
+      0,
       9
     ],
     "coldResult": "✅"
@@ -362,7 +282,7 @@
   "2026111": {
     "period": "2026111",
     "drawNum": "863",
-    "result": null,
+    "result": "❌",
     "updatedAt": null,
     "coldDans": [
       0,
@@ -374,23 +294,23 @@
   "2026112": {
     "period": "2026112",
     "drawNum": "065",
-    "result": null,
+    "result": "❌",
     "updatedAt": null,
     "coldDans": [
       0,
       3,
-      5
+      9
     ],
     "coldResult": "✅"
   },
   "2026113": {
     "period": "2026113",
     "drawNum": "040",
-    "result": null,
+    "result": "❌",
     "updatedAt": null,
     "coldDans": [
-      0,
       3,
+      0,
       9
     ],
     "coldResult": "✅"
@@ -398,19 +318,19 @@
   "2026114": {
     "period": "2026114",
     "drawNum": "864",
-    "result": null,
+    "result": "❌",
     "updatedAt": null,
     "coldDans": [
       3,
-      5,
-      9
+      9,
+      0
     ],
     "coldResult": "❌"
   },
   "2026115": {
     "period": "2026115",
     "drawNum": "581",
-    "result": null,
+    "result": "❌",
     "updatedAt": null,
     "coldDans": [
       3,
@@ -422,23 +342,23 @@
   "2026116": {
     "period": "2026116",
     "drawNum": "020",
-    "result": null,
+    "result": "❌",
     "updatedAt": null,
     "coldDans": [
-      0,
-      2,
-      3
+      3,
+      9,
+      0
     ],
     "coldResult": "✅"
   },
   "2026117": {
     "period": "2026117",
     "drawNum": "411",
-    "result": null,
+    "result": "❌",
     "updatedAt": null,
     "coldDans": [
-      9,
       3,
+      9,
       2
     ],
     "coldResult": "❌"
@@ -446,11 +366,11 @@
   "2026118": {
     "period": "2026118",
     "drawNum": "132",
-    "result": null,
+    "result": "❌",
     "updatedAt": null,
     "coldDans": [
-      9,
       3,
+      9,
       2
     ],
     "coldResult": "✅"
@@ -458,7 +378,7 @@
   "2026119": {
     "period": "2026119",
     "drawNum": "112",
-    "result": null,
+    "result": "❌",
     "updatedAt": null,
     "coldDans": [
       9,
@@ -470,43 +390,43 @@
   "2026120": {
     "period": "2026120",
     "drawNum": "734",
-    "result": null,
+    "result": "❌",
     "updatedAt": null,
     "coldDans": [
-      7,
+      3,
       9,
-      3
+      5
     ],
     "coldResult": "✅"
   },
   "2026121": {
     "period": "2026121",
     "drawNum": "825",
-    "result": null,
+    "result": "❌",
     "updatedAt": null,
     "coldDans": [
       9,
-      5,
-      7
+      3,
+      5
     ],
     "coldResult": "✅"
   },
   "2026122": {
     "period": "2026122",
     "drawNum": "043",
-    "result": null,
+    "result": "❌",
     "updatedAt": null,
     "coldDans": [
       9,
-      5,
+      3,
       7
     ],
-    "coldResult": "❌"
+    "coldResult": "✅"
   },
   "2026123": {
     "period": "2026123",
     "drawNum": "796",
-    "result": null,
+    "result": "❌",
     "updatedAt": null,
     "coldDans": [
       9,
@@ -518,31 +438,31 @@
   "2026124": {
     "period": "2026124",
     "drawNum": "501",
-    "result": null,
+    "result": "❌",
     "updatedAt": null,
     "coldDans": [
       5,
       9,
-      7
+      3
     ],
     "coldResult": "✅"
   },
   "2026125": {
     "period": "2026125",
     "drawNum": "238",
-    "result": null,
+    "result": "❌",
     "updatedAt": null,
     "coldDans": [
       9,
-      4,
+      3,
       5
     ],
-    "coldResult": "❌"
+    "coldResult": "✅"
   },
   "2026126": {
     "period": "2026126",
     "drawNum": "674",
-    "result": null,
+    "result": "❌",
     "updatedAt": null,
     "coldDans": [
       9,
@@ -554,7 +474,7 @@
   "2026127": {
     "period": "2026127",
     "drawNum": "159",
-    "result": null,
+    "result": "❌",
     "updatedAt": null,
     "coldDans": [
       9,
@@ -566,7 +486,7 @@
   "2026128": {
     "period": "2026128",
     "drawNum": "803",
-    "result": null,
+    "result": "❌",
     "updatedAt": null,
     "coldDans": [
       9,
@@ -578,7 +498,7 @@
   "2026129": {
     "period": "2026129",
     "drawNum": "462",
-    "result": null,
+    "result": "❌",
     "updatedAt": null,
     "coldDans": [
       7,
@@ -590,7 +510,7 @@
   "2026130": {
     "period": "2026130",
     "drawNum": "917",
-    "result": null,
+    "result": "❌",
     "updatedAt": null,
     "coldDans": [
       9,
@@ -602,7 +522,7 @@
   "2026131": {
     "period": "2026131",
     "drawNum": "385",
-    "result": null,
+    "result": "❌",
     "updatedAt": null,
     "coldDans": [
       9,
@@ -614,7 +534,7 @@
   "2026132": {
     "period": "2026132",
     "drawNum": "061",
-    "result": null,
+    "result": "❌",
     "updatedAt": null,
     "coldDans": [
       9,
@@ -626,7 +546,7 @@
   "2026133": {
     "period": "2026133",
     "drawNum": "748",
-    "result": null,
+    "result": "❌",
     "updatedAt": null,
     "coldDans": [
       9,
@@ -638,7 +558,7 @@
   "2026134": {
     "period": "2026134",
     "drawNum": "523",
-    "result": null,
+    "result": "❌",
     "updatedAt": null,
     "coldDans": [
       9,
@@ -650,7 +570,7 @@
   "2026135": {
     "period": "2026135",
     "drawNum": "196",
-    "result": null,
+    "result": "❌",
     "updatedAt": null,
     "coldDans": [
       9,
@@ -662,7 +582,7 @@
   "2026136": {
     "period": "2026136",
     "drawNum": "850",
-    "result": null,
+    "result": "❌",
     "updatedAt": null,
     "coldDans": [
       9,
@@ -674,7 +594,7 @@
   "2026137": {
     "period": "2026137",
     "drawNum": "274",
-    "result": null,
+    "result": "❌",
     "updatedAt": null,
     "coldDans": [
       9,
@@ -686,7 +606,7 @@
   "2026138": {
     "period": "2026138",
     "drawNum": "639",
-    "result": null,
+    "result": "❌",
     "updatedAt": null,
     "coldDans": [
       9,
@@ -698,7 +618,7 @@
   "2026139": {
     "period": "2026139",
     "drawNum": "415",
-    "result": null,
+    "result": "❌",
     "updatedAt": null,
     "coldDans": [
       0,
@@ -710,7 +630,7 @@
   "2026140": {
     "period": "2026140",
     "drawNum": "087",
-    "result": null,
+    "result": "❌",
     "updatedAt": null,
     "coldDans": [
       0,
@@ -722,7 +642,7 @@
   "2026141": {
     "period": "2026141",
     "drawNum": "962",
-    "result": null,
+    "result": "❌",
     "updatedAt": null,
     "coldDans": [
       2,
@@ -734,7 +654,7 @@
   "2026142": {
     "period": "2026142",
     "drawNum": "351",
-    "result": null,
+    "result": "❌",
     "updatedAt": null,
     "coldDans": [
       2,
@@ -746,7 +666,7 @@
   "2026143": {
     "period": "2026143",
     "drawNum": "708",
-    "result": null,
+    "result": "❌",
     "updatedAt": null,
     "coldDans": [
       0,
@@ -758,7 +678,7 @@
   "2026144": {
     "period": "2026144",
     "drawNum": "594",
-    "result": null,
+    "result": "❌",
     "updatedAt": null,
     "coldDans": [
       2,
@@ -770,7 +690,7 @@
   "2026145": {
     "period": "2026145",
     "drawNum": "126",
-    "result": null,
+    "result": "❌",
     "updatedAt": null,
     "coldDans": [
       0,
@@ -782,7 +702,7 @@
   "2026146": {
     "period": "2026146",
     "drawNum": "839",
-    "result": null,
+    "result": "❌",
     "updatedAt": null,
     "coldDans": [
       0,
@@ -794,7 +714,7 @@
   "2026147": {
     "period": "2026147",
     "drawNum": "471",
-    "result": null,
+    "result": "❌",
     "updatedAt": null,
     "coldDans": [
       0,
@@ -806,7 +726,7 @@
   "2026148": {
     "period": "2026148",
     "drawNum": "053",
-    "result": null,
+    "result": "❌",
     "updatedAt": null,
     "coldDans": [
       0,
@@ -818,7 +738,7 @@
   "2026149": {
     "period": "2026149",
     "drawNum": "680",
-    "result": null,
+    "result": "❌",
     "updatedAt": null,
     "coldDans": [
       0,
@@ -830,7 +750,7 @@
   "2026150": {
     "period": "2026150",
     "drawNum": "246",
-    "result": null,
+    "result": "❌",
     "updatedAt": null,
     "coldDans": [
       2,
@@ -842,7 +762,7 @@
   "2026151": {
     "period": "2026151",
     "drawNum": "917",
-    "result": null,
+    "result": "❌",
     "updatedAt": null,
     "coldDans": [
       2,
@@ -854,7 +774,7 @@
   "2026152": {
     "period": "2026152",
     "drawNum": "503",
-    "result": null,
+    "result": "❌",
     "updatedAt": null,
     "coldDans": [
       2,
@@ -866,7 +786,7 @@
   "2026153": {
     "period": "2026153",
     "drawNum": "168",
-    "result": null,
+    "result": "❌",
     "updatedAt": null,
     "coldDans": [
       2,
@@ -878,7 +798,7 @@
   "2026154": {
     "period": "2026154",
     "drawNum": "742",
-    "result": null,
+    "result": "❌",
     "updatedAt": null,
     "coldDans": [
       2,
@@ -890,7 +810,7 @@
   "2026155": {
     "period": "2026155",
     "drawNum": "309",
-    "result": null,
+    "result": "❌",
     "updatedAt": null,
     "coldDans": [
       2,
@@ -902,7 +822,7 @@
   "2026156": {
     "period": "2026156",
     "drawNum": "825",
-    "result": null,
+    "result": "❌",
     "updatedAt": null,
     "coldDans": [
       2,
@@ -914,7 +834,7 @@
   "2026157": {
     "period": "2026157",
     "drawNum": "416",
-    "result": null,
+    "result": "❌",
     "updatedAt": null,
     "coldDans": [
       0,
@@ -926,7 +846,7 @@
   "2026158": {
     "period": "2026158",
     "drawNum": "937",
-    "result": null,
+    "result": "❌",
     "updatedAt": null,
     "coldDans": [
       2,
@@ -938,7 +858,7 @@
   "2026159": {
     "period": "2026159",
     "drawNum": "061",
-    "result": null,
+    "result": "❌",
     "updatedAt": null,
     "coldDans": [
       2,
@@ -950,7 +870,7 @@
   "2026160": {
     "period": "2026160",
     "drawNum": "284",
-    "result": null,
+    "result": "❌",
     "updatedAt": null,
     "coldDans": [
       2,
@@ -962,7 +882,7 @@
   "2026161": {
     "period": "2026161",
     "drawNum": "570",
-    "result": null,
+    "result": "❌",
     "updatedAt": null,
     "coldDans": [
       5,
@@ -974,7 +894,7 @@
   "2026162": {
     "period": "2026162",
     "drawNum": "193",
-    "result": null,
+    "result": "❌",
     "updatedAt": null,
     "coldDans": [
       2,
@@ -986,7 +906,7 @@
   "2026163": {
     "period": "2026163",
     "drawNum": "457",
-    "result": null,
+    "result": "❌",
     "updatedAt": null,
     "coldDans": [
       2,
@@ -998,7 +918,7 @@
   "2026164": {
     "period": "2026164",
     "drawNum": "628",
-    "result": null,
+    "result": "❌",
     "updatedAt": null,
     "coldDans": [
       2,
@@ -1010,7 +930,7 @@
   "2026165": {
     "period": "2026165",
     "drawNum": "305",
-    "result": null,
+    "result": "❌",
     "updatedAt": null,
     "coldDans": [
       5,
@@ -1022,7 +942,7 @@
   "2026166": {
     "period": "2026166",
     "drawNum": "719",
-    "result": null,
+    "result": "❌",
     "updatedAt": null,
     "coldDans": [
       2,
@@ -1034,7 +954,7 @@
   "2026167": {
     "period": "2026167",
     "drawNum": "846",
-    "result": null,
+    "result": "❌",
     "updatedAt": null,
     "coldDans": [
       2,
@@ -1046,7 +966,7 @@
   "2026168": {
     "period": "2026168",
     "drawNum": "130",
-    "result": null,
+    "result": "❌",
     "updatedAt": null,
     "coldDans": [
       2,
@@ -1058,7 +978,7 @@
   "2026169": {
     "period": "2026169",
     "drawNum": "832",
-    "result": null,
+    "result": "❌",
     "updatedAt": null,
     "coldDans": [
       2,
@@ -1070,7 +990,7 @@
   "2026170": {
     "period": "2026170",
     "drawNum": "805",
-    "result": null,
+    "result": "❌",
     "updatedAt": null,
     "coldDans": [
       5,
@@ -1082,7 +1002,7 @@
   "2026171": {
     "period": "2026171",
     "drawNum": "134",
-    "result": null,
+    "result": "❌",
     "updatedAt": null,
     "coldDans": [
       2,
@@ -1094,7 +1014,7 @@
   "2026172": {
     "period": "2026172",
     "drawNum": "445",
-    "result": null,
+    "result": "❌",
     "updatedAt": null,
     "coldDans": [
       9,
@@ -1106,7 +1026,7 @@
   "2026173": {
     "period": "2026173",
     "drawNum": "677",
-    "result": null,
+    "result": "❌",
     "updatedAt": null,
     "coldDans": [
       9,
@@ -1118,7 +1038,7 @@
   "2026174": {
     "period": "2026174",
     "drawNum": "618",
-    "result": null,
+    "result": "❌",
     "updatedAt": null,
     "coldDans": [
       9,
@@ -1130,7 +1050,7 @@
   "2026175": {
     "period": "2026175",
     "drawNum": "421",
-    "result": null,
+    "result": "❌",
     "updatedAt": null,
     "coldDans": [
       2,
@@ -1142,7 +1062,7 @@
   "2026176": {
     "period": "2026176",
     "drawNum": "269",
-    "result": null,
+    "result": "❌",
     "updatedAt": null,
     "coldDans": [
       9,
@@ -1154,7 +1074,7 @@
   "2026177": {
     "period": "2026177",
     "drawNum": "808",
-    "result": null,
+    "result": "❌",
     "updatedAt": null,
     "coldDans": [
       9,
@@ -1166,7 +1086,7 @@
   "2026178": {
     "period": "2026178",
     "drawNum": "266",
-    "result": null,
+    "result": "❌",
     "updatedAt": null,
     "coldDans": [
       9,
@@ -1178,7 +1098,7 @@
   "2026179": {
     "period": "2026179",
     "drawNum": "993",
-    "result": null,
+    "result": "❌",
     "updatedAt": null,
     "coldDans": [
       9,
@@ -1190,7 +1110,7 @@
   "2026180": {
     "period": "2026180",
     "drawNum": "520",
-    "result": null,
+    "result": "❌",
     "updatedAt": null,
     "coldDans": [
       0,
@@ -1202,7 +1122,7 @@
   "2026181": {
     "period": "2026181",
     "drawNum": "818",
-    "result": null,
+    "result": "❌",
     "updatedAt": null,
     "coldDans": [
       7,
@@ -1214,7 +1134,7 @@
   "2026182": {
     "period": "2026182",
     "drawNum": "662",
-    "result": null,
+    "result": "❌",
     "updatedAt": null,
     "coldDans": [
       7,
@@ -1226,7 +1146,7 @@
   "2026183": {
     "period": "2026183",
     "drawNum": "923",
-    "result": null,
+    "result": "❌",
     "updatedAt": null,
     "coldDans": [
       7,
@@ -1238,7 +1158,7 @@
   "2026184": {
     "period": "2026184",
     "drawNum": "902",
-    "result": null,
+    "result": "❌",
     "updatedAt": null,
     "coldDans": [
       7,
@@ -1250,7 +1170,7 @@
   "2026185": {
     "period": "2026185",
     "drawNum": "397",
-    "result": null,
+    "result": "❌",
     "updatedAt": null,
     "coldDans": [
       7,
@@ -1262,7 +1182,7 @@
   "2026186": {
     "period": "2026186",
     "drawNum": "045",
-    "result": null,
+    "result": "❌",
     "updatedAt": null,
     "coldDans": [
       5,
@@ -1274,7 +1194,7 @@
   "2026187": {
     "period": "2026187",
     "drawNum": "023",
-    "result": null,
+    "result": "❌",
     "updatedAt": null,
     "coldDans": [
       7,
@@ -1286,7 +1206,7 @@
   "2026188": {
     "period": "2026188",
     "drawNum": "969",
-    "result": null,
+    "result": "❌",
     "updatedAt": null,
     "coldDans": [
       7,
@@ -1298,7 +1218,7 @@
   "2026189": {
     "period": "2026189",
     "drawNum": "558",
-    "result": null,
+    "result": "❌",
     "updatedAt": null,
     "coldDans": [
       7,
@@ -1310,7 +1230,7 @@
   "2026190": {
     "period": "2026190",
     "drawNum": "026",
-    "result": null,
+    "result": "❌",
     "updatedAt": null,
     "coldDans": [
       7,
@@ -1328,7 +1248,7 @@
     "haiGan": "庚",
     "dans": [],
     "drawNum": "906",
-    "result": "",
+    "result": "❌",
     "updatedAt": "2026-08-03T23:02:22.412656+08:00",
     "coldDans": [
       7,
@@ -1518,7 +1438,7 @@
     "year": 2026,
     "month": 7,
     "day": 29,
-    "weekday": 0,
+    "weekday": 3,
     "haiGan": "丁",
     "dans": [
       2,
@@ -1540,7 +1460,7 @@
     "year": 2026,
     "month": 7,
     "day": 30,
-    "weekday": 1,
+    "weekday": 4,
     "haiGan": "己",
     "dans": [
       2,
@@ -1562,7 +1482,7 @@
     "year": 2026,
     "month": 7,
     "day": 31,
-    "weekday": 2,
+    "weekday": 5,
     "haiGan": "己",
     "dans": [
       2,
@@ -1584,7 +1504,7 @@
     "year": 2026,
     "month": 8,
     "day": 1,
-    "weekday": 3,
+    "weekday": 6,
     "haiGan": "辛",
     "dans": [
       2,
@@ -1606,7 +1526,7 @@
     "year": 2026,
     "month": 8,
     "day": 2,
-    "weekday": 4,
+    "weekday": 0,
     "haiGan": "癸",
     "dans": [
       1,
@@ -1628,7 +1548,7 @@
     "year": 2026,
     "month": 8,
     "day": 3,
-    "weekday": 5,
+    "weekday": 1,
     "haiGan": "乙",
     "dans": [
       3,
@@ -1650,7 +1570,7 @@
     "year": 2026,
     "month": 8,
     "day": 4,
-    "weekday": 6,
+    "weekday": 2,
     "haiGan": "丁",
     "dans": [
       2,
@@ -1672,7 +1592,7 @@
     "year": 2026,
     "month": 8,
     "day": 5,
-    "weekday": 0,
+    "weekday": 3,
     "haiGan": "己",
     "dans": [
       2,
@@ -1694,7 +1614,7 @@
     "year": 2026,
     "month": 8,
     "day": 6,
-    "weekday": 1,
+    "weekday": 4,
     "haiGan": "辛",
     "dans": [
       2,
@@ -1716,7 +1636,7 @@
     "year": 2026,
     "month": 8,
     "day": 7,
-    "weekday": 2,
+    "weekday": 5,
     "haiGan": "癸",
     "dans": [
       1,
@@ -1738,7 +1658,7 @@
     "year": 2026,
     "month": 8,
     "day": 8,
-    "weekday": 3,
+    "weekday": 6,
     "haiGan": "乙",
     "dans": [
       3,
@@ -1760,7 +1680,7 @@
     "year": 2026,
     "month": 8,
     "day": 9,
-    "weekday": 4,
+    "weekday": 0,
     "haiGan": "丁",
     "dans": [
       2,
@@ -1782,7 +1702,7 @@
     "year": 2026,
     "month": 8,
     "day": 10,
-    "weekday": 5,
+    "weekday": 1,
     "haiGan": "己",
     "dans": [
       2,
@@ -1804,7 +1724,7 @@
     "year": 2026,
     "month": 8,
     "day": 11,
-    "weekday": 6,
+    "weekday": 2,
     "haiGan": "辛",
     "dans": [
       2,
@@ -1826,7 +1746,7 @@
     "year": 2026,
     "month": 8,
     "day": 12,
-    "weekday": 0,
+    "weekday": 3,
     "haiGan": "癸",
     "dans": [
       1,
@@ -1848,7 +1768,7 @@
     "year": 2026,
     "month": 8,
     "day": 13,
-    "weekday": 1,
+    "weekday": 4,
     "haiGan": "乙",
     "dans": [
       3,
@@ -1870,7 +1790,7 @@
     "year": 2026,
     "month": 8,
     "day": 14,
-    "weekday": 2,
+    "weekday": 5,
     "haiGan": "丁",
     "dans": [
       2,
@@ -1892,7 +1812,7 @@
     "year": 2026,
     "month": 8,
     "day": 15,
-    "weekday": 3,
+    "weekday": 6,
     "haiGan": "己",
     "dans": [
       2,
@@ -1914,7 +1834,7 @@
     "year": 2026,
     "month": 8,
     "day": 16,
-    "weekday": 4,
+    "weekday": 0,
     "haiGan": "辛",
     "dans": [
       2,
@@ -1936,7 +1856,7 @@
     "year": 2026,
     "month": 8,
     "day": 17,
-    "weekday": 5,
+    "weekday": 1,
     "haiGan": "癸",
     "dans": [
       1,
@@ -1958,7 +1878,7 @@
     "year": 2026,
     "month": 8,
     "day": 18,
-    "weekday": 6,
+    "weekday": 2,
     "haiGan": "乙",
     "dans": [
       3,
@@ -1990,7 +1910,7 @@
     "coldDans": [
       0,
       6,
-      3
+      1
     ],
     "drawNum": "296",
     "result": "✅",
@@ -2002,7 +1922,7 @@
     "year": 2026,
     "month": 8,
     "day": 20,
-    "weekday": 1,
+    "weekday": 4,
     "haiGan": "己",
     "dans": [
       2,
@@ -2024,7 +1944,7 @@
     "year": 2026,
     "month": 8,
     "day": 21,
-    "weekday": 2,
+    "weekday": 5,
     "haiGan": "辛",
     "dans": [
       2,
@@ -2046,7 +1966,7 @@
     "year": 2026,
     "month": 8,
     "day": 22,
-    "weekday": 3,
+    "weekday": 6,
     "haiGan": "癸",
     "dans": [
       1,
@@ -2068,7 +1988,7 @@
     "year": 2026,
     "month": 8,
     "day": 23,
-    "weekday": 4,
+    "weekday": 0,
     "haiGan": "乙",
     "dans": [
       3,
@@ -2080,8 +2000,8 @@
     "updatedAt": "2026-08-24T14:01:10.853Z",
     "coldDans": [
       0,
-      6,
-      1
+      1,
+      6
     ],
     "coldResult": "❌"
   },
@@ -2090,7 +2010,7 @@
     "year": 2026,
     "month": 8,
     "day": 24,
-    "weekday": 5,
+    "weekday": 1,
     "haiGan": "丁",
     "dans": [
       2,
@@ -2103,7 +2023,7 @@
     "coldDans": [
       0,
       1,
-      6
+      4
     ],
     "coldResult": "✅"
   },
@@ -2112,7 +2032,7 @@
     "year": 2026,
     "month": 8,
     "day": 25,
-    "weekday": 6,
+    "weekday": 2,
     "haiGan": "己",
     "dans": [
       2,
@@ -2124,8 +2044,8 @@
     "updatedAt": "2026-08-27T02:01:22.053Z",
     "coldDans": [
       0,
-      1,
-      4
+      4,
+      1
     ],
     "coldResult": "❌"
   },
@@ -2156,7 +2076,7 @@
     "year": 2026,
     "month": 8,
     "day": 27,
-    "weekday": 1,
+    "weekday": 4,
     "haiGan": "癸",
     "dans": [
       1,
@@ -2178,7 +2098,7 @@
     "year": 2026,
     "month": 8,
     "day": 28,
-    "weekday": 2,
+    "weekday": 5,
     "haiGan": "乙",
     "dans": [
       3,
@@ -2208,8 +2128,8 @@
       9
     ],
     "coldDans": [
-      0,
       4,
+      0,
       1
     ],
     "drawNum": "733",
@@ -2230,8 +2150,8 @@
       9
     ],
     "coldDans": [
-      4,
       0,
+      4,
       1
     ],
     "drawNum": "658",
@@ -2274,9 +2194,9 @@
       8
     ],
     "coldDans": [
-      0,
       1,
-      4
+      4,
+      0
     ],
     "drawNum": "695",
     "result": "✅",
@@ -2296,8 +2216,8 @@
       8
     ],
     "coldDans": [
-      1,
       4,
+      1,
       0
     ],
     "drawNum": "219",
@@ -2340,8 +2260,8 @@
       9
     ],
     "coldDans": [
-      4,
       1,
+      4,
       0
     ],
     "drawNum": "854",
@@ -2408,7 +2328,7 @@
     "coldDans": [
       1,
       4,
-      0
+      7
     ],
     "drawNum": "981",
     "result": "✅",
@@ -2516,8 +2436,8 @@
       8
     ],
     "coldDans": [
-      4,
       3,
+      4,
       7
     ],
     "drawNum": "549",
@@ -2539,8 +2459,8 @@
     ],
     "coldDans": [
       3,
-      4,
-      7
+      7,
+      1
     ],
     "drawNum": "982",
     "result": "✅",
@@ -2560,9 +2480,9 @@
       9
     ],
     "coldDans": [
+      1,
       3,
-      7,
-      1
+      7
     ],
     "drawNum": "609",
     "result": "✅",
@@ -2604,9 +2524,9 @@
       8
     ],
     "coldDans": [
-      1,
       3,
-      7
+      1,
+      4
     ],
     "drawNum": "689",
     "result": "✅",
@@ -2672,11 +2592,11 @@
     "coldDans": [
       3,
       1,
-      7
+      2
     ],
     "drawNum": "092",
     "result": "✅",
-    "coldResult": "❌",
+    "coldResult": "✅",
     "updatedAt": "2026-09-20T11:55:18.654Z"
   },
   "2026253": {
@@ -2716,7 +2636,7 @@
     "coldDans": [
       3,
       1,
-      4
+      6
     ],
     "drawNum": "850",
     "result": "✅",
@@ -2782,7 +2702,7 @@
     "coldDans": [
       3,
       1,
-      2
+      7
     ],
     "drawNum": "486",
     "result": "✅",
@@ -2848,7 +2768,7 @@
     "coldDans": [
       3,
       1,
-      7
+      2
     ],
     "drawNum": "619",
     "result": "❌",
@@ -2890,9 +2810,9 @@
       9
     ],
     "coldDans": [
+      2,
       3,
-      1,
-      2
+      0
     ],
     "drawNum": "347",
     "result": "✅",
@@ -2904,7 +2824,7 @@
     "year": 2026,
     "month": 9,
     "day": 30,
-    "weekday": 2,
+    "weekday": 3,
     "haiGan": "辛",
     "dans": [
       2,
@@ -2941,7 +2861,7 @@
     ],
     "result": "❌",
     "coldResult": "❌",
-    "weekday": 0
+    "weekday": 1
   },
   "2026265": {
     "period": "2026265",
@@ -2970,7 +2890,7 @@
     "year": 2026,
     "month": 10,
     "day": 7,
-    "weekday": 2,
+    "weekday": 3,
     "haiGan": "乙",
     "dans": [
       3,
@@ -3102,7 +3022,7 @@
     "year": 2026,
     "month": 10,
     "day": 13,
-    "weekday": 1,
+    "weekday": 2,
     "haiGan": "丁",
     "dans": [
       2,
@@ -3190,7 +3110,7 @@
     "year": 2026,
     "month": 10,
     "day": 17,
-    "weekday": 5,
+    "weekday": 6,
     "haiGan": "乙",
     "dans": [
       3,
@@ -3432,68 +3352,84 @@
     "year": 2026,
     "month": 10,
     "day": 28,
-    "weekday": 2,
+    "weekday": 3,
     "haiGan": "丁",
     "dans": [
       2,
       4,
       9
     ],
-    "coldDans": null,
-    "drawNum": null,
-    "result": null,
-    "coldResult": null,
-    "updatedAt": null
+    "coldDans": [
+      4,
+      5,
+      7
+    ],
+    "drawNum": "121",
+    "result": "✅",
+    "coldResult": "❌",
+    "updatedAt": "2026-10-31T14:05:00.000Z"
   },
   "2026288": {
     "period": "2026288",
     "year": 2026,
     "month": 10,
     "day": 29,
-    "weekday": 3,
+    "weekday": 4,
     "haiGan": "己",
     "dans": [
       2,
       4,
       9
     ],
-    "coldDans": null,
-    "drawNum": null,
-    "result": null,
-    "coldResult": null,
-    "updatedAt": null
+    "coldDans": [
+      4,
+      5,
+      7
+    ],
+    "drawNum": "612",
+    "result": "✅",
+    "coldResult": "❌",
+    "updatedAt": "2026-10-31T14:05:00.000Z"
   },
   "2026289": {
     "period": "2026289",
     "year": 2026,
     "month": 10,
     "day": 30,
-    "weekday": 4,
+    "weekday": 5,
     "haiGan": "辛",
     "dans": [
       2,
       6,
       7
     ],
-    "coldDans": null,
-    "drawNum": null,
-    "result": null,
-    "coldResult": null,
-    "updatedAt": null
+    "coldDans": [
+      4,
+      5,
+      7
+    ],
+    "drawNum": "843",
+    "result": "❌",
+    "coldResult": "✅",
+    "updatedAt": "2026-10-31T14:05:00.000Z"
   },
   "2026290": {
     "period": "2026290",
     "year": 2026,
     "month": 10,
     "day": 31,
-    "weekday": 5,
+    "weekday": 6,
     "haiGan": "癸",
     "dans": [
       1,
       6,
       8
     ],
-    "coldDans": null,
+    "coldDans": [
+      4,
+      5,
+      7
+    ],
     "drawNum": null,
     "result": null,
     "coldResult": null,
@@ -3504,7 +3440,7 @@
     "year": 2026,
     "month": 11,
     "day": 1,
-    "weekday": 6,
+    "weekday": 0,
     "haiGan": "乙",
     "dans": [
       3,
@@ -3522,7 +3458,7 @@
     "year": 2026,
     "month": 11,
     "day": 2,
-    "weekday": 0,
+    "weekday": 1,
     "haiGan": "丁",
     "dans": [
       2,
@@ -3540,7 +3476,7 @@
     "year": 2026,
     "month": 11,
     "day": 3,
-    "weekday": 1,
+    "weekday": 2,
     "haiGan": "己",
     "dans": [
       2,
