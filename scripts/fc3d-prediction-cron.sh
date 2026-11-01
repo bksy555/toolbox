@@ -12,6 +12,7 @@
 
 WORK_DIR="$(cd "$(dirname "$0")/.." && pwd)"
 DATA_FILE="$WORK_DIR/data/fc3d-prediction.json"
+P3_DATA_FILE="$WORK_DIR/data/p3-prediction.json"
 cd "$WORK_DIR" || exit 1
 
 echo "=== 福彩3D预测 - 3胆中1 + 冷号3胆 数据更新 ==="
@@ -77,14 +78,44 @@ echo "--- 步骤1.5: 获取排列三最新中奖号码 ---"
 PLS_FETCHED_DRAW=""
 PLS_FETCHED_PERIOD=""
 PLS_FETCHED_DATE=""
-RESULT_PLS=$(timeout 30 python3 scripts/pls-500-fetch.py 2>/dev/null)
-if [ -n "$RESULT_PLS" ] && [ "$RESULT_PLS" != "" ]; then
-  PLS_FETCHED_PERIOD=$(echo "$RESULT_PLS" | cut -d'|' -f1)
-  PLS_FETCHED_DRAW=$(echo "$RESULT_PLS" | cut -d'|' -f2)
-  PLS_FETCHED_DATE=$(echo "$RESULT_PLS" | cut -d'|' -f3)
-  echo "✅ 排列三从500获取: 第${PLS_FETCHED_PERIOD}期 = ${PLS_FETCHED_DRAW} (${PLS_FETCHED_DATE})"
-else
-  echo "⚠️ 排列三未能从500获取（可能未开奖）"
+# 优先百度源（国际网络可用，与3D同方案）：取本地P3最新期号+1，重试3次
+PLS_LOCAL_LATEST=$(python3 -c "
+import json
+try:
+    with open('$P3_DATA_FILE') as f:
+        d = json.load(f)
+    keys = sorted([k for k in d.keys() if d[k].get('drawNum') and d[k]['drawNum'] != '' and d[k]['drawNum'] != ' '], reverse=True)
+    print(keys[0] if keys else '')
+except Exception:
+    print('')
+" 2>/dev/null)
+if [ -n "$PLS_LOCAL_LATEST" ]; then
+  PLS_NEXT_PERIOD=$((10#$PLS_LOCAL_LATEST + 1))
+  for PLS_TRY in 1 2 3; do
+    RESULT_PLS=$(timeout 90 python3 scripts/pls-baidu-fetch.py "$PLS_NEXT_PERIOD" 2>/dev/null)
+    if [ -n "$RESULT_PLS" ] && [ "$RESULT_PLS" != "" ]; then
+      PLS_FETCHED_PERIOD=$(echo "$RESULT_PLS" | cut -d'|' -f1)
+      PLS_FETCHED_DRAW=$(echo "$RESULT_PLS" | cut -d'|' -f2)
+      PLS_FETCHED_DATE=$(echo "$RESULT_PLS" | cut -d'|' -f3)
+      echo "✅ 排列三从百度获取: 第${PLS_FETCHED_PERIOD}期 = ${PLS_FETCHED_DRAW} (${PLS_FETCHED_DATE})（第${PLS_TRY}次尝试）"
+      break
+    else
+      echo "⚠️ 排列三百度第${PLS_TRY}次尝试失败，重试..."
+      sleep 3
+    fi
+  done
+fi
+# 备源：500彩票网（国际网络可能被拦截，仅作兜底）
+if [ -z "$PLS_FETCHED_DRAW" ]; then
+  RESULT_PLS=$(timeout 30 python3 scripts/pls-500-fetch.py 2>/dev/null)
+  if [ -n "$RESULT_PLS" ] && [ "$RESULT_PLS" != "" ]; then
+    PLS_FETCHED_PERIOD=$(echo "$RESULT_PLS" | cut -d'|' -f1)
+    PLS_FETCHED_DRAW=$(echo "$RESULT_PLS" | cut -d'|' -f2)
+    PLS_FETCHED_DATE=$(echo "$RESULT_PLS" | cut -d'|' -f3)
+    echo "✅ 排列三从500获取: 第${PLS_FETCHED_PERIOD}期 = ${PLS_FETCHED_DRAW} (${PLS_FETCHED_DATE})"
+  else
+    echo "⚠️ 排列三百度与500均未能获取（可能未开奖）"
+  fi
 fi
 
 # ---- 数据源3（兜底，仅回溯）: zhcw.com 分析文章 ----
