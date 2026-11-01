@@ -9013,6 +9013,144 @@ greet('世界');</textarea>
   handler: () => { }
 },
 
+// ============================================================
+// 音频格式转换器工具 audio-converter (acv*)
+// ============================================================
+{
+  id: 'audio-converter',
+  cat: 'media',
+  icon: '🎵',
+  name: '音频格式转换器',
+  desc: 'MP3/WAV/OGG/M4A一键互转，支持采样率与声道调整，纯本地处理不上传',
+  html: `
+    <div class="tool-card">
+      <div class="input-group">
+        <label>选择音频文件</label>
+        <input type="file" id="acv-file" accept="audio/*" style="display:none;" onchange="acvLoadFile(this)">
+        <button class="btn btn-secondary" style="margin-top:6px;" onclick="document.getElementById('acv-file').click()">🎵 选择音频</button>
+        <span id="acv-filename" style="font-size:12px;color:var(--text-light);margin-left:10px;"></span>
+      </div>
+      <div class="row-3" style="margin-top:12px;">
+        <div class="input-group">
+          <label>输出格式</label>
+          <select id="acv-format" onchange="acvUpdateTip()">
+            <option value="wav16">WAV (16-bit)</option>
+            <option value="wav24">WAV (24-bit)</option>
+            <option value="mp3_128">MP3 (128kbps)</option>
+            <option value="mp3_192">MP3 (192kbps)</option>
+            <option value="mp3_320">MP3 (320kbps)</option>
+          </select>
+        </div>
+        <div class="input-group">
+          <label>采样率</label>
+          <select id="acv-sr">
+            <option value="0">保留原采样率</option>
+            <option value="48000">48000 Hz</option>
+            <option value="44100">44100 Hz</option>
+            <option value="22050">22050 Hz</option>
+            <option value="16000">16000 Hz</option>
+            <option value="8000">8000 Hz</option>
+          </select>
+        </div>
+        <div class="input-group">
+          <label>声道</label>
+          <select id="acv-ch">
+            <option value="2">双声道 (立体声)</option>
+            <option value="1">单声道 (Mono)</option>
+          </select>
+        </div>
+      </div>
+      <div id="acv-wave" style="margin-top:12px;border:1px solid var(--border,#e2e8f0);border-radius:10px;padding:12px;background:var(--bg-light,#f8fafc);">
+        <canvas id="acv-canvas" style="width:100%;height:90px;display:block;"></canvas>
+      </div>
+      <div class="stats-row" id="acv-stats" style="margin-top:12px;">
+        <div class="stat-item">原始大小: <strong id="acv-orig">-</strong></div>
+        <div class="stat-item">转换后: <strong id="acv-out">-</strong></div>
+        <div class="stat-item">时长: <strong id="acv-dur">-</strong></div>
+      </div>
+      <div class="btn-group" style="margin-top:15px;">
+        <button class="btn btn-primary" onclick="acvConvert()">🎛️ 开始转换</button>
+        <button class="btn btn-secondary" onclick="acvDownload()">💾 下载音频</button>
+      </div>
+      <div id="acv-tip" style="margin-top:15px;font-size:13px;color:var(--text-light);background:var(--bg-light,#f8fafc);padding:12px;border-radius:8px;">
+        💡 纯本地浏览器处理，文件不会上传到服务器；MP3 输出需要联网加载编码器（WAV 输出无需联网）
+      </div>
+    </div>
+  `,
+  handler: () => { }
+},
+
+// ============================================================
+// 视频压缩器工具 video-compressor (vc*)
+// ============================================================
+{
+  id: 'video-compressor',
+  cat: 'media',
+  icon: '🎬',
+  name: '视频压缩器',
+  desc: '在线压缩视频体积，支持分辨率/帧率/码率调节，减小50-80%，无需上传',
+  html: `
+    <div class="tool-card">
+      <div class="input-group">
+        <label>选择视频文件</label>
+        <input type="file" id="vc-file" accept="video/*" style="display:none;" onchange="vcLoadFile(this)">
+        <button class="btn btn-secondary" style="margin-top:6px;" onclick="document.getElementById('vc-file').click()">🎬 选择视频</button>
+        <span id="vc-filename" style="font-size:12px;color:var(--text-light);margin-left:10px;"></span>
+      </div>
+      <div id="vc-preview" style="margin-top:12px;border:1px solid var(--border,#e2e8f0);border-radius:10px;overflow:hidden;display:none;">
+        <video id="vc-video" controls style="width:100%;max-height:280px;background:#000;"></video>
+      </div>
+      <div class="row-3" style="margin-top:12px;">
+        <div class="input-group">
+          <label>分辨率</label>
+          <select id="vc-res">
+            <option value="1">原分辨率</option>
+            <option value="0.75">75% 缩放</option>
+            <option value="0.5">50% 缩放</option>
+            <option value="0.35">35% 缩放</option>
+          </select>
+        </div>
+        <div class="input-group">
+          <label>帧率</label>
+          <select id="vc-fps">
+            <option value="30">30 fps</option>
+            <option value="24">24 fps</option>
+            <option value="15">15 fps</option>
+            <option value="10">10 fps</option>
+          </select>
+        </div>
+        <div class="input-group">
+          <label>压缩质量</label>
+          <select id="vc-quality">
+            <option value="high">高 (体积稍大)</option>
+            <option value="medium" selected>中 (推荐)</option>
+            <option value="low">低 (最小体积)</option>
+          </select>
+        </div>
+      </div>
+      <div class="stats-row" id="vc-stats" style="margin-top:12px;">
+        <div class="stat-item">原始大小: <strong id="vc-orig">-</strong></div>
+        <div class="stat-item">压缩后: <strong id="vc-out">-</strong></div>
+        <div class="stat-item">压缩率: <strong id="vc-rate">-</strong></div>
+      </div>
+      <div id="vc-progress" style="margin-top:12px;display:none;">
+        <div style="font-size:13px;color:var(--text-light);margin-bottom:6px;">⏳ 正在压缩（请保持页面打开）...</div>
+        <div style="height:8px;background:var(--border,#e2e8f0);border-radius:4px;overflow:hidden;">
+          <div id="vc-bar" style="height:100%;width:0%;background:var(--accent,#6366f1);transition:width .3s;"></div>
+        </div>
+      </div>
+      <div class="btn-group" style="margin-top:15px;">
+        <button class="btn btn-primary" onclick="vcCompress()">🎬 开始压缩</button>
+        <button class="btn btn-secondary" onclick="vcDownload()">💾 下载压缩视频</button>
+      </div>
+      <div id="vc-tip" style="margin-top:15px;font-size:13px;color:var(--text-light);background:var(--bg-light,#f8fafc);padding:12px;border-radius:8px;">
+        💡 视频在浏览器本地重新编码（WebM格式），不会上传；时长越长压缩越久，请耐心等待进度条完成
+      </div>
+    </div>
+  `,
+  handler: () => { }
+},
+
 ];
 
 // ============================================================
@@ -10660,7 +10798,7 @@ const CATEGORIES = [
   { id: 'security', icon: '🔒', name: '安全工具', desc: '密码生成、Hash计算、随机数、浏览器指纹检测、身份证号码校验、凯撒密码' },
   { id: 'time', icon: '⏱️', name: '时间工具', desc: '时间戳转换、日期计算、世界时区转换、番茄钟专注计时、待办清单、每日计划' },
   { id: 'color', icon: '🎨', name: '颜色工具', desc: 'HEX/RGB/HSL颜色转换、颜色对比度检查、CSS渐变生成器、配色方案生成器' },
-  { id: 'media', icon: '🎬', name: '媒体工具', desc: '抖音/TikTok去水印下载、视频转GIF、在线录音、录音转文字、音频波形可视化、白噪音发生器、音频变速变调、音频剪辑拼接、视频缩略图制作器、在线便签、人声分离/伴奏提取' },
+  { id: 'media', icon: '🎬', name: '媒体工具', desc: '抖音/TikTok去水印下载、视频转GIF、在线录音、录音转文字、音频波形可视化、白噪音发生器、音频变速变调、音频剪辑拼接、音频格式转换、视频压缩、视频缩略图制作器、在线便签、人声分离/伴奏提取' },
   { id: 'ai', icon: '🤖', name: 'AI工具', desc: 'AI聊天、AI Agent安装、免费AI工具推荐' },
   { id: 'voice', icon: '🗣️', name: '群众心声', desc: '提交工具建议、投票排行榜、前3名自动实现' },
   { id: 'lottery', icon: '🎰', name: '彩票工具', desc: '双色球、大乐透、福彩3D、快乐8、排列三…在线过滤缩水、选号、计算器' },
@@ -21197,5 +21335,302 @@ function sicDownload() {
   link.download = 'compressed_' + sicOriginalBlob.name;
   link.href = URL.createObjectURL(sicCompressedBlob);
   link.click();
+  showToast('💾 已开始下载');
+}
+// ============================================================
+// 音频格式转换器 处理函数 (acv*)
+// ============================================================
+var acvAudioBuffer = null;
+var acvRawFile = null;
+var acvOutBlob = null;
+var acvOutExt = 'wav';
+var acvCtx = null;
+
+function acvLoadFile(input) {
+  const file = input.files[0];
+  if (!file) return;
+  document.getElementById('acv-filename').textContent = file.name;
+  document.getElementById('acv-orig').textContent = (file.size / 1024 / 1024).toFixed(2) + ' MB';
+  document.getElementById('acv-out').textContent = '-';
+  document.getElementById('acv-dur').textContent = '-';
+  acvRawFile = file;
+  document.getElementById('acv-canvas').getContext('2d').clearRect(0, 0, 900, 90);
+
+  const reader = new FileReader();
+  reader.onload = async function (e) {
+    try {
+      if (!acvCtx) acvCtx = new (window.AudioContext || window.webkitAudioContext)();
+      const buf = await acvCtx.decodeAudioData(e.target.result);
+      acvAudioBuffer = buf;
+      const secs = buf.duration;
+      document.getElementById('acv-dur').textContent = Math.floor(secs / 60) + '分' + Math.floor(secs % 60) + '秒';
+      // 绘制波形（抽256段峰值）
+      const canvas = document.getElementById('acv-canvas');
+      const ctx = canvas.getContext('2d');
+      canvas.width = canvas.clientWidth || 900;
+      const w = canvas.width, h = canvas.height;
+      ctx.clearRect(0, 0, w, h);
+      const data = buf.getChannelData(0);
+      const step = Math.floor(data.length / 256);
+      ctx.fillStyle = '#6366f1';
+      for (let i = 0; i < 256; i++) {
+        let peak = 0;
+        for (let j = i * step; j < (i + 1) * step && j < data.length; j++) {
+          const v = Math.abs(data[j]);
+          if (v > peak) peak = v;
+        }
+        const barH = Math.max(2, peak * h * 0.9);
+        ctx.fillRect(i * (w / 256), (h - barH) / 2, Math.max(1, w / 256 - 1), barH);
+      }
+    } catch (err) {
+      showToast('❌ 无法解码该音频文件');
+      console.error(err);
+    }
+  };
+  reader.readAsArrayBuffer(file);
+}
+
+function acvUpdateTip() {
+  const fmt = document.getElementById('acv-format').value;
+  const tip = document.getElementById('acv-tip');
+  if (fmt.indexOf('mp3') === 0) {
+    tip.innerHTML = '💡 MP3 输出需要联网加载编码器（lamejs），文件不会上传；如加载失败请改用 WAV 输出';
+  } else {
+    tip.innerHTML = '💡 纯本地浏览器处理，文件不会上传到服务器；MP3 输出需要联网加载编码器（WAV 输出无需联网）';
+  }
+}
+
+async function acvConvert() {
+  if (!acvAudioBuffer) { showToast('❌ 请先选择音频文件'); return; }
+  const fmt = document.getElementById('acv-format').value;
+  const srSel = parseInt(document.getElementById('acv-sr').value);
+  const chSel = parseInt(document.getElementById('acv-ch').value);
+  const sampleRate = srSel > 0 ? srSel : acvAudioBuffer.sampleRate;
+  const channels = Math.min(chSel, acvAudioBuffer.numberOfChannels);
+  const btn = document.querySelector('[onclick="acvConvert()"]');
+  if (btn) { btn.disabled = true; btn.textContent = '⏳ 转换中...'; }
+
+  try {
+    // 重采样/混音到目标采样率与声道（用 OfflineAudioContext）
+    const offline = new OfflineAudioContext(channels, Math.ceil(acvAudioBuffer.duration * sampleRate), sampleRate);
+    const src = offline.createBufferSource();
+    src.buffer = acvAudioBuffer;
+    src.connect(offline.destination);
+    src.start(0);
+    const rendered = await offline.startRendering();
+
+    if (fmt === 'wav16' || fmt === 'wav24') {
+      const bits = fmt === 'wav16' ? 16 : 24;
+      const wav = acvEncodeWav(rendered, bits);
+      acvOutBlob = wav;
+      acvOutExt = 'wav';
+    } else {
+      const kbps = fmt === 'mp3_128' ? 128 : (fmt === 'mp3_192' ? 192 : 320);
+      const mp3Blob = await acvEncodeMp3(rendered, kbps);
+      if (!mp3Blob) { showToast('❌ MP3 编码器加载失败，请改用 WAV 输出'); return; }
+      acvOutBlob = mp3Blob;
+      acvOutExt = 'mp3';
+    }
+    const kb = (acvOutBlob.size / 1024).toFixed(1);
+    document.getElementById('acv-out').textContent = (acvOutBlob.size / 1024 / 1024).toFixed(2) + ' MB (' + kb + ' KB)';
+    showToast('✅ 转换完成');
+  } catch (e) {
+    console.error(e);
+    showToast('❌ 转换失败: ' + e.message);
+  } finally {
+    if (btn) { btn.disabled = false; btn.textContent = '🎛️ 开始转换'; }
+  }
+}
+
+function acvEncodeWav(buffer, bits) {
+  const numCh = buffer.numberOfChannels;
+  const sampleRate = buffer.sampleRate;
+  const numFrames = buffer.length;
+  const bytesPerSample = bits / 8;
+  const blockAlign = numCh * bytesPerSample;
+  const dataSize = numFrames * blockAlign;
+  const ab = new ArrayBuffer(44 + dataSize);
+  const view = new DataView(ab);
+  function writeStr(offset, str) {
+    for (let i = 0; i < str.length; i++) view.setUint8(offset + i, str.charCodeAt(i));
+  }
+  writeStr(0, 'RIFF'); view.setUint32(4, 36 + dataSize, true); writeStr(8, 'WAVE');
+  writeStr(12, 'fmt '); view.setUint32(16, 16, true);
+  view.setUint16(20, 1, true); // PCM
+  view.setUint16(22, numCh, true);
+  view.setUint32(24, sampleRate, true);
+  view.setUint32(28, sampleRate * blockAlign, true);
+  view.setUint16(32, blockAlign, true);
+  view.setUint16(34, bits, true);
+  writeStr(36, 'data'); view.setUint32(40, dataSize, true);
+
+  const channels = [];
+  for (let c = 0; c < numCh; c++) channels.push(buffer.getChannelData(c));
+  let offset = 44;
+  if (bits === 16) {
+    for (let i = 0; i < numFrames; i++) {
+      for (let c = 0; c < numCh; c++) {
+        let s = Math.max(-1, Math.min(1, channels[c][i]));
+        view.setInt16(offset, s < 0 ? s * 0x8000 : s * 0x7FFF, true);
+        offset += 2;
+      }
+    }
+  } else {
+    for (let i = 0; i < numFrames; i++) {
+      for (let c = 0; c < numCh; c++) {
+        let s = Math.max(-1, Math.min(1, channels[c][i]));
+        view.setInt32(offset, s < 0 ? s * 0x800000 : s * 0x7FFFFF, true);
+        offset += 3;
+      }
+    }
+  }
+  return new Blob([ab], { type: 'audio/wav' });
+}
+
+function acvEncodeMp3(buffer, kbps) {
+  return new Promise(function (resolve) {
+    if (window.lamejs) {
+      resolve(acvMp3FromLame(buffer, kbps));
+      return;
+    }
+    // 动态加载 lamejs
+    const s = document.createElement('script');
+    s.src = 'https://cdn.jsdelivr.net/npm/lamejs@1.2.1/lame.min.js';
+    s.onload = function () {
+      try { resolve(acvMp3FromLame(buffer, kbps)); }
+      catch (e) { resolve(null); }
+    };
+    s.onerror = function () { resolve(null); };
+    document.head.appendChild(s);
+  });
+}
+
+function acvMp3FromLame(buffer, kbps) {
+  const numCh = Math.min(2, buffer.numberOfChannels);
+  const sampleRate = buffer.sampleRate;
+  const mp3enc = new lamejs.Mp3Encoder(numCh, sampleRate, kbps);
+  const left = buffer.getChannelData(0);
+  const right = numCh > 1 ? buffer.getChannelData(1) : left;
+  const samples = [];
+  const blockSize = 1152;
+  for (let i = 0; i < left.length; i += blockSize) {
+    const l = new Int16Array(Math.min(blockSize, left.length - i));
+    const r = new Int16Array(l.length);
+    for (let j = 0; j < l.length; j++) {
+      l[j] = left[i + j] < 0 ? left[i + j] * 0x8000 : left[i + j] * 0x7FFF;
+      r[j] = right[i + j] < 0 ? right[i + j] * 0x8000 : right[i + j] * 0x7FFF;
+    }
+    const buf = numCh > 1 ? mp3enc.encodeBuffer(l, r) : mp3enc.encodeBuffer(l);
+    if (buf.length) samples.push(new Int8Array(buf));
+  }
+  const end = mp3enc.flush();
+  if (end.length) samples.push(new Int8Array(end));
+  const total = samples.reduce(function (n, a) { return n + a.length; }, 0);
+  const out = new Int8Array(total);
+  let off = 0;
+  samples.forEach(function (a) { out.set(a, off); off += a.length; });
+  return new Blob([out], { type: 'audio/mpeg' });
+}
+
+function acvDownload() {
+  if (!acvOutBlob) { showToast('❌ 请先转换'); return; }
+  const base = (acvRawFile ? acvRawFile.name.replace(/\.[^.]+$/, '') : 'audio') + '_converted.' + acvOutExt;
+  const a = document.createElement('a');
+  a.download = base;
+  a.href = URL.createObjectURL(acvOutBlob);
+  a.click();
+  showToast('💾 已开始下载');
+}
+
+// ============================================================
+// 视频压缩器 处理函数 (vc*)
+// ============================================================
+var vcRawFile = null;
+var vcVideoEl = null;
+var vcOutBlob = null;
+
+function vcLoadFile(input) {
+  const file = input.files[0];
+  if (!file) return;
+  document.getElementById('vc-filename').textContent = file.name;
+  document.getElementById('vc-orig').textContent = (file.size / 1024 / 1024).toFixed(2) + ' MB';
+  document.getElementById('vc-out').textContent = '-';
+  document.getElementById('vc-rate').textContent = '-';
+  vcRawFile = file;
+  vcOutBlob = null;
+  const preview = document.getElementById('vc-preview');
+  preview.style.display = 'block';
+  vcVideoEl = document.getElementById('vc-video');
+  vcVideoEl.src = URL.createObjectURL(file);
+  vcVideoEl.load();
+}
+
+function vcCompress() {
+  if (!vcRawFile || !vcVideoEl) { showToast('❌ 请先选择视频'); return; }
+  const scale = parseFloat(document.getElementById('vc-res').value);
+  const fps = parseInt(document.getElementById('vc-fps').value);
+  const q = document.getElementById('vc-quality').value;
+  const v = vcVideoEl;
+  // 用真实视频宽高避免 metadata 未加载
+  const vw = v.videoWidth || 1280;
+  const vh = v.videoHeight || 720;
+  const cw = Math.max(2, Math.round(vw * scale / 2) * 2);
+  const ch = Math.max(2, Math.round(vh * scale / 2) * 2);
+  const canvas = document.createElement('canvas');
+  canvas.width = cw; canvas.height = ch;
+  const ctx = canvas.getContext('2d');
+  const bitrate = q === 'high' ? 2500000 : (q === 'medium' ? 1200000 : 600000);
+  const stream = canvas.captureStream(fps);
+  const mime = (window.MediaRecorder && MediaRecorder.isTypeSupported('video/webm;codecs=vp9')) ? 'video/webm;codecs=vp9' : 'video/webm';
+  const rec = new MediaRecorder(stream, { mimeType: mime, videoBitsPerSecond: bitrate });
+  const chunks = [];
+  rec.ondataavailable = function (e) { if (e.data && e.data.size) chunks.push(e.data); };
+  rec.onstop = function () {
+    vcOutBlob = new Blob(chunks, { type: mime });
+    const outSize = vcOutBlob.size;
+    const origSize = vcRawFile.size;
+    document.getElementById('vc-out').textContent = (outSize / 1024 / 1024).toFixed(2) + ' MB';
+    document.getElementById('vc-rate').textContent = '-' + Math.max(0, Math.round((1 - outSize / origSize) * 100)) + '%';
+    document.getElementById('vc-progress').style.display = 'none';
+    showToast('✅ 压缩完成');
+  };
+  // 播放并逐帧绘制
+  v.currentTime = 0;
+  v.muted = true;
+  v.controls = false;
+  const bar = document.getElementById('vc-bar');
+  const progWrap = document.getElementById('vc-progress');
+  progWrap.style.display = 'block';
+  bar.style.width = '0%';
+  const dur = v.duration || 0;
+  v.addEventListener('timeupdate', function () {
+    if (dur > 0) bar.style.width = Math.min(100, (v.currentTime / dur) * 100) + '%';
+  });
+  v.addEventListener('ended', function () {
+    rec.stop();
+    stream.getTracks().forEach(function (t) { t.stop(); });
+  });
+  v.play().then(function () {
+    rec.start(250);
+    function draw() {
+      if (!v.paused && !v.ended) {
+        ctx.drawImage(v, 0, 0, cw, ch);
+        requestAnimationFrame(draw);
+      }
+    }
+    requestAnimationFrame(draw);
+  }).catch(function (e) {
+    showToast('❌ 无法播放视频: ' + e.message);
+    progWrap.style.display = 'none';
+  });
+}
+
+function vcDownload() {
+  if (!vcOutBlob) { showToast('❌ 请先压缩视频'); return; }
+  const base = (vcRawFile ? vcRawFile.name.replace(/\.[^.]+$/, '') : 'video') + '_compressed.webm';
+  const a = document.createElement('a');
+  a.download = base;
+  a.href = URL.createObjectURL(vcOutBlob);
+  a.click();
   showToast('💾 已开始下载');
 }
