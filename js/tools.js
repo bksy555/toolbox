@@ -9151,6 +9151,105 @@ greet('世界');</textarea>
   handler: () => { }
 },
 
+// ============================================================
+// PDF加密解密工具 pdf-encrypt (pe*)
+// ============================================================
+{
+  id: 'pdf-encrypt',
+  cat: 'document',
+  icon: '🔐',
+  name: 'PDF加密解密',
+  desc: '给PDF设置打开密码保护，或移除密码解密，纯本地处理不上传',
+  html: `
+    <div class="tool-card">
+      <div class="input-group">
+        <label>选择PDF文件</label>
+        <input type="file" id="pe-file" accept=".pdf,application/pdf" style="display:none;" onchange="peLoadFile(this)">
+        <button class="btn btn-secondary" style="margin-top:6px;" onclick="document.getElementById('pe-file').click()">📄 选择PDF</button>
+        <span id="pe-filename" style="font-size:12px;color:var(--text-light);margin-left:10px;"></span>
+      </div>
+      <div class="input-group" style="margin-top:12px;">
+        <label>操作类型</label>
+        <select id="pe-mode" onchange="peModeChange()">
+          <option value="encrypt">🔒 加密（设置打开密码）</option>
+          <option value="decrypt">🔓 解密（移除密码）</option>
+        </select>
+      </div>
+      <div class="input-group" style="margin-top:12px;">
+        <label id="pe-pw-label">打开密码</label>
+        <input type="password" id="pe-password" placeholder="请输入密码（至少4位）" style="width:100%;">
+      </div>
+      <div class="stats-row" id="pe-stats" style="margin-top:12px;">
+        <div class="stat-item">原始大小: <strong id="pe-orig">-</strong></div>
+        <div class="stat-item">处理后: <strong id="pe-out">-</strong></div>
+      </div>
+      <div class="btn-group" style="margin-top:15px;">
+        <button class="btn btn-primary" onclick="peRun()">⚡ 开始处理</button>
+        <button class="btn btn-secondary" onclick="peDownload()">💾 下载结果</button>
+      </div>
+      <div id="pe-tip" style="margin-top:15px;font-size:13px;color:var(--text-light);background:var(--bg-light,#f8fafc);padding:12px;border-radius:8px;">
+        💡 加密可设置打开密码保护PDF内容；解密需输入原密码。文件在浏览器本地处理，不会上传服务器
+      </div>
+    </div>
+  `,
+  handler: () => { }
+},
+
+// ============================================================
+// 多图合成GIF工具 gif-maker (gm*)
+// ============================================================
+{
+  id: 'gif-maker',
+  cat: 'media',
+  icon: '🎞️',
+  name: '多图合成GIF',
+  desc: '多张图片合成GIF动图，支持帧间隔/循环/缩放设置，做表情包动图必备',
+  html: `
+    <div class="tool-card">
+      <div class="input-group">
+        <label>选择图片（可多选，按顺序合成）</label>
+        <input type="file" id="gm-file" accept="image/*" multiple style="display:none;" onchange="gmLoadFiles(this)">
+        <button class="btn btn-secondary" style="margin-top:6px;" onclick="document.getElementById('gm-file').click()">🖼️ 选择图片</button>
+        <span id="gm-filenames" style="font-size:12px;color:var(--text-light);margin-left:10px;"></span>
+      </div>
+      <div id="gm-preview" style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap;min-height:80px;border:1px dashed var(--border,#e2e8f0);border-radius:10px;padding:10px;align-items:center;justify-content:center;color:var(--text-light);font-size:13px;">
+        请选择至少2张图片
+      </div>
+      <div class="row-3" style="margin-top:12px;">
+        <div class="input-group">
+          <label>帧间隔 (毫秒)</label>
+          <input type="number" id="gm-delay" value="300" min="50" max="5000" style="width:100%;">
+        </div>
+        <div class="input-group">
+          <label>缩放宽度 (px)</label>
+          <input type="number" id="gm-width" value="480" min="100" max="1200" style="width:100%;">
+        </div>
+        <div class="input-group">
+          <label>循环次数</label>
+          <select id="gm-repeat">
+            <option value="0">无限循环</option>
+            <option value="1">1次</option>
+            <option value="3">3次</option>
+            <option value="5">5次</option>
+          </select>
+        </div>
+      </div>
+      <div class="stats-row" id="gm-stats" style="margin-top:12px;">
+        <div class="stat-item">图片数: <strong id="gm-count">0</strong></div>
+        <div class="stat-item">GIF大小: <strong id="gm-size">-</strong></div>
+      </div>
+      <div class="btn-group" style="margin-top:15px;">
+        <button class="btn btn-primary" onclick="gmGenerate()">🎞️ 生成GIF</button>
+        <button class="btn btn-secondary" onclick="gmDownload()">💾 下载GIF</button>
+      </div>
+      <div id="gm-tip" style="margin-top:15px;font-size:13px;color:var(--text-light);background:var(--bg-light,#f8fafc);padding:12px;border-radius:8px;">
+        💡 在浏览器本地合成GIF动图，不会上传；图片数量越多、尺寸越大，生成时间越长
+      </div>
+    </div>
+  `,
+  handler: () => { }
+},
+
 ];
 
 // ============================================================
@@ -10793,12 +10892,12 @@ const CATEGORIES = [
   { id: 'text', icon: '✏️', name: '文本工具', desc: '字数统计、简繁转换、摩斯密码、文本转语音、文本对比、电子名片生成器、英文语法检查、占位文本生成' },
   { id: 'dev', icon: '💻', name: '开发者工具', desc: 'JSON格式化、YAML/JSON互转、二维码生成、二维码美化、条形码生成、Favicon图标生成、正则测试、Markdown、IP查询、子网计算、思维导图、图表生成、代码图片生成、表格数据转换、SQL格式化、代码压缩器、假数据生成器、Cron表达式生成器、HTTP状态码速查、SEO标题预览、屏幕坏点测试、字体配对' },
   { id: 'image', icon: '🖼️', name: '图片处理', desc: '去背景换底色、批量压缩、加水印、长图拼接、格式转换、裁剪、异形裁剪、马赛克打码、双色调滤镜、图片转字符画、照片卡通化、OCR、印章制作、九宫格切图、文字转手写体、表情包、社交媒体图片尺寸调整、艺术效果、像素画、设备样机、图片高清放大、图片转线稿、渐变背景、文字特效、拼贴画、图片相框、颜色盲区模拟、海报设计器、老照片修复上色、图片EXIF信息、占位图生成器' },
-  { id: 'document', icon: '📄', name: '文档转换', desc: '图片转PDF、PDF转图片、Word解析、Excel转PDF、PDF合并、PDF拆分、简历生成、电子签名、表单制作、邮件签名、发票/收据生成器、证书生成器' },
+  { id: 'document', icon: '📄', name: '文档转换', desc: '图片转PDF、PDF转图片、Word解析、Excel转PDF、PDF合并、PDF拆分、PDF加密解密、简历生成、电子签名、表单制作、邮件签名、发票/收据生成器、证书生成器' },
   { id: 'convert', icon: '🔄', name: '转换工具', desc: '单位换算、进制转换、函数绘图' },
   { id: 'security', icon: '🔒', name: '安全工具', desc: '密码生成、Hash计算、随机数、浏览器指纹检测、身份证号码校验、凯撒密码' },
   { id: 'time', icon: '⏱️', name: '时间工具', desc: '时间戳转换、日期计算、世界时区转换、番茄钟专注计时、待办清单、每日计划' },
   { id: 'color', icon: '🎨', name: '颜色工具', desc: 'HEX/RGB/HSL颜色转换、颜色对比度检查、CSS渐变生成器、配色方案生成器' },
-  { id: 'media', icon: '🎬', name: '媒体工具', desc: '抖音/TikTok去水印下载、视频转GIF、在线录音、录音转文字、音频波形可视化、白噪音发生器、音频变速变调、音频剪辑拼接、音频格式转换、视频压缩、视频缩略图制作器、在线便签、人声分离/伴奏提取' },
+  { id: 'media', icon: '🎬', name: '媒体工具', desc: '抖音/TikTok去水印下载、视频转GIF、多图合成GIF、在线录音、录音转文字、音频波形可视化、白噪音发生器、音频变速变调、音频剪辑拼接、音频格式转换、视频压缩、视频缩略图制作器、在线便签、人声分离/伴奏提取' },
   { id: 'ai', icon: '🤖', name: 'AI工具', desc: 'AI聊天、AI Agent安装、免费AI工具推荐' },
   { id: 'voice', icon: '🗣️', name: '群众心声', desc: '提交工具建议、投票排行榜、前3名自动实现' },
   { id: 'lottery', icon: '🎰', name: '彩票工具', desc: '双色球、大乐透、福彩3D、快乐8、排列三…在线过滤缩水、选号、计算器' },
@@ -21631,6 +21730,190 @@ function vcDownload() {
   const a = document.createElement('a');
   a.download = base;
   a.href = URL.createObjectURL(vcOutBlob);
+  a.click();
+  showToast('💾 已开始下载');
+}// ============================================================
+// PDF加密解密 处理函数 (pe*)
+// ============================================================
+var peRawFile = null;
+var peOutBlob = null;
+var peOutName = '';
+
+function peLoadFile(input) {
+  const file = input.files[0];
+  if (!file) return;
+  document.getElementById('pe-filename').textContent = file.name;
+  document.getElementById('pe-orig').textContent = (file.size / 1024 / 1024).toFixed(2) + ' MB';
+  document.getElementById('pe-out').textContent = '-';
+  peRawFile = file;
+  peOutBlob = null;
+}
+
+function peModeChange() {
+  const mode = document.getElementById('pe-mode').value;
+  const lab = document.getElementById('pe-pw-label');
+  const inp = document.getElementById('pe-password');
+  if (mode === 'encrypt') {
+    lab.textContent = '打开密码';
+    inp.placeholder = '请输入密码（至少4位）';
+  } else {
+    lab.textContent = '原密码';
+    inp.placeholder = '请输入PDF原密码';
+  }
+}
+
+function peLoadLib() {
+  return new Promise(function (resolve, reject) {
+    if (window.PDFLib) { resolve(); return; }
+    const s = document.createElement('script');
+    s.src = 'https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js';
+    s.onload = function () { resolve(); };
+    s.onerror = function () { reject(new Error('pdf-lib 加载失败')); };
+    document.head.appendChild(s);
+  });
+}
+
+async function peRun() {
+  if (!peRawFile) { showToast('❌ 请先选择PDF文件'); return; }
+  const mode = document.getElementById('pe-mode').value;
+  const pw = document.getElementById('pe-password').value;
+  const btn = document.querySelector('[onclick="peRun()"]');
+  if (btn) { btn.disabled = true; btn.textContent = '⏳ 处理中...'; }
+  try {
+    await peLoadLib();
+    const bytes = await peRawFile.arrayBuffer();
+    let pdf;
+    if (mode === 'decrypt' && pw) {
+      pdf = await window.PDFLib.PDFDocument.load(bytes, { password: pw, ignoreEncryption: false });
+    } else {
+      pdf = await window.PDFLib.PDFDocument.load(bytes, { ignoreEncryption: true });
+    }
+    if (mode === 'encrypt' && pw) {
+      pdf.encrypt({
+        userPassword: pw,
+        ownerPassword: pw,
+        permissions: { printing: 'lowResolution', modifying: false, copying: false }
+      });
+    }
+    const outBytes = await pdf.save();
+    peOutBlob = new Blob([outBytes], { type: 'application/pdf' });
+    peOutName = peRawFile.name.replace(/\.[^.]+$/, '') + (mode === 'encrypt' ? '_加密.pdf' : '_解密.pdf');
+    document.getElementById('pe-out').textContent = (peOutBlob.size / 1024 / 1024).toFixed(2) + ' MB';
+    showToast('✅ 处理完成');
+  } catch (e) {
+    console.error(e);
+    showToast('❌ 处理失败: ' + e.message);
+  } finally {
+    if (btn) { btn.disabled = false; btn.textContent = '⚡ 开始处理'; }
+  }
+}
+
+function peDownload() {
+  if (!peOutBlob) { showToast('❌ 请先处理PDF'); return; }
+  const a = document.createElement('a');
+  a.download = peOutName || 'result.pdf';
+  a.href = URL.createObjectURL(peOutBlob);
+  a.click();
+  showToast('💾 已开始下载');
+}
+
+// ============================================================
+// 多图合成GIF 处理函数 (gm*)
+// ============================================================
+var gmImages = [];
+
+function gmLoadFiles(input) {
+  const files = Array.from(input.files || []);
+  if (files.length === 0) return;
+  gmImages = [];
+  document.getElementById('gm-filenames').textContent = files.length + ' 张';
+  const preview = document.getElementById('gm-preview');
+  preview.innerHTML = '';
+  let loaded = 0;
+  files.forEach(function (file) {
+    const img = new Image();
+    img.onload = function () {
+      gmImages.push({ img: img, name: file.name });
+      loaded++;
+      const thumb = document.createElement('div');
+      thumb.style.cssText = 'position:relative;width:72px;height:72px;border-radius:8px;overflow:hidden;border:1px solid var(--border,#e2e8f0);';
+      const im = document.createElement('img');
+      im.src = img.src;
+      im.style.cssText = 'width:100%;height:100%;object-fit:cover;';
+      thumb.appendChild(im);
+      preview.appendChild(thumb);
+      document.getElementById('gm-count').textContent = gmImages.length;
+      if (loaded === files.length) {
+        preview.style.justifyContent = 'flex-start';
+      }
+    };
+    img.src = URL.createObjectURL(file);
+  });
+}
+
+function gmGenerate() {
+  if (gmImages.length < 2) { showToast('❌ 请至少选择2张图片'); return; }
+  const delay = parseInt(document.getElementById('gm-delay').value) || 300;
+  const width = parseInt(document.getElementById('gm-width').value) || 480;
+  const repeat = parseInt(document.getElementById('gm-repeat').value) || 0;
+  if (typeof GIF === 'undefined') { showToast('❌ GIF库未加载'); return; }
+  const btn = document.querySelector('[onclick="gmGenerate()"]');
+  if (btn) { btn.disabled = true; btn.textContent = '⏳ 生成中...'; }
+  try {
+    // 先用首帧确定高度（按宽度等比缩放）
+    const scale = width / gmImages[0].img.width;
+    const height = Math.max(1, Math.round(gmImages[0].img.height * scale));
+    const gif = new GIF({
+      workers: 2,
+      quality: 10,
+      width: width,
+      height: height,
+      repeat: repeat,
+      workerScript: 'js/gif.worker.js'
+    });
+    gmImages.forEach(function (item) {
+      const s = width / item.img.width;
+      const h = Math.max(1, Math.round(item.img.height * s));
+      const canvas = document.createElement('canvas');
+      canvas.width = width;
+      canvas.height = h;
+      const ctx = canvas.getContext('2d');
+      // 居中绘制到统一高度画布
+      const drawCanvas = document.createElement('canvas');
+      drawCanvas.width = width;
+      drawCanvas.height = height;
+      const dctx = drawCanvas.getContext('2d');
+      dctx.fillStyle = '#ffffff';
+      dctx.fillRect(0, 0, width, height);
+      dctx.drawImage(item.img, 0, (height - h) / 2, width, h);
+      gif.addFrame(dctx, { delay: delay });
+    });
+    gif.on('finished', function (blob) {
+      gmOutBlob = blob;
+      document.getElementById('gm-size').textContent = (blob.size / 1024).toFixed(1) + ' KB';
+      showToast('✅ GIF生成完成');
+      if (btn) { btn.disabled = false; btn.textContent = '🎞️ 生成GIF'; }
+    });
+    gif.on('error', function (e) {
+      console.error(e);
+      showToast('❌ 生成失败');
+      if (btn) { btn.disabled = false; btn.textContent = '🎞️ 生成GIF'; }
+    });
+    gif.render();
+  } catch (e) {
+    console.error(e);
+    showToast('❌ 生成失败: ' + e.message);
+    if (btn) { btn.disabled = false; btn.textContent = '🎞️ 生成GIF'; }
+  }
+}
+
+var gmOutBlob = null;
+
+function gmDownload() {
+  if (!gmOutBlob) { showToast('❌ 请先生成GIF'); return; }
+  const a = document.createElement('a');
+  a.download = 'animation_' + Date.now() + '.gif';
+  a.href = URL.createObjectURL(gmOutBlob);
   a.click();
   showToast('💾 已开始下载');
 }
