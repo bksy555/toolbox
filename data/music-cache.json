@@ -1,18 +1,18 @@
 {
   "songs": [
     {
-      "id": "1973665667",
-      "name": "海屿你",
+      "id": "3456047164",
+      "name": "Hong Kong (feat. 王菲季候风)",
       "artists": [
-        "马也_Crabbit"
+        "The Weeknd"
       ],
-      "album": "海屿你",
-      "albumPic": "https://p1.music.126.net/RfguLkQJ8aMVkiIaxdy70Q==/109951170483263672.jpg",
-      "duration": 295940,
+      "album": "Hong Kong (feat. 王菲季候风)",
+      "albumPic": "https://p2.music.126.net/12-Tl1d-BT-_AwXMl7-MzQ==/109951174206326909.jpg",
+      "duration": 216993,
       "url": null,
       "source": "netease",
       "br": null,
-      "addedAt": "2026-11-01T22:00:31.916Z"
+      "addedAt": "2026-11-02T22:00:47.445Z"
     },
     {
       "id": "287398",
@@ -21,26 +21,26 @@
         "孙燕姿"
       ],
       "album": "未完成",
-      "albumPic": "https://p1.music.126.net/Pzxy6py26NgNmhJjYMf2RQ==/109951169724216323.jpg",
+      "albumPic": "https://p2.music.126.net/Pzxy6py26NgNmhJjYMf2RQ==/109951169724216323.jpg",
       "duration": 320400,
       "url": null,
       "source": "netease",
       "br": null,
-      "addedAt": "2026-11-01T22:00:31.916Z"
+      "addedAt": "2026-11-02T22:00:47.445Z"
     },
     {
-      "id": "1851652156",
-      "name": "忘不掉的你",
+      "id": "1973665667",
+      "name": "海屿你",
       "artists": [
-        "h3R3"
+        "马也_Crabbit"
       ],
-      "album": "忘不掉的你",
-      "albumPic": "https://p1.music.126.net/4BCskpY6Rmm-QReHnY8W6Q==/109951166071009318.jpg",
-      "duration": 172173,
+      "album": "海屿你",
+      "albumPic": "https://p2.music.126.net/RfguLkQJ8aMVkiIaxdy70Q==/109951170483263672.jpg",
+      "duration": 295940,
       "url": null,
       "source": "netease",
       "br": null,
-      "addedAt": "2026-11-01T22:00:31.916Z"
+      "addedAt": "2026-11-02T22:00:47.445Z"
     },
     {
       "id": "167691",
@@ -49,12 +49,26 @@
         "许嵩"
       ],
       "album": "天龙八部之宿敌",
-      "albumPic": "https://p1.music.126.net/Ezo6K3rPFowvnkDtxf-w6Q==/109951172321459335.jpg",
+      "albumPic": "https://p2.music.126.net/Ezo6K3rPFowvnkDtxf-w6Q==/109951172321459335.jpg",
       "duration": 263340,
       "url": null,
       "source": "netease",
       "br": null,
-      "addedAt": "2026-11-01T22:00:31.916Z"
+      "addedAt": "2026-11-02T22:00:47.445Z"
+    },
+    {
+      "id": "3399839173",
+      "name": "甲乙丙丁 (你我怎么两清)",
+      "artists": [
+        "李佳薇"
+      ],
+      "album": "甲乙丙丁",
+      "albumPic": "https://p2.music.126.net/H9iDvukTit_jx-fmhhvXUQ==/109951173482378749.jpg",
+      "duration": 210461,
+      "url": null,
+      "source": "netease",
+      "br": null,
+      "addedAt": "2026-11-02T22:00:47.445Z"
     },
     {
       "id": "1456890009",
@@ -64,54 +78,12 @@
         "Wiz_H张子豪"
       ],
       "album": "罗生门（Follow）",
-      "albumPic": "https://p1.music.126.net/yN1ke1xYMJ718FiHaDWtYQ==/109951165076380471.jpg",
+      "albumPic": "https://p2.music.126.net/yN1ke1xYMJ718FiHaDWtYQ==/109951165076380471.jpg",
       "duration": 243754,
       "url": null,
       "source": "netease",
       "br": null,
-      "addedAt": "2026-11-01T22:00:31.916Z"
-    },
-    {
-      "id": "1918576268",
-      "name": "红",
-      "artists": [
-        "罗言"
-      ],
-      "album": "When the world is came，take it！",
-      "albumPic": "https://p1.music.126.net/G-inyKjA-jO5MuOuV3g7Pg==/109951167027986653.jpg",
-      "duration": 161585,
-      "url": null,
-      "source": "netease",
-      "br": null,
-      "addedAt": "2026-11-01T22:00:31.916Z"
-    },
-    {
-      "id": "3399839173",
-      "name": "甲乙丙丁 (你我怎么两清)",
-      "artists": [
-        "李佳薇"
-      ],
-      "album": "甲乙丙丁",
-      "albumPic": "https://p1.music.126.net/H9iDvukTit_jx-fmhhvXUQ==/109951173482378749.jpg",
-      "duration": 210461,
-      "url": null,
-      "source": "netease",
-      "br": null,
-      "addedAt": "2026-11-01T22:00:31.916Z"
-    },
-    {
-      "id": "1842728629",
-      "name": "如果呢",
-      "artists": [
-        "郑润泽"
-      ],
-      "album": "如果呢",
-      "albumPic": "https://p1.music.126.net/-xMsNLpquZTmMZlIztTgHg==/109951165953469081.jpg",
-      "duration": 257532,
-      "url": null,
-      "source": "netease",
-      "br": null,
-      "addedAt": "2026-11-01T22:00:31.916Z"
+      "addedAt": "2026-11-02T22:00:47.445Z"
     },
     {
       "id": "2600493765",
@@ -120,26 +92,26 @@
         "李荣浩"
       ],
       "album": "黑马",
-      "albumPic": "https://p1.music.126.net/0bk3Iqe2OZGBH2Iuyx7RzA==/109951170045577565.jpg",
+      "albumPic": "https://p2.music.126.net/0bk3Iqe2OZGBH2Iuyx7RzA==/109951170045577565.jpg",
       "duration": 275912,
       "url": null,
       "source": "netease",
       "br": null,
-      "addedAt": "2026-11-01T22:00:31.916Z"
+      "addedAt": "2026-11-02T22:00:47.445Z"
     },
     {
-      "id": "3342319503",
-      "name": "明知故犯",
+      "id": "1842728629",
+      "name": "如果呢",
       "artists": [
-        "Max李玄"
+        "郑润泽"
       ],
-      "album": "失温",
-      "albumPic": "https://p1.music.126.net/H2DFRdwP2y5SuCAn-Tuikw==/109951172568091306.jpg",
-      "duration": 166416,
+      "album": "如果呢",
+      "albumPic": "https://p2.music.126.net/-xMsNLpquZTmMZlIztTgHg==/109951165953469081.jpg",
+      "duration": 257532,
       "url": null,
       "source": "netease",
       "br": null,
-      "addedAt": "2026-11-01T22:00:31.916Z"
+      "addedAt": "2026-11-02T22:00:47.445Z"
     },
     {
       "id": "3382908505",
@@ -148,26 +120,26 @@
         "Gareth.T"
       ],
       "album": "玻璃",
-      "albumPic": "https://p1.music.126.net/MSKoQP60up7v3y1P1d3JIQ==/109951173234747322.jpg",
+      "albumPic": "https://p2.music.126.net/MSKoQP60up7v3y1P1d3JIQ==/109951173234747322.jpg",
       "duration": 185040,
       "url": null,
       "source": "netease",
       "br": null,
-      "addedAt": "2026-11-01T22:00:31.916Z"
+      "addedAt": "2026-11-02T22:00:47.445Z"
     },
     {
-      "id": "1303464858",
-      "name": "于是",
+      "id": "3342319503",
+      "name": "明知故犯",
       "artists": [
-        "郑润泽"
+        "Max李玄"
       ],
-      "album": "于是",
-      "albumPic": "https://p1.music.126.net/PEGvmO3OqgGOkx4m9qxAJA==/109951163478499713.jpg",
-      "duration": 232835,
+      "album": "失温",
+      "albumPic": "https://p2.music.126.net/H2DFRdwP2y5SuCAn-Tuikw==/109951172568091306.jpg",
+      "duration": 166416,
       "url": null,
       "source": "netease",
       "br": null,
-      "addedAt": "2026-11-01T22:00:31.916Z"
+      "addedAt": "2026-11-02T22:00:47.445Z"
     },
     {
       "id": "2741144144",
@@ -176,42 +148,26 @@
         "TizzyT"
       ],
       "album": "99",
-      "albumPic": "https://p1.music.126.net/D-kiZM7mbHrqdB6X8Yoi8Q==/109951171947326885.jpg",
+      "albumPic": "https://p2.music.126.net/D-kiZM7mbHrqdB6X8Yoi8Q==/109951171947326885.jpg",
       "duration": 282188,
       "url": null,
       "source": "netease",
       "br": null,
-      "addedAt": "2026-11-01T22:00:31.916Z"
+      "addedAt": "2026-11-02T22:00:47.445Z"
     },
     {
-      "id": "3451531276",
-      "name": "一张相片",
+      "id": "1303464858",
+      "name": "于是",
       "artists": [
-        "连麻Swimming"
+        "郑润泽"
       ],
-      "album": "斩鸭线",
-      "albumPic": "https://p1.music.126.net/Eafh2qRUgw2IXXOVD4B9LQ==/109951174139932904.jpg",
-      "duration": 224842,
+      "album": "于是",
+      "albumPic": "https://p2.music.126.net/PEGvmO3OqgGOkx4m9qxAJA==/109951163478499713.jpg",
+      "duration": 232835,
       "url": null,
       "source": "netease",
       "br": null,
-      "addedAt": "2026-11-01T22:00:31.916Z"
-    },
-    {
-      "id": "1922888354",
-      "name": "苦茶子",
-      "artists": [
-        "Starling8",
-        "DRODUMANA",
-        "FIVESTAR"
-      ],
-      "album": "埋汰",
-      "albumPic": "https://p1.music.126.net/VjXYNoGC3lXajZDs0r35XQ==/109951167852652412.jpg",
-      "duration": 170796,
-      "url": null,
-      "source": "netease",
-      "br": null,
-      "addedAt": "2026-11-01T22:00:31.916Z"
+      "addedAt": "2026-11-02T22:00:47.445Z"
     },
     {
       "id": "2097443876",
@@ -220,54 +176,40 @@
         "队长"
       ],
       "album": "碎碎念",
-      "albumPic": "https://p1.music.126.net/RYIrCEYzgeAD85DJ0rgOQA==/109951169256300966.jpg",
+      "albumPic": "https://p2.music.126.net/RYIrCEYzgeAD85DJ0rgOQA==/109951169256300966.jpg",
       "duration": 132748,
       "url": null,
       "source": "netease",
       "br": null,
-      "addedAt": "2026-11-01T22:00:31.916Z"
+      "addedAt": "2026-11-02T22:00:47.445Z"
     },
     {
-      "id": "273114",
-      "name": "失眠",
+      "id": "1851652156",
+      "name": "忘不掉的你",
       "artists": [
-        "Suki刘舒妤"
+        "h3R3"
       ],
-      "album": "Ladies Night",
-      "albumPic": "https://p1.music.126.net/-ruDNWFD1mMTGMNmNPzUIg==/109951173355316164.jpg",
-      "duration": 211301,
+      "album": "忘不掉的你",
+      "albumPic": "https://p2.music.126.net/4BCskpY6Rmm-QReHnY8W6Q==/109951166071009318.jpg",
+      "duration": 172173,
       "url": null,
       "source": "netease",
       "br": null,
-      "addedAt": "2026-11-01T22:00:31.916Z"
+      "addedAt": "2026-11-02T22:00:47.445Z"
     },
     {
-      "id": "287063",
-      "name": "我怀念的",
+      "id": "1391891631",
+      "name": "嗜好",
       "artists": [
-        "孙燕姿"
+        "颜人中"
       ],
-      "album": "逆光",
-      "albumPic": "https://p1.music.126.net/wF25xzePLml5EGUWM2eInw==/109951173219336672.jpg",
-      "duration": 289066,
+      "album": "嗜好",
+      "albumPic": "https://p2.music.126.net/J6HaJjtgv-yVVjyUm-h-AA==/109951164373633387.jpg",
+      "duration": 284113,
       "url": null,
       "source": "netease",
       "br": null,
-      "addedAt": "2026-11-01T22:00:31.916Z"
-    },
-    {
-      "id": "3425638996",
-      "name": "互删 (我走以后)",
-      "artists": [
-        "江辰"
-      ],
-      "album": "互删 (我走以后)",
-      "albumPic": "https://p2.music.126.net/nfDVr6WopOJax11vq5brPQ==/109951173820334666.jpg",
-      "duration": 211686,
-      "url": null,
-      "source": "netease",
-      "br": null,
-      "addedAt": "2026-11-01T22:00:31.916Z"
+      "addedAt": "2026-11-02T22:00:47.445Z"
     },
     {
       "id": "3333988321",
@@ -282,7 +224,91 @@
       "url": null,
       "source": "netease",
       "br": null,
-      "addedAt": "2026-11-01T22:00:31.916Z"
+      "addedAt": "2026-11-02T22:00:47.445Z"
+    },
+    {
+      "id": "287063",
+      "name": "我怀念的",
+      "artists": [
+        "孙燕姿"
+      ],
+      "album": "逆光",
+      "albumPic": "https://p2.music.126.net/wF25xzePLml5EGUWM2eInw==/109951173219336672.jpg",
+      "duration": 289066,
+      "url": null,
+      "source": "netease",
+      "br": null,
+      "addedAt": "2026-11-02T22:00:47.445Z"
+    },
+    {
+      "id": "3425638996",
+      "name": "互删 (我走以后)",
+      "artists": [
+        "江辰"
+      ],
+      "album": "互删 (我走以后)",
+      "albumPic": "https://p2.music.126.net/nfDVr6WopOJax11vq5brPQ==/109951173820334666.jpg",
+      "duration": 211686,
+      "url": null,
+      "source": "netease",
+      "br": null,
+      "addedAt": "2026-11-02T22:00:47.445Z"
+    },
+    {
+      "id": "3451531276",
+      "name": "一张相片",
+      "artists": [
+        "连麻Swimming"
+      ],
+      "album": "斩鸭线",
+      "albumPic": "https://p2.music.126.net/Eafh2qRUgw2IXXOVD4B9LQ==/109951174139932904.jpg",
+      "duration": 224842,
+      "url": null,
+      "source": "netease",
+      "br": null,
+      "addedAt": "2026-11-02T22:00:47.445Z"
+    },
+    {
+      "id": "273114",
+      "name": "失眠",
+      "artists": [
+        "Suki刘舒妤"
+      ],
+      "album": "Ladies Night",
+      "albumPic": "https://p2.music.126.net/-ruDNWFD1mMTGMNmNPzUIg==/109951173355316164.jpg",
+      "duration": 211301,
+      "url": null,
+      "source": "netease",
+      "br": null,
+      "addedAt": "2026-11-02T22:00:47.445Z"
+    },
+    {
+      "id": "1918576268",
+      "name": "红",
+      "artists": [
+        "罗言"
+      ],
+      "album": "When the world is came，take it！",
+      "albumPic": "https://p2.music.126.net/G-inyKjA-jO5MuOuV3g7Pg==/109951167027986653.jpg",
+      "duration": 161585,
+      "url": null,
+      "source": "netease",
+      "br": null,
+      "addedAt": "2026-11-02T22:00:47.445Z"
+    },
+    {
+      "id": "215382",
+      "name": "雨过后的风景",
+      "artists": [
+        "Dizzy Dizzo (蔡诗芸)"
+      ],
+      "album": "黑色彩虹",
+      "albumPic": "https://p2.music.126.net/6Y7tdO1ltV0khSYWLFHODQ==/109951173146696212.jpg",
+      "duration": 243133,
+      "url": null,
+      "source": "netease",
+      "br": null,
+      "addedAt": "2026-11-02T22:00:47.445Z"
     },
     {
       "id": "1827600686",
@@ -297,49 +323,7 @@
       "url": null,
       "source": "netease",
       "br": null,
-      "addedAt": "2026-11-01T22:00:31.916Z"
-    },
-    {
-      "id": "215382",
-      "name": "雨过后的风景",
-      "artists": [
-        "Dizzy Dizzo (蔡诗芸)"
-      ],
-      "album": "黑色彩虹",
-      "albumPic": "https://p2.music.126.net/6Y7tdO1ltV0khSYWLFHODQ==/109951173146696212.jpg",
-      "duration": 243133,
-      "url": null,
-      "source": "netease",
-      "br": null,
-      "addedAt": "2026-11-01T22:00:31.916Z"
-    },
-    {
-      "id": "2018733994",
-      "name": "遐想",
-      "artists": [
-        "郑润泽"
-      ],
-      "album": "梦游",
-      "albumPic": "https://p2.music.126.net/Ws93IUrJGR_lK-QEsdKTWw==/109951168408373477.jpg",
-      "duration": 189719,
-      "url": null,
-      "source": "netease",
-      "br": null,
-      "addedAt": "2026-11-01T22:00:31.916Z"
-    },
-    {
-      "id": "1391891631",
-      "name": "嗜好",
-      "artists": [
-        "颜人中"
-      ],
-      "album": "嗜好",
-      "albumPic": "https://p2.music.126.net/J6HaJjtgv-yVVjyUm-h-AA==/109951164373633387.jpg",
-      "duration": 284113,
-      "url": null,
-      "source": "netease",
-      "br": null,
-      "addedAt": "2026-11-01T22:00:31.916Z"
+      "addedAt": "2026-11-02T22:00:47.445Z"
     },
     {
       "id": "2755710644",
@@ -354,63 +338,21 @@
       "url": null,
       "source": "netease",
       "br": null,
-      "addedAt": "2026-11-01T22:00:31.916Z"
+      "addedAt": "2026-11-02T22:00:47.445Z"
     },
     {
-      "id": "2078101758",
-      "name": "时过境迁",
+      "id": "2018733994",
+      "name": "遐想",
       "artists": [
-        "苏艺馨Chency"
+        "郑润泽"
       ],
-      "album": "时过境迁",
-      "albumPic": "https://p2.music.126.net/A5J9gFuJgfzqravyuj184g==/109951168881933739.jpg",
-      "duration": 269117,
+      "album": "梦游",
+      "albumPic": "https://p2.music.126.net/Ws93IUrJGR_lK-QEsdKTWw==/109951168408373477.jpg",
+      "duration": 189719,
       "url": null,
       "source": "netease",
       "br": null,
-      "addedAt": "2026-11-01T22:00:31.917Z"
-    },
-    {
-      "id": "167655",
-      "name": "幻听",
-      "artists": [
-        "许嵩"
-      ],
-      "album": "梦游计",
-      "albumPic": "https://p2.music.126.net/7X3irAHmXIkyZKu1OzDZdQ==/109951172321460834.jpg",
-      "duration": 273266,
-      "url": null,
-      "source": "netease",
-      "br": null,
-      "addedAt": "2026-11-01T22:00:31.917Z"
-    },
-    {
-      "id": "2652647276",
-      "name": "我好想你 (苏打绿版)",
-      "artists": [
-        "苏打绿"
-      ],
-      "album": "秋：故事 (苏打绿版)",
-      "albumPic": "https://p2.music.126.net/uNLLdw0Pxd2NT4Q_aP2tUQ==/109951170216075185.jpg",
-      "duration": 329206,
-      "url": null,
-      "source": "netease",
-      "br": null,
-      "addedAt": "2026-11-01T22:00:31.917Z"
-    },
-    {
-      "id": "316100",
-      "name": "雨爱",
-      "artists": [
-        "杨丞琳"
-      ],
-      "album": "雨爱",
-      "albumPic": "https://p2.music.126.net/Qt6sfLxRCscFZVXhbQ4bfg==/109951172020385959.jpg",
-      "duration": 260480,
-      "url": null,
-      "source": "netease",
-      "br": null,
-      "addedAt": "2026-11-01T22:00:31.917Z"
+      "addedAt": "2026-11-02T22:00:47.445Z"
     },
     {
       "id": "2163210456",
@@ -424,7 +366,35 @@
       "url": null,
       "source": "netease",
       "br": null,
-      "addedAt": "2026-11-01T22:00:31.917Z"
+      "addedAt": "2026-11-02T22:00:47.445Z"
+    },
+    {
+      "id": "2078101758",
+      "name": "时过境迁",
+      "artists": [
+        "苏艺馨Chency"
+      ],
+      "album": "时过境迁",
+      "albumPic": "https://p2.music.126.net/A5J9gFuJgfzqravyuj184g==/109951168881933739.jpg",
+      "duration": 269117,
+      "url": null,
+      "source": "netease",
+      "br": null,
+      "addedAt": "2026-11-02T22:00:47.445Z"
+    },
+    {
+      "id": "167655",
+      "name": "幻听",
+      "artists": [
+        "许嵩"
+      ],
+      "album": "梦游计",
+      "albumPic": "https://p2.music.126.net/7X3irAHmXIkyZKu1OzDZdQ==/109951172321460834.jpg",
+      "duration": 273266,
+      "url": null,
+      "source": "netease",
+      "br": null,
+      "addedAt": "2026-11-02T22:00:47.445Z"
     },
     {
       "id": "27562048",
@@ -439,7 +409,21 @@
       "url": null,
       "source": "netease",
       "br": null,
-      "addedAt": "2026-11-01T22:00:31.917Z"
+      "addedAt": "2026-11-02T22:00:47.445Z"
+    },
+    {
+      "id": "2652647276",
+      "name": "我好想你 (苏打绿版)",
+      "artists": [
+        "苏打绿"
+      ],
+      "album": "秋：故事 (苏打绿版)",
+      "albumPic": "https://p2.music.126.net/uNLLdw0Pxd2NT4Q_aP2tUQ==/109951170216075185.jpg",
+      "duration": 329206,
+      "url": null,
+      "source": "netease",
+      "br": null,
+      "addedAt": "2026-11-02T22:00:47.445Z"
     },
     {
       "id": "1472921626",
@@ -453,7 +437,21 @@
       "url": null,
       "source": "netease",
       "br": null,
-      "addedAt": "2026-11-01T22:00:31.917Z"
+      "addedAt": "2026-11-02T22:00:47.445Z"
+    },
+    {
+      "id": "316100",
+      "name": "雨爱",
+      "artists": [
+        "杨丞琳"
+      ],
+      "album": "雨爱",
+      "albumPic": "https://p2.music.126.net/Qt6sfLxRCscFZVXhbQ4bfg==/109951172020385959.jpg",
+      "duration": 260480,
+      "url": null,
+      "source": "netease",
+      "br": null,
+      "addedAt": "2026-11-02T22:00:47.445Z"
     },
     {
       "id": "28403111",
@@ -467,35 +465,23 @@
       "url": null,
       "source": "netease",
       "br": null,
-      "addedAt": "2026-11-01T22:00:31.917Z"
+      "addedAt": "2026-11-02T22:00:47.445Z"
     },
     {
-      "id": "1359356908",
-      "name": "晚安",
+      "id": "1922888354",
+      "name": "苦茶子",
       "artists": [
-        "颜人中"
+        "Starling8",
+        "DRODUMANA",
+        "FIVESTAR"
       ],
-      "album": "晚安",
-      "albumPic": "https://p2.music.126.net/-rC55JsnmEWvafJQsAZaWw==/109951170473693123.jpg",
-      "duration": 289184,
+      "album": "埋汰",
+      "albumPic": "https://p2.music.126.net/VjXYNoGC3lXajZDs0r35XQ==/109951167852652412.jpg",
+      "duration": 170796,
       "url": null,
       "source": "netease",
       "br": null,
-      "addedAt": "2026-11-01T22:00:31.917Z"
-    },
-    {
-      "id": "1403318151",
-      "name": "把回忆拼好给你",
-      "artists": [
-        "王贰浪"
-      ],
-      "album": "把回忆拼好给你",
-      "albumPic": "https://p2.music.126.net/CBx2K_jEN3SNWwYztagPPw==/109951164485969446.jpg",
-      "duration": 381000,
-      "url": null,
-      "source": "netease",
-      "br": null,
-      "addedAt": "2026-11-01T22:00:31.917Z"
+      "addedAt": "2026-11-02T22:00:47.445Z"
     },
     {
       "id": "2701139855",
@@ -509,575 +495,21 @@
       "url": null,
       "source": "netease",
       "br": null,
-      "addedAt": "2026-11-01T22:00:31.917Z"
+      "addedAt": "2026-11-02T22:00:47.445Z"
     },
     {
-      "id": "208902",
-      "name": "红色高跟鞋",
+      "id": "1403318151",
+      "name": "把回忆拼好给你",
       "artists": [
-        "蔡健雅"
+        "王贰浪"
       ],
-      "album": "若你碰到他",
-      "albumPic": "https://p2.music.126.net/jJOaqlez9x5VofjgB7B_Bw==/109951166195459631.jpg",
-      "duration": 206586,
+      "album": "把回忆拼好给你",
+      "albumPic": "https://p2.music.126.net/CBx2K_jEN3SNWwYztagPPw==/109951164485969446.jpg",
+      "duration": 381000,
       "url": null,
       "source": "netease",
       "br": null,
-      "addedAt": "2026-11-01T22:00:31.917Z"
-    },
-    {
-      "id": "417859631",
-      "name": "我好像在哪见过你",
-      "artists": [
-        "薛之谦"
-      ],
-      "album": "初学者",
-      "albumPic": "https://p2.music.126.net/hti_a0LADoFMBHvOBwAtRA==/1369991500930171.jpg",
-      "duration": 279145,
-      "url": null,
-      "source": "netease",
-      "br": null,
-      "addedAt": "2026-11-01T22:00:31.917Z"
-    },
-    {
-      "id": "1927693793",
-      "name": "再等冬天(Memories)",
-      "artists": [
-        "h3R3"
-      ],
-      "album": "故事商铺·上",
-      "albumPic": "https://p2.music.126.net/JBe7AwcGkYHhleOfQvY2hg==/109951169798343077.jpg",
-      "duration": 168000,
-      "url": null,
-      "source": "netease",
-      "br": null,
-      "addedAt": "2026-11-01T22:00:31.917Z"
-    },
-    {
-      "id": "421423806",
-      "name": "小半",
-      "artists": [
-        "陈粒"
-      ],
-      "album": "小梦大半",
-      "albumPic": "https://p2.music.126.net/HQxTggMCB7AHUXN-ZFEtmA==/1371091013186741.jpg",
-      "duration": 297240,
-      "url": null,
-      "source": "netease",
-      "br": null,
-      "addedAt": "2026-11-01T22:00:31.917Z"
-    },
-    {
-      "id": "1895330088",
-      "name": "予你",
-      "artists": [
-        "队长"
-      ],
-      "album": "予你",
-      "albumPic": "https://p2.music.126.net/yxVm_vRFOode6yP67NmMcA==/109951166625738075.jpg",
-      "duration": 231349,
-      "url": null,
-      "source": "netease",
-      "br": null,
-      "addedAt": "2026-11-01T22:00:31.917Z"
-    },
-    {
-      "id": "1936095074",
-      "name": "再次爱上你",
-      "artists": [
-        "金润吉"
-      ],
-      "album": "再次爱上你",
-      "albumPic": "https://p2.music.126.net/CpFGqvJQILqbN44t6cfF3g==/109951167287280308.jpg",
-      "duration": 213513,
-      "url": null,
-      "source": "netease",
-      "br": null,
-      "addedAt": "2026-11-01T22:00:31.917Z"
-    },
-    {
-      "id": "1398283847",
-      "name": "我只能离开",
-      "artists": [
-        "颜人中"
-      ],
-      "album": "初恋那件小事 电视剧原声带",
-      "albumPic": "https://p2.music.126.net/5GPFbTQU-kW57PGv_7LeBw==/109951164440649436.jpg",
-      "duration": 230000,
-      "url": null,
-      "source": "netease",
-      "br": null,
-      "addedAt": "2026-11-01T22:00:31.917Z"
-    },
-    {
-      "id": "1400259397",
-      "name": "有我呢",
-      "artists": [
-        "郭一凡"
-      ],
-      "album": "重返地球",
-      "albumPic": "https://p2.music.126.net/v_Xh_oLlkrW8Ptp1f6EAmQ==/109951173774936819.jpg",
-      "duration": 274568,
-      "url": null,
-      "source": "netease",
-      "br": null,
-      "addedAt": "2026-11-01T22:00:31.917Z"
-    },
-    {
-      "id": "2041026502",
-      "name": "愿与愁",
-      "artists": [
-        "林俊杰"
-      ],
-      "album": "愿与愁",
-      "albumPic": "https://p2.music.126.net/vtnI8JpimWnZSzkXdmIB3w==/109951168558210782.jpg",
-      "duration": 231586,
-      "url": null,
-      "source": "netease",
-      "br": null,
-      "addedAt": "2026-11-01T22:00:31.917Z"
-    },
-    {
-      "id": "191316",
-      "name": "我爱你",
-      "artists": [
-        "王菲"
-      ],
-      "album": "潜流",
-      "albumPic": "https://p2.music.126.net/kQgYR6s-lDEUFPC09Nux3A==/109951166118021561.jpg",
-      "duration": 310160,
-      "url": null,
-      "source": "netease",
-      "br": null,
-      "addedAt": "2026-11-01T22:00:31.917Z"
-    },
-    {
-      "id": "316157",
-      "name": "茶汤",
-      "artists": [
-        "郁可唯"
-      ],
-      "album": "微加幸福",
-      "albumPic": "https://p2.music.126.net/ugJH-gpHKX6y6p-6MkIIsQ==/109951163187409545.jpg",
-      "duration": 308773,
-      "url": null,
-      "source": "netease",
-      "br": null,
-      "addedAt": "2026-11-01T22:00:31.917Z"
-    },
-    {
-      "id": "3397415408",
-      "name": "回到你身边",
-      "artists": [
-        "h3R3"
-      ],
-      "album": "回响",
-      "albumPic": "https://p2.music.126.net/yed2hVZZwFNeSkTynWPaJQ==/109951173491736376.jpg",
-      "duration": 231119,
-      "url": null,
-      "source": "netease",
-      "br": null,
-      "addedAt": "2026-11-01T22:00:31.917Z"
-    },
-    {
-      "id": "2083785152",
-      "name": "唯一",
-      "artists": [
-        "G.E.M.邓紫棋"
-      ],
-      "album": "T.I.M.E.",
-      "albumPic": "https://p2.music.126.net/aJWtwvdYRXvKUpAE2C6NoA==/109951168919708423.jpg",
-      "duration": 253735,
-      "url": null,
-      "source": "netease",
-      "br": null,
-      "addedAt": "2026-11-01T22:00:31.917Z"
-    },
-    {
-      "id": "3387477661",
-      "name": "梦哑",
-      "artists": [
-        "任然"
-      ],
-      "album": "梦哑",
-      "albumPic": "https://p2.music.126.net/7tJ8BtV2GSKTyWXyCvdEUg==/109951173646389004.jpg",
-      "duration": 234543,
-      "url": null,
-      "source": "netease",
-      "br": null,
-      "addedAt": "2026-11-01T22:00:31.917Z"
-    },
-    {
-      "id": "1926623288",
-      "name": "小胡同",
-      "artists": [
-        "郑润泽"
-      ],
-      "album": "小胡同",
-      "albumPic": "https://p2.music.126.net/QsebYbDgQtKelH6r1iE2Fg==/109951167129280730.jpg",
-      "duration": 276588,
-      "url": null,
-      "source": "netease",
-      "br": null,
-      "addedAt": "2026-11-01T22:00:31.917Z"
-    },
-    {
-      "id": "2740858325",
-      "name": "Star Crossing Night (feat. GALI)",
-      "artists": [
-        "徐明浩",
-        "GALI"
-      ],
-      "album": "Star Crossing Night (feat. GALI)",
-      "albumPic": "https://p2.music.126.net/fsz6GAKO1-khteFArDidjA==/109951171942679749.jpg",
-      "duration": 205000,
-      "url": null,
-      "source": "netease",
-      "br": null,
-      "addedAt": "2026-11-01T22:00:31.917Z"
-    },
-    {
-      "id": "2648204040",
-      "name": "锈 (我们两个都拉过勾)",
-      "artists": [
-        "江辰"
-      ],
-      "album": "瘾",
-      "albumPic": "https://p2.music.126.net/Kc9SWUoUlrcf7tPihgap-A==/109951170169444876.jpg",
-      "duration": 221544,
-      "url": null,
-      "source": "netease",
-      "br": null,
-      "addedAt": "2026-11-01T22:00:31.917Z"
-    },
-    {
-      "id": "108485",
-      "name": "Always Online",
-      "artists": [
-        "林俊杰"
-      ],
-      "album": "JJ陆",
-      "albumPic": "https://p2.music.126.net/zjSzQ70gDJrneldAwvLBOg==/109951173971284858.jpg",
-      "duration": 225013,
-      "url": null,
-      "source": "netease",
-      "br": null,
-      "addedAt": "2026-11-01T22:00:31.917Z"
-    },
-    {
-      "id": "287719",
-      "name": "开始懂了",
-      "artists": [
-        "孙燕姿"
-      ],
-      "album": "我要的幸福",
-      "albumPic": "https://p2.music.126.net/1HJILQwc62AfvcXkGgVJHQ==/109951165549820772.jpg",
-      "duration": 271493,
-      "url": null,
-      "source": "netease",
-      "br": null,
-      "addedAt": "2026-11-01T22:00:31.917Z"
-    },
-    {
-      "id": "1406649619",
-      "name": "有些",
-      "artists": [
-        "颜人中"
-      ],
-      "album": "失眠症候群",
-      "albumPic": "https://p2.music.126.net/8DkTnzi7jdjWGYl4qbwLCg==/109951164517295956.jpg",
-      "duration": 229523,
-      "url": null,
-      "source": "netease",
-      "br": null,
-      "addedAt": "2026-11-01T22:00:31.917Z"
-    },
-    {
-      "id": "254059",
-      "name": "情歌",
-      "artists": [
-        "梁静茹"
-      ],
-      "album": "现在开始我爱你",
-      "albumPic": "https://p2.music.126.net/QKCkMMW_fPDcczRNb0qZyg==/109951168163257789.jpg",
-      "duration": 263293,
-      "url": null,
-      "source": "netease",
-      "br": null,
-      "addedAt": "2026-11-01T22:00:31.917Z"
-    },
-    {
-      "id": "3440961675",
-      "name": "睡前别想太多",
-      "artists": [
-        "李雨霏_晚饭"
-      ],
-      "album": "睡前别想太多",
-      "albumPic": "https://p2.music.126.net/CdAZ76__lHkE_HcjXgR_4w==/109951173999807018.jpg",
-      "duration": 210079,
-      "url": null,
-      "source": "netease",
-      "br": null,
-      "addedAt": "2026-11-01T22:00:31.917Z"
-    },
-    {
-      "id": "21178386",
-      "name": "Whatever Happens",
-      "artists": [
-        "Michael Jackson"
-      ],
-      "album": "Invincible",
-      "albumPic": "https://p2.music.126.net/Iik8WEA3vOyPWMHniVR47A==/109951165992940172.jpg",
-      "duration": 296733,
-      "url": null,
-      "source": "netease",
-      "br": null,
-      "addedAt": "2026-11-01T22:00:31.917Z"
-    },
-    {
-      "id": "167827",
-      "name": "素颜",
-      "artists": [
-        "许嵩",
-        "何曼婷"
-      ],
-      "album": "素颜",
-      "albumPic": "https://p2.music.126.net/t3ogpTd1bIJpwokhkpBtwQ==/109951169829246225.jpg",
-      "duration": 238608,
-      "url": null,
-      "source": "netease",
-      "br": null,
-      "addedAt": "2026-11-01T22:00:31.917Z"
-    },
-    {
-      "id": "1482867143",
-      "name": "夏夜最后的烟火",
-      "artists": [
-        "颜人中"
-      ],
-      "album": "夏夜最后的烟火",
-      "albumPic": "https://p2.music.126.net/i1p1CCz6PaDF2Gs0RqKJBQ==/109951165349625690.jpg",
-      "duration": 279587,
-      "url": null,
-      "source": "netease",
-      "br": null,
-      "addedAt": "2026-11-01T22:00:31.917Z"
-    },
-    {
-      "id": "2154520553",
-      "name": "Marry",
-      "artists": [
-        "Top Barry",
-        "INDEcompany"
-      ],
-      "album": "How I Shine",
-      "albumPic": "https://p2.music.126.net/XQgLpatV-LFMdx55WuV8bA==/109951169706853419.jpg",
-      "duration": 183858,
-      "url": null,
-      "source": "netease",
-      "br": null,
-      "addedAt": "2026-11-01T22:00:31.917Z"
-    },
-    {
-      "id": "2146702461",
-      "name": "暗恋过 结局呢",
-      "artists": [
-        "新街口组合",
-        "Mona Lavi"
-      ],
-      "album": "国王",
-      "albumPic": "https://p2.music.126.net/BJwaaOn06N_1atbW0ncBDg==/109951169504605901.jpg",
-      "duration": 231157,
-      "url": null,
-      "source": "netease",
-      "br": null,
-      "addedAt": "2026-11-01T22:00:31.917Z"
-    },
-    {
-      "id": "300591",
-      "name": "季候风",
-      "artists": [
-        "王菲"
-      ],
-      "album": "执迷不悔 (Remastered 2019)",
-      "albumPic": "https://p2.music.126.net/iEMrtjnaZd3tNtpEbx6NgQ==/109951172414870988.jpg",
-      "duration": 277640,
-      "url": null,
-      "source": "netease",
-      "br": null,
-      "addedAt": "2026-11-01T22:00:31.917Z"
-    },
-    {
-      "id": "1406083061",
-      "name": "你",
-      "artists": [
-        "郑润泽"
-      ],
-      "album": "你",
-      "albumPic": "https://p2.music.126.net/OvnvQlFc8QSD7UnqtM9YYw==/109951164512103081.jpg",
-      "duration": 254781,
-      "url": null,
-      "source": "netease",
-      "br": null,
-      "addedAt": "2026-11-01T22:00:31.917Z"
-    },
-    {
-      "id": "479979029",
-      "name": "Lost ",
-      "artists": [
-        "满舒克",
-        "Jony J"
-      ],
-      "album": "Almost Perfect",
-      "albumPic": "https://p2.music.126.net/5qz5CVIGDWLx7OXyp3rlwg==/109951173203263481.jpg",
-      "duration": 250666,
-      "url": null,
-      "source": "netease",
-      "br": null,
-      "addedAt": "2026-11-01T22:00:31.917Z"
-    },
-    {
-      "id": "32507038",
-      "name": "演员",
-      "artists": [
-        "薛之谦"
-      ],
-      "album": "绅士",
-      "albumPic": "https://p2.music.126.net/vu7SHbVlMuszmSuKR2SKAQ==/109951168707343730.jpg",
-      "duration": 261249,
-      "url": "/data/music/32507038.mp3",
-      "source": "netease",
-      "br": 128000,
-      "addedAt": "2026-11-01T22:00:31.917Z",
-      "local": true
-    },
-    {
-      "id": "2015896805",
-      "name": "浆果",
-      "artists": [
-        "TINY7"
-      ],
-      "album": "浆果",
-      "albumPic": "https://p2.music.126.net/BQAY8w9XzOj_j1wZgIsczQ==/109951168247366566.jpg",
-      "duration": 267999,
-      "url": null,
-      "source": "netease",
-      "br": null,
-      "addedAt": "2026-11-01T22:00:31.917Z"
-    },
-    {
-      "id": "3416333610",
-      "name": "再见太难",
-      "artists": [
-        "利得汇"
-      ],
-      "album": "再见太难",
-      "albumPic": "https://p2.music.126.net/W3AQnp6rLFxYIHdHBaYA7g==/109951174180839929.jpg",
-      "duration": 288417,
-      "url": null,
-      "source": "netease",
-      "br": null,
-      "addedAt": "2026-11-01T22:00:31.917Z"
-    },
-    {
-      "id": "2161222939",
-      "name": "沦陷",
-      "artists": [
-        "贾格JuggShots"
-      ],
-      "album": "沦陷",
-      "albumPic": "https://p2.music.126.net/ctib5R--oR68W2IrOk765w==/109951169635716223.jpg",
-      "duration": 183770,
-      "url": null,
-      "source": "netease",
-      "br": null,
-      "addedAt": "2026-11-01T22:00:31.917Z"
-    },
-    {
-      "id": "1363553440",
-      "name": "出现又离开 (Live)",
-      "artists": [
-        "梁博"
-      ],
-      "album": "我是唱作人 第2期",
-      "albumPic": "https://p2.music.126.net/mAV2OH6nPJd4XLwn80kwpA==/109951164054054313.jpg",
-      "duration": 403968,
-      "url": null,
-      "source": "netease",
-      "br": null,
-      "addedAt": "2026-11-01T22:00:31.917Z"
-    },
-    {
-      "id": "3404238777",
-      "name": "周旋",
-      "artists": [
-        "王以太",
-        "艾热 AIR"
-      ],
-      "album": "太热爱",
-      "albumPic": "https://p2.music.126.net/rDv1qod6MDsYcEHKtxCdAA==/109951173532089932.jpg",
-      "duration": 290731,
-      "url": null,
-      "source": "netease",
-      "br": null,
-      "addedAt": "2026-11-01T22:00:31.917Z"
-    },
-    {
-      "id": "3330620554",
-      "name": "琵琶曲",
-      "artists": [
-        "郑浩Z-Hao",
-        "冰洁"
-      ],
-      "album": "琵琶曲",
-      "albumPic": "https://p2.music.126.net/VvGYXvFGD4LQs5WUdbe6dA==/109951173179274574.jpg",
-      "duration": 235975,
-      "url": null,
-      "source": "netease",
-      "br": null,
-      "addedAt": "2026-11-01T22:00:31.917Z"
-    },
-    {
-      "id": "233888",
-      "name": "爱情讯息",
-      "artists": [
-        "郭静"
-      ],
-      "album": "下一个天亮",
-      "albumPic": "https://p2.music.126.net/-ccXZvLLbvLQc99YEbylUA==/109951171316025348.jpg",
-      "duration": 280680,
-      "url": null,
-      "source": "netease",
-      "br": null,
-      "addedAt": "2026-11-01T22:00:31.917Z"
-    },
-    {
-      "id": "30612793",
-      "name": "多远都要在一起",
-      "artists": [
-        "G.E.M.邓紫棋"
-      ],
-      "album": "新的心跳",
-      "albumPic": "https://p2.music.126.net/kVwk6b8Qdya8oDyGDcyAVA==/1364493930777368.jpg",
-      "duration": 216880,
-      "url": null,
-      "source": "netease",
-      "br": null,
-      "addedAt": "2026-11-01T22:00:31.917Z"
-    },
-    {
-      "id": "2040015902",
-      "name": "熄灭",
-      "artists": [
-        "TC"
-      ],
-      "album": "熄灭",
-      "albumPic": "https://p2.music.126.net/sNOy5UAdfk_OYumV4qF-0g==/109951168551205771.jpg",
-      "duration": 148611,
-      "url": null,
-      "source": "netease",
-      "br": null,
-      "addedAt": "2026-11-01T22:00:31.917Z"
+      "addedAt": "2026-11-02T22:00:47.445Z"
     },
     {
       "id": "3448738711",
@@ -1092,262 +524,432 @@
       "url": null,
       "source": "netease",
       "br": null,
-      "addedAt": "2026-11-01T22:00:31.917Z"
+      "addedAt": "2026-11-02T22:00:47.445Z"
     },
     {
-      "id": "65800",
-      "name": "最佳损友",
+      "id": "1359356908",
+      "name": "晚安",
       "artists": [
-        "陈奕迅"
+        "颜人中"
       ],
-      "album": "Life Continues…",
-      "albumPic": "https://p2.music.126.net/3mi073axgjg-g-79ObwwEQ==/109951171836582062.jpg",
-      "duration": 233560,
+      "album": "晚安",
+      "albumPic": "https://p2.music.126.net/-rC55JsnmEWvafJQsAZaWw==/109951170473693123.jpg",
+      "duration": 289184,
       "url": null,
       "source": "netease",
       "br": null,
-      "addedAt": "2026-11-01T22:00:31.917Z"
+      "addedAt": "2026-11-02T22:00:47.445Z"
     },
     {
-      "id": "25648006",
-      "name": "麦恩莉",
-      "artists": [
-        "方大同"
-      ],
-      "album": "回到未来",
-      "albumPic": "https://p2.music.126.net/8I4zvpNSsj--wGNg-mE2kw==/109951168870428045.jpg",
-      "duration": 288360,
-      "url": null,
-      "source": "netease",
-      "br": null,
-      "addedAt": "2026-11-01T22:00:31.917Z"
-    },
-    {
-      "id": "27955654",
-      "name": "其实",
+      "id": "417859631",
+      "name": "我好像在哪见过你",
       "artists": [
         "薛之谦"
       ],
-      "album": "意外",
-      "albumPic": "https://p2.music.126.net/ywVjRpbu9KpcBQh9KJz2HA==/109951164499974026.jpg",
-      "duration": 242146,
+      "album": "初学者",
+      "albumPic": "https://p2.music.126.net/hti_a0LADoFMBHvOBwAtRA==/1369991500930171.jpg",
+      "duration": 279145,
       "url": null,
       "source": "netease",
       "br": null,
-      "addedAt": "2026-11-01T22:00:31.917Z"
+      "addedAt": "2026-11-02T22:00:47.445Z"
     },
     {
-      "id": "3391179506",
-      "name": "我听见了，你的痛苦成立",
+      "id": "3404238777",
+      "name": "周旋",
       "artists": [
-        "供销社乐队"
+        "王以太",
+        "艾热 AIR"
       ],
-      "album": "我听见了，你的痛苦成立",
-      "albumPic": "https://p2.music.126.net/djCHbIWOv0FCYiumpNEBZQ==/109951173349720959.jpg",
-      "duration": 211114,
+      "album": "太热爱",
+      "albumPic": "https://p2.music.126.net/rDv1qod6MDsYcEHKtxCdAA==/109951173532089932.jpg",
+      "duration": 290731,
       "url": null,
       "source": "netease",
       "br": null,
-      "addedAt": "2026-11-01T22:00:31.917Z"
+      "addedAt": "2026-11-02T22:00:47.445Z"
     },
     {
-      "id": "65766",
-      "name": "富士山下",
+      "id": "191316",
+      "name": "我爱你",
       "artists": [
-        "陈奕迅"
+        "王菲"
       ],
-      "album": "What's Going On…?",
-      "albumPic": "https://p2.music.126.net/oSMs7RzJFx0TgWCqRC8XjA==/109951171844247587.jpg",
-      "duration": 258902,
+      "album": "潜流",
+      "albumPic": "https://p2.music.126.net/kQgYR6s-lDEUFPC09Nux3A==/109951166118021561.jpg",
+      "duration": 310160,
       "url": null,
       "source": "netease",
       "br": null,
-      "addedAt": "2026-11-01T22:00:31.917Z"
+      "addedAt": "2026-11-02T22:00:47.445Z"
     },
     {
-      "id": "1890530891",
-      "name": "如果可以",
+      "id": "2041026502",
+      "name": "愿与愁",
       "artists": [
-        "韦礼安"
+        "林俊杰"
       ],
-      "album": "如果可以",
-      "albumPic": "https://p2.music.126.net/znTzn19zZvZ4IdlKEOhWRg==/109951166564931690.jpg",
-      "duration": 274599,
+      "album": "愿与愁",
+      "albumPic": "https://p2.music.126.net/vtnI8JpimWnZSzkXdmIB3w==/109951168558210782.jpg",
+      "duration": 231586,
       "url": null,
       "source": "netease",
       "br": null,
-      "addedAt": "2026-11-01T22:00:31.917Z"
+      "addedAt": "2026-11-02T22:00:47.445Z"
     },
     {
-      "id": "3451951517",
-      "name": "Undefined",
-      "artists": [
-        "PerVade",
-        "第五人格"
-      ],
-      "album": "Undefined",
-      "albumPic": "https://p2.music.126.net/ccu6U_1qtxIIz5ReqhhQ0w==/109951174144800369.jpg",
-      "duration": 175915,
-      "url": null,
-      "source": "netease",
-      "br": null,
-      "addedAt": "2026-11-01T22:00:31.917Z"
-    },
-    {
-      "id": "3451003254",
-      "name": "宝船",
-      "artists": [
-        "DOUDOU",
-        "燕云十六声"
-      ],
-      "album": "宝船",
-      "albumPic": "https://p2.music.126.net/pdpmj0csBR_nUM7c2xr6pA==/109951174135616642.jpg",
-      "duration": 232500,
-      "url": null,
-      "source": "netease",
-      "br": null,
-      "addedAt": "2026-11-01T22:00:31.917Z"
-    },
-    {
-      "id": "2071935674",
-      "name": "我想念",
-      "artists": [
-        "汪苏泷"
-      ],
-      "album": "我想念",
-      "albumPic": "https://p2.music.126.net/MIWMnBEedpJ8IpOau5D7PA==/109951168829804653.jpg",
-      "duration": 224516,
-      "url": null,
-      "source": "netease",
-      "br": null,
-      "addedAt": "2026-11-01T22:00:31.917Z"
-    },
-    {
-      "id": "1463165983",
-      "name": "天外来物",
-      "artists": [
-        "薛之谦"
-      ],
-      "album": "天外来物",
-      "albumPic": "https://p2.music.126.net/MgH6SepYHboKPr6FR8yg-w==/109951167040040692.jpg",
-      "duration": 257212,
-      "url": null,
-      "source": "netease",
-      "br": null,
-      "addedAt": "2026-11-01T22:00:31.917Z"
-    },
-    {
-      "id": "2601622789",
-      "name": "去北极忘记你",
-      "artists": [
-        "Gareth.T"
-      ],
-      "album": "去北极忘记你",
-      "albumPic": "https://p2.music.126.net/5bZYAmUKMqiUK9K7kDi5Jg==/109951169718000739.jpg",
-      "duration": 251175,
-      "url": null,
-      "source": "netease",
-      "br": null,
-      "addedAt": "2026-11-01T22:00:31.917Z"
-    },
-    {
-      "id": "1399112638",
-      "name": "心似烟火",
-      "artists": [
-        "陈壹千"
-      ],
-      "album": "心似烟火",
-      "albumPic": "https://p2.music.126.net/pE_xbRjFKTza8i7CKfmDuQ==/109951164447654929.jpg",
-      "duration": 271632,
-      "url": null,
-      "source": "netease",
-      "br": null,
-      "addedAt": "2026-11-01T22:00:31.917Z"
-    },
-    {
-      "id": "306665",
-      "name": "一样的月光",
-      "artists": [
-        "徐佳莹"
-      ],
-      "album": "LaLa首张创作专辑",
-      "albumPic": "https://p2.music.126.net/b1hZLgWA9ihXkivZeqo81g==/109951168296446353.jpg",
-      "duration": 240386,
-      "url": null,
-      "source": "netease",
-      "br": null,
-      "addedAt": "2026-11-01T22:00:31.917Z"
-    },
-    {
-      "id": "421423808",
-      "name": "虚拟",
+      "id": "421423806",
+      "name": "小半",
       "artists": [
         "陈粒"
       ],
       "album": "小梦大半",
       "albumPic": "https://p2.music.126.net/HQxTggMCB7AHUXN-ZFEtmA==/1371091013186741.jpg",
-      "duration": 240626,
+      "duration": 297240,
       "url": null,
       "source": "netease",
       "br": null,
-      "addedAt": "2026-11-01T22:00:31.917Z"
+      "addedAt": "2026-11-02T22:00:47.445Z"
     },
     {
-      "id": "2124385868",
-      "name": "如果爱忘了 (live)",
+      "id": "3387477661",
+      "name": "梦哑",
       "artists": [
-        "汪苏泷",
-        "单依纯"
+        "任然"
       ],
-      "album": "声生不息·家年华 第12期",
-      "albumPic": "https://p2.music.126.net/3nL__2mV7k65XMoUw6Gu-g==/109951169721390560.jpg",
-      "duration": 245394,
+      "album": "梦哑",
+      "albumPic": "https://p2.music.126.net/7tJ8BtV2GSKTyWXyCvdEUg==/109951173646389004.jpg",
+      "duration": 234543,
       "url": null,
       "source": "netease",
       "br": null,
-      "addedAt": "2026-11-01T22:00:31.917Z"
+      "addedAt": "2026-11-02T22:00:47.445Z"
     },
     {
-      "id": "2025186889",
-      "name": "绽放",
+      "id": "1400259397",
+      "name": "有我呢",
+      "artists": [
+        "郭一凡"
+      ],
+      "album": "重返地球",
+      "albumPic": "https://p2.music.126.net/v_Xh_oLlkrW8Ptp1f6EAmQ==/109951173774936819.jpg",
+      "duration": 274568,
+      "url": null,
+      "source": "netease",
+      "br": null,
+      "addedAt": "2026-11-02T22:00:47.445Z"
+    },
+    {
+      "id": "208902",
+      "name": "红色高跟鞋",
+      "artists": [
+        "蔡健雅"
+      ],
+      "album": "若你碰到他",
+      "albumPic": "https://p2.music.126.net/jJOaqlez9x5VofjgB7B_Bw==/109951166195459631.jpg",
+      "duration": 206586,
+      "url": null,
+      "source": "netease",
+      "br": null,
+      "addedAt": "2026-11-02T22:00:47.445Z"
+    },
+    {
+      "id": "1895330088",
+      "name": "予你",
+      "artists": [
+        "队长"
+      ],
+      "album": "予你",
+      "albumPic": "https://p2.music.126.net/yxVm_vRFOode6yP67NmMcA==/109951166625738075.jpg",
+      "duration": 231349,
+      "url": null,
+      "source": "netease",
+      "br": null,
+      "addedAt": "2026-11-02T22:00:47.445Z"
+    },
+    {
+      "id": "1927693793",
+      "name": "再等冬天(Memories)",
+      "artists": [
+        "h3R3"
+      ],
+      "album": "故事商铺·上",
+      "albumPic": "https://p2.music.126.net/JBe7AwcGkYHhleOfQvY2hg==/109951169798343077.jpg",
+      "duration": 168000,
+      "url": null,
+      "source": "netease",
+      "br": null,
+      "addedAt": "2026-11-02T22:00:47.445Z"
+    },
+    {
+      "id": "1482867143",
+      "name": "夏夜最后的烟火",
+      "artists": [
+        "颜人中"
+      ],
+      "album": "夏夜最后的烟火",
+      "albumPic": "https://p2.music.126.net/i1p1CCz6PaDF2Gs0RqKJBQ==/109951165349625690.jpg",
+      "duration": 279587,
+      "url": null,
+      "source": "netease",
+      "br": null,
+      "addedAt": "2026-11-02T22:00:47.445Z"
+    },
+    {
+      "id": "1398283847",
+      "name": "我只能离开",
+      "artists": [
+        "颜人中"
+      ],
+      "album": "初恋那件小事 电视剧原声带",
+      "albumPic": "https://p2.music.126.net/5GPFbTQU-kW57PGv_7LeBw==/109951164440649436.jpg",
+      "duration": 230000,
+      "url": null,
+      "source": "netease",
+      "br": null,
+      "addedAt": "2026-11-02T22:00:47.445Z"
+    },
+    {
+      "id": "3397415408",
+      "name": "回到你身边",
+      "artists": [
+        "h3R3"
+      ],
+      "album": "回响",
+      "albumPic": "https://p2.music.126.net/yed2hVZZwFNeSkTynWPaJQ==/109951173491736376.jpg",
+      "duration": 231119,
+      "url": null,
+      "source": "netease",
+      "br": null,
+      "addedAt": "2026-11-02T22:00:47.445Z"
+    },
+    {
+      "id": "2083785152",
+      "name": "唯一",
+      "artists": [
+        "G.E.M.邓紫棋"
+      ],
+      "album": "T.I.M.E.",
+      "albumPic": "https://p2.music.126.net/aJWtwvdYRXvKUpAE2C6NoA==/109951168919708423.jpg",
+      "duration": 253735,
+      "url": null,
+      "source": "netease",
+      "br": null,
+      "addedAt": "2026-11-02T22:00:47.445Z"
+    },
+    {
+      "id": "2154520553",
+      "name": "Marry",
+      "artists": [
+        "Top Barry",
+        "INDEcompany"
+      ],
+      "album": "How I Shine",
+      "albumPic": "https://p2.music.126.net/XQgLpatV-LFMdx55WuV8bA==/109951169706853419.jpg",
+      "duration": 183858,
+      "url": null,
+      "source": "netease",
+      "br": null,
+      "addedAt": "2026-11-02T22:00:47.445Z"
+    },
+    {
+      "id": "2740858325",
+      "name": "Star Crossing Night (feat. GALI)",
+      "artists": [
+        "徐明浩",
+        "GALI"
+      ],
+      "album": "Star Crossing Night (feat. GALI)",
+      "albumPic": "https://p2.music.126.net/fsz6GAKO1-khteFArDidjA==/109951171942679749.jpg",
+      "duration": 205000,
+      "url": null,
+      "source": "netease",
+      "br": null,
+      "addedAt": "2026-11-02T22:00:47.445Z"
+    },
+    {
+      "id": "287719",
+      "name": "开始懂了",
+      "artists": [
+        "孙燕姿"
+      ],
+      "album": "我要的幸福",
+      "albumPic": "https://p2.music.126.net/1HJILQwc62AfvcXkGgVJHQ==/109951165549820772.jpg",
+      "duration": 271493,
+      "url": null,
+      "source": "netease",
+      "br": null,
+      "addedAt": "2026-11-02T22:00:47.445Z"
+    },
+    {
+      "id": "316157",
+      "name": "茶汤",
+      "artists": [
+        "郁可唯"
+      ],
+      "album": "微加幸福",
+      "albumPic": "https://p2.music.126.net/ugJH-gpHKX6y6p-6MkIIsQ==/109951163187409545.jpg",
+      "duration": 308773,
+      "url": null,
+      "source": "netease",
+      "br": null,
+      "addedAt": "2026-11-02T22:00:47.445Z"
+    },
+    {
+      "id": "2648204040",
+      "name": "锈 (我们两个都拉过勾)",
+      "artists": [
+        "江辰"
+      ],
+      "album": "瘾",
+      "albumPic": "https://p2.music.126.net/Kc9SWUoUlrcf7tPihgap-A==/109951170169444876.jpg",
+      "duration": 221544,
+      "url": null,
+      "source": "netease",
+      "br": null,
+      "addedAt": "2026-11-02T22:00:47.445Z"
+    },
+    {
+      "id": "1926623288",
+      "name": "小胡同",
       "artists": [
         "郑润泽"
       ],
-      "album": "梦游",
-      "albumPic": "https://p2.music.126.net/Ws93IUrJGR_lK-QEsdKTWw==/109951168408373477.jpg",
-      "duration": 240116,
+      "album": "小胡同",
+      "albumPic": "https://p2.music.126.net/QsebYbDgQtKelH6r1iE2Fg==/109951167129280730.jpg",
+      "duration": 276588,
       "url": null,
       "source": "netease",
       "br": null,
-      "addedAt": "2026-11-01T22:00:31.917Z"
+      "addedAt": "2026-11-02T22:00:47.445Z"
     },
     {
-      "id": "209397",
-      "name": "太聪明",
+      "id": "3440961675",
+      "name": "睡前别想太多",
       "artists": [
-        "陈绮贞"
+        "李雨霏_晚饭"
       ],
-      "album": "Groupies吉他手",
-      "albumPic": "https://p2.music.126.net/Mvv6oyi8XjVfAIk0Lg76aA==/109951165876268707.jpg",
-      "duration": 263173,
+      "album": "睡前别想太多",
+      "albumPic": "https://p2.music.126.net/CdAZ76__lHkE_HcjXgR_4w==/109951173999807018.jpg",
+      "duration": 210079,
       "url": null,
       "source": "netease",
       "br": null,
-      "addedAt": "2026-11-01T22:00:31.917Z"
+      "addedAt": "2026-11-02T22:00:47.445Z"
     },
     {
-      "id": "2166584564",
-      "name": "小孩",
+      "id": "2015896805",
+      "name": "浆果",
       "artists": [
-        "罗森涛"
+        "TINY7"
       ],
-      "album": "为何离开",
-      "albumPic": "https://p2.music.126.net/5zAv9nKlwj80OearK5Vrjw==/109951169686963932.jpg",
-      "duration": 219865,
+      "album": "浆果",
+      "albumPic": "https://p2.music.126.net/BQAY8w9XzOj_j1wZgIsczQ==/109951168247366566.jpg",
+      "duration": 267999,
       "url": null,
       "source": "netease",
       "br": null,
-      "addedAt": "2026-11-01T22:00:31.917Z"
+      "addedAt": "2026-11-02T22:00:47.445Z"
+    },
+    {
+      "id": "108485",
+      "name": "Always Online",
+      "artists": [
+        "林俊杰"
+      ],
+      "album": "JJ陆",
+      "albumPic": "https://p2.music.126.net/zjSzQ70gDJrneldAwvLBOg==/109951173971284858.jpg",
+      "duration": 225013,
+      "url": null,
+      "source": "netease",
+      "br": null,
+      "addedAt": "2026-11-02T22:00:47.445Z"
+    },
+    {
+      "id": "2146702461",
+      "name": "暗恋过 结局呢",
+      "artists": [
+        "新街口组合",
+        "Mona Lavi"
+      ],
+      "album": "国王",
+      "albumPic": "https://p2.music.126.net/BJwaaOn06N_1atbW0ncBDg==/109951169504605901.jpg",
+      "duration": 231157,
+      "url": null,
+      "source": "netease",
+      "br": null,
+      "addedAt": "2026-11-02T22:00:47.445Z"
+    },
+    {
+      "id": "254059",
+      "name": "情歌",
+      "artists": [
+        "梁静茹"
+      ],
+      "album": "现在开始我爱你",
+      "albumPic": "https://p2.music.126.net/QKCkMMW_fPDcczRNb0qZyg==/109951168163257789.jpg",
+      "duration": 263293,
+      "url": null,
+      "source": "netease",
+      "br": null,
+      "addedAt": "2026-11-02T22:00:47.445Z"
+    },
+    {
+      "id": "1406649619",
+      "name": "有些",
+      "artists": [
+        "颜人中"
+      ],
+      "album": "失眠症候群",
+      "albumPic": "https://p2.music.126.net/8DkTnzi7jdjWGYl4qbwLCg==/109951164517295956.jpg",
+      "duration": 229523,
+      "url": null,
+      "source": "netease",
+      "br": null,
+      "addedAt": "2026-11-02T22:00:47.445Z"
+    },
+    {
+      "id": "21178386",
+      "name": "Whatever Happens",
+      "artists": [
+        "Michael Jackson"
+      ],
+      "album": "Invincible",
+      "albumPic": "https://p2.music.126.net/Iik8WEA3vOyPWMHniVR47A==/109951165992940172.jpg",
+      "duration": 296733,
+      "url": null,
+      "source": "netease",
+      "br": null,
+      "addedAt": "2026-11-02T22:00:47.445Z"
+    },
+    {
+      "id": "167827",
+      "name": "素颜",
+      "artists": [
+        "许嵩",
+        "何曼婷"
+      ],
+      "album": "素颜",
+      "albumPic": "https://p2.music.126.net/t3ogpTd1bIJpwokhkpBtwQ==/109951169829246225.jpg",
+      "duration": 238608,
+      "url": null,
+      "source": "netease",
+      "br": null,
+      "addedAt": "2026-11-02T22:00:47.445Z"
+    },
+    {
+      "id": "1363553440",
+      "name": "出现又离开 (Live)",
+      "artists": [
+        "梁博"
+      ],
+      "album": "我是唱作人 第2期",
+      "albumPic": "https://p2.music.126.net/mAV2OH6nPJd4XLwn80kwpA==/109951164054054313.jpg",
+      "duration": 403968,
+      "url": null,
+      "source": "netease",
+      "br": null,
+      "addedAt": "2026-11-02T22:00:47.445Z"
     },
     {
       "id": "1379918404",
@@ -1362,21 +964,404 @@
       "url": null,
       "source": "netease",
       "br": null,
-      "addedAt": "2026-11-01T22:00:31.917Z"
+      "addedAt": "2026-11-02T22:00:47.445Z"
     },
     {
-      "id": "1410633323",
-      "name": "到时说爱我",
+      "id": "479979029",
+      "name": "Lost ",
       "artists": [
-        "茜拉"
+        "满舒克",
+        "Jony J"
       ],
-      "album": "心旅",
-      "albumPic": "https://p2.music.126.net/z3O2gmFh11wh9N6SxCBopQ==/109951172233412510.jpg",
-      "duration": 201564,
+      "album": "Almost Perfect",
+      "albumPic": "https://p2.music.126.net/5qz5CVIGDWLx7OXyp3rlwg==/109951173203263481.jpg",
+      "duration": 250666,
       "url": null,
       "source": "netease",
       "br": null,
-      "addedAt": "2026-11-01T22:00:31.917Z"
+      "addedAt": "2026-11-02T22:00:47.445Z"
+    },
+    {
+      "id": "3416333610",
+      "name": "再见太难",
+      "artists": [
+        "利得汇"
+      ],
+      "album": "再见太难",
+      "albumPic": "https://p2.music.126.net/W3AQnp6rLFxYIHdHBaYA7g==/109951174180839929.jpg",
+      "duration": 288417,
+      "url": null,
+      "source": "netease",
+      "br": null,
+      "addedAt": "2026-11-02T22:00:47.445Z"
+    },
+    {
+      "id": "2161222939",
+      "name": "沦陷",
+      "artists": [
+        "贾格JuggShots"
+      ],
+      "album": "沦陷",
+      "albumPic": "https://p2.music.126.net/ctib5R--oR68W2IrOk765w==/109951169635716223.jpg",
+      "duration": 183770,
+      "url": null,
+      "source": "netease",
+      "br": null,
+      "addedAt": "2026-11-02T22:00:47.445Z"
+    },
+    {
+      "id": "1406083061",
+      "name": "你",
+      "artists": [
+        "郑润泽"
+      ],
+      "album": "你",
+      "albumPic": "https://p2.music.126.net/OvnvQlFc8QSD7UnqtM9YYw==/109951164512103081.jpg",
+      "duration": 254781,
+      "url": null,
+      "source": "netease",
+      "br": null,
+      "addedAt": "2026-11-02T22:00:47.445Z"
+    },
+    {
+      "id": "32507038",
+      "name": "演员",
+      "artists": [
+        "薛之谦"
+      ],
+      "album": "绅士",
+      "albumPic": "https://p2.music.126.net/vu7SHbVlMuszmSuKR2SKAQ==/109951168707343730.jpg",
+      "duration": 261249,
+      "url": "/data/music/32507038.mp3",
+      "source": "netease",
+      "br": 128000,
+      "addedAt": "2026-11-02T22:00:47.445Z",
+      "local": true
+    },
+    {
+      "id": "3445520471",
+      "name": "隔岸(女版)",
+      "artists": [
+        "可楼"
+      ],
+      "album": "隔岸（女版）",
+      "albumPic": "https://p2.music.126.net/M1zvPh7xCdHqSUWer_yNvQ==/109951174076384529.jpg",
+      "duration": 231261,
+      "url": null,
+      "source": "netease",
+      "br": null,
+      "addedAt": "2026-11-02T22:00:47.445Z"
+    },
+    {
+      "id": "30612793",
+      "name": "多远都要在一起",
+      "artists": [
+        "G.E.M.邓紫棋"
+      ],
+      "album": "新的心跳",
+      "albumPic": "https://p2.music.126.net/kVwk6b8Qdya8oDyGDcyAVA==/1364493930777368.jpg",
+      "duration": 216880,
+      "url": null,
+      "source": "netease",
+      "br": null,
+      "addedAt": "2026-11-02T22:00:47.445Z"
+    },
+    {
+      "id": "65766",
+      "name": "富士山下",
+      "artists": [
+        "陈奕迅"
+      ],
+      "album": "What's Going On…?",
+      "albumPic": "https://p2.music.126.net/oSMs7RzJFx0TgWCqRC8XjA==/109951171844247587.jpg",
+      "duration": 258902,
+      "url": null,
+      "source": "netease",
+      "br": null,
+      "addedAt": "2026-11-02T22:00:47.446Z"
+    },
+    {
+      "id": "233888",
+      "name": "爱情讯息",
+      "artists": [
+        "郭静"
+      ],
+      "album": "下一个天亮",
+      "albumPic": "https://p2.music.126.net/-ccXZvLLbvLQc99YEbylUA==/109951171316025348.jpg",
+      "duration": 280680,
+      "url": null,
+      "source": "netease",
+      "br": null,
+      "addedAt": "2026-11-02T22:00:47.446Z"
+    },
+    {
+      "id": "2124385868",
+      "name": "如果爱忘了 (live)",
+      "artists": [
+        "汪苏泷",
+        "单依纯"
+      ],
+      "album": "声生不息·家年华 第12期",
+      "albumPic": "https://p2.music.126.net/3nL__2mV7k65XMoUw6Gu-g==/109951169721390560.jpg",
+      "duration": 245394,
+      "url": null,
+      "source": "netease",
+      "br": null,
+      "addedAt": "2026-11-02T22:00:47.446Z"
+    },
+    {
+      "id": "65800",
+      "name": "最佳损友",
+      "artists": [
+        "陈奕迅"
+      ],
+      "album": "Life Continues…",
+      "albumPic": "https://p2.music.126.net/3mi073axgjg-g-79ObwwEQ==/109951171836582062.jpg",
+      "duration": 233560,
+      "url": null,
+      "source": "netease",
+      "br": null,
+      "addedAt": "2026-11-02T22:00:47.446Z"
+    },
+    {
+      "id": "27955654",
+      "name": "其实",
+      "artists": [
+        "薛之谦"
+      ],
+      "album": "意外",
+      "albumPic": "https://p2.music.126.net/ywVjRpbu9KpcBQh9KJz2HA==/109951164499974026.jpg",
+      "duration": 242146,
+      "url": null,
+      "source": "netease",
+      "br": null,
+      "addedAt": "2026-11-02T22:00:47.446Z"
+    },
+    {
+      "id": "25648006",
+      "name": "麦恩莉",
+      "artists": [
+        "方大同"
+      ],
+      "album": "回到未来",
+      "albumPic": "https://p2.music.126.net/8I4zvpNSsj--wGNg-mE2kw==/109951168870428045.jpg",
+      "duration": 288360,
+      "url": null,
+      "source": "netease",
+      "br": null,
+      "addedAt": "2026-11-02T22:00:47.446Z"
+    },
+    {
+      "id": "3391179506",
+      "name": "我听见了，你的痛苦成立",
+      "artists": [
+        "供销社乐队"
+      ],
+      "album": "我听见了，你的痛苦成立",
+      "albumPic": "https://p2.music.126.net/djCHbIWOv0FCYiumpNEBZQ==/109951173349720959.jpg",
+      "duration": 211114,
+      "url": null,
+      "source": "netease",
+      "br": null,
+      "addedAt": "2026-11-02T22:00:47.446Z"
+    },
+    {
+      "id": "2040015902",
+      "name": "熄灭",
+      "artists": [
+        "TC"
+      ],
+      "album": "熄灭",
+      "albumPic": "https://p2.music.126.net/sNOy5UAdfk_OYumV4qF-0g==/109951168551205771.jpg",
+      "duration": 148611,
+      "url": null,
+      "source": "netease",
+      "br": null,
+      "addedAt": "2026-11-02T22:00:47.446Z"
+    },
+    {
+      "id": "1936095074",
+      "name": "再次爱上你",
+      "artists": [
+        "金润吉"
+      ],
+      "album": "再次爱上你",
+      "albumPic": "https://p2.music.126.net/CpFGqvJQILqbN44t6cfF3g==/109951167287280308.jpg",
+      "duration": 213513,
+      "url": null,
+      "source": "netease",
+      "br": null,
+      "addedAt": "2026-11-02T22:00:47.446Z"
+    },
+    {
+      "id": "1890530891",
+      "name": "如果可以",
+      "artists": [
+        "韦礼安"
+      ],
+      "album": "如果可以",
+      "albumPic": "https://p2.music.126.net/znTzn19zZvZ4IdlKEOhWRg==/109951166564931690.jpg",
+      "duration": 274599,
+      "url": null,
+      "source": "netease",
+      "br": null,
+      "addedAt": "2026-11-02T22:00:47.446Z"
+    },
+    {
+      "id": "2071935674",
+      "name": "我想念",
+      "artists": [
+        "汪苏泷"
+      ],
+      "album": "我想念",
+      "albumPic": "https://p2.music.126.net/MIWMnBEedpJ8IpOau5D7PA==/109951168829804653.jpg",
+      "duration": 224516,
+      "url": null,
+      "source": "netease",
+      "br": null,
+      "addedAt": "2026-11-02T22:00:47.446Z"
+    },
+    {
+      "id": "2601622789",
+      "name": "去北极忘记你",
+      "artists": [
+        "Gareth.T"
+      ],
+      "album": "去北极忘记你",
+      "albumPic": "https://p2.music.126.net/5bZYAmUKMqiUK9K7kDi5Jg==/109951169718000739.jpg",
+      "duration": 251175,
+      "url": null,
+      "source": "netease",
+      "br": null,
+      "addedAt": "2026-11-02T22:00:47.446Z"
+    },
+    {
+      "id": "1463165983",
+      "name": "天外来物",
+      "artists": [
+        "薛之谦"
+      ],
+      "album": "天外来物",
+      "albumPic": "https://p2.music.126.net/MgH6SepYHboKPr6FR8yg-w==/109951167040040692.jpg",
+      "duration": 257212,
+      "url": null,
+      "source": "netease",
+      "br": null,
+      "addedAt": "2026-11-02T22:00:47.446Z"
+    },
+    {
+      "id": "306665",
+      "name": "一样的月光",
+      "artists": [
+        "徐佳莹"
+      ],
+      "album": "LaLa首张创作专辑",
+      "albumPic": "https://p2.music.126.net/b1hZLgWA9ihXkivZeqo81g==/109951168296446353.jpg",
+      "duration": 240386,
+      "url": null,
+      "source": "netease",
+      "br": null,
+      "addedAt": "2026-11-02T22:00:47.446Z"
+    },
+    {
+      "id": "3330620554",
+      "name": "琵琶曲",
+      "artists": [
+        "郑浩Z-Hao",
+        "冰洁"
+      ],
+      "album": "琵琶曲",
+      "albumPic": "https://p2.music.126.net/VvGYXvFGD4LQs5WUdbe6dA==/109951173179274574.jpg",
+      "duration": 235975,
+      "url": null,
+      "source": "netease",
+      "br": null,
+      "addedAt": "2026-11-02T22:00:47.446Z"
+    },
+    {
+      "id": "300591",
+      "name": "季候风",
+      "artists": [
+        "王菲"
+      ],
+      "album": "执迷不悔 (Remastered 2019)",
+      "albumPic": "https://p2.music.126.net/iEMrtjnaZd3tNtpEbx6NgQ==/109951172414870988.jpg",
+      "duration": 277640,
+      "url": null,
+      "source": "netease",
+      "br": null,
+      "addedAt": "2026-11-02T22:00:47.446Z"
+    },
+    {
+      "id": "421423808",
+      "name": "虚拟",
+      "artists": [
+        "陈粒"
+      ],
+      "album": "小梦大半",
+      "albumPic": "https://p2.music.126.net/HQxTggMCB7AHUXN-ZFEtmA==/1371091013186741.jpg",
+      "duration": 240626,
+      "url": null,
+      "source": "netease",
+      "br": null,
+      "addedAt": "2026-11-02T22:00:47.446Z"
+    },
+    {
+      "id": "3432893870",
+      "name": "全息恋人",
+      "artists": [
+        "栾一鸣Floscar"
+      ],
+      "album": "全息恋人",
+      "albumPic": "https://p2.music.126.net/oxXWRp9IKoKStlYHdx4YkA==/109951173900088235.jpg",
+      "duration": 147200,
+      "url": null,
+      "source": "netease",
+      "br": null,
+      "addedAt": "2026-11-02T22:00:47.446Z"
+    },
+    {
+      "id": "3451003254",
+      "name": "宝船",
+      "artists": [
+        "DOUDOU",
+        "燕云十六声"
+      ],
+      "album": "宝船",
+      "albumPic": "https://p2.music.126.net/pdpmj0csBR_nUM7c2xr6pA==/109951174135616642.jpg",
+      "duration": 232500,
+      "url": null,
+      "source": "netease",
+      "br": null,
+      "addedAt": "2026-11-02T22:00:47.446Z"
+    },
+    {
+      "id": "209397",
+      "name": "太聪明",
+      "artists": [
+        "陈绮贞"
+      ],
+      "album": "Groupies吉他手",
+      "albumPic": "https://p2.music.126.net/Mvv6oyi8XjVfAIk0Lg76aA==/109951165876268707.jpg",
+      "duration": 263173,
+      "url": null,
+      "source": "netease",
+      "br": null,
+      "addedAt": "2026-11-02T22:00:47.446Z"
+    },
+    {
+      "id": "4872687",
+      "name": "同花顺",
+      "artists": [
+        "林倛玉"
+      ],
+      "album": "12蓮花 原著電影原聲帶 (Original Motion Picture Soundtrack)",
+      "albumPic": "https://p2.music.126.net/qiHFF-c4a4ULDyUjWjo4MQ==/109951164606137385.jpg",
+      "duration": 237960,
+      "url": null,
+      "source": "netease",
+      "br": null,
+      "addedAt": "2026-11-02T22:00:47.446Z"
     },
     {
       "id": "64093",
@@ -1390,36 +1375,49 @@
       "url": null,
       "source": "netease",
       "br": null,
-      "addedAt": "2026-11-01T22:00:31.917Z"
+      "addedAt": "2026-11-02T22:00:47.446Z"
     },
     {
-      "id": "1443838552",
-      "name": "他只是经过",
+      "id": "1399112638",
+      "name": "心似烟火",
       "artists": [
-        "h3R3",
-        "高旭"
+        "陈壹千"
       ],
-      "album": "他只是经过",
-      "albumPic": "https://p2.music.126.net/wUog39IHoJb76pL0AVCFNQ==/109951165348116023.jpg",
-      "duration": 215381,
+      "album": "心似烟火",
+      "albumPic": "https://p2.music.126.net/pE_xbRjFKTza8i7CKfmDuQ==/109951164447654929.jpg",
+      "duration": 271632,
       "url": null,
       "source": "netease",
       "br": null,
-      "addedAt": "2026-11-01T22:00:31.917Z"
+      "addedAt": "2026-11-02T22:00:47.446Z"
     },
     {
-      "id": "3436855494",
-      "name": "自由的你",
+      "id": "1420706073",
+      "name": "离开我的依赖",
       "artists": [
-        "G.E.M.邓紫棋"
+        "王艳薇"
       ],
-      "album": "自由的你",
-      "albumPic": "https://p1.music.126.net/qu42OhTbF0WNUU0vokhHhA==/109951174189215515.jpg",
-      "duration": 296900,
+      "album": "离开我的依赖",
+      "albumPic": "https://p2.music.126.net/btYBbFLd5mf9w0lDpfNs6w==/109951171506809884.jpg",
+      "duration": 233882,
       "url": null,
       "source": "netease",
       "br": null,
-      "addedAt": "2026-11-01T22:00:34.680Z"
+      "addedAt": "2026-11-02T22:00:47.446Z"
+    },
+    {
+      "id": "1410633323",
+      "name": "到时说爱我",
+      "artists": [
+        "茜拉"
+      ],
+      "album": "心旅",
+      "albumPic": "https://p2.music.126.net/z3O2gmFh11wh9N6SxCBopQ==/109951172233412510.jpg",
+      "duration": 201564,
+      "url": null,
+      "source": "netease",
+      "br": null,
+      "addedAt": "2026-11-02T22:00:47.446Z"
     },
     {
       "id": "3451531277",
@@ -1428,68 +1426,26 @@
         "连麻Swimming"
       ],
       "album": "斩鸭线",
-      "albumPic": "https://p1.music.126.net/Eafh2qRUgw2IXXOVD4B9LQ==/109951174139932904.jpg",
+      "albumPic": "https://p2.music.126.net/Eafh2qRUgw2IXXOVD4B9LQ==/109951174139932904.jpg",
       "duration": 231724,
       "url": null,
       "source": "netease",
       "br": null,
-      "addedAt": "2026-11-01T22:00:34.680Z"
+      "addedAt": "2026-11-02T22:00:50.298Z"
     },
     {
-      "id": "3445520471",
-      "name": "隔岸(女版)",
+      "id": "3436855494",
+      "name": "自由的你",
       "artists": [
-        "可楼"
+        "G.E.M.邓紫棋"
       ],
-      "album": "隔岸（女版）",
-      "albumPic": "https://p1.music.126.net/M1zvPh7xCdHqSUWer_yNvQ==/109951174076384529.jpg",
-      "duration": 231261,
+      "album": "自由的你",
+      "albumPic": "https://p2.music.126.net/qu42OhTbF0WNUU0vokhHhA==/109951174189215515.jpg",
+      "duration": 296900,
       "url": null,
       "source": "netease",
       "br": null,
-      "addedAt": "2026-11-01T22:00:34.680Z"
-    },
-    {
-      "id": "3454765936",
-      "name": "年轻人的一生（Intro）",
-      "artists": [
-        "法老"
-      ],
-      "album": "年轻人的一生",
-      "albumPic": "https://p1.music.126.net/FEc7v3I3YXHMDu31NJwuLg==/109951174185039781.jpg",
-      "duration": 510940,
-      "url": null,
-      "source": "netease",
-      "br": null,
-      "addedAt": "2026-11-01T22:00:34.680Z"
-    },
-    {
-      "id": "3455143359",
-      "name": "Pharaoh Is Like",
-      "artists": [
-        "法老"
-      ],
-      "album": "年轻人的一生",
-      "albumPic": "https://p1.music.126.net/FEc7v3I3YXHMDu31NJwuLg==/109951174185039781.jpg",
-      "duration": 236758,
-      "url": null,
-      "source": "netease",
-      "br": null,
-      "addedAt": "2026-11-01T22:00:34.680Z"
-    },
-    {
-      "id": "3451570714",
-      "name": "Cherry Candy",
-      "artists": [
-        "Lunak"
-      ],
-      "album": "Cherry Candy",
-      "albumPic": "https://p1.music.126.net/geIUgfHRN9iWEIo-uWSTSQ==/109951174140300294.jpg",
-      "duration": 141034,
-      "url": null,
-      "source": "netease",
-      "br": null,
-      "addedAt": "2026-11-01T22:00:34.680Z"
+      "addedAt": "2026-11-02T22:00:50.298Z"
     },
     {
       "id": "3448039922",
@@ -1498,12 +1454,41 @@
         "Nzwin 黄跃成"
       ],
       "album": "茉茉",
-      "albumPic": "https://p1.music.126.net/x9H0NVxO5ha9wWCOvW1-eQ==/109951174106566868.jpg",
+      "albumPic": "https://p2.music.126.net/x9H0NVxO5ha9wWCOvW1-eQ==/109951174106566868.jpg",
       "duration": 120169,
       "url": null,
       "source": "netease",
       "br": null,
-      "addedAt": "2026-11-01T22:00:34.680Z"
+      "addedAt": "2026-11-02T22:00:50.298Z"
+    },
+    {
+      "id": "3451570714",
+      "name": "Cherry Candy",
+      "artists": [
+        "Lunak"
+      ],
+      "album": "Cherry Candy",
+      "albumPic": "https://p2.music.126.net/geIUgfHRN9iWEIo-uWSTSQ==/109951174140300294.jpg",
+      "duration": 141034,
+      "url": null,
+      "source": "netease",
+      "br": null,
+      "addedAt": "2026-11-02T22:00:50.298Z"
+    },
+    {
+      "id": "3451951517",
+      "name": "Undefined",
+      "artists": [
+        "PerVade",
+        "第五人格"
+      ],
+      "album": "Undefined",
+      "albumPic": "https://p2.music.126.net/ccu6U_1qtxIIz5ReqhhQ0w==/109951174144800369.jpg",
+      "duration": 175915,
+      "url": null,
+      "source": "netease",
+      "br": null,
+      "addedAt": "2026-11-02T22:00:50.298Z"
     },
     {
       "id": "3444402860",
@@ -1512,42 +1497,12 @@
         "Trispect"
       ],
       "album": "Montagem Nada Funk",
-      "albumPic": "https://p1.music.126.net/rxRBgvgWFRm-2QrrdMICZA==/109951174060325680.jpg",
+      "albumPic": "https://p2.music.126.net/rxRBgvgWFRm-2QrrdMICZA==/109951174060325680.jpg",
       "duration": 96002,
       "url": null,
       "source": "netease",
       "br": null,
-      "addedAt": "2026-11-01T22:00:34.680Z"
-    },
-    {
-      "id": "3455146033",
-      "name": "天黑了",
-      "artists": [
-        "法老",
-        "泠风"
-      ],
-      "album": "年轻人的一生",
-      "albumPic": "https://p1.music.126.net/FEc7v3I3YXHMDu31NJwuLg==/109951174185039781.jpg",
-      "duration": 264509,
-      "url": null,
-      "source": "netease",
-      "br": null,
-      "addedAt": "2026-11-01T22:00:34.680Z"
-    },
-    {
-      "id": "3455153430",
-      "name": "再见黑怕",
-      "artists": [
-        "法老",
-        "泠风"
-      ],
-      "album": "年轻人的一生",
-      "albumPic": "https://p1.music.126.net/FEc7v3I3YXHMDu31NJwuLg==/109951174185039781.jpg",
-      "duration": 226861,
-      "url": null,
-      "source": "netease",
-      "br": null,
-      "addedAt": "2026-11-01T22:00:34.680Z"
+      "addedAt": "2026-11-02T22:00:50.298Z"
     },
     {
       "id": "3447017233",
@@ -1556,12 +1511,27 @@
         "陈默之"
       ],
       "album": "刻在我心底的名字",
-      "albumPic": "https://p1.music.126.net/bRsN8ZNI-F70EsNpK4M2AA==/109951174097453179.jpg",
+      "albumPic": "https://p2.music.126.net/bRsN8ZNI-F70EsNpK4M2AA==/109951174097453179.jpg",
       "duration": 277183,
       "url": null,
       "source": "netease",
       "br": null,
-      "addedAt": "2026-11-01T22:00:34.680Z"
+      "addedAt": "2026-11-02T22:00:50.298Z"
+    },
+    {
+      "id": "3443989683",
+      "name": "Grey trails live on",
+      "artists": [
+        "Dirk",
+        "Echo"
+      ],
+      "album": "Grey trails live on",
+      "albumPic": "https://p2.music.126.net/JxqD63nhlqf0SZaWRsCoGQ==/109951174134872951.jpg",
+      "duration": 272597,
+      "url": null,
+      "source": "netease",
+      "br": null,
+      "addedAt": "2026-11-02T22:00:50.298Z"
     },
     {
       "id": "3450569159",
@@ -1576,57 +1546,26 @@
         "田小娟"
       ],
       "album": "FIRESTARTER",
-      "albumPic": "https://p1.music.126.net/9R6YxeIwMLT7nHy8W7-P-g==/109951174131850898.jpg",
+      "albumPic": "https://p2.music.126.net/9R6YxeIwMLT7nHy8W7-P-g==/109951174131850898.jpg",
       "duration": 187280,
       "url": null,
       "source": "netease",
       "br": null,
-      "addedAt": "2026-11-01T22:00:34.680Z"
+      "addedAt": "2026-11-02T22:00:50.298Z"
     },
     {
-      "id": "3455149415",
-      "name": "最重要的听众",
+      "id": "3453962065",
+      "name": "你的不经意",
       "artists": [
-        "法老",
-        "泠风"
+        "Fozik佛子克"
       ],
-      "album": "年轻人的一生",
-      "albumPic": "https://p1.music.126.net/FEc7v3I3YXHMDu31NJwuLg==/109951174185039781.jpg",
-      "duration": 333846,
+      "album": "你的不经意",
+      "albumPic": "https://p2.music.126.net/qXtvpDCeIwVfxBwMi7Oqaw==/109951174174967843.jpg",
+      "duration": 191666,
       "url": null,
       "source": "netease",
       "br": null,
-      "addedAt": "2026-11-01T22:00:34.680Z"
-    },
-    {
-      "id": "3455146338",
-      "name": "黑山羊",
-      "artists": [
-        "法老",
-        "帕特龙"
-      ],
-      "album": "年轻人的一生",
-      "albumPic": "https://p1.music.126.net/FEc7v3I3YXHMDu31NJwuLg==/109951174185039781.jpg",
-      "duration": 234798,
-      "url": null,
-      "source": "netease",
-      "br": null,
-      "addedAt": "2026-11-01T22:00:34.680Z"
-    },
-    {
-      "id": "3443989683",
-      "name": "Grey trails live on",
-      "artists": [
-        "Dirk",
-        "Echo"
-      ],
-      "album": "Grey trails live on",
-      "albumPic": "https://p1.music.126.net/JxqD63nhlqf0SZaWRsCoGQ==/109951174134872951.jpg",
-      "duration": 272597,
-      "url": null,
-      "source": "netease",
-      "br": null,
-      "addedAt": "2026-11-01T22:00:34.680Z"
+      "addedAt": "2026-11-02T22:00:50.298Z"
     },
     {
       "id": "3448737289",
@@ -1635,27 +1574,12 @@
         "李雨霏_晚饭"
       ],
       "album": "何必相逢",
-      "albumPic": "https://p1.music.126.net/eweCdkm0LLDvqAnfYh8EMA==/109951174112410856.jpg",
+      "albumPic": "https://p2.music.126.net/eweCdkm0LLDvqAnfYh8EMA==/109951174112410856.jpg",
       "duration": 224761,
       "url": null,
       "source": "netease",
       "br": null,
-      "addedAt": "2026-11-01T22:00:34.680Z"
-    },
-    {
-      "id": "3451010797",
-      "name": "和你有关这一生",
-      "artists": [
-        "幸卓辉",
-        "章明伯"
-      ],
-      "album": "和你有关这一生",
-      "albumPic": "https://p1.music.126.net/P2MmrhVGpZOrDCkky3R-kw==/109951174173768743.jpg",
-      "duration": 223632,
-      "url": null,
-      "source": "netease",
-      "br": null,
-      "addedAt": "2026-11-01T22:00:34.680Z"
+      "addedAt": "2026-11-02T22:00:50.298Z"
     },
     {
       "id": "3443782110",
@@ -1664,12 +1588,12 @@
         "moli"
       ],
       "album": "眼泪比爱深刻",
-      "albumPic": "https://p1.music.126.net/4Vb_EF4yZNaFPzVcRbOHkg==/109951174047813257.jpg",
+      "albumPic": "https://p2.music.126.net/4Vb_EF4yZNaFPzVcRbOHkg==/109951174047813257.jpg",
       "duration": 139040,
       "url": null,
       "source": "netease",
       "br": null,
-      "addedAt": "2026-11-01T22:00:34.680Z"
+      "addedAt": "2026-11-02T22:00:50.298Z"
     },
     {
       "id": "3451609995",
@@ -1680,26 +1604,12 @@
         "HOYO-MiX"
       ],
       "album": "绝区零-1% Battery Girl 低电量女孩",
-      "albumPic": "https://p1.music.126.net/xrwfGWgu_xmpeci71k7Z3g==/109951174140667624.jpg",
+      "albumPic": "https://p2.music.126.net/xrwfGWgu_xmpeci71k7Z3g==/109951174140667624.jpg",
       "duration": 208546,
       "url": null,
       "source": "netease",
       "br": null,
-      "addedAt": "2026-11-01T22:00:34.680Z"
-    },
-    {
-      "id": "3453962065",
-      "name": "你的不经意",
-      "artists": [
-        "Fozik佛子克"
-      ],
-      "album": "你的不经意",
-      "albumPic": "https://p1.music.126.net/qXtvpDCeIwVfxBwMi7Oqaw==/109951174174967843.jpg",
-      "duration": 191666,
-      "url": null,
-      "source": "netease",
-      "br": null,
-      "addedAt": "2026-11-01T22:00:34.680Z"
+      "addedAt": "2026-11-02T22:00:50.298Z"
     },
     {
       "id": "3453304463",
@@ -1708,12 +1618,55 @@
         "Zzh"
       ],
       "album": "降温",
-      "albumPic": "https://p1.music.126.net/pbHcu5WSuWqOYOMdpkKaPg==/109951174163337450.jpg",
+      "albumPic": "https://p2.music.126.net/pbHcu5WSuWqOYOMdpkKaPg==/109951174163337450.jpg",
       "duration": 199229,
       "url": null,
       "source": "netease",
       "br": null,
-      "addedAt": "2026-11-01T22:00:34.680Z"
+      "addedAt": "2026-11-02T22:00:50.298Z"
+    },
+    {
+      "id": "3454765936",
+      "name": "年轻人的一生（Intro）",
+      "artists": [
+        "法老"
+      ],
+      "album": "年轻人的一生",
+      "albumPic": "https://p2.music.126.net/FEc7v3I3YXHMDu31NJwuLg==/109951174185039781.jpg",
+      "duration": 510940,
+      "url": null,
+      "source": "netease",
+      "br": null,
+      "addedAt": "2026-11-02T22:00:50.298Z"
+    },
+    {
+      "id": "3451106402",
+      "name": "Call your name (DeepHouse)",
+      "artists": [
+        "诅咒之翼·Cursewing"
+      ],
+      "album": "Call your name (DeepHouse)",
+      "albumPic": "https://p2.music.126.net/VRk9pgpS98SrMYeUUudAiw==/109951174136259139.jpg",
+      "duration": 178206,
+      "url": null,
+      "source": "netease",
+      "br": null,
+      "addedAt": "2026-11-02T22:00:50.298Z"
+    },
+    {
+      "id": "3451010797",
+      "name": "和你有关这一生",
+      "artists": [
+        "幸卓辉",
+        "章明伯"
+      ],
+      "album": "和你有关这一生",
+      "albumPic": "https://p2.music.126.net/P2MmrhVGpZOrDCkky3R-kw==/109951174173768743.jpg",
+      "duration": 223632,
+      "url": null,
+      "source": "netease",
+      "br": null,
+      "addedAt": "2026-11-02T22:00:50.298Z"
     },
     {
       "id": "3444775814",
@@ -1722,12 +1675,12 @@
         "三棱镜"
       ],
       "album": "kiss kiss（拥吻）",
-      "albumPic": "https://p1.music.126.net/tkYDrVUgeQjVV6Ct7zxV8g==/109951174066408927.jpg",
+      "albumPic": "https://p2.music.126.net/tkYDrVUgeQjVV6Ct7zxV8g==/109951174066408927.jpg",
       "duration": 125898,
       "url": null,
       "source": "netease",
       "br": null,
-      "addedAt": "2026-11-01T22:00:34.680Z"
+      "addedAt": "2026-11-02T22:00:50.298Z"
     },
     {
       "id": "3451530455",
@@ -1736,68 +1689,12 @@
         "连麻Swimming"
       ],
       "album": "斩鸭线",
-      "albumPic": "https://p1.music.126.net/Eafh2qRUgw2IXXOVD4B9LQ==/109951174139932904.jpg",
+      "albumPic": "https://p2.music.126.net/Eafh2qRUgw2IXXOVD4B9LQ==/109951174139932904.jpg",
       "duration": 177572,
       "url": null,
       "source": "netease",
       "br": null,
-      "addedAt": "2026-11-01T22:00:34.680Z"
-    },
-    {
-      "id": "3448795260",
-      "name": "Gasolina (Slap House)",
-      "artists": [
-        "诅咒之翼·Cursewing"
-      ],
-      "album": "Gasolina (Slap House)",
-      "albumPic": "https://p1.music.126.net/hXrZfdsZmQxi8GmQuutnPA==/109951174112954691.jpg",
-      "duration": 133130,
-      "url": null,
-      "source": "netease",
-      "br": null,
-      "addedAt": "2026-11-01T22:00:34.680Z"
-    },
-    {
-      "id": "3450878202",
-      "name": "骰子人生",
-      "artists": [
-        "Spylent"
-      ],
-      "album": "骰子人生",
-      "albumPic": "https://p1.music.126.net/lRpWp1zPX3UbmnxKq5I7Vg==/109951174134284361.jpg",
-      "duration": 145943,
-      "url": null,
-      "source": "netease",
-      "br": null,
-      "addedAt": "2026-11-01T22:00:34.680Z"
-    },
-    {
-      "id": "3449064757",
-      "name": "Housewife",
-      "artists": [
-        "Tate McRae"
-      ],
-      "album": "Housewife",
-      "albumPic": "https://p1.music.126.net/Sb78QHaKOSvpF0kMnpOd-w==/109951174207350609.jpg",
-      "duration": 208810,
-      "url": null,
-      "source": "netease",
-      "br": null,
-      "addedAt": "2026-11-01T22:00:34.680Z"
-    },
-    {
-      "id": "3443840079",
-      "name": "Montagem Nada Tropica#1",
-      "artists": [
-        "Lenoxi"
-      ],
-      "album": "Montagem Nada Tropica",
-      "albumPic": "https://p1.music.126.net/FvUl6Adws96V8t6xNFUoEg==/109951174141916129.jpg",
-      "duration": 152812,
-      "url": null,
-      "source": "netease",
-      "br": null,
-      "addedAt": "2026-11-01T22:00:34.680Z"
+      "addedAt": "2026-11-02T22:00:50.298Z"
     },
     {
       "id": "3448187840",
@@ -1807,54 +1704,40 @@
         "VOLT"
       ],
       "album": "Fever Beat",
-      "albumPic": "https://p1.music.126.net/5EkWsO7syIZWkt0ixgSe_Q==/109951174107682582.jpg",
+      "albumPic": "https://p2.music.126.net/5EkWsO7syIZWkt0ixgSe_Q==/109951174107682582.jpg",
       "duration": 121174,
       "url": null,
       "source": "netease",
       "br": null,
-      "addedAt": "2026-11-01T22:00:34.680Z"
+      "addedAt": "2026-11-02T22:00:50.298Z"
     },
     {
-      "id": "3451106402",
-      "name": "Call your name (DeepHouse)",
+      "id": "3455143359",
+      "name": "Pharaoh Is Like",
+      "artists": [
+        "法老"
+      ],
+      "album": "年轻人的一生",
+      "albumPic": "https://p2.music.126.net/FEc7v3I3YXHMDu31NJwuLg==/109951174185039781.jpg",
+      "duration": 236758,
+      "url": null,
+      "source": "netease",
+      "br": null,
+      "addedAt": "2026-11-02T22:00:50.298Z"
+    },
+    {
+      "id": "3448795260",
+      "name": "Gasolina (Slap House)",
       "artists": [
         "诅咒之翼·Cursewing"
       ],
-      "album": "Call your name (DeepHouse)",
-      "albumPic": "https://p1.music.126.net/VRk9pgpS98SrMYeUUudAiw==/109951174136259139.jpg",
-      "duration": 178206,
+      "album": "Gasolina (Slap House)",
+      "albumPic": "https://p2.music.126.net/hXrZfdsZmQxi8GmQuutnPA==/109951174112954691.jpg",
+      "duration": 133130,
       "url": null,
       "source": "netease",
       "br": null,
-      "addedAt": "2026-11-01T22:00:34.680Z"
-    },
-    {
-      "id": "3445957923",
-      "name": "山海不说话（我路过山 山不说话）",
-      "artists": [
-        "陳鴨梨Charlie"
-      ],
-      "album": "山海不说话（我路过山 山不说话）",
-      "albumPic": "https://p1.music.126.net/UyjTXkpDk2lBw-uha0lp5A==/109951174082641753.jpg",
-      "duration": 210414,
-      "url": null,
-      "source": "netease",
-      "br": null,
-      "addedAt": "2026-11-01T22:00:34.680Z"
-    },
-    {
-      "id": "3448658809",
-      "name": "天还是阴",
-      "artists": [
-        "Fozik佛子克"
-      ],
-      "album": "天还是阴",
-      "albumPic": "https://p1.music.126.net/zEoybE-25Zhqzhzw-ORA8A==/109951174111902306.jpg",
-      "duration": 165000,
-      "url": null,
-      "source": "netease",
-      "br": null,
-      "addedAt": "2026-11-01T22:00:34.680Z"
+      "addedAt": "2026-11-02T22:00:50.298Z"
     },
     {
       "id": "3443942182",
@@ -1863,111 +1746,83 @@
         "Odetari"
       ],
       "album": "I'M A BLACKHOLE",
-      "albumPic": "https://p1.music.126.net/4dw2g4Fj7WSfIoasdjS9kw==/109951174147807581.jpg",
+      "albumPic": "https://p2.music.126.net/4dw2g4Fj7WSfIoasdjS9kw==/109951174147807581.jpg",
       "duration": 198519,
       "url": null,
       "source": "netease",
       "br": null,
-      "addedAt": "2026-11-01T22:00:34.680Z"
+      "addedAt": "2026-11-02T22:00:50.298Z"
     },
     {
-      "id": "3451530519",
-      "name": "斩鸭线",
+      "id": "3449064757",
+      "name": "Housewife",
       "artists": [
-        "连麻Swimming"
+        "Tate McRae"
       ],
-      "album": "斩鸭线",
-      "albumPic": "https://p1.music.126.net/Eafh2qRUgw2IXXOVD4B9LQ==/109951174139932904.jpg",
-      "duration": 262285,
+      "album": "Housewife",
+      "albumPic": "https://p2.music.126.net/Sb78QHaKOSvpF0kMnpOd-w==/109951174207350609.jpg",
+      "duration": 208810,
       "url": null,
       "source": "netease",
       "br": null,
-      "addedAt": "2026-11-01T22:00:34.680Z"
+      "addedAt": "2026-11-02T22:00:50.298Z"
     },
     {
-      "id": "3445595679",
-      "name": "有你爱就明媚",
+      "id": "3450878202",
+      "name": "骰子人生",
       "artists": [
-        "Fozik佛子克"
+        "Spylent"
       ],
-      "album": "有你爱就明媚",
-      "albumPic": "https://p1.music.126.net/18gUQgUlqzuLfLZw8qPMmA==/109951174077558701.jpg",
-      "duration": 159560,
+      "album": "骰子人生",
+      "albumPic": "https://p2.music.126.net/lRpWp1zPX3UbmnxKq5I7Vg==/109951174134284361.jpg",
+      "duration": 145943,
       "url": null,
       "source": "netease",
       "br": null,
-      "addedAt": "2026-11-01T22:00:34.680Z"
+      "addedAt": "2026-11-02T22:00:50.298Z"
     },
     {
-      "id": "3448180073",
-      "name": "Gasolina (Remix)",
+      "id": "3455153430",
+      "name": "再见黑怕",
       "artists": [
-        "Passat"
+        "法老",
+        "泠风"
       ],
-      "album": "Gasolina (Remix)",
-      "albumPic": "https://p1.music.126.net/n2iZbwcDBPt034D4vNLY0A==/109951174107641683.jpg",
-      "duration": 203660,
+      "album": "年轻人的一生",
+      "albumPic": "https://p2.music.126.net/FEc7v3I3YXHMDu31NJwuLg==/109951174185039781.jpg",
+      "duration": 226861,
       "url": null,
       "source": "netease",
       "br": null,
-      "addedAt": "2026-11-01T22:00:34.680Z"
+      "addedAt": "2026-11-02T22:00:50.298Z"
     },
     {
-      "id": "3451531274",
-      "name": "大理出奇迹",
+      "id": "3453935031",
+      "name": "霏儿",
       "artists": [
-        "连麻Swimming"
+        "李雨霏_晚饭"
       ],
-      "album": "斩鸭线",
-      "albumPic": "https://p1.music.126.net/Eafh2qRUgw2IXXOVD4B9LQ==/109951174139932904.jpg",
-      "duration": 160755,
+      "album": "霏儿",
+      "albumPic": "https://p2.music.126.net/H3WNpIrd5jvDm44DgJmKDg==/109951174174675607.jpg",
+      "duration": 209717,
       "url": null,
       "source": "netease",
       "br": null,
-      "addedAt": "2026-11-01T22:00:34.680Z"
+      "addedAt": "2026-11-02T22:00:50.298Z"
     },
     {
-      "id": "3451531273",
-      "name": "Gangsta Don’t Lie",
+      "id": "3445957923",
+      "name": "山海不说话（我路过山 山不说话）",
       "artists": [
-        "连麻Swimming"
+        "陳鴨梨Charlie"
       ],
-      "album": "斩鸭线",
-      "albumPic": "https://p1.music.126.net/Eafh2qRUgw2IXXOVD4B9LQ==/109951174139932904.jpg",
-      "duration": 153320,
+      "album": "山海不说话（我路过山 山不说话）",
+      "albumPic": "https://p2.music.126.net/UyjTXkpDk2lBw-uha0lp5A==/109951174082641753.jpg",
+      "duration": 210414,
       "url": null,
       "source": "netease",
       "br": null,
-      "addedAt": "2026-11-01T22:00:34.680Z"
-    },
-    {
-      "id": "3448488384",
-      "name": "Lies (feat. Lana Del Rey)",
-      "artists": [
-        "Zach Bryan",
-        "Lana Del Rey"
-      ],
-      "album": "Young Manhood and Other Donatable Organs",
-      "albumPic": "https://p1.music.126.net/9Ps0TU82IPKNCc4iwgfZqw==/109951174110867777.jpg",
-      "duration": 220588,
-      "url": null,
-      "source": "netease",
-      "br": null,
-      "addedAt": "2026-11-01T22:00:34.680Z"
-    },
-    {
-      "id": "3452345410",
-      "name": "渡口",
-      "artists": [
-        "张杰"
-      ],
-      "album": "渡口",
-      "albumPic": "https://p1.music.126.net/HQhgnTWa2eAm45AebqRvxA==/109951174149110219.jpg",
-      "duration": 259625,
-      "url": null,
-      "source": "netease",
-      "br": null,
-      "addedAt": "2026-11-01T22:00:34.680Z"
+      "addedAt": "2026-11-02T22:00:50.298Z"
     },
     {
       "id": "3454742114",
@@ -1979,12 +1834,170 @@
         "Sofia Silvestri"
       ],
       "album": "A Necessary Message",
-      "albumPic": "https://p1.music.126.net/gk0Uk7dHmWvR1Mp2zKYGgg==/109951174184625950.jpg",
+      "albumPic": "https://p2.music.126.net/gk0Uk7dHmWvR1Mp2zKYGgg==/109951174184625950.jpg",
       "duration": 275595,
       "url": null,
       "source": "netease",
       "br": null,
-      "addedAt": "2026-11-01T22:00:34.680Z"
+      "addedAt": "2026-11-02T22:00:50.298Z"
+    },
+    {
+      "id": "3445595679",
+      "name": "有你爱就明媚",
+      "artists": [
+        "Fozik佛子克"
+      ],
+      "album": "有你爱就明媚",
+      "albumPic": "https://p2.music.126.net/18gUQgUlqzuLfLZw8qPMmA==/109951174077558701.jpg",
+      "duration": 159560,
+      "url": null,
+      "source": "netease",
+      "br": null,
+      "addedAt": "2026-11-02T22:00:50.298Z"
+    },
+    {
+      "id": "3455149415",
+      "name": "最重要的听众",
+      "artists": [
+        "法老",
+        "泠风"
+      ],
+      "album": "年轻人的一生",
+      "albumPic": "https://p2.music.126.net/FEc7v3I3YXHMDu31NJwuLg==/109951174185039781.jpg",
+      "duration": 333846,
+      "url": null,
+      "source": "netease",
+      "br": null,
+      "addedAt": "2026-11-02T22:00:50.298Z"
+    },
+    {
+      "id": "3455146033",
+      "name": "天黑了",
+      "artists": [
+        "法老",
+        "泠风"
+      ],
+      "album": "年轻人的一生",
+      "albumPic": "https://p2.music.126.net/FEc7v3I3YXHMDu31NJwuLg==/109951174185039781.jpg",
+      "duration": 264509,
+      "url": null,
+      "source": "netease",
+      "br": null,
+      "addedAt": "2026-11-02T22:00:50.298Z"
+    },
+    {
+      "id": "3448658809",
+      "name": "天还是阴",
+      "artists": [
+        "Fozik佛子克"
+      ],
+      "album": "天还是阴",
+      "albumPic": "https://p2.music.126.net/zEoybE-25Zhqzhzw-ORA8A==/109951174111902306.jpg",
+      "duration": 165000,
+      "url": null,
+      "source": "netease",
+      "br": null,
+      "addedAt": "2026-11-02T22:00:50.298Z"
+    },
+    {
+      "id": "3443840079",
+      "name": "Montagem Nada Tropica#1",
+      "artists": [
+        "Lenoxi"
+      ],
+      "album": "Montagem Nada Tropica",
+      "albumPic": "https://p2.music.126.net/FvUl6Adws96V8t6xNFUoEg==/109951174141916129.jpg",
+      "duration": 152812,
+      "url": null,
+      "source": "netease",
+      "br": null,
+      "addedAt": "2026-11-02T22:00:50.298Z"
+    },
+    {
+      "id": "3451530519",
+      "name": "斩鸭线",
+      "artists": [
+        "连麻Swimming"
+      ],
+      "album": "斩鸭线",
+      "albumPic": "https://p2.music.126.net/Eafh2qRUgw2IXXOVD4B9LQ==/109951174139932904.jpg",
+      "duration": 262285,
+      "url": null,
+      "source": "netease",
+      "br": null,
+      "addedAt": "2026-11-02T22:00:50.298Z"
+    },
+    {
+      "id": "3455165859",
+      "name": "天亮了",
+      "artists": [
+        "法老",
+        "张尕怂"
+      ],
+      "album": "年轻人的一生",
+      "albumPic": "https://p2.music.126.net/FEc7v3I3YXHMDu31NJwuLg==/109951174185039781.jpg",
+      "duration": 195000,
+      "url": null,
+      "source": "netease",
+      "br": null,
+      "addedAt": "2026-11-02T22:00:50.298Z"
+    },
+    {
+      "id": "3448180073",
+      "name": "Gasolina (Remix)",
+      "artists": [
+        "Passat"
+      ],
+      "album": "Gasolina (Remix)",
+      "albumPic": "https://p2.music.126.net/n2iZbwcDBPt034D4vNLY0A==/109951174107641683.jpg",
+      "duration": 203660,
+      "url": null,
+      "source": "netease",
+      "br": null,
+      "addedAt": "2026-11-02T22:00:50.298Z"
+    },
+    {
+      "id": "3452345410",
+      "name": "渡口",
+      "artists": [
+        "张杰"
+      ],
+      "album": "渡口",
+      "albumPic": "https://p2.music.126.net/HQhgnTWa2eAm45AebqRvxA==/109951174149110219.jpg",
+      "duration": 259625,
+      "url": null,
+      "source": "netease",
+      "br": null,
+      "addedAt": "2026-11-02T22:00:50.298Z"
+    },
+    {
+      "id": "3448488384",
+      "name": "Lies (feat. Lana Del Rey)",
+      "artists": [
+        "Zach Bryan",
+        "Lana Del Rey"
+      ],
+      "album": "Young Manhood and Other Donatable Organs",
+      "albumPic": "https://p2.music.126.net/9Ps0TU82IPKNCc4iwgfZqw==/109951174110867777.jpg",
+      "duration": 220588,
+      "url": null,
+      "source": "netease",
+      "br": null,
+      "addedAt": "2026-11-02T22:00:50.298Z"
+    },
+    {
+      "id": "3451531274",
+      "name": "大理出奇迹",
+      "artists": [
+        "连麻Swimming"
+      ],
+      "album": "斩鸭线",
+      "albumPic": "https://p2.music.126.net/Eafh2qRUgw2IXXOVD4B9LQ==/109951174139932904.jpg",
+      "duration": 160755,
+      "url": null,
+      "source": "netease",
+      "br": null,
+      "addedAt": "2026-11-02T22:00:50.298Z"
     },
     {
       "id": "3452839724",
@@ -1993,12 +2006,68 @@
         "Hidoyard"
       ],
       "album": "星星",
-      "albumPic": "https://p1.music.126.net/iv0__yK5DQMdurBitXZWDQ==/109951174155516729.jpg",
+      "albumPic": "https://p2.music.126.net/iv0__yK5DQMdurBitXZWDQ==/109951174155516729.jpg",
       "duration": 151095,
       "url": null,
       "source": "netease",
       "br": null,
-      "addedAt": "2026-11-01T22:00:34.680Z"
+      "addedAt": "2026-11-02T22:00:50.298Z"
+    },
+    {
+      "id": "3451531273",
+      "name": "Gangsta Don’t Lie",
+      "artists": [
+        "连麻Swimming"
+      ],
+      "album": "斩鸭线",
+      "albumPic": "https://p2.music.126.net/Eafh2qRUgw2IXXOVD4B9LQ==/109951174139932904.jpg",
+      "duration": 153320,
+      "url": null,
+      "source": "netease",
+      "br": null,
+      "addedAt": "2026-11-02T22:00:50.298Z"
+    },
+    {
+      "id": "3446954477",
+      "name": "Odd Dice",
+      "artists": [
+        "millsage"
+      ],
+      "album": "Odd Dice",
+      "albumPic": "https://p2.music.126.net/6xwcAEs9BIHsjWwOSqGeJA==/109951174097038152.jpg",
+      "duration": 248828,
+      "url": null,
+      "source": "netease",
+      "br": null,
+      "addedAt": "2026-11-02T22:00:50.298Z"
+    },
+    {
+      "id": "3445972111",
+      "name": "焦灼",
+      "artists": [
+        "太泽希恩TimeTheCion"
+      ],
+      "album": "焦灼",
+      "albumPic": "https://p2.music.126.net/Zc3EtEAdmpvgpMMpZ4Egfw==/109951174082810693.jpg",
+      "duration": 153176,
+      "url": null,
+      "source": "netease",
+      "br": null,
+      "addedAt": "2026-11-02T22:00:50.298Z"
+    },
+    {
+      "id": "3452608305",
+      "name": "MISS ME",
+      "artists": [
+        "keshi"
+      ],
+      "album": "MISS ME",
+      "albumPic": "https://p2.music.126.net/eFEPvZFya2W2__0WwjsuRg==/109951174154507647.jpg",
+      "duration": 193066,
+      "url": null,
+      "source": "netease",
+      "br": null,
+      "addedAt": "2026-11-02T22:00:50.298Z"
     },
     {
       "id": "3447072754",
@@ -2008,40 +2077,12 @@
         "Water333"
       ],
       "album": "脉搏",
-      "albumPic": "https://p1.music.126.net/xT-FuKwzicJmBUQyAGDcbQ==/109951174097953413.jpg",
+      "albumPic": "https://p2.music.126.net/xT-FuKwzicJmBUQyAGDcbQ==/109951174097953413.jpg",
       "duration": 174000,
       "url": null,
       "source": "netease",
       "br": null,
-      "addedAt": "2026-11-01T22:00:34.680Z"
-    },
-    {
-      "id": "3446954477",
-      "name": "Odd Dice",
-      "artists": [
-        "millsage"
-      ],
-      "album": "Odd Dice",
-      "albumPic": "https://p1.music.126.net/6xwcAEs9BIHsjWwOSqGeJA==/109951174097038152.jpg",
-      "duration": 248828,
-      "url": null,
-      "source": "netease",
-      "br": null,
-      "addedAt": "2026-11-01T22:00:34.680Z"
-    },
-    {
-      "id": "3452608305",
-      "name": "MISS ME",
-      "artists": [
-        "keshi"
-      ],
-      "album": "MISS ME",
-      "albumPic": "https://p1.music.126.net/eFEPvZFya2W2__0WwjsuRg==/109951174154507647.jpg",
-      "duration": 193066,
-      "url": null,
-      "source": "netease",
-      "br": null,
-      "addedAt": "2026-11-01T22:00:34.680Z"
+      "addedAt": "2026-11-02T22:00:50.298Z"
     },
     {
       "id": "3444459725",
@@ -2050,12 +2091,12 @@
         "delphia!"
       ],
       "album": "Town/Blunt (Extended Intro Remix)",
-      "albumPic": "https://p1.music.126.net/7elkaH6AeNJiUE8ANgYnng==/109951174061290221.jpg",
+      "albumPic": "https://p2.music.126.net/7elkaH6AeNJiUE8ANgYnng==/109951174061290221.jpg",
       "duration": 138770,
       "url": null,
       "source": "netease",
       "br": null,
-      "addedAt": "2026-11-01T22:00:34.680Z"
+      "addedAt": "2026-11-02T22:00:50.298Z"
     },
     {
       "id": "3449273923",
@@ -2064,26 +2105,26 @@
         "LNGSHOT"
       ],
       "album": "Masterpiece",
-      "albumPic": "https://p1.music.126.net/UTshU5Ftc0WXjOTUMNuXwQ==/109951174118011730.jpg",
+      "albumPic": "https://p2.music.126.net/UTshU5Ftc0WXjOTUMNuXwQ==/109951174118011730.jpg",
       "duration": 169714,
       "url": null,
       "source": "netease",
       "br": null,
-      "addedAt": "2026-11-01T22:00:34.680Z"
+      "addedAt": "2026-11-02T22:00:50.298Z"
     },
     {
-      "id": "3445972111",
-      "name": "焦灼",
+      "id": "3453872949",
+      "name": "需要人陪",
       "artists": [
-        "太泽希恩TimeTheCion"
+        "辰乐"
       ],
-      "album": "焦灼",
-      "albumPic": "https://p1.music.126.net/Zc3EtEAdmpvgpMMpZ4Egfw==/109951174082810693.jpg",
-      "duration": 153176,
+      "album": "需要人陪",
+      "albumPic": "https://p2.music.126.net/IF6vcxx9HyAdXLMrBN9TdQ==/109951174189729177.jpg",
+      "duration": 244437,
       "url": null,
       "source": "netease",
       "br": null,
-      "addedAt": "2026-11-01T22:00:34.680Z"
+      "addedAt": "2026-11-02T22:00:50.298Z"
     },
     {
       "id": "3442131349",
@@ -2092,12 +2133,12 @@
         "Mili"
       ],
       "album": "Rendezvous",
-      "albumPic": "https://p1.music.126.net/7kaZumjeo8LjULsgyb0UJw==/109951174021104763.jpg",
+      "albumPic": "https://p2.music.126.net/7kaZumjeo8LjULsgyb0UJw==/109951174021104763.jpg",
       "duration": 208533,
       "url": null,
       "source": "netease",
       "br": null,
-      "addedAt": "2026-11-01T22:00:34.680Z"
+      "addedAt": "2026-11-02T22:00:50.298Z"
     },
     {
       "id": "3451247176",
@@ -2110,26 +2151,12 @@
         "曺薇娟"
       ],
       "album": "FIRESTARTER",
-      "albumPic": "https://p1.music.126.net/310_2NP-FSWzbNw7wyzC0A==/109951174138007263.jpg",
+      "albumPic": "https://p2.music.126.net/310_2NP-FSWzbNw7wyzC0A==/109951174138007263.jpg",
       "duration": 189720,
       "url": null,
       "source": "netease",
       "br": null,
-      "addedAt": "2026-11-01T22:00:34.680Z"
-    },
-    {
-      "id": "3444470310",
-      "name": "目光归我",
-      "artists": [
-        "BUTON"
-      ],
-      "album": "目光归我",
-      "albumPic": "https://p1.music.126.net/JUnNfKQALPEDyF3SRgaDaQ==/109951174061459360.jpg",
-      "duration": 119491,
-      "url": null,
-      "source": "netease",
-      "br": null,
-      "addedAt": "2026-11-01T22:00:34.680Z"
+      "addedAt": "2026-11-02T22:00:50.298Z"
     },
     {
       "id": "3441851572",
@@ -2139,12 +2166,26 @@
         "庸医"
       ],
       "album": "地狱笑话",
-      "albumPic": "https://p1.music.126.net/XzRufvMDau7cxrnpbOfLmQ==/109951174017384079.jpg",
+      "albumPic": "https://p2.music.126.net/XzRufvMDau7cxrnpbOfLmQ==/109951174017384079.jpg",
       "duration": 115011,
       "url": null,
       "source": "netease",
       "br": null,
-      "addedAt": "2026-11-01T22:00:34.680Z"
+      "addedAt": "2026-11-02T22:00:50.298Z"
+    },
+    {
+      "id": "3444470310",
+      "name": "目光归我",
+      "artists": [
+        "BUTON"
+      ],
+      "album": "目光归我",
+      "albumPic": "https://p2.music.126.net/JUnNfKQALPEDyF3SRgaDaQ==/109951174061459360.jpg",
+      "duration": 119491,
+      "url": null,
+      "source": "netease",
+      "br": null,
+      "addedAt": "2026-11-02T22:00:50.298Z"
     },
     {
       "id": "3446607699",
@@ -2153,40 +2194,12 @@
         "THORN020"
       ],
       "album": "葛藤花语",
-      "albumPic": "https://p1.music.126.net/tv0PO9ymtZfzmj5_zFbw3g==/109951174091381821.jpg",
+      "albumPic": "https://p2.music.126.net/tv0PO9ymtZfzmj5_zFbw3g==/109951174091381821.jpg",
       "duration": 150987,
       "url": null,
       "source": "netease",
       "br": null,
-      "addedAt": "2026-11-01T22:00:34.680Z"
-    },
-    {
-      "id": "3450465096",
-      "name": "我还在树下等一个人",
-      "artists": [
-        "陆虎"
-      ],
-      "album": "我还在树下等一个人",
-      "albumPic": "https://p1.music.126.net/ZKxuI7YWk9A9Kg0pd8DEEw==/109951174130664879.jpg",
-      "duration": 224761,
-      "url": null,
-      "source": "netease",
-      "br": null,
-      "addedAt": "2026-11-01T22:00:34.680Z"
-    },
-    {
-      "id": "3440597644",
-      "name": "Come Back To Me",
-      "artists": [
-        "Russ"
-      ],
-      "album": "Come Back To Me",
-      "albumPic": "https://p1.music.126.net/FCjVff3AegnCFsxg2RSVcg==/109951173992339417.jpg",
-      "duration": 186666,
-      "url": null,
-      "source": "netease",
-      "br": null,
-      "addedAt": "2026-11-01T22:00:34.680Z"
+      "addedAt": "2026-11-02T22:00:50.298Z"
     },
     {
       "id": "3448742535",
@@ -2195,12 +2208,12 @@
         "喆FILM"
       ],
       "album": "古人开麦 Rap Battle",
-      "albumPic": "https://p1.music.126.net/0ylhLOBO_b6p7xIgP5ZOJA==/109951174061745277.jpg",
+      "albumPic": "https://p2.music.126.net/0ylhLOBO_b6p7xIgP5ZOJA==/109951174061745277.jpg",
       "duration": 282166,
       "url": null,
       "source": "netease",
       "br": null,
-      "addedAt": "2026-11-01T22:00:34.680Z"
+      "addedAt": "2026-11-02T22:00:50.298Z"
     },
     {
       "id": "3449111055",
@@ -2209,27 +2222,12 @@
         "Taylor Swift"
       ],
       "album": "Patient Zero",
-      "albumPic": "https://p1.music.126.net/zSGqjtlVfj359Cwd5R4E3A==/109951174117256781.jpg",
+      "albumPic": "https://p2.music.126.net/zSGqjtlVfj359Cwd5R4E3A==/109951174117256781.jpg",
       "duration": 225868,
       "url": null,
       "source": "netease",
       "br": null,
-      "addedAt": "2026-11-01T22:00:34.680Z"
-    },
-    {
-      "id": "3451960391",
-      "name": "灰色童话",
-      "artists": [
-        "PearBae小梨",
-        "Top Barry"
-      ],
-      "album": "灰色童话",
-      "albumPic": "https://p1.music.126.net/-QTjvheTuM5crIT8dIjEVA==/109951174144774285.jpg",
-      "duration": 154285,
-      "url": null,
-      "source": "netease",
-      "br": null,
-      "addedAt": "2026-11-01T22:00:34.680Z"
+      "addedAt": "2026-11-02T22:00:50.298Z"
     },
     {
       "id": "3445490637",
@@ -2238,56 +2236,12 @@
         "余佳运"
       ],
       "album": "思念像一场重感冒·开始奏乐开始舞",
-      "albumPic": "https://p1.music.126.net/Jv36uPpNVv6mo1UXqlUUXQ==/109951174076158806.jpg",
+      "albumPic": "https://p2.music.126.net/Jv36uPpNVv6mo1UXqlUUXQ==/109951174076158806.jpg",
       "duration": 157500,
       "url": null,
       "source": "netease",
       "br": null,
-      "addedAt": "2026-11-01T22:00:34.680Z"
-    },
-    {
-      "id": "3451625898",
-      "name": "前路有光",
-      "artists": [
-        "张杰"
-      ],
-      "album": "前路有光",
-      "albumPic": "https://p1.music.126.net/WU_agkznCiJ82lbi28pOYg==/109951174140945914.jpg",
-      "duration": 233785,
-      "url": null,
-      "source": "netease",
-      "br": null,
-      "addedAt": "2026-11-01T22:00:34.680Z"
-    },
-    {
-      "id": "3444439817",
-      "name": "Fever Pitch（唯有泪千行）",
-      "artists": [
-        "Harmonic Thaw",
-        "Sin Wecokat"
-      ],
-      "album": "Fever Pitch（唯有泪千行）",
-      "albumPic": "https://p1.music.126.net/rZOziTl65IfghW3CrdbPVg==/109951173812812819.jpg",
-      "duration": 116375,
-      "url": null,
-      "source": "netease",
-      "br": null,
-      "addedAt": "2026-11-01T22:00:34.680Z"
-    },
-    {
-      "id": "3437520894",
-      "name": "It's You",
-      "artists": [
-        "VALORANT",
-        "Karencici"
-      ],
-      "album": "It's You",
-      "albumPic": "https://p1.music.126.net/XOG1t9HOMOmeJ-XpPHL5LQ==/109951174134905061.jpg",
-      "duration": 146933,
-      "url": null,
-      "source": "netease",
-      "br": null,
-      "addedAt": "2026-11-01T22:00:34.680Z"
+      "addedAt": "2026-11-02T22:00:50.298Z"
     },
     {
       "id": "3444858995",
@@ -2302,12 +2256,140 @@
         "i-dle"
       ],
       "album": "Know My Name",
-      "albumPic": "https://p1.music.126.net/w-ckZDbzuuaq8_xX67bVtA==/109951174067773064.jpg",
+      "albumPic": "https://p2.music.126.net/w-ckZDbzuuaq8_xX67bVtA==/109951174067773064.jpg",
       "duration": 212236,
       "url": null,
       "source": "netease",
       "br": null,
-      "addedAt": "2026-11-01T22:00:34.680Z"
+      "addedAt": "2026-11-02T22:00:50.298Z"
+    },
+    {
+      "id": "3445486920",
+      "name": "现在的我",
+      "artists": [
+        "承桓"
+      ],
+      "album": "现在的我",
+      "albumPic": "https://p2.music.126.net/AByQKT6Yg3eM20bx4Lc_ew==/109951174076069812.jpg",
+      "duration": 225133,
+      "url": null,
+      "source": "netease",
+      "br": null,
+      "addedAt": "2026-11-02T22:00:50.298Z"
+    },
+    {
+      "id": "3449297745",
+      "name": "别来我梦里",
+      "artists": [
+        "任然"
+      ],
+      "album": "别来我梦里",
+      "albumPic": "https://p2.music.126.net/8eMNmpYR0vigqFEGyd1rzA==/109951174118169632.jpg",
+      "duration": 222820,
+      "url": null,
+      "source": "netease",
+      "br": null,
+      "addedAt": "2026-11-02T22:00:50.298Z"
+    },
+    {
+      "id": "3449132707",
+      "name": "珍惜对你例外的人(不存在的人)",
+      "artists": [
+        "心煜"
+      ],
+      "album": "珍惜对你例外的人",
+      "albumPic": "https://p2.music.126.net/u5OWKduKKmncURZAqBvrCw==/109951174116987844.jpg",
+      "duration": 218500,
+      "url": null,
+      "source": "netease",
+      "br": null,
+      "addedAt": "2026-11-02T22:00:50.298Z"
+    },
+    {
+      "id": "3450465096",
+      "name": "我还在树下等一个人",
+      "artists": [
+        "陆虎"
+      ],
+      "album": "我还在树下等一个人",
+      "albumPic": "https://p2.music.126.net/ZKxuI7YWk9A9Kg0pd8DEEw==/109951174130664879.jpg",
+      "duration": 224761,
+      "url": null,
+      "source": "netease",
+      "br": null,
+      "addedAt": "2026-11-02T22:00:50.298Z"
+    },
+    {
+      "id": "3452436258",
+      "name": "标准外",
+      "artists": [
+        "Arboi氩男孩"
+      ],
+      "album": "标准外",
+      "albumPic": "https://p2.music.126.net/YGL8SB_tr5OMPXwNlLibLA==/109951174149867673.jpg",
+      "duration": 161998,
+      "url": null,
+      "source": "netease",
+      "br": null,
+      "addedAt": "2026-11-02T22:00:50.298Z"
+    },
+    {
+      "id": "3451625898",
+      "name": "前路有光",
+      "artists": [
+        "张杰"
+      ],
+      "album": "前路有光",
+      "albumPic": "https://p2.music.126.net/WU_agkznCiJ82lbi28pOYg==/109951174140945914.jpg",
+      "duration": 233785,
+      "url": null,
+      "source": "netease",
+      "br": null,
+      "addedAt": "2026-11-02T22:00:50.298Z"
+    },
+    {
+      "id": "3446384412",
+      "name": "保留关系",
+      "artists": [
+        "Max李玄"
+      ],
+      "album": "保留关系",
+      "albumPic": "https://p2.music.126.net/d1MmOFraUxqZ9RYHzvExiA==/109951174087883787.jpg",
+      "duration": 191194,
+      "url": null,
+      "source": "netease",
+      "br": null,
+      "addedAt": "2026-11-02T22:00:50.298Z"
+    },
+    {
+      "id": "3437520894",
+      "name": "It's You",
+      "artists": [
+        "VALORANT",
+        "Karencici"
+      ],
+      "album": "It's You",
+      "albumPic": "https://p2.music.126.net/XOG1t9HOMOmeJ-XpPHL5LQ==/109951174134905061.jpg",
+      "duration": 146933,
+      "url": null,
+      "source": "netease",
+      "br": null,
+      "addedAt": "2026-11-02T22:00:50.298Z"
+    },
+    {
+      "id": "3451947890",
+      "name": "​雁南飞​",
+      "artists": [
+        "王齐铭WatchMe",
+        "热单间HEATROOM"
+      ],
+      "album": "HEATROOM TAPE 6th",
+      "albumPic": "https://p2.music.126.net/g8xwJyF0jdwB_azNcVjLxA==/109951174144675406.jpg",
+      "duration": 210352,
+      "url": null,
+      "source": "netease",
+      "br": null,
+      "addedAt": "2026-11-02T22:00:50.298Z"
     },
     {
       "id": "3445438105",
@@ -2318,82 +2400,12 @@
         "星尘"
       ],
       "album": "《反乌托邦Pt.2》，但是反驳型人格",
-      "albumPic": "https://p1.music.126.net/rU0pJETVvq6V2CpZzX0lcg==/109951174075674897.jpg",
+      "albumPic": "https://p2.music.126.net/rU0pJETVvq6V2CpZzX0lcg==/109951174075674897.jpg",
       "duration": 180950,
       "url": null,
       "source": "netease",
       "br": null,
-      "addedAt": "2026-11-01T22:00:34.680Z"
-    },
-    {
-      "id": "3447060873",
-      "name": "指尖缠绕",
-      "artists": [
-        "ZIV"
-      ],
-      "album": "指尖缠绕",
-      "albumPic": "https://p1.music.126.net/UEsAAtvNBUKWwZsBQl6wwg==/109951174097758221.jpg",
-      "duration": 194052,
-      "url": null,
-      "source": "netease",
-      "br": null,
-      "addedAt": "2026-11-01T22:00:34.680Z"
-    },
-    {
-      "id": "3444720987",
-      "name": "Follow Me",
-      "artists": [
-        "Alec Benjamin"
-      ],
-      "album": "Follow Me",
-      "albumPic": "https://p1.music.126.net/f5OvcKK7e44LpJ7ySBui0Q==/109951174065677398.jpg",
-      "duration": 171352,
-      "url": null,
-      "source": "netease",
-      "br": null,
-      "addedAt": "2026-11-01T22:00:34.680Z"
-    },
-    {
-      "id": "3443222100",
-      "name": "結び",
-      "artists": [
-        "Ayumu Imazu"
-      ],
-      "album": "結び",
-      "albumPic": "https://p1.music.126.net/7K5JWIRPQMfhROh4hFR-jw==/109951174039608978.jpg",
-      "duration": 206998,
-      "url": null,
-      "source": "netease",
-      "br": null,
-      "addedAt": "2026-11-01T22:00:34.680Z"
-    },
-    {
-      "id": "3449297745",
-      "name": "别来我梦里",
-      "artists": [
-        "任然"
-      ],
-      "album": "别来我梦里",
-      "albumPic": "https://p1.music.126.net/8eMNmpYR0vigqFEGyd1rzA==/109951174118169632.jpg",
-      "duration": 222820,
-      "url": null,
-      "source": "netease",
-      "br": null,
-      "addedAt": "2026-11-01T22:00:34.680Z"
-    },
-    {
-      "id": "3449132707",
-      "name": "珍惜对你例外的人(不存在的人)",
-      "artists": [
-        "心煜"
-      ],
-      "album": "珍惜对你例外的人",
-      "albumPic": "https://p1.music.126.net/u5OWKduKKmncURZAqBvrCw==/109951174116987844.jpg",
-      "duration": 218500,
-      "url": null,
-      "source": "netease",
-      "br": null,
-      "addedAt": "2026-11-01T22:00:34.680Z"
+      "addedAt": "2026-11-02T22:00:50.298Z"
     },
     {
       "id": "3451909103",
@@ -2403,12 +2415,27 @@
         "APMOZART"
       ],
       "album": "害怕你说谎（以前再也回不去了）ft.APMOZART",
-      "albumPic": "https://p1.music.126.net/Cf11uiuYRFT9XQ5_xYvzcQ==/109951174144350745.jpg",
+      "albumPic": "https://p2.music.126.net/Cf11uiuYRFT9XQ5_xYvzcQ==/109951174144350745.jpg",
       "duration": 130972,
       "url": null,
       "source": "netease",
       "br": null,
-      "addedAt": "2026-11-01T22:00:34.680Z"
+      "addedAt": "2026-11-02T22:00:50.298Z"
+    },
+    {
+      "id": "3444439817",
+      "name": "Fever Pitch（唯有泪千行）",
+      "artists": [
+        "Harmonic Thaw",
+        "Sin Wecokat"
+      ],
+      "album": "Fever Pitch（唯有泪千行）",
+      "albumPic": "https://p2.music.126.net/rZOziTl65IfghW3CrdbPVg==/109951173812812819.jpg",
+      "duration": 116375,
+      "url": null,
+      "source": "netease",
+      "br": null,
+      "addedAt": "2026-11-02T22:00:50.298Z"
     },
     {
       "id": "3452038776",
@@ -2417,12 +2444,69 @@
         "邹沛沛"
       ],
       "album": "游梦",
-      "albumPic": "https://p1.music.126.net/ZlBq5tyvtbyhXBUYsBiL_w==/109951174145598276.jpg",
+      "albumPic": "https://p2.music.126.net/ZlBq5tyvtbyhXBUYsBiL_w==/109951174145598276.jpg",
       "duration": 256753,
       "url": null,
       "source": "netease",
       "br": null,
-      "addedAt": "2026-11-01T22:00:34.680Z"
+      "addedAt": "2026-11-02T22:00:50.298Z"
+    },
+    {
+      "id": "3455581833",
+      "name": "Behind My Eyes",
+      "artists": [
+        "Lunak"
+      ],
+      "album": "Behind My Eyes",
+      "albumPic": "https://p2.music.126.net/1iNhK5kdmLATix8u2RwQ0A==/109951174196000921.jpg",
+      "duration": 183234,
+      "url": null,
+      "source": "netease",
+      "br": null,
+      "addedAt": "2026-11-02T22:00:50.298Z"
+    },
+    {
+      "id": "3451960391",
+      "name": "灰色童话",
+      "artists": [
+        "PearBae小梨",
+        "Top Barry"
+      ],
+      "album": "灰色童话",
+      "albumPic": "https://p2.music.126.net/-QTjvheTuM5crIT8dIjEVA==/109951174144774285.jpg",
+      "duration": 154285,
+      "url": null,
+      "source": "netease",
+      "br": null,
+      "addedAt": "2026-11-02T22:00:50.298Z"
+    },
+    {
+      "id": "3447749509",
+      "name": "雲を抜け風下へ私だけ",
+      "artists": [
+        "ヨルシカ"
+      ],
+      "album": "雲を抜け風下へ私だけ",
+      "albumPic": "https://p2.music.126.net/rlyd27VK7UH1lnzV9K_GXA==/109951174106176775.jpg",
+      "duration": 238398,
+      "url": null,
+      "source": "netease",
+      "br": null,
+      "addedAt": "2026-11-02T22:00:50.298Z"
+    },
+    {
+      "id": "3447060873",
+      "name": "指尖缠绕",
+      "artists": [
+        "ZIV"
+      ],
+      "album": "指尖缠绕",
+      "albumPic": "https://p2.music.126.net/UEsAAtvNBUKWwZsBQl6wwg==/109951174097758221.jpg",
+      "duration": 194052,
+      "url": null,
+      "source": "netease",
+      "br": null,
+      "addedAt": "2026-11-02T22:00:50.298Z"
     },
     {
       "id": "3452841383",
@@ -2431,27 +2515,43 @@
         "WE GO-6"
       ],
       "album": "Lucky Charm",
-      "albumPic": "https://p1.music.126.net/dwdHf7nR1c053ksQw_inKQ==/109951174173471141.jpg",
+      "albumPic": "https://p2.music.126.net/dwdHf7nR1c053ksQw_inKQ==/109951174173471141.jpg",
       "duration": 125762,
       "url": null,
       "source": "netease",
       "br": null,
-      "addedAt": "2026-11-01T22:00:34.680Z"
+      "addedAt": "2026-11-02T22:00:50.298Z"
     },
     {
-      "id": "3453976884",
-      "name": "Before the Mic Check",
+      "id": "3448337966",
+      "name": "Flower In A Hurricane (feat. Tame Impala, SZA, King Gizzard & the Lizard Wizard) [From GTAVI: Original Score]",
       "artists": [
-        "KIV",
-        "贾真Jahgen"
+        "Justice",
+        "Tame Impala",
+        "SZA",
+        "Grand Theft Auto VI"
       ],
-      "album": "Jress Kode",
-      "albumPic": "https://p1.music.126.net/1ImAA6YrmV1mOwUXAOvA4w==/109951174175102049.jpg",
-      "duration": 159999,
+      "album": "Flower In A Hurricane (feat. Tame Impala, SZA, King Gizzard & the Lizard Wizard) [From GTAVI: Original Score]",
+      "albumPic": "https://p2.music.126.net/HjZkWcl5P68o5obOdvAewg==/109951174119015177.jpg",
+      "duration": 224877,
       "url": null,
       "source": "netease",
       "br": null,
-      "addedAt": "2026-11-01T22:00:34.680Z"
+      "addedAt": "2026-11-02T22:00:50.298Z"
+    },
+    {
+      "id": "3444736220",
+      "name": "Stay Awake",
+      "artists": [
+        "Moon Sujin"
+      ],
+      "album": "닥터X : 하얀 마피아의 시대 OST Part.2",
+      "albumPic": "https://p2.music.126.net/DNEmRzDNCK5O_TyS6yQbJQ==/109951174065917196.jpg",
+      "duration": 192000,
+      "url": null,
+      "source": "netease",
+      "br": null,
+      "addedAt": "2026-11-02T22:00:50.298Z"
     },
     {
       "id": "3451247787",
@@ -2463,303 +2563,26 @@
         "Sophie Powers"
       ],
       "album": "FIRESTARTER",
-      "albumPic": "https://p1.music.126.net/310_2NP-FSWzbNw7wyzC0A==/109951174138007263.jpg",
+      "albumPic": "https://p2.music.126.net/310_2NP-FSWzbNw7wyzC0A==/109951174138007263.jpg",
       "duration": 182493,
       "url": null,
       "source": "netease",
       "br": null,
-      "addedAt": "2026-11-01T22:00:34.680Z"
+      "addedAt": "2026-11-02T22:00:50.298Z"
     },
     {
-      "id": "3444092572",
-      "name": "世界和你一样坏",
+      "id": "3444720987",
+      "name": "Follow Me",
       "artists": [
-        "4444",
-        "悲伤情绪海"
+        "Alec Benjamin"
       ],
-      "album": "世界和你一样坏",
-      "albumPic": "https://p1.music.126.net/cV0F8V8bqNO4DnOoWkxzdA==/109951174054291284.jpg",
-      "duration": 117913,
+      "album": "Follow Me",
+      "albumPic": "https://p2.music.126.net/f5OvcKK7e44LpJ7ySBui0Q==/109951174065677398.jpg",
+      "duration": 171352,
       "url": null,
       "source": "netease",
       "br": null,
-      "addedAt": "2026-11-01T22:00:34.680Z"
-    },
-    {
-      "id": "3448337966",
-      "name": "Flower In A Hurricane (feat. Tame Impala, SZA, King Gizzard & the Lizard Wizard) [from GTAVI]",
-      "artists": [
-        "Justice",
-        "Tame Impala",
-        "SZA",
-        "Grand Theft Auto VI"
-      ],
-      "album": "Flower In A Hurricane (feat. Tame Impala, SZA, King Gizzard & the Lizard Wizard) [from GTAVI]",
-      "albumPic": "https://p1.music.126.net/HjZkWcl5P68o5obOdvAewg==/109951174119015177.jpg",
-      "duration": 224877,
-      "url": null,
-      "source": "netease",
-      "br": null,
-      "addedAt": "2026-11-01T22:00:34.680Z"
-    },
-    {
-      "id": "3452436258",
-      "name": "标准外",
-      "artists": [
-        "Arboi氩男孩"
-      ],
-      "album": "标准外",
-      "albumPic": "https://p1.music.126.net/YGL8SB_tr5OMPXwNlLibLA==/109951174149867673.jpg",
-      "duration": 161998,
-      "url": null,
-      "source": "netease",
-      "br": null,
-      "addedAt": "2026-11-01T22:00:34.680Z"
-    },
-    {
-      "id": "3447749509",
-      "name": "雲を抜け風下へ私だけ",
-      "artists": [
-        "ヨルシカ"
-      ],
-      "album": "雲を抜け風下へ私だけ",
-      "albumPic": "https://p1.music.126.net/rlyd27VK7UH1lnzV9K_GXA==/109951174106176775.jpg",
-      "duration": 238398,
-      "url": null,
-      "source": "netease",
-      "br": null,
-      "addedAt": "2026-11-01T22:00:34.680Z"
-    },
-    {
-      "id": "3445486920",
-      "name": "现在的我",
-      "artists": [
-        "承桓"
-      ],
-      "album": "现在的我",
-      "albumPic": "https://p1.music.126.net/AByQKT6Yg3eM20bx4Lc_ew==/109951174076069812.jpg",
-      "duration": 225133,
-      "url": null,
-      "source": "netease",
-      "br": null,
-      "addedAt": "2026-11-01T22:00:34.680Z"
-    },
-    {
-      "id": "3455163809",
-      "name": "永恒少年",
-      "artists": [
-        "KAFE.HU胡懿",
-        "黄之仪Kyra Zilver",
-        "KEY.L刘聪",
-        "功夫胖KUNGFU-PEN"
-      ],
-      "album": "永恒少年",
-      "albumPic": "https://p1.music.126.net/4civ6x3ct9aa4q3xpjfekg==/109951174189886051.jpg",
-      "duration": 278125,
-      "url": null,
-      "source": "netease",
-      "br": null,
-      "addedAt": "2026-11-01T22:00:34.680Z"
-    },
-    {
-      "id": "3453935031",
-      "name": "霏儿",
-      "artists": [
-        "李雨霏_晚饭"
-      ],
-      "album": "霏儿",
-      "albumPic": "https://p1.music.126.net/H3WNpIrd5jvDm44DgJmKDg==/109951174174675607.jpg",
-      "duration": 209717,
-      "url": null,
-      "source": "netease",
-      "br": null,
-      "addedAt": "2026-11-01T22:00:34.680Z"
-    },
-    {
-      "id": "3451040461",
-      "name": "Real Recognize Real",
-      "artists": [
-        "TizzyT",
-        "HunGer"
-      ],
-      "album": "Real Recognize Real",
-      "albumPic": "https://p1.music.126.net/ZEFWkusyC6ah24wxq6EGsg==/109951174135531144.jpg",
-      "duration": 151836,
-      "url": null,
-      "source": "netease",
-      "br": null,
-      "addedAt": "2026-11-01T22:00:34.680Z"
-    },
-    {
-      "id": "3442250724",
-      "name": "Circles",
-      "artists": [
-        "James Blunt"
-      ],
-      "album": "Circles",
-      "albumPic": "https://p1.music.126.net/EWEiCq4au7tlkz6O_SNG4Q==/109951174022455495.jpg",
-      "duration": 232468,
-      "url": null,
-      "source": "netease",
-      "br": null,
-      "addedAt": "2026-11-01T22:00:34.680Z"
-    },
-    {
-      "id": "3446384412",
-      "name": "保留关系",
-      "artists": [
-        "Max李玄"
-      ],
-      "album": "保留关系",
-      "albumPic": "https://p1.music.126.net/d1MmOFraUxqZ9RYHzvExiA==/109951174087883787.jpg",
-      "duration": 191194,
-      "url": null,
-      "source": "netease",
-      "br": null,
-      "addedAt": "2026-11-01T22:00:34.680Z"
-    },
-    {
-      "id": "3445947349",
-      "name": "最难得",
-      "artists": [
-        "单依纯"
-      ],
-      "album": "最难得",
-      "albumPic": "https://p1.music.126.net/In59tmNk1xSTHxQyw7Vhmg==/109951174082547347.jpg",
-      "duration": 245263,
-      "url": null,
-      "source": "netease",
-      "br": null,
-      "addedAt": "2026-11-01T22:00:34.680Z"
-    },
-    {
-      "id": "3448795535",
-      "name": "何处山海万象生",
-      "artists": [
-        "铁痕电台-MSR",
-        "8:48"
-      ],
-      "album": "丹青渡OST",
-      "albumPic": "https://p1.music.126.net/5UjtOOz1-4bnIA-dyd8fKA==/109951174112405162.jpg",
-      "duration": 170561,
-      "url": null,
-      "source": "netease",
-      "br": null,
-      "addedAt": "2026-11-01T22:00:34.680Z"
-    },
-    {
-      "id": "3445099129",
-      "name": "伥",
-      "artists": [
-        "UDG Records",
-        "DD Ma Shawty"
-      ],
-      "album": "UDG FRESHMAN 2026 SHOW",
-      "albumPic": "https://p1.music.126.net/yIco-8o-eq6P5CQ7ybIv-Q==/109951174087306724.jpg",
-      "duration": 125807,
-      "url": null,
-      "source": "netease",
-      "br": null,
-      "addedAt": "2026-11-01T22:00:34.680Z"
-    },
-    {
-      "id": "3446271874",
-      "name": "人生剩下的难题",
-      "artists": [
-        "廖俊涛"
-      ],
-      "album": "俊涛的猜想",
-      "albumPic": "https://p1.music.126.net/keJU1Z7lQPUvJnaEYpJI0g==/109951174086638117.jpg",
-      "duration": 379545,
-      "url": null,
-      "source": "netease",
-      "br": null,
-      "addedAt": "2026-11-01T22:00:34.680Z"
-    },
-    {
-      "id": "3443796005",
-      "name": "Desultory Signals",
-      "artists": [
-        "technoplanet"
-      ],
-      "album": "Desultory Signals",
-      "albumPic": "https://p1.music.126.net/dordaUfD8kfM3mO9hDmgog==/109951174134970328.jpg",
-      "duration": 150750,
-      "url": null,
-      "source": "netease",
-      "br": null,
-      "addedAt": "2026-11-01T22:00:34.680Z"
-    },
-    {
-      "id": "3448136989",
-      "name": "青春症：谢幕",
-      "artists": [
-        "白居可能易",
-        "M3mo"
-      ],
-      "album": "青春症",
-      "albumPic": "https://p1.music.126.net/SWt7orD55GJZsVmzw_ZcMA==/109951174107330698.jpg",
-      "duration": 136585,
-      "url": null,
-      "source": "netease",
-      "br": null,
-      "addedAt": "2026-11-01T22:00:34.680Z"
-    },
-    {
-      "id": "3444736220",
-      "name": "Stay Awake",
-      "artists": [
-        "Moon Sujin"
-      ],
-      "album": "닥터X : 하얀 마피아의 시대 OST Part.2",
-      "albumPic": "https://p1.music.126.net/DNEmRzDNCK5O_TyS6yQbJQ==/109951174065917196.jpg",
-      "duration": 192000,
-      "url": null,
-      "source": "netease",
-      "br": null,
-      "addedAt": "2026-11-01T22:00:34.680Z"
-    },
-    {
-      "id": "3451494941",
-      "name": "轻轻",
-      "artists": [
-        "肖战"
-      ],
-      "album": "轻轻",
-      "albumPic": "https://p1.music.126.net/UB5316m5gjB4ItMnUxlxpA==/109951174139650085.jpg",
-      "duration": 220547,
-      "url": null,
-      "source": "netease",
-      "br": null,
-      "addedAt": "2026-11-01T22:00:34.680Z"
-    },
-    {
-      "id": "3446942693",
-      "name": "你透过我的眼睛在看谁",
-      "artists": [
-        "陈小满阿"
-      ],
-      "album": "你透过我的眼睛在看谁",
-      "albumPic": "https://p1.music.126.net/vKNnkFD53KrYyFVa6t_guw==/109951174096896811.jpg",
-      "duration": 262588,
-      "url": null,
-      "source": "netease",
-      "br": null,
-      "addedAt": "2026-11-01T22:00:34.680Z"
-    },
-    {
-      "id": "3449083016",
-      "name": "面目全非",
-      "artists": [
-        "张远"
-      ],
-      "album": "面目全非",
-      "albumPic": "https://p1.music.126.net/UawlDEAxFKQF27Zk7lxuzg==/109951174116617076.jpg",
-      "duration": 231308,
-      "url": null,
-      "source": "netease",
-      "br": null,
-      "addedAt": "2026-11-01T22:00:34.680Z"
+      "addedAt": "2026-11-02T22:00:50.298Z"
     },
     {
       "id": "3450368441",
@@ -2770,397 +2593,384 @@
         "Bryce Pinkham"
       ],
       "album": "Helluva Boss: Season Three, Part 1 (Episodes 4-5)",
-      "albumPic": "https://p1.music.126.net/ZcEhDERhuzCydNV3N1EdGQ==/109951174129799095.jpg",
+      "albumPic": "https://p2.music.126.net/ZcEhDERhuzCydNV3N1EdGQ==/109951174129799095.jpg",
       "duration": 192505,
       "url": null,
       "source": "netease",
       "br": null,
-      "addedAt": "2026-11-01T22:00:34.680Z"
+      "addedAt": "2026-11-02T22:00:50.298Z"
     },
     {
-      "id": "3453872949",
-      "name": "需要人陪",
+      "id": "3445947349",
+      "name": "最难得",
       "artists": [
-        "辰乐"
+        "单依纯"
       ],
-      "album": "需要人陪",
-      "albumPic": "https://p1.music.126.net/IF6vcxx9HyAdXLMrBN9TdQ==/109951174189729177.jpg",
-      "duration": 244437,
+      "album": "最难得",
+      "albumPic": "https://p2.music.126.net/In59tmNk1xSTHxQyw7Vhmg==/109951174082547347.jpg",
+      "duration": 245263,
       "url": null,
       "source": "netease",
       "br": null,
-      "addedAt": "2026-11-01T22:00:34.680Z"
+      "addedAt": "2026-11-02T22:00:50.298Z"
     },
     {
-      "id": "3447955267",
-      "name": "雨天",
+      "id": "3451040461",
+      "name": "Real Recognize Real",
       "artists": [
-        "曲甲"
+        "TizzyT",
+        "HunGer"
       ],
-      "album": "雨天",
-      "albumPic": "https://p1.music.126.net/rmObDjfBOEudlijU2tlRVQ==/109951174106320304.jpg",
-      "duration": 215704,
+      "album": "Real Recognize Real",
+      "albumPic": "https://p2.music.126.net/ZEFWkusyC6ah24wxq6EGsg==/109951174135531144.jpg",
+      "duration": 151836,
       "url": null,
       "source": "netease",
       "br": null,
-      "addedAt": "2026-11-01T22:00:34.680Z"
+      "addedAt": "2026-11-02T22:00:50.298Z"
     },
     {
-      "id": "3372052257",
-      "name": "学功夫练武术",
+      "id": "3444092572",
+      "name": "世界和你一样坏",
       "artists": [
-        "概念黁"
+        "4444",
+        "悲伤情绪海"
       ],
-      "album": "Kung Fu Jumpstyle",
-      "albumPic": "https://p1.music.126.net/KliaeKISrdtzwpIHWjcIuA==/109951173089315216.jpg",
-      "duration": 98844,
+      "album": "世界和你一样坏",
+      "albumPic": "https://p2.music.126.net/cV0F8V8bqNO4DnOoWkxzdA==/109951174054291284.jpg",
+      "duration": 117913,
       "url": null,
       "source": "netease",
       "br": null,
-      "addedAt": "2026-11-01T22:00:37.461Z"
+      "addedAt": "2026-11-02T22:00:50.298Z"
     },
     {
-      "id": "2693246353",
-      "name": "†TAKEDISKRUSH!†（嘉豪进行曲）",
+      "id": "3451494941",
+      "name": "轻轻",
       "artists": [
-        "N2UtheHartlocker"
+        "肖战"
       ],
-      "album": "†TAKEDISKRUSH!†（三角洲行动二洲年宣传片BGM）",
-      "albumPic": "https://p1.music.126.net/sW7ohtadMkh3lQZ_YdTyEg==/109951170710899916.jpg",
-      "duration": 162000,
+      "album": "轻轻",
+      "albumPic": "https://p2.music.126.net/UB5316m5gjB4ItMnUxlxpA==/109951174139650085.jpg",
+      "duration": 220547,
       "url": null,
       "source": "netease",
       "br": null,
-      "addedAt": "2026-11-01T22:00:37.461Z"
+      "addedAt": "2026-11-02T22:00:50.298Z"
     },
     {
-      "id": "3356975915",
-      "name": "Montagem pitty",
+      "id": "3445099129",
+      "name": "伥",
       "artists": [
-        "见过夏天P",
-        "洛天依"
+        "UDG Records",
+        "DD Ma Shawty"
       ],
-      "album": "拼接遗憾",
-      "albumPic": "https://p1.music.126.net/5jl8JqT7s04C9dcoIoRH_A==/109951173083608975.jpg",
-      "duration": 98070,
+      "album": "UDG FRESHMAN 2026 SHOW",
+      "albumPic": "https://p2.music.126.net/yIco-8o-eq6P5CQ7ybIv-Q==/109951174087306724.jpg",
+      "duration": 125807,
       "url": null,
       "source": "netease",
       "br": null,
-      "addedAt": "2026-11-01T22:00:37.461Z"
+      "addedAt": "2026-11-02T22:00:50.298Z"
     },
     {
-      "id": "3455150751",
-      "name": "樱花妹",
+      "id": "3449083016",
+      "name": "面目全非",
       "artists": [
-        "法老",
-        "GENIUSAID"
+        "张远"
       ],
-      "album": "年轻人的一生",
-      "albumPic": "https://p2.music.126.net/FEc7v3I3YXHMDu31NJwuLg==/109951174185039781.jpg",
-      "duration": 180839,
+      "album": "面目全非",
+      "albumPic": "https://p2.music.126.net/UawlDEAxFKQF27Zk7lxuzg==/109951174116617076.jpg",
+      "duration": 231308,
       "url": null,
       "source": "netease",
       "br": null,
-      "addedAt": "2026-11-01T22:00:37.461Z"
+      "addedAt": "2026-11-02T22:00:50.298Z"
     },
     {
-      "id": "3381504830",
-      "name": "感官过载",
+      "id": "3448136989",
+      "name": "青春症：谢幕",
       "artists": [
-        "残像音阶",
+        "白居可能易",
         "M3mo"
       ],
-      "album": "感官过载",
-      "albumPic": "https://p2.music.126.net/qGLgEziAdCXsk9SbhiYjbw==/109951173214324887.jpg",
-      "duration": 116165,
+      "album": "青春症",
+      "albumPic": "https://p2.music.126.net/SWt7orD55GJZsVmzw_ZcMA==/109951174107330698.jpg",
+      "duration": 136585,
       "url": null,
       "source": "netease",
       "br": null,
-      "addedAt": "2026-11-01T22:00:37.461Z"
+      "addedAt": "2026-11-02T22:00:50.298Z"
     },
     {
-      "id": "3410751520",
-      "name": "选择失忆",
+      "id": "3443796005",
+      "name": "Desultory Signals",
       "artists": [
-        "陈予恩",
-        "季夏"
+        "technoplanet"
       ],
-      "album": "选择失忆",
-      "albumPic": "https://p2.music.126.net/5bKkhbmR384JbHJFTtEnow==/109951173628785706.jpg",
-      "duration": 121547,
+      "album": "Desultory Signals",
+      "albumPic": "https://p2.music.126.net/dordaUfD8kfM3mO9hDmgog==/109951174134970328.jpg",
+      "duration": 150750,
       "url": null,
       "source": "netease",
       "br": null,
-      "addedAt": "2026-11-01T22:00:37.461Z"
+      "addedAt": "2026-11-02T22:00:50.298Z"
     },
     {
-      "id": "420401511",
-      "name": "和你",
+      "id": "3448795535",
+      "name": "何处山海万象生",
       "artists": [
-        "余佳运"
+        "铁痕电台-MSR",
+        "8:48"
       ],
-      "album": "幸福三部曲",
-      "albumPic": "https://p2.music.126.net/O6d7GYY3gp2uy8zehvcOjQ==/17699938184267410.jpg",
-      "duration": 200708,
+      "album": "丹青渡OST",
+      "albumPic": "https://p2.music.126.net/5UjtOOz1-4bnIA-dyd8fKA==/109951174112405162.jpg",
+      "duration": 170561,
       "url": null,
       "source": "netease",
       "br": null,
-      "addedAt": "2026-11-01T22:00:37.461Z"
+      "addedAt": "2026-11-02T22:00:50.298Z"
     },
     {
-      "id": "174956",
-      "name": "坏女孩",
+      "id": "3454354719",
+      "name": "孤岛",
       "artists": [
-        "徐良",
-        "小凌"
+        "吴姆斯"
       ],
-      "album": "不良少年",
-      "albumPic": "https://p2.music.126.net/a82aXr_eNkbFX0BkXuKvgg==/109951172050962571.jpg",
-      "duration": 242426,
+      "album": "孤岛（太多人的相逢只是一场梦）",
+      "albumPic": "https://p2.music.126.net/gqVhMHA4kwu1O_W6vfb4Eg==/109951174179931866.jpg",
+      "duration": 150808,
       "url": null,
       "source": "netease",
       "br": null,
-      "addedAt": "2026-11-01T22:00:37.461Z"
+      "addedAt": "2026-11-02T22:00:50.298Z"
     },
     {
-      "id": "3417407543",
-      "name": "消失的那片海",
+      "id": "3445842367",
+      "name": "琥珀色的情话",
       "artists": [
-        "昨天"
+        "周传雄"
       ],
-      "album": "幸福昭昭如流水",
-      "albumPic": "https://p2.music.126.net/F-2KLcqKobRfnhnVuBA4Kw==/109951173705891444.jpg",
-      "duration": 151912,
+      "album": "琥珀色的情话",
+      "albumPic": "https://p2.music.126.net/lcjmWPCSnoa_zP_R3q9HxQ==/109951174081732345.jpg",
+      "duration": 273982,
       "url": null,
       "source": "netease",
       "br": null,
-      "addedAt": "2026-11-01T22:00:37.461Z"
+      "addedAt": "2026-11-02T22:00:50.298Z"
     },
     {
-      "id": "494642794",
-      "name": "magnolia",
+      "id": "3446271874",
+      "name": "人生剩下的难题",
       "artists": [
-        "keshi"
+        "廖俊涛"
       ],
-      "album": "magnolia",
-      "albumPic": "https://p2.music.126.net/51MhPlXdP3edwqML9SxbZA==/109951168789051293.jpg",
-      "duration": 139623,
+      "album": "俊涛的猜想",
+      "albumPic": "https://p2.music.126.net/keJU1Z7lQPUvJnaEYpJI0g==/109951174086638117.jpg",
+      "duration": 379545,
       "url": null,
       "source": "netease",
       "br": null,
-      "addedAt": "2026-11-01T22:00:37.461Z"
+      "addedAt": "2026-11-02T22:00:50.298Z"
     },
     {
-      "id": "28718313",
-      "name": "The Way I Still Love You",
+      "id": "3451009876",
+      "name": "焦虑型依恋",
       "artists": [
-        "Reynard Silva"
+        "Start Over"
       ],
-      "album": "Reynard Silva",
-      "albumPic": "https://p2.music.126.net/JyPsd_g00M-4mqXLLtHncw==/5984641790343690.jpg",
-      "duration": 228080,
+      "album": "焦虑型依恋",
+      "albumPic": "https://p2.music.126.net/qy3d-uZbZo537OX915ep9Q==/109951174135250681.jpg",
+      "duration": 179731,
       "url": null,
       "source": "netease",
       "br": null,
-      "addedAt": "2026-11-01T22:00:37.461Z"
+      "addedAt": "2026-11-02T22:00:50.298Z"
     },
     {
-      "id": "1975457499",
-      "name": "Prelude",
-      "artists": [
-        "Andria Rose"
-      ],
-      "album": "Electric",
-      "albumPic": "https://p2.music.126.net/Vqacogww8Nz-tW0508unBg==/109951167817066053.jpg",
-      "duration": 236500,
-      "url": null,
-      "source": "netease",
-      "br": null,
-      "addedAt": "2026-11-01T22:00:37.461Z"
-    },
-    {
-      "id": "865202070",
-      "name": "时间飞行",
-      "artists": [
-        "吾恩",
-        "苍白"
-      ],
-      "album": "时间飞行",
-      "albumPic": "https://p2.music.126.net/32hu0FvD2A7yCWMCravHKw==/109951163398826662.jpg",
-      "duration": 186014,
-      "url": null,
-      "source": "netease",
-      "br": null,
-      "addedAt": "2026-11-01T22:00:37.461Z"
-    },
-    {
-      "id": "19827042",
-      "name": "Call You Tonight",
-      "artists": [
-        "Whitney Houston"
-      ],
-      "album": "I Look To You",
-      "albumPic": "https://p2.music.126.net/0rCqvshmixfyHpQYxd1LsQ==/109951165987301859.jpg",
-      "duration": 250066,
-      "url": null,
-      "source": "netease",
-      "br": null,
-      "addedAt": "2026-11-01T22:00:37.461Z"
-    },
-    {
-      "id": "3428156635",
-      "name": "Una Mattina Slap House",
-      "artists": [
-        "SMYE"
-      ],
-      "album": "Una Mattina Slap House",
-      "albumPic": "https://p2.music.126.net/f4Fm5mfEQ4ZDo2TTwWBYkg==/109951173852374867.jpg",
-      "duration": 179323,
-      "url": null,
-      "source": "netease",
-      "br": null,
-      "addedAt": "2026-11-01T22:00:37.461Z"
-    },
-    {
-      "id": "108263",
-      "name": "心墙",
-      "artists": [
-        "林俊杰"
-      ],
-      "album": "她说 概念自选辑",
-      "albumPic": "https://p2.music.126.net/LI3duoHIZyyLawRJLY51kA==/109951172024569374.jpg",
-      "duration": 225645,
-      "url": null,
-      "source": "netease",
-      "br": null,
-      "addedAt": "2026-11-01T22:00:37.461Z"
-    },
-    {
-      "id": "3426181126",
-      "name": "短发女孩(她留短发淡的妆)",
+      "id": "3450402022",
+      "name": "桔梗花般的她",
       "artists": [
         "Zzh"
       ],
-      "album": "短发女孩(她留短发淡的妆)",
-      "albumPic": "https://p2.music.126.net/Xeiv0AMaqMM-Du3ttGbzSg==/109951173826301475.jpg",
-      "duration": 146663,
+      "album": "桔梗花般的她",
+      "albumPic": "https://p2.music.126.net/i3_f4DlreIfksgGoc5SciA==/109951174130112065.jpg",
+      "duration": 174155,
       "url": null,
       "source": "netease",
       "br": null,
-      "addedAt": "2026-11-01T22:00:37.461Z"
+      "addedAt": "2026-11-02T22:00:50.298Z"
     },
     {
-      "id": "3432805648",
-      "name": "夜醉佳人",
+      "id": "2623879439",
+      "name": "新生活",
       "artists": [
-        "FLAdMoile"
+        "王齐铭WatchMe",
+        "LSGCsikoriot"
       ],
-      "album": "夜醉佳人",
-      "albumPic": "https://p2.music.126.net/5-7QeHoTSyPbOgVOSR_mBQ==/109951173899227455.jpg",
-      "duration": 113225,
+      "album": "新生活",
+      "albumPic": "https://p2.music.126.net/xWWFtgjV7BgpLXhxdWfQEw==/109951169929918547.jpg",
+      "duration": 183947,
       "url": null,
       "source": "netease",
       "br": null,
-      "addedAt": "2026-11-01T22:00:37.461Z"
+      "addedAt": "2026-11-02T22:00:53.157Z"
     },
     {
-      "id": "1381723556",
-      "name": "Call your name <Gv>",
+      "id": "27867073",
+      "name": "연애의 조건 (Love Options)",
       "artists": [
-        "澤野弘之",
-        "R!N/Gemie"
+        "BESTie"
       ],
-      "album": "「進撃の巨人」Season3 オリジナルサウンドトラック",
-      "albumPic": "https://p2.music.126.net/tUVBHTRiO2fSvvgIcMhuGA==/109951164317563085.jpg",
-      "duration": 259720,
+      "album": "연애의 조건 (Love Options)",
+      "albumPic": "https://p2.music.126.net/6rRfz31BrRX6R3GGl_10kA==/109951169710211584.jpg",
+      "duration": 194118,
       "url": null,
       "source": "netease",
       "br": null,
-      "addedAt": "2026-11-01T22:00:37.461Z"
+      "addedAt": "2026-11-02T22:00:53.157Z"
     },
     {
-      "id": "167873",
-      "name": "多余的解释",
+      "id": "2645641440",
+      "name": "November Rain",
       "artists": [
-        "许嵩"
+        "YangYang"
       ],
-      "album": "自定义",
-      "albumPic": "https://p2.music.126.net/Zg4XDfsiRi5vawjSWPP8Ng==/109951172899966259.jpg",
-      "duration": 277040,
+      "album": "November Rain",
+      "albumPic": "https://p2.music.126.net/R4O6KM8FJQ-9SM3AlQPCbg==/109951170145454911.jpg",
+      "duration": 192875,
       "url": null,
       "source": "netease",
       "br": null,
-      "addedAt": "2026-11-01T22:00:37.461Z"
+      "addedAt": "2026-11-02T22:00:53.157Z"
     },
     {
-      "id": "3325162235",
-      "name": "痛载入2.0",
+      "id": "3454738807",
+      "name": "旧衣柜",
       "artists": [
-        "猫头英OWL"
+        "李斯丹妮"
       ],
-      "album": "痛载入2.0",
-      "albumPic": "https://p2.music.126.net/vzvXi-lP87VZ5biNdiRUpw==/109951172387435953.jpg",
-      "duration": 152244,
+      "album": "旧衣柜",
+      "albumPic": "https://p2.music.126.net/i6DUKKP4wQfo7Iu63WeHiQ==/109951174184696390.jpg",
+      "duration": 185714,
       "url": null,
       "source": "netease",
       "br": null,
-      "addedAt": "2026-11-01T22:00:37.461Z"
+      "addedAt": "2026-11-02T22:00:53.157Z"
     },
     {
-      "id": "233866",
-      "name": "心墙",
+      "id": "2122615322",
+      "name": "Forget it （feat. Mac Ova Seas）",
       "artists": [
-        "郭静"
+        "SETI",
+        "mac ova seas"
       ],
-      "album": "在树上唱歌",
-      "albumPic": "https://p2.music.126.net/SJtLWf0X4I4N0NgvSJAUVQ==/109951167343238383.jpg",
-      "duration": 226920,
+      "album": "nightfall EP",
+      "albumPic": "https://p2.music.126.net/_jRndEytHJkJbSkoOUQ49g==/109951169859352741.jpg",
+      "duration": 216051,
       "url": null,
       "source": "netease",
       "br": null,
-      "addedAt": "2026-11-01T22:00:37.461Z"
+      "addedAt": "2026-11-02T22:00:53.157Z"
     },
     {
-      "id": "2640844059",
-      "name": "慢慢离开你",
+      "id": "18094919",
+      "name": "November Rain",
       "artists": [
-        "金润吉"
+        "Guns N' Roses"
       ],
-      "album": "慢慢离开你",
-      "albumPic": "https://p2.music.126.net/mmlWL5zMvScknPj8nRj9kA==/109951170088065162.jpg",
-      "duration": 231393,
+      "album": "Use Your Illusion I",
+      "albumPic": "https://p2.music.126.net/AdHzlPZ7lM595PLweCekWw==/109951165416103681.jpg",
+      "duration": 536466,
       "url": null,
       "source": "netease",
       "br": null,
-      "addedAt": "2026-11-01T22:00:37.461Z"
+      "addedAt": "2026-11-02T22:00:53.157Z"
     },
     {
-      "id": "3431881323",
-      "name": "名为你的雨季",
+      "id": "191394",
+      "name": "Wish You Well",
       "artists": [
-        "moli"
+        "张智成"
       ],
-      "album": "名为你的雨季",
-      "albumPic": "https://p2.music.126.net/ILrIQ8CkDGvU7ECnzln4ag==/109951173890097757.jpg",
-      "duration": 117559,
+      "album": "你爱上的...",
+      "albumPic": "https://p2.music.126.net/oWVtJ9GkK-uXo4bN0H_6ZQ==/109951168978100966.jpg",
+      "duration": 257000,
       "url": null,
       "source": "netease",
       "br": null,
-      "addedAt": "2026-11-01T22:00:37.461Z"
+      "addedAt": "2026-11-02T22:00:53.157Z"
     },
     {
-      "id": "108463",
-      "name": "不潮不用花钱",
+      "id": "3410004848",
+      "name": "Mote",
       "artists": [
-        "林俊杰"
+        "tz11ltee"
       ],
-      "album": "JJ陆",
-      "albumPic": "https://p2.music.126.net/zjSzQ70gDJrneldAwvLBOg==/109951173971284858.jpg",
-      "duration": 233506,
+      "album": "MOTE",
+      "albumPic": "https://p2.music.126.net/vdtSDm_ymAxoFR8CJcrqyw==/109951173636234293.jpg",
+      "duration": 242925,
       "url": null,
       "source": "netease",
       "br": null,
-      "addedAt": "2026-11-01T22:00:37.461Z"
+      "addedAt": "2026-11-02T22:00:53.157Z"
+    },
+    {
+      "id": "3454739616",
+      "name": "我的华北",
+      "artists": [
+        "刘森"
+      ],
+      "album": "峨眉",
+      "albumPic": "https://p2.music.126.net/w8btVcZVNspCy-75ygWXOg==/109951172516621501.jpg",
+      "duration": 242848,
+      "url": null,
+      "source": "netease",
+      "br": null,
+      "addedAt": "2026-11-02T22:00:53.157Z"
+    },
+    {
+      "id": "3454711320",
+      "name": "我在海南岛不是很想你",
+      "artists": [
+        "圣",
+        "西园寺芒果"
+      ],
+      "album": "我在海南岛不是很想你",
+      "albumPic": "https://p2.music.126.net/GmboJJE5XSE6EjRZogijLA==/109951174184554501.jpg",
+      "duration": 155806,
+      "url": null,
+      "source": "netease",
+      "br": null,
+      "addedAt": "2026-11-02T22:00:53.157Z"
+    },
+    {
+      "id": "421124749",
+      "name": "HONG KONG",
+      "artists": [
+        "JANNABI"
+      ],
+      "album": "MONKEY HOTEL",
+      "albumPic": "https://p2.music.126.net/t5X7WKw1QN_PykKWBZh1_w==/109951169726063807.jpg",
+      "duration": 217000,
+      "url": null,
+      "source": "netease",
+      "br": null,
+      "addedAt": "2026-11-02T22:00:53.157Z"
+    },
+    {
+      "id": "306675",
+      "name": "明年依然好时节",
+      "artists": [
+        "许飞"
+      ],
+      "album": "许飞",
+      "albumPic": "https://p2.music.126.net/4WCa9RLCxIRPYG8AHGmtFQ==/67070209310523.jpg",
+      "duration": 161093,
+      "url": null,
+      "source": "netease",
+      "br": null,
+      "addedAt": "2026-11-02T22:00:53.157Z"
     },
     {
       "id": "442867526",
@@ -3174,78 +2984,196 @@
       "url": null,
       "source": "netease",
       "br": null,
-      "addedAt": "2026-11-01T22:00:37.461Z"
+      "addedAt": "2026-11-02T22:00:53.157Z"
     },
     {
-      "id": "1437030961",
-      "name": "Butterflies",
+      "id": "3440639515",
+      "name": "事事慢慢如愿",
       "artists": [
-        "艾志恒Asen",
-        "Maikon Flocka Flame"
+        "灰蒙蒙",
+        "VOLT"
       ],
-      "album": "Small Town Kid",
-      "albumPic": "https://p2.music.126.net/Vm34iFy0wr9ZCdTLc83pag==/109951164865285593.jpg",
-      "duration": 236040,
+      "album": "事事慢慢如愿",
+      "albumPic": "https://p2.music.126.net/gT9A3oOcU2XobWugQI-o0w==/109951173993011482.jpg",
+      "duration": 126062,
       "url": null,
       "source": "netease",
       "br": null,
-      "addedAt": "2026-11-01T22:00:37.461Z"
+      "addedAt": "2026-11-02T22:00:53.157Z"
     },
     {
-      "id": "108138",
-      "name": "那些你很冒险的梦",
+      "id": "3451519465",
+      "name": "绿豆沙",
       "artists": [
-        "林俊杰"
+        "周传雄"
       ],
-      "album": "学不会",
-      "albumPic": "https://p2.music.126.net/Z5lg-iA7pGbquJvMoY8tbg==/109951168271379420.jpg",
-      "duration": 244470,
+      "album": "绿豆沙",
+      "albumPic": "https://p2.music.126.net/crVS5XG_u-UcANOTpYS2cA==/109951174139851600.jpg",
+      "duration": 145942,
       "url": null,
       "source": "netease",
       "br": null,
-      "addedAt": "2026-11-01T22:00:37.461Z"
+      "addedAt": "2026-11-02T22:00:53.157Z"
     },
     {
-      "id": "139774",
-      "name": "The truth that you leave",
+      "id": "3441953925",
+      "name": "片刻无法永恒",
       "artists": [
-        "Pianoboy高至豪"
+        "Badynow"
       ],
-      "album": "The truth that you leave",
-      "albumPic": "https://p2.music.126.net/9idkdzbel_-lYBP7Dv_dVQ==/102254581395289.jpg",
-      "duration": 223467,
+      "album": "片刻无法永恒",
+      "albumPic": "https://p2.music.126.net/iesmkPbVjnoj-J2Nt2HvCg==/109951174018477640.jpg",
+      "duration": 169207,
       "url": null,
       "source": "netease",
       "br": null,
-      "addedAt": "2026-11-01T22:00:37.461Z"
+      "addedAt": "2026-11-02T22:00:53.157Z"
     },
     {
-      "id": "479219481",
-      "name": "Butterflies",
+      "id": "25780143",
+      "name": "过渡期",
       "artists": [
-        "Nohidea"
+        "小宇-宋念宇"
       ],
-      "album": "Blank Space",
-      "albumPic": "https://p2.music.126.net/qGZA9Po96JW1F6lkPUYi2Q==/109951165239367182.jpg",
-      "duration": 110031,
+      "album": "再一次",
+      "albumPic": "https://p2.music.126.net/jzNo1mbaW2E0fr3ojs0Y3A==/109951166730782749.jpg",
+      "duration": 275640,
       "url": null,
       "source": "netease",
       "br": null,
-      "addedAt": "2026-11-01T22:00:37.461Z"
+      "addedAt": "2026-11-02T22:00:53.157Z"
     },
     {
-      "id": "2644724736",
-      "name": "雨夹雪（end）",
+      "id": "3451947846",
+      "name": "​穷娃早当家​",
       "artists": [
-        "Seto"
+        "王齐铭WatchMe",
+        "热单间HEATROOM"
       ],
-      "album": "雨夹雪（end）",
-      "albumPic": "https://p2.music.126.net/TBEzhMXj53IhKXMWSbLjfg==/109951170132740470.jpg",
-      "duration": 135288,
+      "album": "HEATROOM TAPE 6th",
+      "albumPic": "https://p2.music.126.net/g8xwJyF0jdwB_azNcVjLxA==/109951174144675406.jpg",
+      "duration": 134482,
       "url": null,
       "source": "netease",
       "br": null,
-      "addedAt": "2026-11-01T22:00:37.461Z"
+      "addedAt": "2026-11-02T22:00:53.157Z"
+    },
+    {
+      "id": "3452033350",
+      "name": "Kiss Me Again",
+      "artists": [
+        "VOLT",
+        "Distress"
+      ],
+      "album": "Kiss Me Again",
+      "albumPic": "https://p2.music.126.net/ZNGT66A2NQkCQ5wkYk5-Cg==/109951174145500550.jpg",
+      "duration": 138448,
+      "url": null,
+      "source": "netease",
+      "br": null,
+      "addedAt": "2026-11-02T22:00:53.157Z"
+    },
+    {
+      "id": "3439808319",
+      "name": "好坏",
+      "artists": [
+        "Zkaaai",
+        "哈利白特"
+      ],
+      "album": "好坏",
+      "albumPic": "https://p2.music.126.net/-6NeNtqXVUuvEI93Dw8sfQ==/109951173982289999.jpg",
+      "duration": 228239,
+      "url": null,
+      "source": "netease",
+      "br": null,
+      "addedAt": "2026-11-02T22:00:53.157Z"
+    },
+    {
+      "id": "3425768520",
+      "name": "渐冷（你能不能再爱我一遍）",
+      "artists": [
+        "月落微醺"
+      ],
+      "album": "你能不能再爱我一遍",
+      "albumPic": "https://p2.music.126.net/cOSr6Y1Harn1XowizGuwXA==/109951173822210164.jpg",
+      "duration": 208480,
+      "url": null,
+      "source": "netease",
+      "br": null,
+      "addedAt": "2026-11-02T22:00:53.157Z"
+    },
+    {
+      "id": "3325162235",
+      "name": "痛载入2.0",
+      "artists": [
+        "猫头英OWL"
+      ],
+      "album": "痛载入2.0",
+      "albumPic": "https://p2.music.126.net/vzvXi-lP87VZ5biNdiRUpw==/109951172387435953.jpg",
+      "duration": 152244,
+      "url": null,
+      "source": "netease",
+      "br": null,
+      "addedAt": "2026-11-02T22:00:53.157Z"
+    },
+    {
+      "id": "3385211463",
+      "name": "我的存在也无所谓吗",
+      "artists": [
+        "悲爱"
+      ],
+      "album": "我的存在也无所谓吗",
+      "albumPic": "https://p2.music.126.net/GraZfTDQ8hFVNfRDb8fXBg==/109951173265892418.jpg",
+      "duration": 135348,
+      "url": null,
+      "source": "netease",
+      "br": null,
+      "addedAt": "2026-11-02T22:00:53.157Z"
+    },
+    {
+      "id": "3451880124",
+      "name": "友情期限",
+      "artists": [
+        "许明明"
+      ],
+      "album": "友情期限",
+      "albumPic": "https://p2.music.126.net/Y7pVKPe073D3IEEo3WCA7g==/109951174140314936.jpg",
+      "duration": 274737,
+      "url": null,
+      "source": "netease",
+      "br": null,
+      "addedAt": "2026-11-02T22:00:53.157Z"
+    },
+    {
+      "id": "3454731482",
+      "name": "宇宙回音（音阙诗听十周年团歌）",
+      "artists": [
+        "音阙诗听"
+      ],
+      "album": "宇宙回音（音阙诗听十周年团歌）",
+      "albumPic": "https://p2.music.126.net/mQP8i3KlYmsFZgNDnWQ_pA==/109951174184727445.jpg",
+      "duration": 292235,
+      "url": null,
+      "source": "netease",
+      "br": null,
+      "addedAt": "2026-11-02T22:00:53.157Z"
+    },
+    {
+      "id": "3415902478",
+      "name": "长恨歌（在天愿做比翼鸟 在地原为连理枝）",
+      "artists": [
+        "ONEK",
+        "LEIZI雷子",
+        "L4NE",
+        "褪色的海"
+      ],
+      "album": "长恨歌（在天愿做比翼鸟 在地原为连理枝）",
+      "albumPic": "https://p2.music.126.net/h36Hf1QyL7gTf3qYZtiNzg==/109951173687603513.jpg",
+      "duration": 126208,
+      "url": null,
+      "source": "netease",
+      "br": null,
+      "addedAt": "2026-11-02T22:00:53.157Z"
     },
     {
       "id": "2754934563",
@@ -3259,395 +3187,826 @@
       "url": null,
       "source": "netease",
       "br": null,
-      "addedAt": "2026-11-01T22:00:37.461Z"
+      "addedAt": "2026-11-02T22:00:53.157Z"
     },
     {
-      "id": "2071452224",
-      "name": "Take Me Hand",
+      "id": "3420904215",
+      "name": "Facing The Sun（inst）",
       "artists": [
-        "DAISHI DANCE",
-        "Cécile Corbel"
+        "SER"
       ],
-      "album": "Take Me Hand",
-      "albumPic": "https://p2.music.126.net/q_ZSJmVQ_NlLXq7UNAYK3g==/109951168826077552.jpg",
-      "duration": 259480,
+      "album": "Love to listen",
+      "albumPic": "https://p2.music.126.net/z4GfvgYrL25tBxrY9bOKow==/109951173235877020.jpg",
+      "duration": 136381,
       "url": null,
       "source": "netease",
       "br": null,
-      "addedAt": "2026-11-01T22:00:37.461Z"
+      "addedAt": "2026-11-02T22:00:53.157Z"
     },
     {
-      "id": "2047103213",
-      "name": "From The Start",
+      "id": "1406633327",
+      "name": "Blinding Lights",
       "artists": [
-        "Laufey"
+        "The Weeknd"
       ],
-      "album": "From The Start",
-      "albumPic": "https://p2.music.126.net/V8Qkc44CIt5CoVjw6MdiMg==/109951168609507265.jpg",
-      "duration": 169573,
+      "album": "Blinding Lights",
+      "albumPic": "https://p2.music.126.net/N-bKreSjAKtuY7bHm5hwzw==/109951165370121751.jpg",
+      "duration": 200045,
       "url": null,
       "source": "netease",
       "br": null,
-      "addedAt": "2026-11-01T22:00:37.461Z"
+      "addedAt": "2026-11-02T22:00:53.157Z"
     },
     {
-      "id": "2663837607",
-      "name": "别哭了我爱你",
+      "id": "3452445138",
+      "name": "男子汉 (热单间Live)",
       "artists": [
-        "不要杀死我的爱"
+        "王齐铭WatchMe",
+        "热单间HEATROOM"
       ],
-      "album": "别哭了我爱你",
-      "albumPic": "https://p2.music.126.net/4izJNiR-bz8wLqrcReCxAQ==/109951170357091670.jpg",
-      "duration": 199494,
+      "album": "HEATROOM TAPE 6th",
+      "albumPic": "https://p2.music.126.net/g8xwJyF0jdwB_azNcVjLxA==/109951174144675406.jpg",
+      "duration": 164812,
       "url": null,
       "source": "netease",
       "br": null,
-      "addedAt": "2026-11-01T22:00:37.461Z"
+      "addedAt": "2026-11-02T22:00:53.157Z"
     },
     {
-      "id": "2707652862",
-      "name": "沉溺（你让我的心不再结冰）",
+      "id": "2604389571",
+      "name": "Too Timid",
       "artists": [
-        "邹沛沛",
-        "Pank"
+        "Holdan Sutton"
       ],
-      "album": "没有声嘶力竭的情歌",
-      "albumPic": "https://p2.music.126.net/YFrVTXibevPl4HZQAN2U9A==/109951171015434828.jpg",
-      "duration": 193773,
+      "album": "Vagabond",
+      "albumPic": "https://p2.music.126.net/PVRcX71OjtnYw8fbdjQeYQ==/109951173945526636.jpg",
+      "duration": 308072,
       "url": null,
       "source": "netease",
       "br": null,
-      "addedAt": "2026-11-01T22:00:37.461Z"
+      "addedAt": "2026-11-02T22:00:53.157Z"
     },
     {
-      "id": "1925404868",
-      "name": "等",
+      "id": "3321333352",
+      "name": "Darkest Hour",
       "artists": [
-        "TC"
+        "Smoke"
       ],
-      "album": "等",
-      "albumPic": "https://p2.music.126.net/GzOoQ3OCsc1P3PWlAZXp0w==/109951167114915195.jpg",
-      "duration": 164911,
+      "album": "Darkest Hour",
+      "albumPic": "https://p2.music.126.net/DNlCVZZm0XAOPeUOo63SKQ==/109951172459720829.jpg",
+      "duration": 189235,
       "url": null,
       "source": "netease",
       "br": null,
-      "addedAt": "2026-11-01T22:00:37.461Z"
+      "addedAt": "2026-11-02T22:00:53.158Z"
     },
     {
-      "id": "1339725713",
-      "name": "忘羡",
+      "id": "1909927738",
+      "name": "Is There Someone Else?",
       "artists": [
-        "吾恩",
-        "朱强"
+        "The Weeknd"
       ],
-      "album": "忘羡",
-      "albumPic": "https://p2.music.126.net/VrbLpfA2CDvqvS2dppK3zA==/109951164087929256.jpg",
-      "duration": 259583,
+      "album": "Dawn FM",
+      "albumPic": "https://p2.music.126.net/tOG07yoslGokcyR7nygeKw==/109951173675216683.jpg",
+      "duration": 199111,
       "url": null,
       "source": "netease",
       "br": null,
-      "addedAt": "2026-11-01T22:00:37.461Z"
+      "addedAt": "2026-11-02T22:00:53.158Z"
     },
     {
-      "id": "1393412185",
-      "name": "maybe",
+      "id": "1500379460",
+      "name": "潜伏期",
       "artists": [
-        "mixed matches",
-        "Lukrative"
+        "孙盛希"
       ],
-      "album": "ready for the world",
-      "albumPic": "https://p2.music.126.net/JCSoWEUTa52XnXf3G2iO1A==/109951174121208353.jpg",
-      "duration": 171111,
+      "album": "出没地带",
+      "albumPic": "https://p2.music.126.net/gRMWUKU2ScajuiJDcAdX4Q==/109951165517115227.jpg",
+      "duration": 256632,
       "url": null,
       "source": "netease",
       "br": null,
-      "addedAt": "2026-11-01T22:00:37.461Z"
+      "addedAt": "2026-11-02T22:00:53.158Z"
     },
     {
-      "id": "26093064",
-      "name": "Sacred Play Secret Place",
+      "id": "3452445139",
+      "name": "多事之秋 (热单间Live)",
       "artists": [
-        "Matryoshka"
+        "王齐铭WatchMe",
+        "热单间HEATROOM"
       ],
-      "album": "Laideronnette",
-      "albumPic": "https://p2.music.126.net/1opYZaMgfAQrKMKfLy1xZA==/109951169789816801.jpg",
-      "duration": 317547,
+      "album": "HEATROOM TAPE 6th",
+      "albumPic": "https://p2.music.126.net/g8xwJyF0jdwB_azNcVjLxA==/109951174144675406.jpg",
+      "duration": 209602,
       "url": null,
       "source": "netease",
       "br": null,
-      "addedAt": "2026-11-01T22:00:37.461Z"
+      "addedAt": "2026-11-02T22:00:53.158Z"
     },
     {
-      "id": "108251",
-      "name": "当你",
+      "id": "3451440480",
+      "name": "现在立刻马上",
+      "artists": [
+        "刘炫廷",
+        "XMASwu(吴骜)"
+      ],
+      "album": "现在立刻马上",
+      "albumPic": "https://p2.music.126.net/XRc31HRsILIQO0D5ZptITw==/109951174139213114.jpg",
+      "duration": 154670,
+      "url": null,
+      "source": "netease",
+      "br": null,
+      "addedAt": "2026-11-02T22:00:53.158Z"
+    },
+    {
+      "id": "1372762575",
+      "name": "天空之外",
+      "artists": [
+        "弦子"
+      ],
+      "album": "陪你到世界之巅 电视剧原声带",
+      "albumPic": "https://p2.music.126.net/X-Qoq4sZXbxoskLjKEYrLA==/109951166369327695.jpg",
+      "duration": 297948,
+      "url": null,
+      "source": "netease",
+      "br": null,
+      "addedAt": "2026-11-02T22:00:53.158Z"
+    },
+    {
+      "id": "3455607602",
+      "name": "Тысячу лет спустя",
+      "artists": [
+        "塞壬唱片-MSR",
+        "Julia Avrutskaia",
+        "Sterling Maffe"
+      ],
+      "album": "Тысячу лет спустя",
+      "albumPic": "https://p2.music.126.net/t-XL-EmIBxyeD6S-2AdgJg==/109951174196166603.jpg",
+      "duration": 256817,
+      "url": null,
+      "source": "netease",
+      "br": null,
+      "addedAt": "2026-11-02T22:00:53.158Z"
+    },
+    {
+      "id": "37240568",
+      "name": "不潮不用花钱",
       "artists": [
         "林俊杰"
       ],
-      "album": "她说 概念自选辑",
-      "albumPic": "https://p2.music.126.net/LI3duoHIZyyLawRJLY51kA==/109951172024569374.jpg",
-      "duration": 251324,
+      "album": "乌鸦嘴妙女郎 电视原声带",
+      "albumPic": "https://p2.music.126.net/5akA85rFCVnKwjEU70dWew==/3298534888342104.jpg",
+      "duration": 230503,
       "url": null,
       "source": "netease",
       "br": null,
-      "addedAt": "2026-11-01T22:00:37.461Z"
+      "addedAt": "2026-11-02T22:00:53.158Z"
     },
     {
-      "id": "2087550484",
-      "name": "Only In My Mind",
+      "id": "28445719",
+      "name": "Bruce Lee",
       "artists": [
-        "Kenya Grace"
+        "梁博"
       ],
-      "album": "Only In My Mind",
-      "albumPic": "https://p2.music.126.net/s4QD9WzIR_lSggfWXtZlfA==/109951168959921992.jpg",
-      "duration": 161137,
+      "album": "梁博",
+      "albumPic": "https://p2.music.126.net/E8jKK_Yxa-xtEBshZb9c3w==/109951173663628420.jpg",
+      "duration": 323489,
       "url": null,
       "source": "netease",
       "br": null,
-      "addedAt": "2026-11-01T22:00:37.461Z"
+      "addedAt": "2026-11-02T22:00:53.158Z"
     },
     {
-      "id": "3410198541",
-      "name": "水为媒",
+      "id": "3451980222",
+      "name": "爱是痛觉",
       "artists": [
-        "礼越"
+        "彭雅琦（Yakisa）"
       ],
-      "album": "水为媒",
-      "albumPic": "https://p2.music.126.net/fFYdwrRt6wt87dwvv-qOYw==/109951173621996343.jpg",
-      "duration": 258650,
+      "album": "爱是痛觉",
+      "albumPic": "https://p2.music.126.net/ernLdcf9F8yCniNghPaT2g==/109951174144971921.jpg",
+      "duration": 234466,
       "url": null,
       "source": "netease",
       "br": null,
-      "addedAt": "2026-11-01T22:00:37.461Z"
+      "addedAt": "2026-11-02T22:00:53.158Z"
     },
     {
-      "id": "493525751",
-      "name": "煮酒听雨",
-      "artists": [
-        "吾恩"
-      ],
-      "album": "古风歌曲不完全收录",
-      "albumPic": "https://p2.music.126.net/uTGYVrT3jdAq6eD7QkAhOw==/109951162985737967.jpg",
-      "duration": 256171,
-      "url": null,
-      "source": "netease",
-      "br": null,
-      "addedAt": "2026-11-01T22:00:37.461Z"
-    },
-    {
-      "id": "2638443338",
-      "name": "捣蛋鬼别捣蛋！",
-      "artists": [
-        "小鷹"
-      ],
-      "album": "捣蛋鬼别捣蛋！",
-      "albumPic": "https://p2.music.126.net/KojZEXImaRUyUnSsKASS9A==/109951170100649119.jpg",
-      "duration": 134218,
-      "url": null,
-      "source": "netease",
-      "br": null,
-      "addedAt": "2026-11-01T22:00:37.461Z"
-    },
-    {
-      "id": "472045959",
-      "name": "The Cure",
-      "artists": [
-        "Lady Gaga"
-      ],
-      "album": "The Cure",
-      "albumPic": "https://p2.music.126.net/bARV4ZiYwNpoaZTyhtEwLg==/18679603046750668.jpg",
-      "duration": 211363,
-      "url": null,
-      "source": "netease",
-      "br": null,
-      "addedAt": "2026-11-01T22:00:37.461Z"
-    },
-    {
-      "id": "1958430831",
-      "name": "无赖",
-      "artists": [
-        "h3R3"
-      ],
-      "album": "故事商铺·上",
-      "albumPic": "https://p2.music.126.net/JBe7AwcGkYHhleOfQvY2hg==/109951169798343077.jpg",
-      "duration": 211895,
-      "url": null,
-      "source": "netease",
-      "br": null,
-      "addedAt": "2026-11-01T22:00:37.461Z"
-    },
-    {
-      "id": "420478436",
-      "name": "We Don't Talk Anymore (Mr. Collipark Remix)",
-      "artists": [
-        "Charlie Puth",
-        "Selena Gomez",
-        "Mr. Collipark"
-      ],
-      "album": "We Don't Talk Anymore (Mr. Collipark Remix)",
-      "albumPic": "https://p2.music.126.net/ZnSOe-J4MEfPj1J5ocEtwQ==/109951163983943030.jpg",
-      "duration": 254400,
-      "url": null,
-      "source": "netease",
-      "br": null,
-      "addedAt": "2026-11-01T22:00:37.461Z"
-    },
-    {
-      "id": "1374446646",
-      "name": "I Love You 3000",
-      "artists": [
-        "Stephanie Poetri"
-      ],
-      "album": "I Love You 3000",
-      "albumPic": "https://p2.music.126.net/9RNRp5dkqfgUu8CLEfEwlQ==/109951170496839853.jpg",
-      "duration": 209734,
-      "url": null,
-      "source": "netease",
-      "br": null,
-      "addedAt": "2026-11-01T22:00:37.461Z"
-    },
-    {
-      "id": "3342037266",
-      "name": "Её парень",
-      "artists": [
-        "Shluzov"
-      ],
-      "album": "Любимый сайт",
-      "albumPic": "https://p2.music.126.net/h7bqh6Oc3szJVGdDRjVe8Q==/109951174039422706.jpg",
-      "duration": 72000,
-      "url": null,
-      "source": "netease",
-      "br": null,
-      "addedAt": "2026-11-01T22:00:37.461Z"
-    },
-    {
-      "id": "1407789513",
-      "name": "Dark",
-      "artists": [
-        "mixed matches"
-      ],
-      "album": "Dark",
-      "albumPic": "https://p2.music.126.net/41cYmse7QDlb-G9_0aN4hA==/109951168881039362.jpg",
-      "duration": 166153,
-      "url": null,
-      "source": "netease",
-      "br": null,
-      "addedAt": "2026-11-01T22:00:37.461Z"
-    },
-    {
-      "id": "3454702309",
-      "name": "Until You (泰剧《 Fool In Love》插曲)",
-      "artists": [
-        "Bank Artit",
-        "Copter Nuntapong"
-      ],
-      "album": "Fool in Love OST",
-      "albumPic": "https://p2.music.126.net/ERImDLYOD-EuhBPX_QfiUg==/109951174184451421.jpg",
-      "duration": 221482,
-      "url": null,
-      "source": "netease",
-      "br": null,
-      "addedAt": "2026-11-01T22:00:37.461Z"
-    },
-    {
-      "id": "254132",
-      "name": "会呼吸的痛",
-      "artists": [
-        "梁静茹"
-      ],
-      "album": "崇拜",
-      "albumPic": "https://p2.music.126.net/8E9NHOTIf6V6Vv45_Taxdg==/109951168163299080.jpg",
-      "duration": 272973,
-      "url": null,
-      "source": "netease",
-      "br": null,
-      "addedAt": "2026-11-01T22:00:37.461Z"
-    },
-    {
-      "id": "3455079379",
-      "name": "雪化作泪滴 (Old Tape)",
-      "artists": [
-        "Cheeze",
-        "Trazzy",
-        "雾明"
-      ],
-      "album": "雪化作泪滴 (Old Tape)",
-      "albumPic": "https://p2.music.126.net/E1O_Vqj8BFZWf-WxiOHJRw==/109951174189111463.jpg",
-      "duration": 168462,
-      "url": null,
-      "source": "netease",
-      "br": null,
-      "addedAt": "2026-11-01T22:00:37.461Z"
-    },
-    {
-      "id": "422132597",
-      "name": "尘埃",
+      "id": "300752",
+      "name": "无奈那天",
       "artists": [
         "王菲"
       ],
-      "album": "尘埃",
-      "albumPic": "https://p2.music.126.net/ClnBZfVCRnjXQV8RaaLF_w==/3413983621484782.jpg",
-      "duration": 301041,
+      "album": "王靖雯 (Remastered 2019)",
+      "albumPic": "https://p2.music.126.net/ThM1wiumqC-7fEq7dM_inw==/109951172414920711.jpg",
+      "duration": 303892,
       "url": null,
       "source": "netease",
       "br": null,
-      "addedAt": "2026-11-01T22:00:37.461Z"
+      "addedAt": "2026-11-02T22:00:53.158Z"
     },
     {
-      "id": "426026689",
-      "name": "Breath",
+      "id": "28971281",
+      "name": "Love Me Harder",
       "artists": [
-        "Pluto",
-        "ye."
+        "Ariana Grande",
+        "The Weeknd"
       ],
-      "album": "Breath",
-      "albumPic": "https://p2.music.126.net/2BVXxrUgiJ6y3lSwDMMyyQ==/18560855788522506.jpg",
-      "duration": 201008,
+      "album": "My Everything (Deluxe Version)",
+      "albumPic": "https://p2.music.126.net/Y-tzBH3TBTExf7enqOIoIw==/109951169256431068.jpg",
+      "duration": 236133,
       "url": null,
       "source": "netease",
       "br": null,
-      "addedAt": "2026-11-01T22:00:37.461Z"
+      "addedAt": "2026-11-02T22:00:53.158Z"
     },
     {
-      "id": "440208643",
-      "name": "Psycho, Pt. 2",
+      "id": "2052348113",
+      "name": "Popular (Music from the HBO Original Series)",
       "artists": [
-        "Russ"
+        "The Weeknd",
+        "Playboi Carti",
+        "Madonna"
       ],
-      "album": "Psycho, Pt. 2",
-      "albumPic": "https://p2.music.126.net/Z8q0skkFiyZUxzJK2uCYcg==/109951164939830012.jpg",
-      "duration": 161985,
+      "album": "Popular (Music from the HBO Original Series)",
+      "albumPic": "https://p2.music.126.net/0NnJKyg1IXVGHU1uqc_eLA==/109951168972704668.jpg",
+      "duration": 215466,
       "url": null,
       "source": "netease",
       "br": null,
-      "addedAt": "2026-11-01T22:00:37.461Z"
+      "addedAt": "2026-11-02T22:00:53.158Z"
     },
     {
-      "id": "65528",
-      "name": "淘汰",
+      "id": "3417322099",
+      "name": "恋痛症",
       "artists": [
-        "陈奕迅"
+        "寒晗",
+        "小仓许"
       ],
-      "album": "认了吧",
-      "albumPic": "https://p2.music.126.net/o_OjL_NZNoeog9fIjBXAyw==/18782957139233959.jpg",
-      "duration": 285000,
+      "album": "恋痛症",
+      "albumPic": "https://p2.music.126.net/b1cWlc-qhzjyvZXPDNlt1Q==/109951173705032968.jpg",
+      "duration": 150237,
       "url": null,
       "source": "netease",
       "br": null,
-      "addedAt": "2026-11-01T22:00:37.461Z"
+      "addedAt": "2026-11-02T22:00:53.158Z"
     },
     {
-      "id": "109616",
-      "name": "100种生活",
+      "id": "3436847895",
+      "name": "他没有心pt2",
       "artists": [
-        "卢广仲"
+        "Badynow"
       ],
-      "album": "100种生活",
-      "albumPic": "https://p2.music.126.net/dpHKvxD5RrDYk-2tY6NFWA==/109951163618701907.jpg",
-      "duration": 287427,
+      "album": "他没有心pt2",
+      "albumPic": "https://p2.music.126.net/QjKO8G5UJsXu8Q2agYEvXw==/109951173946615789.jpg",
+      "duration": 137950,
       "url": null,
       "source": "netease",
       "br": null,
-      "addedAt": "2026-11-01T22:00:37.461Z"
+      "addedAt": "2026-11-02T22:00:53.158Z"
+    },
+    {
+      "id": "26145318",
+      "name": "Ma Boy",
+      "artists": [
+        "Sistar19"
+      ],
+      "album": "있다 없으니까",
+      "albumPic": "https://p2.music.126.net/OwiMNwVOIQ36xlmGlL09CQ==/2424423139247741.jpg",
+      "duration": 198000,
+      "url": null,
+      "source": "netease",
+      "br": null,
+      "addedAt": "2026-11-02T22:00:53.158Z"
+    },
+    {
+      "id": "2758268704",
+      "name": "Sins Of The Father",
+      "artists": [
+        "Daniel Caesar",
+        "Bon Iver"
+      ],
+      "album": "Son Of Spergy",
+      "albumPic": "https://p2.music.126.net/PAaYT5hSx6OlKjTsOYYT2w==/109951172185882237.jpg",
+      "duration": 470500,
+      "url": null,
+      "source": "netease",
+      "br": null,
+      "addedAt": "2026-11-02T22:00:53.158Z"
+    },
+    {
+      "id": "3455169579",
+      "name": "心湖",
+      "artists": [
+        "张靓颖"
+      ],
+      "album": "心湖",
+      "albumPic": "https://p2.music.126.net/T4jEfKxzb1U_LDWVL7LBqw==/109951174197603331.jpg",
+      "duration": 279048,
+      "url": null,
+      "source": "netease",
+      "br": null,
+      "addedAt": "2026-11-02T22:00:53.158Z"
+    },
+    {
+      "id": "1820040979",
+      "name": "Julie.",
+      "artists": [
+        "Gallant"
+      ],
+      "album": "Neptune",
+      "albumPic": "https://p2.music.126.net/H3BJ6iUJqrfKwpAgkf3jvw==/109951165846756037.jpg",
+      "duration": 231733,
+      "url": null,
+      "source": "netease",
+      "br": null,
+      "addedAt": "2026-11-02T22:00:53.158Z"
+    },
+    {
+      "id": "2058139099",
+      "name": "One Of The Girls",
+      "artists": [
+        "The Weeknd",
+        "JENNIE",
+        "Lily-Rose Depp"
+      ],
+      "album": "The Idol Episode 4 (Music from the HBO Original Series)",
+      "albumPic": "https://p2.music.126.net/6aqy20VWVRtn1f2jBLPeKQ==/109951168694564986.jpg",
+      "duration": 244684,
+      "url": null,
+      "source": "netease",
+      "br": null,
+      "addedAt": "2026-11-02T22:00:53.158Z"
+    },
+    {
+      "id": "212233",
+      "name": "千千阙歌",
+      "artists": [
+        "陈慧娴"
+      ],
+      "album": "千千阙歌",
+      "albumPic": "https://p2.music.126.net/xvdDMvUoTiREN40AUObttQ==/109951172341269304.jpg",
+      "duration": 299106,
+      "url": null,
+      "source": "netease",
+      "br": null,
+      "addedAt": "2026-11-02T22:00:53.158Z"
+    },
+    {
+      "id": "2640844059",
+      "name": "慢慢离开你",
+      "artists": [
+        "金润吉"
+      ],
+      "album": "慢慢离开你",
+      "albumPic": "https://p2.music.126.net/mmlWL5zMvScknPj8nRj9kA==/109951170088065162.jpg",
+      "duration": 231393,
+      "url": null,
+      "source": "netease",
+      "br": null,
+      "addedAt": "2026-11-02T22:00:53.158Z"
+    },
+    {
+      "id": "3444655741",
+      "name": "Sluggard",
+      "artists": [
+        "dʒesi",
+        "裴欢Devbor"
+      ],
+      "album": "DJ sty(BGM Original Mix)",
+      "albumPic": "https://p2.music.126.net/oY6nRBEGevh3a3NumaPwnA==/109951169034030454.jpg",
+      "duration": 199418,
+      "url": null,
+      "source": "netease",
+      "br": null,
+      "addedAt": "2026-11-02T22:00:53.158Z"
+    },
+    {
+      "id": "2686896007",
+      "name": "玄鸟",
+      "artists": [
+        "CashTrippy"
+      ],
+      "album": "万古",
+      "albumPic": "https://p2.music.126.net/bnlU1kCImWOvUkRH-ijDHA==/109951170644659962.jpg",
+      "duration": 153786,
+      "url": null,
+      "source": "netease",
+      "br": null,
+      "addedAt": "2026-11-02T22:00:53.158Z"
+    },
+    {
+      "id": "2742480271",
+      "name": "陷阱 (Live)",
+      "artists": [
+        "王北车"
+      ],
+      "album": "中国音乐公告牌 第四期",
+      "albumPic": "https://p2.music.126.net/F92JYJoRTimZUg9Jy7ajqw==/109951163573156980.jpg",
+      "duration": 281189,
+      "url": null,
+      "source": "netease",
+      "br": null,
+      "addedAt": "2026-11-02T22:00:53.158Z"
+    },
+    {
+      "id": "1862565773",
+      "name": "Fukashigi No Carte Lofi (Bunny Girl Senpai)",
+      "artists": [
+        "HYGH Lofi Music",
+        "Lobit",
+        "Cooky"
+      ],
+      "album": "Fukashigi No Carte Lofi (Bunny Girl Senpai)",
+      "albumPic": "https://p2.music.126.net/yhfCZeluPQnzhBiZcSRoPw==/109951166195135886.jpg",
+      "duration": 146093,
+      "url": null,
+      "source": "netease",
+      "br": null,
+      "addedAt": "2026-11-02T22:00:53.158Z"
+    },
+    {
+      "id": "256631",
+      "name": "至少还有你 (Sentimental Version)",
+      "artists": [
+        "林忆莲"
+      ],
+      "album": "林忆莲's",
+      "albumPic": "https://p2.music.126.net/Tpkxzsv2OA_4NrFjaYP1qA==/109951163829570820.jpg",
+      "duration": 207453,
+      "url": null,
+      "source": "netease",
+      "br": null,
+      "addedAt": "2026-11-02T22:00:53.158Z"
+    },
+    {
+      "id": "3454958276",
+      "name": "LOVE ME",
+      "artists": [
+        "The whitE",
+        "DrakSun"
+      ],
+      "album": "LOVE ME",
+      "albumPic": "https://p2.music.126.net/Vy8GRzm803i67M3pie7Ieg==/109951174189615733.jpg",
+      "duration": 157948,
+      "url": null,
+      "source": "netease",
+      "br": null,
+      "addedAt": "2026-11-02T22:00:53.158Z"
+    },
+    {
+      "id": "3455621001",
+      "name": "美美美",
+      "artists": [
+        "赵小童"
+      ],
+      "album": "美美美",
+      "albumPic": "https://p2.music.126.net/EmvwGE3guxhns_dfOSFztw==/109951174196437327.jpg",
+      "duration": 213461,
+      "url": null,
+      "source": "netease",
+      "br": null,
+      "addedAt": "2026-11-02T22:00:53.158Z"
+    },
+    {
+      "id": "3437986736",
+      "name": "不过就是一眨眼",
+      "artists": [
+        "张方钊"
+      ],
+      "album": "蛋专",
+      "albumPic": "https://p2.music.126.net/zHRzldNmi5I8_2O9m1wBPw==/109951173951926165.jpg",
+      "duration": 169584,
+      "url": null,
+      "source": "netease",
+      "br": null,
+      "addedAt": "2026-11-02T22:00:53.158Z"
+    },
+    {
+      "id": "3446656952",
+      "name": "ラズベリー",
+      "artists": [
+        "柿崎ユウタ"
+      ],
+      "album": "ラズベリー",
+      "albumPic": "https://p2.music.126.net/GAx10A9VePGQcBXa9XgrdQ==/109951174092169381.jpg",
+      "duration": 161666,
+      "url": null,
+      "source": "netease",
+      "br": null,
+      "addedAt": "2026-11-02T22:00:53.158Z"
+    },
+    {
+      "id": "3453830834",
+      "name": "反季节",
+      "artists": [
+        "博仔LIT"
+      ],
+      "album": "反季节",
+      "albumPic": "https://p2.music.126.net/if4aYwIE2rLzA0BqhRc5Ng==/109951174173636771.jpg",
+      "duration": 186666,
+      "url": null,
+      "source": "netease",
+      "br": null,
+      "addedAt": "2026-11-02T22:00:53.158Z"
+    },
+    {
+      "id": "3455478702",
+      "name": "petal (angry live version)",
+      "artists": [
+        "Ariana Grande"
+      ],
+      "album": "petal",
+      "albumPic": "https://p2.music.126.net/62gkk5EDgrHCNJv7-pjLTQ==/109951174195495570.jpg",
+      "duration": 205845,
+      "url": null,
+      "source": "netease",
+      "br": null,
+      "addedAt": "2026-11-02T22:00:53.158Z"
+    },
+    {
+      "id": "3448544567",
+      "name": "ころしちゃった! (Villa!ns Parade) (feat. 初音ミク)",
+      "artists": [
+        "夏山よつぎ",
+        "初音ミク"
+      ],
+      "album": "ころしちゃった! (Villa!ns Parade)",
+      "albumPic": "https://p2.music.126.net/3EVa_1nH5O2rsBsiB6OFNw==/109951174111173290.jpg",
+      "duration": 214545,
+      "url": null,
+      "source": "netease",
+      "br": null,
+      "addedAt": "2026-11-02T22:00:53.158Z"
+    },
+    {
+      "id": "3437973444",
+      "name": "透明軌道",
+      "artists": [
+        "HACHI"
+      ],
+      "album": "透明軌道",
+      "albumPic": "https://p2.music.126.net/bC3V9_EyL03cCrvmxLS3vQ==/109951173960313300.jpg",
+      "duration": 236210,
+      "url": null,
+      "source": "netease",
+      "br": null,
+      "addedAt": "2026-11-02T22:00:53.158Z"
+    },
+    {
+      "id": "3416689295",
+      "name": "遗落梦",
+      "artists": [
+        "唯愿",
+        "RL安染"
+      ],
+      "album": "遗落梦",
+      "albumPic": "https://p2.music.126.net/PeLvL87p2l0fGYZgUvDzJg==/109951173698191099.jpg",
+      "duration": 118567,
+      "url": null,
+      "source": "netease",
+      "br": null,
+      "addedAt": "2026-11-02T22:00:53.158Z"
+    },
+    {
+      "id": "2107439032",
+      "name": "phone kisses",
+      "artists": [
+        "suhmeduh"
+      ],
+      "album": "phone kisses",
+      "albumPic": "https://p2.music.126.net/IZLuaoGyoQP0xHGSoLRZXw==/109951172876798813.jpg",
+      "duration": 115990,
+      "url": null,
+      "source": "netease",
+      "br": null,
+      "addedAt": "2026-11-02T22:00:53.158Z"
+    },
+    {
+      "id": "3452436519",
+      "name": "失控漩涡",
+      "artists": [
+        "时星也"
+      ],
+      "album": "失控漩涡",
+      "albumPic": "https://p2.music.126.net/cIC7IVKzmZaOjdR3pDlSIA==/109951174149873714.jpg",
+      "duration": 199986,
+      "url": null,
+      "source": "netease",
+      "br": null,
+      "addedAt": "2026-11-02T22:00:53.158Z"
+    },
+    {
+      "id": "1382781502",
+      "name": "False God",
+      "artists": [
+        "Taylor Swift"
+      ],
+      "album": "Lover",
+      "albumPic": "https://p2.music.126.net/6CB6Jsmb7k7qiJqfMY5Row==/109951164260234943.jpg",
+      "duration": 200306,
+      "url": null,
+      "source": "netease",
+      "br": null,
+      "addedAt": "2026-11-02T22:00:53.158Z"
+    },
+    {
+      "id": "3455557996",
+      "name": "祝你自由（Live）",
+      "artists": [
+        "陆虎"
+      ],
+      "album": "听,谁在唱歌2 第四期",
+      "albumPic": "https://p2.music.126.net/rT8oyThZKk62YP_07y6lqg==/109951174195448700.jpg",
+      "duration": 196000,
+      "url": null,
+      "source": "netease",
+      "br": null,
+      "addedAt": "2026-11-02T22:00:53.158Z"
+    },
+    {
+      "id": "2711116206",
+      "name": "Big Walk Theme (Jumping Voices)",
+      "artists": [
+        "aksfx"
+      ],
+      "album": "Big Walk Theme (Jumping Voices)",
+      "albumPic": "https://p2.music.126.net/tGMeDC9Zx9WyNOZFtQx0bQ==/109951171230853054.jpg",
+      "duration": 225500,
+      "url": null,
+      "source": "netease",
+      "br": null,
+      "addedAt": "2026-11-02T22:00:53.158Z"
+    },
+    {
+      "id": "2015708003",
+      "name": "Love Life",
+      "artists": [
+        "Ritsew"
+      ],
+      "album": "Love Life",
+      "albumPic": "https://p2.music.126.net/xv6ejQBAdrZGzdMDtf9Y2Q==/109951168245936145.jpg",
+      "duration": 72283,
+      "url": null,
+      "source": "netease",
+      "br": null,
+      "addedAt": "2026-11-02T22:00:53.158Z"
+    },
+    {
+      "id": "3451233547",
+      "name": "clean slate",
+      "artists": [
+        "girl in red"
+      ],
+      "album": "BLUE",
+      "albumPic": "https://p2.music.126.net/uBb5Gp-xPvLP1hXfkq6Hqw==/109951174137922729.jpg",
+      "duration": 190249,
+      "url": null,
+      "source": "netease",
+      "br": null,
+      "addedAt": "2026-11-02T22:00:53.158Z"
+    },
+    {
+      "id": "472435756",
+      "name": "淡淡的歌",
+      "artists": [
+        "许飞"
+      ],
+      "album": "恰许同学年少",
+      "albumPic": "https://p2.music.126.net/LjOcp0ajc-fnPlyh4G6k4w==/109951162904481803.jpg",
+      "duration": 222960,
+      "url": null,
+      "source": "netease",
+      "br": null,
+      "addedAt": "2026-11-02T22:00:53.158Z"
+    },
+    {
+      "id": "2624235389",
+      "name": "生日快乐",
+      "artists": [
+        "网易云音乐"
+      ],
+      "album": "生日快乐",
+      "albumPic": "https://p2.music.126.net/IVN4CSi2ABGalKcPg-GndA==/109951169932535789.jpg",
+      "duration": 83454,
+      "url": null,
+      "source": "netease",
+      "br": null,
+      "addedAt": "2026-11-02T22:00:53.158Z"
+    },
+    {
+      "id": "3455557991",
+      "name": "Alright (Live)",
+      "artists": [
+        "鹭卓",
+        "陈卓璇"
+      ],
+      "album": "听,谁在唱歌2 第四期",
+      "albumPic": "https://p2.music.126.net/rT8oyThZKk62YP_07y6lqg==/109951174195448700.jpg",
+      "duration": 219847,
+      "url": null,
+      "source": "netease",
+      "br": null,
+      "addedAt": "2026-11-02T22:00:53.158Z"
+    },
+    {
+      "id": "3455170083",
+      "name": "弯弯",
+      "artists": [
+        "暗杠"
+      ],
+      "album": "弯弯",
+      "albumPic": "https://p2.music.126.net/IpIhSFfNmokBap6BW0E40Q==/109951174189831996.jpg",
+      "duration": 203636,
+      "url": null,
+      "source": "netease",
+      "br": null,
+      "addedAt": "2026-11-02T22:00:53.158Z"
+    },
+    {
+      "id": "135394",
+      "name": "该死的温柔",
+      "artists": [
+        "马天宇"
+      ],
+      "album": "宇光十色",
+      "albumPic": "https://p2.music.126.net/umywx7aNRrnSVVZoIqgy7w==/109951167482694502.jpg",
+      "duration": 224733,
+      "url": null,
+      "source": "netease",
+      "br": null,
+      "addedAt": "2026-11-02T22:00:53.158Z"
+    },
+    {
+      "id": "3452705368",
+      "name": "什么都好Fart2",
+      "artists": [
+        "爆音常安",
+        "洛天依Official",
+        "夜桜ねん"
+      ],
+      "album": "什么都好Fart2",
+      "albumPic": "https://p2.music.126.net/71oSlydbMiI_sOVo9IW4Ag==/109951174154270312.jpg",
+      "duration": 223500,
+      "url": null,
+      "source": "netease",
+      "br": null,
+      "addedAt": "2026-11-02T22:00:53.158Z"
+    },
+    {
+      "id": "257098",
+      "name": "为你我受冷风吹",
+      "artists": [
+        "林忆莲"
+      ],
+      "album": "Love, Sandy",
+      "albumPic": "https://p2.music.126.net/J_IhJvdJUnmwvhL7dWXhNA==/109951172383108373.jpg",
+      "duration": 259666,
+      "url": null,
+      "source": "netease",
+      "br": null,
+      "addedAt": "2026-11-02T22:00:53.158Z"
+    },
+    {
+      "id": "3454919966",
+      "name": "在流水平静之前",
+      "artists": [
+        "CigarHan"
+      ],
+      "album": "在流水平静之前",
+      "albumPic": "https://p2.music.126.net/lUyFT68UPYTCLK_Y4Criqw==/109951174186949078.jpg",
+      "duration": 188571,
+      "url": null,
+      "source": "netease",
+      "br": null,
+      "addedAt": "2026-11-02T22:00:53.158Z"
+    },
+    {
+      "id": "1415663223",
+      "name": "寻常岁月诗",
+      "artists": [
+        "柏松"
+      ],
+      "album": "听闻余生",
+      "albumPic": "https://p2.music.126.net/DK1_4sP_339o5rowMdPXdw==/109951164071024476.jpg",
+      "duration": 271277,
+      "url": null,
+      "source": "netease",
+      "br": null,
+      "addedAt": "2026-11-02T22:00:53.158Z"
+    },
+    {
+      "id": "3455557992",
+      "name": "你的姑娘 (Live)",
+      "artists": [
+        "隔壁老樊"
+      ],
+      "album": "听,谁在唱歌2 第四期",
+      "albumPic": "https://p2.music.126.net/rT8oyThZKk62YP_07y6lqg==/109951174195448700.jpg",
+      "duration": 238699,
+      "url": null,
+      "source": "netease",
+      "br": null,
+      "addedAt": "2026-11-02T22:00:53.158Z"
     },
     {
       "id": "85580",
@@ -3845,7 +4204,7 @@
       "addedAt": "2026-09-05T03:52:03.000Z"
     }
   ],
-  "total": 267,
+  "total": 292,
   "localCount": 14,
-  "updatedAt": "2026-11-01T22:00:37.461Z"
+  "updatedAt": "2026-11-02T22:00:53.158Z"
 }
