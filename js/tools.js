@@ -9250,6 +9250,109 @@ greet('世界');</textarea>
   handler: () => { }
 },
 
+// ============================================================
+// 节拍器工具 metronome (mt*)
+// ============================================================
+{
+  id: 'metronome',
+  cat: 'media',
+  icon: '🎼',
+  name: '节拍器',
+  desc: '在线节拍器，支持40-208 BPM、拍号选择、强弱拍提示，练琴练鼓必备',
+  html: `
+    <div class="tool-card">
+      <div class="input-group">
+        <label>速度 (BPM)</label>
+        <input type="range" id="mt-bpm" min="40" max="208" value="120" oninput="mtSetBpm(this.value)" style="width:100%;">
+        <div style="display:flex;justify-content:space-between;font-size:13px;color:var(--text-light);margin-top:4px;">
+          <span><span id="mt-bpm-val">120</span> BPM</span>
+          <span>🎵 <button class="btn btn-sm" onclick="mtTapTempo()">👆 点按测速</button></span>
+        </div>
+      </div>
+      <div class="row-2" style="margin-top:12px;">
+        <div class="input-group">
+          <label>拍号</label>
+          <select id="mt-meter" onchange="mtSetup()">
+            <option value="2">2/4</option>
+            <option value="3">3/4</option>
+            <option value="4" selected>4/4</option>
+            <option value="6">6/8</option>
+          </select>
+        </div>
+        <div class="input-group">
+          <label>音量</label>
+          <input type="range" id="mt-vol" min="0" max="100" value="70" style="width:100%;">
+        </div>
+      </div>
+      <div id="mt-pendulum" style="margin:20px auto;width:220px;height:160px;position:relative;border-bottom:3px solid var(--accent,#6366f1);border-radius:0 0 10px 10px;">
+        <div id="mt-arm" style="position:absolute;bottom:0;left:110px;width:3px;height:130px;background:var(--accent,#6366f1);transform-origin:bottom center;transform:rotate(0deg);transition:transform .1s linear;"></div>
+        <div id="mt-ball" style="position:absolute;bottom:118px;left:97px;width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#818cf8,#6366f1);box-shadow:0 2px 6px rgba(0,0,0,.3);"></div>
+        <div style="position:absolute;bottom:-30px;left:0;right:0;text-align:center;font-size:28px;color:var(--text-light);" id="mt-beat-dot">○</div>
+      </div>
+      <div class="btn-group" style="margin-top:20px;">
+        <button class="btn btn-primary" id="mt-toggle" onclick="mtToggle()">▶️ 开始</button>
+        <button class="btn btn-secondary" onclick="mtStop()">⏹️ 停止</button>
+      </div>
+      <div id="mt-tip" style="margin-top:15px;font-size:13px;color:var(--text-light);background:var(--bg-light,#f8fafc);padding:12px;border-radius:8px;">
+        💡 点击"点按测速"按节拍连点4次可自动估算BPM；滑块调整速度实时生效
+      </div>
+    </div>
+  `,
+  handler: () => { }
+},
+
+// ============================================================
+// 视频抽帧器工具 video-frame-extractor (vfe*)
+// ============================================================
+{
+  id: 'video-frame-extractor',
+  cat: 'media',
+  icon: '🖼️',
+  name: '视频抽帧器',
+  desc: '从视频中按时间间隔抽取画面，批量导出高清图片，做封面/素材/九宫格必备',
+  html: `
+    <div class="tool-card">
+      <div class="input-group">
+        <label>选择视频文件</label>
+        <input type="file" id="vfe-file" accept="video/*" style="display:none;" onchange="vfeLoadFile(this)">
+        <button class="btn btn-secondary" style="margin-top:6px;" onclick="document.getElementById('vfe-file').click()">🎬 选择视频</button>
+        <span id="vfe-filename" style="font-size:12px;color:var(--text-light);margin-left:10px;"></span>
+      </div>
+      <div id="vfe-video-wrap" style="margin-top:12px;display:none;">
+        <video id="vfe-video" controls style="width:100%;max-height:280px;background:#000;"></video>
+      </div>
+      <div class="row-3" style="margin-top:12px;">
+        <div class="input-group">
+          <label>抽帧间隔 (秒)</label>
+          <input type="number" id="vfe-interval" value="2" min="0.1" max="120" step="0.1" style="width:100%;">
+        </div>
+        <div class="input-group">
+          <label>最大宽度 (px)</label>
+          <input type="number" id="vfe-width" value="1280" min="320" max="3840" step="10" style="width:100%;">
+        </div>
+        <div class="input-group">
+          <label>输出格式</label>
+          <select id="vfe-format">
+            <option value="image/jpeg">JPG (小体积)</option>
+            <option value="image/png">PNG (无损)</option>
+            <option value="image/webp">WebP</option>
+          </select>
+        </div>
+      </div>
+      <div class="btn-group" style="margin-top:15px;">
+        <button class="btn btn-primary" onclick="vfeExtract()">🖼️ 开始抽帧</button>
+        <button class="btn btn-secondary" onclick="vfeDownloadAll()">📦 打包下载全部</button>
+      </div>
+      <div id="vfe-progress" style="margin-top:12px;font-size:13px;color:var(--text-light);"></div>
+      <div id="vfe-grid" style="margin-top:12px;display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px;"></div>
+      <div id="vfe-tip" style="margin-top:15px;font-size:13px;color:var(--text-light);background:var(--bg-light,#f8fafc);padding:12px;border-radius:8px;">
+        💡 视频在浏览器本地处理，不会上传；抽帧数 = 视频时长 ÷ 间隔，间隔越大帧越少
+      </div>
+    </div>
+  `,
+  handler: () => { }
+},
+
 ];
 
 // ============================================================
@@ -10897,7 +11000,7 @@ const CATEGORIES = [
   { id: 'security', icon: '🔒', name: '安全工具', desc: '密码生成、Hash计算、随机数、浏览器指纹检测、身份证号码校验、凯撒密码' },
   { id: 'time', icon: '⏱️', name: '时间工具', desc: '时间戳转换、日期计算、世界时区转换、番茄钟专注计时、待办清单、每日计划' },
   { id: 'color', icon: '🎨', name: '颜色工具', desc: 'HEX/RGB/HSL颜色转换、颜色对比度检查、CSS渐变生成器、配色方案生成器' },
-  { id: 'media', icon: '🎬', name: '媒体工具', desc: '抖音/TikTok去水印下载、视频转GIF、多图合成GIF、在线录音、录音转文字、音频波形可视化、白噪音发生器、音频变速变调、音频剪辑拼接、音频格式转换、视频压缩、视频缩略图制作器、在线便签、人声分离/伴奏提取' },
+  { id: 'media', icon: '🎬', name: '媒体工具', desc: '抖音/TikTok去水印下载、视频转GIF、多图合成GIF、在线录音、录音转文字、音频波形可视化、白噪音发生器、音频变速变调、音频剪辑拼接、音频格式转换、视频压缩、节拍器、视频抽帧器、视频缩略图制作器、在线便签、人声分离/伴奏提取' },
   { id: 'ai', icon: '🤖', name: 'AI工具', desc: 'AI聊天、AI Agent安装、免费AI工具推荐' },
   { id: 'voice', icon: '🗣️', name: '群众心声', desc: '提交工具建议、投票排行榜、前3名自动实现' },
   { id: 'lottery', icon: '🎰', name: '彩票工具', desc: '双色球、大乐透、福彩3D、快乐8、排列三…在线过滤缩水、选号、计算器' },
@@ -21916,4 +22019,216 @@ function gmDownload() {
   a.href = URL.createObjectURL(gmOutBlob);
   a.click();
   showToast('💾 已开始下载');
+}// ============================================================
+// 节拍器 处理函数 (mt*)
+// ============================================================
+var mtBpm = 120;
+var mtMeter = 4;
+var mtCtx = null;
+var mtTimer = null;
+var mtSwing = false;
+var mtTaps = [];
+var mtRunning = false;
+var mtBeatCount = 0;
+
+function mtSetBpm(v) {
+  mtBpm = parseInt(v);
+  document.getElementById('mt-bpm-val').textContent = mtBpm;
+  if (mtRunning) mtRestartTimer();
+}
+
+function mtSetup() {
+  const m = document.getElementById('mt-meter');
+  mtMeter = m ? parseInt(m.value) : 4;
+  mtBeatCount = 0;
+}
+
+function mtTapTempo() {
+  const now = Date.now();
+  mtTaps.push(now);
+  if (mtTaps.length > 4) mtTaps.shift();
+  if (mtTaps.length >= 2) {
+    const diffs = [];
+    for (let i = 1; i < mtTaps.length; i++) diffs.push(mtTaps[i] - mtTaps[i - 1]);
+    const avg = diffs.reduce((a, b) => a + b, 0) / diffs.length;
+    const bpm = Math.round(60000 / avg);
+    if (bpm >= 40 && bpm <= 208) {
+      mtBpm = bpm;
+      document.getElementById('mt-bpm').value = bpm;
+      document.getElementById('mt-bpm-val').textContent = bpm;
+      if (mtRunning) mtRestartTimer();
+    }
+  }
+  showToast('👆 ' + mtTaps.length + '/4 次');
+}
+
+function mtGetCtx() {
+  if (!mtCtx) mtCtx = new (window.AudioContext || window.webkitAudioContext)();
+  return mtCtx;
+}
+
+function mtBeep(accent) {
+  const ctx = mtGetCtx();
+  const osc = ctx.createOscillator();
+  const gain = ctx.createGain();
+  const vol = (parseInt(document.getElementById('mt-vol').value) || 70) / 100;
+  osc.type = 'sine';
+  osc.frequency.value = accent ? 1320 : 880;
+  gain.gain.setValueAtTime(0.0001, ctx.currentTime);
+  gain.gain.exponentialRampToValueAtTime(vol, ctx.currentTime + 0.005);
+  gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.06);
+  osc.connect(gain);
+  gain.connect(ctx.destination);
+  osc.start(ctx.currentTime);
+  osc.stop(ctx.currentTime + 0.07);
+}
+
+function mtTick() {
+  if (!mtRunning) return;
+  const accent = mtBeatCount % mtMeter === 0;
+  mtBeep(accent);
+  const dot = document.getElementById('mt-beat-dot');
+  if (dot) {
+    dot.textContent = accent ? '●' : '○';
+    dot.style.color = accent ? '#4ade80' : 'var(--text-light)';
+  }
+  // 摆锤动画
+  const arm = document.getElementById('mt-arm');
+  if (arm) {
+    const angle = (mtBeatCount % 2 === 0) ? 20 : -20;
+    arm.style.transform = 'rotate(' + angle + 'deg)';
+  }
+  mtBeatCount++;
+}
+
+function mtRestartTimer() {
+  if (mtTimer) { clearInterval(mtTimer); mtTimer = null; }
+  if (!mtRunning) return;
+  const interval = 60000 / mtBpm;
+  mtTick();
+  mtTimer = setInterval(mtTick, interval);
+}
+
+function mtToggle() {
+  if (!mtRunning) {
+    mtRunning = true;
+    mtBeatCount = 0;
+    mtRestartTimer();
+    document.getElementById('mt-toggle').textContent = '⏸️ 暂停';
+    if (mtGetCtx().state === 'suspended') mtGetCtx().resume();
+  } else {
+    mtRunning = false;
+    if (mtTimer) { clearInterval(mtTimer); mtTimer = null; }
+    document.getElementById('mt-toggle').textContent = '▶️ 开始';
+  }
+}
+
+function mtStop() {
+  mtRunning = false;
+  if (mtTimer) { clearInterval(mtTimer); mtTimer = null; }
+  document.getElementById('mt-toggle').textContent = '▶️ 开始';
+  document.getElementById('mt-beat-dot').textContent = '○';
+  const arm = document.getElementById('mt-arm');
+  if (arm) arm.style.transform = 'rotate(0deg)';
+}
+
+// ============================================================
+// 视频抽帧器 处理函数 (vfe*)
+// ============================================================
+var vfeRawFile = null;
+var vfeVideoEl = null;
+var vfeFrames = [];
+
+function vfeLoadFile(input) {
+  const file = input.files[0];
+  if (!file) return;
+  document.getElementById('vfe-filename').textContent = file.name;
+  vfeRawFile = file;
+  vfeFrames = [];
+  document.getElementById('vfe-grid').innerHTML = '';
+  document.getElementById('vfe-progress').textContent = '';
+  const wrap = document.getElementById('vfe-video-wrap');
+  wrap.style.display = 'block';
+  vfeVideoEl = document.getElementById('vfe-video');
+  vfeVideoEl.src = URL.createObjectURL(file);
+  vfeVideoEl.load();
+}
+
+function vfeExtract() {
+  if (!vfeRawFile || !vfeVideoEl) { showToast('❌ 请先选择视频'); return; }
+  const interval = parseFloat(document.getElementById('vfe-interval').value) || 2;
+  const maxW = parseInt(document.getElementById('vfe-width').value) || 1280;
+  const fmt = document.getElementById('vfe-format').value;
+  const v = vfeVideoEl;
+  const dur = v.duration || 0;
+  if (!dur || !isFinite(dur)) { showToast('❌ 无法获取视频时长'); return; }
+  const btns = document.querySelectorAll('[onclick="vfeExtract()"],[onclick="vfeDownloadAll()"]');
+  btns.forEach(function (b) { b.disabled = true; });
+  const progress = document.getElementById('vfe-progress');
+  const grid = document.getElementById('vfe-grid');
+  grid.innerHTML = '';
+  vfeFrames = [];
+  const count = Math.max(1, Math.floor(dur / interval));
+  progress.textContent = '⏳ 正在抽帧（共约 ' + count + ' 帧）...';
+  let done = 0;
+
+  function drawFrame(time, cb) {
+    v.currentTime = time;
+    v.onseeked = function () {
+      const scale = maxW / v.videoWidth;
+      const w = Math.max(80, Math.round(v.videoWidth * scale));
+      const h = Math.max(45, Math.round(v.videoHeight * scale));
+      const canvas = document.createElement('canvas');
+      canvas.width = w;
+      canvas.height = h;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(v, 0, 0, w, h);
+      const dataUrl = canvas.toDataURL(fmt, 0.92);
+      const img = document.createElement('img');
+      img.src = dataUrl;
+      img.style.cssText = 'width:100%;border-radius:8px;border:1px solid var(--border,#e2e8f0);cursor:pointer;';
+      img.title = '第' + (vfeFrames.length + 1) + '帧 @' + time.toFixed(1) + 's';
+      img.onclick = function () {
+        const a = document.createElement('a');
+        a.download = 'frame_' + String(vfeFrames.length + 1).padStart(3, '0') + '.jpg';
+        a.href = dataUrl;
+        a.click();
+      };
+      grid.appendChild(img);
+      vfeFrames.push(dataUrl);
+      done++;
+      progress.textContent = '⏳ 已抽取 ' + done + '/' + count + ' 帧';
+      cb();
+    };
+  }
+
+  function next(i) {
+    if (i >= count) {
+      v.onseeked = null;
+      progress.textContent = '✅ 完成，共抽取 ' + vfeFrames.length + ' 帧（点击图片可单张下载）';
+      btns.forEach(function (b) { b.disabled = false; });
+      return;
+    }
+    const t = Math.min(i * interval, Math.max(0, dur - 0.05));
+    drawFrame(t, function () { next(i + 1); });
+  }
+  next(0);
+}
+
+function vfeDownloadAll() {
+  if (vfeFrames.length === 0) { showToast('❌ 请先抽帧'); return; }
+  const formatMap = {
+    'image/jpeg': 'jpg', 'image/png': 'png', 'image/webp': 'webp'
+  };
+  const ext = formatMap[document.getElementById('vfe-format').value] || 'jpg';
+  // 逐个下载（浏览器自动批量触发）
+  vfeFrames.forEach(function (dataUrl, i) {
+    const a = document.createElement('a');
+    a.download = 'frame_' + String(i + 1).padStart(3, '0') + '.' + ext;
+    a.href = dataUrl;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+  });
+  showToast('📦 开始下载 ' + vfeFrames.length + ' 张图片');
 }
