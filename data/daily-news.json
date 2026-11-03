@@ -1,15 +1,68 @@
 {
   "date": "2026-11-03",
-  "updateTime": "2026-11-03T22:32:30+08:00",
+  "updateTime": "2026-11-03T16:02:10+08:00",
   "items": [
     {
       "type": "news",
       "icon": "📺",
       "label": "新闻联播",
       "data": {
-        "source": "新闻联播",
-        "items": [],
-        "updateTime": "2026-11-03T22:32:30+08:00"
+        "source": "新闻联播(央视网)",
+        "items": [
+          {
+            "title": "【学习贯彻党的二十届五中全会精神】永葆生机活力 为中国式现代化提供坚强保障",
+            "url": "https://tv.cctv.com/lm/xwlb/"
+          },
+          {
+            "title": "人民日报评论员文章：强化系统观念，增强整体效能——论学习贯彻党的二十届五中全会精神",
+            "url": "https://tv.cctv.com/lm/xwlb/"
+          },
+          {
+            "title": "央视快评：为民造福是最大政绩",
+            "url": "https://tv.cctv.com/lm/xwlb/"
+          },
+          {
+            "title": "刘延东同志遗体在京火化",
+            "url": "https://tv.cctv.com/lm/xwlb/"
+          },
+          {
+            "title": "不断开创黄河保护治理工作新局面——习近平总书记对进一步做好黄河保护治理工作的重要指示引发热烈反响",
+            "url": "https://tv.cctv.com/lm/xwlb/"
+          },
+          {
+            "title": "央视快评：努力让黄河这条母亲河越来越美",
+            "url": "https://tv.cctv.com/lm/xwlb/"
+          },
+          {
+            "title": "李强出席2026年世界互联网大会乌镇峰会开幕式并发表主旨演讲",
+            "url": "https://tv.cctv.com/lm/xwlb/"
+          },
+          {
+            "title": "十四届全国人大常委会第二十五次会议举行第二次全体会议",
+            "url": "https://tv.cctv.com/lm/xwlb/"
+          },
+          {
+            "title": "传达学习贯彻中共二十届五中全会精神 全国政协十四届常委会第十九次会议开幕 王沪宁主持 李希作报告",
+            "url": "https://tv.cctv.com/lm/xwlb/"
+          },
+          {
+            "title": "学习贯彻党的二十届五中全会精神中央宣讲团首场报告会在京举行",
+            "url": "https://tv.cctv.com/lm/xwlb/"
+          },
+          {
+            "title": "国内联播快讯",
+            "url": "https://tv.cctv.com/lm/xwlb/"
+          },
+          {
+            "title": "中国之治与世界发展全球对话会美国专场在华盛顿举行",
+            "url": "https://tv.cctv.com/lm/xwlb/"
+          },
+          {
+            "title": "国际联播快讯",
+            "url": "https://tv.cctv.com/lm/xwlb/"
+          }
+        ],
+        "updateTime": "2026-11-03T16:02:10+08:00"
       }
     },
     {
@@ -19,7 +72,7 @@
       "data": {
         "source": "AI科技日报",
         "items": [],
-        "updateTime": "2026-11-03T22:32:30+08:00"
+        "updateTime": "2026-11-03T16:02:10+08:00"
       }
     }
   ]
