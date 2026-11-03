@@ -1,96 +1,15 @@
 {
-  "date": "2026-11-02",
-  "updateTime": "2026-11-02T16:01:34+08:00",
+  "date": "2026-11-03",
+  "updateTime": "2026-11-03T22:32:30+08:00",
   "items": [
     {
       "type": "news",
       "icon": "📺",
       "label": "新闻联播",
       "data": {
-        "source": "新闻联播(央视网)",
-        "items": [
-          {
-            "title": "习近平举行仪式欢迎阿曼苏丹国苏丹访华",
-            "url": "https://tv.cctv.com/lm/xwlb/"
-          },
-          {
-            "title": "习近平同阿曼苏丹会谈",
-            "url": "https://tv.cctv.com/lm/xwlb/"
-          },
-          {
-            "title": "习近平对进一步做好黄河保护治理工作作出重要指示强调 持续完善大保护大协同格局 努力让这条母亲河越来越美",
-            "url": "https://tv.cctv.com/lm/xwlb/"
-          },
-          {
-            "title": "习近平同秘鲁总统就中秘建交55周年互致贺电",
-            "url": "https://tv.cctv.com/lm/xwlb/"
-          },
-          {
-            "title": "应习近平邀请 加蓬总统将访华",
-            "url": "https://tv.cctv.com/lm/xwlb/"
-          },
-          {
-            "title": "李强会见阿曼苏丹",
-            "url": "https://tv.cctv.com/lm/xwlb/"
-          },
-          {
-            "title": "十四届全国人大常委会第二十五次会议在京举行 审议检察公益诉讼法草案、水法修订草案等 赵乐际主持",
-            "url": "https://tv.cctv.com/lm/xwlb/"
-          },
-          {
-            "title": "赵乐际同俄罗斯联邦委员会主席会谈",
-            "url": "https://tv.cctv.com/lm/xwlb/"
-          },
-          {
-            "title": "王沪宁会见俄罗斯联邦委员会主席",
-            "url": "https://tv.cctv.com/lm/xwlb/"
-          },
-          {
-            "title": "王沪宁会见越南共产党代表团",
-            "url": "https://tv.cctv.com/lm/xwlb/"
-          },
-          {
-            "title": "学习贯彻党的二十届五中全会精神中央宣讲团动员会在京召开 蔡奇出席会议并讲话",
-            "url": "https://tv.cctv.com/lm/xwlb/"
-          },
-          {
-            "title": "李干杰受中共中央委托向党外人士通报中共二十届五中全会精神",
-            "url": "https://tv.cctv.com/lm/xwlb/"
-          },
-          {
-            "title": "【学习贯彻党的二十届五中全会精神】永葆清醒坚定 持之以恒推进全面从严治党",
-            "url": "https://tv.cctv.com/lm/xwlb/"
-          },
-          {
-            "title": "党的二十届五中全会精神学习辅导材料出版发行",
-            "url": "https://tv.cctv.com/lm/xwlb/"
-          },
-          {
-            "title": "新华社长篇通讯：新征程上强党强国的光辉文献",
-            "url": "https://tv.cctv.com/lm/xwlb/"
-          },
-          {
-            "title": "人民日报评论员文章：坚持问题导向，解决突出问题——论学习贯彻党的二十届五中全会精神",
-            "url": "https://tv.cctv.com/lm/xwlb/"
-          },
-          {
-            "title": "央视快评：增强党性是全面从严治党的根本性任务",
-            "url": "https://tv.cctv.com/lm/xwlb/"
-          },
-          {
-            "title": "国内联播快讯",
-            "url": "https://tv.cctv.com/lm/xwlb/"
-          },
-          {
-            "title": "世界政党政要高度评价中国共产党二十届五中全会成果",
-            "url": "https://tv.cctv.com/lm/xwlb/"
-          },
-          {
-            "title": "国际联播快讯",
-            "url": "https://tv.cctv.com/lm/xwlb/"
-          }
-        ],
-        "updateTime": "2026-11-02T16:01:34+08:00"
+        "source": "新闻联播",
+        "items": [],
+        "updateTime": "2026-11-03T22:32:30+08:00"
       }
     },
     {
@@ -100,7 +19,7 @@
       "data": {
         "source": "AI科技日报",
         "items": [],
-        "updateTime": "2026-11-02T16:01:34+08:00"
+        "updateTime": "2026-11-03T22:32:30+08:00"
       }
     }
   ]
