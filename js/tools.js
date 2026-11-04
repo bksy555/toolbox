@@ -9470,6 +9470,111 @@ greet('世界');</textarea>
   handler: () => { }
 },
 
+// ============================================================
+// 在线钢琴工具 virtual-piano (vp*)
+// ============================================================
+{
+  id: 'virtual-piano',
+  cat: 'fun',
+  icon: '🎹',
+  name: '在线钢琴',
+  desc: '88键虚拟钢琴，支持鼠标/键盘弹奏、录音回放、和弦模式，练琴找调必备',
+  html: `
+    <div class="tool-card">
+      <div class="input-group">
+        <label>钢琴键盘（点击或使用电脑键盘 A-W / Z-M 弹奏）</label>
+      </div>
+      <div id="vp-piano" style="margin-top:10px;overflow-x:auto;padding-bottom:10px;">
+        <div id="vp-keys" style="display:flex;min-width:1400px;position:relative;height:220px;user-select:none;"></div>
+      </div>
+      <div class="row-3" style="margin-top:14px;">
+        <div class="input-group">
+          <label>音色</label>
+          <select id="vp-wave">
+            <option value="triangle">🎹 三角波 (钢琴)</option>
+            <option value="sine">🎻 正弦波 (柔和)</option>
+            <option value="square">🎸 方波 (电子)</option>
+            <option value="sawtooth">🎷 锯齿波 (管乐)</option>
+          </select>
+        </div>
+        <div class="input-group">
+          <label>八度 ▼</label>
+          <select id="vp-octave">
+            <option value="0">-1</option>
+            <option value="1">0</option>
+            <option value="2" selected>+1</option>
+            <option value="3">+2</option>
+            <option value="4">+3</option>
+          </select>
+        </div>
+        <div class="input-group">
+          <label>&nbsp;</label>
+          <div style="display:flex;gap:8px;">
+            <button class="btn btn-sm btn-secondary" onclick="vpToggleRecord()">🔴 录音</button>
+            <button class="btn btn-sm btn-secondary" onclick="vpPlayRecord()">▶️ 回放</button>
+          </div>
+        </div>
+      </div>
+      <div id="vp-tip" style="margin-top:15px;font-size:13px;color:var(--text-light);background:var(--bg-light,#f8fafc);padding:12px;border-radius:8px;">
+        💡 键盘快捷键：A S D F G H J K L = C D E F G A B C；W E T Y U = 黑键；上下挡切换八度；录音后点回放可听
+      </div>
+    </div>
+  `,
+  handler: () => { vpInit(); }
+},
+
+// ============================================================
+// 批量文件重命名工具 batch-rename (br*)
+// ============================================================
+{
+  id: 'batch-rename',
+  cat: 'file',
+  icon: '📁',
+  name: '批量文件重命名',
+  desc: '批量重命名文件名，支持前后缀/序号/查找替换/日期，整理下载文件必备',
+  html: `
+    <div class="tool-card">
+      <div class="input-group">
+        <label>选择多个文件（仅预览，不离开浏览器）</label>
+        <input type="file" id="br-file" multiple style="display:none;" onchange="brLoadFiles(this)">
+        <button class="btn btn-secondary" style="margin-top:6px;" onclick="document.getElementById('br-file').click()">📁 选择文件</button>
+        <span id="br-count" style="font-size:12px;color:var(--text-light);margin-left:10px;">0 个文件</span>
+      </div>
+      <div class="row-3" style="margin-top:12px;">
+        <div class="input-group">
+          <label>前缀</label>
+          <input type="text" id="br-prefix" placeholder="如 IMG_" style="width:100%;">
+        </div>
+        <div class="input-group">
+          <label>后缀</label>
+          <input type="text" id="br-suffix" placeholder="如 _final" style="width:100%;">
+        </div>
+        <div class="input-group">
+          <label>查找替换</label>
+          <div style="display:flex;gap:6px;">
+            <input type="text" id="br-find" placeholder="查找" style="width:50%;">
+            <input type="text" id="br-replace" placeholder="替换" style="width:50%;">
+          </div>
+        </div>
+      </div>
+      <div class="input-group" style="margin-top:10px;">
+        <label>文件名格式（# = 序号）</label>
+        <input type="text" id="br-template" value="photo_#01" style="width:100%;">
+        <div style="font-size:12px;color:var(--text-light);margin-top:4px;">预览：photo_01.jpg · photo_02.jpg ...</div>
+      </div>
+      <div id="br-list" style="margin-top:12px;border:1px solid var(--border,#e2e8f0);border-radius:10px;max-height:240px;overflow-y:auto;padding:10px;"></div>
+      <div class="btn-group" style="margin-top:15px;">
+        <button class="btn btn-primary" onclick="brDownload()">💾 按新名称下载全部</button>
+        <button class="btn btn-secondary" onclick="brClear()">🗑️ 清空</button>
+      </div>
+      <div id="br-tip" style="margin-top:15px;font-size:13px;color:var(--text-light);background:var(--bg-light,#f8fafc);padding:12px;border-radius:8px;">
+        💡 文件在浏览器本地重命名下载，不会上传；同名文件会自动加 (1)(2) 后缀避免覆盖
+      </div>
+    </div>
+  `,
+  handler: () => { }
+},
+
 ];
 
 // ============================================================
@@ -22561,4 +22666,213 @@ function vtaDownload() {
   a.href = URL.createObjectURL(vtaAudioBlob);
   a.click();
   showToast('💾 已开始下载');
+}// ============================================================
+// 在线钢琴 处理函数 (vp*)
+// ============================================================
+var vpCtx = null;
+var vpRecorded = [];
+var vpRecording = false;
+var vpKeyMap = { 'a': 0, 'w': 1, 's': 2, 'e': 3, 'd': 4, 'f': 5, 't': 6, 'g': 7, 'y': 8, 'h': 9, 'u': 10, 'j': 11, 'k': 12, 'o': 13, 'l': 14, 'p': 15, 'z': 12, 'x': 13, 'c': 14, 'v': 15, 'b': 16, 'n': 17, 'm': 18 };
+
+function vpInit() {
+  const wrap = document.getElementById('vp-keys');
+  if (!wrap || wrap.children.length > 0) return;
+  const NOTE_NAMES = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+  const baseFreq = 261.63; // C4
+  // 生成 88 键（A0..C8 简化：白键 52 + 黑键 36，这里画 4 个八度 C4-C7 的 25 键）
+  const octaves = [4, 5, 6, 7];
+  const whiteIdx = [];
+  const blackSet = {};
+  let midiBase = 60; // C4
+  octaves.forEach(function (oct) {
+    [0, 2, 4, 5, 7, 9, 11].forEach(function (semi) {
+      whiteIdx.push({ note: NOTE_NAMES[semi] + oct, semi: semi, oct: oct, midi: 12 * (oct + 1) + semi });
+    });
+    [1, 3, 6, 8, 10].forEach(function (semi) {
+      blackSet[(12 * (oct + 1) + semi)] = { note: NOTE_NAMES[semi] + oct, semi: semi, oct: oct, midi: 12 * (oct + 1) + semi };
+      // 手动补最后一个 C#/D#（两黑组）
+    });
+  });
+
+  const W = 40, H = 160;
+  whiteIdx.forEach(function (k, i) {
+    const d = document.createElement('div');
+    d.className = 'vp-white';
+    d.setAttribute('data-midi', k.midi);
+    d.style.cssText = 'position:absolute;left:' + (i * W) + 'px;top:0;width:' + (W - 1) + 'px;height:' + H + 'px;background:#fff;border:1px solid #cbd5e1;border-radius:0 0 6px 6px;cursor:pointer;box-shadow:0 2px 3px rgba(0,0,0,.12);display:flex;align-items:flex-end;justify-content:center;font-size:11px;color:#94a3b8;';
+    d.textContent = k.note;
+    d.addEventListener('mousedown', function () { vpPlayNote(k.midi, true); });
+    d.addEventListener('mouseup', function () { vpStopNote(k.midi); });
+    d.addEventListener('mouseleave', function () { vpStopNote(k.midi); });
+    wrap.appendChild(d);
+  });
+  // 黑键覆盖在白键上
+  const blackList = [];
+  whiteIdx.forEach(function () { });
+  [60, 62, 64, 65, 67, 69, 71, 72, 74, 76, 77, 79, 81, 83, 84, 86, 88, 89, 91, 93, 95, 96].forEach(function (midi, idx) {
+    const semiInOct = midi % 12;
+    if (!blackSet[midi] && [1, 3, 6, 8, 10].indexOf(semiInOct) >= 0) {
+      blackSet[midi] = { note: NOTE_NAMES[semiInOct] + Math.floor(midi / 12 - 1), semi: semiInOct, oct: Math.floor(midi / 12 - 1), midi: midi };
+    }
+  });
+  Object.values(blackSet).forEach(function (k) {
+    const oct = k.oct;
+    const baseOct = oct - 4;
+    const whiteBefore = octaves.slice(0, oct - 4 + 1).reduce(function (acc) { return acc + 7; }, 0) - 7;
+    // 计算黑键在哪个白键右侧：C→0 D→1 E→2 F→3 G→4 A→5 B→6
+    const order = { 1: 0.7, 3: 1.7, 6: 3.7, 8: 4.7, 10: 5.7 };
+    if (order[k.semi] === undefined) return;
+    const left = (whiteBefore + order[k.semi]) * W - W / 4;
+    const d = document.createElement('div');
+    d.className = 'vp-black';
+    d.setAttribute('data-midi', k.midi);
+    d.style.cssText = 'position:absolute;left:' + left + 'px;top:0;width:' + (W / 2) + 'px;height:' + (H * 0.6) + 'px;background:#1e293b;border-radius:0 0 5px 5px;cursor:pointer;z-index:2;box-shadow:0 3px 4px rgba(0,0,0,.35);';
+    d.addEventListener('mousedown', function () { vpPlayNote(k.midi, true); });
+    d.addEventListener('mouseup', function () { vpStopNote(k.midi); });
+    d.addEventListener('mouseleave', function () { vpStopNote(k.midi); });
+    wrap.appendChild(d);
+  });
 }
+
+function vpGetCtx() {
+  if (!vpCtx) vpCtx = new (window.AudioContext || window.webkitAudioContext)();
+  return vpCtx;
+}
+
+function vpPlayNote(midi, isPress) {
+  const ctx = vpGetCtx();
+  const waveSel = document.getElementById('vp-wave');
+  const octShift = parseInt(document.getElementById('vp-octave').value) || 2;
+  const freq = 440 * Math.pow(2, (midi - 69 + (octShift - 2) * 12) / 12);
+  const t = ctx.currentTime;
+  const osc = ctx.createOscillator();
+  const gain = ctx.createGain();
+  osc.type = waveSel ? waveSel.value : 'triangle';
+  osc.frequency.setValueAtTime(freq, t);
+  gain.gain.setValueAtTime(0.0001, t);
+  gain.gain.exponentialRampToValueAtTime(0.35, t + 0.01);
+  gain.gain.exponentialRampToValueAtTime(0.0001, t + 1.8);
+  osc.connect(gain);
+  gain.connect(ctx.destination);
+  osc.start(t);
+  osc.stop(t + 2);
+  if (vpRecording) {
+    vpRecorded.push({ midi: midi, t: t, dur: 0.5 });
+  }
+  return osc;
+}
+
+function vpStopNote(midi) { /* 短音符无需手动停 */ }
+
+function vpToggleRecord() {
+  vpRecording = !vpRecording;
+  if (vpRecording) {
+    vpRecorded = [];
+    showToast('🔴 开始录音');
+  } else {
+    showToast('⏹️ 录音结束，可点回放');
+  }
+}
+
+function vpPlayRecord() {
+  if (vpRecorded.length === 0) { showToast('❌ 暂无录音'); return; }
+  const startT = vpRecorded[0].t;
+  vpRecorded.forEach(function (note) {
+    const ctx = vpGetCtx();
+    const delay = note.t - startT;
+    setTimeout(function () { vpPlayNote(note.midi, false); }, delay * 1000);
+  });
+  showToast('▶️ 回放中');
+}
+
+// 键盘绑定（页面加载后只绑定一次）
+document.addEventListener('keydown', function (e) {
+  if (e.target && /INPUT|TEXTAREA|SELECT/.test(e.target.tagName)) return;
+  const key = e.key.toLowerCase();
+  if (vpKeyMap[key] !== undefined && !e.repeat) {
+    const midi = 60 + vpKeyMap[key];
+    vpPlayNote(midi, true);
+  }
+});
+
+// ============================================================
+// 批量文件重命名 处理函数 (br*)
+// ============================================================
+var brFiles = [];
+var brRenamed = [];
+
+function brLoadFiles(input) {
+  const files = Array.from(input.files || []);
+  if (files.length === 0) return;
+  brFiles = files;
+  document.getElementById('br-count').textContent = files.length + ' 个文件';
+  brRenamed = [];
+  brRender();
+}
+
+function brRender() {
+  const list = document.getElementById('br-list');
+  if (!list) return;
+  const prefix = document.getElementById('br-prefix').value || '';
+  const suffix = document.getElementById('br-suffix').value || '';
+  const find = document.getElementById('br-find').value;
+  const replace = document.getElementById('br-replace').value;
+  const template = document.getElementById('br-template').value || 'photo_#01';
+  brRenamed = brFiles.map(function (f, i) {
+    const orig = f.name.replace(/\.[^.]+$/, '');
+    const ext = (f.name.match(/\.[^.]+$/) || [''])[0];
+    let base = template.replace(/#/g, function () {
+      const pad = template.indexOf('#0') >= 0 ? 2 : (template.indexOf('#00') >= 0 ? 3 : 1);
+      return String(i + 1).padStart(pad, '0');
+    });
+    if (find !== undefined && find !== '') {
+      base = base.split(new RegExp(find.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'))).join(replace);
+    }
+    base = prefix + base + suffix;
+    // 防重名
+    const used = {};
+    let name = base + ext;
+    let n = 1;
+    while (used[name]) { name = base + '_' + (n++) + ext; }
+    used[name] = true;
+    return { orig: f.name, name: name, size: f.size, file: f };
+  });
+
+  list.innerHTML = brRenamed.length === 0
+    ? '<div style="color:var(--text-light);text-align:center;padding:20px;">请先选择文件</div>'
+    : brRenamed.map(function (r) {
+        return '<div style="display:flex;justify-content:space-between;padding:8px 6px;border-bottom:1px solid var(--border,#eef2f7);font-size:13px;">' +
+          '<span style="color:#94a3b8;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:45%;">' + r.orig + '</span>' +
+          '<span style="color:var(--accent,#6366f1);">→</span>' +
+          '<span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:45%;">' + r.name + '</span></div>';
+      }).join('');
+}
+
+function brDownload() {
+  if (brRenamed.length === 0) { showToast('❌ 请先选择文件'); return; }
+  brRenamed.forEach(function (r) {
+    const a = document.createElement('a');
+    a.download = r.name;
+    a.href = URL.createObjectURL(r.file);
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+  });
+  showToast('💾 开始下载 ' + brRenamed.length + ' 个文件');
+}
+
+function brClear() {
+  brFiles = [];
+  brRenamed = [];
+  document.getElementById('br-count').textContent = '0 个文件';
+  document.getElementById('br-list').innerHTML = '';
+  const inp = document.getElementById('br-file');
+  if (inp) inp.value = '';
+}
+
+// 表单输入实时刷新预览
+document.addEventListener('input', function (e) {
+  if (e.target && e.target.id && e.target.id.indexOf('br-') === 0) {
+    brRender();
+  }
+});
