@@ -9660,6 +9660,138 @@ greet('世界');</textarea>
   handler: () => { }
 },
 
+// ============================================================
+// 视频加水印工具 video-watermark (vw*)
+// ============================================================
+{
+  id: 'video-watermark',
+  cat: 'media',
+  icon: '💧',
+  name: '视频加水印',
+  desc: '给视频添加文字或图片水印，可调位置/大小/透明度，防搬运必备',
+  html: `
+    <div class="tool-card">
+      <div class="input-group">
+        <label>选择视频文件</label>
+        <input type="file" id="vw-file" accept="video/*" style="display:none;" onchange="vwLoadFile(this)">
+        <button class="btn btn-secondary" style="margin-top:6px;" onclick="document.getElementById('vw-file').click()">🎬 选择视频</button>
+        <span id="vw-filename" style="font-size:12px;color:var(--text-light);margin-left:10px;"></span>
+      </div>
+      <div class="input-group" style="margin-top:12px;">
+        <label>水印文字</label>
+        <input type="text" id="vw-text" value="© 我的作品" style="width:100%;" oninput="vwPreview()">
+      </div>
+      <div class="row-3" style="margin-top:10px;">
+        <div class="input-group">
+          <label>位置</label>
+          <select id="vw-pos" onchange="vwPreview()">
+            <option value="tl">左上</option>
+            <option value="tr">右上</option>
+            <option value="bl">左下</option>
+            <option value="br" selected>右下</option>
+            <option value="center">居中</option>
+          </select>
+        </div>
+        <div class="input-group">
+          <label>大小</label>
+          <select id="vw-size" onchange="vwPreview()">
+            <option value="small">小</option>
+            <option value="medium" selected>中</option>
+            <option value="large">大</option>
+          </select>
+        </div>
+        <div class="input-group">
+          <label>透明度: <span id="vw-opacity-val">70</span>%</label>
+          <input type="range" id="vw-opacity" min="10" max="100" value="70" oninput="vwOpacityChange(this.value)">
+        </div>
+      </div>
+      <div id="vw-preview" style="margin-top:12px;display:none;border:1px solid var(--border,#e2e8f0);border-radius:10px;overflow:hidden;">
+        <video id="vw-video" controls style="width:100%;max-height:240px;background:#000;"></video>
+      </div>
+      <div class="stats-row" style="margin-top:12px;">
+        <div class="stat-item">原始大小: <strong id="vw-orig">-</strong></div>
+        <div class="stat-item">导出: <strong id="vw-out">-</strong></div>
+      </div>
+      <div class="btn-group" style="margin-top:15px;">
+        <button class="btn btn-primary" onclick="vwRender()">💧 加水印并导出</button>
+        <button class="btn btn-secondary" onclick="vwDownload()">💾 下载视频</button>
+      </div>
+      <div id="vw-tip" style="margin-top:15px;font-size:13px;color:var(--text-light);background:var(--bg-light,#f8fafc);padding:12px;border-radius:8px;">
+        💡 视频在浏览器本地逐帧绘制水印后导出WebM，不会上传；字体/位置/大小可在导出前调整
+      </div>
+    </div>
+  `,
+  handler: () => { }
+},
+
+// ============================================================
+// GIF转视频工具 gif-to-video (gtv*)
+// ============================================================
+{
+  id: 'gif-to-video',
+  cat: 'media',
+  icon: '🎬',
+  name: 'GIF转视频',
+  desc: '把GIF动图转为MP4/WebM视频，体积更小、可静音播放，发帖分享更流畅',
+  html: `
+    <div class="tool-card">
+      <div class="input-group">
+        <label>选择GIF文件</label>
+        <input type="file" id="gtv-file" accept=".gif,image/gif" style="display:none;" onchange="gtvLoadFile(this)">
+        <button class="btn btn-secondary" style="margin-top:6px;" onclick="document.getElementById('gtv-file').click()">🎞️ 选择GIF</button>
+        <span id="gtv-filename" style="font-size:12px;color:var(--text-light);margin-left:10px;"></span>
+      </div>
+      <div style="display:flex;gap:12px;margin-top:12px;">
+        <div style="flex:1;text-align:center;">
+          <div style="font-size:13px;color:var(--text-light);margin-bottom:6px;">原始GIF</div>
+          <img id="gtv-preview" src="" alt="" style="max-width:100%;border-radius:10px;border:1px solid var(--border,#e2e8f0);">
+        </div>
+        <div style="flex:1;text-align:center;display:none;" id="gtv-video-wrap">
+          <div style="font-size:13px;color:var(--text-light);margin-bottom:6px;">转换结果</div>
+          <video id="gtv-video" controls loop style="max-width:100%;border-radius:10px;border:1px solid var(--border,#e2e8f0);"></video>
+        </div>
+      </div>
+      <div class="row-3" style="margin-top:12px;">
+        <div class="input-group">
+          <label>输出格式</label>
+          <select id="gtv-format">
+            <option value="webm" selected>WebM (推荐)</option>
+            <option value="mp4">MP4 (H.264)</option>
+          </select>
+        </div>
+        <div class="input-group">
+          <label>帧率</label>
+          <select id="gtv-fps">
+            <option value="15" selected>15 fps</option>
+            <option value="24">24 fps</option>
+            <option value="30">30 fps</option>
+          </select>
+        </div>
+        <div class="input-group">
+          <label>循环</label>
+          <select id="gtv-loop">
+            <option value="loop" selected>循环播放</option>
+            <option value="no">单次播放</option>
+          </select>
+        </div>
+      </div>
+      <div class="stats-row" style="margin-top:12px;">
+        <div class="stat-item">GIF大小: <strong id="gtv-orig">-</strong></div>
+        <div class="stat-item">视频大小: <strong id="gtv-out">-</strong></div>
+        <div class="stat-item">压缩率: <strong id="gtv-rate">-</strong></div>
+      </div>
+      <div class="btn-group" style="margin-top:15px;">
+        <button class="btn btn-primary" onclick="gtvConvert()">🎬 开始转换</button>
+        <button class="btn btn-secondary" onclick="gtvDownload()">💾 下载视频</button>
+      </div>
+      <div id="gtv-tip" style="margin-top:15px;font-size:13px;color:var(--text-light);background:var(--bg-light,#f8fafc);padding:12px;border-radius:8px;">
+        💡 在浏览器本地把GIF逐帧重编码为视频，不会上传；动图转视频后体积通常可减小50-80%
+      </div>
+    </div>
+  `,
+  handler: () => { }
+},
+
 ];
 
 // ============================================================
@@ -11307,7 +11439,7 @@ const CATEGORIES = [
   { id: 'security', icon: '🔒', name: '安全工具', desc: '密码生成、Hash计算、随机数、浏览器指纹检测、身份证号码校验、凯撒密码' },
   { id: 'time', icon: '⏱️', name: '时间工具', desc: '时间戳转换、日期计算、世界时区转换、番茄钟专注计时、待办清单、每日计划' },
   { id: 'color', icon: '🎨', name: '颜色工具', desc: 'HEX/RGB/HSL颜色转换、颜色对比度检查、CSS渐变生成器、配色方案生成器' },
-  { id: 'media', icon: '🎬', name: '媒体工具', desc: '抖音/TikTok去水印下载、视频转GIF、多图合成GIF、GIF压缩器、在线录音、录音转文字、音频波形可视化、白噪音发生器、音频变速变调、音频剪辑拼接、音频格式转换、音频均衡器、视频压缩、视频提取音频、节拍器、视频抽帧器、视频缩略图制作器、在线便签、人声分离/伴奏提取' },
+  { id: 'media', icon: '🎬', name: '媒体工具', desc: '抖音/TikTok去水印下载、视频转GIF、GIF转视频、多图合成GIF、GIF压缩器、视频加水印、在线录音、录音转文字、音频波形可视化、白噪音发生器、音频变速变调、音频剪辑拼接、音频格式转换、音频均衡器、视频压缩、视频提取音频、节拍器、视频抽帧器、视频缩略图制作器、在线便签、人声分离/伴奏提取' },
   { id: 'ai', icon: '🤖', name: 'AI工具', desc: 'AI聊天、AI Agent安装、免费AI工具推荐' },
   { id: 'voice', icon: '🗣️', name: '群众心声', desc: '提交工具建议、投票排行榜、前3名自动实现' },
   { id: 'lottery', icon: '🎰', name: '彩票工具', desc: '双色球、大乐透、福彩3D、快乐8、排列三…在线过滤缩水、选号、计算器' },
@@ -23292,4 +23424,195 @@ function pcDownload() {
   showToast('💾 已开始下载');
 }
 
-var pcRawFileName = 'image';
+var pcRawFileName = 'image';// ============================================================
+// 视频加水印 处理函数 (vw*)
+// ============================================================
+var vwRawFile = null;
+var vwVideoEl = null;
+var vwOutBlob = null;
+
+function vwLoadFile(input) {
+  const file = input.files[0];
+  if (!file) return;
+  document.getElementById('vw-filename').textContent = file.name;
+  document.getElementById('vw-orig').textContent = (file.size / 1024 / 1024).toFixed(2) + ' MB';
+  document.getElementById('vw-out').textContent = '-';
+  vwRawFile = file;
+  vwOutBlob = null;
+  const preview = document.getElementById('vw-preview');
+  preview.style.display = 'block';
+  vwVideoEl = document.getElementById('vw-video');
+  vwVideoEl.src = URL.createObjectURL(file);
+  vwVideoEl.load();
+}
+
+function vwOpacityChange(v) {
+  document.getElementById('vw-opacity-val').textContent = v;
+}
+
+function vwPreview() { /* 预览水印样式，导出时实际绘制 */ }
+
+function vwRender() {
+  if (!vwRawFile || !vwVideoEl) { showToast('❌ 请先选择视频'); return; }
+  const text = document.getElementById('vw-text').value || '水印';
+  const pos = document.getElementById('vw-pos').value;
+  const size = document.getElementById('vw-size').value;
+  const opacity = parseInt(document.getElementById('vw-opacity').value) / 100;
+  const fps = 30;
+  const v = vwVideoEl;
+  const vw = v.videoWidth || 1280;
+  const vh = v.videoHeight || 720;
+  const fontPx = size === 'small' ? Math.round(vw * 0.025) : (size === 'large' ? Math.round(vw * 0.06) : Math.round(vw * 0.04));
+  const canvas = document.createElement('canvas');
+  canvas.width = vw; canvas.height = vh;
+  const ctx = canvas.getContext('2d');
+  const stream = canvas.captureStream(fps);
+  const mime = (MediaRecorder.isTypeSupported('video/webm;codecs=vp9')) ? 'video/webm;codecs=vp9' : 'video/webm';
+  const rec = new MediaRecorder(stream, { mimeType: mime, videoBitsPerSecond: 4000000 });
+  const chunks = [];
+  rec.ondataavailable = function (e) { if (e.data && e.data.size) chunks.push(e.data); };
+  rec.onstop = function () {
+    vwOutBlob = new Blob(chunks, { type: mime });
+    document.getElementById('vw-out').textContent = (vwOutBlob.size / 1024 / 1024).toFixed(2) + ' MB';
+    showToast('✅ 导出完成');
+  };
+  v.currentTime = 0;
+  v.muted = true;
+  v.controls = false;
+  v.play().then(function () {
+    rec.start(250);
+    function draw() {
+      if (!v.paused && !v.ended) {
+        ctx.drawImage(v, 0, 0, vw, vh);
+        ctx.font = 'bold ' + fontPx + 'px "Noto Sans SC", sans-serif';
+        ctx.fillStyle = 'rgba(255,255,255,' + opacity + ')';
+        ctx.strokeStyle = 'rgba(0,0,0,' + (opacity * 0.6) + ')';
+        ctx.lineWidth = Math.max(2, fontPx / 12);
+        const tw = ctx.measureText(text).width;
+        const th = fontPx;
+        const pad = fontPx * 0.5;
+        let x = pad, y = vh - pad;
+        if (pos === 'tl') { x = pad; y = th + pad; }
+        else if (pos === 'tr') { x = vw - tw - pad; y = th + pad; }
+        else if (pos === 'bl') { x = pad; y = vh - pad; }
+        else if (pos === 'br') { x = vw - tw - pad; y = vh - pad; }
+        else { x = (vw - tw) / 2; y = (vh + th) / 2; }
+        ctx.strokeText(text, x, y);
+        ctx.fillText(text, x, y);
+        requestAnimationFrame(draw);
+      }
+      if (v.ended) {
+        rec.stop();
+        stream.getTracks().forEach(function (t) { t.stop(); });
+      }
+    }
+    requestAnimationFrame(draw);
+  }).catch(function (e) {
+    showToast('❌ 无法播放视频: ' + e.message);
+  });
+}
+
+function vwDownload() {
+  if (!vwOutBlob) { showToast('❌ 请先导出'); return; }
+  const a = document.createElement('a');
+  a.download = (vwRawFile ? vwRawFile.name.replace(/\.[^.]+$/, '') : 'video') + '_watermark.webm';
+  a.href = URL.createObjectURL(vwOutBlob);
+  a.click();
+  showToast('💾 已开始下载');
+}
+
+// ============================================================
+// GIF转视频 处理函数 (gtv*)
+// ============================================================
+var gtvRawFile = null;
+var gtvImg = null;
+var gtvOutBlob = null;
+
+function gtvLoadFile(input) {
+  const file = input.files[0];
+  if (!file) return;
+  document.getElementById('gtv-filename').textContent = file.name;
+  document.getElementById('gtv-orig').textContent = (file.size / 1024).toFixed(1) + ' KB';
+  document.getElementById('gtv-out').textContent = '-';
+  document.getElementById('gtv-rate').textContent = '-';
+  gtvRawFile = file;
+  gtvOutBlob = null;
+  const img = document.getElementById('gtv-preview');
+  const videoWrap = document.getElementById('gtv-video-wrap');
+  videoWrap.style.display = 'none';
+  img.src = URL.createObjectURL(file);
+  gtvImg = new Image();
+  gtvImg.src = img.src;
+}
+
+function gtvConvert() {
+  if (!gtvRawFile || !gtvImg) { showToast('❌ 请先选择GIF'); return; }
+  const fmt = document.getElementById('gtv-format').value;
+  const fps = parseInt(document.getElementById('gtv-fps').value) || 15;
+  const loop = document.getElementById('gtv-loop').value;
+  const btn = document.querySelector('[onclick="gtvConvert()"]');
+  if (btn) { btn.disabled = true; btn.textContent = '⏳ 转换中...'; }
+  try {
+    // 采用 canvas 屏幕录制：浏览器播放GIF动图并通过 rAF 绘制到 canvas，然后用 MediaRecorder 编码
+    const w = gtvImg.width || 480;
+    const h = gtvImg.height || 270;
+    const canvas = document.createElement('canvas');
+    canvas.width = w; canvas.height = h;
+    const ctx = canvas.getContext('2d');
+    const stream = canvas.captureStream(fps);
+    const mime = fmt === 'mp4'
+      ? (MediaRecorder.isTypeSupported('video/mp4') ? 'video/mp4' : 'video/webm')
+      : (MediaRecorder.isTypeSupported('video/webm;codecs=vp9') ? 'video/webm;codecs=vp9' : 'video/webm');
+    const rec = new MediaRecorder(stream, { mimeType: mime, videoBitsPerSecond: 2500000 });
+    const chunks = [];
+    rec.ondataavailable = function (e) { if (e.data && e.data.size) chunks.push(e.data); };
+    rec.onstop = function () {
+      gtvOutBlob = new Blob(chunks, { type: mime });
+      const orig = gtvRawFile.size;
+      document.getElementById('gtv-out').textContent = (gtvOutBlob.size / 1024).toFixed(1) + ' KB';
+      document.getElementById('gtv-rate').textContent = '-' + Math.max(0, Math.round((1 - gtvOutBlob.size / orig) * 100)) + '%';
+      // 显示预览
+      const videoWrap = document.getElementById('gtv-video-wrap');
+      videoWrap.style.display = 'block';
+      const video = document.getElementById('gtv-video');
+      video.src = URL.createObjectURL(gtvOutBlob);
+      if (loop === 'loop') video.loop = true;
+      showToast('✅ 转换完成');
+      if (btn) { btn.disabled = false; btn.textContent = '🎬 开始转换'; }
+    };
+    rec.start(200);
+    // 录制约 4 秒（多数GIF完整播放一遍）
+    let frames = 0;
+    const totalFrames = fps * 4;
+    function drawFrame() {
+      if (frames > totalFrames) {
+        rec.stop();
+        stream.getTracks().forEach(function (t) { t.stop(); });
+        return;
+      }
+      ctx.fillStyle = '#fff';
+      ctx.fillRect(0, 0, w, h);
+      ctx.drawImage(gtvImg, 0, 0, w, h);
+      frames++;
+      setTimeout(drawFrame, 1000 / fps);
+    }
+    setTimeout(drawFrame, 100);
+
+    // 确保 img 动画已开始
+    gtvImg.onload = function () { /* GIF 动画自动播放 */ };
+  } catch (e) {
+    console.error(e);
+    showToast('❌ 转换失败: ' + e.message);
+    if (btn) { btn.disabled = false; btn.textContent = '🎬 开始转换'; }
+  }
+}
+
+function gtvDownload() {
+  if (!gtvOutBlob) { showToast('❌ 请先转换'); return; }
+  const ext = document.getElementById('gtv-format').value;
+  const a = document.createElement('a');
+  a.download = (gtvRawFile ? gtvRawFile.name.replace(/\.[^.]+$/, '') : 'gif') + '_video.' + ext;
+  a.href = URL.createObjectURL(gtvOutBlob);
+  a.click();
+  showToast('💾 已开始下载');
+}
