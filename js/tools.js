@@ -9575,6 +9575,91 @@ greet('世界');</textarea>
   handler: () => { }
 },
 
+// ============================================================
+// 音频均衡器工具 audio-equalizer (aeq*)
+// ============================================================
+{
+  id: 'audio-equalizer',
+  cat: 'media',
+  icon: '🎚️',
+  name: '音频均衡器',
+  desc: '调节音频低中高频增益，预置流行/摇滚/古典曲线，试听并导出处理后的音频',
+  html: `
+    <div class="tool-card">
+      <div class="input-group">
+        <label>选择音频文件</label>
+        <input type="file" id="aeq-file" accept="audio/*" style="display:none;" onchange="aeqLoadFile(this)">
+        <button class="btn btn-secondary" style="margin-top:6px;" onclick="document.getElementById('aeq-file').click()">🎵 选择音频</button>
+        <span id="aeq-filename" style="font-size:12px;color:var(--text-light);margin-left:10px;"></span>
+      </div>
+      <div class="input-group" style="margin-top:12px;">
+        <label>预设曲线</label>
+        <select id="aeq-preset" onchange="aeqApplyPreset(this.value)">
+          <option value="flat">平直（无增益）</option>
+          <option value="pop">🎤 流行</option>
+          <option value="rock">🎸 摇滚</option>
+          <option value="classical">🎻 古典</option>
+          <option value="bass">🔊 低音增强</option>
+          <option value="treble">🔔 高音增强</option>
+        </select>
+      </div>
+      <div id="aeq-bands" style="margin-top:12px;">
+        <div class="input-group"><label>40 Hz（低频）</label><input type="range" class="aeq-band" data-freq="40" min="-12" max="12" value="0" style="width:100%;"></div>
+        <div class="input-group"><label>160 Hz（中低）</label><input type="range" class="aeq-band" data-freq="160" min="-12" max="12" value="0" style="width:100%;"></div>
+        <div class="input-group"><label>1 kHz（中频）</label><input type="range" class="aeq-band" data-freq="1000" min="-12" max="12" value="0" style="width:100%;"></div>
+        <div class="input-group"><label>4 kHz（中高）</label><input type="range" class="aeq-band" data-freq="4000" min="-12" max="12" value="0" style="width:100%;"></div>
+        <div class="input-group"><label>12 kHz（高频）</label><input type="range" class="aeq-band" data-freq="12000" min="-12" max="12" value="0" style="width:100%;"></div>
+      </div>
+      <div class="stats-row" style="margin-top:12px;">
+        <div class="stat-item">原始大小: <strong id="aeq-orig">-</strong></div>
+        <div class="stat-item">处理后: <strong id="aeq-out">-</strong></div>
+      </div>
+      <div class="btn-group" style="margin-top:15px;">
+        <button class="btn btn-primary" onclick="aeqPreview()">▶️ 试听</button>
+        <button class="btn btn-secondary" onclick="aeqRender()">⚙️ 处理并导出</button>
+        <button class="btn btn-secondary" onclick="aeqDownload()">💾 下载</button>
+      </div>
+      <div id="aeq-tip" style="margin-top:15px;font-size:13px;color:var(--text-light);background:var(--bg-light,#f8fafc);padding:12px;border-radius:8px;">
+        💡 拖拽滑块调节各频段增益（-12~+12 dB），试听实时效果；导出为 WAV（纯本地，不上传）
+      </div>
+    </div>
+  `,
+  handler: () => { }
+},
+
+// ============================================================
+// 文档透视矫正工具 perspective-correct (pc*)
+// ============================================================
+{
+  id: 'perspective-correct',
+  cat: 'image',
+  icon: '📐',
+  name: '文档透视矫正',
+  desc: '把拍歪的文档/白板/照片拉正，四角拖拽透视矫正，导出高清图片',
+  html: `
+    <div class="tool-card">
+      <div class="input-group">
+        <label>选择图片（文档/白板/照片均可）</label>
+        <input type="file" id="pc-file" accept="image/*" style="display:none;" onchange="pcLoadFile(this)">
+        <button class="btn btn-secondary" style="margin-top:6px;" onclick="document.getElementById('pc-file').click()">📷 选择图片</button>
+        <span id="pc-filename" style="font-size:12px;color:var(--text-light);margin-left:10px;"></span>
+      </div>
+      <div id="pc-canvas-wrap" style="margin-top:12px;text-align:center;background:#f1f5f9;border-radius:10px;padding:10px;display:none;">
+        <canvas id="pc-canvas" style="max-width:100%;border-radius:6px;"></canvas>
+        <div style="font-size:12px;color:var(--text-light);margin-top:6px;">拖动四个角点对齐文档边缘</div>
+      </div>
+      <div class="btn-group" style="margin-top:12px;">
+        <button class="btn btn-primary" onclick="pcApply()">✨ 应用矫正</button>
+        <button class="btn btn-secondary" onclick="pcDownload()">💾 下载矫正图片</button>
+      </div>
+      <div id="pc-tip" style="margin-top:15px;font-size:13px;color:var(--text-light);background:var(--bg-light,#f8fafc);padding:12px;border-radius:8px;">
+        💡 上传后拖动四个色彩角点贴住文档/白板四角，点击"应用矫正"即可拉正；图片在浏览器本地处理，不会上传
+      </div>
+    </div>
+  `,
+  handler: () => { }
+},
+
 ];
 
 // ============================================================
@@ -11216,13 +11301,13 @@ function dpCopyText() {
 const CATEGORIES = [
   { id: 'text', icon: '✏️', name: '文本工具', desc: '字数统计、简繁转换、摩斯密码、文本转语音、文本对比、电子名片生成器、英文语法检查、占位文本生成' },
   { id: 'dev', icon: '💻', name: '开发者工具', desc: 'JSON格式化、YAML/JSON互转、二维码生成、二维码美化、条形码生成、Favicon图标生成、正则测试、Markdown、IP查询、子网计算、思维导图、图表生成、代码图片生成、表格数据转换、SQL格式化、代码压缩器、假数据生成器、Cron表达式生成器、HTTP状态码速查、SEO标题预览、屏幕坏点测试、字体配对' },
-  { id: 'image', icon: '🖼️', name: '图片处理', desc: '去背景换底色、批量压缩、加水印、长图拼接、格式转换、裁剪、异形裁剪、马赛克打码、双色调滤镜、图片转字符画、照片卡通化、OCR、印章制作、九宫格切图、文字转手写体、表情包、社交媒体图片尺寸调整、艺术效果、像素画、设备样机、图片高清放大、图片转线稿、渐变背景、文字特效、拼贴画、图片相框、颜色盲区模拟、海报设计器、老照片修复上色、图片EXIF信息、占位图生成器' },
+  { id: 'image', icon: '🖼️', name: '图片处理', desc: '去背景换底色、批量压缩、加水印、长图拼接、格式转换、裁剪、异形裁剪、马赛克打码、双色调滤镜、图片转字符画、照片卡通化、OCR、印章制作、九宫格切图、文字转手写体、表情包、社交媒体图片尺寸调整、艺术效果、像素画、设备样机、图片高清放大、图片转线稿、渐变背景、文字特效、拼贴画、图片相框、颜色盲区模拟、海报设计器、老照片修复上色、图片EXIF信息、占位图生成器、文档透视矫正' },
   { id: 'document', icon: '📄', name: '文档转换', desc: '图片转PDF、PDF转图片、Word解析、Excel转PDF、PDF合并、PDF拆分、PDF加密解密、简历生成、电子签名、表单制作、邮件签名、发票/收据生成器、证书生成器' },
   { id: 'convert', icon: '🔄', name: '转换工具', desc: '单位换算、进制转换、函数绘图' },
   { id: 'security', icon: '🔒', name: '安全工具', desc: '密码生成、Hash计算、随机数、浏览器指纹检测、身份证号码校验、凯撒密码' },
   { id: 'time', icon: '⏱️', name: '时间工具', desc: '时间戳转换、日期计算、世界时区转换、番茄钟专注计时、待办清单、每日计划' },
   { id: 'color', icon: '🎨', name: '颜色工具', desc: 'HEX/RGB/HSL颜色转换、颜色对比度检查、CSS渐变生成器、配色方案生成器' },
-  { id: 'media', icon: '🎬', name: '媒体工具', desc: '抖音/TikTok去水印下载、视频转GIF、多图合成GIF、GIF压缩器、在线录音、录音转文字、音频波形可视化、白噪音发生器、音频变速变调、音频剪辑拼接、音频格式转换、视频压缩、视频提取音频、节拍器、视频抽帧器、视频缩略图制作器、在线便签、人声分离/伴奏提取' },
+  { id: 'media', icon: '🎬', name: '媒体工具', desc: '抖音/TikTok去水印下载、视频转GIF、多图合成GIF、GIF压缩器、在线录音、录音转文字、音频波形可视化、白噪音发生器、音频变速变调、音频剪辑拼接、音频格式转换、音频均衡器、视频压缩、视频提取音频、节拍器、视频抽帧器、视频缩略图制作器、在线便签、人声分离/伴奏提取' },
   { id: 'ai', icon: '🤖', name: 'AI工具', desc: 'AI聊天、AI Agent安装、免费AI工具推荐' },
   { id: 'voice', icon: '🗣️', name: '群众心声', desc: '提交工具建议、投票排行榜、前3名自动实现' },
   { id: 'lottery', icon: '🎰', name: '彩票工具', desc: '双色球、大乐透、福彩3D、快乐8、排列三…在线过滤缩水、选号、计算器' },
@@ -22875,4 +22960,336 @@ document.addEventListener('input', function (e) {
   if (e.target && e.target.id && e.target.id.indexOf('br-') === 0) {
     brRender();
   }
-});
+});// ============================================================
+// 音频均衡器 处理函数 (aeq*)
+// ============================================================
+var aeqBuffer = null;
+var aeqRawFile = null;
+var aeqOutBlob = null;
+var aeqCtx = null;
+
+function aeqLoadFile(input) {
+  const file = input.files[0];
+  if (!file) return;
+  document.getElementById('aeq-filename').textContent = file.name;
+  document.getElementById('aeq-orig').textContent = (file.size / 1024 / 1024).toFixed(2) + ' MB';
+  document.getElementById('aeq-out').textContent = '-';
+  aeqRawFile = file;
+  aeqOutBlob = null;
+  const reader = new FileReader();
+  reader.onload = async function (e) {
+    try {
+      if (!aeqCtx) aeqCtx = new (window.AudioContext || window.webkitAudioContext)();
+      aeqBuffer = await aeqCtx.decodeAudioData(e.target.result);
+      showToast('✅ 音频加载成功');
+    } catch (err) {
+      showToast('❌ 无法解码音频');
+      console.error(err);
+    }
+  };
+  reader.readAsArrayBuffer(file);
+}
+
+function aeqApplyPreset(name) {
+  const presets = {
+    flat: [0, 0, 0, 0, 0],
+    pop: [-2, 2, 3, 2, -1],
+    rock: [4, 2, -1, 3, 4],
+    classical: [0, 0, 0, 0, 0],
+    bass: [8, 5, 1, -2, -4],
+    treble: [-4, -2, 0, 3, 7]
+  };
+  const vals = presets[name] || [0, 0, 0, 0, 0];
+  document.querySelectorAll('.aeq-band').forEach(function (el, i) {
+    if (vals[i] !== undefined) el.value = vals[i];
+  });
+}
+
+function aeqGetGains() {
+  return Array.from(document.querySelectorAll('.aeq-band')).map(function (el) {
+    return parseInt(el.value) || 0;
+  });
+}
+
+function aeqPreview() {
+  if (!aeqBuffer) { showToast('❌ 请先选择音频'); return; }
+  const ctx = aeqGetCtx();
+  const src = ctx.createBufferSource();
+  src.buffer = aeqBuffer;
+  let node = src;
+  [40, 160, 1000, 4000, 12000].forEach(function (freq, i) {
+    const filter = ctx.createBiquadFilter();
+    filter.type = 'peaking';
+    filter.frequency.value = freq;
+    filter.Q.value = 1;
+    filter.gain.value = aeqGetGains()[i];
+    node.connect(filter);
+    node = filter;
+  });
+  node.connect(ctx.destination);
+  src.start(0);
+  showToast('▶️ 试听中（处理后效果）');
+}
+
+function aeqGetCtx() {
+  if (!aeqCtx) aeqCtx = new (window.AudioContext || window.webkitAudioContext)();
+  return aeqCtx;
+}
+
+async function aeqRender() {
+  if (!aeqBuffer) { showToast('❌ 请先选择音频'); return; }
+  const btn = document.querySelector('[onclick="aeqRender()"]');
+  if (btn) { btn.disabled = true; btn.textContent = '⏳ 处理中...'; }
+  try {
+    const sampleRate = aeqBuffer.sampleRate;
+    const channels = Math.min(2, aeqBuffer.numberOfChannels);
+    const offline = new OfflineAudioContext(channels, aeqBuffer.length, sampleRate);
+    const src = offline.createBufferSource();
+    src.buffer = aeqBuffer;
+    let node = src;
+    [40, 160, 1000, 4000, 12000].forEach(function (freq, i) {
+      const filter = offline.createBiquadFilter();
+      filter.type = 'peaking';
+      filter.frequency.value = freq;
+      filter.Q.value = 1;
+      filter.gain.value = aeqGetGains()[i];
+      node.connect(filter);
+      node = filter;
+    });
+    node.connect(offline.destination);
+    src.start(0);
+    const rendered = await offline.startRendering();
+    const wav = acvEncodeWav(rendered, 16);
+    aeqOutBlob = wav;
+    document.getElementById('aeq-out').textContent = (wav.size / 1024 / 1024).toFixed(2) + ' MB';
+    showToast('✅ 处理完成');
+  } catch (e) {
+    console.error(e);
+    showToast('❌ 处理失败: ' + e.message);
+  } finally {
+    if (btn) { btn.disabled = false; btn.textContent = '⚙️ 处理并导出'; }
+  }
+}
+
+function aeqDownload() {
+  if (!aeqOutBlob) { showToast('❌ 请先处理音频'); return; }
+  const base = (aeqRawFile ? aeqRawFile.name.replace(/\.[^.]+$/, '') : 'audio') + '_eq.wav';
+  const a = document.createElement('a');
+  a.download = base;
+  a.href = URL.createObjectURL(aeqOutBlob);
+  a.click();
+  showToast('💾 已开始下载');
+}
+
+// ============================================================
+// 文档透视矫正 处理函数 (pc*)
+// ============================================================
+var pcImg = null;
+var pcCorners = [];
+var pcCanvas = null;
+var pcCtx2d = null;
+var pcDragIndex = -1;
+var pcSourceImg = null;
+
+function pcLoadFile(input) {
+  const file = input.files[0];
+  if (!file) return;
+  document.getElementById('pc-filename').textContent = file.name;
+  const url = URL.createObjectURL(file);
+  pcSourceImg = new Image();
+  pcSourceImg.onload = function () {
+    const wrap = document.getElementById('pc-canvas-wrap');
+    wrap.style.display = 'block';
+    const maxW = Math.min(700, window.innerWidth - 60);
+    const scale = maxW / pcSourceImg.width;
+    pcCanvas = document.getElementById('pc-canvas');
+    pcCanvas.width = pcSourceImg.width;
+    pcCanvas.height = pcSourceImg.height;
+    pcCtx2d = pcCanvas.getContext('2d');
+    pcCtx2d.drawImage(pcSourceImg, 0, 0);
+    // 初始角点 = 图片四角（略内缩 5%）
+    pcCorners = [
+      { x: pcSourceImg.width * 0.06, y: pcSourceImg.height * 0.06 },
+      { x: pcSourceImg.width * 0.94, y: pcSourceImg.height * 0.06 },
+      { x: pcSourceImg.width * 0.94, y: pcSourceImg.height * 0.94 },
+      { x: pcSourceImg.width * 0.06, y: pcSourceImg.height * 0.94 }
+    ];
+    pcDrawCorners();
+    pcBindMouse();
+  };
+  pcSourceImg.src = url;
+}
+
+function pcDrawCorners() {
+  if (!pcCtx2d || pcCorners.length !== 4) return;
+  pcCtx2d.drawImage(pcSourceImg, 0, 0);
+  const colors = ['#ef4444', '#3b82f6', '#22c55e', '#f59e0b'];
+  pcCorners.forEach(function (c, i) {
+    pcCtx2d.beginPath();
+    pcCtx2d.arc(c.x, c.y, 12, 0, Math.PI * 2);
+    pcCtx2d.fillStyle = colors[i];
+    pcCtx2d.fill();
+    pcCtx2d.strokeStyle = '#fff';
+    pcCtx2d.lineWidth = 3;
+    pcCtx2d.stroke();
+  });
+}
+
+function pcBindMouse() {
+  pcCanvas.addEventListener('mousedown', function (e) {
+    const rect = pcCanvas.getBoundingClientRect();
+    const scaleX = pcCanvas.width / rect.width;
+    const scaleY = pcCanvas.height / rect.height;
+    const mx = (e.clientX - rect.left) * scaleX;
+    const my = (e.clientY - rect.top) * scaleY;
+    pcCorners.forEach(function (c, i) {
+      if (Math.abs(mx - c.x) < 20 && Math.abs(my - c.y) < 20) pcDragIndex = i;
+    });
+  });
+  pcCanvas.addEventListener('mousemove', function (e) {
+    if (pcDragIndex < 0) return;
+    const rect = pcCanvas.getBoundingClientRect();
+    const scaleX = pcCanvas.width / rect.width;
+    const scaleY = pcCanvas.height / rect.height;
+    pcCorners[pcDragIndex].x = (e.clientX - rect.left) * scaleX;
+    pcCorners[pcDragIndex].y = (e.clientY - rect.top) * scaleY;
+    pcDrawCorners();
+  });
+  pcCanvas.addEventListener('mouseup', function () { pcDragIndex = -1; });
+}
+
+function pcApply() {
+  if (!pcSourceImg || pcCorners.length !== 4) return;
+  // 目标尺寸 = 源图尺寸
+  const W = pcSourceImg.width;
+  const H = pcSourceImg.height;
+  // 四角映射（源 -> 目标四角）
+  const src = pcCorners;
+  const dst = [
+    { x: 0, y: 0 },
+    { x: W - 1, y: 0 },
+    { x: W - 1, y: H - 1 },
+    { x: 0, y: H - 1 }
+  ];
+  // 解 3x3 单应矩阵（8 未知数），简化用双线性插值配合重心坐标法：
+  // 这里用标准透视变换矩阵求解
+  const M = pcHomography(src, dst);
+  const out = document.createElement('canvas');
+  out.width = W;
+  out.height = H;
+  const octx = out.getContext('2d');
+  const imgData = octx.createImageData(W, H);
+  const srcData = pcCtx2d.getImageData(0, 0, W, H).data;
+
+  for (let y = 0; y < H; y++) {
+    for (let x = 0; x < W; x++) {
+      // 目标 -> 源
+      const inv = pcInvert(M);
+      const p = pcMul(inv, x, y);
+      const sx = p.x / p.w;
+      const sy = p.y / p.w;
+      if (sx >= 0 && sx < W - 1 && sy >= 0 && sy < H - 1) {
+        const x0 = Math.floor(sx), y0 = Math.floor(sy);
+        const dx = sx - x0, dy = sy - y0;
+        const i00 = (y0 * W + x0) * 4;
+        const i10 = (y0 * W + x0 + 1) * 4;
+        const i01 = ((y0 + 1) * W + x0) * 4;
+        const i11 = ((y0 + 1) * W + x0 + 1) * 4;
+        for (let c = 0; c < 4; c++) {
+          const v = (srcData[i00 + c] * (1 - dx) + srcData[i10 + c] * dx) * (1 - dy) +
+                    (srcData[i01 + c] * (1 - dx) + srcData[i11 + c] * dx) * dy;
+          imgData.data[(y * W + x) * 4 + c] = v;
+        }
+      }
+    }
+  }
+  octx.putImageData(imgData, 0, 0);
+  pcCanvas.width = W; pcCanvas.height = H;
+  pcCanvas.getContext('2d').drawImage(out, 0, 0);
+  pcSourceImg = out; // 更新为矫正后图像
+  pcCorners = null;
+  pcShowResult();
+}
+
+function pcHomography(src, dst) {
+  // 8x8 线性方程（DLT 简化版）
+  const A = [];
+  for (let i = 0; i < 4; i++) {
+    const x = src[i].x, y = src[i].y;
+    const u = dst[i].x, v = dst[i].y;
+    A.push([x, y, 1, 0, 0, 0, -u * x, -u * y]);
+    A.push([0, 0, 0, x, y, 1, -v * x, -v * y]);
+  }
+  const b = [dst[0].x, dst[0].y, dst[1].x, dst[1].y, dst[2].x, dst[2].y, dst[3].x, dst[3].y];
+  const h = pcSolve(A, b);
+  return [
+    [h[0], h[1], h[2]],
+    [h[3], h[4], h[5]],
+    [h[6], h[7], 1]
+  ];
+}
+
+function pcSolve(A, b) {
+  // 高斯消元解 8x8
+  const n = 8;
+  const M = A.map((row, i) => row.concat(b[i]));
+  for (let col = 0; col < n; col++) {
+    let pivot = col;
+    for (let r = col + 1; r < n; r++) if (Math.abs(M[r][col]) > Math.abs(M[pivot][col])) pivot = r;
+    [M[col], M[pivot]] = [M[pivot], M[col]];
+    const pv = M[col][col];
+    if (Math.abs(pv) < 1e-12) continue;
+    for (let c = col; c <= n; c++) M[col][c] /= pv;
+    for (let r = 0; r < n; r++) {
+      if (r === col) continue;
+      const f = M[r][col];
+      for (let c = col; c <= n; c++) M[r][c] -= f * M[col][c];
+    }
+  }
+  return M.map((row, i) => row[n]);
+}
+
+function pcInvert(m) {
+  // 3x3 逆
+  const a = m[0][0], b = m[0][1], c = m[0][2];
+  const d = m[1][0], e = m[1][1], f = m[1][2];
+  const g = m[2][0], h = m[2][1], i = m[2][2];
+  const det = a * (e * i - f * h) - b * (d * i - f * g) + c * (d * h - e * g);
+  if (Math.abs(det) < 1e-12) return [[1, 0, 0], [0, 1, 0], [0, 0, 1]];
+  return [
+    [(e * i - f * h) / det, (c * h - b * i) / det, (b * f - c * e) / det],
+    [(f * g - d * i) / det, (a * i - c * g) / det, (c * d - a * f) / det],
+    [(d * h - e * g) / det, (b * g - a * h) / det, (a * e - b * d) / det]
+  ];
+}
+
+function pcMul(m, x, y) {
+  return {
+    x: m[0][0] * x + m[0][1] * y + m[0][2],
+    y: m[1][0] * x + m[1][1] * y + m[1][2],
+    w: m[2][0] * x + m[2][1] * y + m[2][2]
+  };
+}
+
+var pcResultBlob = null;
+
+function pcShowResult() {
+  if (!pcCanvas) return;
+  pcResultBlob = null;
+  pcCanvas.toBlob(function (blob) {
+    pcResultBlob = blob;
+    showToast('✨ 矫正完成，可下载');
+  }, 'image/png');
+  document.getElementById('pc-tip').innerHTML = '✅ 矫正完成！点击"下载矫正图片"保存结果；如需重新调整请刷新页面重新上传';
+}
+
+function pcDownload() {
+  if (!pcResultBlob) { showToast('❌ 请先应用矫正'); return; }
+  const a = document.createElement('a');
+  a.download = 'corrected_' + (pcRawFileName || 'image') + '.png';
+  a.href = URL.createObjectURL(pcResultBlob);
+  a.click();
+  showToast('💾 已开始下载');
+}
+
+var pcRawFileName = 'image';
