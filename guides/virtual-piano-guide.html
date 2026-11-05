@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>在线钢琴：3步弹奏钢琴，无需乐器也能练琴找调（88键虚拟钢琴） - ToolBox 工具箱指南</title>
+  <meta name="description" content="图文详解在线钢琴的使用方法：鼠标点击即弹、电脑键盘弹奏、切换音色八度、录音回放。免费使用，无需安装，练琴找调必备。">
+  <meta name="keywords" content="在线钢琴,虚拟钢琴,钢琴练习,网页钢琴,在线弹钢琴,电子琴,弹钢琴">
+  <meta name="author" content="ToolBox">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://toolai.ccwu.cc/guides/virtual-piano-guide.html">
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    :root {
+      --bg: #0f0f1a;
+      --bg-card: #1a1a2e;
+      --text: #e0e0e0;
+      --text-light: #8888aa;
+      --border: #2a2a44;
+      --accent: #6366f1;
+      --accent-hover: #4f46e5;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Noto Sans SC', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      margin: 0;
+      line-height: 1.8;
+    }
+    .guide-header {
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+      border-bottom: 1px solid var(--border);
+      padding: 20px 0;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(10px);
+    }
+    .guide-header-inner {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 0 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .guide-header a {
+      color: var(--accent);
+      text-decoration: none;
+      font-size: 14px;
+    }
+    .guide-header a:hover { color: var(--accent-hover); }
+    .guide-container {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 40px 20px 80px;
+    }
+    .guide-breadcrumb {
+      font-size: 13px;
+      color: var(--text-light);
+      margin-bottom: 20px;
+    }
+    .guide-breadcrumb a { color: var(--accent); text-decoration: none; }
+    .guide-breadcrumb a:hover { text-decoration: underline; }
+    h1 {
+      font-size: 32px;
+      font-weight: 700;
+      margin: 0 0 10px;
+      line-height: 1.3;
+      background: linear-gradient(135deg, #e0e0e0, #a78bfa);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .guide-meta {
+      font-size: 13px;
+      color: var(--text-light);
+      margin-bottom: 30px;
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .guide-meta span { display: flex; align-items: center; gap: 4px; }
+    h2 {
+      font-size: 22px;
+      font-weight: 600;
+      margin: 40px 0 16px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border);
+      color: #e0e0e0;
+    }
+    h3 {
+      font-size: 18px;
+      font-weight: 600;
+      margin: 28px 0 12px;
+      color: #ccc;
+    }
+    p { margin: 0 0 16px; color: #ccc; }
+    .guide-step {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 24px;
+      margin: 20px 0;
+    }
+    .guide-step-number {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #6366f1, #8b5cf6);
+      color: #fff;
+      font-weight: 700;
+      font-size: 15px;
+      margin-right: 10px;
+      vertical-align: middle;
+    }
+    .guide-step h3 { display: inline; font-size: 19px; color: #e0e0e0; }
+    .guide-step img {
+      width: 100%;
+      border-radius: 10px;
+      margin-top: 16px;
+      border: 1px solid var(--border);
+    }
+    .guide-tip {
+      background: rgba(99, 102, 241, 0.08);
+      border-left: 3px solid var(--accent);
+      border-radius: 8px;
+      padding: 14px 18px;
+      margin: 16px 0;
+      font-size: 14px;
+      color: #bbb;
+    }
+    .guide-scenarios { list-style: none; padding: 0; }
+    .guide-scenarios li {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px 18px;
+      margin: 10px 0;
+      font-size: 15px;
+    }
+    .guide-scenarios li strong { color: #a78bfa; }
+    .guide-faq details {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px 18px;
+      margin: 10px 0;
+    }
+    .guide-faq summary {
+      cursor: pointer;
+      font-weight: 600;
+      color: #e0e0e0;
+      font-size: 15px;
+    }
+    .guide-faq details p { margin: 12px 0 4px; font-size: 14px; }
+    .guide-cta {
+      background: linear-gradient(135deg, #1a1a2e, #16213e);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 36px 24px;
+      text-align: center;
+      margin: 40px 0 0;
+    }
+    .guide-cta h2 { border: none; margin-top: 0; }
+    .guide-cta p { font-size: 15px; color: #999; margin-bottom: 20px; }
+    .btn {
+      display: inline-block;
+      background: linear-gradient(135deg, #6366f1, #8b5cf6);
+      color: #fff !important;
+      padding: 12px 32px;
+      border-radius: 30px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 15px;
+      transition: transform .15s, box-shadow .15s;
+    }
+    .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(99,102,241,0.3); }
+    @media (max-width: 640px) {
+      h1 { font-size: 24px; }
+      .guide-container { padding: 24px 16px 60px; }
+      .guide-step { padding: 18px 14px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="guide-header">
+    <div class="guide-header-inner">
+      <a href="../index.html">← ToolBox 工具箱</a>
+      <a href="https://toolai.ccwu.cc/">返回首页</a>
+    </div>
+  </div>
+
+  <div class="guide-container">
+    <div class="guide-breadcrumb">
+      <a href="../index.html">首页</a> › <a href="../index.html#guides">工具箱指南</a> › 在线钢琴
+    </div>
+
+    <h1>在线钢琴：无需乐器，打开浏览器就能练琴找调</h1>
+    <div class="guide-meta">
+      <span>⏱️ 阅读约 4 分钟</span>
+      <span>📅 2026-11-05</span>
+      <span>🎹 趣味工具</span>
+    </div>
+
+    <p>想弹琴但身边没有乐器？想快速找调、练练手型、或者给朋友哼一段旋律？<strong>在线钢琴</strong>把 88 键的虚拟琴键直接搬进浏览器——鼠标点击就能出声，电脑键盘也能弹，还支持录音回放。下面是完整的使用指南。</p>
+
+    <img src="images/vp-cover.png" alt="在线钢琴界面" style="width:100%;border-radius:12px;border:1px solid var(--border);margin:10px 0 20px;">
+
+    <h2>开始使用</h2>
+
+    <div class="guide-step">
+      <span class="guide-step-number">1</span><h3>打开在线钢琴工具</h3>
+      <p>进入首页后，点击「趣味工具」分类，找到「🎹 在线钢琴」并打开。页面会显示一排完整的钢琴键盘——白键和黑键排列整齐，就像一架真实的钢琴。</p>
+      <img src="images/vp-step1-interface.png" alt="在线钢琴主界面">
+    </div>
+
+    <div class="guide-step">
+      <span class="guide-step-number">2</span><h3>用鼠标或键盘弹奏</h3>
+      <p>直接用鼠标点击琴键即可发声。更顺手的方式是用<strong>电脑键盘</strong>：A S D F G H J K L 对应 C D E F G A B C（白键），W E T Y U 是黑键。想弹更高的音域？在「八度」下拉框把音域调高，键盘位置不变，音高就整体上移。</p>
+      <img src="images/vp-step2-config.png" alt="音色与八度设置">
+      <div class="guide-tip">💡 默认是柔和的三角波钢琴音色。想玩电子音？把音色切换成「方波」或「锯齿波」，立刻变成合成器效果。</div>
+    </div>
+
+    <div class="guide-step">
+      <span class="guide-step-number">3</span><h3>录音与回放</h3>
+      <p>即兴弹了一段好听的旋律？点击「🔴 录音」开始记录，弹完后再次点击停止，然后点「▶️ 回放」——刚刚的演奏就会完整重现。特别适合反复练习同一段乐句，或者录下来对比自己的进步。</p>
+      <img src="images/vp-step3-record.png" alt="录音回放">
+      <div class="guide-tip">💡 小技巧：先用「点按测速」找到稳定速度，再配合节拍器工具一起练，节奏感提升超快。</div>
+    </div>
+
+    <h2>使用场景</h2>
+    <ul class="guide-scenarios">
+      <li><strong>🎵 临时找调</strong> — 听到一段旋律想扒谱，用钢琴一个音一个音试出来，比哼唱靠谱得多。</li>
+      <li><strong>🧒 音乐启蒙</strong> — 给孩子认识 Do-Re-Mi、练手眼协调，零成本体验弹琴的乐趣。</li>
+      <li><strong>✍️ 创作 Demo</strong> — 随手弹旋律并录音回放，攒下创作灵感，不用等手边有真乐器。</li>
+      <li><strong>🎤 唱歌校准</strong> — 用钢琴给出标准音高，跟琴练唱，跑调立刻能听出来。</li>
+      <li><strong>🕹️ 纯娱乐</strong> — 无聊时弹两下《小星星》或《欢乐颂》，键盘就是你的乐器。</li>
+    </ul>
+
+    <h2>常见问题</h2>
+    <div class="guide-faq">
+      <details>
+        <summary>手机/平板上能用吗？</summary>
+        <p>可以。触屏设备直接点琴键就能发声，无需外接键盘。建议平板横屏使用，键盘显示更完整。</p>
+      </details>
+      <details>
+        <summary>怎么让音更高/更低？</summary>
+        <p>用「八度」下拉框调整（-1 到 +3）。调高八度后，键盘按键不变但整体音域上移，可以覆盖不同音区的练习需求。</p>
+      </details>
+      <details>
+        <summary>录音能保存成文件吗？</summary>
+        <p>当前版本录音支持实时回放练习，支持音色/八度调整；如需把音频导出为文件，可以用站内的「音频录制」工具辅助。</p>
+      </details>
+    </div>
+
+    <div class="guide-cta">
+      <h2>现在就试试在线钢琴</h2>
+      <p>免费使用 · 无需安装 · 打开即弹</p>
+      <a href="https://toolai.ccwu.cc/" class="btn">🎹 打开在线钢琴</a>
+    </div>
+  </div>
+</body>
+</html>
