@@ -9792,6 +9792,73 @@ greet('世界');</textarea>
   handler: () => { }
 },
 
+// ============================================================
+// 乐器调音器工具 guitar-tuner (tuner*)
+// ============================================================
+{
+  id: 'guitar-tuner',
+  cat: 'media',
+  icon: '🎸',
+  name: '乐器调音器',
+  desc: '使用麦克风实时检测音高，为吉他/小提琴/尤克里里等乐器调音，校准音准必备',
+  html: `
+    <div class="tool-card">
+      <div class="input-group">
+        <label>调音模式（按乐器选择标准音高）</label>
+        <select id="tuner-mode" onchange="tunerSetMode(this.value)">
+          <option value="guitar">🎸 吉他 (EADGBE)</option>
+          <option value="ukulele">🎻 尤克里里 (GCEA)</option>
+          <option value="violin">🎻 小提琴 (GDAE)</option>
+          <option value="bass">🎛️ 贝斯 (EADG)</option>
+          <option value="chromatic">🎹 十二平均律</option>
+        </select>
+      </div>
+      <div id="tuner-display" style="margin:24px auto;text-align:center;">
+        <div style="font-size:56px;font-weight:800;color:var(--accent,#6366f1);" id="tuner-note">--</div>
+        <div style="font-size:14px;color:var(--text-light);margin-top:4px;" id="tuner-freq">等待输入...</div>
+        <div id="tuner-meter" style="margin:18px auto 4px;width:260px;height:14px;background:var(--border,#e2e8f0);border-radius:7px;position:relative;overflow:hidden;">
+          <div id="tuner-bar" style="position:absolute;left:50%;top:0;width:4px;height:100%;background:#6366f1;transform:translateX(-2px);transition:left .08s;"></div>
+        </div>
+        <div style="font-size:12px;color:var(--text-light);">♭ 偏低  <span style="margin:0 20px;color:var(--accent);">✔ 准</span>  ♯ 偏高</div>
+      </div>
+      <div class="btn-group" style="margin-top:10px;">
+        <button class="btn btn-primary" id="tuner-start" onclick="tunerToggle()">🎙️ 开始调音</button>
+        <button class="btn btn-secondary" onclick="tunerStop()">⏹️ 停止</button>
+      </div>
+      <div id="tuner-tip" style="margin-top:15px;font-size:13px;color:var(--text-light);background:var(--bg-light,#f8fafc);padding:12px;border-radius:8px;">
+        💡 点击"开始调音"并允许麦克风权限，靠近乐器拨弦即可看到音名和偏差；数字越接近 0 说明越准
+      </div>
+    </div>
+  `,
+  handler: () => { }
+},
+
+// ============================================================
+// 文件类型识别器工具 file-signature (fs*)
+// ============================================================
+{
+  id: 'file-signature',
+  cat: 'dev',
+  icon: '🔬',
+  name: '文件类型识别器',
+  desc: '读取文件头(魔数)识别真实文件类型，识别伪装扩展名的文件',
+  html: `
+    <div class="tool-card">
+      <div class="input-group">
+        <label>选择文件（不离开浏览器）</label>
+        <input type="file" id="fs-file" multiple style="display:none;" onchange="fsLoadFiles(this)">
+        <button class="btn btn-secondary" style="margin-top:6px;" onclick="document.getElementById('fs-file').click()">🔬 选择文件</button>
+        <span id="fs-count" style="font-size:12px;color:var(--text-light);margin-left:10px;">0 个文件</span>
+      </div>
+      <div id="fs-result" style="margin-top:15px;"></div>
+      <div id="fs-tip" style="margin-top:15px;font-size:13px;color:var(--text-light);background:var(--bg-light,#f8fafc);padding:12px;border-radius:8px;">
+        💡 根据文件头部魔数判断真实格式，可识别伪装扩展名的文件（如把 exe 改成 jpg）；纯本地读取，不上传
+      </div>
+    </div>
+  `,
+  handler: () => { }
+},
+
 ];
 
 // ============================================================
@@ -11432,14 +11499,14 @@ function dpCopyText() {
 // ============================================================
 const CATEGORIES = [
   { id: 'text', icon: '✏️', name: '文本工具', desc: '字数统计、简繁转换、摩斯密码、文本转语音、文本对比、电子名片生成器、英文语法检查、占位文本生成' },
-  { id: 'dev', icon: '💻', name: '开发者工具', desc: 'JSON格式化、YAML/JSON互转、二维码生成、二维码美化、条形码生成、Favicon图标生成、正则测试、Markdown、IP查询、子网计算、思维导图、图表生成、代码图片生成、表格数据转换、SQL格式化、代码压缩器、假数据生成器、Cron表达式生成器、HTTP状态码速查、SEO标题预览、屏幕坏点测试、字体配对' },
+  { id: 'dev', icon: '💻', name: '开发者工具', desc: 'JSON格式化、YAML/JSON互转、二维码生成、二维码美化、条形码生成、Favicon图标生成、正则测试、Markdown、IP查询、子网计算、思维导图、图表生成、代码图片生成、表格数据转换、SQL格式化、代码压缩器、假数据生成器、Cron表达式生成器、HTTP状态码速查、SEO标题预览、屏幕坏点测试、字体配对、文件类型识别器' },
   { id: 'image', icon: '🖼️', name: '图片处理', desc: '去背景换底色、批量压缩、加水印、长图拼接、格式转换、裁剪、异形裁剪、马赛克打码、双色调滤镜、图片转字符画、照片卡通化、OCR、印章制作、九宫格切图、文字转手写体、表情包、社交媒体图片尺寸调整、艺术效果、像素画、设备样机、图片高清放大、图片转线稿、渐变背景、文字特效、拼贴画、图片相框、颜色盲区模拟、海报设计器、老照片修复上色、图片EXIF信息、占位图生成器、文档透视矫正' },
   { id: 'document', icon: '📄', name: '文档转换', desc: '图片转PDF、PDF转图片、Word解析、Excel转PDF、PDF合并、PDF拆分、PDF加密解密、简历生成、电子签名、表单制作、邮件签名、发票/收据生成器、证书生成器' },
   { id: 'convert', icon: '🔄', name: '转换工具', desc: '单位换算、进制转换、函数绘图' },
   { id: 'security', icon: '🔒', name: '安全工具', desc: '密码生成、Hash计算、随机数、浏览器指纹检测、身份证号码校验、凯撒密码' },
   { id: 'time', icon: '⏱️', name: '时间工具', desc: '时间戳转换、日期计算、世界时区转换、番茄钟专注计时、待办清单、每日计划' },
   { id: 'color', icon: '🎨', name: '颜色工具', desc: 'HEX/RGB/HSL颜色转换、颜色对比度检查、CSS渐变生成器、配色方案生成器' },
-  { id: 'media', icon: '🎬', name: '媒体工具', desc: '抖音/TikTok去水印下载、视频转GIF、GIF转视频、多图合成GIF、GIF压缩器、视频加水印、在线录音、录音转文字、音频波形可视化、白噪音发生器、音频变速变调、音频剪辑拼接、音频格式转换、音频均衡器、视频压缩、视频提取音频、节拍器、视频抽帧器、视频缩略图制作器、在线便签、人声分离/伴奏提取' },
+  { id: 'media', icon: '🎬', name: '媒体工具', desc: '抖音/TikTok去水印下载、视频转GIF、GIF转视频、多图合成GIF、GIF压缩器、视频加水印、乐器调音器、在线录音、录音转文字、音频波形可视化、白噪音发生器、音频变速变调、音频剪辑拼接、音频格式转换、音频均衡器、视频压缩、视频提取音频、节拍器、视频抽帧器、视频缩略图制作器、在线便签、人声分离/伴奏提取' },
   { id: 'ai', icon: '🤖', name: 'AI工具', desc: 'AI聊天、AI Agent安装、免费AI工具推荐' },
   { id: 'voice', icon: '🗣️', name: '群众心声', desc: '提交工具建议、投票排行榜、前3名自动实现' },
   { id: 'lottery', icon: '🎰', name: '彩票工具', desc: '双色球、大乐透、福彩3D、快乐8、排列三…在线过滤缩水、选号、计算器' },
@@ -23615,4 +23682,199 @@ function gtvDownload() {
   a.href = URL.createObjectURL(gtvOutBlob);
   a.click();
   showToast('💾 已开始下载');
+}// ============================================================
+// 乐器调音器 处理函数 (tuner*)
+// ============================================================
+var tunerRunning = false;
+var tunerStream = null;
+var tunerTimer = null;
+var tunerMode = 'guitar';
+var tunerCtx = null;
+var tunerAnalyser = null;
+
+var TUNER_MODES = {
+  guitar: [
+    { note: 'E2', freq: 82.41 }, { note: 'A2', freq: 110 },
+    { note: 'D3', freq: 146.83 }, { note: 'G3', freq: 196 },
+    { note: 'B3', freq: 246.94 }, { note: 'E4', freq: 329.63 }
+  ],
+  ukulele: [
+    { note: 'G4', freq: 392 }, { note: 'C4', freq: 261.63 },
+    { note: 'E4', freq: 329.63 }, { note: 'A4', freq: 440 }
+  ],
+  violin: [
+    { note: 'G3', freq: 196 }, { note: 'D4', freq: 293.66 },
+    { note: 'A4', freq: 440 }, { note: 'E5', freq: 659.25 }
+  ],
+  bass: [
+    { note: 'E1', freq: 41.2 }, { note: 'A1', freq: 55 },
+    { note: 'D2', freq: 73.42 }, { note: 'G2', freq: 98 }
+  ],
+  chromatic: [
+    { note: 'C', freq: 261.63 }, { note: 'C#', freq: 277.18 },
+    { note: 'D', freq: 293.66 }, { note: 'D#', freq: 311.13 },
+    { note: 'E', freq: 329.63 }, { note: 'F', freq: 349.23 },
+    { note: 'F#', freq: 369.99 }, { note: 'G', freq: 392 },
+    { note: 'G#', freq: 415.3 }, { note: 'A', freq: 440 },
+    { note: 'A#', freq: 466.16 }, { note: 'B', freq: 493.88 }
+  ]
+};
+
+function tunerSetMode(v) {
+  tunerMode = v;
+}
+
+async function tunerToggle() {
+  if (tunerRunning) { tunerStop(); return; }
+  try {
+    tunerStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+  } catch (e) {
+    showToast('❌ 无法获取麦克风权限');
+    return;
+  }
+  tunerCtx = new (window.AudioContext || window.webkitAudioContext)();
+  const src = tunerCtx.createMediaStreamSource(tunerStream);
+  tunerAnalyser = tunerCtx.createAnalyser();
+  tunerAnalyser.fftSize = 2048;
+  src.connect(tunerAnalyser);
+  tunerRunning = true;
+  document.getElementById('tuner-start').textContent = '⏹️ 停止调音';
+  showToast('🎙️ 正在聆听...请拨弦');
+  tunerLoop();
+}
+
+function tunerStop() {
+  tunerRunning = false;
+  if (tunerTimer) { clearTimeout(tunerTimer); tunerTimer = null; }
+  if (tunerStream) {
+    tunerStream.getTracks().forEach(function (t) { t.stop(); });
+    tunerStream = null;
+  }
+  if (tunerCtx) { tunerCtx.close(); tunerCtx = null; }
+  document.getElementById('tuner-start').textContent = '🎙️ 开始调音';
+  document.getElementById('tuner-note').textContent = '--';
+  document.getElementById('tuner-freq').textContent = '已停止';
+}
+
+function tunerLoop() {
+  if (!tunerRunning || !tunerAnalyser) return;
+  const buf = new Uint8Array(tunerAnalyser.fftSize);
+  tunerAnalyser.getByteTimeDomainData(buf);
+  const freq = tunerYin(buf, tunerAnalyser.fftSize, tunerCtx.sampleRate);
+  if (freq > 30 && freq < 2000) {
+    const note = tunerNearestNote(freq);
+    const cents = Math.round(1200 * Math.log2(freq / note.freq));
+    document.getElementById('tuner-note').textContent = note.note;
+    document.getElementById('tuner-freq').textContent = freq.toFixed(1) + ' Hz  (' + (cents > 0 ? '+' : '') + cents + ' 音分)';
+    // 指示条：-50 ~ +50 音分映射到 0% ~ 100%
+    const pct = Math.max(0, Math.min(100, 50 + cents * 0.8));
+    const bar = document.getElementById('tuner-bar');
+    if (bar) bar.style.left = pct + '%';
+    if (Math.abs(cents) <= 5) showToast('✅ 音准');
+  }
+  tunerTimer = setTimeout(tunerLoop, 120);
+}
+
+function tunerYin(buf, size, sampleRate) {
+  // 简单自相关法估计基频
+  let rms = 0;
+  for (let i = 0; i < size; i += 4) {
+    const v = (buf[i] - 128) / 128;
+    rms += v * v;
+  }
+  rms = Math.sqrt(rms / (size / 4));
+  if (rms < 0.02) return -1;
+  const thresh = 0.85;
+  let bestLag = -1, bestCorr = 0;
+  const minLag = Math.floor(sampleRate / 2000);
+  const maxLag = Math.floor(sampleRate / 30);
+  for (let lag = minLag; lag < maxLag; lag++) {
+    let corr = 0;
+    for (let i = 0; i < Math.min(1024, size - lag); i++) {
+      const a = (buf[i] - 128) / 128;
+      const b = (buf[i + lag] - 128) / 128;
+      corr += a * b;
+    }
+    corr /= (Math.min(1024, size - lag));
+    if (corr > bestCorr) { bestCorr = corr; bestLag = lag; }
+  }
+  if (bestLag < 0 || bestCorr < thresh) return -1;
+  return sampleRate / bestLag;
+}
+
+function tunerNearestNote(freq) {
+  const mode = TUNER_MODES[tunerMode] || TUNER_MODES.chromatic;
+  let best = mode[0], bestCents = 1e9;
+  mode.forEach(function (n) {
+    // 考虑邻近八度
+    [-1, 0, 1].forEach(function (oct) {
+      const f = n.freq * Math.pow(2, oct);
+      const c = Math.abs(1200 * Math.log2(freq / f));
+      if (c < bestCents) { bestCents = c; best = { note: n.note + (oct === 1 ? "'" : oct === -1 ? ',' : ''), freq: f }; }
+    });
+  });
+  return best;
+}
+
+// ============================================================
+// 文件类型识别器 处理函数 (fs*)
+// ============================================================
+var FS_SIGNATURES = [
+  { sig: 'ffd8ffe0', name: 'JPG 图片', ext: '.jpg/.jpeg' },
+  { sig: 'ffd8ffee', name: 'JPG 图片（相机）', ext: '.jpg' },
+  { sig: '89504e470d0a1a0a', name: 'PNG 图片', ext: '.png' },
+  { sig: '474946383761', name: 'GIF 图片 (87a)', ext: '.gif' },
+  { sig: '474946383961', name: 'GIF 图片 (89a)', ext: '.gif' },
+  { sig: '52494646', name: 'RIFF 容器（WAV/AVI/WebP）', ext: '.wav/.avi/.webp' },
+  { sig: '494433', name: 'MP3 音频 (ID3标签)', ext: '.mp3' },
+  { sig: 'fffb', name: 'MP3 音频', ext: '.mp3' },
+  { sig: 'fff3', name: 'MP3 音频', ext: '.mp3' },
+  { sig: '4f676753', name: 'OGG 音频', ext: '.ogg' },
+  { sig: '25504446', name: 'PDF 文档', ext: '.pdf' },
+  { sig: '504b0304', name: 'ZIP 压缩包（含DOCX/XLSX/PPTX）', ext: '.zip/.docx/.xlsx' },
+  { sig: '504b0506', name: 'ZIP 空压缩包', ext: '.zip' },
+  { sig: '7f454c46', name: 'ELF 可执行文件（Linux）', ext: '.elf' },
+  { sig: '4d5a', name: 'EXE 可执行文件（Windows）', ext: '.exe' },
+  { sig: 'cafebabe', name: 'Java 类文件', ext: '.class' },
+  { sig: '377abcaf271c', name: '7Z 压缩包', ext: '.7z' },
+  { sig: '1f8b', name: 'GZIP 压缩包', ext: '.gz' },
+  { sig: '52617221', name: 'RAR 压缩包 v1.5+', ext: '.rar' },
+  { sig: '38425053', name: 'PSD 图片（Photoshop）', ext: '.psd' },
+  { sig: '424d', name: 'BMP 图片', ext: '.bmp' },
+  { sig: '49492a00', name: 'TIFF 图片 (LE)', ext: '.tiff' },
+  { sig: '4d4d002a', name: 'TIFF 图片 (BE)', ext: '.tiff' },
+  { sig: '0000001c66747970', name: 'MP4 视频', ext: '.mp4' },
+  { sig: '0000002066747970', name: 'MP4 视频', ext: '.mp4' },
+  { sig: '1a45dfa3', name: 'MKV/WebM 视频', ext: '.mkv/.webm' }
+];
+
+function fsLoadFiles(input) {
+  const files = Array.from(input.files || []);
+  if (files.length === 0) return;
+  document.getElementById('fs-count').textContent = files.length + ' 个文件';
+  const box = document.getElementById('fs-result');
+  box.innerHTML = '';
+  files.forEach(function (f) {
+    const reader = new FileReader();
+    reader.onload = function (e) {
+      const arr = new Uint8Array(e.target.result);
+      const hex = Array.from(arr.slice(0, 16)).map(function (b) {
+        return b.toString(16).padStart(2, '0');
+      }).join('');
+      const match = FS_SIGNATURES.find(function (s) {
+        return hex.startsWith(s.sig);
+      });
+      const real = match ? match.name + ' (' + match.ext + ')' : '未知类型';
+      const likely = f.type || '未知';
+      box.innerHTML +=
+        '<div style="border:1px solid var(--border,#e2e8f0);border-radius:10px;padding:12px 14px;margin-bottom:10px;font-size:13px;">' +
+        '<div style="font-weight:600;color:#0f172a;margin-bottom:6px;">📄 ' + f.name + '</div>' +
+        '<div>识别结果: <strong style="color:' + (match ? '#16a34a' : '#94a3b8') + ';">' + real + '</strong></div>' +
+        '<div style="color:var(--text-light);margin-top:4px;">扩展名声称: ' + (f.name.split('.').pop() || '无') +
+        (match && f.name.split('.').pop().toLowerCase() !== match.ext.replace('.', '').split('/')[0] && match.ext !== '.zip/.docx/.xlsx' && match.ext !== '.wav/.avi/.webp' && match.ext !== '.mkv/.webm' ? ' ⚠️ 与魔数不符（可能伪装）' : '') + '</div>' +
+        '<div style="color:var(--text-light);margin-top:4px;">文件头(hex): <code style="font-size:11px;">' + hex.slice(0, 16) + '</code></div>' +
+        '</div>';
+    };
+    reader.readAsArrayBuffer(f.slice(0, 64));
+  });
 }
