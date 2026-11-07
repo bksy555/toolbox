@@ -9859,6 +9859,90 @@ greet('世界');</textarea>
   handler: () => { }
 },
 
+// ============================================================
+// BPM节拍检测器工具 bpm-detector (bpm*)
+// ============================================================
+{
+  id: 'bpm-detector',
+  cat: 'media',
+  icon: '🥁',
+  name: 'BPM节拍检测器',
+  desc: '上传音乐自动检测BPM和节拍数，DJ混音/健身音乐/剪辑选曲必备',
+  html: `
+    <div class="tool-card">
+      <div class="input-group">
+        <label>选择音频文件</label>
+        <input type="file" id="bpm-file" accept="audio/*" style="display:none;" onchange="bpmLoadFile(this)">
+        <button class="btn btn-secondary" style="margin-top:6px;" onclick="document.getElementById('bpm-file').click()">🎵 选择音频</button>
+        <span id="bpm-filename" style="font-size:12px;color:var(--text-light);margin-left:10px;"></span>
+      </div>
+      <div id="bpm-result" style="margin:20px auto;text-align:center;">
+        <div style="font-size:52px;font-weight:800;color:var(--accent,#6366f1);" id="bpm-value">--</div>
+        <div style="font-size:14px;color:var(--text-light);">BPM（拍/分钟）</div>
+        <div style="font-size:13px;color:var(--text-light);margin-top:8px;" id="bpm-desc"></div>
+      </div>
+      <div id="bpm-wave" style="margin-top:10px;border:1px solid var(--border,#e2e8f0);border-radius:10px;padding:12px;background:var(--bg-light,#f8fafc);">
+        <canvas id="bpm-canvas" style="width:100%;height:80px;display:block;"></canvas>
+      </div>
+      <div class="btn-group" style="margin-top:15px;">
+        <button class="btn btn-primary" onclick="bpmDetect()">🥁 开始检测</button>
+      </div>
+      <div id="bpm-tip" style="margin-top:15px;font-size:13px;color:var(--text-light);background:var(--bg-light,#f8fafc);padding:12px;border-radius:8px;">
+        💡 在浏览器本地分析音频能量包络的周期性来估算BPM；结果仅供参考，录音质量越好越准
+      </div>
+    </div>
+  `,
+  handler: () => { }
+},
+
+// ============================================================
+// 视频变速工具 video-speed (vsp*)
+// ============================================================
+{
+  id: 'video-speed',
+  cat: 'media',
+  icon: '⏩',
+  name: '视频变速',
+  desc: '在线调整视频播放速度（0.25x~2x），慢放细节或快速预览，导出变速视频',
+  html: `
+    <div class="tool-card">
+      <div class="input-group">
+        <label>选择视频文件</label>
+        <input type="file" id="vsp-file" accept="video/*" style="display:none;" onchange="vspLoadFile(this)">
+        <button class="btn btn-secondary" style="margin-top:6px;" onclick="document.getElementById('vsp-file').click()">🎬 选择视频</button>
+        <span id="vsp-filename" style="font-size:12px;color:var(--text-light);margin-left:10px;"></span>
+      </div>
+      <div id="vsp-video-wrap" style="margin-top:12px;display:none;">
+        <video id="vsp-video" controls style="width:100%;max-height:260px;background:#000;"></video>
+      </div>
+      <div class="input-group" style="margin-top:12px;">
+        <label>播放速度: <span id="vsp-rate-val">1.00</span>x</label>
+        <input type="range" id="vsp-rate" min="0.25" max="2" step="0.05" value="1" style="width:100%;" oninput="vspRateChange(this.value)">
+      </div>
+      <div class="btn-group" style="margin-top:8px;flex-wrap:wrap;">
+        <button class="btn btn-sm btn-secondary" onclick="vspSetRate(0.5)">0.5x</button>
+        <button class="btn btn-sm btn-secondary" onclick="vspSetRate(0.75)">0.75x</button>
+        <button class="btn btn-sm btn-secondary" onclick="vspSetRate(1)">1x</button>
+        <button class="btn btn-sm btn-secondary" onclick="vspSetRate(1.25)">1.25x</button>
+        <button class="btn btn-sm btn-secondary" onclick="vspSetRate(1.5)">1.5x</button>
+        <button class="btn btn-sm btn-secondary" onclick="vspSetRate(2)">2x</button>
+      </div>
+      <div class="stats-row" style="margin-top:12px;">
+        <div class="stat-item">原始大小: <strong id="vsp-orig">-</strong></div>
+        <div class="stat-item">导出: <strong id="vsp-out">-</strong></div>
+      </div>
+      <div class="btn-group" style="margin-top:15px;">
+        <button class="btn btn-primary" onclick="vspRender()">⏩ 变速并导出</button>
+        <button class="btn btn-secondary" onclick="vspDownload()">💾 下载视频</button>
+      </div>
+      <div id="vsp-tip" style="margin-top:15px;font-size:13px;color:var(--text-light);background:var(--bg-light,#f8fafc);padding:12px;border-radius:8px;">
+        💡 在浏览器本地用 canvas 逐帧重新编码实现变速（视频长度会相应变化）；导出为 WebM 格式；0.25x 适合精细回放，2x 适合快速预览
+      </div>
+    </div>
+  `,
+  handler: () => { }
+},
+
 ];
 
 // ============================================================
@@ -11506,7 +11590,7 @@ const CATEGORIES = [
   { id: 'security', icon: '🔒', name: '安全工具', desc: '密码生成、Hash计算、随机数、浏览器指纹检测、身份证号码校验、凯撒密码' },
   { id: 'time', icon: '⏱️', name: '时间工具', desc: '时间戳转换、日期计算、世界时区转换、番茄钟专注计时、待办清单、每日计划' },
   { id: 'color', icon: '🎨', name: '颜色工具', desc: 'HEX/RGB/HSL颜色转换、颜色对比度检查、CSS渐变生成器、配色方案生成器' },
-  { id: 'media', icon: '🎬', name: '媒体工具', desc: '抖音/TikTok去水印下载、视频转GIF、GIF转视频、多图合成GIF、GIF压缩器、视频加水印、乐器调音器、在线录音、录音转文字、音频波形可视化、白噪音发生器、音频变速变调、音频剪辑拼接、音频格式转换、音频均衡器、视频压缩、视频提取音频、节拍器、视频抽帧器、视频缩略图制作器、在线便签、人声分离/伴奏提取' },
+  { id: 'media', icon: '🎬', name: '媒体工具', desc: '抖音/TikTok去水印下载、视频转GIF、GIF转视频、多图合成GIF、GIF压缩器、视频加水印、视频变速、乐器调音器、在线录音、录音转文字、音频波形可视化、白噪音发生器、音频变速变调、音频剪辑拼接、音频格式转换、音频均衡器、BPM节拍检测、视频压缩、视频提取音频、节拍器、视频抽帧器、视频缩略图制作器、在线便签、人声分离/伴奏提取' },
   { id: 'ai', icon: '🤖', name: 'AI工具', desc: 'AI聊天、AI Agent安装、免费AI工具推荐' },
   { id: 'voice', icon: '🗣️', name: '群众心声', desc: '提交工具建议、投票排行榜、前3名自动实现' },
   { id: 'lottery', icon: '🎰', name: '彩票工具', desc: '双色球、大乐透、福彩3D、快乐8、排列三…在线过滤缩水、选号、计算器' },
@@ -23877,4 +23961,205 @@ function fsLoadFiles(input) {
     };
     reader.readAsArrayBuffer(f.slice(0, 64));
   });
+}// ============================================================
+// BPM节拍检测器 处理函数 (bpm*)
+// ============================================================
+var bpmBuffer = null;
+var bpmRawFile = null;
+var bpmCtx = null;
+
+function bpmLoadFile(input) {
+  const file = input.files[0];
+  if (!file) return;
+  document.getElementById('bpm-filename').textContent = file.name;
+  document.getElementById('bpm-value').textContent = '--';
+  document.getElementById('bpm-desc').textContent = '';
+  bpmRawFile = file;
+  const reader = new FileReader();
+  reader.onload = async function (e) {
+    try {
+      if (!bpmCtx) bpmCtx = new (window.AudioContext || window.webkitAudioContext)();
+      bpmBuffer = await bpmCtx.decodeAudioData(e.target.result);
+      showToast('✅ 音频加载成功');
+    } catch (err) {
+      showToast('❌ 无法解码音频');
+      console.error(err);
+    }
+  };
+  reader.readAsArrayBuffer(file);
+}
+
+function bpmDetect() {
+  if (!bpmBuffer) { showToast('❌ 请先选择音频'); return; }
+  const btn = document.querySelector('[onclick="bpmDetect()"]');
+  if (btn) { btn.disabled = true; btn.textContent = '⏳ 分析中...'; }
+  setTimeout(function () {
+    try {
+      const data = bpmBuffer.getChannelData(0);
+      const sampleRate = bpmBuffer.sampleRate;
+      const bpm = bpmEstimate(data, sampleRate);
+      document.getElementById('bpm-value').textContent = bpm || '--';
+      document.getElementById('bpm-desc').textContent = bpm ? bpmLabel(bpm) : '未能识别节拍（音频太安静或非常规节奏）';
+      bpmDrawWave(data, sampleRate);
+      showToast('✅ 检测完成');
+    } catch (e) {
+      console.error(e);
+      showToast('❌ 检测失败');
+    } finally {
+      if (btn) { btn.disabled = false; btn.textContent = '🥁 开始检测'; }
+    }
+  }, 50);
+}
+
+function bpmEstimate(data, sampleRate) {
+  // 用短时能量包络提取节拍
+  const hop = Math.floor(sampleRate * 0.05); // 50ms hop
+  const frame = Math.floor(sampleRate * 0.1);
+  const energies = [];
+  for (let i = 0; i + frame < data.length; i += hop) {
+    let e = 0;
+    for (let j = i; j < i + frame; j++) e += data[j] * data[j];
+    energies.push(e / frame);
+  }
+  // 找峰值
+  const peaks = [];
+  for (let i = 1; i < energies.length - 1; i++) {
+    if (energies[i] > energies[i - 1] && energies[i] >= energies[i + 1] && energies[i] > 0.01) {
+      peaks.push(i * hop / sampleRate); // 秒
+    }
+  }
+  if (peaks.length < 4) return null;
+  // 峰间隔 -> BPM（允许 0.5x-2x 折叠）
+  let bestBpm = 0, bestScore = -1;
+  for (let b = 60; b <= 200; b += 1) {
+    const beat = 60 / b;
+    let score = 0;
+    for (let i = 0; i < peaks.length; i++) {
+      const t = peaks[i];
+      const phase = (t / beat) % 1;
+      score += Math.exp(-10 * Math.min(phase, 1 - phase));
+    }
+    if (score > bestScore) { bestScore = score; bestBpm = b; }
+  }
+  // 折半/加倍修正到常见范围
+  while (bestBpm < 70) bestBpm *= 2;
+  while (bestBpm > 190) bestBpm /= 2;
+  return Math.round(bestBpm);
+}
+
+function bpmLabel(bpm) {
+  if (bpm < 70) return '舒缓/慢板 (Largo/Adagio)';
+  if (bpm < 100) return '中速/行板 (Andante/Moderato)';
+  if (bpm < 130) return '较快/快板 (Allegro)';
+  if (bpm < 160) return '快板 (Vivace/Presto)';
+  return '极快 (Prestissimo)';
+}
+
+function bpmDrawWave(data, sampleRate) {
+  const canvas = document.getElementById('bpm-canvas');
+  if (!canvas) return;
+  canvas.width = canvas.clientWidth || 800;
+  const ctx = canvas.getContext('2d');
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  const step = Math.floor(data.length / 320);
+  ctx.fillStyle = '#6366f1';
+  for (let i = 0; i < 320; i++) {
+    let peak = 0;
+    for (let j = i * step; j < (i + 1) * step && j < data.length; j++) {
+      const v = Math.abs(data[j]);
+      if (v > peak) peak = v;
+    }
+    const h = Math.max(2, peak * 60);
+    ctx.fillRect(i * (canvas.width / 320), (canvas.height - h) / 2, Math.max(1, canvas.width / 320 - 1), h);
+  }
+}
+
+// ============================================================
+// 视频变速 处理函数 (vsp*)
+// ============================================================
+var vspRawFile = null;
+var vspVideoEl = null;
+var vspOutBlob = null;
+var vspRate = 1;
+
+function vspLoadFile(input) {
+  const file = input.files[0];
+  if (!file) return;
+  document.getElementById('vsp-filename').textContent = file.name;
+  document.getElementById('vsp-orig').textContent = (file.size / 1024 / 1024).toFixed(2) + ' MB';
+  document.getElementById('vsp-out').textContent = '-';
+  vspRawFile = file;
+  vspOutBlob = null;
+  const wrap = document.getElementById('vsp-video-wrap');
+  wrap.style.display = 'block';
+  vspVideoEl = document.getElementById('vsp-video');
+  vspVideoEl.src = URL.createObjectURL(file);
+  vspVideoEl.load();
+}
+
+function vspRateChange(v) {
+  vspRate = parseFloat(v);
+  document.getElementById('vsp-rate-val').textContent = vspRate.toFixed(2);
+  if (vspVideoEl) vspVideoEl.playbackRate = vspRate;
+}
+
+function vspSetRate(r) {
+  document.getElementById('vsp-rate').value = r;
+  vspRateChange(r);
+}
+
+function vspRender() {
+  if (!vspRawFile || !vspVideoEl) { showToast('❌ 请先选择视频'); return; }
+  const btn = document.querySelector('[onclick="vspRender()"]');
+  if (btn) { btn.disabled = true; btn.textContent = '⏳ 导出中...'; }
+  const v = vspVideoEl;
+  const vw = v.videoWidth || 1280;
+  const vh = v.videoHeight || 720;
+  const rate = vspRate;
+  const fps = 30;
+  const canvas = document.createElement('canvas');
+  canvas.width = vw; canvas.height = vh;
+  const ctx = canvas.getContext('2d');
+  const stream = canvas.captureStream(fps);
+  const mime = (MediaRecorder.isTypeSupported('video/webm;codecs=vp9')) ? 'video/webm;codecs=vp9' : 'video/webm';
+  const rec = new MediaRecorder(stream, { mimeType: mime, videoBitsPerSecond: 4000000 });
+  const chunks = [];
+  rec.ondataavailable = function (e) { if (e.data && e.data.size) chunks.push(e.data); };
+  rec.onstop = function () {
+    vspOutBlob = new Blob(chunks, { type: mime });
+    document.getElementById('vsp-out').textContent = (vspOutBlob.size / 1024 / 1024).toFixed(2) + ' MB';
+    showToast('✅ 导出完成');
+    if (btn) { btn.disabled = false; btn.textContent = '⏩ 变速并导出'; }
+  };
+  // 用变速播放 + 固定帧率采集（近似变速：播放速度按 rate，采集间隔按 1/fps）
+  v.playbackRate = rate;
+  v.currentTime = 0;
+  v.muted = true;
+  v.controls = false;
+  v.play().then(function () {
+    rec.start(200);
+    const interval = 1000 / fps;
+    function draw() {
+      if (!v.paused && !v.ended) {
+        ctx.drawImage(v, 0, 0, vw, vh);
+        setTimeout(draw, interval);
+      } else if (v.ended) {
+        rec.stop();
+        stream.getTracks().forEach(function (t) { t.stop(); });
+      }
+    }
+    setTimeout(draw, interval);
+  }).catch(function (e) {
+    showToast('❌ 无法播放视频: ' + e.message);
+    if (btn) { btn.disabled = false; btn.textContent = '⏩ 变速并导出'; }
+  });
+}
+
+function vspDownload() {
+  if (!vspOutBlob) { showToast('❌ 请先导出'); return; }
+  const a = document.createElement('a');
+  a.download = (vspRawFile ? vspRawFile.name.replace(/\.[^.]+$/, '') : 'video') + '_speed' + vspRate + 'x.webm';
+  a.href = URL.createObjectURL(vspOutBlob);
+  a.click();
+  showToast('💾 已开始下载');
 }
