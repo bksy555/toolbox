@@ -6481,7 +6481,7 @@
     ],
     "drawNum": "320",
     "result": "✅",
-    "updatedAt": "2026-11-06T14:00:42.891Z",
+    "updatedAt": "2026-11-07T00:31:25.003Z",
     "coldDans": [
       0,
       5,
@@ -6756,6 +6756,24 @@
       3,
       4,
       8
+    ],
+    "drawNum": null,
+    "result": null,
+    "updatedAt": null,
+    "coldDans": null,
+    "coldResult": null
+  },
+  "2026312": {
+    "period": "2026312",
+    "year": 2026,
+    "month": 11,
+    "day": 22,
+    "weekday": 0,
+    "haiGan": "丁",
+    "dans": [
+      2,
+      4,
+      9
     ],
     "drawNum": null,
     "result": null,
