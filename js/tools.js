@@ -9943,6 +9943,95 @@ greet('世界');</textarea>
   handler: () => { }
 },
 
+// ============================================================
+// 音频频谱可视化器工具 audio-spectrum (as*)
+// ============================================================
+{
+  id: 'audio-spectrum',
+  cat: 'media',
+  icon: '📊',
+  name: '音频频谱可视化器',
+  desc: '实时显示音频频谱/波形，支持麦克风输入与本地文件，音乐可视化/直播背景必备',
+  html: `
+    <div class="tool-card">
+      <div class="input-group">
+        <label>音频来源</label>
+        <select id="as-source" onchange="asSourceChange(this.value)">
+          <option value="mic">🎙️ 麦克风（实时）</option>
+          <option value="file">📁 本地音频文件</option>
+        </select>
+      </div>
+      <div id="as-file-wrap" style="display:none;margin-top:10px;">
+        <input type="file" id="as-file" accept="audio/*" style="display:none;" onchange="asLoadFile(this)">
+        <button class="btn btn-secondary" onclick="document.getElementById('as-file').click()">🎵 选择音频</button>
+        <span id="as-filename" style="font-size:12px;color:var(--text-light);margin-left:10px;"></span>
+      </div>
+      <div class="input-group" style="margin-top:12px;">
+        <label>显示模式</label>
+        <select id="as-mode">
+          <option value="spectrum" selected>📊 频谱</option>
+          <option value="waveform">〰️ 波形</option>
+          <option value="bars">🎚️ 音量柱</option>
+        </select>
+      </div>
+      <div class="input-group" style="margin-top:10px;">
+        <label>平滑度</label>
+        <input type="range" id="as-smooth" min="0.2" max="0.95" step="0.05" value="0.8" style="width:100%;">
+      </div>
+      <div id="as-canvas-wrap" style="margin-top:12px;border:1px solid var(--border,#e2e8f0);border-radius:10px;padding:12px;background:#0b0f1a;">
+        <canvas id="as-canvas" style="width:100%;height:200px;display:block;"></canvas>
+      </div>
+      <div class="btn-group" style="margin-top:15px;">
+        <button class="btn btn-primary" id="as-start" onclick="asStart()">▶️ 开始可视化</button>
+        <button class="btn btn-secondary" onclick="asStop()">⏹️ 停止</button>
+      </div>
+      <div id="as-tip" style="margin-top:15px;font-size:13px;color:var(--text-light);background:var(--bg-light,#f8fafc);padding:12px;border-radius:8px;">
+        💡 麦克风模式需授权；文件模式点击选择音频后按开始可视化即可播放并实时显示频谱
+      </div>
+    </div>
+  `,
+  handler: () => { }
+},
+
+// ============================================================
+// JSON/CSV 互转工具 json-csv (jcs*)
+// ============================================================
+{
+  id: 'json-csv',
+  cat: 'dev',
+  icon: '🔄',
+  name: 'JSON/CSV互转',
+  desc: 'JSON转CSV表格、CSV转JSON对象，支持嵌套对象/数组展开，数据搬砖必备',
+  html: `
+    <div class="tool-card">
+      <div class="input-group">
+        <label>转换方向</label>
+        <select id="jcs-dir">
+          <option value="json2csv" selected>JSON → CSV</option>
+          <option value="csv2json">CSV → JSON</option>
+        </select>
+      </div>
+      <div class="input-group" style="margin-top:12px;">
+        <label>输入数据</label>
+        <textarea id="jcs-input" placeholder='将 JSON 或 CSV 粘贴到这里...' style="height:180px;font-family:monospace;font-size:13px;"></textarea>
+      </div>
+      <div class="btn-group" style="margin-top:12px;">
+        <button class="btn btn-primary" onclick="jcsConvert()">🔄 转换</button>
+        <button class="btn btn-secondary" onclick="jcsCopy()">📋 复制结果</button>
+        <button class="btn btn-secondary" onclick="jcsDownload()">💾 下载文件</button>
+      </div>
+      <div class="input-group" style="margin-top:12px;">
+        <label>输出结果</label>
+        <textarea id="jcs-output" readonly placeholder="转换结果将显示在这里" style="height:180px;font-family:monospace;font-size:13px;"></textarea>
+      </div>
+      <div id="jcs-tip" style="margin-top:15px;font-size:13px;color:var(--text-light);background:var(--bg-light,#f8fafc);padding:12px;border-radius:8px;">
+        💡 JSON转CSV只取数组首层字段；嵌套对象会用点号路径作为列名（如 user.name）；CSV转JSON自动识别表头
+      </div>
+    </div>
+  `,
+  handler: () => { }
+},
+
 ];
 
 // ============================================================
@@ -11583,14 +11672,14 @@ function dpCopyText() {
 // ============================================================
 const CATEGORIES = [
   { id: 'text', icon: '✏️', name: '文本工具', desc: '字数统计、简繁转换、摩斯密码、文本转语音、文本对比、电子名片生成器、英文语法检查、占位文本生成' },
-  { id: 'dev', icon: '💻', name: '开发者工具', desc: 'JSON格式化、YAML/JSON互转、二维码生成、二维码美化、条形码生成、Favicon图标生成、正则测试、Markdown、IP查询、子网计算、思维导图、图表生成、代码图片生成、表格数据转换、SQL格式化、代码压缩器、假数据生成器、Cron表达式生成器、HTTP状态码速查、SEO标题预览、屏幕坏点测试、字体配对、文件类型识别器' },
+  { id: 'dev', icon: '💻', name: '开发者工具', desc: 'JSON格式化、JSON/CSV互转、YAML/JSON互转、二维码生成、二维码美化、条形码生成、Favicon图标生成、正则测试、Markdown、IP查询、子网计算、思维导图、图表生成、代码图片生成、表格数据转换、SQL格式化、代码压缩器、假数据生成器、Cron表达式生成器、HTTP状态码速查、SEO标题预览、屏幕坏点测试、字体配对、文件类型识别器' },
   { id: 'image', icon: '🖼️', name: '图片处理', desc: '去背景换底色、批量压缩、加水印、长图拼接、格式转换、裁剪、异形裁剪、马赛克打码、双色调滤镜、图片转字符画、照片卡通化、OCR、印章制作、九宫格切图、文字转手写体、表情包、社交媒体图片尺寸调整、艺术效果、像素画、设备样机、图片高清放大、图片转线稿、渐变背景、文字特效、拼贴画、图片相框、颜色盲区模拟、海报设计器、老照片修复上色、图片EXIF信息、占位图生成器、文档透视矫正' },
   { id: 'document', icon: '📄', name: '文档转换', desc: '图片转PDF、PDF转图片、Word解析、Excel转PDF、PDF合并、PDF拆分、PDF加密解密、简历生成、电子签名、表单制作、邮件签名、发票/收据生成器、证书生成器' },
   { id: 'convert', icon: '🔄', name: '转换工具', desc: '单位换算、进制转换、函数绘图' },
   { id: 'security', icon: '🔒', name: '安全工具', desc: '密码生成、Hash计算、随机数、浏览器指纹检测、身份证号码校验、凯撒密码' },
   { id: 'time', icon: '⏱️', name: '时间工具', desc: '时间戳转换、日期计算、世界时区转换、番茄钟专注计时、待办清单、每日计划' },
   { id: 'color', icon: '🎨', name: '颜色工具', desc: 'HEX/RGB/HSL颜色转换、颜色对比度检查、CSS渐变生成器、配色方案生成器' },
-  { id: 'media', icon: '🎬', name: '媒体工具', desc: '抖音/TikTok去水印下载、视频转GIF、GIF转视频、多图合成GIF、GIF压缩器、视频加水印、视频变速、乐器调音器、在线录音、录音转文字、音频波形可视化、白噪音发生器、音频变速变调、音频剪辑拼接、音频格式转换、音频均衡器、BPM节拍检测、视频压缩、视频提取音频、节拍器、视频抽帧器、视频缩略图制作器、在线便签、人声分离/伴奏提取' },
+  { id: 'media', icon: '🎬', name: '媒体工具', desc: '抖音/TikTok去水印下载、视频转GIF、GIF转视频、多图合成GIF、GIF压缩器、视频加水印、视频变速、音频频谱可视化、乐器调音器、在线录音、录音转文字、音频波形可视化、白噪音发生器、音频变速变调、音频剪辑拼接、音频格式转换、音频均衡器、BPM节拍检测、视频压缩、视频提取音频、节拍器、视频抽帧器、视频缩略图制作器、在线便签、人声分离/伴奏提取' },
   { id: 'ai', icon: '🤖', name: 'AI工具', desc: 'AI聊天、AI Agent安装、免费AI工具推荐' },
   { id: 'voice', icon: '🗣️', name: '群众心声', desc: '提交工具建议、投票排行榜、前3名自动实现' },
   { id: 'lottery', icon: '🎰', name: '彩票工具', desc: '双色球、大乐透、福彩3D、快乐8、排列三…在线过滤缩水、选号、计算器' },
@@ -24160,6 +24249,242 @@ function vspDownload() {
   const a = document.createElement('a');
   a.download = (vspRawFile ? vspRawFile.name.replace(/\.[^.]+$/, '') : 'video') + '_speed' + vspRate + 'x.webm';
   a.href = URL.createObjectURL(vspOutBlob);
+  a.click();
+  showToast('💾 已开始下载');
+}// ============================================================
+// 音频频谱可视化器 处理函数 (as*)
+// ============================================================
+var asRunning = false;
+var asStream = null;
+var asCtx = null;
+var asSourceNode = null;
+var asAnalyser = null;
+var asRaf = null;
+var asAudioEl = null;
+var asFileUrl = null;
+
+function asSourceChange(v) {
+  document.getElementById('as-file-wrap').style.display = v === 'file' ? 'block' : 'none';
+  asStop();
+}
+
+function asLoadFile(input) {
+  const file = input.files[0];
+  if (!file) return;
+  document.getElementById('as-filename').textContent = file.name;
+  if (asFileUrl) URL.revokeObjectURL(asFileUrl);
+  asFileUrl = URL.createObjectURL(file);
+  asStop();
+}
+
+async function asStart() {
+  const source = document.getElementById('as-source').value;
+  if (asRunning) asStop();
+  try {
+    asCtx = new (window.AudioContext || window.webkitAudioContext)();
+    asAnalyser = asCtx.createAnalyser();
+    asAnalyser.fftSize = 2048;
+    asAnalyser.smoothingTimeConstant = parseFloat(document.getElementById('as-smooth').value) || 0.8;
+
+    if (source === 'mic') {
+      asStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      asSourceNode = asCtx.createMediaStreamSource(asStream);
+    } else {
+      if (!asFileUrl) { showToast('❌ 请先选择音频文件'); asCtx.close(); asCtx = null; return; }
+      asAudioEl = new Audio(asFileUrl);
+      asSourceNode = asCtx.createMediaElementSource(asAudioEl);
+      asAudioEl.connect(asCtx.destination);
+    }
+    asSourceNode.connect(asAnalyser);
+    if (asAudioEl) asAudioEl.play();
+    asRunning = true;
+    document.getElementById('as-start').textContent = '⏹️ 停止可视化';
+    asDraw();
+    showToast('✅ 可视化已开始');
+  } catch (e) {
+    console.error(e);
+    showToast('❌ 无法启动（麦克风权限或文件问题）');
+    asStop();
+  }
+}
+
+function asStop() {
+  asRunning = false;
+  if (asRaf) { cancelAnimationFrame(asRaf); asRaf = null; }
+  if (asAudioEl) { asAudioEl.pause(); asAudioEl = null; }
+  if (asStream) { asStream.getTracks().forEach(function (t) { t.stop(); }); asStream = null; }
+  if (asSourceNode) { try { asSourceNode.disconnect(); } catch (e) {} asSourceNode = null; }
+  if (asCtx) { try { asCtx.close(); } catch (e) {} asCtx = null; }
+  asAnalyser = null;
+  const btn = document.getElementById('as-start');
+  if (btn) btn.textContent = '▶️ 开始可视化';
+  const canvas = document.getElementById('as-canvas');
+  if (canvas) {
+    const ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+  }
+}
+
+function asDraw() {
+  if (!asRunning || !asAnalyser) return;
+  const canvas = document.getElementById('as-canvas');
+  if (!canvas) return;
+  canvas.width = canvas.clientWidth || 800;
+  canvas.height = canvas.clientHeight || 200;
+  const ctx = canvas.getContext('2d');
+  ctx.fillStyle = '#0b0f1a';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  const mode = document.getElementById('as-mode').value;
+  if (mode === 'spectrum') {
+    const freq = new Uint8Array(asAnalyser.frequencyBinCount);
+    asAnalyser.getByteFrequencyData(freq);
+    const bars = Math.min(96, freq.length);
+    const bw = canvas.width / bars;
+    for (let i = 0; i < bars; i++) {
+      const v = freq[i] / 255;
+      const h = v * canvas.height;
+      const hue = (i / bars) * 260;
+      ctx.fillStyle = 'hsl(' + hue + ', 80%, 55%)';
+      ctx.fillRect(i * bw, canvas.height - h, bw - 2, h);
+    }
+  } else if (mode === 'waveform') {
+    const data = new Uint8Array(asAnalyser.fftSize);
+    asAnalyser.getByteTimeDomainData(data);
+    ctx.strokeStyle = '#6366f1';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    for (let i = 0; i < data.length; i++) {
+      const v = (data[i] - 128) / 128;
+      const x = (i / data.length) * canvas.width;
+      const y = canvas.height / 2 + v * canvas.height * 0.45;
+      if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+    }
+    ctx.stroke();
+  } else {
+    // 音量柱（time domain RMS）
+    const data = new Uint8Array(asAnalyser.fftSize);
+    asAnalyser.getByteTimeDomainData(data);
+    let sum = 0;
+    for (let i = 0; i < data.length; i++) sum += (data[i] - 128) * (data[i] - 128);
+    const rms = Math.sqrt(sum / data.length) / 128;
+    ctx.fillStyle = '#4ade80';
+    ctx.fillRect(0, canvas.height - rms * canvas.height, canvas.width, rms * canvas.height);
+  }
+  asRaf = requestAnimationFrame(asDraw);
+}
+
+// ============================================================
+// JSON/CSV 互转 处理函数 (jcs*)
+// ============================================================
+var jcsResultText = '';
+var jcsResultExt = 'csv';
+
+function jcsConvert() {
+  const dir = document.getElementById('jcs-dir').value;
+  const input = document.getElementById('jcs-input').value.trim();
+  const out = document.getElementById('jcs-output');
+  if (!input) { showToast('❌ 请输入数据'); return; }
+  try {
+    if (dir === 'json2csv') {
+      const data = JSON.parse(input);
+      if (!Array.isArray(data) || data.length === 0) throw new Error('JSON 应为非空数组');
+      const headers = jcsCollectHeaders(data);
+      const rows = data.map(function (row) {
+        return headers.map(function (h) {
+          const v = jcsGetPath(row, h.split('.'));
+          return jcsEscapeCsv(v === undefined || v === null ? '' : String(v));
+        }).join(',');
+      });
+      jcsResultText = [headers.map(jcsEscapeCsv).join(','), rows.join('\n')].join('\n');
+      jcsResultExt = 'csv';
+    } else {
+      const lines = input.split(/\r?\n/).filter(function (l) { return l.trim() !== ''; });
+      if (lines.length < 2) throw new Error('CSV 至少需要表头+一行数据');
+      const headers = jcsParseCsvLine(lines[0]);
+      const arr = lines.slice(1).map(function (line, idx) {
+        const cells = jcsParseCsvLine(line);
+        const obj = {};
+        headers.forEach(function (h, i) {
+          obj[h] = cells[i] !== undefined ? cells[i] : '';
+        });
+        return obj;
+      });
+      jcsResultText = JSON.stringify(arr, null, 2);
+      jcsResultExt = 'json';
+    }
+    out.value = jcsResultText;
+    showToast('✅ 转换完成');
+  } catch (e) {
+    showToast('❌ 转换失败: ' + e.message);
+  }
+}
+
+function jcsCollectHeaders(arr) {
+  const set = {};
+  arr.forEach(function (row) {
+    if (row && typeof row === 'object') {
+      Object.keys(row).forEach(function (k) { jcsFlatten(row, k, '', set); });
+    }
+  });
+  return Object.keys(set);
+}
+
+function jcsFlatten(obj, key, prefix, set) {
+  const path = prefix ? prefix + '.' + key : key;
+  if (obj[key] && typeof obj[key] === 'object' && !Array.isArray(obj[key])) {
+    Object.keys(obj[key]).forEach(function (k) { jcsFlatten(obj[key], k, path, set); });
+  } else {
+    set[path] = true;
+  }
+}
+
+function jcsGetPath(obj, parts) {
+  let cur = obj;
+  for (const p of parts) {
+    if (cur === null || cur === undefined) return undefined;
+    cur = cur[p];
+  }
+  return cur;
+}
+
+function jcsEscapeCsv(s) {
+  if (/[",\n]/.test(s)) return '"' + s.replace(/"/g, '""') + '"';
+  return s;
+}
+
+function jcsParseCsvLine(line) {
+  const cells = [];
+  let cur = '', inQ = false;
+  for (let i = 0; i < line.length; i++) {
+    const ch = line[i];
+    if (inQ) {
+      if (ch === '"') {
+        if (line[i + 1] === '"') { cur += '"'; i++; } else inQ = false;
+      } else cur += ch;
+    } else {
+      if (ch === '"') inQ = true;
+      else if (ch === ',') { cells.push(cur); cur = ''; }
+      else cur += ch;
+    }
+  }
+  cells.push(cur);
+  return cells.map(function (c) { return c.trim(); });
+}
+
+function jcsCopy() {
+  if (!jcsResultText) { showToast('❌ 没有可复制的结果'); return; }
+  navigator.clipboard.writeText(jcsResultText).then(function () {
+    showToast('✅ 已复制');
+  }).catch(function () { showToast('❌ 复制失败'); });
+}
+
+function jcsDownload() {
+  if (!jcsResultText) { showToast('❌ 没有可下载的结果'); return; }
+  const blob = new Blob([jcsResultText], { type: 'text/plain;charset=utf-8' });
+  const a = document.createElement('a');
+  a.download = 'converted.' + jcsResultExt;
+  a.href = URL.createObjectURL(blob);
   a.click();
   showToast('💾 已开始下载');
 }
