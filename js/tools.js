@@ -10032,6 +10032,115 @@ greet('世界');</textarea>
   handler: () => { }
 },
 
+// ============================================================
+// PDF加水印工具 pdf-watermark (pwm*)
+// ============================================================
+{
+  id: 'pdf-watermark',
+  cat: 'document',
+  icon: '💧',
+  name: 'PDF加水印',
+  desc: '批量给PDF添加文字水印，可调内容/大小/透明度/旋转，保护文档防抄袭',
+  html: `
+    <div class="tool-card">
+      <div class="input-group">
+        <label>选择PDF文件</label>
+        <input type="file" id="pwm-file" accept=".pdf,application/pdf" style="display:none;" onchange="pwmLoadFile(this)">
+        <button class="btn btn-secondary" style="margin-top:6px;" onclick="document.getElementById('pwm-file').click()">📄 选择PDF</button>
+        <span id="pwm-filename" style="font-size:12px;color:var(--text-light);margin-left:10px;"></span>
+      </div>
+      <div class="input-group" style="margin-top:12px;">
+        <label>水印文字</label>
+        <input type="text" id="pwm-text" value="内部资料，禁止外传" style="width:100%;">
+      </div>
+      <div class="row-3" style="margin-top:10px;">
+        <div class="input-group">
+          <label>字号</label>
+          <select id="pwm-size">
+            <option value="24">小</option>
+            <option value="36" selected>中</option>
+            <option value="52">大</option>
+          </select>
+        </div>
+        <div class="input-group">
+          <label>透明度: <span id="pwm-opacity-val">30</span>%</label>
+          <input type="range" id="pwm-opacity" min="5" max="90" value="30" oninput="document.getElementById('pwm-opacity-val').textContent=this.value">
+        </div>
+        <div class="input-group">
+          <label>覆盖页</label>
+          <select id="pwm-pages">
+            <option value="all" selected>全部页面</option>
+            <option value="first">仅首页</option>
+          </select>
+        </div>
+      </div>
+      <div class="stats-row" style="margin-top:12px;">
+        <div class="stat-item">原始大小: <strong id="pwm-orig">-</strong></div>
+        <div class="stat-item">加水印后: <strong id="pwm-out">-</strong></div>
+      </div>
+      <div class="btn-group" style="margin-top:15px;">
+        <button class="btn btn-primary" onclick="pwmRun()">💧 添加水印</button>
+        <button class="btn btn-secondary" onclick="pwmDownload()">💾 下载PDF</button>
+      </div>
+      <div id="pwm-tip" style="margin-top:15px;font-size:13px;color:var(--text-light);background:var(--bg-light,#f8fafc);padding:12px;border-radius:8px;">
+        💡 在浏览器本地为PDF添加斜向文字水印，不会上传；支持中英文，可调大小/透明度/覆盖页
+      </div>
+    </div>
+  `,
+  handler: () => { }
+},
+
+// ============================================================
+// Markdown表格生成器工具 markdown-table (mdt*)
+// ============================================================
+{
+  id: 'markdown-table',
+  cat: 'text',
+  icon: '📋',
+  name: 'Markdown表格生成器',
+  desc: '快速生成Markdown表格，支持CSV/纯文本粘贴转换、对齐设置、复制下载',
+  html: `
+    <div class="tool-card">
+      <div class="input-group">
+        <label>输入数据（每行用 | 或 , 或 Tab 分隔，首行为表头）</label>
+        <textarea id="mdt-input" placeholder="姓名,城市,年龄&#10;张三,北京,25&#10;李四,上海,30&#10;王五,广州,28" style="height:160px;font-family:monospace;font-size:13px;"></textarea>
+      </div>
+      <div class="row-2" style="margin-top:10px;">
+        <div class="input-group">
+          <label>列对齐</label>
+          <select id="mdt-align">
+            <option value="left" selected>左对齐 (:—)</option>
+            <option value="center">居中 (:—:)</option>
+            <option value="right">右对齐 (—:)</option>
+          </select>
+        </div>
+        <div class="input-group">
+          <label>分隔符</label>
+          <select id="mdt-sep">
+            <option value="auto" selected>自动识别</option>
+            <option value="|">竖线 |</option>
+            <option value=",">逗号 ,</option>
+            <option value="tab">Tab</option>
+          </select>
+        </div>
+      </div>
+      <div class="btn-group" style="margin-top:12px;">
+        <button class="btn btn-primary" onclick="mdtGenerate()">📋 生成表格</button>
+        <button class="btn btn-secondary" onclick="mdtCopy()">📋 复制Markdown</button>
+        <button class="btn btn-secondary" onclick="mdtDownload()">💾 下载.md</button>
+      </div>
+      <div class="input-group" style="margin-top:12px;">
+        <label>预览</label>
+        <div id="mdt-preview" style="border:1px solid var(--border,#e2e8f0);border-radius:8px;padding:14px;font-size:13px;overflow:auto;max-height:300px;"></div>
+      </div>
+      <div id="mdt-tip" style="margin-top:15px;font-size:13px;color:var(--text-light);background:var(--bg-light,#f8fafc);padding:12px;border-radius:8px;">
+        💡 输入表格数据一键生成 GitHub/README 兼容的 Markdown 表格，支持复制和下载 .md 文件
+      </div>
+    </div>
+  `,
+  handler: () => { }
+},
+
 ];
 
 // ============================================================
@@ -11671,10 +11780,10 @@ function dpCopyText() {
 // 分类定义
 // ============================================================
 const CATEGORIES = [
-  { id: 'text', icon: '✏️', name: '文本工具', desc: '字数统计、简繁转换、摩斯密码、文本转语音、文本对比、电子名片生成器、英文语法检查、占位文本生成' },
+  { id: 'text', icon: '✏️', name: '文本工具', desc: '字数统计、简繁转换、摩斯密码、文本转语音、文本对比、Markdown表格生成器、电子名片生成器、英文语法检查、占位文本生成' },
   { id: 'dev', icon: '💻', name: '开发者工具', desc: 'JSON格式化、JSON/CSV互转、YAML/JSON互转、二维码生成、二维码美化、条形码生成、Favicon图标生成、正则测试、Markdown、IP查询、子网计算、思维导图、图表生成、代码图片生成、表格数据转换、SQL格式化、代码压缩器、假数据生成器、Cron表达式生成器、HTTP状态码速查、SEO标题预览、屏幕坏点测试、字体配对、文件类型识别器' },
   { id: 'image', icon: '🖼️', name: '图片处理', desc: '去背景换底色、批量压缩、加水印、长图拼接、格式转换、裁剪、异形裁剪、马赛克打码、双色调滤镜、图片转字符画、照片卡通化、OCR、印章制作、九宫格切图、文字转手写体、表情包、社交媒体图片尺寸调整、艺术效果、像素画、设备样机、图片高清放大、图片转线稿、渐变背景、文字特效、拼贴画、图片相框、颜色盲区模拟、海报设计器、老照片修复上色、图片EXIF信息、占位图生成器、文档透视矫正' },
-  { id: 'document', icon: '📄', name: '文档转换', desc: '图片转PDF、PDF转图片、Word解析、Excel转PDF、PDF合并、PDF拆分、PDF加密解密、简历生成、电子签名、表单制作、邮件签名、发票/收据生成器、证书生成器' },
+  { id: 'document', icon: '📄', name: '文档转换', desc: '图片转PDF、PDF转图片、Word解析、Excel转PDF、PDF合并、PDF拆分、PDF加密解密、PDF加水印、简历生成、电子签名、表单制作、邮件签名、发票/收据生成器、证书生成器' },
   { id: 'convert', icon: '🔄', name: '转换工具', desc: '单位换算、进制转换、函数绘图' },
   { id: 'security', icon: '🔒', name: '安全工具', desc: '密码生成、Hash计算、随机数、浏览器指纹检测、身份证号码校验、凯撒密码' },
   { id: 'time', icon: '⏱️', name: '时间工具', desc: '时间戳转换、日期计算、世界时区转换、番茄钟专注计时、待办清单、每日计划' },
@@ -24484,6 +24593,174 @@ function jcsDownload() {
   const blob = new Blob([jcsResultText], { type: 'text/plain;charset=utf-8' });
   const a = document.createElement('a');
   a.download = 'converted.' + jcsResultExt;
+  a.href = URL.createObjectURL(blob);
+  a.click();
+  showToast('💾 已开始下载');
+}// ============================================================
+// PDF加水印 处理函数 (pwm*)
+// ============================================================
+var pwmRawFile = null;
+var pwmOutBlob = null;
+
+function pwmLoadFile(input) {
+  const file = input.files[0];
+  if (!file) return;
+  document.getElementById('pwm-filename').textContent = file.name;
+  document.getElementById('pwm-orig').textContent = (file.size / 1024 / 1024).toFixed(2) + ' MB';
+  document.getElementById('pwm-out').textContent = '-';
+  pwmRawFile = file;
+  pwmOutBlob = null;
+}
+
+function pwmLoadLib() {
+  return new Promise(function (resolve, reject) {
+    if (window.PDFLib) { resolve(); return; }
+    const s = document.createElement('script');
+    s.src = 'https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js';
+    s.onload = function () { resolve(); };
+    s.onerror = function () { reject(new Error('pdf-lib 加载失败')); };
+    document.head.appendChild(s);
+  });
+}
+
+async function pwmRun() {
+  if (!pwmRawFile) { showToast('❌ 请先选择PDF文件'); return; }
+  const text = document.getElementById('pwm-text').value.trim();
+  if (!text) { showToast('❌ 请输入水印文字'); return; }
+  const sizeMap = { '24': 24, '36': 36, '52': 52 };
+  const fontSize = sizeMap[document.getElementById('pwm-size').value] || 36;
+  const opacity = parseInt(document.getElementById('pwm-opacity').value) / 100;
+  const pagesMode = document.getElementById('pwm-pages').value;
+  const btn = document.querySelector('[onclick="pwmRun()"]');
+  if (btn) { btn.disabled = true; btn.textContent = '⏳ 处理中...'; }
+  try {
+    await pwmLoadLib();
+    const bytes = await pwmRawFile.arrayBuffer();
+    const pdf = await window.PDFLib.PDFDocument.load(bytes);
+    const pages = pdf.getPages();
+    const selected = pagesMode === 'first' ? [pages[0]] : pages;
+    const font = await pdf.embedFont(window.PDFLib.StandardFonts.Helvetica);
+    selected.forEach(function (page) {
+      const { width, height } = page.getSize();
+      // 绘制两条对角水印，增加覆盖
+      for (let y = height * 0.15; y < height; y += height * 0.35) {
+        for (let x = -width * 0.3; x < width; x += width * 0.9) {
+          page.drawText(text, {
+            x: x + width * 0.12,
+            y: y,
+            size: fontSize,
+            font: font,
+            color: window.PDFLib.rgb(0.3, 0.3, 0.3),
+            opacity: opacity,
+            rotate: window.PDFLib.degrees(35)
+          });
+        }
+      }
+    });
+    const outBytes = await pdf.save();
+    pwmOutBlob = new Blob([outBytes], { type: 'application/pdf' });
+    document.getElementById('pwm-out').textContent = (pwmOutBlob.size / 1024 / 1024).toFixed(2) + ' MB';
+    showToast('✅ 水印已添加');
+  } catch (e) {
+    console.error(e);
+    showToast('❌ 处理失败: ' + e.message);
+  } finally {
+    if (btn) { btn.disabled = false; btn.textContent = '💧 添加水印'; }
+  }
+}
+
+function pwmDownload() {
+  if (!pwmOutBlob) { showToast('❌ 请先添加水印'); return; }
+  const a = document.createElement('a');
+  a.download = (pwmRawFile ? pwmRawFile.name.replace(/\.[^.]+$/, '') : 'doc') + '_水印.pdf';
+  a.href = URL.createObjectURL(pwmOutBlob);
+  a.click();
+  showToast('💾 已开始下载');
+}
+
+// ============================================================
+// Markdown表格生成器 处理函数 (mdt*)
+// ============================================================
+var mdtResult = '';
+
+function mdtGenerate() {
+  const input = document.getElementById('mdt-input').value.trim();
+  const align = document.getElementById('mdt-align').value;
+  const sepMode = document.getElementById('mdt-sep').value;
+  if (!input) { showToast('❌ 请输入表格数据'); return; }
+  const lines = input.split(/\r?\n/).filter(function (l) { return l.trim() !== ''; });
+  if (lines.length === 0) { showToast('❌ 没有数据行'); return; }
+
+  // 自动识别分隔符：| > , > tab
+  function detectSep(line) {
+    if (line.indexOf('|') >= 0) return '|';
+    if (line.indexOf('\t') >= 0) return 'tab';
+    if (line.indexOf(',') >= 0) return ',';
+    return '|';
+  }
+  const sep = sepMode === 'auto' ? detectSep(lines[0]) : sepMode;
+
+  const cells = lines.map(function (line) {
+    if (sep === '|') {
+      let s = line.trim();
+      if (s.startsWith('|')) s = s.slice(1);
+      if (s.endsWith('|') && !s.endsWith('\\|')) s = s.slice(0, -1);
+      return s.split('|').map(function (c) { return c.trim(); });
+    }
+    if (sep === 'tab') return line.split('\t').map(function (c) { return c.trim(); });
+    return line.split(',').map(function (c) { return c.trim(); });
+  });
+
+  const colCount = Math.max.apply(null, cells.map(function (r) { return r.length; }));
+  const norm = cells.map(function (r) {
+    while (r.length < colCount) r.push('');
+    return r;
+  });
+  const aligned = align === 'left' ? ':---' : (align === 'center' ? ':---:' : '---:');
+
+  const rows = norm.map(function (row, idx) {
+    return '| ' + row.map(function (c) {
+      return String(c).replace(/\|/g, '\\|');
+    }).join(' | ') + ' |';
+  });
+  const header = rows[0];
+  const sepRow = '| ' + Array(colCount).fill(aligned).join(' | ') + ' |';
+  const body = rows.slice(1).join('\n');
+  mdtResult = [header, sepRow, body].filter(Boolean).join('\n');
+  mdtPreview();
+  showToast('✅ 已生成Markdown表格');
+}
+
+function mdtPreview() {
+  const box = document.getElementById('mdt-preview');
+  if (!box) return;
+  if (!mdtResult) { box.innerHTML = '<span style="color:var(--text-light);">结果将显示在这里</span>'; return; }
+  // 简单渲染为 HTML 表格预览
+  const lines = mdtResult.split('\n').filter(function (l) { return l.trim().startsWith('|'); });
+  const data = lines.map(function (l) {
+    return l.replace(/^\||\|$/g, '').split('|').map(function (c) { return c.replace(/\\\|/g, '|').trim(); });
+  });
+  const html = '<table style="border-collapse:collapse;width:100%;font-size:13px;">' +
+    data.map(function (row, ri) {
+      const tag = ri === 0 ? 'th' : 'td';
+      const style = 'border:1px solid #dde3ea;padding:6px 10px;' + (ri === 0 ? 'background:#eef2ff;' : '');
+      return '<tr>' + row.map(function (c) { return '<' + tag + ' style="' + style + '">' + c + '</' + tag + '>'; }).join('') + '</tr>';
+    }).join('') + '</table>';
+  box.innerHTML = html;
+}
+
+function mdtCopy() {
+  if (!mdtResult) { showToast('❌ 请先生成表格'); return; }
+  navigator.clipboard.writeText(mdtResult).then(function () {
+    showToast('✅ Markdown已复制');
+  }).catch(function () { showToast('❌ 复制失败'); });
+}
+
+function mdtDownload() {
+  if (!mdtResult) { showToast('❌ 请先生成表格'); return; }
+  const blob = new Blob([mdtResult], { type: 'text/markdown;charset=utf-8' });
+  const a = document.createElement('a');
+  a.download = 'table.md';
   a.href = URL.createObjectURL(blob);
   a.click();
   showToast('💾 已开始下载');
