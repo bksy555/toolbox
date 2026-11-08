@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Markdown表格生成器：3步把数据变成GitHub风格表格（CSV/对齐/复制下载） - ToolBox 工具箱指南</title>
+  <meta name="description" content="图文详解Markdown表格生成器的用法：粘贴数据自动生成Markdown表格，支持CSV/竖线/Tab分隔、三种对齐方式、HTML预览、复制或下载.md，写README与文档必备。">
+  <meta name="keywords" content="Markdown表格,表格生成器,Markdown生成,README表格,MD表格,表格转换">
+  <meta name="author" content="ToolBox">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://toolai.ccwu.cc/guides/markdown-table-guide.html">
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    :root {
+      --bg: #0f0f1a;
+      --bg-card: #1a1a2e;
+      --text: #e0e0e0;
+      --text-light: #8888aa;
+      --border: #2a2a44;
+      --accent: #6366f1;
+      --accent-hover: #4f46e5;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Noto Sans SC', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      margin: 0;
+      line-height: 1.8;
+    }
+    .guide-header {
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+      border-bottom: 1px solid var(--border);
+      padding: 20px 0;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(10px);
+    }
+    .guide-header-inner {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 0 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .guide-header a { color: var(--accent); text-decoration: none; font-size: 14px; }
+    .guide-header a:hover { color: var(--accent-hover); }
+    .guide-container { max-width: 860px; margin: 0 auto; padding: 40px 20px 80px; }
+    .guide-breadcrumb { font-size: 13px; color: var(--text-light); margin-bottom: 20px; }
+    .guide-breadcrumb a { color: var(--accent); text-decoration: none; }
+    .guide-breadcrumb a:hover { text-decoration: underline; }
+    h1 {
+      font-size: 32px; font-weight: 700; margin: 0 0 10px; line-height: 1.3;
+      background: linear-gradient(135deg, #e0e0e0, #a78bfa);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .guide-meta { font-size: 13px; color: var(--text-light); margin-bottom: 30px; display: flex; gap: 16px; flex-wrap: wrap; }
+    .guide-meta span { display: flex; align-items: center; gap: 4px; }
+    h2 { font-size: 22px; font-weight: 600; margin: 40px 0 16px; padding-bottom: 8px; border-bottom: 1px solid var(--border); color: #e0e0e0; }
+    h3 { font-size: 18px; font-weight: 600; margin: 28px 0 12px; color: #ccc; }
+    p { margin: 0 0 16px; color: #ccc; }
+    .guide-step { background: var(--bg-card); border: 1px solid var(--border); border-radius: 14px; padding: 24px; margin: 20px 0; }
+    .guide-step-number {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 32px; height: 32px; border-radius: 50%;
+      background: linear-gradient(135deg, #6366f1, #8b5cf6); color: #fff;
+      font-weight: 700; font-size: 15px; margin-right: 10px; vertical-align: middle;
+    }
+    .guide-step h3 { display: inline; font-size: 19px; color: #e0e0e0; }
+    .guide-step img { width: 100%; border-radius: 10px; margin-top: 16px; border: 1px solid var(--border); }
+    .guide-tip { background: rgba(99,102,241,0.08); border-left: 3px solid var(--accent); border-radius: 8px; padding: 14px 18px; margin: 16px 0; font-size: 14px; color: #bbb; }
+    .guide-scenarios { list-style: none; padding: 0; }
+    .guide-scenarios li { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 14px 18px; margin: 10px 0; font-size: 15px; }
+    .guide-scenarios li strong { color: #a78bfa; }
+    .guide-faq details { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 14px 18px; margin: 10px 0; }
+    .guide-faq summary { cursor: pointer; font-weight: 600; color: #e0e0e0; font-size: 15px; }
+    .guide-faq details p { margin: 12px 0 4px; font-size: 14px; }
+    .guide-cta { background: linear-gradient(135deg, #1a1a2e, #16213e); border: 1px solid var(--border); border-radius: 14px; padding: 36px 24px; text-align: center; margin: 40px 0 0; }
+    .guide-cta h2 { border: none; margin-top: 0; }
+    .guide-cta p { font-size: 15px; color: #999; margin-bottom: 20px; }
+    .btn { display: inline-block; background: linear-gradient(135deg, #6366f1, #8b5cf6); color: #fff !important; padding: 12px 32px; border-radius: 30px; text-decoration: none; font-weight: 600; font-size: 15px; transition: transform .15s, box-shadow .15s; }
+    .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(99,102,241,0.3); }
+    @media (max-width: 640px) {
+      h1 { font-size: 24px; }
+      .guide-container { padding: 24px 16px 60px; }
+      .guide-step { padding: 18px 14px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="guide-header">
+    <div class="guide-header-inner">
+      <a href="../index.html">← ToolBox 工具箱</a>
+      <a href="https://toolai.ccwu.cc/">返回首页</a>
+    </div>
+  </div>
+
+  <div class="guide-container">
+    <div class="guide-breadcrumb">
+      <a href="../index.html">首页</a> › <a href="../index.html#guides">工具箱指南</a> › Markdown表格生成器
+    </div>
+
+    <h1>Markdown表格生成器：3步把数据变成GitHub风格表格</h1>
+    <div class="guide-meta">
+      <span>⏱️ 阅读约 3 分钟</span>
+      <span>📅 2026-11-08</span>
+      <span>📋 文本工具</span>
+    </div>
+
+    <p>写 GitHub README、技术文档、项目说明时，最烦的就是手打 Markdown 表格——竖线、冒号、标题分隔行，稍不留神就错位。<strong>Markdown表格生成器</strong> 帮你把散装数据一键变成规范表格，粘贴即生成，复制就能用。</p>
+
+    <img src="images/mdt-cover.png" alt="Markdown表格生成器界面" style="width:100%;border-radius:12px;border:1px solid var(--border);margin:10px 0 20px;">
+
+    <h2>开始使用</h2>
+
+    <div class="guide-step">
+      <span class="guide-step-number">1</span><h3>输入表格数据</h3>
+      <p>打开「文本工具」分类里的「📋 Markdown表格生成器」。在输入框粘贴你的数据：支持<strong>逗号分隔</strong>（CSV）、<strong>竖线</strong>（|）或<strong>Tab 分隔</strong>，首行自动作为表头。比如输入「姓名,城市,年龄」换行后逐行加数据，几秒钟搞定。</p>
+      <img src="images/mdt-step1-input.png" alt="输入表格数据">
+    </div>
+
+    <div class="guide-step">
+      <span class="guide-step-number">2</span><h3>设置对齐并生成</h3>
+      <p>选择列对齐方式：<strong>左对齐</strong>（默认，README 最常见）、<strong>居中</strong>或<strong>右对齐</strong>。点击「📋 生成表格」，右侧会立即用 HTML 表格预览效果——行列清晰，一眼确认无误。</p>
+      <img src="images/mdt-step2-result.png" alt="生成表格预览">
+      <div class="guide-tip">💡 分隔符选择「自动识别」即可：工具会优先识别竖线、Tab，其次才是逗号，兼容 Excel 复制出来的数据。</div>
+    </div>
+
+    <div class="guide-step">
+      <span class="guide-step-number">3</span><h3>复制或下载</h3>
+      <p>预览满意后，点「📋 复制Markdown」直接粘贴到 GitHub/语雀/飞书；或点「💾 下载.md」保存为 .md 文件导入文档。生成的表格严格符合 GitHub 渲染语法，不需要再手动修。</p>
+      <div class="guide-tip">💡 单元格里如果含有竖线会自动转义为 \\|，不会破坏表格结构。</div>
+    </div>
+
+    <h2>使用场景</h2>
+    <ul class="guide-scenarios">
+      <li><strong>📝 README 文档</strong> — 参数说明、版本记录、功能对比表，几秒生成规范表格。</li>
+      <li><strong>📊 数据搬运</strong> — 把 Excel/CSV 数据转成 Markdown 表格，进技术文档不带格式错乱。</li>
+      <li><strong>🗂️ 项目说明</strong> — 依赖清单、接口字段表、环境变量说明，团队协作更清晰。</li>
+      <li><strong>🎓 学习笔记</strong> — 把零散的对比信息结构化，笔记可读性翻倍。</li>
+      <li><strong>🧾 简历/作品集</strong> — 技能表、项目表，Markdown 简历必备。</li>
+    </ul>
+
+    <h2>常见问题</h2>
+    <div class="guide-faq">
+      <details>
+        <summary>GitHub 上表格不显示怎么办？</summary>
+        <p>确认复制的内容以「| 列1 | 列2 |」开头，并保留第二行对齐分隔行（如 :---）。本工具生成的结果已包含完整表头+分隔行，粘贴即可正常渲染。部分平台（如某些邮件客户端）不支持 Markdown 表格，属于平台限制。</p>
+      </details>
+      <details>
+        <summary>数据里本身有逗号/竖线会不会出错？</summary>
+        <p>单元格内容如果含逗号，建议改用竖线或 Tab 分隔再粘贴；含竖线的单元格生成时会被自动转义（\\|），不会破坏表格结构。</p>
+      </details>
+      <details>
+        <summary>能解析 Excel 直接复制的内容吗？</summary>
+        <p>可以。Excel 复制到剪贴板通常是 Tab 分隔，选择「分隔符 → Tab」或在自动识别模式下粘贴即可生成（含表头时选上首行作为表头）。</p>
+      </details>
+    </div>
+
+    <div class="guide-cta">
+      <h2>现在就试试Markdown表格生成器</h2>
+      <p>免费使用 · 无需安装 · 本地生成不上传</p>
+      <a href="https://toolai.ccwu.cc/" class="btn">📋 打开Markdown表格生成器</a>
+    </div>
+  </div>
+</body>
+</html>
