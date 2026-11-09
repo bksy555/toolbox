@@ -10141,6 +10141,97 @@ greet('世界');</textarea>
   handler: () => { }
 },
 
+// ============================================================
+// 图片对比滑块工具 image-compare (icmp*)
+// ============================================================
+{
+  id: 'image-compare',
+  cat: 'image',
+  icon: '🔍',
+  name: '图片对比滑块',
+  desc: '左右拖动滑块对比两张图片（修复前/后、滤镜效果），一键保存对比图',
+  html: `
+    <div class="tool-card">
+      <div class="input-group">
+        <label>左图（原始/修复前）</label>
+        <input type="file" id="icmp-before" accept="image/*" style="display:none;" onchange="icmpLoad('before', this)">
+        <button class="btn btn-secondary" style="margin-top:6px;" onclick="document.getElementById('icmp-before').click()">📷 选择左图</button>
+        <span id="icmp-before-name" style="font-size:12px;color:var(--text-light);margin-left:10px;"></span>
+      </div>
+      <div class="input-group" style="margin-top:10px;">
+        <label>右图（处理后/修复后）</label>
+        <input type="file" id="icmp-after" accept="image/*" style="display:none;" onchange="icmpLoad('after', this)">
+        <button class="btn btn-secondary" style="margin-top:6px;" onclick="document.getElementById('icmp-after').click()">📷 选择右图</button>
+        <span id="icmp-after-name" style="font-size:12px;color:var(--text-light);margin-left:10px;"></span>
+      </div>
+      <div id="icmp-wrap" style="margin-top:14px;position:relative;display:none;border:1px solid var(--border,#e2e8f0);border-radius:10px;overflow:hidden;user-select:none;touch-action:none;">
+        <div id="icmp-after-show" style="position:absolute;inset:0;background-size:cover;background-repeat:no-repeat;background-position:center;"></div>
+        <div id="icmp-before-cover" style="position:absolute;inset:0;background-size:cover;background-repeat:no-repeat;background-position:center;clip-path:inset(0 50% 0 0);"></div>
+        <div id="icmp-line" style="position:absolute;top:0;bottom:0;left:50%;width:2px;background:#fff;box-shadow:0 0 6px rgba(0,0,0,.5);"></div>
+        <div id="icmp-handle" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:38px;height:38px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,.4);cursor:ew-resize;">⇄</div>
+        <div id="icmp-label-l" style="position:absolute;left:10px;top:10px;background:rgba(0,0,0,.55);color:#fff;padding:4px 12px;border-radius:16px;font-size:12px;">原始</div>
+        <div id="icmp-label-r" style="position:absolute;right:10px;top:10px;background:rgba(0,0,0,.55);color:#fff;padding:4px 12px;border-radius:16px;font-size:12px;">处理后</div>
+      </div>
+      <div class="btn-group" style="margin-top:14px;">
+        <button class="btn btn-primary" onclick="icmpSave()">💾 保存对比图</button>
+      </div>
+      <div id="icmp-tip" style="margin-top:15px;font-size:13px;color:var(--text-light);background:var(--bg-light,#f8fafc);padding:12px;border-radius:8px;">
+        💡 选择两张大小相近的图片（左=原始，右=处理结果），拖动滑块查看差异；保存时自动导出为对比图 PNG
+      </div>
+    </div>
+  `,
+  handler: () => { }
+},
+
+// ============================================================
+// HIIT间隔计时器工具 interval-timer (itm*)
+// ============================================================
+{
+  id: 'interval-timer',
+  cat: 'fun',
+  icon: '⏱️',
+  name: 'HIIT间隔计时器',
+  desc: '循环训练计时器，支持动作/休息多组轮换、提醒音效，健身训练必备',
+  html: `
+    <div class="tool-card">
+      <div class="row-3">
+        <div class="input-group">
+          <label>动作时间 (秒)</label>
+          <input type="number" id="itm-work" value="30" min="3" max="600" style="width:100%;">
+        </div>
+        <div class="input-group">
+          <label>休息时间 (秒)</label>
+          <input type="number" id="itm-rest" value="15" min="0" max="600" style="width:100%;">
+        </div>
+        <div class="input-group">
+          <label>轮数</label>
+          <input type="number" id="itm-rounds" value="8" min="1" max="50" style="width:100%;">
+        </div>
+      </div>
+      <div class="input-group" style="margin-top:10px;">
+        <label>准备倒计时 (秒)</label>
+        <input type="number" id="itm-prepare" value="3" min="0" max="30" style="width:100%;">
+      </div>
+      <div id="itm-display" style="margin:20px auto;text-align:center;background:var(--bg-light,#f8fafc);border:1px solid var(--border,#e2e8f0);border-radius:16px;padding:24px 12px;">
+        <div id="itm-phase" style="font-size:20px;font-weight:700;color:#0f172a;">准备开始</div>
+        <div id="itm-time" style="font-size:64px;font-weight:800;color:#0f172a;line-height:1.2;font-variant-numeric:tabular-nums;">--:--</div>
+        <div id="itm-round" style="font-size:14px;color:#64748b;margin-top:6px;">轮数 0/0</div>
+      </div>
+      <div id="itm-progress" style="height:8px;background:var(--border,#e2e8f0);border-radius:4px;overflow:hidden;margin-top:10px;">
+        <div id="itm-bar" style="height:100%;width:0%;background:linear-gradient(90deg,#6366f1,#8b5cf6);transition:width .2s;"></div>
+      </div>
+      <div class="btn-group" style="margin-top:15px;">
+        <button class="btn btn-primary" id="itm-toggle" onclick="itmToggle()">▶️ 开始</button>
+        <button class="btn btn-secondary" onclick="itmReset()">🔄 重置</button>
+      </div>
+      <div id="itm-tip" style="margin-top:15px;font-size:13px;color:var(--text-light);background:var(--bg-light,#f8fafc);padding:12px;border-radius:8px;">
+        💡 循环「动作→休息」直到完成所有轮数；动作/休息切换时有提示音；适合HIIT、Tabata、平板支撑等训练
+      </div>
+    </div>
+  `,
+  handler: () => { }
+},
+
 ];
 
 // ============================================================
@@ -11782,7 +11873,7 @@ function dpCopyText() {
 const CATEGORIES = [
   { id: 'text', icon: '✏️', name: '文本工具', desc: '字数统计、简繁转换、摩斯密码、文本转语音、文本对比、Markdown表格生成器、电子名片生成器、英文语法检查、占位文本生成' },
   { id: 'dev', icon: '💻', name: '开发者工具', desc: 'JSON格式化、JSON/CSV互转、YAML/JSON互转、二维码生成、二维码美化、条形码生成、Favicon图标生成、正则测试、Markdown、IP查询、子网计算、思维导图、图表生成、代码图片生成、表格数据转换、SQL格式化、代码压缩器、假数据生成器、Cron表达式生成器、HTTP状态码速查、SEO标题预览、屏幕坏点测试、字体配对、文件类型识别器' },
-  { id: 'image', icon: '🖼️', name: '图片处理', desc: '去背景换底色、批量压缩、加水印、长图拼接、格式转换、裁剪、异形裁剪、马赛克打码、双色调滤镜、图片转字符画、照片卡通化、OCR、印章制作、九宫格切图、文字转手写体、表情包、社交媒体图片尺寸调整、艺术效果、像素画、设备样机、图片高清放大、图片转线稿、渐变背景、文字特效、拼贴画、图片相框、颜色盲区模拟、海报设计器、老照片修复上色、图片EXIF信息、占位图生成器、文档透视矫正' },
+  { id: 'image', icon: '🖼️', name: '图片处理', desc: '去背景换底色、批量压缩、加水印、长图拼接、格式转换、裁剪、异形裁剪、马赛克打码、双色调滤镜、图片转字符画、照片卡通化、OCR、印章制作、九宫格切图、文字转手写体、表情包、社交媒体图片尺寸调整、艺术效果、像素画、设备样机、图片高清放大、图片转线稿、渐变背景、文字特效、拼贴画、图片相框、颜色盲区模拟、海报设计器、老照片修复上色、图片EXIF信息、占位图生成器、文档透视矫正、图片对比滑块' },
   { id: 'document', icon: '📄', name: '文档转换', desc: '图片转PDF、PDF转图片、Word解析、Excel转PDF、PDF合并、PDF拆分、PDF加密解密、PDF加水印、简历生成、电子签名、表单制作、邮件签名、发票/收据生成器、证书生成器' },
   { id: 'convert', icon: '🔄', name: '转换工具', desc: '单位换算、进制转换、函数绘图' },
   { id: 'security', icon: '🔒', name: '安全工具', desc: '密码生成、Hash计算、随机数、浏览器指纹检测、身份证号码校验、凯撒密码' },
@@ -11792,7 +11883,7 @@ const CATEGORIES = [
   { id: 'ai', icon: '🤖', name: 'AI工具', desc: 'AI聊天、AI Agent安装、免费AI工具推荐' },
   { id: 'voice', icon: '🗣️', name: '群众心声', desc: '提交工具建议、投票排行榜、前3名自动实现' },
   { id: 'lottery', icon: '🎰', name: '彩票工具', desc: '双色球、大乐透、福彩3D、快乐8、排列三…在线过滤缩水、选号、计算器' },
-  { id: 'fun', icon: '🎪', name: '趣味工具', desc: '表情包生成、决策转盘、抽奖抽签、词云生成、涂鸦画板、Emoji表情速查、数独生成器、随机起名器、生肖星座查询、娱乐好玩' },
+  { id: 'fun', icon: '🎪', name: '趣味工具', desc: '表情包生成、决策转盘、抽奖抽签、词云生成、涂鸦画板、Emoji表情速查、数独生成器、随机起名器、生肖星座查询、HIIT间隔计时器、娱乐好玩' },
   { id: 'finance', icon: '💰', name: '财务工具', desc: '家庭记账本、收支统计、月度汇总' },
   { id: 'edu', icon: '📚', name: '教育资源', desc: '电子教材在线阅读、学习资源导航、元素周期表、习惯打卡、打字速度测试、历史上的今天、科学计算器、成语大全、诗词名句库、汉字笔画' },
   { id: 'health', icon: '🏥', name: '健康工具', desc: 'BMI 指数计算、体重管理参考' }
@@ -24764,4 +24855,253 @@ function mdtDownload() {
   a.href = URL.createObjectURL(blob);
   a.click();
   showToast('💾 已开始下载');
+}// ============================================================
+// 图片对比滑块 处理函数 (icmp*)
+// ============================================================
+var icmpBefore = null;
+var icmpAfter = null;
+var icmpPos = 50;
+var icmpDragging = false;
+
+function icmpLoad(side, input) {
+  const file = input.files[0];
+  if (!file) return;
+  const nameEl = document.getElementById('icmp-' + side + '-name');
+  if (nameEl) nameEl.textContent = file.name;
+  const url = URL.createObjectURL(file);
+  if (side === 'before') {
+    icmpBefore = url;
+    const cover = document.getElementById('icmp-before-cover');
+    if (cover) cover.style.backgroundImage = 'url("' + url + '")';
+  } else {
+    icmpAfter = url;
+    const show = document.getElementById('icmp-after-show');
+    if (show) show.style.backgroundImage = 'url("' + url + '")';
+  }
+  icmpShowIfReady();
+}
+
+function icmpShowIfReady() {
+  const wrap = document.getElementById('icmp-wrap');
+  if (icmpBefore && icmpAfter && wrap) {
+    wrap.style.display = 'block';
+    icmpSetPos(50);
+  }
+}
+
+function icmpSetPos(p) {
+  icmpPos = Math.max(0, Math.min(100, p));
+  const cover = document.getElementById('icmp-before-cover');
+  const line = document.getElementById('icmp-line');
+  const handle = document.getElementById('icmp-handle');
+  if (cover) cover.style.clipPath = 'inset(0 ' + (100 - icmpPos) + '% 0 0)';
+  if (line) line.style.left = icmpPos + '%';
+  if (handle) handle.style.left = icmpPos + '%';
+}
+
+function icmpBindEvents() {
+  const wrap = document.getElementById('icmp-wrap');
+  if (!wrap || wrap.dataset.bound) return;
+  wrap.dataset.bound = '1';
+  function posFromEvent(e) {
+    const rect = wrap.getBoundingClientRect();
+    const x = (e.clientX || e.touches[0].clientX) - rect.left;
+    return (x / rect.width) * 100;
+  }
+  wrap.addEventListener('mousedown', function (e) { icmpDragging = true; icmpSetPos(posFromEvent(e)); e.preventDefault(); });
+  wrap.addEventListener('touchstart', function (e) { icmpDragging = true; icmpSetPos(posFromEvent(e)); e.preventDefault(); }, { passive: false });
+  document.addEventListener('mousemove', function (e) { if (icmpDragging) icmpSetPos(posFromEvent(e)); });
+  document.addEventListener('touchmove', function (e) { if (icmpDragging) icmpSetPos(posFromEvent(e)); }, { passive: false });
+  document.addEventListener('mouseup', function () { icmpDragging = false; });
+  document.addEventListener('touchend', function () { icmpDragging = false; });
+}
+
+function icmpSave() {
+  if (!icmpBefore || !icmpAfter) { showToast('❌ 请先选择两张图片'); return; }
+  const wrap = document.getElementById('icmp-wrap');
+  const w = wrap.clientWidth, h = wrap.clientHeight;
+  const canvas = document.createElement('canvas');
+  canvas.width = w * 2; canvas.height = h * 2;
+  const ctx = canvas.getContext('2d');
+  const img1 = new Image(); img1.src = icmpBefore;
+  const img2 = new Image(); img2.src = icmpAfter;
+  Promise.all([img1.decode ? img1.decode() : Promise.resolve(), img2.decode ? img2.decode() : Promise.resolve()]).then(function () {
+    ctx.drawImage(img1, 0, 0, canvas.width, canvas.height);
+    // 右半覆盖处理后
+    ctx.save();
+    ctx.beginPath();
+    ctx.rect(canvas.width / 2, 0, canvas.width / 2, canvas.height);
+    ctx.clip();
+    ctx.drawImage(img2, 0, 0, canvas.width, canvas.height);
+    ctx.restore();
+    // 中线
+    ctx.fillStyle = '#fff';
+    ctx.fillRect(canvas.width / 2 - 2, 0, 4, canvas.height);
+    canvas.toBlob(function (blob) {
+      const a = document.createElement('a');
+      a.download = 'image-compare.png';
+      a.href = URL.createObjectURL(blob);
+      a.click();
+      showToast('💾 对比图已下载');
+    }, 'image/png');
+  });
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+  icmpBindEvents();
+});
+
+// ============================================================
+// HIIT间隔计时器 处理函数 (itm*)
+// ============================================================
+var itmTimer = null;
+var itmRunning = false;
+var itmPhase = 'prepare'; // prepare | work | rest
+var itmRound = 0;
+var itmRemain = 0;
+var itmCtx = null;
+var itmTotalRounds = 1;
+
+function itmBeep(high) {
+  try {
+    if (!itmCtx) itmCtx = new (window.AudioContext || window.webkitAudioContext)();
+    const osc = itmCtx.createOscillator();
+    const gain = itmCtx.createGain();
+    osc.type = 'sine';
+    osc.frequency.value = high ? 1046 : 660;
+    gain.gain.setValueAtTime(0.25, itmCtx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, itmCtx.currentTime + 0.25);
+    osc.connect(gain);
+    gain.connect(itmCtx.destination);
+    osc.start();
+    osc.stop(itmCtx.currentTime + 0.25);
+  } catch (e) { /* no audio */ }
+}
+
+function itmToggle() {
+  if (itmRunning) {
+    itmPause();
+    return;
+  }
+  itmRunning = true;
+  document.getElementById('itm-toggle').textContent = '⏸️ 暂停';
+  const work = parseInt(document.getElementById('itm-work').value) || 30;
+  const rest = parseInt(document.getElementById('itm-rest').value) || 15;
+  const rounds = parseInt(document.getElementById('itm-rounds').value) || 8;
+  const prepare = parseInt(document.getElementById('itm-prepare').value) || 3;
+  itmTotalRounds = rounds;
+  if (itmPhase === 'prepare' && itmRemain <= 0) {
+    itmPhase = 'prepare';
+    itmRemain = prepare;
+    itmRound = 0;
+  }
+  itmTick();
+  itmTimer = setInterval(itmTick, 1000);
+}
+
+function itmPause() {
+  itmRunning = false;
+  if (itmTimer) { clearInterval(itmTimer); itmTimer = null; }
+  document.getElementById('itm-toggle').textContent = '▶️ 继续';
+}
+
+function itmTimerReset() {
+  itmPause();
+  itmPhase = 'prepare';
+  itmRound = 0;
+  itmRemain = 0;
+  itmRenderDisplay('准备开始', '--:--', '轮数 0/0', 0, '#0f172a');
+  document.getElementById('itm-toggle').textContent = '▶️ 开始';
+}
+
+function itmReset() { itmTimerReset(); }
+
+function itmTick() {
+  if (!itmRunning) return;
+  const work = parseInt(document.getElementById('itm-work').value) || 30;
+  const rest = parseInt(document.getElementById('itm-rest').value) || 15;
+  const rounds = itmTotalRounds || 8;
+
+  if (itmPhase === 'prepare') {
+    if (itmRemain <= 0) {
+      itmPhase = 'work';
+      itmRound = 1;
+      itmRemain = work;
+      itmBeep(true);
+      itmRenderDisplay('动作 💪', itmFmt(itmRemain), '轮数 ' + itmRound + '/' + rounds, 0, '#16a34a');
+      return;
+    }
+    itmRenderDisplay('准备倒计时', itmFmt(itmRemain), '轮数 0/' + rounds, (itmPrepareTotal - itmRemain) / (itmPrepareTotal || 1) * 100, '#64748b');
+    itmRemain--;
+    return;
+  }
+  if (itmPhase === 'work') {
+    const total = work;
+    if (itmRemain <= 0) {
+      if (rest > 0) {
+        itmPhase = 'rest';
+        itmRemain = rest;
+        itmBeep(false);
+        itmRenderDisplay('休息 😌', itmFmt(itmRemain), '轮数 ' + itmRound + '/' + rounds, 0, '#2563eb');
+      } else {
+        itmRound++;
+        if (itmRound > rounds) { itmFinish(); return; }
+        itmPhase = 'work';
+        itmRemain = work;
+        itmBeep(true);
+        itmRenderDisplay('动作 💪', itmFmt(itmRemain), '轮数 ' + itmRound + '/' + rounds, 0, '#16a34a');
+      }
+      return;
+    }
+    itmRenderDisplay('动作 💪', itmFmt(itmRemain), '轮数 ' + itmRound + '/' + rounds, (total - itmRemain) / total * 100, '#16a34a');
+    itmRemain--;
+    return;
+  }
+  if (itmPhase === 'rest') {
+    const total = rest;
+    if (itmRemain <= 0) {
+      itmRound++;
+      if (itmRound > rounds) { itmFinish(); return; }
+      itmPhase = 'work';
+      itmRemain = work;
+      itmBeep(true);
+      itmRenderDisplay('动作 💪', itmFmt(itmRemain), '轮数 ' + itmRound + '/' + rounds, 0, '#16a34a');
+      return;
+    }
+    itmRenderDisplay('休息 😌', itmFmt(itmRemain), '轮数 ' + itmRound + '/' + rounds, (total - itmRemain) / total * 100, '#2563eb');
+    itmRemain--;
+    return;
+  }
+}
+
+function itmPrepareTotal() {
+  return parseInt(document.getElementById('itm-prepare').value) || 3;
+}
+
+function itmFmt(s) {
+  const m = Math.floor(Math.max(0, s) / 60);
+  const sec = Math.max(0, s) % 60;
+  return String(m).padStart(2, '0') + ':' + String(sec).padStart(2, '0');
+}
+
+function itmFinish() {
+  itmPause();
+  itmPhase = 'prepare';
+  itmRound = 0;
+  itmRemain = 0;
+  itmBeep(true);
+  itmRenderDisplay('🎉 完成！', '00:00', '全部 ' + itmTotalRounds + ' 轮结束', 100, '#8b5cf6');
+  document.getElementById('itm-toggle').textContent = '▶️ 开始';
+  showToast('🎉 训练完成！');
+}
+
+function itmRenderDisplay(phase, time, round, pct, color) {
+  const p = document.getElementById('itm-phase');
+  const t = document.getElementById('itm-time');
+  const r = document.getElementById('itm-round');
+  const bar = document.getElementById('itm-bar');
+  if (p) { p.textContent = phase; p.style.color = color; }
+  if (t) { t.textContent = time; t.style.color = color; }
+  if (r) r.textContent = round;
+  if (bar) bar.style.width = Math.max(0, Math.min(100, pct)) + '%';
 }
