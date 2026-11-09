@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>图片对比滑块：3步做修图前后对比图（拖动查看差异/一键导出） - ToolBox 工具箱指南</title>
+  <meta name="description" content="图文详解图片对比滑块工具：上传两张图片，拖动滑块直观对比修复前后/滤镜效果，一键导出对比图。修图、设计、摄影前后对比必备。">
+  <meta name="keywords" content="图片对比,对比滑块,修图前后对比,BEFORE AFTER,图片对比工具,效果对比">
+  <meta name="author" content="ToolBox">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://toolai.ccwu.cc/guides/image-compare-guide.html">
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    :root {
+      --bg: #0f0f1a;
+      --bg-card: #1a1a2e;
+      --text: #e0e0e0;
+      --text-light: #8888aa;
+      --border: #2a2a44;
+      --accent: #6366f1;
+      --accent-hover: #4f46e5;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Noto Sans SC', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      margin: 0;
+      line-height: 1.8;
+    }
+    .guide-header {
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+      border-bottom: 1px solid var(--border);
+      padding: 20px 0;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(10px);
+    }
+    .guide-header-inner {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 0 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .guide-header a { color: var(--accent); text-decoration: none; font-size: 14px; }
+    .guide-header a:hover { color: var(--accent-hover); }
+    .guide-container { max-width: 860px; margin: 0 auto; padding: 40px 20px 80px; }
+    .guide-breadcrumb { font-size: 13px; color: var(--text-light); margin-bottom: 20px; }
+    .guide-breadcrumb a { color: var(--accent); text-decoration: none; }
+    .guide-breadcrumb a:hover { text-decoration: underline; }
+    h1 {
+      font-size: 32px; font-weight: 700; margin: 0 0 10px; line-height: 1.3;
+      background: linear-gradient(135deg, #e0e0e0, #a78bfa);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .guide-meta { font-size: 13px; color: var(--text-light); margin-bottom: 30px; display: flex; gap: 16px; flex-wrap: wrap; }
+    .guide-meta span { display: flex; align-items: center; gap: 4px; }
+    h2 { font-size: 22px; font-weight: 600; margin: 40px 0 16px; padding-bottom: 8px; border-bottom: 1px solid var(--border); color: #e0e0e0; }
+    h3 { font-size: 18px; font-weight: 600; margin: 28px 0 12px; color: #ccc; }
+    p { margin: 0 0 16px; color: #ccc; }
+    .guide-step { background: var(--bg-card); border: 1px solid var(--border); border-radius: 14px; padding: 24px; margin: 20px 0; }
+    .guide-step-number {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 32px; height: 32px; border-radius: 50%;
+      background: linear-gradient(135deg, #6366f1, #8b5cf6); color: #fff;
+      font-weight: 700; font-size: 15px; margin-right: 10px; vertical-align: middle;
+    }
+    .guide-step h3 { display: inline; font-size: 19px; color: #e0e0e0; }
+    .guide-step img { width: 100%; border-radius: 10px; margin-top: 16px; border: 1px solid var(--border); }
+    .guide-tip { background: rgba(99,102,241,0.08); border-left: 3px solid var(--accent); border-radius: 8px; padding: 14px 18px; margin: 16px 0; font-size: 14px; color: #bbb; }
+    .guide-scenarios { list-style: none; padding: 0; }
+    .guide-scenarios li { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 14px 18px; margin: 10px 0; font-size: 15px; }
+    .guide-scenarios li strong { color: #a78bfa; }
+    .guide-faq details { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 14px 18px; margin: 10px 0; }
+    .guide-faq summary { cursor: pointer; font-weight: 600; color: #e0e0e0; font-size: 15px; }
+    .guide-faq details p { margin: 12px 0 4px; font-size: 14px; }
+    .guide-cta { background: linear-gradient(135deg, #1a1a2e, #16213e); border: 1px solid var(--border); border-radius: 14px; padding: 36px 24px; text-align: center; margin: 40px 0 0; }
+    .guide-cta h2 { border: none; margin-top: 0; }
+    .guide-cta p { font-size: 15px; color: #999; margin-bottom: 20px; }
+    .btn { display: inline-block; background: linear-gradient(135deg, #6366f1, #8b5cf6); color: #fff !important; padding: 12px 32px; border-radius: 30px; text-decoration: none; font-weight: 600; font-size: 15px; transition: transform .15s, box-shadow .15s; }
+    .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(99,102,241,0.3); }
+    @media (max-width: 640px) {
+      h1 { font-size: 24px; }
+      .guide-container { padding: 24px 16px 60px; }
+      .guide-step { padding: 18px 14px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="guide-header">
+    <div class="guide-header-inner">
+      <a href="../index.html">← ToolBox 工具箱</a>
+      <a href="https://toolai.ccwu.cc/">返回首页</a>
+    </div>
+  </div>
+
+  <div class="guide-container">
+    <div class="guide-breadcrumb">
+      <a href="../index.html">首页</a> › <a href="../index.html#guides">工具箱指南</a> › 图片对比滑块
+    </div>
+
+    <h1>图片对比滑块：3步做修图前后对比图</h1>
+    <div class="guide-meta">
+      <span>⏱️ 阅读约 3 分钟</span>
+      <span>📅 2026-11-09</span>
+      <span>🔍 图片处理</span>
+    </div>
+
+    <p>修图前 vs 修图后、原片 vs 滤镜、旧照 vs 修复——想直观展示差异，最有力的方式就是<strong>拖动滑块</strong>。<strong>图片对比滑块</strong> 让你上传两张图，左右滑动就能切换查看，还能一键导出带中线的对比图，用于交付验收、作品展示或教程配图。</p>
+
+    <img src="images/icmp-cover.png" alt="图片对比滑块工具界面" style="width:100%;border-radius:12px;border:1px solid var(--border);margin:10px 0 20px;">
+
+    <h2>开始使用</h2>
+
+    <div class="guide-step">
+      <span class="guide-step-number">1</span><h3>选择左右两张图片</h3>
+      <p>进入首页「图片处理」分类，打开「🔍 图片对比滑块」。左侧选择<strong>原始/修复前</strong>图片，右侧选择<strong>处理后/修复后</strong>图片。建议两张图尺寸接近，对比效果会更好。</p>
+      <img src="images/icmp-step1-upload.png" alt="上传两张对比图片">
+    </div>
+
+    <div class="guide-step">
+      <span class="guide-step-number">2</span><h3>拖动滑块查看差异</h3>
+      <p>图片加载后，画面中间会出现一条白色分割线和 ⇄ 手柄。用鼠标（或手指）左右拖动，即可像拉开窗帘一样切换「原始 → 处理结果」，任何细节差异都一目了然。</p>
+      <img src="images/icmp-step2-slide.png" alt="拖动滑块对比">
+      <div class="guide-tip">💡 对比摄影修图、老照片修复、美化前后的作品时，把滑块停在差异最大处截图，展示效果最好。</div>
+    </div>
+
+    <div class="guide-step">
+      <span class="guide-step-number">3</span><h3>保存对比图</h3>
+      <p>满意后点击「💾 保存对比图」，工具会在本地把左图（原始）和右图（处理结果）合成一张带白色分割线的 PNG 图片，方便你交付给客户、贴进教程或发到社交平台。</p>
+      <div class="guide-tip">💡 所有处理都在浏览器本地完成，图片不会上传到任何服务器。</div>
+    </div>
+
+    <h2>使用场景</h2>
+    <ul class="guide-scenarios">
+      <li><strong>🎨 修图交付</strong> — 给客户展示精修前后对比，直观证明工作量与效果。</li>
+      <li><strong>📷 摄影前后期</strong> — 原片 vs 调色成品，滑块对比推荐给同好。</li>
+      <li><strong>🖥️ 滤镜对比</strong> — 同一张图套不同滤镜，快速选出最佳效果。</li>
+      <li><strong>🔧 修复展示</strong> — 老照片修复、模糊变清晰的前后对照，成果更有说服力。</li>
+      <li><strong>🎓 教程配图</strong> — 制作「处理前/处理后」教学示意图，一张对比图胜千言。</li>
+    </ul>
+
+    <h2>常见问题</h2>
+    <div class="guide-faq">
+      <details>
+        <summary>两张图片尺寸不一样会怎样？</summary>
+        <p>工具会把两张图都铺满对比区域展示；保存时以对比区域大小为准合成。如需完全对齐，建议提前把图片裁成相同尺寸。</p>
+      </details>
+      <details>
+        <summary>导出图包含滑块和手柄吗？</summary>
+        <p>不会。保存的对比图只包含左图、右图和中间白色分割线，是干净的交付图，不会残留界面元素。</p>
+      </details>
+      <details>
+        <summary>手机/触屏上能用吗？</summary>
+        <p>可以。工具同时支持鼠标和触摸事件，手机上直接手指左右滑动即可对比。</p>
+      </details>
+    </div>
+
+    <div class="guide-cta">
+      <h2>现在就试试图片对比滑块</h2>
+      <p>免费使用 · 无需安装 · 本地处理不上传</p>
+      <a href="https://toolai.ccwu.cc/" class="btn">🔍 打开图片对比滑块</a>
+    </div>
+  </div>
+</body>
+</html>
