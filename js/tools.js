@@ -10232,6 +10232,76 @@ greet('世界');</textarea>
   handler: () => { }
 },
 
+// ============================================================
+// HTML/Markdown 互转工具 html-md (hm*)
+// ============================================================
+{
+  id: 'html-md',
+  cat: 'dev',
+  icon: '🔗',
+  name: 'HTML/Markdown互转',
+  desc: 'HTML转Markdown、Markdown转HTML，博客/文档迁移必备',
+  html: `
+    <div class="tool-card">
+      <div class="input-group">
+        <label>转换方向</label>
+        <select id="hm-dir">
+          <option value="html2md" selected>HTML → Markdown</option>
+          <option value="md2html">Markdown → HTML</option>
+        </select>
+      </div>
+      <div class="input-group" style="margin-top:12px;">
+        <label>输入</label>
+        <textarea id="hm-input" placeholder="# 标题&#10;输入 Markdown 或 HTML 内容..." style="height:200px;font-family:monospace;font-size:13px;"></textarea>
+      </div>
+      <div class="btn-group" style="margin-top:12px;">
+        <button class="btn btn-primary" onclick="hmConvert()">🔄 转换</button>
+        <button class="btn btn-secondary" onclick="hmCopy()">📋 复制结果</button>
+      </div>
+      <div class="input-group" style="margin-top:12px;">
+        <label>输出</label>
+        <textarea id="hm-output" readonly placeholder="转换结果将显示在这里" style="height:200px;font-family:monospace;font-size:13px;"></textarea>
+      </div>
+      <div id="hm-tip" style="margin-top:15px;font-size:13px;color:var(--text-light);background:var(--bg-light,#f8fafc);padding:12px;border-radius:8px;">
+        💡 纯本地转换，不上传；支持标题、加粗、链接、图片、列表、代码块、表格等常见语法；适合将旧网页内容迁移到 Markdown 博客
+      </div>
+    </div>
+  `,
+  handler: () => { }
+},
+
+// ============================================================
+// 条形码扫描器工具 barcode-scanner (bcs*)
+// ============================================================
+{
+  id: 'barcode-scanner',
+  cat: 'dev',
+  icon: '🏷️',
+  name: '条形码扫描器',
+  desc: '摄像头扫描条形码/二维码，识别商品码、ISBN等，无需安装扫码软件',
+  html: `
+    <div class="tool-card">
+      <div class="input-group">
+        <label>条形码/二维码扫描（摄像头）</label>
+        <p style="font-size:13px;color:var(--text-light);margin:0 0 8px;">点击开始后授权摄像头，将条码对准镜头即可自动识别（需浏览器支持 BarcodeDetector）。</p>
+      </div>
+      <div id="bcs-video-wrap" style="position:relative;border:1px solid var(--border,#e2e8f0);border-radius:10px;overflow:hidden;display:none;background:#000;">
+        <video id="bcs-video" playsinline muted style="width:100%;max-height:360px;display:block;"></video>
+        <div id="bcs-scanline" style="position:absolute;left:0;right:0;top:40%;height:3px;background:rgba(99,102,241,.8);box-shadow:0 0 12px #6366f1;display:none;"></div>
+      </div>
+      <div id="bcs-result" style="margin-top:14px;border:1px solid var(--border,#e2e8f0);border-radius:10px;padding:16px;min-height:60px;"></div>
+      <div class="btn-group" style="margin-top:14px;">
+        <button class="btn btn-primary" id="bcs-start" onclick="bcsStart()">📷 开始扫描</button>
+        <button class="btn btn-secondary" onclick="bcsStop()">⏹️ 停止</button>
+      </div>
+      <div id="bcs-tip" style="margin-top:15px;font-size:13px;color:var(--text-light);background:var(--bg-light,#f8fafc);padding:12px;border-radius:8px;">
+        💡 需要 HTTPS 环境与摄像头权限；Chrome/Edge 支持 BarcodeDetector，若浏览器不支持可改用「二维码识别器」工具上传图片识别
+      </div>
+    </div>
+  `,
+  handler: () => { }
+},
+
 ];
 
 // ============================================================
@@ -11872,7 +11942,7 @@ function dpCopyText() {
 // ============================================================
 const CATEGORIES = [
   { id: 'text', icon: '✏️', name: '文本工具', desc: '字数统计、简繁转换、摩斯密码、文本转语音、文本对比、Markdown表格生成器、电子名片生成器、英文语法检查、占位文本生成' },
-  { id: 'dev', icon: '💻', name: '开发者工具', desc: 'JSON格式化、JSON/CSV互转、YAML/JSON互转、二维码生成、二维码美化、条形码生成、Favicon图标生成、正则测试、Markdown、IP查询、子网计算、思维导图、图表生成、代码图片生成、表格数据转换、SQL格式化、代码压缩器、假数据生成器、Cron表达式生成器、HTTP状态码速查、SEO标题预览、屏幕坏点测试、字体配对、文件类型识别器' },
+  { id: 'dev', icon: '💻', name: '开发者工具', desc: 'JSON格式化、JSON/CSV互转、YAML/JSON互转、HTML/Markdown互转、二维码生成、二维码美化、条形码生成、条形码扫描器、Favicon图标生成、正则测试、Markdown、IP查询、子网计算、思维导图、图表生成、代码图片生成、表格数据转换、SQL格式化、代码压缩器、假数据生成器、Cron表达式生成器、HTTP状态码速查、SEO标题预览、屏幕坏点测试、字体配对、文件类型识别器' },
   { id: 'image', icon: '🖼️', name: '图片处理', desc: '去背景换底色、批量压缩、加水印、长图拼接、格式转换、裁剪、异形裁剪、马赛克打码、双色调滤镜、图片转字符画、照片卡通化、OCR、印章制作、九宫格切图、文字转手写体、表情包、社交媒体图片尺寸调整、艺术效果、像素画、设备样机、图片高清放大、图片转线稿、渐变背景、文字特效、拼贴画、图片相框、颜色盲区模拟、海报设计器、老照片修复上色、图片EXIF信息、占位图生成器、文档透视矫正、图片对比滑块' },
   { id: 'document', icon: '📄', name: '文档转换', desc: '图片转PDF、PDF转图片、Word解析、Excel转PDF、PDF合并、PDF拆分、PDF加密解密、PDF加水印、简历生成、电子签名、表单制作、邮件签名、发票/收据生成器、证书生成器' },
   { id: 'convert', icon: '🔄', name: '转换工具', desc: '单位换算、进制转换、函数绘图' },
@@ -25104,4 +25174,164 @@ function itmRenderDisplay(phase, time, round, pct, color) {
   if (t) { t.textContent = time; t.style.color = color; }
   if (r) r.textContent = round;
   if (bar) bar.style.width = Math.max(0, Math.min(100, pct)) + '%';
+}// ============================================================
+// HTML/Markdown 互转 处理函数 (hm*)
+// ============================================================
+var hmResult = '';
+
+function hmConvert() {
+  const dir = document.getElementById('hm-dir').value;
+  const input = document.getElementById('hm-input').value;
+  const out = document.getElementById('hm-output');
+  if (!input.trim()) { showToast('❌ 请输入内容'); return; }
+  try {
+    hmResult = dir === 'html2md' ? hmHtmlToMd(input) : hmMdToHtml(input);
+    out.value = hmResult;
+    showToast('✅ 转换完成');
+  } catch (e) {
+    showToast('❌ 转换失败: ' + e.message);
+  }
+}
+
+function hmHtmlToMd(html) {
+  // 轻量 HTML → Markdown：处理常见标签
+  let s = html
+    .replace(/<h1[^>]*>([\s\S]*?)<\/h1>/gi, '\n# $1\n')
+    .replace(/<h2[^>]*>([\s\S]*?)<\/h2>/gi, '\n## $1\n')
+    .replace(/<h3[^>]*>([\s\S]*?)<\/h3>/gi, '\n### $1\n')
+    .replace(/<h4[^>]*>([\s\S]*?)<\/h4>/gi, '\n#### $1\n')
+    .replace(/<strong>([\s\S]*?)<\/strong>/gi, '**$1**')
+    .replace(/<b>([\s\S]*?)<\/b>/gi, '**$1**')
+    .replace(/<em>([\s\S]*?)<\/em>/gi, '*$1*')
+    .replace(/<i>([\s\S]*?)<\/i>/gi, '*$1*')
+    .replace(/<code>([\s\S]*?)<\/code>/gi, '`$1`')
+    .replace(/<a[^>]*href="([^"]*)"[^>]*>([\s\S]*?)<\/a>/gi, '[$2]($1)')
+    .replace(/<img[^>]*src="([^"]*)"[^>]*alt="([^"]*)"[^>]*>/gi, '![$2]($1)')
+    .replace(/<ul[^>]*>([\s\S]*?)<\/ul>/gi, function (m, inner) {
+      return inner.replace(/<li[^>]*>([\s\S]*?)<\/li>/gi, '- $1\n');
+    })
+    .replace(/<ol[^>]*>([\s\S]*?)<\/ol>/gi, function (m, inner) {
+      let i = 1;
+      return inner.replace(/<li[^>]*>([\s\S]*?)<\/li>/gi, function (mm, li) { return (i++) + '. ' + li + '\n'; });
+    })
+    .replace(/<br\s*\/?>/gi, '\n')
+    .replace(/<p[^>]*>([\s\S]*?)<\/p>/gi, '$1\n\n')
+    .replace(/<pre[^>]*>([\s\S]*?)<\/pre>/gi, '\n```\n$1\n```\n')
+    .replace(/<\/?(?:div|span|section|article|header|footer|main|aside)[^>]*>/gi, '\n')
+    .replace(/\n{3,}/g, '\n\n')
+    .trim();
+  return s;
+}
+
+function hmMdToHtml(md) {
+  // 轻量 Markdown → HTML
+  const escaped = md.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  let s = escaped
+    .replace(/^###### (.*)$/gm, '<h6>$1</h6>')
+    .replace(/^##### (.*)$/gm, '<h5>$1</h5>')
+    .replace(/^#### (.*)$/gm, '<h4>$1</h4>')
+    .replace(/^### (.*)$/gm, '<h3>$1</h3>')
+    .replace(/^## (.*)$/gm, '<h2>$1</h2>')
+    .replace(/^# (.*)$/gm, '<h1>$1</h1>')
+    .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+    .replace(/\*([^*]+)\*/g, '<em>$1</em>')
+    .replace(/`([^`]+)`/g, '<code>$1</code>')
+    .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>')
+    .replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img src="$2" alt="$1">');
+  // 列表
+  const lines = s.split('\n');
+  let inList = false, inCode = false, codeBuf = [], outLines = [];
+  lines.forEach(function (line) {
+    const codeMatch = line.match(/^```$/);
+    if (codeMatch) {
+      if (inCode) { outLines.push('<pre><code>' + codeBuf.join('\n') + '</code></pre>'); codeBuf = []; inCode = false; }
+      else inCode = true;
+      return;
+    }
+    if (inCode) { codeBuf.push(line); return; }
+    if (/^[-*] /.test(line)) {
+      if (!inList) { outLines.push('<ul>'); inList = true; }
+      outLines.push('<li>' + line.replace(/^[-*] /, '') + '</li>');
+      return;
+    }
+    if (/^\d+\. /.test(line)) {
+      if (!inList) { outLines.push('<ol>'); inList = true; }
+      outLines.push('<li>' + line.replace(/^\d+\. /, '') + '</li>');
+      return;
+    }
+    if (inList) { outLines.push('</ul></ol>'.replace('</ul></ol>', '</ul>')); inList = false; }
+    if (line.trim() === '') { outLines.push(''); }
+    else outLines.push('<p>' + line + '</p>');
+  });
+  if (inCode) outLines.push('<pre><code>' + codeBuf.join('\n') + '</code></pre>');
+  if (inList) outLines.push('</ul>');
+  s = outLines.join('\n').replace(/\n{3,}/g, '\n\n');
+  return s.trim();
+}
+
+function hmCopy() {
+  if (!hmResult) { showToast('❌ 没有可复制的结果'); return; }
+  navigator.clipboard.writeText(hmResult).then(function () { showToast('✅ 已复制'); }).catch(function () { showToast('❌ 复制失败'); });
+}
+
+// ============================================================
+// 条形码扫描器 处理函数 (bcs*)
+// ============================================================
+var bcsStream = null;
+var bcsTimer = null;
+var bcsRunning = false;
+
+function bcsStart() {
+  if (bcsRunning) return;
+  if (!('BarcodeDetector' in window)) {
+    showToast('⚠️ 当前浏览器不支持 BarcodeDetector，请用 Chrome/Edge 或改用二维码识别器');
+    return;
+  }
+  const wrap = document.getElementById('bcs-video-wrap');
+  const video = document.getElementById('bcs-video');
+  const line = document.getElementById('bcs-scanline');
+  navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } }).then(function (stream) {
+    bcsStream = stream;
+    video.srcObject = stream;
+    wrap.style.display = 'block';
+    line.style.display = 'block';
+    bcsRunning = true;
+    document.getElementById('bcs-start').textContent = '🔄 扫描中...';
+    const detector = new BarcodeDetector({ formats: ['qr_code', 'ean_13', 'ean_8', 'code_128', 'upc_a', 'code_39', 'isbn_13'] });
+    bcsTimer = setInterval(function () {
+      detector.detect(video).then(function (codes) {
+        if (codes.length > 0) {
+          const code = codes[0];
+          document.getElementById('bcs-result').innerHTML =
+            '<div style="font-weight:700;color:#16a34a;font-size:15px;">✅ 识别成功</div>' +
+            '<div style="margin-top:8px;font-size:14px;">格式: <strong>' + (code.format || 'unknown') + '</strong></div>' +
+            '<div style="margin-top:6px;font-size:18px;word-break:break-all;">' + code.rawValue + '</div>' +
+            '<button class="btn btn-sm" style="margin-top:12px;" onclick="bcsCopy(\'' + code.rawValue.replace(/'/g, "\\'") + '\')">📋 复制结果</button>';
+          bcsStop();
+          showToast('✅ 识别成功');
+        }
+      }).catch(function () {});
+    }, 300);
+    showToast('📷 正在扫描，请对准条码');
+  }).catch(function (e) {
+    showToast('❌ 无法访问摄像头: ' + e.message);
+  });
+}
+
+function bcsCopy(v) {
+  navigator.clipboard.writeText(v).then(function () { showToast('✅ 已复制'); }).catch(function () { showToast('❌ 复制失败'); });
+}
+
+function bcsStop() {
+  bcsRunning = false;
+  if (bcsTimer) { clearInterval(bcsTimer); bcsTimer = null; }
+  if (bcsStream) { bcsStream.getTracks().forEach(function (t) { t.stop(); }); bcsStream = null; }
+  const wrap = document.getElementById('bcs-video-wrap');
+  const line = document.getElementById('bcs-scanline');
+  const btn = document.getElementById('bcs-start');
+  if (wrap) wrap.style.display = 'none';
+  if (line) line.style.display = 'none';
+  if (btn) btn.textContent = '📷 开始扫描';
+  const video = document.getElementById('bcs-video');
+  if (video) video.srcObject = null;
 }
