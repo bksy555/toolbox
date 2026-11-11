@@ -10302,6 +10302,92 @@ greet('世界');</textarea>
   handler: () => { }
 },
 
+// ============================================================
+// GIF提取帧工具 gif-extract (gex*)
+// ============================================================
+{
+  id: 'gif-extract',
+  cat: 'media',
+  icon: '🎞️',
+  name: 'GIF提取帧',
+  desc: '把GIF动图拆分成单张图片，导出PNG/JPG帧图，做素材/缩略图/逐帧动画学习',
+  html: `
+    <div class="tool-card">
+      <div class="input-group">
+        <label>选择GIF文件</label>
+        <input type="file" id="gex-file" accept=".gif,image/gif" style="display:none;" onchange="gexLoadFile(this)">
+        <button class="btn btn-secondary" style="margin-top:6px;" onclick="document.getElementById('gex-file').click()">🎞️ 选择GIF</button>
+        <span id="gex-filename" style="font-size:12px;color:var(--text-light);margin-left:10px;"></span>
+      </div>
+      <div class="row-3" style="margin-top:12px;">
+        <div class="input-group">
+          <label>采样间隔（帧）</label>
+          <input type="number" id="gex-step" value="1" min="1" max="20" style="width:100%;">
+        </div>
+        <div class="input-group">
+          <label>输出格式</label>
+          <select id="gex-fmt">
+            <option value="image/png" selected>PNG (无损)</option>
+            <option value="image/jpeg">JPG (小体积)</option>
+          </select>
+        </div>
+        <div class="input-group">
+          <label>&nbsp;</label>
+          <button class="btn btn-secondary" style="width:100%;" onclick="gexDownloadSelected()">📦 下载当前帧</button>
+        </div>
+      </div>
+      <div id="gex-progress" style="margin-top:12px;font-size:13px;color:var(--text-light);"></div>
+      <div id="gex-grid" style="margin-top:12px;display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px;"></div>
+      <div id="gex-tip" style="margin-top:15px;font-size:13px;color:var(--text-light);background:var(--bg-light,#f8fafc);padding:12px;border-radius:8px;">
+        💡 在浏览器本地解析GIF并逐帧导出，不会上传；点击任意帧可下载单张，采样间隔越大导出的帧越少
+      </div>
+    </div>
+  `,
+  handler: () => { }
+},
+
+// ============================================================
+// 音频响度计工具 audio-level-meter (alm*)
+// ============================================================
+{
+  id: 'audio-level-meter',
+  cat: 'media',
+  icon: '🔊',
+  name: '音频响度计',
+  desc: '实时显示麦克风/音频响度(dBFS)，检查音量是否爆音或过小，录音直播必备',
+  html: `
+    <div class="tool-card">
+      <div class="input-group">
+        <label>音频来源</label>
+        <select id="alm-source">
+          <option value="mic" selected>🎙️ 麦克风（实时）</option>
+          <option value="file">📁 本地音频文件</option>
+        </select>
+      </div>
+      <div id="alm-file-wrap" style="display:none;margin-top:10px;">
+        <input type="file" id="alm-file" accept="audio/*" style="display:none;" onchange="almLoadFile(this)">
+        <button class="btn btn-secondary" onclick="document.getElementById('alm-file').click()">🎵 选择音频</button>
+        <span id="alm-filename" style="font-size:12px;color:var(--text-light);margin-left:10px;"></span>
+      </div>
+      <div id="alm-display" style="margin:20px auto;text-align:center;">
+        <canvas id="alm-canvas" style="width:100%;height:120px;display:block;"></canvas>
+        <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--text-light);margin-top:4px;">
+          <span>-60 dB</span><span>-40</span><span>-20</span><span>-10</span><span>-6</span><span>0 dB</span>
+        </div>
+      </div>
+      <div style="text-align:center;font-size:24px;font-weight:700;color:var(--text-light);" id="alm-value">--</div>
+      <div class="btn-group" style="margin-top:15px;">
+        <button class="btn btn-primary" id="alm-start" onclick="almStart()">▶️ 开始监听</button>
+        <button class="btn btn-secondary" onclick="almStop()">⏹️ 停止</button>
+      </div>
+      <div id="alm-tip" style="margin-top:15px;font-size:13px;color:var(--text-light);background:var(--bg-light,#f8fafc);padding:12px;border-radius:8px;">
+        💡 实时显示当前响度（dBFS），绿色为安全区、黄色偏大、红色接近爆音；适合录音/直播/播客前检查音量
+      </div>
+    </div>
+  `,
+  handler: () => { }
+},
+
 ];
 
 // ============================================================
@@ -11949,7 +12035,7 @@ const CATEGORIES = [
   { id: 'security', icon: '🔒', name: '安全工具', desc: '密码生成、Hash计算、随机数、浏览器指纹检测、身份证号码校验、凯撒密码' },
   { id: 'time', icon: '⏱️', name: '时间工具', desc: '时间戳转换、日期计算、世界时区转换、番茄钟专注计时、待办清单、每日计划' },
   { id: 'color', icon: '🎨', name: '颜色工具', desc: 'HEX/RGB/HSL颜色转换、颜色对比度检查、CSS渐变生成器、配色方案生成器' },
-  { id: 'media', icon: '🎬', name: '媒体工具', desc: '抖音/TikTok去水印下载、视频转GIF、GIF转视频、多图合成GIF、GIF压缩器、视频加水印、视频变速、音频频谱可视化、乐器调音器、在线录音、录音转文字、音频波形可视化、白噪音发生器、音频变速变调、音频剪辑拼接、音频格式转换、音频均衡器、BPM节拍检测、视频压缩、视频提取音频、节拍器、视频抽帧器、视频缩略图制作器、在线便签、人声分离/伴奏提取' },
+  { id: 'media', icon: '🎬', name: '媒体工具', desc: '抖音/TikTok去水印下载、视频转GIF、GIF转视频、多图合成GIF、GIF压缩器、GIF提取帧、视频加水印、视频变速、音频频谱可视化、音频响度计、乐器调音器、在线录音、录音转文字、音频波形可视化、白噪音发生器、音频变速变调、音频剪辑拼接、音频格式转换、音频均衡器、BPM节拍检测、视频压缩、视频提取音频、节拍器、视频抽帧器、视频缩略图制作器、在线便签、人声分离/伴奏提取' },
   { id: 'ai', icon: '🤖', name: 'AI工具', desc: 'AI聊天、AI Agent安装、免费AI工具推荐' },
   { id: 'voice', icon: '🗣️', name: '群众心声', desc: '提交工具建议、投票排行榜、前3名自动实现' },
   { id: 'lottery', icon: '🎰', name: '彩票工具', desc: '双色球、大乐透、福彩3D、快乐8、排列三…在线过滤缩水、选号、计算器' },
@@ -25334,4 +25420,173 @@ function bcsStop() {
   if (btn) btn.textContent = '📷 开始扫描';
   const video = document.getElementById('bcs-video');
   if (video) video.srcObject = null;
+}// ============================================================
+// GIF提取帧 处理函数 (gex*)
+// ============================================================
+var gexFrames = [];
+var gexRawFile = null;
+
+function gexLoadFile(input) {
+  const file = input.files[0];
+  if (!file) return;
+  document.getElementById('gex-filename').textContent = file.name;
+  document.getElementById('gex-grid').innerHTML = '';
+  document.getElementById('gex-progress').textContent = '';
+  gexRawFile = file;
+  gexFrames = [];
+  const img = new Image();
+  img.onload = function () {
+    // 用 canvas 逐帧捕获 GIF 动画（浏览器 img 动画推进）
+    const step = Math.max(1, parseInt(document.getElementById('gex-step').value) || 1);
+    const fmt = document.getElementById('gex-fmt').value;
+    const w = img.width, h = img.height;
+    const canvas = document.createElement('canvas');
+    canvas.width = w; canvas.height = h;
+    const ctx = canvas.getContext('2d');
+    const grid = document.getElementById('gex-grid');
+    const progress = document.getElementById('gex-progress');
+    const frames = [];
+    let capCount = 0;
+
+    function capture() {
+      ctx.fillStyle = '#fff';
+      ctx.fillRect(0, 0, w, h);
+      ctx.drawImage(img, 0, 0, w, h);
+      const dataUrl = canvas.toDataURL(fmt, 0.92);
+      const imgEl = document.createElement('img');
+      imgEl.src = dataUrl;
+      imgEl.style.cssText = 'width:100%;border-radius:8px;border:1px solid var(--border,#e2e8f0);cursor:pointer;';
+      imgEl.title = '帧 ' + (frames.length + 1);
+      imgEl.onclick = function () {
+        const a = document.createElement('a');
+        a.download = 'frame_' + String(frames.length + 1).padStart(3, '0') + (fmt === 'image/png' ? '.png' : '.jpg');
+        a.href = dataUrl;
+        a.click();
+      };
+      grid.appendChild(imgEl);
+      frames.push(dataUrl);
+      progress.textContent = '已提取 ' + frames.length + ' 帧（点击帧可下载）';
+    }
+
+    // 定时采样（GIF 动画约 10-15fps，步进采样）
+    const interval = setInterval(function () {
+      capCount++;
+      if (capCount % step === 0) capture();
+      if (capCount > 60 * 5) { clearInterval(interval); progress.textContent = '完成，共提取 ' + frames.length + ' 帧'; }
+    }, 66); // ~15fps
+
+    // 5 秒后停止（多数 GIF 会在 5s 内循环一遍）
+    setTimeout(function () {
+      clearInterval(interval);
+      gexFrames = frames;
+      progress.textContent = '完成，共提取 ' + frames.length + ' 帧（点击帧图可下载单张）';
+    }, 5000);
+  };
+  img.src = URL.createObjectURL(file);
 }
+
+function gexDownloadSelected() {
+  const grid = document.getElementById('gex-grid');
+  showToast('💡 直接点击上方任意帧图片即可下载该帧');
+}
+
+// ============================================================
+// 音频响度计 处理函数 (alm*)
+// ============================================================
+var almRunning = false;
+var almStream = null;
+var almCtx = null;
+var almAnalyser = null;
+var almRaf = null;
+var almAudioEl = null;
+var almFileUrl = null;
+
+function almLoadFile(input) {
+  const file = input.files[0];
+  if (!file) return;
+  document.getElementById('alm-filename').textContent = file.name;
+  if (almFileUrl) URL.revokeObjectURL(almFileUrl);
+  almFileUrl = URL.createObjectURL(file);
+  almStop();
+}
+
+async function almStart() {
+  const source = document.getElementById('alm-source').value;
+  if (almRunning) almStop();
+  try {
+    almCtx = new (window.AudioContext || window.webkitAudioContext)();
+    almAnalyser = almCtx.createAnalyser();
+    almAnalyser.fftSize = 2048;
+    if (source === 'mic') {
+      almStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      const src = almCtx.createMediaStreamSource(almStream);
+      src.connect(almAnalyser);
+    } else {
+      if (!almFileUrl) { showToast('❌ 请先选择音频文件'); return; }
+      almAudioEl = new Audio(almFileUrl);
+      const src = almCtx.createMediaElementSource(almAudioEl);
+      src.connect(almAnalyser);
+      almAudioEl.play();
+    }
+    almRunning = true;
+    document.getElementById('alm-start').textContent = '⏹️ 停止监听';
+    almDraw();
+  } catch (e) {
+    console.error(e);
+    showToast('❌ 无法启动（请检查麦克风权限）');
+    almStop();
+  }
+}
+
+function almStop() {
+  almRunning = false;
+  if (almRaf) { cancelAnimationFrame(almRaf); almRaf = null; }
+  if (almAudioEl) { almAudioEl.pause(); almAudioEl = null; }
+  if (almStream) { almStream.getTracks().forEach(function (t) { t.stop(); }); almStream = null; }
+  if (almCtx) { try { almCtx.close(); } catch (e) {} almCtx = null; }
+  almAnalyser = null;
+  const btn = document.getElementById('alm-start');
+  if (btn) btn.textContent = '▶️ 开始监听';
+  const val = document.getElementById('alm-value');
+  if (val) val.textContent = '--';
+}
+
+function almDraw() {
+  if (!almRunning || !almAnalyser) return;
+  const canvas = document.getElementById('alm-canvas');
+  if (canvas) {
+    canvas.width = canvas.clientWidth || 700;
+    canvas.height = canvas.clientHeight || 120;
+    const ctx = canvas.getContext('2d');
+    const data = new Uint8Array(almAnalyser.fftSize);
+    almAnalyser.getByteTimeDomainData(data);
+    let sum = 0;
+    for (let i = 0; i < data.length; i++) sum += (data[i] - 128) * (data[i] - 128);
+    const rms = Math.sqrt(sum / data.length);
+    // dBFS ≈ 20*log10(rms/128)
+    let db = -96;
+    if (rms > 0.5) db = 20 * Math.log10(rms / 128);
+    document.getElementById('alm-value').textContent = db.toFixed(1) + ' dBFS';
+
+    ctx.fillStyle = '#0b0f1a';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    // 分段彩条：-60~0 dB 映射到 0~100%
+    const pct = Math.max(0, Math.min(1, (db + 60) / 60));
+    const x = pct * canvas.width;
+    // 背景刻度
+    ctx.fillStyle = '#1e293b';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = '#16a34a'; ctx.fillRect(0, 0, x * 0.7, canvas.height);
+    ctx.fillStyle = '#eab308'; ctx.fillRect(x * 0.7, 0, x * 0.15, canvas.height);
+    ctx.fillStyle = '#ef4444'; ctx.fillRect(x * 0.85, 0, x * 0.15, canvas.height);
+  }
+  almRaf = requestAnimationFrame(almDraw);
+}
+
+// 来源切换停止
+document.addEventListener('change', function (e) {
+  if (e.target && e.target.id === 'alm-source') {
+    document.getElementById('alm-file-wrap').style.display = e.target.value === 'file' ? 'block' : 'none';
+    almStop();
+  }
+});
