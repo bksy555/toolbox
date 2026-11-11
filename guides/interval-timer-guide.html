@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HIIT间隔计时器：3步设置动作/休息循环训练计时（Tabata/健身热身） - ToolBox 工具箱指南</title>
+  <meta name="description" content="图文详解HIIT间隔计时器用法：设置动作时间、休息时间、轮数和准备倒计时，循环训练自动切换，支持提示音。健身、Tabata、平板支撑训练必备。">
+  <meta name="keywords" content="HIIT计时器,间隔计时器,训练计时,Tabata,健身计时器,循环计时,动作休息">
+  <meta name="author" content="ToolBox">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://toolai.ccwu.cc/guides/interval-timer-guide.html">
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    :root {
+      --bg: #0f0f1a;
+      --bg-card: #1a1a2e;
+      --text: #e0e0e0;
+      --text-light: #8888aa;
+      --border: #2a2a44;
+      --accent: #6366f1;
+      --accent-hover: #4f46e5;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Noto Sans SC', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      margin: 0;
+      line-height: 1.8;
+    }
+    .guide-header {
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+      border-bottom: 1px solid var(--border);
+      padding: 20px 0;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(10px);
+    }
+    .guide-header-inner {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 0 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .guide-header a { color: var(--accent); text-decoration: none; font-size: 14px; }
+    .guide-header a:hover { color: var(--accent-hover); }
+    .guide-container { max-width: 860px; margin: 0 auto; padding: 40px 20px 80px; }
+    .guide-breadcrumb { font-size: 13px; color: var(--text-light); margin-bottom: 20px; }
+    .guide-breadcrumb a { color: var(--accent); text-decoration: none; }
+    .guide-breadcrumb a:hover { text-decoration: underline; }
+    h1 {
+      font-size: 32px; font-weight: 700; margin: 0 0 10px; line-height: 1.3;
+      background: linear-gradient(135deg, #e0e0e0, #a78bfa);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .guide-meta { font-size: 13px; color: var(--text-light); margin-bottom: 30px; display: flex; gap: 16px; flex-wrap: wrap; }
+    .guide-meta span { display: flex; align-items: center; gap: 4px; }
+    h2 { font-size: 22px; font-weight: 600; margin: 40px 0 16px; padding-bottom: 8px; border-bottom: 1px solid var(--border); color: #e0e0e0; }
+    h3 { font-size: 18px; font-weight: 600; margin: 28px 0 12px; color: #ccc; }
+    p { margin: 0 0 16px; color: #ccc; }
+    .guide-step { background: var(--bg-card); border: 1px solid var(--border); border-radius: 14px; padding: 24px; margin: 20px 0; }
+    .guide-step-number {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 32px; height: 32px; border-radius: 50%;
+      background: linear-gradient(135deg, #6366f1, #8b5cf6); color: #fff;
+      font-weight: 700; font-size: 15px; margin-right: 10px; vertical-align: middle;
+    }
+    .guide-step h3 { display: inline; font-size: 19px; color: #e0e0e0; }
+    .guide-step img { width: 100%; border-radius: 10px; margin-top: 16px; border: 1px solid var(--border); }
+    .guide-tip { background: rgba(99,102,241,0.08); border-left: 3px solid var(--accent); border-radius: 8px; padding: 14px 18px; margin: 16px 0; font-size: 14px; color: #bbb; }
+    .guide-scenarios { list-style: none; padding: 0; }
+    .guide-scenarios li { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 14px 18px; margin: 10px 0; font-size: 15px; }
+    .guide-scenarios li strong { color: #a78bfa; }
+    .guide-faq details { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 14px 18px; margin: 10px 0; }
+    .guide-faq summary { cursor: pointer; font-weight: 600; color: #e0e0e0; font-size: 15px; }
+    .guide-faq details p { margin: 12px 0 4px; font-size: 14px; }
+    .guide-cta { background: linear-gradient(135deg, #1a1a2e, #16213e); border: 1px solid var(--border); border-radius: 14px; padding: 36px 24px; text-align: center; margin: 40px 0 0; }
+    .guide-cta h2 { border: none; margin-top: 0; }
+    .guide-cta p { font-size: 15px; color: #999; margin-bottom: 20px; }
+    .btn { display: inline-block; background: linear-gradient(135deg, #6366f1, #8b5cf6); color: #fff !important; padding: 12px 32px; border-radius: 30px; text-decoration: none; font-weight: 600; font-size: 15px; transition: transform .15s, box-shadow .15s; }
+    .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(99,102,241,0.3); }
+    @media (max-width: 640px) {
+      h1 { font-size: 24px; }
+      .guide-container { padding: 24px 16px 60px; }
+      .guide-step { padding: 18px 14px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="guide-header">
+    <div class="guide-header-inner">
+      <a href="../index.html">← ToolBox 工具箱</a>
+      <a href="https://toolai.ccwu.cc/">返回首页</a>
+    </div>
+  </div>
+
+  <div class="guide-container">
+    <div class="guide-breadcrumb">
+      <a href="../index.html">首页</a> › <a href="../index.html#guides">工具箱指南</a> › HIIT间隔计时器
+    </div>
+
+    <h1>HIIT间隔计时器：3步设置动作/休息循环训练计时</h1>
+    <div class="guide-meta">
+      <span>⏱️ 阅读约 3 分钟</span>
+      <span>📅 2026-11-11</span>
+      <span>⏱️ 趣味工具</span>
+    </div>
+
+    <p>做 HIIT、Tabata、平板支撑或循环训练时，最难的不是动作本身，而是<strong>记住什么时候该动、什么时候该停</strong>。<strong>HIIT间隔计时器</strong> 帮你把「动作 → 休息」的循环自动跑起来，到点自动切换并发出提示音，练完都不用盯着秒表。</p>
+
+    <img src="images/itm-cover.png" alt="HIIT间隔计时器界面" style="width:100%;border-radius:12px;border:1px solid var(--border);margin:10px 0 20px;">
+
+    <h2>开始使用</h2>
+
+    <div class="guide-step">
+      <span class="guide-step-number">1</span><h3>设置训练参数</h3>
+      <p>打开「趣味工具」分类里的「⏱️ HIIT间隔计时器」。设置<strong>动作时间</strong>（每组训练秒数）、<strong>休息时间</strong>（组间休息秒数，可设 0 表示不休息）、<strong>轮数</strong>（总共循环多少次），以及可选的<strong>准备倒计时</strong>（开始前的缓冲时间）。</p>
+      <img src="images/itm-step1-config.png" alt="设置训练参数">
+      <div class="guide-tip">💡 经典 Tabata 是 20 秒动作 + 10 秒休息 × 8 轮；新手推荐 30 秒动作 + 30 秒休息 × 5 轮起步。</div>
+    </div>
+
+    <div class="guide-step">
+      <span class="guide-step-number">2</span><h3>开始训练并跟随倒计时</h3>
+      <p>点击「▶️ 开始」。先进入准备倒计时，随后进入「动作 💪」阶段，大号数字实时倒计时并显示当前轮数；时间过半后自动切到「休息 😌」（蓝色），进度条同步显示每阶段完成比例。切换时有提示音提醒。</p>
+      <img src="images/itm-step2-run.png" alt="训练倒计时运行中">
+    </div>
+
+    <div class="guide-step">
+      <span class="guide-step-number">3</span><h3>暂停/重置，循环到结束</h3>
+      <p>训练中可随时点击「⏸️ 暂停」休息一下，「🔄 重置」重新开始。所有轮数完成后会播放完成提示并显示「🎉 完成！」。全程纯本地运行，不需要联网。</p>
+    </div>
+
+    <h2>使用场景</h2>
+    <ul class="guide-scenarios">
+      <li><strong>🏋️ HIIT 训练</strong> — 30s 冲刺 + 30s 慢走循环，燃脂高效又省时。</li>
+      <li><strong>💥 Tabata 高效燃脂</strong> — 20s 全力 + 10s 休息 × 8 轮，经典 4 分钟挑战。</li>
+      <li><strong>🧘 平板支撑</strong> — 撑 30s 休息 15s，循序渐进提升核心耐力。</li>
+      <li><strong>🏃 间歇跑</strong> — 快跑/慢走交替，手机放桌上就能当教练。</li>
+      <li><strong>⏲️ 任何循环练习</strong> — 俯卧撑、深蹲、拉伸组间休息计时，一器多用。</li>
+    </ul>
+
+    <h2>常见问题</h2>
+    <div class="guide-faq">
+      <details>
+        <summary>训练中途想加长休息怎么办？</summary>
+        <p>点击「⏸️ 暂停」随时停下，调整上方参数后再点「▶️ 继续」，计时会以新参数继续。</p>
+      </details>
+      <details>
+        <summary>没听到提示音？</summary>
+        <p>请确认设备音量已打开且未静音；浏览器可能需要在开始前完成一次交互（点击按钮）才能播放声音，点击「开始」即满足。</p>
+      </details>
+      <details>
+        <summary>休息时间设为 0 可以吗？</summary>
+        <p>可以。休息为 0 时动作结束后直接进入下一轮，适合连续组（如波比跳连续挑战）场景。</p>
+      </details>
+    </div>
+
+    <div class="guide-cta">
+      <h2>现在就试试HIIT间隔计时器</h2>
+      <p>免费使用 · 无需安装 · 本地运行</p>
+      <a href="https://toolai.ccwu.cc/" class="btn">⏱️ 打开HIIT间隔计时器</a>
+    </div>
+  </div>
+</body>
+</html>
