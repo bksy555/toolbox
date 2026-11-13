@@ -10388,6 +10388,97 @@ greet('世界');</textarea>
   handler: () => { }
 },
 
+// ============================================================
+// 批量查找替换工具 text-replace (trp*)
+// ============================================================
+{
+  id: 'text-replace',
+  cat: 'text',
+  icon: '🔁',
+  name: '批量查找替换',
+  desc: '多组查找替换同时执行，支持正则、大小写选项，批量文本处理必备',
+  html: `
+    <div class="tool-card">
+      <div class="input-group">
+        <label>原文</label>
+        <textarea id="trp-input" placeholder="在此输入或粘贴文本..." style="height:160px;"></textarea>
+      </div>
+      <div class="input-group" style="margin-top:12px;">
+        <label>替换规则（每行一组：查找 → 替换）</label>
+        <textarea id="trp-rules" placeholder="旧文本 → 新文本&#10;foo → bar" style="height:100px;font-family:monospace;font-size:13px;"></textarea>
+      </div>
+      <div class="row-2" style="margin-top:10px;">
+        <label style="display:flex;align-items:center;gap:6px;font-size:13px;"><input type="checkbox" id="trp-regex"> 使用正则</label>
+        <label style="display:flex;align-items:center;gap:6px;font-size:13px;"><input type="checkbox" id="trp-ignorecase"> 忽略大小写</label>
+      </div>
+      <div class="btn-group" style="margin-top:12px;">
+        <button class="btn btn-primary" onclick="trpRun()">🔁 执行替换</button>
+        <button class="btn btn-secondary" onclick="trpCopy()">📋 复制结果</button>
+      </div>
+      <div class="input-group" style="margin-top:12px;">
+        <label>结果</label>
+        <textarea id="trp-output" readonly placeholder="替换结果将显示在这里" style="height:160px;"></textarea>
+      </div>
+      <div id="trp-tip" style="margin-top:15px;font-size:13px;color:var(--text-light);background:var(--bg-light,#f8fafc);padding:12px;border-radius:8px;">
+        💡 支持多组规则按顺序执行；勾选"使用正则"时查找为正则表达式；勾选"忽略大小写"时按不区分大小写匹配
+      </div>
+    </div>
+  `,
+  handler: () => { }
+},
+
+// ============================================================
+// 首字母缩写生成器工具 acronym-generator (acr*)
+// ============================================================
+{
+  id: 'acronym-generator',
+  cat: 'text',
+  icon: '🔤',
+  name: '首字母缩写生成器',
+  desc: '从英文短语生成首字母缩写，支持全部大写/点号分隔，命名起名必备',
+  html: `
+    <div class="tool-card">
+      <div class="input-group">
+        <label>输入英文短语</label>
+        <textarea id="acr-input" placeholder="例如: World Health Organization&#10;或: as soon as possible" style="height:100px;"></textarea>
+      </div>
+      <div class="row-3" style="margin-top:12px;">
+        <div class="input-group">
+          <label>字母大小写</label>
+          <select id="acr-case">
+            <option value="upper" selected>全部大写</option>
+            <option value="lower">全部小写</option>
+            <option value="title">首字母大写</option>
+          </select>
+        </div>
+        <div class="input-group">
+          <label>分隔方式</label>
+          <select id="acr-sep">
+            <option value="none" selected>无分隔 (WHO)</option>
+            <option value="dot">点号 (W.H.O.)</option>
+            <option value="space">空格 (W H O)</option>
+          </select>
+        </div>
+        <div class="input-group">
+          <label>&nbsp;</label>
+          <button class="btn btn-secondary" style="width:100%;" onclick="acrCopy()">📋 复制</button>
+        </div>
+      </div>
+      <div class="input-group" style="margin-top:12px;">
+        <label>生成结果</label>
+        <div id="acr-result" style="border:1px solid var(--border,#e2e8f0);border-radius:10px;padding:16px;min-height:50px;font-size:20px;font-weight:700;letter-spacing:2px;"></div>
+      </div>
+      <div class="btn-group" style="margin-top:12px;">
+        <button class="btn btn-primary" onclick="acrGenerate()">🔤 生成缩写</button>
+      </div>
+      <div id="acr-tip" style="margin-top:15px;font-size:13px;color:var(--text-light);background:var(--bg-light,#f8fafc);padding:12px;border-radius:8px;">
+        💡 支持多行逐行生成；只取每个单词首字母，忽略 and/of/the 等虚词；适合品牌命名、学术缩写、代码变量名构思
+      </div>
+    </div>
+  `,
+  handler: () => { }
+},
+
 ];
 
 // ============================================================
@@ -12027,7 +12118,7 @@ function dpCopyText() {
 // 分类定义
 // ============================================================
 const CATEGORIES = [
-  { id: 'text', icon: '✏️', name: '文本工具', desc: '字数统计、简繁转换、摩斯密码、文本转语音、文本对比、Markdown表格生成器、电子名片生成器、英文语法检查、占位文本生成' },
+  { id: 'text', icon: '✏️', name: '文本工具', desc: '字数统计、简繁转换、摩斯密码、文本转语音、文本对比、批量查找替换、首字母缩写生成器、Markdown表格生成器、电子名片生成器、英文语法检查、占位文本生成' },
   { id: 'dev', icon: '💻', name: '开发者工具', desc: 'JSON格式化、JSON/CSV互转、YAML/JSON互转、HTML/Markdown互转、二维码生成、二维码美化、条形码生成、条形码扫描器、Favicon图标生成、正则测试、Markdown、IP查询、子网计算、思维导图、图表生成、代码图片生成、表格数据转换、SQL格式化、代码压缩器、假数据生成器、Cron表达式生成器、HTTP状态码速查、SEO标题预览、屏幕坏点测试、字体配对、文件类型识别器' },
   { id: 'image', icon: '🖼️', name: '图片处理', desc: '去背景换底色、批量压缩、加水印、长图拼接、格式转换、裁剪、异形裁剪、马赛克打码、双色调滤镜、图片转字符画、照片卡通化、OCR、印章制作、九宫格切图、文字转手写体、表情包、社交媒体图片尺寸调整、艺术效果、像素画、设备样机、图片高清放大、图片转线稿、渐变背景、文字特效、拼贴画、图片相框、颜色盲区模拟、海报设计器、老照片修复上色、图片EXIF信息、占位图生成器、文档透视矫正、图片对比滑块' },
   { id: 'document', icon: '📄', name: '文档转换', desc: '图片转PDF、PDF转图片、Word解析、Excel转PDF、PDF合并、PDF拆分、PDF加密解密、PDF加水印、简历生成、电子签名、表单制作、邮件签名、发票/收据生成器、证书生成器' },
@@ -25589,4 +25680,87 @@ document.addEventListener('change', function (e) {
     document.getElementById('alm-file-wrap').style.display = e.target.value === 'file' ? 'block' : 'none';
     almStop();
   }
-});
+});// ============================================================
+// 批量查找替换 处理函数 (trp*)
+// ============================================================
+function trpRun() {
+  const input = document.getElementById('trp-input').value;
+  const rawRules = document.getElementById('trp-rules').value;
+  const useRegex = document.getElementById('trp-regex').checked;
+  const ignoreCase = document.getElementById('trp-ignorecase').checked;
+  const out = document.getElementById('trp-output');
+  if (!input.trim() || !rawRules.trim()) { showToast('❌ 请输入原文与替换规则'); return; }
+  let result = input;
+  const lines = rawRules.split(/\r?\n/).filter(function (l) { return l.trim() !== ''; });
+  lines.forEach(function (line) {
+    const parts = line.split('→');
+    if (parts.length < 2) return;
+    const find = parts[0].trim();
+    const repl = parts.slice(1).join('→').trim();
+    if (!find) return;
+    if (useRegex) {
+      try {
+        const flags = ignoreCase ? 'gi' : 'g';
+        result = result.replace(new RegExp(find, flags), repl);
+      } catch (e) {
+        showToast('❌ 正则无效: ' + e.message);
+        return;
+      }
+    } else {
+      if (ignoreCase) {
+        const regex = new RegExp(find.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'gi');
+        result = result.replace(regex, repl);
+      } else {
+        result = result.split(find).join(repl);
+      }
+    }
+  });
+  out.value = result;
+  showToast('✅ 替换完成（' + lines.length + ' 条规则）');
+}
+
+function trpCopy() {
+  const out = document.getElementById('trp-output');
+  if (!out.value) { showToast('❌ 没有可复制的结果'); return; }
+  navigator.clipboard.writeText(out.value).then(function () { showToast('✅ 已复制'); }).catch(function () { showToast('❌ 复制失败'); });
+}
+
+// ============================================================
+// 首字母缩写生成器 处理函数 (acr*)
+// ============================================================
+function acrGenerate() {
+  const raw = document.getElementById('acr-input').value;
+  const caseMode = document.getElementById('acr-case').value;
+  const sepMode = document.getElementById('acr-sep').value;
+  const resultEl = document.getElementById('acr-result');
+  if (!raw.trim()) { showToast('❌ 请输入英文短语'); return; }
+  const lines = raw.split(/\r?\n/).filter(function (l) { return l.trim() !== ''; });
+  const stopWords = ['and', 'or', 'of', 'the', 'a', 'an', 'to', 'in', 'for', 'with', 'on', 'at'];
+  const rendered = lines.map(function (line) {
+    const words = line.trim().split(/\s+/);
+    let letters = words.map(function (w) {
+      const clean = w.replace(/[^a-zA-Z]/g, '');
+      if (!clean) return '';
+      const lower = clean.toLowerCase();
+      if (stopWords.indexOf(lower) >= 0) return '';
+      return clean[0];
+    }).filter(function (l) { return l !== ''; }).join('');
+    if (caseMode === 'lower') letters = letters.toLowerCase();
+    else if (caseMode === 'title') letters = letters.charAt(0).toUpperCase() + letters.slice(1).toLowerCase();
+    else letters = letters.toUpperCase();
+    if (sepMode === 'dot') letters = letters.split('').join('.') + '.';
+    else if (sepMode === 'space') letters = letters.split('').join(' ');
+    return letters;
+  });
+  resultEl.innerHTML = rendered.map(function (r) {
+    return '<div style="margin:6px 0;">' + r + '</div>';
+  }).join('');
+  showToast('✅ 缩写已生成');
+}
+
+function acrCopy() {
+  const resultEl = document.getElementById('acr-result');
+  const text = resultEl.innerText.replace(/\n+/g, '\n').trim();
+  if (!text) { showToast('❌ 没有可复制的内容'); return; }
+  navigator.clipboard.writeText(text).then(function () { showToast('✅ 已复制'); }).catch(function () { showToast('❌ 复制失败'); });
+}
