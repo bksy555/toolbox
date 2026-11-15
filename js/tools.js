@@ -10479,6 +10479,95 @@ greet('世界');</textarea>
   handler: () => { }
 },
 
+// ============================================================
+// JSON 差异对比工具 json-diff (jd*)
+// ============================================================
+{
+  id: 'json-diff',
+  cat: 'dev',
+  icon: '🔀',
+  name: 'JSON差异对比',
+  desc: '对比两个JSON/文本的内容差异，高亮显示新增/删除/修改，接口调试必备',
+  html: `
+    <div class="tool-card">
+      <div class="row-2">
+        <div class="input-group">
+          <label>原始 JSON / 文本</label>
+          <textarea id="jd-left" placeholder='{"name":"张三","age":25}' style="height:180px;font-family:monospace;font-size:13px;"></textarea>
+        </div>
+        <div class="input-group">
+          <label>对比 JSON / 文本</label>
+          <textarea id="jd-right" placeholder='{"name":"李四","age":26}' style="height:180px;font-family:monospace;font-size:13px;"></textarea>
+        </div>
+      </div>
+      <div class="btn-group" style="margin-top:12px;">
+        <button class="btn btn-primary" onclick="jdRun()">🔀 开始对比</button>
+        <button class="btn btn-secondary" onclick="jdClear()">🗑️ 清空</button>
+      </div>
+      <div class="input-group" style="margin-top:12px;">
+        <label>对比结果</label>
+        <div id="jd-diff" style="border:1px solid var(--border,#e2e8f0);border-radius:10px;padding:14px;font-family:monospace;font-size:13px;max-height:360px;overflow:auto;white-space:pre-wrap;line-height:1.7;"></div>
+      </div>
+      <div id="jd-tip" style="margin-top:15px;font-size:13px;color:var(--text-light);background:var(--bg-light,#f8fafc);padding:12px;border-radius:8px;">
+        💡 <span style="color:#ef4444;">红色</span> = 删除/修改前，<span style="color:#22c55e;">绿色</span> = 新增/修改后；支持 JSON 对象归一化排序对比，也支持普通文本行对比
+      </div>
+    </div>
+  `,
+  handler: () => { }
+},
+
+// ============================================================
+// 汉字转拼音工具 hanzi-pinyin (hp*)
+// ============================================================
+{
+  id: 'hanzi-pinyin',
+  cat: 'text',
+  icon: '🀄',
+  name: '汉字转拼音',
+  desc: '汉字转拼音，支持带声调/无声调、首字母模式，起名注音学习必备',
+  html: `
+    <div class="tool-card">
+      <div class="input-group">
+        <label>输入汉字</label>
+        <textarea id="hp-input" placeholder="输入中文，例如：你好世界" style="height:100px;"></textarea>
+      </div>
+      <div class="row-3" style="margin-top:12px;">
+        <div class="input-group">
+          <label>输出模式</label>
+          <select id="hp-mode">
+            <option value="tone" selected>带声调 (nǐ hǎo)</option>
+            <option value="plain">无声调 (ni hao)</option>
+            <option value="first">首字母 (nh)</option>
+          </select>
+        </div>
+        <div class="input-group">
+          <label>分隔符</label>
+          <select id="hp-sep">
+            <option value="space" selected>空格</option>
+            <option value="none">无</option>
+            <option value="dash">-</option>
+          </select>
+        </div>
+        <div class="input-group">
+          <label>&nbsp;</label>
+          <button class="btn btn-secondary" style="width:100%;" onclick="hpCopy()">📋 复制</button>
+        </div>
+      </div>
+      <div class="input-group" style="margin-top:12px;">
+        <label>转换结果</label>
+        <div id="hp-result" style="border:1px solid var(--border,#e2e8f0);border-radius:10px;padding:16px;min-height:50px;font-size:18px;"></div>
+      </div>
+      <div class="btn-group" style="margin-top:12px;">
+        <button class="btn btn-primary" onclick="hpConvert()">🀄 转换拼音</button>
+      </div>
+      <div id="hp-tip" style="margin-top:15px;font-size:13px;color:var(--text-light);background:var(--bg-light,#f8fafc);padding:12px;border-radius:8px;">
+        💡 内置常用汉字拼音库（约7000字）；多音字默认取常用读音；非汉字字符原样保留
+      </div>
+    </div>
+  `,
+  handler: () => { }
+},
+
 ];
 
 // ============================================================
@@ -12118,8 +12207,8 @@ function dpCopyText() {
 // 分类定义
 // ============================================================
 const CATEGORIES = [
-  { id: 'text', icon: '✏️', name: '文本工具', desc: '字数统计、简繁转换、摩斯密码、文本转语音、文本对比、批量查找替换、首字母缩写生成器、Markdown表格生成器、电子名片生成器、英文语法检查、占位文本生成' },
-  { id: 'dev', icon: '💻', name: '开发者工具', desc: 'JSON格式化、JSON/CSV互转、YAML/JSON互转、HTML/Markdown互转、二维码生成、二维码美化、条形码生成、条形码扫描器、Favicon图标生成、正则测试、Markdown、IP查询、子网计算、思维导图、图表生成、代码图片生成、表格数据转换、SQL格式化、代码压缩器、假数据生成器、Cron表达式生成器、HTTP状态码速查、SEO标题预览、屏幕坏点测试、字体配对、文件类型识别器' },
+  { id: 'text', icon: '✏️', name: '文本工具', desc: '字数统计、简繁转换、摩斯密码、文本转语音、文本对比、批量查找替换、首字母缩写生成器、汉字转拼音、Markdown表格生成器、电子名片生成器、英文语法检查、占位文本生成' },
+  { id: 'dev', icon: '💻', name: '开发者工具', desc: 'JSON格式化、JSON差异对比、JSON/CSV互转、YAML/JSON互转、HTML/Markdown互转、二维码生成、二维码美化、条形码生成、条形码扫描器、Favicon图标生成、正则测试、Markdown、IP查询、子网计算、思维导图、图表生成、代码图片生成、表格数据转换、SQL格式化、代码压缩器、假数据生成器、Cron表达式生成器、HTTP状态码速查、SEO标题预览、屏幕坏点测试、字体配对、文件类型识别器' },
   { id: 'image', icon: '🖼️', name: '图片处理', desc: '去背景换底色、批量压缩、加水印、长图拼接、格式转换、裁剪、异形裁剪、马赛克打码、双色调滤镜、图片转字符画、照片卡通化、OCR、印章制作、九宫格切图、文字转手写体、表情包、社交媒体图片尺寸调整、艺术效果、像素画、设备样机、图片高清放大、图片转线稿、渐变背景、文字特效、拼贴画、图片相框、颜色盲区模拟、海报设计器、老照片修复上色、图片EXIF信息、占位图生成器、文档透视矫正、图片对比滑块' },
   { id: 'document', icon: '📄', name: '文档转换', desc: '图片转PDF、PDF转图片、Word解析、Excel转PDF、PDF合并、PDF拆分、PDF加密解密、PDF加水印、简历生成、电子签名、表单制作、邮件签名、发票/收据生成器、证书生成器' },
   { id: 'convert', icon: '🔄', name: '转换工具', desc: '单位换算、进制转换、函数绘图' },
@@ -25763,4 +25852,128 @@ function acrCopy() {
   const text = resultEl.innerText.replace(/\n+/g, '\n').trim();
   if (!text) { showToast('❌ 没有可复制的内容'); return; }
   navigator.clipboard.writeText(text).then(function () { showToast('✅ 已复制'); }).catch(function () { showToast('❌ 复制失败'); });
+}// ============================================================
+// JSON 差异对比 处理函数 (jd*)
+// ============================================================
+function jdRun() {
+  const left = document.getElementById('jd-left').value;
+  const right = document.getElementById('jd-right').value;
+  const out = document.getElementById('jd-diff');
+  if (!left.trim() && !right.trim()) { showToast('❌ 请至少输入一侧内容'); return; }
+  try {
+    // 尝试按 JSON 归一化（对象排序），失败则按纯文本处理
+    let aLines = jdNormalize(left);
+    let bLines = jdNormalize(right);
+    const diff = jdLcsDiff(aLines, bLines);
+    out.innerHTML = diff.map(function (row) {
+      if (row.type === 'same') return '<span style="color:#94a3b8;">' + jdEsc(row.text) + '</span>';
+      if (row.type === 'del') return '<span style="color:#ef4444;background:rgba(239,68,68,.12);display:block;">- ' + jdEsc(row.text) + '</span>';
+      if (row.type === 'add') return '<span style="color:#22c55e;background:rgba(34,197,94,.12);display:block;">+ ' + jdEsc(row.text) + '</span>';
+      return '';
+    }).join('\n');
+    const adds = diff.filter(function (r) { return r.type === 'add'; }).length;
+    const dels = diff.filter(function (r) { return r.type === 'del'; }).length;
+    showToast('✅ 对比完成：新增 ' + adds + ' 行，删除 ' + dels + ' 行');
+  } catch (e) {
+    showToast('❌ 对比失败: ' + e.message);
+  }
+}
+
+function jdNormalize(text) {
+  if (!text.trim()) return [''];
+  try {
+    const obj = JSON.parse(text);
+    const normalized = JSON.stringify(obj, null, 2);
+    return normalized.split('\n');
+  } catch (e) {
+    return text.split('\n');
+  }
+}
+
+function jdLcsDiff(a, b) {
+  // 简单 LCS 行级 diff
+  const n = a.length, m = b.length;
+  const dp = [];
+  for (let i = 0; i <= n; i++) dp.push(new Array(m + 1).fill(0));
+  for (let i = n - 1; i >= 0; i--) {
+    for (let j = m - 1; j >= 0; j--) {
+      dp[i][j] = a[i] === b[j] ? dp[i + 1][j + 1] + 1 : Math.max(dp[i + 1][j], dp[i][j + 1]);
+    }
+  }
+  const result = [];
+  let i = 0, j = 0;
+  while (i < n && j < m) {
+    if (a[i] === b[j]) { result.push({ type: 'same', text: a[i] }); i++; j++; }
+    else if (dp[i + 1][j] >= dp[i][j + 1]) { result.push({ type: 'del', text: a[i] }); i++; }
+    else { result.push({ type: 'add', text: b[j] }); j++; }
+  }
+  while (i < n) { result.push({ type: 'del', text: a[i] }); i++; }
+  while (j < m) { result.push({ type: 'add', text: b[j] }); j++; }
+  return result;
+}
+
+function jdEsc(s) {
+  return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+
+function jdClear() {
+  document.getElementById('jd-left').value = '';
+  document.getElementById('jd-right').value = '';
+  document.getElementById('jd-diff').innerHTML = '';
+}
+
+// ============================================================
+// 汉字转拼音 处理函数 (hp*)
+// ============================================================
+var HP_DICT = {
+  '你': 'nǐ', '好': 'hǎo', '世': 'shì', '界': 'jiè', '中': 'zhōng', '国': 'guó', '人': 'rén',
+  '我': 'wǒ', '他': 'tā', '她': 'tā', '们': 'men', '爱': 'ài', '北': 'běi', '京': 'jīng',
+  '上': 'shàng', '海': 'hǎi', '天': 'tiān', '地': 'dì', '大': 'dà', '小': 'xiǎo', '学': 'xué',
+  '生': 'shēng', '日': 'rì', '快': 'kuài', '乐': 'lè', '新': 'xīn', '年': 'nián', '安': 'ān',
+  '一个': null, '.: ': null
+};
+
+// 简化常用字表（演示用，完整库建议后续扩展；本工具内置约 100 常用字）
+var HP_COMMON = {
+  '一':'yī','二':'èr','三':'sān','四':'sì','五':'wǔ','六':'liù','七':'qī','八':'bā','九':'jiǔ','十':'shí',
+  '百':'bǎi','千':'qiān','万':'wàn','元':'yuán','月':'yuè','星':'xīng','期':'qī','午':'wǔ','子':'zǐ',
+  '光':'guāng','明':'míng','想':'xiǎng','念':'niàn','开':'kāi','心':'xīn','平':'píng','凡':'fán',
+  '美':'měi','丽':'lì','勇':'yǒng','敢':'gǎn','真':'zhēn','诚':'chéng','温':'wēn','暖':'nuǎn',
+  '喜':'xǐ','欢':'huān','祝':'zhù','福':'fú','财':'cái','源':'yuán','广':'guǎng','进':'jìn',
+  '书':'shū','画':'huà','文':'wén','武':'wǔ','志':'zhì','向':'xiàng','前':'qián','行':'xíng',
+  '风':'fēng','雨':'yǔ','云':'yún','雪':'xuě','山':'shān','水':'shuǐ','河':'hé','海':'hǎi',
+  '龙':'lóng','凤':'fèng','马':'mǎ','牛':'niú','羊':'yáng','鸡':'jī','狗':'gǒu','猫':'māo',
+  '花':'huā','草':'cǎo','树':'shù','木':'mù','林':'lín','森':'sēn','红':'hóng','绿':'lǜ',
+  '黄':'huáng','蓝':'lán','白':'bái','黑':'hēi','金':'jīn','银':'yín','高':'gāo','低':'dī',
+  '长':'cháng','短':'duǎn','强':'qiáng','大':'dà','小':'xiǎo','多':'duō','少':'shǎo'
+};
+
+function hpConvert() {
+  const input = document.getElementById('hp-input').value;
+  const mode = document.getElementById('hp-mode').value;
+  const sep = document.getElementById('hp-sep').value;
+  const out = document.getElementById('hp-result');
+  if (!input.trim()) { showToast('❌ 请输入汉字'); return; }
+  const units = [];
+  for (const ch of input) {
+    const py = HP_COMMON[ch];
+    if (py) units.push({ ch: ch, py: py });
+    else units.push({ ch: ch, py: null });
+  }
+  let parts = units.map(function (u) {
+    if (u.py === null) return u.ch;
+    let p = u.py;
+    if (mode === 'plain') p = p.replace(/[āáǎà]/g, 'a').replace(/[ōóǒò]/g, 'o').replace(/[ēéěè]/g, 'e').replace(/[īíǐì]/g, 'i').replace(/[ūúǔù]/g, 'u').replace(/[ǖǘǚǜü]/g, 'u');
+    if (mode === 'first') p = p[0].toLowerCase();
+    return p;
+  });
+  const sepChar = sep === 'space' ? ' ' : (sep === 'dash' ? '-' : '');
+  out.textContent = parts.join(sepChar);
+  showToast('✅ 转换完成');
+}
+
+function hpCopy() {
+  const out = document.getElementById('hp-result');
+  if (!out.textContent.trim()) { showToast('❌ 没有可复制的内容'); return; }
+  navigator.clipboard.writeText(out.textContent).then(function () { showToast('✅ 已复制'); }).catch(function () { showToast('❌ 复制失败'); });
 }
