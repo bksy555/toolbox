@@ -1,6 +1,6 @@
 {
-  "date": "2026-11-14",
-  "updateTime": "2026-11-14T22:30:35+08:00",
+  "date": "2026-11-16",
+  "updateTime": "2026-11-16T08:30:29+08:00",
   "items": [
     {
       "type": "news",
@@ -8,49 +8,8 @@
       "label": "新闻联播",
       "data": {
         "source": "新闻联播",
-        "items": [
-          {
-            "title": "【建设亚太共同体 促进共同繁荣】创新亚太 携手同行",
-            "url": "https://tv.cctv.com/2026/11/14/VIDEr9iRUqmQsYVGZSOmwhyl261114.shtml"
-          },
-          {
-            "title": "持之以恒推进全面从严治党 以高质量党建引领企业高质量发展——习近平总书记对国有企业党的建设工作作出重要指示引发热烈反响",
-            "url": "https://tv.cctv.com/2026/11/14/VIDETtvBvtr7xBhRAcOnEIvM261114.shtml"
-          },
-          {
-            "title": "李强出席泰国总理举行的欢迎仪式",
-            "url": "https://tv.cctv.com/2026/11/14/VIDEPqoogTMlJzD8Rfw0Q85v261114.shtml"
-          },
-          {
-            "title": "李强同泰国总理会谈",
-            "url": "https://tv.cctv.com/2026/11/14/VIDE4eppj53rCpVHRnyAGEVz261114.shtml"
-          },
-          {
-            "title": "李强会见泰国国会主席兼下议长",
-            "url": "https://tv.cctv.com/2026/11/14/VIDEn5k7cXxPCHMagS09nHM2261114.shtml"
-          },
-          {
-            "title": "【学习贯彻党的二十届五中全会精神】中央宣讲团在各地宣讲党的二十届五中全会精神",
-            "url": "https://tv.cctv.com/2026/11/14/VIDEUPCGpbbyFjrrsxj54iMH261114.shtml"
-          },
-          {
-            "title": "政策发力显效 多项先行指标持续改善",
-            "url": "https://tv.cctv.com/2026/11/14/VIDEFr7nHBS7lV99Fc73TUfA261114.shtml"
-          },
-          {
-            "title": "2026年APEC领导人会议周活动逐步升温",
-            "url": "https://tv.cctv.com/2026/11/14/VIDEHUOwxudBSvkIgMHDIeZ1261114.shtml"
-          },
-          {
-            "title": "【数说APEC】APEC进口农产品丰富中国餐桌",
-            "url": "https://tv.cctv.com/2026/11/14/VIDED6QHva3Ibpde0ZjE0SIF261114.shtml"
-          },
-          {
-            "title": "推动亚太共同体建设迈上新台阶——国际人士期待习近平主席出席亚太经合组织第三十三次领导人非正式会议及相关活动",
-            "url": "https://tv.cctv.com/2026/11/14/VIDEtQWeuyfpS6b9yd28A7gQ261114.shtml"
-          }
-        ],
-        "updateTime": "2026-11-14T22:30:35+08:00"
+        "items": [],
+        "updateTime": "2026-11-16T08:30:29+08:00"
       }
     },
     {
@@ -60,7 +19,7 @@
       "data": {
         "source": "AI科技日报",
         "items": [],
-        "updateTime": "2026-11-14T22:30:35+08:00"
+        "updateTime": "2026-11-16T08:30:29+08:00"
       }
     }
   ]
