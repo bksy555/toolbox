@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BPM节拍检测器：3步测出音乐BPM（DJ混音/健身选曲/剪辑配乐） - ToolBox 工具箱指南</title>
+  <meta name="description" content="图文详解BPM节拍检测器的用法：上传音频自动检测BPM和拍速，附风格标签与波形。DJ混音、健身音乐编排、视频剪辑选曲必备，本地处理不上传。">
+  <meta name="keywords" content="BPM检测,节拍检测,测BPM,音乐BPM,拍速检测,DJ工具,健身音乐">
+  <meta name="author" content="ToolBox">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://toolai.ccwu.cc/guides/bpm-detector-guide.html">
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    :root {
+      --bg: #0f0f1a;
+      --bg-card: #1a1a2e;
+      --text: #e0e0e0;
+      --text-light: #8888aa;
+      --border: #2a2a44;
+      --accent: #6366f1;
+      --accent-hover: #4f46e5;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Noto Sans SC', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      margin: 0;
+      line-height: 1.8;
+    }
+    .guide-header {
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+      border-bottom: 1px solid var(--border);
+      padding: 20px 0;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(10px);
+    }
+    .guide-header-inner {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 0 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .guide-header a { color: var(--accent); text-decoration: none; font-size: 14px; }
+    .guide-header a:hover { color: var(--accent-hover); }
+    .guide-container { max-width: 860px; margin: 0 auto; padding: 40px 20px 80px; }
+    .guide-breadcrumb { font-size: 13px; color: var(--text-light); margin-bottom: 20px; }
+    .guide-breadcrumb a { color: var(--accent); text-decoration: none; }
+    .guide-breadcrumb a:hover { text-decoration: underline; }
+    h1 {
+      font-size: 32px; font-weight: 700; margin: 0 0 10px; line-height: 1.3;
+      background: linear-gradient(135deg, #e0e0e0, #a78bfa);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .guide-meta { font-size: 13px; color: var(--text-light); margin-bottom: 30px; display: flex; gap: 16px; flex-wrap: wrap; }
+    .guide-meta span { display: flex; align-items: center; gap: 4px; }
+    h2 { font-size: 22px; font-weight: 600; margin: 40px 0 16px; padding-bottom: 8px; border-bottom: 1px solid var(--border); color: #e0e0e0; }
+    h3 { font-size: 18px; font-weight: 600; margin: 28px 0 12px; color: #ccc; }
+    p { margin: 0 0 16px; color: #ccc; }
+    .guide-step { background: var(--bg-card); border: 1px solid var(--border); border-radius: 14px; padding: 24px; margin: 20px 0; }
+    .guide-step-number {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 32px; height: 32px; border-radius: 50%;
+      background: linear-gradient(135deg, #6366f1, #8b5cf6); color: #fff;
+      font-weight: 700; font-size: 15px; margin-right: 10px; vertical-align: middle;
+    }
+    .guide-step h3 { display: inline; font-size: 19px; color: #e0e0e0; }
+    .guide-step img { width: 100%; border-radius: 10px; margin-top: 16px; border: 1px solid var(--border); }
+    .guide-tip { background: rgba(99,102,241,0.08); border-left: 3px solid var(--accent); border-radius: 8px; padding: 14px 18px; margin: 16px 0; font-size: 14px; color: #bbb; }
+    .guide-scenarios { list-style: none; padding: 0; }
+    .guide-scenarios li { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 14px 18px; margin: 10px 0; font-size: 15px; }
+    .guide-scenarios li strong { color: #a78bfa; }
+    .guide-faq details { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 14px 18px; margin: 10px 0; }
+    .guide-faq summary { cursor: pointer; font-weight: 600; color: #e0e0e0; font-size: 15px; }
+    .guide-faq details p { margin: 12px 0 4px; font-size: 14px; }
+    .guide-cta { background: linear-gradient(135deg, #1a1a2e, #16213e); border: 1px solid var(--border); border-radius: 14px; padding: 36px 24px; text-align: center; margin: 40px 0 0; }
+    .guide-cta h2 { border: none; margin-top: 0; }
+    .guide-cta p { font-size: 15px; color: #999; margin-bottom: 20px; }
+    .btn { display: inline-block; background: linear-gradient(135deg, #6366f1, #8b5cf6); color: #fff !important; padding: 12px 32px; border-radius: 30px; text-decoration: none; font-weight: 600; font-size: 15px; transition: transform .15s, box-shadow .15s; }
+    .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(99,102,241,0.3); }
+    @media (max-width: 640px) {
+      h1 { font-size: 24px; }
+      .guide-container { padding: 24px 16px 60px; }
+      .guide-step { padding: 18px 14px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="guide-header">
+    <div class="guide-header-inner">
+      <a href="../index.html">← ToolBox 工具箱</a>
+      <a href="https://toolai.ccwu.cc/">返回首页</a>
+    </div>
+  </div>
+
+  <div class="guide-container">
+    <div class="guide-breadcrumb">
+      <a href="../index.html">首页</a> › <a href="../index.html#guides">工具箱指南</a> › BPM节拍检测器
+    </div>
+
+    <h1>BPM节拍检测器：3步测出音乐BPM</h1>
+    <div class="guide-meta">
+      <span>⏱️ 阅读约 3 分钟</span>
+      <span>📅 2026-11-16</span>
+      <span>🥁 媒体工具</span>
+    </div>
+
+    <p>做 DJ 混音、给健身视频配乐、或剪辑时想选一首「节奏对味」的歌——第一步都是要知道它的 BPM（每分钟节拍数）。<strong>BPM节拍检测器</strong> 帮你上传音频一键测速，还能标注风格（慢板/行板/快板…），纯本地分析、无需上传。</p>
+
+    <img src="images/bpm-cover.png" alt="BPM节拍检测器界面" style="width:100%;border-radius:12px;border:1px solid var(--border);margin:10px 0 20px;">
+
+    <h2>开始使用</h2>
+
+    <div class="guide-step">
+      <span class="guide-step-number">1</span><h3>选择音频文件</h3>
+      <p>打开「媒体工具」分类里的「🥁 BPM节拍检测器」。点击"选择音频"，从本地上传 MP3/WAV/OGG 等格式的音乐文件即可（常见格式浏览器都能解码）。</p>
+      <img src="images/bpm-step1-detect.png" alt="选择音频并检测BPM">
+    </div>
+
+    <div class="guide-step">
+      <span class="guide-step-number">2</span><h3>点击检测</h3>
+      <p>点击「🥁 开始检测」，工具会分析音频的<strong>能量包络周期性</strong>来估算节拍速度，几秒内显示出 BPM 数值，并附上风格标签（如「中速/行板」「快板」），下方还会画出一段波形供参考。录音质量越好、节拍越规整，结果越准。</p>
+      <div class="guide-tip">💡 测出的 BPM 会自动归一到 60–190 的常见区间；电子舞曲、流行歌通常一测即准。</div>
+    </div>
+
+    <div class="guide-step">
+      <span class="guide-step-number">3</span><h3>结合使用</h3>
+      <p>拿到 BPM 后，可以配合站内「节拍器」把速度设成同样的 BPM 练手，或用「音频变速变调」调整歌曲速度——比如把 120 BPM 的歌调成 128，训练/剪辑更跟拍。整个过程都在浏览器本地完成，不会上传你的音乐。</p>
+      <div class="guide-tip">💡 如果检测结果与直觉差一半（如 90 与 180），可能是一拍/半拍制差异，属正常现象。</div>
+    </div>
+
+    <h2>使用场景</h2>
+    <ul class="guide-scenarios">
+      <li><strong>🎧 DJ 混音</strong> — 两首歌 BPM 接近才容易接拍，先测速再对拍。</li>
+      <li><strong>🏋️ 健身音乐</strong> — 挑选 120-140 BPM 的歌做训练，节奏更带感。</li>
+      <li><strong>🎬 剪辑配乐</strong> — 卡点视频先测 BPM，镜头切换更精准。</li>
+      <li><strong>🏃 跑步歌单</strong> — 按步频选同 BPM 歌曲，越跑越顺。</li>
+      <li><strong>🎼 扒谱学习</strong> — 先知道速度，练琴练歌更省力。</li>
+    </ul>
+
+    <h2>常见问题</h2>
+    <div class="guide-faq">
+      <details>
+        <summary>检测结果不准怎么办？</summary>
+        <p>选择更清晰、音量稳定、节奏规整的片段效果最好；如果有前奏人声或静音段落可截短再测。结果仅供参考，专业场合建议再用 DAW 核对。</p>
+      </details>
+      <details>
+        <summary>支持哪些格式？</summary>
+        <p>浏览器可解码的常见音频格式都支持：MP3、WAV、OGG、M4A 等。视频文件请先用「视频提取音频」转成音频再测。</p>
+      </details>
+      <details>
+        <summary>音频会上传吗？</summary>
+        <p>不会。所有分析都在浏览器本地完成，音频文件不会离开你的设备，隐私安全。</p>
+      </details>
+    </div>
+
+    <div class="guide-cta">
+      <h2>现在就试试BPM节拍检测器</h2>
+      <p>免费使用 · 无需安装 · 本地分析不上传</p>
+      <a href="https://toolai.ccwu.cc/" class="btn">🥁 打开BPM节拍检测器</a>
+    </div>
+  </div>
+</body>
+</html>
