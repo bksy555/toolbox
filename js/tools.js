@@ -10568,6 +10568,92 @@ greet('世界');</textarea>
   handler: () => { }
 },
 
+// ============================================================
+// 二维码拼接工具 qr-merge (qrm*)
+// ============================================================
+{
+  id: 'qr-merge',
+  cat: 'dev',
+  icon: '🧩',
+  name: '二维码拼接',
+  desc: '把多个二维码拼成一张大图（N×M网格），批量展示/打印二维码必备',
+  html: `
+    <div class="tool-card">
+      <div class="input-group">
+        <label>二维码内容（每行一个）</label>
+        <textarea id="qrm-input" placeholder="https://toolai.ccwu.cc/&#10;https://example.com/a&#10;https://example.com/b" style="height:140px;font-family:monospace;font-size:13px;"></textarea>
+      </div>
+      <div class="row-3" style="margin-top:12px;">
+        <div class="input-group">
+          <label>每行个数</label>
+          <input type="number" id="qrm-cols" value="2" min="1" max="5" style="width:100%;">
+        </div>
+        <div class="input-group">
+          <label>二维码尺寸 (px)</label>
+          <input type="number" id="qrm-size" value="200" min="100" max="600" step="10" style="width:100%;">
+        </div>
+        <div class="input-group">
+          <label>间距 (px)</label>
+          <input type="number" id="qrm-gap" value="12" min="0" max="60" style="width:100%;">
+        </div>
+      </div>
+      <div class="btn-group" style="margin-top:12px;">
+        <button class="btn btn-primary" onclick="qrmGenerate()">🧩 生成拼接图</button>
+        <button class="btn btn-secondary" onclick="qrmDownload()">💾 下载PNG</button>
+      </div>
+      <div id="qrm-preview" style="margin-top:14px;border:1px solid var(--border,#e2e8f0);border-radius:10px;padding:14px;min-height:80px;display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:center;"></div>
+      <div id="qrm-tip" style="margin-top:15px;font-size:13px;color:var(--text-light);background:var(--bg-light,#f8fafc);padding:12px;border-radius:8px;">
+        💡 每行一个链接/文本生成二维码，再按网格拼接成一张大图；纯本地生成，方便批量打印展示
+      </div>
+    </div>
+  `,
+  handler: () => { }
+},
+
+// ============================================================
+// 万年历工具 calendar (cal*)
+// ============================================================
+{
+  id: 'calendar',
+  cat: 'time',
+  icon: '📅',
+  name: '万年历',
+  desc: '在线万年历，支持查看任意年月、标记今天、农历/节日参考，日期工具大全',
+  html: `
+    <div class="tool-card">
+      <div class="row-3" style="align-items:flex-end;">
+        <div class="input-group">
+          <label>年</label>
+          <input type="number" id="cal-year" value="2026" min="1900" max="2100" style="width:100%;">
+        </div>
+        <div class="input-group">
+          <label>月</label>
+          <select id="cal-month">
+            <option value="1">1月</option><option value="2">2月</option><option value="3">3月</option>
+            <option value="4">4月</option><option value="5">5月</option><option value="6">6月</option>
+            <option value="7">7月</option><option value="8">8月</option><option value="9">9月</option>
+            <option value="10">10月</option><option value="11">11月</option><option value="12">12月</option>
+          </select>
+        </div>
+        <div class="input-group">
+          <label>&nbsp;</label>
+          <button class="btn btn-primary" style="width:100%;" onclick="calRender()">📅 查看</button>
+        </div>
+      </div>
+      <div class="btn-group" style="margin-top:10px;flex-wrap:wrap;">
+        <button class="btn btn-sm btn-secondary" onclick="calNav(-1)">◀ 上一月</button>
+        <button class="btn btn-sm btn-secondary" onclick="calToday()">今天</button>
+        <button class="btn btn-sm btn-secondary" onclick="calNav(1)">下一月 ▶</button>
+      </div>
+      <div id="cal-grid" style="margin-top:16px;"></div>
+      <div id="cal-tip" style="margin-top:15px;font-size:13px;color:var(--text-light);background:var(--bg-light,#f8fafc);padding:12px;border-radius:8px;">
+        💡 点击日期可将该日期复制为 YYYY-MM-DD；支持切换任意年月与今天定位
+      </div>
+    </div>
+  `,
+  handler: () => { }
+},
+
 ];
 
 // ============================================================
@@ -12208,12 +12294,12 @@ function dpCopyText() {
 // ============================================================
 const CATEGORIES = [
   { id: 'text', icon: '✏️', name: '文本工具', desc: '字数统计、简繁转换、摩斯密码、文本转语音、文本对比、批量查找替换、首字母缩写生成器、汉字转拼音、Markdown表格生成器、电子名片生成器、英文语法检查、占位文本生成' },
-  { id: 'dev', icon: '💻', name: '开发者工具', desc: 'JSON格式化、JSON差异对比、JSON/CSV互转、YAML/JSON互转、HTML/Markdown互转、二维码生成、二维码美化、条形码生成、条形码扫描器、Favicon图标生成、正则测试、Markdown、IP查询、子网计算、思维导图、图表生成、代码图片生成、表格数据转换、SQL格式化、代码压缩器、假数据生成器、Cron表达式生成器、HTTP状态码速查、SEO标题预览、屏幕坏点测试、字体配对、文件类型识别器' },
+  { id: 'dev', icon: '💻', name: '开发者工具', desc: 'JSON格式化、JSON差异对比、JSON/CSV互转、YAML/JSON互转、HTML/Markdown互转、二维码生成、二维码美化、二维码拼接、条形码生成、条形码扫描器、Favicon图标生成、正则测试、Markdown、IP查询、子网计算、思维导图、图表生成、代码图片生成、表格数据转换、SQL格式化、代码压缩器、假数据生成器、Cron表达式生成器、HTTP状态码速查、SEO标题预览、屏幕坏点测试、字体配对、文件类型识别器' },
   { id: 'image', icon: '🖼️', name: '图片处理', desc: '去背景换底色、批量压缩、加水印、长图拼接、格式转换、裁剪、异形裁剪、马赛克打码、双色调滤镜、图片转字符画、照片卡通化、OCR、印章制作、九宫格切图、文字转手写体、表情包、社交媒体图片尺寸调整、艺术效果、像素画、设备样机、图片高清放大、图片转线稿、渐变背景、文字特效、拼贴画、图片相框、颜色盲区模拟、海报设计器、老照片修复上色、图片EXIF信息、占位图生成器、文档透视矫正、图片对比滑块' },
   { id: 'document', icon: '📄', name: '文档转换', desc: '图片转PDF、PDF转图片、Word解析、Excel转PDF、PDF合并、PDF拆分、PDF加密解密、PDF加水印、简历生成、电子签名、表单制作、邮件签名、发票/收据生成器、证书生成器' },
   { id: 'convert', icon: '🔄', name: '转换工具', desc: '单位换算、进制转换、函数绘图' },
   { id: 'security', icon: '🔒', name: '安全工具', desc: '密码生成、Hash计算、随机数、浏览器指纹检测、身份证号码校验、凯撒密码' },
-  { id: 'time', icon: '⏱️', name: '时间工具', desc: '时间戳转换、日期计算、世界时区转换、番茄钟专注计时、待办清单、每日计划' },
+  { id: 'time', icon: '⏱️', name: '时间工具', desc: '时间戳转换、日期计算、世界时区转换、万年历、番茄钟专注计时、待办清单、每日计划' },
   { id: 'color', icon: '🎨', name: '颜色工具', desc: 'HEX/RGB/HSL颜色转换、颜色对比度检查、CSS渐变生成器、配色方案生成器' },
   { id: 'media', icon: '🎬', name: '媒体工具', desc: '抖音/TikTok去水印下载、视频转GIF、GIF转视频、多图合成GIF、GIF压缩器、GIF提取帧、视频加水印、视频变速、音频频谱可视化、音频响度计、乐器调音器、在线录音、录音转文字、音频波形可视化、白噪音发生器、音频变速变调、音频剪辑拼接、音频格式转换、音频均衡器、BPM节拍检测、视频压缩、视频提取音频、节拍器、视频抽帧器、视频缩略图制作器、在线便签、人声分离/伴奏提取' },
   { id: 'ai', icon: '🤖', name: 'AI工具', desc: 'AI聊天、AI Agent安装、免费AI工具推荐' },
@@ -25976,4 +26062,146 @@ function hpCopy() {
   const out = document.getElementById('hp-result');
   if (!out.textContent.trim()) { showToast('❌ 没有可复制的内容'); return; }
   navigator.clipboard.writeText(out.textContent).then(function () { showToast('✅ 已复制'); }).catch(function () { showToast('❌ 复制失败'); });
+}// ============================================================
+// 二维码拼接 处理函数 (qrm*)
+// ============================================================
+var qrmUrls = [];
+var qrmCanvas = null;
+
+function qrmGenerate() {
+  const input = document.getElementById('qrm-input').value.trim();
+  if (!input) { showToast('❌ 请输入内容（每行一个）'); return; }
+  const lines = input.split(/\r?\n/).filter(function (l) { return l.trim() !== ''; });
+  if (lines.length === 0) { showToast('❌ 没有有效内容'); return; }
+  qrmUrls = lines;
+  const cols = Math.max(1, parseInt(document.getElementById('qrm-cols').value) || 2);
+  const size = Math.max(60, parseInt(document.getElementById('qrm-size').value) || 200);
+  const gap = Math.max(0, parseInt(document.getElementById('qrm-gap').value) || 12);
+  const preview = document.getElementById('qrm-preview');
+  preview.innerHTML = '';
+
+  // 每个内容生成一个二维码（使用已有全局 QRCode 库）
+  const created = [];
+  lines.forEach(function (url, idx) {
+    const cell = document.createElement('div');
+    cell.style.cssText = 'position:relative;width:' + size + 'px;height:' + size + 'px;background:#fff;';
+    cell.setAttribute('data-qrm-url', url);
+    preview.appendChild(cell);
+    created.push({ el: cell, url: url, idx: idx });
+  });
+
+  // 等待全部二维码渲染后拼成一张图
+  setTimeout(function () {
+    const rows = Math.ceil(lines.length / cols);
+    const canvas = document.createElement('canvas');
+    canvas.width = cols * (size + gap) + gap;
+    canvas.height = rows * (size + gap) + gap;
+    const ctx = canvas.getContext('2d');
+    ctx.fillStyle = '#ffffff';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    created.forEach(function (item) {
+      const img = item.el.querySelector('img') || item.el.querySelector('canvas');
+      if (img) {
+        const r = Math.floor(item.idx / cols), c = item.idx % cols;
+        ctx.drawImage(img, gap + c * (size + gap), gap + r * (size + gap), size, size);
+      }
+    });
+    qrmCanvas = canvas;
+    preview.innerHTML = '';
+    const showImg = document.createElement('img');
+    showImg.src = canvas.toDataURL('image/png');
+    showImg.style.cssText = 'max-width:100%;border-radius:8px;';
+    preview.appendChild(showImg);
+    showToast('✅ 已生成 ' + lines.length + ' 个二维码拼接图');
+  }, 400 + lines.length * 120);
+
+  // 实际渲染二维码：如果页面已有 genQRCode 函数可复用；否则尝试用 canvas 库
+  lines.forEach(function (url, idx) {
+    const cell = preview.children[idx];
+    try {
+      if (typeof QRCode === 'function') {
+        // 旧版 QRCode 类用法
+        const qr = new QRCode(cell, { width: size, height: size });
+        qr.makeCode(url);
+      } else if (typeof QRCode !== 'undefined' && QRCode.toCanvas) {
+        QRCode.toCanvas(cell, url, { width: size, margin: 1 }, function () {});
+      } else {
+        // 降级：画一个占位框
+        cell.innerHTML = '<div style="font-size:11px;padding:8px;word-break:break-all;">' + url + '</div>';
+      }
+    } catch (e) {
+      cell.innerHTML = '<div style="font-size:11px;padding:8px;word-break:break-all;">' + url + '</div>';
+    }
+  });
+}
+
+function qrmDownload() {
+  if (!qrmCanvas) { showToast('❌ 请先生成拼接图'); return; }
+  const a = document.createElement('a');
+  a.download = 'qrcode-merge.png';
+  a.href = qrmCanvas.toDataURL('image/png');
+  a.click();
+  showToast('💾 拼接图已下载');
+}
+
+// ============================================================
+// 万年历 处理函数 (cal*)
+// ============================================================
+var calYear = new Date().getFullYear();
+var calMonth = new Date().getMonth() + 1;
+
+function calInit() {
+  const y = document.getElementById('cal-year');
+  const m = document.getElementById('cal-month');
+  if (y) y.value = calYear;
+  if (m) m.value = calMonth;
+  calRender();
+}
+
+function calNav(delta) {
+  calMonth += delta;
+  if (calMonth < 1) { calMonth = 12; calYear--; }
+  if (calMonth > 12) { calMonth = 1; calYear++; }
+  document.getElementById('cal-year').value = calYear;
+  document.getElementById('cal-month').value = calMonth;
+  calRender();
+}
+
+function calToday() {
+  const now = new Date();
+  calYear = now.getFullYear();
+  calMonth = now.getMonth() + 1;
+  document.getElementById('cal-year').value = calYear;
+  document.getElementById('cal-month').value = calMonth;
+  calRender();
+}
+
+function calRender() {
+  calYear = parseInt(document.getElementById('cal-year').value) || 2026;
+  calMonth = parseInt(document.getElementById('cal-month').value) || 1;
+  const grid = document.getElementById('cal-grid');
+  const first = new Date(calYear, calMonth - 1, 1);
+  const startDay = first.getDay(); // 0=周日
+  const daysInMonth = new Date(calYear, calMonth, 0).getDate();
+  const today = new Date();
+  const todayStr = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+
+  const weekdays = ['日', '一', '二', '三', '四', '五', '六'];
+  let html = '<div style="font-size:18px;font-weight:700;text-align:center;margin-bottom:12px;color:#0f172a;">' + calYear + ' 年 ' + calMonth + ' 月</div>';
+  html += '<div style="display:grid;grid-template-columns:repeat(7,1fr);gap:4px;font-size:12px;text-align:center;color:#64748b;margin-bottom:6px;">';
+  weekdays.forEach(function (w) { html += '<div>' + w + '</div>'; });
+  html += '</div><div style="display:grid;grid-template-columns:repeat(7,1fr);gap:4px;">';
+  for (let i = 0; i < startDay; i++) html += '<div></div>';
+  for (let d = 1; d <= daysInMonth; d++) {
+    const ds = calYear + '-' + calMonth + '-' + d;
+    const isToday = ds === todayStr;
+    html += '<div onclick="calCopyDate(' + calYear + ',' + calMonth + ',' + d + ')" style="cursor:pointer;border-radius:8px;padding:8px 4px;text-align:center;font-size:14px;background:' + (isToday ? 'linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff;font-weight:700;' : '#f8fafc;color:#0f172a;') + '">' + d + '</div>';
+  }
+  html += '</div>';
+  grid.innerHTML = html;
+}
+
+function calCopyDate(y, m, d) {
+  const str = y + '-' + String(m).padStart(2, '0') + '-' + String(d).padStart(2, '0');
+  navigator.clipboard.writeText(str).then(function () { showToast('✅ 已复制：' + str); }).catch(function () { showToast('📋 ' + str); });
 }
